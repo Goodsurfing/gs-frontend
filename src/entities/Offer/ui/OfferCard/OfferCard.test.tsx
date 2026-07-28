@@ -50,13 +50,13 @@ describe("OfferCard", () => {
         expect(onSelect).toHaveBeenCalledWith(1);
     });
 
-    it("клик по «Подробнее» не вызывает onSelect (переход по ссылке отдельно)", () => {
+    it("клик по «Подробнее» тоже вызывает onSelect (id должен попасть в URL до перехода)", () => {
         const onSelect = vi.fn();
         renderCard({ onSelect, link: "/ru/offer-personal/1" });
 
         fireEvent.click(screen.getByText("Подробнее"));
 
-        expect(onSelect).not.toHaveBeenCalled();
+        expect(onSelect).toHaveBeenCalledWith(1);
     });
 
     it("подсвечивает карточку, если isSelected=true", () => {

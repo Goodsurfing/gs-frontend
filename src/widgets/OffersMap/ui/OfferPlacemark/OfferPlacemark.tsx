@@ -3,7 +3,7 @@ import React, {
     FC, memo, useCallback, useEffect,
     useRef,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { useCategories } from "@/shared/data/categories";
@@ -29,6 +29,7 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo((props: OfferPlacema
     } = props;
 
     const navigate = useNavigate();
+    const [, setSearchParams] = useSearchParams();
     const ymaps = useYMaps();
     const { getTranslation } = useCategories();
     const [getOffer, {
@@ -38,8 +39,16 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo((props: OfferPlacema
     const placemarkRef = useRef<any>(null);
 
     const handleClick = useCallback(() => {
+        // Клик по маркеру не идёт через OffersList/onSelectOffer, поэтому сам
+        // пишет offerId в URL — иначе кнопка "назад" со страницы вакансии,
+        // открытой с карты, возвращала бы к списку без выделенного маркера.
+        setSearchParams((prev) => {
+            const updated = new URLSearchParams(prev);
+            updated.set("offerId", id);
+            return updated;
+        }, { replace: true });
         navigate(getOfferPersonalPageUrl(locale, id));
-    }, [locale, id, navigate]);
+    }, [locale, id, navigate, setSearchParams]);
 
     const updateBalloonContent = useCallback(() => {
         const element = document.getElementById(`ballon-offer-${id}`);

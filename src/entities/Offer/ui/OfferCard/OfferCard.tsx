@@ -154,7 +154,15 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                 </p>
                 <Link
                     to={link ?? getMainPageUrl(locale)}
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e) => {
+                        // Не даём клику дойти до onClick обёртки (двойной вызов
+                        // onSelect не нужен), но сам onSelect всё равно должны
+                        // вызвать явно — иначе при переходе именно по этой
+                        // ссылке (а не по клику на карточку) id вакансии никогда
+                        // не попадёт в URL, и "назад" вернёт к списку без выбора.
+                        e.stopPropagation();
+                        onSelect?.(offerId);
+                    }}
                     className={styles.learnMore}
                 >
                     {t("Подробнее")}
