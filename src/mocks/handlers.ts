@@ -1,7 +1,7 @@
 import { rest } from "msw";
 
 export const handlers = [
-    rest.get("*/api/v3/verify/email/:id", (req, res, ctx) => res(
+    rest.get("*/api/v1/verify/email/:id", (req, res, ctx) => res(
         ctx.status(200),
         ctx.json({
             accessToken: "test-access-token",
