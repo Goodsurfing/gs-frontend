@@ -15,8 +15,12 @@
 
 .description {
     font-size: 0.875rem;
+    line-height: 1.6;
     white-space: pre-line;
     overflow-wrap: break-word;
+    max-width: 720px;
+    width: 100%;
+    text-align: left;
 }
 
 .button {
