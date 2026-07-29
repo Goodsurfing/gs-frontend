@@ -208,7 +208,13 @@ export const OffersSearchFilter = () => {
         fetchOffersMapWithBounds({ search });
         reset(defaultValues);
         onChangePage(1);
-    }, []);
+        // onChangePage must stay in deps: it closes over setSearchParams via a
+        // functional updater, and setSearchParams is recreated on every URL
+        // change — an empty deps array here would freeze this handler on the
+        // mount-time onChangePage/setSearchParams forever, so its updater's
+        // `prev` would always resolve to whatever searchParams existed on
+        // page load, silently reintroducing them on every apply/reset click.
+    }, [onChangePage]);
 
     useEffect(() => {
         const searchParam = searchParams.get("search");
@@ -228,7 +234,10 @@ export const OffersSearchFilter = () => {
         fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
         fetchOffersMapWithBounds({ ...preparedData });
         onChangePage(1);
-    }), []);
+        // See onApplySearch above for why onChangePage can't be omitted here —
+        // this is exactly the bug that made "Применить" resurrect a category
+        // the user had just unchecked (GS staging report, 2026-07-29).
+    }), [onChangePage]);
 
     const onResetFilters = useCallback(async () => {
         currentSearchRef.current = "";
@@ -239,7 +248,7 @@ export const OffersSearchFilter = () => {
         fetchOffersMapWithBounds({ ...preparedData });
         reset(defaultValues);
         onChangePage(1);
-    }, []);
+    }, [onChangePage]);
 
     const handleMapOpen = useCallback(() => {
         setMapOpened((prev) => !prev);
