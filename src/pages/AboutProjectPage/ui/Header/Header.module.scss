@@ -1,5 +1,5 @@
 .wrapper {
-    background-image: url("@/shared/assets/images/about-project/header.webp");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("@/shared/assets/images/about-project/header.webp");
     width: 100%;
     max-width: 1920px;
     margin: 0 auto;
@@ -19,10 +19,16 @@
     text-align: center;
     font-size: 2.5rem;
     font-weight: 600;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
 @media(max-width: 992px) {
     .wrapper {
         padding: 20px;
+        min-height: 260px;
+    }
+
+    .title {
+        font-size: 1.75rem;
     }
 }
