@@ -27,6 +27,9 @@
     flex-shrink: 0;
     width: 160px;
     height: 110px;
+    // Заливка на случай, пока картинка ещё грузится (или сломана) — иначе
+    // до onError/onLoad там просто белая дыра на фоне карточки.
+    background-color: var(--bg-accent);
 
     img {
         width: 100%;

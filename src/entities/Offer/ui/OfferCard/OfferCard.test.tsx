@@ -78,4 +78,16 @@ describe("OfferCard", () => {
         renderCard({});
         expect(screen.queryByText("нет на карте")).not.toBeInTheDocument();
     });
+
+    it("показывает плейсхолдер вместо сломанной картинки после onError, а не пустое место", () => {
+        const { container } = renderCard({ image: "https://example.com/broken.jpg" });
+
+        const img = container.querySelector("img[alt=\"offer-img\"]") as HTMLImageElement;
+        expect(img).toBeInTheDocument();
+
+        fireEvent.error(img);
+
+        expect(container.querySelector("img[alt=\"offer-img\"]")).not.toBeInTheDocument();
+        expect(container.querySelector("[class*=\"imagePlaceholder\"]")).toBeInTheDocument();
+    });
 });

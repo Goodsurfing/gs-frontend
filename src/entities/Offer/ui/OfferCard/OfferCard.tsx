@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC, memo } from "react";
+import React, { FC, memo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 
@@ -61,6 +61,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         onSelect,
     } = props;
     const { t } = useTranslation();
+    const [imageFailed, setImageFailed] = useState(false);
 
     return (
         <div
@@ -77,7 +78,14 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         >
             {isImageShow && (
                 <div className={styles.imageWrapper}>
-                    {image ? <img src={image} alt="offer-img" loading="lazy" /> : <div className={styles.imagePlaceholder} />}
+                    {image && !imageFailed ? (
+                        <img
+                            src={image}
+                            alt="offer-img"
+                            loading="lazy"
+                            onError={() => setImageFailed(true)}
+                        />
+                    ) : <div className={styles.imagePlaceholder} />}
                     {isFavoriteIconShow && (
                         <ReactSVG
                             src={heartIcon}
