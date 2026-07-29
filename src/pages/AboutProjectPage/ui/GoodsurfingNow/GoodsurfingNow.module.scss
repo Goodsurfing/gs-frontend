@@ -1,7 +1,14 @@
 .content {
     margin-top: 36px;
     display: flex;
-    justify-content: space-between;
+    // space-between spreads items edge-to-edge only while they all fit on
+    // one row; the moment 4 fixed-140px circles + gaps + padding overflow
+    // (any width narrower than ~992px isn't even needed to trigger this —
+    // it also happened well above that breakpoint), the wrapped remainder
+    // lands flush-left instead of centered, looking broken. center wraps
+    // consistently at every width, so there's no separate override needed
+    // below 992px anymore either.
+    justify-content: center;
     flex-wrap: wrap;
     padding-left: 100px;
     padding-right: 100px;
@@ -19,7 +26,6 @@
 
 @media (max-width: 992px) {
     .content {
-        justify-content: center;
         padding-left: 0;
         padding-right: 0;
     }
