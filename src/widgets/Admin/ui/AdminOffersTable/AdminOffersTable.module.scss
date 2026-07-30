@@ -12,6 +12,12 @@
     align-items: center;
 }
 
+.featuredCounter {
+    color: var(--text-caption);
+    font-size: 14px;
+    white-space: nowrap;
+}
+
 .btnIcon {
     background: transparent;
     border: none;

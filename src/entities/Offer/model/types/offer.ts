@@ -176,6 +176,7 @@ export interface GetOffersFilters {
     categoryIds: number[];
     page: number;
     limit: number;
+    isFeatured: boolean;
 }
 
 export interface MapBounds {

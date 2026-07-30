@@ -28,6 +28,7 @@ import {
     GetAdminHouseParams, GetAdminHouseResponse,
     GetAdminOffersParams,
     GetAdminOffersRequest,
+    UpdateAdminVacancyFeaturedRequest,
     GetAdminOrganizationParams, GetAdminOrganizationResponse,
     GetAdminReviewVacancyListParams,
     GetAdminReviewVacancyListResponse,
@@ -810,6 +811,14 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
+        updateAdminVacancyFeatured: build.mutation<void, UpdateAdminVacancyFeaturedRequest>({
+            query: (data) => ({
+                url: `vacancy/toggle-featured/${data.id}`,
+                method: "PATCH",
+                body: { isFeatured: data.isFeatured },
+            }),
+            invalidatesTags: ["offer"],
+        }),
         getAdminSearchUsers: build.query<GetAdminUsersResponse[], Partial<GetAdminUsersParams>>({
             query: (params) => ({
                 url: "user/search",
@@ -961,6 +970,7 @@ export const {
     useLazyGetAdminReviewVolunteerByIdQuery,
     useGetAdminReviewVolunteerByIdQuery,
     useLazyGetAdminOffersQuery,
+    useGetAdminOffersQuery,
     useDeleteAdminOfferMutation,
     useGetAdminVacancyWhereQuery,
     useUpdateAdminVacancyWhereMutation,
@@ -978,6 +988,7 @@ export const {
     useUpdateAdminVacancyFinishingTouchesMutation,
     useUpdateAdminVacancyImageGalleryMutation,
     useUpdateAdminVacancyStatusMutation,
+    useUpdateAdminVacancyFeaturedMutation,
     useLazyGetAdminSearchUsersQuery,
     useGetAmbassadorsQuery,
     useLazyGetAdminAmbassadorsQuery,
