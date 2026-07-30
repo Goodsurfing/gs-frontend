@@ -8,6 +8,7 @@ import Button from "@/shared/ui/Button/Button";
 import styles from "./Mission.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getNPOPageUrl } from "@/shared/config/routes/AppUrls";
+import { renderBoldText } from "@/shared/lib/renderBoldText";
 
 interface MissionProps {
     className?: string;
@@ -28,7 +29,7 @@ export const Mission: FC<MissionProps> = (props: MissionProps) => {
         <section className={cn(className, styles.wrapper)}>
             <h2 className={styles.title}>{t("Миссия ГудСёрфинга")}</h2>
             <p className={styles.description}>
-                {description}
+                {description && renderBoldText(description)}
             </p>
             <Button
                 className={styles.button}
