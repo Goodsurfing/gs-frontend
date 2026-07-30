@@ -9,7 +9,7 @@ export const useSubmenuVolunteerItems = () => {
         },
         {
             text: t("personal.Умения"),
-            id: "1",
+            id: "skills",
         },
         {
             text: t("personal.Вакансии"),

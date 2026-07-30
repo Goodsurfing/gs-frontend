@@ -5,6 +5,7 @@ import {
     ApplicationReview, ApplicationReviewResponse,
     CreateOfferReview,
     CreateVolunteerReview,
+    FeaturedReview,
     GetAboutVolunteerReviewParams, GetAboutVolunteerReviewRequest,
     GetOfferReviewByHostIdParams,
     GetOfferReviewByHostResponse,
@@ -158,6 +159,13 @@ export const reviewApi = createApi({
             }),
             providesTags: ["volunteer", "host"],
         }),
+        getFeaturedReviews: build.query<FeaturedReview[], void>({
+            query: () => ({
+                url: `${API_BASE_URL_ABSOLUTE}review-vacancy/featured`,
+                method: "GET",
+            }),
+            providesTags: ["host", "volunteer"],
+        }),
         createOfferReview: build.mutation<void,
         CreateOfferReview>({
             query: (body) => ({
@@ -249,4 +257,5 @@ export const {
     useLazyGetHostReviewByHostIdQuery,
     useLazyGetVolunteerReviewByVolunteerIdQuery,
     useGetOfferReviewsQuery,
+    useGetFeaturedReviewsQuery,
 } = reviewApi;

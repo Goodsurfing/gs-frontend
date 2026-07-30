@@ -7,7 +7,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.min.css";
 
 import { useTranslation } from "react-i18next";
-import { reviewsData } from "@/widgets/ReviewsContainer";
+import { useGetFeaturedReviewsQuery } from "@/entities/Review";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { ReviewSlide } from "../ReviewSlide/ReviewSlide";
 import styles from "./Review.module.scss";
 
@@ -18,21 +19,32 @@ interface ReviewProps {
 export const Review: FC<ReviewProps> = (props: ReviewProps) => {
     const { className } = props;
     const { t } = useTranslation("membership");
+    const { data: featuredReviews } = useGetFeaturedReviewsQuery();
+
+    const reviewsWithPhotos = useMemo(
+        () => (featuredReviews ?? []).filter((review) => review.images.length > 0),
+        [featuredReviews],
+    );
+
     const renderSlides = useMemo(
-        () => reviewsData.map((review, index) => (
-            <SwiperSlide key={index}>
+        () => reviewsWithPhotos.map((review) => (
+            <SwiperSlide key={review.id}>
                 <ReviewSlide
                     className={styles.slide}
                     title={review.title}
-                    reviewText={review.text}
-                    image={review.image}
-                    authorName={review.author}
-                    authorAvatar={review.avatar}
+                    reviewText={review.description}
+                    image={getMediaContent(review.images[0], "LARGE") ?? ""}
+                    authorName={review.authorName}
+                    authorAvatar={getMediaContent(review.authorAvatar ?? undefined, "SMALL")}
                 />
             </SwiperSlide>
         )),
-        [],
+        [reviewsWithPhotos],
     );
+
+    if (reviewsWithPhotos.length === 0) {
+        return null;
+    }
 
     return (
         <section className={cn(className, styles.wrapper)}>

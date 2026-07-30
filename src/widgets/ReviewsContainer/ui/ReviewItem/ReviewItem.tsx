@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
 import styles from "./ReviewItem.module.scss";
 
@@ -7,7 +8,7 @@ interface ReviewItemProps {
     text: string;
     image: string;
     author: string;
-    avatar: string;
+    avatar?: string;
 }
 
 const ReviewItem: FC<ReviewItemProps> = ({
@@ -23,7 +24,13 @@ const ReviewItem: FC<ReviewItemProps> = ({
             <h3 className={styles.title}>{title}</h3>
             <p className={styles.text}>{text}</p>
             <div className={styles.user}>
-                <img src={avatar} alt={author} className={styles.avatar} loading="lazy" />
+                <Avatar
+                    size="SMALL"
+                    icon={avatar}
+                    text={author}
+                    alt={author}
+                    className={styles.avatar}
+                />
                 <p className={styles.author}>{author}</p>
             </div>
         </div>

@@ -61,6 +61,7 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
         return (
             <div className={cn(className)}>
                 <VolunteerDesctiptionCard
+                    id="1"
                     title={t("personal.О себе")}
                     description={profileData?.aboutMe ?? undefined}
                 />
