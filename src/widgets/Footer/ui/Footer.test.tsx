@@ -61,4 +61,22 @@ describe("Footer", () => {
         const allLinks = screen.getAllByRole("link").map((el) => el.getAttribute("href"));
         expect(allLinks).toContain("/ru/feedback");
     });
+
+    /**
+     * "Курсы для организаторов" вёл на главную (getMainPageUrl) вместо
+     * реальной страницы, которой не существует — мёртвая/сбивающая с
+     * толку ссылка. Скрыт до появления реальной страницы, по аналогии с
+     * другими ещё не готовыми пунктами меню в этом файле.
+     */
+    it("не содержит ссылку 'Курсы для организаторов', ведущую на главную", () => {
+        renderWithProviders(
+            <MemoryRouter>
+                <Footer />
+            </MemoryRouter>,
+        );
+
+        expect(
+            screen.queryByText("main.welcome.header.for-organizers.courses-for-organizers"),
+        ).not.toBeInTheDocument();
+    });
 });
