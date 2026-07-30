@@ -449,6 +449,7 @@ export interface GetAdminReviewVacancyListParams {
     authorLastName?: string;
     authorFirstName?: string;
     vacancyName?: string;
+    isFeatured?: boolean;
     page: number;
     limit: number;
 }
