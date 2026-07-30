@@ -83,13 +83,16 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                 const categoryName = offer.categories[0]?.name ?? noCategory;
                 const categoryColor = offer.categories[0]?.color ?? "var(--text-caption)";
 
+                const offerUrl = getOfferPersonalPageUrl(locale, offer.id.toString());
                 const balloonContent = `
           <div class="${styles.balloonWrapper}">
-            <a href="${getOfferPersonalPageUrl(locale, offer.id.toString())}"><img class="${styles.balloonImage}" src="${getMediaContent(imgSrc, "SMALL") ?? defaultImage}" /></a>
+            <a href="${offerUrl}" class="${styles.balloonImageLink}">
+              <img class="${styles.balloonImage}" src="${getMediaContent(imgSrc, "SMALL") ?? defaultImage}" />
+            </a>
             <div class="${styles.text}">
               <div class="${styles.balloonTitle}">${title}</div>
               <div class="${styles.balloonCategory}" style="color: ${categoryColor};">${categoryName}</div>
-              <a href="${getOfferPersonalPageUrl(locale, offer.id.toString())}" class="${styles.balloonLink}">${learnMore}</a>
+              <a href="${offerUrl}" class="${styles.balloonLink}">${learnMore}</a>
             </div>
           </div>
         `;
@@ -111,6 +114,17 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                         ),
                         iconImageSize: [30, 30],
                         iconImageOffset: [-15, -15],
+                        // Без iconShape Яндекс.Карты по умолчанию считают форму
+                        // маркера прямоугольным пином, а не нашим кастомным
+                        // кружком — из-за этого хвостик balloon указывал не в
+                        // центр маркера. Круг тех же размеров/центра, что и сама
+                        // иконка (без учёта iconImageOffset — как в
+                        // clusterIconShape ниже).
+                        iconShape: {
+                            type: "Circle",
+                            coordinates: [15, 15],
+                            radius: 15,
+                        },
                     },
                 };
             });

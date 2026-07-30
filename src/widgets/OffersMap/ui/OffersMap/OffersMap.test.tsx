@@ -14,6 +14,7 @@ const getBounds = vi.fn(() => [[54, 36], [57, 39]]);
 const boundsChangeHandlers: Array<() => void> = [];
 const onLoadCalls = vi.fn();
 const balloonOpen = vi.fn().mockResolvedValue(undefined);
+let capturedFeatures: any[] = [];
 
 vi.mock("react-i18next", () => ({
     useTranslation: () => ({ t: (key: string) => key }),
@@ -56,6 +57,7 @@ vi.mock("@pbe/react-yandex-maps", () => ({
     // eslint-disable-next-line react/no-unused-prop-types
     ObjectManager: (props: { features: unknown[]; instanceRef?: { current: unknown } }) => {
         const { features, instanceRef } = props;
+        capturedFeatures = features;
         if (instanceRef) {
             instanceRef.current = { objects: { balloon: { open: balloonOpen } } };
         }
@@ -81,6 +83,7 @@ describe("OffersMap", () => {
         onLoadCalls.mockClear();
         balloonOpen.mockClear();
         boundsChangeHandlers.length = 0;
+        capturedFeatures = [];
     });
 
     it("фокусирует карту, если у выбранной вакансии известны координаты", () => {
@@ -238,5 +241,36 @@ describe("OffersMap", () => {
         );
 
         await waitFor(() => expect(screen.getByTestId("object-manager")).toHaveTextContent("1"));
+    });
+
+    it("даёт маркеру круглую iconShape, совпадающую с кастомной иконкой, чтобы balloon указывал точно на неё", async () => {
+        render(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(capturedFeatures).toHaveLength(1));
+        expect(capturedFeatures[0].options.iconShape).toEqual({
+            type: "Circle",
+            coordinates: [15, 15],
+            radius: 15,
+        });
+    });
+
+    it("рисует balloon как карточку: фото сверху на всю ширину, ссылка на вакансию", async () => {
+        render(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(capturedFeatures).toHaveLength(1));
+        const { balloonContent } = capturedFeatures[0].properties;
+        expect(balloonContent).toContain("balloonImageLink");
+        expect(balloonContent).toContain("balloonImage");
+        expect(balloonContent).toContain("/ru/offers/1");
     });
 });
