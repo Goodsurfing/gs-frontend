@@ -79,7 +79,8 @@ describe("OffersMap", () => {
     beforeEach(() => {
         setCenter.mockClear();
         getZoom.mockClear();
-        getBounds.mockClear();
+        getBounds.mockReset();
+        getBounds.mockReturnValue([[54, 36], [57, 39]]);
         onLoadCalls.mockClear();
         balloonOpen.mockClear();
         boundsChangeHandlers.length = 0;
@@ -173,6 +174,21 @@ describe("OffersMap", () => {
         await waitFor(() => expect(onBoundsChange).toHaveBeenCalledWith({
             boundsSwLat: 54, boundsSwLng: 36, boundsNeLat: 57, boundsNeLng: 39,
         }), { timeout: 1000 });
+    });
+
+    it("не сообщает вырожденный (нулевой площади) bounds (регресс: скрытая через display:none десктопная карта на мобильном шлёт SW===NE и стирает реальные маркеры пустым ответом)", async () => {
+        getBounds.mockReturnValue([[50, 50], [50, 50]]);
+        const onBoundsChange = vi.fn();
+        render(
+            <OffersMap
+                offersData={[]}
+                isOffersLoading={false}
+                onBoundsChange={onBoundsChange}
+            />,
+        );
+
+        await waitFor(() => expect(onLoadCalls).toHaveBeenCalledTimes(1));
+        expect(onBoundsChange).not.toHaveBeenCalled();
     });
 
     it("не пересоздаёт карту при переключении isOffersLoading (регресс: карта уходила в бесконечный цикл unmount/remount)", async () => {
