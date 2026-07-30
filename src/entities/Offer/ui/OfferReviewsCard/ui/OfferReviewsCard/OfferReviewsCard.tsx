@@ -137,39 +137,45 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         return (
             <div className={styles.wrapper} id="review">
                 <Text title={t("personalOffer.Отзывы")} titleSize="h3" />
-                <Rating
-                    disabled={!canReview || isSendReview}
-                    size="large"
-                    value={rating}
-                    onChange={(_, valueItem) => setRating(valueItem)}
-                    sx={{
-                        "& .MuiRating-iconFilled": {
-                            color: "#FED81C",
-                        },
-                    }}
-                />
-                <CommentInput
-                    onSend={handleSendReview}
-                    btnText={t("personalOffer.Написать отзыв")}
-                    disabled={!canReview || isSendReview}
-                    disabledBtn={!commentInput.trim() || rating === null}
-                    placeholder={t("personalOffer.Ваш отзыв")}
-                    className={styles.commentInput}
-                    value={commentInput}
-                    onChange={handleCommentInput}
-                />
-                {canReview && !isSendReview && (
-                    <ImagesUploader
-                        uploadedImgs={reviewImages}
-                        onUpload={async (uploaded) => {
-                            setReviewImages((prev) => [...prev, ...uploaded]);
-                        }}
-                        onDelete={(imgId) => {
-                            setReviewImages((prev) => prev.filter((img) => img.id !== imgId));
-                        }}
-                        onError={() => {}}
-                        maxLength={10}
-                    />
+                {canReview && (
+                    <>
+                        <Rating
+                            disabled={isSendReview}
+                            size="large"
+                            value={rating}
+                            onChange={(_, valueItem) => setRating(valueItem)}
+                            sx={{
+                                "& .MuiRating-iconFilled": {
+                                    color: "#FED81C",
+                                },
+                            }}
+                        />
+                        <CommentInput
+                            onSend={handleSendReview}
+                            btnText={t("personalOffer.Написать отзыв")}
+                            disabled={isSendReview}
+                            disabledBtn={!commentInput.trim() || rating === null}
+                            placeholder={t("personalOffer.Ваш отзыв")}
+                            className={styles.commentInput}
+                            value={commentInput}
+                            onChange={handleCommentInput}
+                        />
+                        {!isSendReview && (
+                            <ImagesUploader
+                                uploadedImgs={reviewImages}
+                                onUpload={async (uploaded) => {
+                                    setReviewImages((prev) => [...prev, ...uploaded]);
+                                }}
+                                onDelete={(imgId) => {
+                                    setReviewImages(
+                                        (prev) => prev.filter((img) => img.id !== imgId),
+                                    );
+                                }}
+                                onError={() => {}}
+                                maxLength={10}
+                            />
+                        )}
+                    </>
                 )}
                 <div className={styles.container}>
                     {renderContent()}
