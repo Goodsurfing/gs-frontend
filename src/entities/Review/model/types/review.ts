@@ -218,6 +218,7 @@ export interface MyReviewHostResponse {
 export interface FeaturedReview {
     id: string;
     title: string;
+    vacancyId: number;
     description: string;
     rating: number;
     authorName: string;

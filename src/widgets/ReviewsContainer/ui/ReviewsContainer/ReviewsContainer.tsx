@@ -68,6 +68,7 @@ const ReviewsContainer: FC = () => {
                                 image={getMediaContent(review.images[0], "LARGE") ?? ""}
                                 author={review.authorName}
                                 avatar={getMediaContent(review.authorAvatar ?? undefined, "SMALL")}
+                                vacancyId={review.vacancyId}
                             />
                         </SwiperSlide>
                     ))}

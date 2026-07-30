@@ -1,13 +1,23 @@
 import {
     describe, it, expect, vi,
 } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import ReviewsContainer from "./ReviewsContainer";
+
+const navigateMock = vi.fn();
 
 let mockFeaturedReviews: unknown[] | undefined;
 
 vi.mock("@/entities/Review", () => ({
     useGetFeaturedReviewsQuery: () => ({ data: mockFeaturedReviews }),
+}));
+
+vi.mock("react-router-dom", () => ({
+    useNavigate: () => navigateMock,
+}));
+
+vi.mock("@/app/providers/LocaleProvider", () => ({
+    useLocale: () => ({ locale: "ru" }),
 }));
 
 /**
@@ -42,6 +52,7 @@ describe("ReviewsContainer", () => {
         mockFeaturedReviews = [{
             id: "1",
             title: "Отзыв с фото",
+            vacancyId: 42,
             description: "Отличная поездка",
             rating: 5,
             authorName: "Тест Волонтёр",
@@ -50,5 +61,23 @@ describe("ReviewsContainer", () => {
         }];
         render(<ReviewsContainer />);
         expect(screen.getByText("Отзыв с фото")).toBeInTheDocument();
+    });
+
+    it("переходит на страницу вакансии по клику на карточку отзыва", () => {
+        navigateMock.mockClear();
+        mockFeaturedReviews = [{
+            id: "1",
+            title: "Отзыв с фото",
+            vacancyId: 42,
+            description: "Отличная поездка",
+            rating: 5,
+            authorName: "Тест Волонтёр",
+            authorAvatar: null,
+            images: [{ id: "img1", contentUrl: "https://example.com/1.jpg" }],
+        }];
+        render(<ReviewsContainer />);
+        fireEvent.click(screen.getByText("Отзыв с фото"));
+
+        expect(navigateMock).toHaveBeenCalledWith("/ru/offers/42");
     });
 });
