@@ -215,6 +215,16 @@ export interface MyReviewHostResponse {
     pagination: Pagination;
 }
 
+export interface FeaturedReview {
+    id: string;
+    title: string;
+    description: string;
+    rating: number;
+    authorName: string;
+    authorAvatar: Image | null;
+    images: Image[];
+}
+
 export interface NotDoneReviewHost {
     id: string;
     vacancyId: number;

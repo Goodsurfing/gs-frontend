@@ -30,11 +30,12 @@ export const AdminReviewVolunteerInfo: FC<AdminReviewVolunteerInfoProps> = (prop
             const {
                 rating, description, id, authorFirstName,
                 authorLastName, volunteerFirstName, volunteerLastName,
-                created,
+                created, images,
             } = reviewData;
             setReviewFields({
                 rating,
                 description,
+                images,
             });
             setReviewInfoTable({
                 id,
@@ -52,7 +53,7 @@ export const AdminReviewVolunteerInfo: FC<AdminReviewVolunteerInfoProps> = (prop
 
     const onSubmit = async (data: AdminReviewFields) => {
         setToast(undefined);
-        const { rating, description } = data;
+        const { rating, description, images } = data;
         if (!rating) return;
         try {
             await updateReview({
@@ -60,6 +61,7 @@ export const AdminReviewVolunteerInfo: FC<AdminReviewVolunteerInfoProps> = (prop
                 body: {
                     description,
                     rating,
+                    imageIds: (images ?? []).map((image) => image.id),
                 },
             }).unwrap();
             setToast({

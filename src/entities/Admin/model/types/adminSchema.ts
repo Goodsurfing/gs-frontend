@@ -439,6 +439,8 @@ export interface EditReviewVacancy {
     body: {
         rating: number;
         description: string;
+        isFeatured?: boolean;
+        imageIds?: string[];
     }
 }
 
@@ -460,7 +462,8 @@ export interface AdminReviewVacancy {
     rating: number;
     description: string;
     created: string;
-
+    isFeatured: boolean;
+    images: Image[];
 }
 
 export interface GetAdminReviewVacancyListResponse {
@@ -472,6 +475,7 @@ export interface EditAdminReviewVolunteerRequest {
     body: {
         rating: number;
         description: string;
+        imageIds?: string[];
     }
     reviewId: string;
 }
@@ -495,6 +499,7 @@ export interface AdminReviewVolunteer {
     rating: number;
     description: string;
     created: string;
+    images: Image[];
 }
 
 export interface GetAdminReviewVolunteerListResponse {

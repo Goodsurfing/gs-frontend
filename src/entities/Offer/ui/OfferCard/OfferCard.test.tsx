@@ -2,7 +2,7 @@ import {
     describe, it, expect, vi,
 } from "vitest";
 import { screen, fireEvent } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import type { ComponentProps } from "react";
 import { renderWithProviders } from "@/test-utils";
 import { OfferCard } from "./OfferCard";
@@ -57,6 +57,24 @@ describe("OfferCard", () => {
         fireEvent.click(screen.getByText("Подробнее"));
 
         expect(onSelect).toHaveBeenCalledWith(1);
+    });
+
+    it("клик по карточке без onSelect (списки в профиле/кабинете) ведёт на страницу вакансии", () => {
+        renderWithProviders(
+            <MemoryRouter initialEntries={["/"]}>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<OfferCard {...baseProps} link="/ru/offers/1" />}
+                    />
+                    <Route path="/ru/offers/1" element={<div>Страница вакансии</div>} />
+                </Routes>
+            </MemoryRouter>,
+        );
+
+        fireEvent.click(screen.getByRole("button"));
+
+        expect(screen.getByText("Страница вакансии")).toBeInTheDocument();
     });
 
     it("подсвечивает карточку, если isSelected=true", () => {

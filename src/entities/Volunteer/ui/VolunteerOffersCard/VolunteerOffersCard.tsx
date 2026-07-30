@@ -139,8 +139,10 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                                                     id,
                                                     title: description?.title,
                                                     shortDescription: description?.shortDescription,
-                                                    // eslint-disable-next-line max-len
-                                                    imagePath: description?.image?.thumbnails?.medium,
+                                                    imagePath: getMediaContent(
+                                                        description?.image ?? undefined,
+                                                        "MEDIUM",
+                                                    ),
                                                     address: where?.address,
                                                     categories: categoriesTemp,
                                                     acceptedApplicationsCount,
