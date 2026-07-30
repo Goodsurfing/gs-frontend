@@ -141,7 +141,29 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
             Math.max(currentZoom, FOCUS_ZOOM),
             { duration: 400 },
         );
-    }, [selectedOfferId, selectedOfferCoordinates]);
+
+        // Клик по карточке в списке раньше молча подвигал карту, а подсказку
+        // с превью вакансии видел только тот, кто кликнул прямо по маркеру.
+        // Открываем тот же balloon программно, но только после того как pan
+        // завершится (actionend) — иначе ObjectManager может не найти
+        // объект, если он ещё не попал в текущий кластер на новом месте.
+        const map = mapRef.current;
+        const objectManager = objectManagerRef.current;
+        if (!objectManager) return undefined;
+
+        const openBalloon = () => {
+            map.events.remove("actionend", openBalloon);
+            objectManager.objects.balloon.open(selectedOfferId.toString()).catch(() => {});
+        };
+        map.events.add("actionend", openBalloon);
+        return () => {
+            map.events.remove("actionend", openBalloon);
+        };
+        // ymapState в зависимостях намеренно: ObjectManager монтируется
+        // (и заполняет objectManagerRef) только после onLoad карты, который
+        // может случиться позже, чем этот эффект уже отработал на первом
+        // рендере с уже выбранной вакансией (например, ?offerId= в URL).
+    }, [selectedOfferId, selectedOfferCoordinates, ymapState]);
 
     useEffect(() => {
         if (!ymapState || !mapRef.current) return undefined;
