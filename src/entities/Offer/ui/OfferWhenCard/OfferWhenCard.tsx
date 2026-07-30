@@ -36,11 +36,12 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
     const isHavePeriods = periods.length > 0;
     const isRenderGridPeriods = periods.length > 3;
 
-    const renderItemPeriods = periods.map((period) => {
+    const renderItemPeriods = periods.map((period, index) => {
         const { start, end } = period;
 
         return (
-            <p>
+            // eslint-disable-next-line react/no-array-index-key
+            <p key={`${start ?? ""}-${end ?? ""}-${index}`}>
                 {`${start ?? ""} — ${end ?? ""}`}
             </p>
         );
