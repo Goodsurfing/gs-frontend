@@ -13,6 +13,7 @@ const getZoom = vi.fn(() => 5);
 const getBounds = vi.fn(() => [[54, 36], [57, 39]]);
 const boundsChangeHandlers: Array<() => void> = [];
 const onLoadCalls = vi.fn();
+const balloonOpen = vi.fn().mockResolvedValue(undefined);
 
 vi.mock("react-i18next", () => ({
     useTranslation: () => ({ t: (key: string) => key }),
@@ -52,9 +53,14 @@ vi.mock("@pbe/react-yandex-maps", () => ({
         return <div>{children}</div>;
     },
     ZoomControl: () => null,
-    ObjectManager: ({ features }: { features: unknown[] }) => (
-        <div data-testid="object-manager">{features.length}</div>
-    ),
+    // eslint-disable-next-line react/no-unused-prop-types
+    ObjectManager: (props: { features: unknown[]; instanceRef?: { current: unknown } }) => {
+        const { features, instanceRef } = props;
+        if (instanceRef) {
+            instanceRef.current = { objects: { balloon: { open: balloonOpen } } };
+        }
+        return <div data-testid="object-manager">{features.length}</div>;
+    },
 }));
 
 const offer = (overrides: Partial<OfferMap> = {}): OfferMap => ({
@@ -73,6 +79,7 @@ describe("OffersMap", () => {
         getZoom.mockClear();
         getBounds.mockClear();
         onLoadCalls.mockClear();
+        balloonOpen.mockClear();
         boundsChangeHandlers.length = 0;
     });
 
@@ -88,6 +95,27 @@ describe("OffersMap", () => {
 
         expect(setCenter).toHaveBeenCalledWith([55.75, 37.61], 10, { duration: 400 });
         expect(screen.queryByText(/местоположение/)).not.toBeInTheDocument();
+    });
+
+    it("открывает balloon выбранной вакансии, когда фокусировка карты завершилась", async () => {
+        render(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+                selectedOfferId={1}
+                selectedOfferCoordinates={{ latitude: 55.75, longitude: 37.61 }}
+            />,
+        );
+
+        await waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+        expect(balloonOpen).not.toHaveBeenCalled();
+
+        // Симулируем завершение panning-анимации карты (событие "actionend").
+        act(() => {
+            boundsChangeHandlers.forEach((handler) => handler());
+        });
+
+        expect(balloonOpen).toHaveBeenCalledWith("1");
     });
 
     it("показывает подсказку вместо тишины, если координаты точно отсутствуют (null)", () => {
