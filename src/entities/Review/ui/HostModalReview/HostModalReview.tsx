@@ -4,6 +4,7 @@ import { ReviewTypeFields } from "@/features/Notes";
 
 import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
 import { Locale } from "@/entities/Locale";
+import { MediaObjectType } from "@/types/media";
 import { NotDoneReviewHost } from "../../model/types/review";
 import { MiniVolunteerReview } from "../MiniVolunteerReview/MiniVolunteerReview";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -19,6 +20,8 @@ interface HostModalReviewProps {
     successText?: string;
     errorText?: string;
     locale: Locale;
+    images?: MediaObjectType[];
+    onImagesChange?: (images: MediaObjectType[]) => void;
 }
 
 export const HostModalReview: FC<HostModalReviewProps> = (props) => {
@@ -33,6 +36,8 @@ export const HostModalReview: FC<HostModalReviewProps> = (props) => {
         successText,
         errorText,
         locale,
+        images,
+        onImagesChange,
     } = props;
     const { stars, text } = value;
     return (
@@ -49,6 +54,8 @@ export const HostModalReview: FC<HostModalReviewProps> = (props) => {
             sendReview={sendReview}
             successText={successText}
             errorText={errorText}
+            images={images}
+            onImagesChange={onImagesChange}
         >
             {review && (
                 <MiniVolunteerReview

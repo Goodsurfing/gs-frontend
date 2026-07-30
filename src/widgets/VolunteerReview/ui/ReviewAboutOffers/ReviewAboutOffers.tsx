@@ -23,6 +23,7 @@ import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { NotDoneReviewVolunteer } from "@/entities/Review/model/types/review";
+import { MediaObjectType } from "@/types/media";
 import styles from "./ReviewAboutOffers.module.scss";
 import { getErrorText } from "@/shared/lib/getErrorText";
 
@@ -51,6 +52,7 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
     const [selectedOffer, setSelectedOffer] = useState<NotDoneReviewVolunteer | null>(
         null,
     );
+    const [reviewImages, setReviewImages] = useState<MediaObjectType[]>([]);
 
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
@@ -107,6 +109,7 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
     const resetSelectedReview = () => {
         setSelectedOffer(null);
         setToast(undefined);
+        setReviewImages([]);
         reset();
     };
 
@@ -118,7 +121,12 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
             setToast(undefined);
             try {
                 await createOfferReview(
-                    { vacancyId: selectedOffer.id, description: text, rating: stars },
+                    {
+                        vacancyId: selectedOffer.id,
+                        description: text,
+                        rating: stars,
+                        imageIds: reviewImages.map((image) => image.id),
+                    },
                 ).unwrap();
                 setToast({
                     text: "Ваш отзыв был отправлен",
@@ -132,6 +140,7 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
                 });
             } finally {
                 reset();
+                setReviewImages([]);
             }
         }
     });
@@ -220,6 +229,8 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
                                 : undefined
                         }
                         locale={locale}
+                        images={reviewImages}
+                        onImagesChange={setReviewImages}
                     />
                 )}
             />

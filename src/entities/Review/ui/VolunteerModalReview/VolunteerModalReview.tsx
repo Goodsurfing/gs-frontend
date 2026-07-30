@@ -3,6 +3,7 @@ import React, { FC } from "react";
 import { ReviewTypeFields } from "@/features/Notes";
 import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
 import { Locale } from "@/entities/Locale";
+import { MediaObjectType } from "@/types/media";
 import { NotDoneReviewVolunteer } from "../../model/types/review";
 import { MiniOfferReview } from "../MiniOfferReview/MiniOfferReview";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -17,6 +18,8 @@ interface VolunteerModalReviewProps {
     successText?: string;
     errorText?: string;
     locale: Locale;
+    images?: MediaObjectType[];
+    onImagesChange?: (images: MediaObjectType[]) => void;
 }
 
 export const VolunteerModalReview: FC<VolunteerModalReviewProps> = (props) => {
@@ -30,6 +33,8 @@ export const VolunteerModalReview: FC<VolunteerModalReviewProps> = (props) => {
         successText,
         errorText,
         locale,
+        images,
+        onImagesChange,
     } = props;
     const { stars, text } = value;
     return (
@@ -46,6 +51,8 @@ export const VolunteerModalReview: FC<VolunteerModalReviewProps> = (props) => {
             sendReview={sendReview}
             successText={successText}
             errorText={errorText}
+            images={images}
+            onImagesChange={onImagesChange}
         >
             {application && (
                 <MiniOfferReview

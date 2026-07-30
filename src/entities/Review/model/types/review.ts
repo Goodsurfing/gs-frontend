@@ -38,6 +38,7 @@ export interface GetAboutVolunteerReview {
     rating: number;
     description: string;
     created: string;
+    images: Image[];
 }
 
 export interface CreateVolunteerReview {
@@ -45,6 +46,7 @@ export interface CreateVolunteerReview {
     vacancyId: number;
     rating: number;
     description: string;
+    imageIds?: string[];
 }
 
 export interface GetAboutVolunteerReviewRequest {
@@ -61,6 +63,7 @@ export interface CreateOfferReview {
     vacancyId: number;
     rating: number;
     description: string;
+    imageIds?: string[];
 }
 
 export interface GetOfferReview {
@@ -79,6 +82,7 @@ export interface GetOfferReview {
         lastName: string;
         image: Image;
     }
+    images: Image[];
 }
 
 export interface GetOfferReviewRequest {
@@ -107,6 +111,7 @@ export interface GetOfferReviewByVacancy {
     }
     description: string;
     rating: number;
+    images: Image[];
 }
 
 export interface GetOfferReviewByVacancyResponse {
@@ -140,6 +145,7 @@ export interface GetVolunteerReviewByVolunteerId {
     name: string;
     description: string;
     rating: number;
+    images: Image[];
 }
 
 export interface GetVolunteerReviewByVolunteerIdResponse {
@@ -169,6 +175,7 @@ export interface MyReviewVolunteer {
     rating: number;
     description: string;
     created: string;
+    images: Image[];
 }
 
 export interface MyReviewVolunteerRequest {
@@ -200,6 +207,7 @@ export interface MyReviewHost {
     }
     rating: number;
     description: string;
+    images: Image[];
 }
 
 export interface MyReviewHostResponse {

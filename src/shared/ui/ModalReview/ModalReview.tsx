@@ -1,6 +1,7 @@
 import { Rating } from "@mui/material";
 import React, {
     FC, ReactNode,
+    useCallback,
     useEffect,
 } from "react";
 
@@ -11,6 +12,8 @@ import { Modal } from "../Modal/Modal";
 import Textarea from "../Textarea/Textarea";
 import styles from "./ModalReview.module.scss";
 import { ErrorText } from "../ErrorText/ErrorText";
+import { ImagesUploader } from "../ImagesUploader/ImagesUploader";
+import { MediaObjectType } from "@/types/media";
 
 interface ReviewType {
     stars: number | undefined;
@@ -27,6 +30,8 @@ interface ModalReviewProps {
     successText?: string;
     errorText?: string;
     children?: ReactNode;
+    images?: MediaObjectType[];
+    onImagesChange?: (images: MediaObjectType[]) => void;
 }
 
 export const ModalReview: FC<ModalReviewProps> = (props) => {
@@ -40,6 +45,8 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
         onChange,
         successText,
         errorText,
+        images,
+        onImagesChange,
     } = props;
     const {
         stars, text,
@@ -49,6 +56,14 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
     useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "";
     }, [isOpen]);
+
+    const handleUploadImages = useCallback(async (uploaded: MediaObjectType[]) => {
+        onImagesChange?.([...(images ?? []), ...uploaded]);
+    }, [images, onImagesChange]);
+
+    const handleDeleteImage = useCallback((imgId: string) => {
+        onImagesChange?.((images ?? []).filter((img) => img.id !== imgId));
+    }, [images, onImagesChange]);
 
     if (successText) {
         return (
@@ -101,6 +116,15 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
                     label={t("host-dashboard.Напишите ваш отзыв")}
                     maxLength={500}
                 />
+                {onImagesChange && (
+                    <ImagesUploader
+                        uploadedImgs={images ?? []}
+                        onUpload={handleUploadImages}
+                        onDelete={handleDeleteImage}
+                        onError={() => {}}
+                        maxLength={10}
+                    />
+                )}
                 {errorText && (<ErrorText text={errorText} />)}
                 {!stars && (
                     <p className={styles.hint}>

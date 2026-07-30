@@ -24,6 +24,7 @@ import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { MediaObjectType } from "@/types/media";
 import styles from "./ReviewAboutVolunteers.module.scss";
 
 interface ReviewAboutVolunteersProps {
@@ -51,6 +52,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
     const [selectedVolunteer, setSelectedVolunteer] = useState<NotDoneReviewHost | null>(
         null,
     );
+    const [reviewImages, setReviewImages] = useState<MediaObjectType[]>([]);
 
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
@@ -106,6 +108,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
     const resetSelectedReview = () => {
         setSelectedVolunteer(null);
         setToast(undefined);
+        setReviewImages([]);
         reset();
     };
 
@@ -121,6 +124,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                     volunteerId: selectedVolunteer.id,
                     description: text,
                     rating: stars,
+                    imageIds: reviewImages.map((image) => image.id),
                 }).unwrap();
                 setToast({
                     text: t("hostReviews.Ваш отзыв был отправлен"),
@@ -134,6 +138,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                 });
             } finally {
                 reset();
+                setReviewImages([]);
             }
         }
     });
@@ -222,6 +227,8 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                                 : undefined
                         }
                         locale={locale}
+                        images={reviewImages}
+                        onImagesChange={setReviewImages}
                     />
                 )}
             />

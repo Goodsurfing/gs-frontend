@@ -3,6 +3,8 @@ import React, { FC, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import star from "@/shared/assets/icons/offers/star.svg";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
+import { ReviewGallery } from "@/shared/ui/ReviewGallery/ReviewGallery";
+import { Image } from "@/types/media";
 
 import styles from "./ReviewWidget.module.scss";
 
@@ -12,12 +14,13 @@ interface ReviewWidgetProps {
     avatar?: string;
     name: string;
     url: string;
+    images?: Image[];
 }
 
 export const ReviewWidget: FC<ReviewWidgetProps> = memo(
     (props: ReviewWidgetProps) => {
         const {
-            reviewText, stars, name, avatar, url,
+            reviewText, stars, name, avatar, url, images,
         } = props;
         const navigate = useNavigate();
 
@@ -28,6 +31,7 @@ export const ReviewWidget: FC<ReviewWidgetProps> = memo(
         return (
             <div className={styles.wrapper}>
                 <p className={styles.reviewText}>{reviewText}</p>
+                <ReviewGallery images={images} />
                 <div className={styles.reviewInfo}>
                     <div className={styles.ratingContainer}>
                         <img src={star} alt="rating" />
