@@ -28,4 +28,25 @@ describe("pickSliderOffers", () => {
 
         expect(pickSliderOffers([], recommended)).toHaveLength(SLIDER_OFFERS_LIMIT);
     });
+
+    it("GS-90: персональные вакансии волонтёра важнее admin-подборки", () => {
+        const personal = makeOffers(2);
+        const featured = makeOffers(3);
+        const recommended = makeOffers(5);
+
+        expect(pickSliderOffers(personal, featured, recommended)).toEqual(personal);
+    });
+
+    it("GS-90: падает на admin-подборку, если у волонтёра нет персональных совпадений", () => {
+        const featured = makeOffers(3);
+        const recommended = makeOffers(5);
+
+        expect(pickSliderOffers([], featured, recommended)).toEqual(featured);
+    });
+
+    it("GS-90: падает на рекомендации, если нет ни персональных, ни admin вакансий", () => {
+        const recommended = makeOffers(5);
+
+        expect(pickSliderOffers([], [], recommended)).toEqual(recommended);
+    });
 });
