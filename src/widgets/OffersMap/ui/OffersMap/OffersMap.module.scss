@@ -10,11 +10,17 @@
 
 .balloonWrapper {
     display: flex;
-    gap: 8px;
-    align-items: flex-start;
-    padding: 4px;
+    flex-direction: column;
+    width: 220px;
     cursor: pointer;
-    min-width: 200px;
+    background: var(--color-white);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.balloonImageLink {
+    display: block;
+    line-height: 0;
 }
 
 .text {
@@ -22,6 +28,7 @@
     flex-direction: column;
     gap: 4px;
     overflow: hidden;
+    padding: 10px 12px 12px;
 }
 
 .map {
@@ -52,19 +59,20 @@
     color: var(--text-primary-1);
 }
 
-.balloonLink {
-    color: var(--accent-color);
-}
-
 .balloonImage {
-    width: 100px;
-    height: 50px;
+    display: block;
+    width: 100%;
+    height: 120px;
     object-fit: cover;
 }
 
 .balloonTitle {
     font-weight: 700;
     font-size: 14px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 }
 
 .balloonCategory {

@@ -1,27 +1,27 @@
-// .ymaps-2-1-79-balloon {
-//     box-shadow: none !important;
-// }
+// Наша карточка (.balloonWrapper в OffersMap.module.scss) уже сама рисует
+// фон/скругление/тень — снимаем дефолтные отступы и рамку balloon у Яндекса,
+// иначе вокруг карточки остаётся некрасивый белый паддинг. border-radius +
+// overflow: hidden вешаем на __layout, а не на внешний .ymaps-2-1-79-balloon,
+// чтобы не обрезать хвостик-указатель (он рендерится соседним элементом).
+.ymaps-2-1-79-balloon {
+    box-shadow: none !important;
+}
 
-// .ymaps-2-1-79-balloon__content {
-//     padding: 0 !important;
-//     background: transparent !important;
-//     margin: 0 !important;
-// }
+.ymaps-2-1-79-balloon__content {
+    padding: 0 !important;
+    background: transparent !important;
+    margin: 0 !important;
+}
 
-// .ymaps-2-1-79-balloon__layout {
-//     background: transparent !important;
-//     border: none !important;
-//     width: auto !important;
-//     height: auto;
-// }
-
-// .offer-card {
-//     width: 200px;
-//     height: auto;
-// }
-// .ymaps-2-1-79-balloon__content > ymaps {
-//     height: auto;
-// }
+.ymaps-2-1-79-balloon__layout {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: 0 8px 24px rgba(33, 33, 33, 0.16) !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+    width: auto !important;
+    height: auto;
+}
 
 .ymaps-2-1-79-map-copyrights-promo {
     display: none;
