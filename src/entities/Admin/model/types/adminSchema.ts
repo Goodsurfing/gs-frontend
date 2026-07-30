@@ -513,6 +513,7 @@ export interface GetAdminOffersParams {
     userId?: string;
     organizationName?: string;
     vacancyName?: string;
+    isFeatured?: boolean;
     page: number;
     limit: number;
 }
@@ -531,11 +532,17 @@ export interface GetAdminOffers {
     countTotalApplication: number;
     countAcceptApplication: number;
     countCanselApplication: number;
+    isFeatured: boolean;
 }
 
 export interface GetAdminOffersRequest {
     data: GetAdminOffers[];
     pagination: Pagination;
+}
+
+export interface UpdateAdminVacancyFeaturedRequest {
+    id: string;
+    isFeatured: boolean;
 }
 
 export interface AdminVacancyWhere {

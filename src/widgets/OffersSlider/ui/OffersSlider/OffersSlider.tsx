@@ -12,6 +12,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import Offer from "../Offer/Offer";
 import styles from "./OffersSlider.module.scss";
+import { pickSliderOffers } from "./pickSliderOffers";
 
 interface OffersSliderProps {
     className?: string;
@@ -27,16 +28,19 @@ export const OffersSlider: FC<OffersSliderProps> = (props) => {
 
     useEffect(() => {
         const fetchOffers = async () => {
-            await getOffersData({
-                sort: OfferSort.Recommendation,
-            })
-                .unwrap()
-                .then((result) => {
-                    setOffers(result.data.slice(0, 10));
-                })
-                .catch(() => {
-                    setOffers([]);
-                });
+            try {
+                const featured = await getOffersData({ isFeatured: true }).unwrap();
+                if (featured.data.length > 0) {
+                    setOffers(pickSliderOffers(featured.data, []));
+                    return;
+                }
+                const recommended = await getOffersData({
+                    sort: OfferSort.Recommendation,
+                }).unwrap();
+                setOffers(pickSliderOffers([], recommended.data));
+            } catch {
+                setOffers([]);
+            }
         };
         fetchOffers();
     }, [getOffersData]);
