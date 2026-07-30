@@ -230,6 +230,13 @@ export const OffersSearchFilter = () => {
 
     const onApplyFilters = useCallback(handleSubmit(async (data: OffersFilterFields) => {
         currentSearchRef.current = "";
+        // "Применить" drops any active text search (search and
+        // category/date/etc. filters aren't combined) — without clearing the
+        // input too, it kept showing the old query while results were
+        // silently no longer filtered by it, e.g. searching "Байкал" then
+        // applying a category showed unrelated results with "Байкал" still
+        // sitting in the search box.
+        searchRef.current?.clearSearch();
         const preparedData = offersFilterApiAdapter(data);
         fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
         fetchOffersMapWithBounds({ ...preparedData });

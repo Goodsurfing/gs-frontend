@@ -20,7 +20,10 @@ vi.mock("../OffersSearchFilterMobile/OffersSearchFilterMobile", () => ({
 }));
 vi.mock("@/widgets/OffersMap/ui/SearchOffers/SearchOffers", () => ({
     SearchOffers: React.forwardRef(
-        (_props: unknown, ref: React.Ref<HTMLDivElement>) => <div ref={ref} />,
+        (_props: unknown, ref: React.Ref<{ clearSearch: () => void }>) => {
+            React.useImperativeHandle(ref, () => ({ clearSearch: () => {} }));
+            return <div />;
+        },
     ),
 }));
 // A minimal stand-in for the real OffersFilter that exposes just enough of the
