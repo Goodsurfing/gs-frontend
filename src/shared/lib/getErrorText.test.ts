@@ -26,4 +26,18 @@ describe("getErrorText", () => {
 
         expect(getErrorText(error)).not.toBe("Произошла неизвестная ошибка.");
     });
+
+    /**
+     * Регресс-guard для GS-93: публикация вакансии без обязательных полей
+     * (название/описание/адрес) раньше проходила без ошибки — теперь
+     * бэкенд отдаёт detail с этим текстом, и он не должен утонуть в
+     * generic-заглушке.
+     */
+    it("не подменяет заглушкой «Произошла ошибка» detail о незаполненной вакансии", () => {
+        const error = {
+            data: { detail: "Fill in the vacancy title, description and address before publishing." },
+        };
+
+        expect(getErrorText(error)).not.toBe("Произошла неизвестная ошибка.");
+    });
 });
