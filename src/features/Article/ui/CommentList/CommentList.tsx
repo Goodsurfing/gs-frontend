@@ -18,6 +18,7 @@ export const CommentList: FC<CommentListProps> = (props: CommentListProps) => {
     const renderComments = useMemo(
         () => comments.map((comment) => (
             <Comment
+                key={`${comment.authorId}-${comment.date}-${comment.comment}`}
                 authorAvatar={comment.authorAvatar}
                 authorName={comment.authorName}
                 date={comment.date}
