@@ -189,6 +189,15 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
             const bounds = map.getBounds?.();
             if (!bounds) return;
             const [[swLat, swLng], [neLat, neLng]] = bounds;
+            // На мобильном эта же карта продолжает существовать в DOM, просто
+            // скрыта через display:none (десктопная раскладка в
+            // OffersSearchFilter.tsx) — Яндекс.Карты в нулевом контейнере
+            // отдают вырожденный bounds, где SW и NE совпадают. Реальный pan/
+            // zoom так не бывает; без этой проверки такой bounds улетает
+            // наверх, там уходит в vacancy/for-map/list и стирает реальный
+            // набор маркеров пустым ответом — в том числе у видимой мобильной
+            // карты, которая делит один и тот же allOffersMap со скрытой.
+            if (swLat === neLat && swLng === neLng) return;
             onBoundsChangeRef.current?.({
                 boundsSwLat: swLat, boundsSwLng: swLng, boundsNeLat: neLat, boundsNeLng: neLng,
             });
