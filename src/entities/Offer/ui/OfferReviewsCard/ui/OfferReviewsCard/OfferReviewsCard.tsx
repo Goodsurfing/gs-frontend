@@ -18,6 +18,8 @@ import { useGetFullName } from "@/shared/lib/getFullName";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { ShowNext } from "@/shared/ui/ShowNext/ShowNext";
 import { Text } from "@/shared/ui/Text/Text";
+import { ImagesUploader } from "@/shared/ui/ImagesUploader/ImagesUploader";
+import { MediaObjectType } from "@/types/media";
 
 import { CommentInput } from "@/features/Article";
 import styles from "./OfferReviewsCard.module.scss";
@@ -36,6 +38,7 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         const [isSendReview, setSendReview] = useState(false);
         const [rating, setRating] = useState<number | null>(null);
         const [commentInput, setCommentInput] = useState<string>("");
+        const [reviewImages, setReviewImages] = useState<MediaObjectType[]>([]);
         const [page, setPage] = useState<number>(1);
         const [error, setError] = useState<string | null>(null);
         const [reviews, setReviews] = useState<GetOfferReviewByVacancy[]>([]);
@@ -81,18 +84,22 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
                     vacancyId: offerId,
                     description: commentInput.trim(),
                     rating,
+                    imageIds: reviewImages.map((image) => image.id),
                 }).unwrap();
 
                 setSendReview(true);
                 setCommentInput("");
                 setRating(null);
+                setReviewImages([]);
 
                 setPage(1);
                 await fetchReviews(1);
             } catch (err) {
                 setError("Не удалось отправить отзыв. Попробуйте позже.");
             }
-        }, [canReview, commentInput, rating, createOfferReview, offerId, fetchReviews]);
+        }, [
+            canReview, commentInput, rating, reviewImages, createOfferReview, offerId, fetchReviews,
+        ]);
 
         const renderReviews = reviews.map((review) => (
             <ReviewWidget
@@ -101,6 +108,7 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
                 reviewText={review.description}
                 stars={review.rating}
                 url={getVolunteerPersonalPageUrl(locale, review.author.id)}
+                images={review.images}
                 key={review.id}
             />
         ));
@@ -150,6 +158,19 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
                     value={commentInput}
                     onChange={handleCommentInput}
                 />
+                {canReview && !isSendReview && (
+                    <ImagesUploader
+                        uploadedImgs={reviewImages}
+                        onUpload={async (uploaded) => {
+                            setReviewImages((prev) => [...prev, ...uploaded]);
+                        }}
+                        onDelete={(imgId) => {
+                            setReviewImages((prev) => prev.filter((img) => img.id !== imgId));
+                        }}
+                        onError={() => {}}
+                        maxLength={10}
+                    />
+                )}
                 <div className={styles.container}>
                     {renderContent()}
                 </div>
