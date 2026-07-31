@@ -62,6 +62,7 @@ export const HostReviewCard: FC<HostReviewCardProps> = memo((props: HostReviewCa
 
     const renderReviews = reviews.map((review) => (
         <ReviewWidget
+            key={review.id}
             name={getFullName(review.firstName, review.lastName)}
             avatar={getMediaContent(review.image ?? undefined, "SMALL")}
             reviewText={review.description}
