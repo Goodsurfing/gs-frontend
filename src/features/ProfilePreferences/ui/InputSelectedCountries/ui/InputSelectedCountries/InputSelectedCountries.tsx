@@ -44,7 +44,12 @@ export const InputSelectedCountries: FC = memo(() => {
             <div className={styles.tagInput}>
                 <ul className={styles.tagList}>
                     {tags.map((tag, index) => (
-                        <TagComponent tag={tag} handleDelete={handleDelete} index={index} />
+                        <TagComponent
+                            key={tag}
+                            tag={tag}
+                            handleDelete={handleDelete}
+                            index={index}
+                        />
                     ))}
                 </ul>
                 <input

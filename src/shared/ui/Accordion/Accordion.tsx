@@ -33,7 +33,7 @@ export const Accordion: FC<AccordionProps> = memo((props: AccordionProps) => {
 
     const renderList = useMemo(
         () => data.map((item, key) => (
-            <li className={styles.item}>
+            <li className={styles.item} key={key}>
                 <button
                     className={styles.header}
                     type="button"
