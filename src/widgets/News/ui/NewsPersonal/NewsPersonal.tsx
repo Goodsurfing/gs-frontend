@@ -46,10 +46,17 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
     const [createNews] = useCreateReviewNewsMutation();
     const [getReviews, { data: reviewsData }] = useLazyGetReviewsNewsQuery();
 
+    // Реальный id, а не newsId (это может быть slug из URL) — лайки/
+    // комментарии на бэкенде завязаны на настоящий id (row 117).
+    const realNewsId = data?.id;
+
     const fetchReviews = useCallback(async (pageItem: number) => {
+        if (realNewsId === undefined) {
+            return;
+        }
         try {
             await getReviews({
-                newsId,
+                newsId: realNewsId,
                 limit: VISIBLE_COUNT,
                 page: pageItem,
             }).unwrap();
@@ -59,7 +66,7 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
                 type: HintType.Error,
             });
         }
-    }, [getReviews, newsId]);
+    }, [getReviews, realNewsId]);
 
     useEffect(() => {
         fetchReviews(page);
@@ -84,9 +91,12 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
             });
             return;
         }
+        if (realNewsId === undefined) {
+            return;
+        }
         try {
             setToast(undefined);
-            await putLike(newsId).unwrap();
+            await putLike(realNewsId).unwrap();
         } catch {
             setToast({
                 text: "Произошла ошибка",
@@ -103,8 +113,11 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
             });
             return;
         }
+        if (realNewsId === undefined) {
+            return;
+        }
         try {
-            await createNews({ newsId, description }).unwrap();
+            await createNews({ newsId: realNewsId, description }).unwrap();
             await fetchReviews(1);
         } catch {
             setToast({
