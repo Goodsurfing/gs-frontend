@@ -124,8 +124,8 @@ export const AdminDonationReportForm: FC<AdminDonationReportFormProps> = (props)
                             {files.length === 0 && (
                                 <p className={styles.emptyList}>Файлы не добавлены</p>
                             )}
-                            {files.map((field, index) => (
-                                <div className={styles.fileItemWrapper}>
+                            {files.map((field) => (
+                                <div className={styles.fileItemWrapper} key={field.file.id}>
                                     {" "}
                                     {/* Общий контейнер */}
                                     <CustomLink
@@ -133,7 +133,6 @@ export const AdminDonationReportForm: FC<AdminDonationReportFormProps> = (props)
                                         // eslint-disable-next-line no-restricted-syntax
                                         to={getMediaContent(field.file.contentUrl) ?? ""}
                                         variant="DEFAULT"
-                                        key={index}
                                         className={styles.fileItem}
                                         target="_blank"
                                     >
