@@ -96,7 +96,17 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                 offer.image?.contentUrl ?? "",
             ].join(":"))
             .sort()
-            .join("|");
+            .join("|")
+            // templateLayoutFactory становится доступен только после onLoad
+            // карты — если он ещё не готов на момент первого построения
+            // features (offersData уже пришли раньше), iconContentLayout
+            // маркера строится пустым (фабрики нет), и цветной кружок
+            // маркера никогда не рисуется. Без этого флага в сигнатуре
+            // переход "фабрика появилась" не отличался бы по содержимому от
+            // предыдущего рендера и результат с пустым iconContentLayout
+            // переиспользовался бы навсегда — маркер оставался бы невидимым
+            // даже после того как balloon уже открывался поверх него.
+            + (ymapState?.templateLayoutFactory ? "|ready" : "|pending");
         if (signature === lastFeaturesSignatureRef.current && lastFeaturesRef.current.length > 0) {
             return lastFeaturesRef.current;
         }

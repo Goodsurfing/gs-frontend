@@ -49,7 +49,7 @@ vi.mock("@pbe/react-yandex-maps", () => ({
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
             onLoadCalls();
-            onLoad?.({ templateLayoutFactory: { createClass: () => undefined } });
+            onLoad?.({ templateLayoutFactory: { createClass: () => "layout-class-sentinel" } });
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
         return <div>{children}</div>;
@@ -593,5 +593,22 @@ describe("OffersMap", () => {
         );
 
         expect(capturedFeatures).not.toBe(firstFeatures);
+    });
+
+    it("строит маркер с реальным iconContentLayout (не пустым), даже если offersData уже пришли ДО того, "
+        + "как карта закончила грузиться (регресс: templateLayoutFactory становится доступен только после "
+        + "onLoad карты — если features успевают построиться раньше на пустой фабрике, а сигнатура "
+        + "стабильности не учитывает эту готовность, устаревший набор с пустым iconContentLayout "
+        + "переиспользуется навсегда, и цветной кружок маркера никогда не рисуется, хотя balloon по клику "
+        + "всё равно открывается)", async () => {
+        render(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(capturedFeatures).toHaveLength(1));
+        expect(capturedFeatures[0].options.iconContentLayout).toBeTruthy();
     });
 });
