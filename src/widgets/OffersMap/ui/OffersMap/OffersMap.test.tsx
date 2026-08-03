@@ -259,6 +259,36 @@ describe("OffersMap", () => {
         await waitFor(() => expect(screen.getByTestId("object-manager")).toHaveTextContent("1"));
     });
 
+    it("не падает, если balloon.open синхронно бросает (регресс: карта разваливалась при быстром переключении между вакансиями в списке)", async () => {
+        // Реальный Яндекс.Карты SDK бросает TypeError синхронно (не reject),
+        // когда объект ещё не попал в ObjectManager — маркеры viewport-scoped
+        // и приходят отдельным bounds-запросом с дебаунсом ПОСЛЕ actionend,
+        // так что быстрый клик по следующей вакансии в списке легко успевает
+        // раньше. .catch() на промисе тут не спасает.
+        balloonOpen.mockImplementationOnce(() => {
+            throw new TypeError("Cannot read properties of null (reading 'geometry')");
+        });
+
+        render(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+                selectedOfferId={1}
+                selectedOfferCoordinates={{ latitude: 55.75, longitude: 37.61 }}
+            />,
+        );
+
+        await waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+
+        expect(() => {
+            act(() => {
+                boundsChangeHandlers.forEach((handler) => handler());
+            });
+        }).not.toThrow();
+
+        expect(balloonOpen).toHaveBeenCalledWith("1");
+    });
+
     it("даёт маркеру круглую iconShape, совпадающую с кастомной иконкой, чтобы balloon указывал точно на неё", async () => {
         render(
             <OffersMap
