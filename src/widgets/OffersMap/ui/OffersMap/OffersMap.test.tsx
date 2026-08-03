@@ -289,6 +289,92 @@ describe("OffersMap", () => {
         expect(balloonOpen).toHaveBeenCalledWith("1");
     });
 
+    it("повторяет попытку открыть balloon, пока маркер не появится в ObjectManager (регресс: табличка молча не появлялась, был виден только маркер)", async () => {
+        // Первые несколько попыток проваливаются (маркер под только что
+        // выбранную вакансию ещё не подъехал с bounds-запросом), но объект
+        // рано или поздно появляется — balloon должен открыться, а не
+        // молча остаться закрытым после первой неудачи.
+        let attempt = 0;
+        balloonOpen.mockImplementation(() => {
+            attempt += 1;
+            if (attempt < 3) {
+                throw new TypeError("Cannot read properties of null (reading 'geometry')");
+            }
+            return Promise.resolve();
+        });
+
+        vi.useFakeTimers();
+        try {
+            render(
+                <OffersMap
+                    offersData={[offer({ id: 1 })]}
+                    isOffersLoading={false}
+                    selectedOfferId={1}
+                    selectedOfferCoordinates={{ latitude: 55.75, longitude: 37.61 }}
+                />,
+            );
+
+            await vi.waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+
+            act(() => {
+                boundsChangeHandlers.forEach((handler) => handler());
+            });
+
+            expect(attempt).toBe(1);
+
+            act(() => {
+                vi.advanceTimersByTime(200);
+            });
+            expect(attempt).toBe(2);
+
+            act(() => {
+                vi.advanceTimersByTime(200);
+            });
+            expect(attempt).toBe(3);
+            expect(balloonOpen).toHaveLastReturnedWith(Promise.resolve());
+        } finally {
+            vi.useRealTimers();
+        }
+    });
+
+    it("прекращает попытки открыть balloon после разумного числа неудач, а не бесконечно (объекта у вакансии в принципе никогда не будет)", async () => {
+        balloonOpen.mockImplementation(() => {
+            throw new TypeError("Cannot read properties of null (reading 'geometry')");
+        });
+
+        vi.useFakeTimers();
+        try {
+            render(
+                <OffersMap
+                    offersData={[offer({ id: 1 })]}
+                    isOffersLoading={false}
+                    selectedOfferId={1}
+                    selectedOfferCoordinates={{ latitude: 55.75, longitude: 37.61 }}
+                />,
+            );
+
+            await vi.waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+
+            act(() => {
+                boundsChangeHandlers.forEach((handler) => handler());
+            });
+
+            act(() => {
+                vi.advanceTimersByTime(30_000);
+            });
+
+            const callsAfterLongWait = balloonOpen.mock.calls.length;
+
+            act(() => {
+                vi.advanceTimersByTime(30_000);
+            });
+
+            expect(balloonOpen.mock.calls.length).toBe(callsAfterLongWait);
+        } finally {
+            vi.useRealTimers();
+        }
+    });
+
     it("даёт маркеру круглую iconShape, совпадающую с кастомной иконкой, чтобы balloon указывал точно на неё", async () => {
         render(
             <OffersMap

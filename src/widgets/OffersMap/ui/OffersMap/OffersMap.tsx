@@ -165,26 +165,43 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         const objectManager = objectManagerRef.current;
         if (!objectManager) return undefined;
 
-        const openBalloon = () => {
-            map.events.remove("actionend", openBalloon);
+        let retryTimeoutId: ReturnType<typeof setTimeout> | undefined;
+        let cancelled = false;
+
+        const tryOpenBalloon = (attemptsLeft: number) => {
+            if (cancelled) return;
             // Даже после actionend объект может ещё не попасть в ObjectManager:
             // маркеры viewport-scoped (см. features выше) и приходят отдельным
-            // bounds-запросом с 400мс дебаунсом ПОСЛЕ actionend, так что при
-            // быстром переключении между вакансиями в списке (клик #1, клик #2
-            // до того как домаунтился набор маркеров под клик #1) balloon.open
-            // синхронно бросает TypeError ("Cannot read properties of null
-            // (reading 'geometry')") внутри самого Яндекс.Карт SDK — .catch()
-            // тут не помогает, потому что это не отклонённый Promise, а
-            // синхронный throw. Без try/catch это разносило карту целиком.
+            // bounds-запросом с 400мс дебаунсом ПОСЛЕ actionend, так что клик по
+            // вакансии в списке почти всегда обгоняет собственный набор
+            // маркеров под новые bounds. balloon.open в этом случае синхронно
+            // бросает TypeError ("Cannot read properties of null (reading
+            // 'geometry')") внутри самого Яндекс.Карт SDK — .catch() тут не
+            // помогает (это не отклонённый Promise, а синхронный throw), и без
+            // try/catch раньше разносило карту целиком. Вместо того чтобы
+            // просто проглатывать ошибку (тогда табличка молча не появляется),
+            // повторяем попытку, пока маркеры не подъедут — данные точно
+            // придут, т.к. mapBoundsRef уже включает координаты вакансии
+            // (карта туда запанилась) и есть их явный запрос по id (см.
+            // fetchPageOffersLocation в OffersSearchFilter).
             try {
                 objectManager.objects.balloon.open(selectedOfferId.toString())?.catch(() => {});
+                return;
             } catch {
-                // объекта ещё нет на карте — тихо пропускаем, пользователь всё
-                // равно уже увидел итог pan'а к нужным координатам
+                // объекта пока нет на карте — попробуем ещё раз чуть позже
             }
+            if (attemptsLeft <= 0) return;
+            retryTimeoutId = setTimeout(() => tryOpenBalloon(attemptsLeft - 1), 200);
+        };
+
+        const openBalloon = () => {
+            map.events.remove("actionend", openBalloon);
+            tryOpenBalloon(10);
         };
         map.events.add("actionend", openBalloon);
         return () => {
+            cancelled = true;
+            if (retryTimeoutId) clearTimeout(retryTimeoutId);
             map.events.remove("actionend", openBalloon);
         };
         // ymapState в зависимостях намеренно: ObjectManager монтируется
