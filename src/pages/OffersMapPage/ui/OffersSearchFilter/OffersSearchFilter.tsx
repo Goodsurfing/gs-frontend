@@ -39,11 +39,13 @@ const OFFERS_PER_PAGE = 20;
 export const OffersSearchFilter = () => {
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
     const [searchParams, setSearchParams] = useSearchParams();
-    const [fetchOffers, { data: offersData, isLoading, isFetching }] = useLazyGetOffersQuery();
+    const [fetchOffers, {
+        data: offersData, isLoading, isFetching, isError: isOffersListError,
+    }] = useLazyGetOffersQuery();
     const [fetchAllOffersMap,
         {
             data: allOffersMap = [], isLoading: isAllOffersMapLoading,
-            isFetching: isAllOffersMapFetching,
+            isFetching: isAllOffersMapFetching, isError: isAllOffersMapError,
         }] = useLazyGetAllOffersMapQuery();
     // Отдельный вызов того же эндпоинта по конкретным id вместо bounds —
     // даёт координаты/наличие локации именно для карточек текущей страницы
@@ -95,9 +97,11 @@ export const OffersSearchFilter = () => {
         fetchAllOffersMap({ ...params, ...(mapBoundsRef.current ?? {}) });
     }, [fetchAllOffersMap]);
 
-    const handleBoundsChange = useCallback((bounds: MapViewportBounds) => {
-        mapBoundsRef.current = bounds;
-
+    // Общий путь и для обычного обновления (смена bounds/фильтров), и для
+    // повторной попытки после ошибки — кнопка "Попробовать снова" должна
+    // повторить именно ПОСЛЕДНИЙ реальный запрос (те же bounds/фильтры/поиск),
+    // а не какой-то дефолтный, иначе после смены фильтров retry вернёт не то.
+    const refetchOffersMap = useCallback(() => {
         const watchData = watch();
         const preparedData = offersFilterApiAdapter(watchData);
         if (currentSearchRef.current) {
@@ -107,7 +111,12 @@ export const OffersSearchFilter = () => {
         }
     }, [watch, fetchOffersMapWithBounds]);
 
-    useEffect(() => {
+    const handleBoundsChange = useCallback((bounds: MapViewportBounds) => {
+        mapBoundsRef.current = bounds;
+        refetchOffersMap();
+    }, [refetchOffersMap]);
+
+    const refetchOffersList = useCallback(() => {
         if (currentSearchRef.current) {
             fetchOffers({
                 sort: OfferSort.UpdatedDesc,
@@ -120,12 +129,14 @@ export const OffersSearchFilter = () => {
             const preparedData = offersFilterApiAdapter(watchData);
             fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
         }
+    }, [currentPage, fetchOffers, watch]);
+
+    useEffect(() => {
+        refetchOffersList();
     }, [currentPage]);
 
     useEffect(() => {
-        const watchData = watch();
-        const preparedData = offersFilterApiAdapter(watchData);
-        fetchOffersMapWithBounds({ ...preparedData });
+        refetchOffersMap();
     }, []);
 
     useEffect(() => {
@@ -368,6 +379,8 @@ export const OffersSearchFilter = () => {
                         <OffersList
                             data={offersData?.data}
                             isLoading={isLoading || isFetching}
+                            isError={isOffersListError}
+                            onRetry={refetchOffersList}
                             className={cn(styles.offersList)}
                             onChangeMapOpen={handleMapOpen}
                             mapOpenValue={isMapOpened}
@@ -384,6 +397,8 @@ export const OffersSearchFilter = () => {
                         <OffersMap
                             offersData={allOffersMap}
                             isOffersLoading={isAllOffersMapLoading || isAllOffersMapFetching}
+                            isOffersError={isAllOffersMapError}
+                            onRetry={refetchOffersMap}
                             className={styles.offersMap}
                             classNameMap={styles.offersMap}
                             selectedOfferId={selectedOfferId}
@@ -396,7 +411,11 @@ export const OffersSearchFilter = () => {
                     data={offersData?.data}
                     allOffersMapData={allOffersMap}
                     isLoadingAllOffersMap={isAllOffersMapLoading || isAllOffersMapFetching}
+                    isMapError={isAllOffersMapError}
+                    onRetryMap={refetchOffersMap}
                     isLoading={isLoading || isFetching}
+                    isError={isOffersListError}
+                    onRetry={refetchOffersList}
                     className={styles.mobile}
                     onApplySearch={onApplySearch}
                     onSubmit={onApplyFilters}

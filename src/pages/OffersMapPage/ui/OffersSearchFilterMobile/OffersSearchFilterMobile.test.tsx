@@ -164,4 +164,24 @@ describe("OffersSearchFilterMobile", () => {
 
         expect(latestOffersMapProps.current.onBoundsChange).toBe(onBoundsChange);
     });
+
+    it("показывает отдельное сообщение об ошибке списка (не «вакансий не были найдены») и вызывает onRetry "
+        + "по кнопке", async () => {
+        const onRetry = vi.fn();
+        renderMobile({ isError: true, data: undefined, onRetry });
+
+        expect(screen.getByText("Не удалось загрузить вакансии")).toBeInTheDocument();
+        expect(screen.queryByText("Вакансии не были найдены")).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText("Попробовать снова"));
+        expect(onRetry).toHaveBeenCalledTimes(1);
+    });
+
+    it("передаёт isMapError/onRetryMap в мобильную OffersMap как isOffersError/onRetry", () => {
+        const onRetryMap = vi.fn();
+        renderMobile({ selectedOfferId: 1, isMapError: true, onRetryMap });
+
+        expect(latestOffersMapProps.current.isOffersError).toBe(true);
+        expect(latestOffersMapProps.current.onRetry).toBe(onRetryMap);
+    });
 });
