@@ -323,12 +323,12 @@ describe("OffersMap", () => {
             expect(attempt).toBe(1);
 
             act(() => {
-                vi.advanceTimersByTime(200);
+                vi.advanceTimersByTime(300);
             });
             expect(attempt).toBe(2);
 
             act(() => {
-                vi.advanceTimersByTime(200);
+                vi.advanceTimersByTime(300);
             });
             expect(attempt).toBe(3);
             expect(balloonOpen).toHaveLastReturnedWith(Promise.resolve());
@@ -404,5 +404,44 @@ describe("OffersMap", () => {
         expect(balloonContent).toContain("balloonImageLink");
         expect(balloonContent).toContain("balloonImage");
         expect(balloonContent).toContain("/ru/offers/1");
+    });
+
+    it("использует MEDIUM-превью в balloon, а не крошечный SMALL (56x56, размывается при показе крупнее)", async () => {
+        render(
+            <OffersMap
+                offersData={[offer({
+                    id: 1,
+                    image: {
+                        id: "1",
+                        contentUrl: "https://example.com/original.jpg",
+                        thumbnails: {
+                            small: "https://example.com/small.webp",
+                            medium: "https://example.com/medium.webp",
+                            large: "https://example.com/large.webp",
+                        },
+                    },
+                })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(capturedFeatures).toHaveLength(1));
+        const { balloonContent } = capturedFeatures[0].properties;
+        expect(balloonContent).toContain("https://example.com/medium.webp");
+        expect(balloonContent).not.toContain("https://example.com/small.webp");
+    });
+
+    it("держит iconContentSize/Offset в том же фрейме, что и iconImageSize/Offset, иначе видимый маркер и его кликабельная область (iconShape) расходятся", async () => {
+        render(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(capturedFeatures).toHaveLength(1));
+        const { options } = capturedFeatures[0];
+        expect(options.iconContentSize).toEqual(options.iconImageSize);
+        expect(options.iconContentOffset).toEqual(options.iconImageOffset);
     });
 });
