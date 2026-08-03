@@ -17,3 +17,15 @@
 .link {
     color: var(--text-primary-1);
 }
+
+.logos {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.logo {
+    height: 28px;
+    width: auto;
+}
