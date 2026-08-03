@@ -263,31 +263,43 @@ describe("OffersMap", () => {
         await waitFor(() => expect(screen.getByTestId("object-manager")).toHaveTextContent("1"));
     });
 
-    it("не падает, если balloon.open синхронно бросает даже когда объект уже числится в ObjectManager (регресс: карта разваливалась при быстром переключении между вакансиями в списке)", async () => {
-        // Редкая гонка: getById успел увидеть объект, но он пропал (или SDK
-        // всё равно бросает) к моменту вызова open() — не должно ронять карту.
+    it("не падает и повторяет попытку, если balloon.open синхронно бросает даже когда объект уже числится в ObjectManager (регресс: getById подтверждал существование объекта раньше, чем его геометрия готова для balloon — пойманное исключение раньше тихо считалось успехом, и табличка так и не появлялась, хотя маркер по прямому клику уже открывался)", async () => {
         balloonOpen.mockImplementationOnce(() => {
             throw new TypeError("Cannot read properties of null (reading 'geometry')");
         });
 
-        render(
-            <OffersMap
-                offersData={[offer({ id: 1 })]}
-                isOffersLoading={false}
-                selectedOfferId={1}
-                selectedOfferCoordinates={{ latitude: 55.75, longitude: 37.61 }}
-            />,
-        );
+        vi.useFakeTimers();
+        try {
+            render(
+                <OffersMap
+                    offersData={[offer({ id: 1 })]}
+                    isOffersLoading={false}
+                    selectedOfferId={1}
+                    selectedOfferCoordinates={{ latitude: 55.75, longitude: 37.61 }}
+                />,
+            );
 
-        await waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+            await vi.waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
 
-        expect(() => {
+            expect(() => {
+                act(() => {
+                    boundsChangeHandlers.forEach((handler) => handler());
+                });
+            }).not.toThrow();
+
+            expect(balloonOpen).toHaveBeenCalledTimes(1);
+
             act(() => {
-                boundsChangeHandlers.forEach((handler) => handler());
+                vi.advanceTimersByTime(300);
             });
-        }).not.toThrow();
 
-        expect(balloonOpen).toHaveBeenCalledWith("1");
+            // Второй вызов (mockImplementationOnce исчерпан, дальше balloonOpen
+            // резолвится нормально) доказывает, что после пойманного исключения
+            // код запланировал повтор, а не тихо решил, что всё получилось.
+            expect(balloonOpen).toHaveBeenCalledTimes(2);
+        } finally {
+            vi.useRealTimers();
+        }
     });
 
     it("повторяет попытку открыть balloon, пока маркер не появится в ObjectManager (регресс: табличка молча не появлялась, был виден только маркер)", async () => {
