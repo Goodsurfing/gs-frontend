@@ -155,4 +155,13 @@ describe("OffersSearchFilterMobile", () => {
 
         expect(screen.getByTestId("offer-card-1")).toHaveAttribute("data-selected", "true");
     });
+
+    it("передаёт onBoundsChange в мобильную OffersMap (регресс: без него мобильная карта грузит "
+        + "весь неограниченный набор маркеров вместо viewport-scoped, из-за чего ObjectManager не успевает "
+        + "зарегистрировать маркер в бюджете ретраев открытия balloon)", () => {
+        const onBoundsChange = vi.fn();
+        renderMobile({ selectedOfferId: 1, onBoundsChange });
+
+        expect(latestOffersMapProps.current.onBoundsChange).toBe(onBoundsChange);
+    });
 });
