@@ -13,6 +13,7 @@ import {
     OffersMap,
     SwitchClosedOffers,
 } from "@/widgets/OffersMap";
+import type { MapViewportBounds } from "@/widgets/OffersMap/ui/OffersMap/OffersMap";
 import { OfferCard } from "@/widgets/OffersMap/ui/OfferCard/OfferCard";
 import { SearchOffers } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 import { SelectSort } from "@/widgets/OffersMap/ui/SelectSort/SelectSort";
@@ -48,6 +49,7 @@ interface OffersSearchFilterMobileProps {
     onSelectOffer?: (offerId: number) => void;
     selectedOfferCoordinates?: { latitude: number; longitude: number } | null;
     offerIdsWithoutLocation?: Set<number>;
+    onBoundsChange?: (bounds: MapViewportBounds) => void;
 }
 
 const MemoizedOfferCard = React.memo(OfferCard);
@@ -70,6 +72,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
     onSelectOffer,
     selectedOfferCoordinates,
     offerIdsWithoutLocation,
+    onBoundsChange,
 }) => {
     const { control } = useFormContext();
     const { t } = useTranslation("offers-map");
@@ -283,6 +286,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                     classNameMap={styles.offersMap}
                     selectedOfferId={selectedOfferId}
                     selectedOfferCoordinates={selectedOfferCoordinates}
+                    onBoundsChange={onBoundsChange}
                 />
             )}
             {tabStates.isFilterTabOpened && (

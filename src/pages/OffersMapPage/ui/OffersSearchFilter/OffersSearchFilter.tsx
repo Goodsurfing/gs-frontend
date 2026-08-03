@@ -409,6 +409,7 @@ export const OffersSearchFilter = () => {
                     onSelectOffer={handleSelectOffer}
                     selectedOfferCoordinates={selectedOfferCoordinates}
                     offerIdsWithoutLocation={offerIdsWithoutLocation}
+                    onBoundsChange={handleBoundsChange}
                 />
             </div>
         </FormProvider>
