@@ -14,6 +14,7 @@ const getBounds = vi.fn(() => [[54, 36], [57, 39]]);
 const boundsChangeHandlers: Array<() => void> = [];
 const onLoadCalls = vi.fn();
 const balloonOpen = vi.fn().mockResolvedValue(undefined);
+const getById = vi.fn((): object | undefined => ({}));
 let capturedFeatures: any[] = [];
 
 vi.mock("react-i18next", () => ({
@@ -59,7 +60,7 @@ vi.mock("@pbe/react-yandex-maps", () => ({
         const { features, instanceRef } = props;
         capturedFeatures = features;
         if (instanceRef) {
-            instanceRef.current = { objects: { balloon: { open: balloonOpen } } };
+            instanceRef.current = { objects: { balloon: { open: balloonOpen }, getById } };
         }
         return <div data-testid="object-manager">{features.length}</div>;
     },
@@ -83,6 +84,9 @@ describe("OffersMap", () => {
         getBounds.mockReturnValue([[54, 36], [57, 39]]);
         onLoadCalls.mockClear();
         balloonOpen.mockClear();
+        balloonOpen.mockResolvedValue(undefined);
+        getById.mockClear();
+        getById.mockImplementation(() => ({}));
         boundsChangeHandlers.length = 0;
         capturedFeatures = [];
     });
@@ -259,12 +263,9 @@ describe("OffersMap", () => {
         await waitFor(() => expect(screen.getByTestId("object-manager")).toHaveTextContent("1"));
     });
 
-    it("не падает, если balloon.open синхронно бросает (регресс: карта разваливалась при быстром переключении между вакансиями в списке)", async () => {
-        // Реальный Яндекс.Карты SDK бросает TypeError синхронно (не reject),
-        // когда объект ещё не попал в ObjectManager — маркеры viewport-scoped
-        // и приходят отдельным bounds-запросом с дебаунсом ПОСЛЕ actionend,
-        // так что быстрый клик по следующей вакансии в списке легко успевает
-        // раньше. .catch() на промисе тут не спасает.
+    it("не падает, если balloon.open синхронно бросает даже когда объект уже числится в ObjectManager (регресс: карта разваливалась при быстром переключении между вакансиями в списке)", async () => {
+        // Редкая гонка: getById успел увидеть объект, но он пропал (или SDK
+        // всё равно бросает) к моменту вызова open() — не должно ронять карту.
         balloonOpen.mockImplementationOnce(() => {
             throw new TypeError("Cannot read properties of null (reading 'geometry')");
         });
@@ -290,17 +291,14 @@ describe("OffersMap", () => {
     });
 
     it("повторяет попытку открыть balloon, пока маркер не появится в ObjectManager (регресс: табличка молча не появлялась, был виден только маркер)", async () => {
-        // Первые несколько попыток проваливаются (маркер под только что
-        // выбранную вакансию ещё не подъехал с bounds-запросом), но объект
-        // рано или поздно появляется — balloon должен открыться, а не
-        // молча остаться закрытым после первой неудачи.
+        // getById.open() возвращает falsy (объекта ещё нет — маркер под
+        // только что выбранную вакансию ещё не подъехал с bounds-запросом)
+        // первые несколько попыток, но объект рано или поздно появляется —
+        // balloon должен открыться, а не молча остаться закрытым.
         let attempt = 0;
-        balloonOpen.mockImplementation(() => {
+        getById.mockImplementation(() => {
             attempt += 1;
-            if (attempt < 3) {
-                throw new TypeError("Cannot read properties of null (reading 'geometry')");
-            }
-            return Promise.resolve();
+            return attempt >= 3 ? {} : undefined;
         });
 
         vi.useFakeTimers();
@@ -321,26 +319,26 @@ describe("OffersMap", () => {
             });
 
             expect(attempt).toBe(1);
+            expect(balloonOpen).not.toHaveBeenCalled();
 
             act(() => {
                 vi.advanceTimersByTime(300);
             });
             expect(attempt).toBe(2);
+            expect(balloonOpen).not.toHaveBeenCalled();
 
             act(() => {
                 vi.advanceTimersByTime(300);
             });
             expect(attempt).toBe(3);
-            expect(balloonOpen).toHaveLastReturnedWith(Promise.resolve());
+            expect(balloonOpen).toHaveBeenCalledWith("1");
         } finally {
             vi.useRealTimers();
         }
     });
 
     it("прекращает попытки открыть balloon после разумного числа неудач, а не бесконечно (объекта у вакансии в принципе никогда не будет)", async () => {
-        balloonOpen.mockImplementation(() => {
-            throw new TypeError("Cannot read properties of null (reading 'geometry')");
-        });
+        getById.mockImplementation(() => undefined);
 
         vi.useFakeTimers();
         try {
@@ -363,13 +361,14 @@ describe("OffersMap", () => {
                 vi.advanceTimersByTime(30_000);
             });
 
-            const callsAfterLongWait = balloonOpen.mock.calls.length;
+            const callsAfterLongWait = getById.mock.calls.length;
 
             act(() => {
                 vi.advanceTimersByTime(30_000);
             });
 
-            expect(balloonOpen.mock.calls.length).toBe(callsAfterLongWait);
+            expect(getById.mock.calls.length).toBe(callsAfterLongWait);
+            expect(balloonOpen).not.toHaveBeenCalled();
         } finally {
             vi.useRealTimers();
         }
