@@ -165,8 +165,8 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const panActionEndedRef = useRef(false);
 
     // Пытается открыть balloon прямо сейчас. Возвращает true, если маркер уже
-    // зарегистрирован в ObjectManager (успех или редкая гонка на open()) —
-    // тогда дальше можно не пытаться. false — маркера пока нет, надо ждать.
+    // зарегистрирован в ObjectManager и open() не бросил — таймер-цикл ниже
+    // на этом остановится. false — маркера пока нет, надо ждать/повторить.
     const attemptOpenBalloon = (offerId: number): boolean => {
         const objectManager = objectManagerRef.current;
         if (!objectManager) return false;
@@ -198,7 +198,19 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         } catch {
             return false;
         }
-        pendingBalloonOfferIdRef.current = null;
+        // Шестое живое наблюдение на стейдже: даже успешный open() не значит
+        // "готово навсегда". Bounds-дебаунс может дать ДВЕ волны обновления
+        // маркеров за один pan (промежуточная позиция во время анимации +
+        // финальная после actionend) — второй remove()+add() в ObjectManager
+        // молча закрывает уже открытый balloon. Раньше pendingBalloonOfferIdRef
+        // обнулялся сразу по первому успеху, и реактивный эффект переставал
+        // реагировать на дальнейшие обновления features — balloon закрывался
+        // и больше никогда не переоткрывался, хотя код считал задачу
+        // выполненной. НЕ обнуляем pending здесь: пока выбрана та же вакансия,
+        // каждое следующее обновление маркеров просто попробует открыть
+        // balloon ещё раз (дёшево и идемпотентно, если он и так уже открыт).
+        // pending сбрасывается только когда меняется сам выбор (см. эффект
+        // ниже) — реального смысла "мы наконец закончили" здесь больше нет.
         return true;
     };
 
