@@ -400,6 +400,43 @@ describe("OffersMap", () => {
         }
     });
 
+    it("переоткрывает balloon при следующем обновлении маркеров даже после уже успешного open() (регресс: bounds-дебаунс иногда даёт две волны обновления за один pan — промежуточную и финальную; второй remove()+add() в ObjectManager молча закрывал уже открытый balloon, а код считал задачу выполненной и больше не пытался)", async () => {
+        getById.mockImplementation(() => ({}));
+        const coordinates = { latitude: 55.75, longitude: 37.61 };
+
+        const { rerender } = render(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+                selectedOfferId={1}
+                selectedOfferCoordinates={coordinates}
+            />,
+        );
+
+        await waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+
+        act(() => {
+            boundsChangeHandlers.forEach((handler) => handler());
+        });
+        expect(balloonOpen).toHaveBeenCalledTimes(1);
+
+        // Вторая волна маркеров под тот же самый pan (та самая "финальная"
+        // bounds-загрузка) — balloon должен попытаться открыться снова, а не
+        // молчать, потому что "уже открывали один раз".
+        act(() => {
+            rerender(
+                <OffersMap
+                    offersData={[offer({ id: 1, name: "Ещё одно обновление" })]}
+                    isOffersLoading={false}
+                    selectedOfferId={1}
+                    selectedOfferCoordinates={coordinates}
+                />,
+            );
+        });
+
+        expect(balloonOpen).toHaveBeenCalledTimes(2);
+    });
+
     it("прекращает попытки открыть balloon после разумного числа неудач, а не бесконечно (объекта у вакансии в принципе никогда не будет)", async () => {
         getById.mockImplementation(() => undefined);
 
