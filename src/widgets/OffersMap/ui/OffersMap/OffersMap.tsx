@@ -167,7 +167,21 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
 
         const openBalloon = () => {
             map.events.remove("actionend", openBalloon);
-            objectManager.objects.balloon.open(selectedOfferId.toString()).catch(() => {});
+            // Даже после actionend объект может ещё не попасть в ObjectManager:
+            // маркеры viewport-scoped (см. features выше) и приходят отдельным
+            // bounds-запросом с 400мс дебаунсом ПОСЛЕ actionend, так что при
+            // быстром переключении между вакансиями в списке (клик #1, клик #2
+            // до того как домаунтился набор маркеров под клик #1) balloon.open
+            // синхронно бросает TypeError ("Cannot read properties of null
+            // (reading 'geometry')") внутри самого Яндекс.Карт SDK — .catch()
+            // тут не помогает, потому что это не отклонённый Promise, а
+            // синхронный throw. Без try/catch это разносило карту целиком.
+            try {
+                objectManager.objects.balloon.open(selectedOfferId.toString())?.catch(() => {});
+            } catch {
+                // объекта ещё нет на карте — тихо пропускаем, пользователь всё
+                // равно уже увидел итог pan'а к нужным координатам
+            }
         };
         map.events.add("actionend", openBalloon);
         return () => {
