@@ -546,4 +546,52 @@ describe("OffersMap", () => {
         // продублировать тот же сдвиг ещё и для content, он применится дважды.
         expect(options.iconContentOffset).toBeUndefined();
     });
+
+    it("держит ту же ссылку на features, если пришедший offersData не меняет фактический набор маркеров "
+        + "(регресс: ObjectManager делает remove()+add() по ВСЕЙ коллекции на каждую новую ссылку features, "
+        + "даже если содержимое идентично — например повторный bounds-фетч тех же данных или лёгкий пан в "
+        + "пределах того же viewport — из-за чего все маркеры на карте видимо мигали при каждом таком апдейте)", async () => {
+        const { rerender } = render(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(capturedFeatures).toHaveLength(1));
+        const firstFeatures = capturedFeatures;
+
+        // Новый массив-литерал с offersData, но по содержимому — те же самые
+        // офферы: именно так выглядит повторный RTK Query fetch с тем же
+        // результатом (новая ссылка на массив/объекты при каждом success).
+        rerender(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        expect(capturedFeatures).toBe(firstFeatures);
+    });
+
+    it("строит новый набор features, если офферы реально изменились (координаты)", async () => {
+        const { rerender } = render(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(capturedFeatures).toHaveLength(1));
+        const firstFeatures = capturedFeatures;
+
+        rerender(
+            <OffersMap
+                offersData={[offer({ id: 1, latitude: 60 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        expect(capturedFeatures).not.toBe(firstFeatures);
+    });
 });

@@ -64,6 +64,17 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     // моргает при каждом перемещении. Держим последний непустой набор
     // маркеров на экране, пока не придут новые (stale-while-revalidate).
     const lastFeaturesRef = useRef<any[]>([]);
+    // ObjectManager (react-yandex-maps) на каждое изменение ССЫЛКИ features
+    // делает remove(старые) + add(новые) по ВСЕЙ коллекции разом — не diff.
+    // offersData после каждого bounds-рефетча приходит новым массивом от
+    // RTK Query, даже если набор маркеров не изменился ни на йоту (например,
+    // повторный fetch с теми же bounds или лёгкий pan в пределах того же
+    // viewport) — .filter().map() ниже тогда всё равно строит новый массив
+    // объектов, ObjectManager видит "новую" ссылку и на мгновение снимает и
+    // возвращает ВСЕ маркеры сразу — заметное мигание карты. Держим сигнатуру
+    // последнего построенного набора, чтобы при том же содержимом отдавать ту
+    // же ссылку на features и не трогать ObjectManager вовсе.
+    const lastFeaturesSignatureRef = useRef<string>("");
 
     const noTitle = t("Без названия");
     const noCategory = t("Без категории");
@@ -75,8 +86,23 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const features = useMemo(() => {
         if (isOffersLoading || !offersData.length) return lastFeaturesRef.current;
 
-        const computed = offersData
-            .filter((offer) => typeof offer.latitude === "number" && typeof offer.longitude === "number")
+        const relevantOffers = offersData
+            .filter((offer) => typeof offer.latitude === "number" && typeof offer.longitude === "number");
+
+        const signature = relevantOffers
+            .map((offer) => [
+                offer.id, offer.latitude, offer.longitude, offer.name,
+                offer.categories[0]?.name ?? "", offer.categories[0]?.color ?? "",
+                offer.image?.contentUrl ?? "",
+            ].join(":"))
+            .sort()
+            .join("|");
+        if (signature === lastFeaturesSignatureRef.current && lastFeaturesRef.current.length > 0) {
+            return lastFeaturesRef.current;
+        }
+        lastFeaturesSignatureRef.current = signature;
+
+        const computed = relevantOffers
             .map((offer) => {
                 const imgSrc = offer?.image ?? undefined;
                 const title = offer.name || noTitle;
