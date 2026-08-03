@@ -154,10 +154,52 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         noTitle, noCategory, offerWithoutName, learnMore,
     ]);
 
+    // Оффер, для которого нужно открыть balloon, как только его маркер
+    // реально появится в ObjectManager. null — нечего открывать / уже открыли.
+    const pendingBalloonOfferIdRef = useRef<number | null>(null);
+    // true — pan уже завершился (actionend), можно пробовать открыть balloon
+    // реактивно при каждом обновлении маркеров. Без этого флага реактивный
+    // эффект ниже (на features) стрелял бы balloon.open ещё ДО того, как
+    // карта закончит панорамирование — балун появлялся бы мгновенно вместо
+    // "сначала фокус, потом табличка".
+    const panActionEndedRef = useRef(false);
+
+    // Пытается открыть balloon прямо сейчас. Возвращает true, если маркер уже
+    // зарегистрирован в ObjectManager (успех или редкая гонка на open()) —
+    // тогда дальше можно не пытаться. false — маркера пока нет, надо ждать.
+    const attemptOpenBalloon = (offerId: number): boolean => {
+        const objectManager = objectManagerRef.current;
+        if (!objectManager) return false;
+        // Даже после actionend объект может ещё не попасть в ObjectManager:
+        // маркеры viewport-scoped (см. features выше) и приходят отдельным
+        // bounds-запросом с 400мс дебаунсом ПОСЛЕ actionend, так что клик по
+        // вакансии в списке почти всегда обгоняет собственный набор маркеров
+        // под новые bounds. Проверяем через getById, что объект уже
+        // зарегистрирован, ПЕРЕД тем как звать balloon.open — раньше звали
+        // open() вслепую и полагались на то, что она либо синхронно бросит
+        // TypeError ("Cannot read properties of null (reading 'geometry')")
+        // для отсутствующего объекта, либо успешно откроет balloon. На деле
+        // для отсутствующего объекта open() иногда просто молча возвращает
+        // falsy без throw — тогда старый код принимал это за успех и больше
+        // не повторял попытку, табличка так и не появлялась. getById даёт
+        // однозначный ответ вместо гадания по побочному эффекту open().
+        if (!objectManager.objects.getById(offerId.toString())) return false;
+        try {
+            objectManager.objects.balloon.open(offerId.toString())?.catch(() => {});
+        } catch {
+            // объект пропал между проверкой и открытием (редкая гонка) — не
+            // страшно, дальше повторять уже нечего
+        }
+        pendingBalloonOfferIdRef.current = null;
+        return true;
+    };
+
     useEffect(() => {
         if (!selectedOfferId || selectedOfferCoordinates === undefined) {
             setShowNoLocationNotice(false);
-            return;
+            pendingBalloonOfferIdRef.current = null;
+            panActionEndedRef.current = false;
+            return undefined;
         }
 
         // Часть вакансий физически не имеет координат в базе (адрес не
@@ -165,7 +207,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         // клик по такой карточке в списке просто ничего не делал молча,
         // что выглядело как баг; показываем явную причину вместо тишины.
         setShowNoLocationNotice(selectedOfferCoordinates === null);
-        if (!selectedOfferCoordinates || !mapRef.current) return;
+        if (!selectedOfferCoordinates || !mapRef.current) return undefined;
 
         const currentZoom = mapRef.current.getZoom();
         mapRef.current.setCenter(
@@ -180,47 +222,28 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         // завершится (actionend) — иначе ObjectManager может не найти
         // объект, если он ещё не попал в текущий кластер на новом месте.
         const map = mapRef.current;
-        const objectManager = objectManagerRef.current;
-        if (!objectManager) return undefined;
+        pendingBalloonOfferIdRef.current = selectedOfferId;
+        panActionEndedRef.current = false;
 
         let retryTimeoutId: ReturnType<typeof setTimeout> | undefined;
         let cancelled = false;
 
         const tryOpenBalloon = (attemptsLeft: number) => {
             if (cancelled) return;
-            // Даже после actionend объект может ещё не попасть в ObjectManager:
-            // маркеры viewport-scoped (см. features выше) и приходят отдельным
-            // bounds-запросом с 400мс дебаунсом ПОСЛЕ actionend, так что клик по
-            // вакансии в списке почти всегда обгоняет собственный набор
-            // маркеров под новые bounds. Проверяем через getById, что объект уже
-            // зарегистрирован, ПЕРЕД тем как звать balloon.open — раньше звали
-            // open() вслепую и полагались на то, что она либо синхронно бросит
-            // TypeError ("Cannot read properties of null (reading 'geometry')")
-            // для отсутствующего объекта, либо успешно откроет balloon. На деле
-            // для отсутствующего объекта open() иногда просто молча возвращает
-            // falsy без throw — тогда старый код принимал это за успех и больше
-            // не повторял попытку, табличка так и не появлялась. getById даёт
-            // однозначный ответ вместо гадания по побочному эффекту open().
-            if (!objectManager.objects.getById(selectedOfferId.toString())) {
-                if (attemptsLeft <= 0) return;
-                retryTimeoutId = setTimeout(() => tryOpenBalloon(attemptsLeft - 1), 300);
-                return;
-            }
-            try {
-                objectManager.objects.balloon.open(selectedOfferId.toString())?.catch(() => {});
-            } catch {
-                // объект пропал между проверкой и открытием (редкая гонка) — не
-                // страшно, дальше повторять уже нечего, пользователь либо увидит
-                // balloon с повторного клика, либо нет
-            }
+            if (attemptOpenBalloon(selectedOfferId)) return;
+            if (attemptsLeft <= 0) return;
+            retryTimeoutId = setTimeout(() => tryOpenBalloon(attemptsLeft - 1), 300);
         };
 
         const openBalloon = () => {
             map.events.remove("actionend", openBalloon);
-            // 30 попыток по 300мс — с запасом перекрывает 400мс bounds-дебаунс
-            // + реальный сетевой round-trip до vacancy/for-map/list, который
-            // раньше (10 попыток по 200мс = 2с) иногда не укладывался, и
-            // табличка молча не появлялась.
+            panActionEndedRef.current = true;
+            // Таймер-ретраи — подстраховка на случай если реактивный триггер
+            // ниже (эффект на features) почему-то не сработает. Основной путь
+            // быстрее: как только придут новые маркеры под bounds, тот эффект
+            // сразу попробует открыть balloon, не дожидаясь следующего тика
+            // таймера. 30 попыток по 300мс (9с) — щедрый запас поверх 400мс
+            // bounds-дебаунса на случай медленной сети.
             tryOpenBalloon(30);
         };
         map.events.add("actionend", openBalloon);
@@ -234,6 +257,22 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         // может случиться позже, чем этот эффект уже отработал на первом
         // рендере с уже выбранной вакансией (например, ?offerId= в URL).
     }, [selectedOfferId, selectedOfferCoordinates, ymapState]);
+
+    // Реактивный триггер: как только приходят новые (bounds-scoped) маркеры,
+    // сразу пробуем открыть balloon для отложенной вакансии — не дожидаясь
+    // следующего тика таймера выше. Раньше единственным путём был опрос по
+    // таймеру (300мс), и на медленной сети/бэкенде реальный round-trip до
+    // vacancy/for-map/list мог не уложиться в весь отведённый бюджет —
+    // табличка молча не появлялась, хотя маркер уже был на карте.
+    useEffect(() => {
+        // panActionEndedRef: не пытаться открыть balloon раньше, чем
+        // закончится сам pan — иначе табличка выскакивала бы мгновенно при
+        // клике, до того как карта успевала визуально долететь до маркера.
+        if (panActionEndedRef.current && pendingBalloonOfferIdRef.current !== null) {
+            attemptOpenBalloon(pendingBalloonOfferIdRef.current);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [features]);
 
     useEffect(() => {
         if (!ymapState || !mapRef.current) return undefined;

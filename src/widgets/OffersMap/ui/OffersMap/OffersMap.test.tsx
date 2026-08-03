@@ -337,6 +337,57 @@ describe("OffersMap", () => {
         }
     });
 
+    it("открывает balloon реактивно при обновлении маркеров, не дожидаясь следующего тика таймера-ретрая (регресс: на медленной сети/бэкенде реальный round-trip мог не уложиться в весь таймерный бюджет)", async () => {
+        // Маркера нет в ObjectManager после actionend — таймер уходит в
+        // ожидание следующей попытки (300мс, ещё не наступило). Затем маркер
+        // "приезжает" (features обновляются новым набором offersData), и
+        // getById внезапно начинает подтверждать существование объекта —
+        // balloon должен открыться СРАЗУ по этому событию, а не по таймеру.
+        getById.mockImplementation(() => undefined);
+        // Одна и та же ссылка на объект координат для обоих рендеров: если
+        // передавать новый литерал при каждом рендере, pan-эффект (у него в
+        // зависимостях selectedOfferCoordinates) перезапускался бы сам по
+        // себе и сбрасывал бы флаг "pan завершился" — тест проверял бы не то.
+        const coordinates = { latitude: 55.75, longitude: 37.61 };
+
+        vi.useFakeTimers();
+        try {
+            const { rerender } = render(
+                <OffersMap
+                    offersData={[offer({ id: 1 })]}
+                    isOffersLoading={false}
+                    selectedOfferId={1}
+                    selectedOfferCoordinates={coordinates}
+                />,
+            );
+
+            await vi.waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+
+            act(() => {
+                boundsChangeHandlers.forEach((handler) => handler());
+            });
+            expect(balloonOpen).not.toHaveBeenCalled();
+
+            getById.mockImplementation(() => ({}));
+            act(() => {
+                rerender(
+                    <OffersMap
+                        offersData={[offer({ id: 1, name: "Обновлённое название" })]}
+                        isOffersLoading={false}
+                        selectedOfferId={1}
+                        selectedOfferCoordinates={coordinates}
+                    />,
+                );
+            });
+
+            // Ни один таймер не продвигался — если balloon всё равно открылся,
+            // значит сработал реактивный эффект на features, а не таймер.
+            expect(balloonOpen).toHaveBeenCalledWith("1");
+        } finally {
+            vi.useRealTimers();
+        }
+    });
+
     it("прекращает попытки открыть balloon после разумного числа неудач, а не бесконечно (объекта у вакансии в принципе никогда не будет)", async () => {
         getById.mockImplementation(() => undefined);
 
