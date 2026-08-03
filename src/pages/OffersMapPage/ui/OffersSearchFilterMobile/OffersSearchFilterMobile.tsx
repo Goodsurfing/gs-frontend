@@ -44,6 +44,10 @@ interface OffersSearchFilterMobileProps {
     currentPage: number;
     offersPerPage: number;
     onChangePage: (pageItem: number) => void;
+    selectedOfferId?: number;
+    onSelectOffer?: (offerId: number) => void;
+    selectedOfferCoordinates?: { latitude: number; longitude: number } | null;
+    offerIdsWithoutLocation?: Set<number>;
 }
 
 const MemoizedOfferCard = React.memo(OfferCard);
@@ -62,11 +66,20 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
     offersPerPage,
     total,
     onChangePage,
+    selectedOfferId,
+    onSelectOffer,
+    selectedOfferCoordinates,
+    offerIdsWithoutLocation,
 }) => {
     const { control } = useFormContext();
     const { t } = useTranslation("offers-map");
     const { locale } = useLocale();
-    const [selectedTab, setSelectedTab] = useState<SelectedTabType>("offers");
+    // Ссылка вида /offers-map?offerId=... (шеринг конкретной вакансии) должна
+    // сразу показывать её на карте — иначе человек попадает в список вакансий
+    // и должен ещё сам догадаться вручную переключиться на вкладку "Карта".
+    const [selectedTab, setSelectedTab] = useState<SelectedTabType>(
+        () => (selectedOfferId ? "map" : "offers"),
+    );
 
     const [isPending, startTransition] = useTransition();
 
@@ -104,6 +117,18 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
     const handleMapTab = useCallback(() => {
         setSelectedTab("map");
     }, []);
+
+    // На десктопе список и карта видны бок о бок, поэтому клик по карточке
+    // просто выделяет метку на уже открытой карте. На мобильном они на
+    // разных вкладках — без переключения на "Карта" клик по карточке в
+    // списке визуально не приводил бы ни к чему (карту пользователь тогда
+    // не видит), хотя выбор внутри состояния уже происходил бы. Тот же
+    // сценарий, что и на десктопе ("фокус на точке → табличка с фото"), но
+    // с явным переходом на вкладку карты вместо соседней колонки.
+    const handleSelectOffer = useCallback((offerId: number) => {
+        onSelectOffer?.(offerId);
+        setSelectedTab("map");
+    }, [onSelectOffer]);
 
     const tabStates = useMemo(
         () => ({
@@ -152,10 +177,16 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                     reviewsCount: offer.reviewsCount,
                 }}
                 key={offer.id}
+                isSelected={offer.id === selectedOfferId}
+                onSelect={handleSelectOffer}
+                hasLocation={!offerIdsWithoutLocation?.has(offer.id)}
             />
         ));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [locale, t, isLoading, isPending, data]);
+    }, [
+        locale, t, isLoading, isPending, data, selectedOfferId,
+        handleSelectOffer, offerIdsWithoutLocation,
+    ]);
 
     const totalPages = useMemo(
         () => (data ? Math.ceil(total / offersPerPage) : 1),
@@ -250,6 +281,8 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                     isOffersLoading={isLoadingAllOffersMap}
                     className={styles.offersMap}
                     classNameMap={styles.offersMap}
+                    selectedOfferId={selectedOfferId}
+                    selectedOfferCoordinates={selectedOfferCoordinates}
                 />
             )}
             {tabStates.isFilterTabOpened && (

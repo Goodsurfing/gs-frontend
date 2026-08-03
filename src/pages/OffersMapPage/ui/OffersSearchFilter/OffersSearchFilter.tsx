@@ -405,6 +405,10 @@ export const OffersSearchFilter = () => {
                     offersPerPage={OFFERS_PER_PAGE}
                     total={offersData?.pagination.total ?? 0}
                     onChangePage={onChangePage}
+                    selectedOfferId={selectedOfferId}
+                    onSelectOffer={handleSelectOffer}
+                    selectedOfferCoordinates={selectedOfferCoordinates}
+                    offerIdsWithoutLocation={offerIdsWithoutLocation}
                 />
             </div>
         </FormProvider>
