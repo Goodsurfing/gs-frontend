@@ -110,7 +110,10 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const reloadPageText = t("Обновить страницу");
 
     const features = useMemo(() => {
-        if (isOffersLoading || !offersData.length) return lastFeaturesRef.current;
+        // Не путать "ещё грузится" с "загрузилось и оказалось пусто" — во втором
+        // случае нужно реально очистить карту (и дать сработать пустому
+        // уведомлению), а не бесконечно показывать маркеры предыдущего запроса.
+        if (isOffersLoading) return lastFeaturesRef.current;
 
         const relevantOffers = offersData
             .filter((offer) => typeof offer.latitude === "number" && typeof offer.longitude === "number");

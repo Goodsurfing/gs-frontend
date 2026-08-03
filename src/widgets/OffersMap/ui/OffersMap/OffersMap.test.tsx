@@ -625,6 +625,34 @@ describe("OffersMap", () => {
         expect(capturedFeatures[0].options.iconContentLayout).toBeTruthy();
     });
 
+    it("очищает маркеры на карте, если новый результат поиска/фильтра пришёл пустым (регресс: анти-мигающий "
+        + "кэш последнего набора features отдавал старые маркеры и тогда, когда offersData реально стал "
+        + "пустым и загрузка уже завершилась — не только во время загрузки, для которой кэш и задумывался; "
+        + "карта продолжала показывать результаты предыдущего запроса, а новое пустое уведомление не "
+        + "успевало сработать, потому что features так и не становился пустым)", async () => {
+        const { rerender } = render(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(capturedFeatures).toHaveLength(1));
+
+        rerender(
+            <OffersMap
+                offersData={[]}
+                isOffersLoading={false}
+            />,
+        );
+
+        // ObjectManager рендерится только при features.length > 0 — при реально
+        // пустом результате он должен размонтироваться (а не остаться висеть со
+        // старым содержимым), поэтому проверяем именно его отсутствие в дереве.
+        await waitFor(() => expect(screen.queryByTestId("object-manager")).not.toBeInTheDocument());
+        expect(screen.getByText("По вашему запросу вакансий на карте не найдено")).toBeInTheDocument();
+    });
+
     it("показывает отдельное сообщение об ошибке (не «вакансий не найдено»), если загрузка маркеров упала, "
         + "и кнопка «Попробовать снова» вызывает onRetry", async () => {
         const onRetry = vi.fn();
