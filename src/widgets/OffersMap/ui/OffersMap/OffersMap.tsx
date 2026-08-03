@@ -192,24 +192,27 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
             // маркеры viewport-scoped (см. features выше) и приходят отдельным
             // bounds-запросом с 400мс дебаунсом ПОСЛЕ actionend, так что клик по
             // вакансии в списке почти всегда обгоняет собственный набор
-            // маркеров под новые bounds. balloon.open в этом случае синхронно
-            // бросает TypeError ("Cannot read properties of null (reading
-            // 'geometry')") внутри самого Яндекс.Карт SDK — .catch() тут не
-            // помогает (это не отклонённый Promise, а синхронный throw), и без
-            // try/catch раньше разносило карту целиком. Вместо того чтобы
-            // просто проглатывать ошибку (тогда табличка молча не появляется),
-            // повторяем попытку, пока маркеры не подъедут — данные точно
-            // придут, т.к. mapBoundsRef уже включает координаты вакансии
-            // (карта туда запанилась) и есть их явный запрос по id (см.
-            // fetchPageOffersLocation в OffersSearchFilter).
+            // маркеров под новые bounds. Проверяем через getById, что объект уже
+            // зарегистрирован, ПЕРЕД тем как звать balloon.open — раньше звали
+            // open() вслепую и полагались на то, что она либо синхронно бросит
+            // TypeError ("Cannot read properties of null (reading 'geometry')")
+            // для отсутствующего объекта, либо успешно откроет balloon. На деле
+            // для отсутствующего объекта open() иногда просто молча возвращает
+            // falsy без throw — тогда старый код принимал это за успех и больше
+            // не повторял попытку, табличка так и не появлялась. getById даёт
+            // однозначный ответ вместо гадания по побочному эффекту open().
+            if (!objectManager.objects.getById(selectedOfferId.toString())) {
+                if (attemptsLeft <= 0) return;
+                retryTimeoutId = setTimeout(() => tryOpenBalloon(attemptsLeft - 1), 300);
+                return;
+            }
             try {
                 objectManager.objects.balloon.open(selectedOfferId.toString())?.catch(() => {});
-                return;
             } catch {
-                // объекта пока нет на карте — попробуем ещё раз чуть позже
+                // объект пропал между проверкой и открытием (редкая гонка) — не
+                // страшно, дальше повторять уже нечего, пользователь либо увидит
+                // balloon с повторного клика, либо нет
             }
-            if (attemptsLeft <= 0) return;
-            retryTimeoutId = setTimeout(() => tryOpenBalloon(attemptsLeft - 1), 300);
         };
 
         const openBalloon = () => {
