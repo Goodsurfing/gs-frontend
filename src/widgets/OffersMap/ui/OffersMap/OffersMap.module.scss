@@ -124,5 +124,29 @@
     font-size: 14px;
     font-weight: 500;
     color: var(--color-black-primary);
-    white-space: nowrap;
+    max-width: calc(100% - 32px);
+    text-align: center;
+}
+
+.errorContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    padding: 0 16px;
+}
+
+.mapErrorOverlay {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background-color: var(--color-white);
+    text-align: center;
+    padding: 0 16px;
 }

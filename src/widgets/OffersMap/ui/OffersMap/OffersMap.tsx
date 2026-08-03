@@ -15,12 +15,15 @@ import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import "./yandex-map-restyle-ballon.scss";
 import { OfferMap } from "@/entities/Offer";
 import styles from "./OffersMap.module.scss";
+import Button from "@/shared/ui/Button/Button";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { Text } from "@/shared/ui/Text/Text";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 const FOCUS_ZOOM = 10;
 const BOUNDS_CHANGE_DEBOUNCE_MS = 400;
+const MAP_LOAD_TIMEOUT_MS = 15_000;
 
 export interface MapViewportBounds {
     boundsSwLat: number;
@@ -43,21 +46,38 @@ interface OffersMapProps {
     // случая, которые раньше смешивались.
     selectedOfferCoordinates?: { latitude: number; longitude: number } | null;
     onBoundsChange?: (bounds: MapViewportBounds) => void;
+    isOffersError?: boolean;
+    onRetry?: () => void;
 }
 
 export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const {
         className, classNameMap, isOffersLoading,
         offersData, selectedOfferId, selectedOfferCoordinates, onBoundsChange,
+        isOffersError, onRetry,
     } = props;
     const { locale } = useLocale();
     const { t } = useTranslation();
     const [ymapState, setYmapState] = useState<YmapType | undefined>(undefined);
     const [showNoLocationNotice, setShowNoLocationNotice] = useState(false);
+    // Скрипт Яндекс.Карт грузится извне (<script> тег, не React-дерево) —
+    // если он падает или зависает (сеть, блокировщик, сбой самого сервиса),
+    // это происходит ВНЕ цикла рендера React, и никакой Error Boundary (в
+    // т.ч. встроенный в react-yandex-maps) это не поймает: onLoad просто
+    // никогда не вызывается, карта молча остаётся пустым местом навсегда.
+    // Тайм-аут — единственный надёжный способ вообще заметить эту ситуацию,
+    // независимо от конкретной причины сбоя.
+    const [mapLoadTimedOut, setMapLoadTimedOut] = useState(false);
     const mapRef = useRef<any>(null);
     const objectManagerRef = useRef<any>(null);
     const onBoundsChangeRef = useRef(onBoundsChange);
     onBoundsChangeRef.current = onBoundsChange;
+
+    useEffect(() => {
+        if (ymapState) return undefined;
+        const timeoutId = setTimeout(() => setMapLoadTimedOut(true), MAP_LOAD_TIMEOUT_MS);
+        return () => clearTimeout(timeoutId);
+    }, [ymapState]);
     // Пока идёт bounds-рефетч, offersData на мгновение становится [] —
     // если сразу же чистить markers, ObjectManager размонтируется и
     // смонтируется заново при приходе новых данных, и карта один раз
@@ -82,6 +102,12 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const learnMore = t("Подробнее");
     const vacancyListTitle = t("Список вакансий:");
     const noLocationText = t("У этой вакансии не указано местоположение на карте");
+    const noOffersOnMapText = t("По вашему запросу вакансий на карте не найдено");
+    const loadErrorTitle = t("Не удалось загрузить вакансии");
+    const loadErrorSubtitle = t("Проверьте соединение и попробуйте ещё раз");
+    const retryText = t("Попробовать снова");
+    const mapLoadErrorTitle = t("Не удалось загрузить карту");
+    const reloadPageText = t("Обновить страницу");
 
     const features = useMemo(() => {
         if (isOffersLoading || !offersData.length) return lastFeaturesRef.current;
@@ -368,12 +394,52 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         };
     }, [ymapState]);
 
+    // Пустая карта (0 маркеров) отличается от карты, которая ещё грузится
+    // или упала с ошибкой — без этого условия пользователь видел бы то же
+    // самое молчаливое пустое место в обоих случаях.
+    const showEmptyNotice = !isOffersError && !isOffersLoading
+        && !!ymapState && features.length === 0;
+
     return (
         <div className={cn(className, styles.wrapper)}>
-            {isOffersLoading && (
+            {mapLoadTimedOut && (
+                <div className={styles.mapErrorOverlay}>
+                    <Text textSize="primary" text={mapLoadErrorTitle} />
+                    <Button
+                        color="BLUE"
+                        size="MEDIUM"
+                        variant="OUTLINE"
+                        onClick={() => window.location.reload()}
+                    >
+                        {reloadPageText}
+                    </Button>
+                </div>
+            )}
+            {!mapLoadTimedOut && isOffersError && (
+                <div className={styles.loadingPlaceholder}>
+                    <div className={styles.errorContent}>
+                        <Text textSize="primary" text={loadErrorTitle} />
+                        <Text textSize="secondary" text={loadErrorSubtitle} />
+                        {onRetry && (
+                            <Button
+                                color="BLUE"
+                                size="MEDIUM"
+                                variant="OUTLINE"
+                                onClick={onRetry}
+                            >
+                                {retryText}
+                            </Button>
+                        )}
+                    </div>
+                </div>
+            )}
+            {!mapLoadTimedOut && isOffersLoading && (
                 <div className={styles.loadingPlaceholder}>
                     <MiniLoader />
                 </div>
+            )}
+            {showEmptyNotice && (
+                <div className={styles.noLocationNotice}>{noOffersOnMapText}</div>
             )}
             {showNoLocationNotice && (
                 <div className={styles.noLocationNotice}>{noLocationText}</div>
@@ -402,6 +468,14 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                     onLoad={(ymap) => {
                         setYmapState(ymap);
                     }}
+                    // react-yandex-maps сам оборачивает Map в Error Boundary —
+                    // без onError падение внутри неё (например, сбой самого
+                    // Яндекс.Карт SDK при рендере) тихо съедалось бы этим
+                    // boundary, и карта осталась бы пустым местом без единого
+                    // сигнала. Переиспользуем тот же оверлей, что и для
+                    // тайм-аута загрузки — с точки зрения пользователя это
+                    // один и тот же "карта не работает".
+                    onError={() => setMapLoadTimedOut(true)}
                     className={cn(styles.map, classNameMap)}
                 >
                     <ZoomControl options={{ position: { right: 10, top: 10 } }} />

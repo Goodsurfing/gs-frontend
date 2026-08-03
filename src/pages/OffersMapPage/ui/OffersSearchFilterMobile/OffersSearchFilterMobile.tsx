@@ -23,6 +23,7 @@ import { OfferApi, OfferMap } from "@/entities/Offer";
 // import { getUserAuthData } from "@/entities/User";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 // import { useAppSelector } from "@/shared/hooks/redux";
+import Button from "@/shared/ui/Button/Button";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { SquareButton } from "@/shared/ui/SquareButton/SquareButton";
 import { Text } from "@/shared/ui/Text/Text";
@@ -36,8 +37,12 @@ interface OffersSearchFilterMobileProps {
     className?: string;
     allOffersMapData: OfferMap[];
     isLoadingAllOffersMap: boolean;
+    isMapError?: boolean;
+    onRetryMap?: () => void;
     data?: OfferApi[];
     isLoading: boolean;
+    isError?: boolean;
+    onRetry?: () => void;
     onApplySearch: (search: string) => void;
     onSubmit: () => void;
     onResetFilters: () => void;
@@ -60,7 +65,11 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
     data,
     allOffersMapData,
     isLoadingAllOffersMap,
+    isMapError,
+    onRetryMap,
     isLoading,
+    isError,
+    onRetry,
     onApplySearch,
     onSubmit,
     onResetFilters,
@@ -143,6 +152,31 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
     );
 
     const renderOfferCards = useMemo(() => {
+        if (isError) {
+            return (
+                <div className={styles.error}>
+                    <Text
+                        textSize="primary"
+                        text={t("Не удалось загрузить вакансии")}
+                    />
+                    <Text
+                        textSize="secondary"
+                        text={t("Проверьте соединение и попробуйте ещё раз")}
+                    />
+                    {onRetry && (
+                        <Button
+                            className={styles.retryButton}
+                            color="BLUE"
+                            size="MEDIUM"
+                            variant="OUTLINE"
+                            onClick={onRetry}
+                        >
+                            {t("Попробовать снова")}
+                        </Button>
+                    )}
+                </div>
+            );
+        }
         if (isLoading || isPending) {
             return (
                 <div className={cn(styles.wrapper, className)}>
@@ -187,7 +221,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
         ));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
-        locale, t, isLoading, isPending, data, selectedOfferId,
+        locale, t, isLoading, isPending, isError, onRetry, data, selectedOfferId,
         handleSelectOffer, offerIdsWithoutLocation,
     ]);
 
@@ -282,6 +316,8 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                 <OffersMap
                     offersData={allOffersMapData}
                     isOffersLoading={isLoadingAllOffersMap}
+                    isOffersError={isMapError}
+                    onRetry={onRetryMap}
                     className={styles.offersMap}
                     classNameMap={styles.offersMap}
                     selectedOfferId={selectedOfferId}

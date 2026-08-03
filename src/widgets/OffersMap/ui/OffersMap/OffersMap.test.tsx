@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import {
     render, screen, act, waitFor,
 } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { OffersMap } from "./OffersMap";
 import { OfferMap } from "@/entities/Offer";
 
@@ -16,6 +17,11 @@ const onLoadCalls = vi.fn();
 const balloonOpen = vi.fn().mockResolvedValue(undefined);
 const getById = vi.fn((): object | undefined => ({}));
 let capturedFeatures: any[] = [];
+// Тесты на тайм-аут/onError загрузки карты не должны давать моку Map
+// самому вызывать onLoad — иначе карта "успевает" загрузиться раньше, чем
+// успеет сработать проверяемое поведение.
+let skipAutoLoad = false;
+let capturedOnError: (() => void) | undefined;
 
 vi.mock("react-i18next", () => ({
     useTranslation: () => ({ t: (key: string) => key }),
@@ -32,8 +38,11 @@ vi.mock("@pbe/react-yandex-maps", () => ({
         children: React.ReactNode;
         instanceRef: { current: unknown };
         onLoad?: (ymap: unknown) => void;
+        onError?: () => void;
     }) => {
-        const { children, instanceRef, onLoad } = props;
+        const {
+            children, instanceRef, onLoad, onError,
+        } = props;
         instanceRef.current = {
             setCenter,
             getZoom,
@@ -46,8 +55,10 @@ vi.mock("@pbe/react-yandex-maps", () => ({
                 },
             },
         };
+        capturedOnError = onError;
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
+            if (skipAutoLoad) return;
             onLoadCalls();
             onLoad?.({ templateLayoutFactory: { createClass: () => "layout-class-sentinel" } });
             // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,6 +100,8 @@ describe("OffersMap", () => {
         getById.mockImplementation(() => ({}));
         boundsChangeHandlers.length = 0;
         capturedFeatures = [];
+        skipAutoLoad = false;
+        capturedOnError = undefined;
     });
 
     it("фокусирует карту, если у выбранной вакансии известны координаты", () => {
@@ -610,5 +623,96 @@ describe("OffersMap", () => {
 
         await waitFor(() => expect(capturedFeatures).toHaveLength(1));
         expect(capturedFeatures[0].options.iconContentLayout).toBeTruthy();
+    });
+
+    it("показывает отдельное сообщение об ошибке (не «вакансий не найдено»), если загрузка маркеров упала, "
+        + "и кнопка «Попробовать снова» вызывает onRetry", async () => {
+        const onRetry = vi.fn();
+        render(
+            <OffersMap
+                offersData={[]}
+                isOffersLoading={false}
+                isOffersError
+                onRetry={onRetry}
+            />,
+        );
+
+        expect(screen.getByText("Не удалось загрузить вакансии")).toBeInTheDocument();
+        expect(screen.queryByText("По вашему запросу вакансий на карте не найдено")).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText("Попробовать снова"));
+        expect(onRetry).toHaveBeenCalledTimes(1);
+    });
+
+    it("показывает «вакансий не найдено», если карта загрузилась, но маркеров нет и это не ошибка "
+        + "(регресс: пустой результат фильтров/поиска выглядел на карте как молчаливо пустое место, "
+        + "неотличимое от карты, которая просто ещё грузится)", async () => {
+        render(
+            <OffersMap
+                offersData={[]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(onLoadCalls).toHaveBeenCalled());
+        expect(screen.getByText("По вашему запросу вакансий на карте не найдено")).toBeInTheDocument();
+    });
+
+    it("не показывает «вакансий не найдено», пока карта ещё грузится", () => {
+        skipAutoLoad = true;
+        render(
+            <OffersMap
+                offersData={[]}
+                isOffersLoading={false}
+            />,
+        );
+
+        expect(screen.queryByText("По вашему запросу вакансий на карте не найдено")).not.toBeInTheDocument();
+    });
+
+    it("показывает «не удалось загрузить карту» с кнопкой перезагрузки страницы, если карта не "
+        + "загрузилась за разумное время (регресс: скрипт Яндекс.Карт грузится вне React-дерева — если он "
+        + "падает или зависает, никакой Error Boundary этого не ловит, карта молча остаётся пустым местом "
+        + "навсегда без единого сигнала)", () => {
+        vi.useFakeTimers();
+        try {
+            skipAutoLoad = true;
+            render(
+                <OffersMap
+                    offersData={[]}
+                    isOffersLoading={false}
+                />,
+            );
+
+            expect(screen.queryByText("Не удалось загрузить карту")).not.toBeInTheDocument();
+
+            act(() => {
+                vi.advanceTimersByTime(15_000);
+            });
+
+            expect(screen.getByText("Не удалось загрузить карту")).toBeInTheDocument();
+            expect(screen.getByText("Обновить страницу")).toBeInTheDocument();
+        } finally {
+            vi.useRealTimers();
+        }
+    });
+
+    it("показывает тот же оверлей сразу через onError, не дожидаясь тайм-аута, если карта падает "
+        + "при рендере (Error Boundary внутри react-yandex-maps)", () => {
+        skipAutoLoad = true;
+        render(
+            <OffersMap
+                offersData={[]}
+                isOffersLoading={false}
+            />,
+        );
+
+        expect(screen.queryByText("Не удалось загрузить карту")).not.toBeInTheDocument();
+
+        act(() => {
+            capturedOnError?.();
+        });
+
+        expect(screen.getByText("Не удалось загрузить карту")).toBeInTheDocument();
     });
 });
