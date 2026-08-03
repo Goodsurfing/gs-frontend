@@ -87,7 +87,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                 const balloonContent = `
           <div class="${styles.balloonWrapper}">
             <a href="${offerUrl}" class="${styles.balloonImageLink}">
-              <img class="${styles.balloonImage}" src="${getMediaContent(imgSrc, "SMALL") ?? defaultImage}" />
+              <img class="${styles.balloonImage}" src="${getMediaContent(imgSrc, "MEDIUM") ?? defaultImage}" />
             </a>
             <div class="${styles.text}">
               <div class="${styles.balloonTitle}">${title}</div>
@@ -112,14 +112,28 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                         iconContentLayout: ymapState?.templateLayoutFactory.createClass(
                             `<div style="background-color: ${categoryColor || "var(--accent-color)"};" class="${styles.customPlacemarkIcon}"></div>`,
                         ),
+                        // iconContentSize/Offset must mirror iconImageSize/Offset:
+                        // без iconContentSize Яндекс.Карты по умолчанию заводят под
+                        // content крошечный 10x10 контейнер (наш div визуально
+                        // растягивался до 30x30 через CSS, перекрывая границы), а
+                        // без iconContentOffset контент кладётся в его собственный
+                        // угол, а не туда же, где числится iconImageOffset. Из-за
+                        // этого видимый кружок и реальная кликабельная область
+                        // (iconShape, привязанный к фрейму iconImageOffset)
+                        // расходились на добрый десяток пикселей — клик по
+                        // видимому маркеру мимо своей же hit-зоны молча ничего не
+                        // делал.
+                        iconContentSize: [30, 30],
+                        iconContentOffset: [-15, -15],
                         iconImageSize: [30, 30],
                         iconImageOffset: [-15, -15],
                         // Без iconShape Яндекс.Карты по умолчанию считают форму
                         // маркера прямоугольным пином, а не нашим кастомным
                         // кружком — из-за этого хвостик balloon указывал не в
                         // центр маркера. Круг тех же размеров/центра, что и сама
-                        // иконка (без учёта iconImageOffset — как в
-                        // clusterIconShape ниже).
+                        // иконка, в том же фрейме, что и iconContentOffset/
+                        // iconImageOffset выше (см. clusterIconShape ниже — там
+                        // тот же принцип, но со своим независимым слоем).
                         iconShape: {
                             type: "Circle",
                             coordinates: [15, 15],
@@ -191,12 +205,16 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                 // объекта пока нет на карте — попробуем ещё раз чуть позже
             }
             if (attemptsLeft <= 0) return;
-            retryTimeoutId = setTimeout(() => tryOpenBalloon(attemptsLeft - 1), 200);
+            retryTimeoutId = setTimeout(() => tryOpenBalloon(attemptsLeft - 1), 300);
         };
 
         const openBalloon = () => {
             map.events.remove("actionend", openBalloon);
-            tryOpenBalloon(10);
+            // 30 попыток по 300мс — с запасом перекрывает 400мс bounds-дебаунс
+            // + реальный сетевой round-trip до vacancy/for-map/list, который
+            // раньше (10 попыток по 200мс = 2с) иногда не укладывался, и
+            // табличка молча не появлялась.
+            tryOpenBalloon(30);
         };
         map.events.add("actionend", openBalloon);
         return () => {

@@ -199,10 +199,7 @@ export interface OfferMap {
     latitude: number;
     longitude: number;
     name: string;
-    image: {
-        id: string;
-        contentUrl: string;
-    }
+    image: Image;
     categories: {
         name: string;
         color: string;
