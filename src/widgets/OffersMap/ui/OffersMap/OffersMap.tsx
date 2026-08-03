@@ -112,19 +112,18 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                         iconContentLayout: ymapState?.templateLayoutFactory.createClass(
                             `<div style="background-color: ${categoryColor || "var(--accent-color)"};" class="${styles.customPlacemarkIcon}"></div>`,
                         ),
-                        // iconContentSize/Offset must mirror iconImageSize/Offset:
-                        // без iconContentSize Яндекс.Карты по умолчанию заводят под
+                        // Без iconContentSize Яндекс.Карты по умолчанию заводят под
                         // content крошечный 10x10 контейнер (наш div визуально
-                        // растягивался до 30x30 через CSS, перекрывая границы), а
-                        // без iconContentOffset контент кладётся в его собственный
-                        // угол, а не туда же, где числится iconImageOffset. Из-за
-                        // этого видимый кружок и реальная кликабельная область
-                        // (iconShape, привязанный к фрейму iconImageOffset)
-                        // расходились на добрый десяток пикселей — клик по
-                        // видимому маркеру мимо своей же hit-зоны молча ничего не
-                        // делал.
+                        // растягивался до 30x30 через CSS, перекрывая границы) —
+                        // из-за этого видимый кружок и реальная кликабельная
+                        // область (iconShape) расходились на добрый десяток
+                        // пикселей, клик по видимому маркеру мимо своей же
+                        // hit-зоны молча ничего не делал. iconContentOffset НЕ
+                        // трогаем (оставляем дефолт [0,0]): контейнер content уже
+                        // сам сидит внутри контейнера image, который и так
+                        // сдвинут на iconImageOffset — если продублировать тот же
+                        // сдвиг ещё и для content, смещение применится дважды.
                         iconContentSize: [30, 30],
-                        iconContentOffset: [-15, -15],
                         iconImageSize: [30, 30],
                         iconImageOffset: [-15, -15],
                         // Без iconShape Яндекс.Карты по умолчанию считают форму
