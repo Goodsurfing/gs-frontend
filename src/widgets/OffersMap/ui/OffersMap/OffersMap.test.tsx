@@ -375,7 +375,7 @@ describe("OffersMap", () => {
         }
     });
 
-    it("даёт маркеру круглую iconShape, совпадающую с кастомной иконкой, чтобы balloon указывал точно на неё", async () => {
+    it("даёт маркеру круглую iconShape с центром в точке геопривязки (регресс: [15,15] сдвигал кликабельную область на 15px вправо-вниз от видимого маркера — курсор становился pointer мимо самого кружка)", async () => {
         render(
             <OffersMap
                 offersData={[offer({ id: 1 })]}
@@ -386,7 +386,7 @@ describe("OffersMap", () => {
         await waitFor(() => expect(capturedFeatures).toHaveLength(1));
         expect(capturedFeatures[0].options.iconShape).toEqual({
             type: "Circle",
-            coordinates: [15, 15],
+            coordinates: [0, 0],
             radius: 15,
         });
     });
