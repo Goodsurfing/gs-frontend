@@ -431,7 +431,7 @@ describe("OffersMap", () => {
         expect(balloonContent).not.toContain("https://example.com/small.webp");
     });
 
-    it("держит iconContentSize/Offset в том же фрейме, что и iconImageSize/Offset, иначе видимый маркер и его кликабельная область (iconShape) расходятся", async () => {
+    it("задаёт iconContentSize вровень с iconImageSize (иначе Яндекс.Карты по умолчанию заводят под content крошечный 10x10 хитбокс вместо видимых 30x30, и клик по маркеру мимо своей же кликабельной области ничего не делает)", async () => {
         render(
             <OffersMap
                 offersData={[offer({ id: 1 })]}
@@ -442,6 +442,9 @@ describe("OffersMap", () => {
         await waitFor(() => expect(capturedFeatures).toHaveLength(1));
         const { options } = capturedFeatures[0];
         expect(options.iconContentSize).toEqual(options.iconImageSize);
-        expect(options.iconContentOffset).toEqual(options.iconImageOffset);
+        // iconContentOffset намеренно не задаём: content уже сидит внутри
+        // контейнера image (который сам сдвинут на iconImageOffset) — если
+        // продублировать тот же сдвиг ещё и для content, он применится дважды.
+        expect(options.iconContentOffset).toBeUndefined();
     });
 });
