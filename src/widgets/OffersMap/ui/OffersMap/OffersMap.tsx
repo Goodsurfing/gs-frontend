@@ -409,8 +409,13 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     };
 
     useEffect(() => {
+        // Скрываем уведомление сразу при любой смене выбора/пересчёте
+        // координат — его текст относится к КОНКРЕТНОЙ вакансии, нельзя
+        // оставлять его от предыдущего выбора, пока решается, что показать
+        // для нового.
+        setShowNoLocationNotice(false);
+
         if (!selectedOfferId || selectedOfferCoordinates === undefined) {
-            setShowNoLocationNotice(false);
             pendingBalloonOfferIdRef.current = null;
             panActionEndedRef.current = false;
             return undefined;
@@ -420,8 +425,24 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         // геокодирован) — карте попросту нечем "сфокусироваться". Раньше
         // клик по такой карточке в списке просто ничего не делал молча,
         // что выглядело как баг; показываем явную причину вместо тишины.
-        setShowNoLocationNotice(selectedOfferCoordinates === null);
-        if (!selectedOfferCoordinates || !mapRef.current) return undefined;
+        if (selectedOfferCoordinates === null) {
+            pendingBalloonOfferIdRef.current = null;
+            panActionEndedRef.current = false;
+            // Небольшая задержка перед показом: при переключении между
+            // элементами списка selectedOfferCoordinates пересчитывается
+            // синхронно и почти всегда сразу верный, но родитель (см.
+            // fetchPageOffersLocation в OffersSearchFilter.tsx) на КАЖДЫЙ
+            // выбор заново запускает фоновый рефетч координат страницы —
+            // без задержки здесь уведомление успело бы мигнуть, если этот
+            // рефетч на миг отдаст устаревший/пустой результат раньше, чем
+            // подтвердит реальные координаты. Если у вакансии действительно
+            // нет координат, задержка не страшна — null никуда не денется,
+            // и уведомление просто появится чуть позже.
+            const timeoutId = setTimeout(() => setShowNoLocationNotice(true), 350);
+            return () => clearTimeout(timeoutId);
+        }
+
+        if (!mapRef.current) return undefined;
 
         const currentZoom = mapRef.current.getZoom();
         mapRef.current.setCenter(

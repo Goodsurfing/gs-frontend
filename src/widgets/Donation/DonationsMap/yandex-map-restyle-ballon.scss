@@ -4,3 +4,20 @@
 .ymaps-2-1-79-b-cluster-content__header {
     display: none !important;
 }
+
+// Тот же фикс, что и в OffersMap.tsx — карточка .balloonWrapper начинается
+// сразу с фото на всю ширину, и дефолтный полупрозрачный (opacity: 0.3)
+// тёмный крестик Яндекса на нём практически не виден. Непрозрачная тёмная
+// подложка-кружок + выбеленный через filter: invert крестик держат контраст
+// независимо от содержимого фото под кнопкой.
+.ymaps-2-1-79-balloon__close-button {
+    opacity: 1 !important;
+    background-color: rgba(0, 0, 0, 0.55) !important;
+    background-size: 10px 10px !important;
+    filter: invert(1);
+    border-radius: 50%;
+    width: 22px !important;
+    height: 22px !important;
+    margin: 8px 8px 0 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}

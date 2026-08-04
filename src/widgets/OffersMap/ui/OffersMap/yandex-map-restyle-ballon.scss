@@ -30,6 +30,25 @@
     display: none !important;
 }
 
+// Дефолтная кнопка закрытия balloon у Яндекса — тёмный "×" с opacity: 0.3,
+// рассчитанный на светлый фон обычного balloon. Наша карточка (.balloonWrapper)
+// начинается сразу с фото на всю ширину — та же кнопка ложится прямо на фото и
+// на тёмных/пёстрых снимках становится практически невидимой (а на светлых —
+// почти невидимой и без фото). Даём ей непрозрачную тёмную подложку-кружок и
+// выбеливаем сам крестик через filter: invert — тогда контраст гарантирован
+// независимо от того, что происходит на фото под ней.
+.ymaps-2-1-79-balloon__close-button {
+    opacity: 1 !important;
+    background-color: rgba(0, 0, 0, 0.55) !important;
+    background-size: 10px 10px !important;
+    filter: invert(1);
+    border-radius: 50%;
+    width: 22px !important;
+    height: 22px !important;
+    margin: 8px 8px 0 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
 // Zoom control (+/- slider): Yandex positions it via an inline `inset`
 // (right/top offsets in px), which only ever anchors it to a corner — and
 // its own positioning parent, .controls-pane, is collapsed to 0 height via

@@ -194,17 +194,81 @@ describe("OffersMap", () => {
     });
 
     it("показывает подсказку вместо тишины, если координаты точно отсутствуют (null)", () => {
-        render(
-            <OffersMap
-                offersData={[offer({ id: 1 })]}
-                isOffersLoading={false}
-                selectedOfferId={999}
-                selectedOfferCoordinates={null}
-            />,
-        );
+        vi.useFakeTimers();
+        try {
+            render(
+                <OffersMap
+                    offersData={[offer({ id: 1 })]}
+                    isOffersLoading={false}
+                    selectedOfferId={999}
+                    selectedOfferCoordinates={null}
+                />,
+            );
 
-        expect(setCenter).not.toHaveBeenCalled();
-        expect(screen.getByText("У этой вакансии не указано местоположение на карте")).toBeInTheDocument();
+            expect(setCenter).not.toHaveBeenCalled();
+            // Показ уведомления намеренно отложен (см. регресс-тест ниже) —
+            // сразу после рендера его ещё нет.
+            expect(screen.queryByText("У этой вакансии не указано местоположение на карте")).not.toBeInTheDocument();
+
+            act(() => {
+                vi.advanceTimersByTime(350);
+            });
+
+            expect(screen.getByText("У этой вакансии не указано местоположение на карте")).toBeInTheDocument();
+        } finally {
+            vi.useRealTimers();
+        }
+    });
+
+    it("не мигает подсказкой \"нет местоположения\" при переключении на другую вакансию, у которой "
+        + "координаты есть (регресс: selectedOfferCoordinates мог на короткий момент вычислиться как null "
+        + "раньше, чем повторный фоновый рефетч координат страницы в родителе успевал подтвердить реальные "
+        + "координаты — уведомление успевало мигнуть на экране до появления маркера с табличкой)", () => {
+        vi.useFakeTimers();
+        try {
+            const { rerender } = render(
+                <OffersMap
+                    offersData={[offer({ id: 1 })]}
+                    isOffersLoading={false}
+                    selectedOfferId={1}
+                    selectedOfferCoordinates={{ latitude: 55.75, longitude: 37.61 }}
+                />,
+            );
+            expect(screen.queryByText(/местоположение/)).not.toBeInTheDocument();
+
+            // Переключились на другую вакансию — координаты на мгновение null
+            // (типичная стадия рефетча в родителе), но затем сразу приходят
+            // реальные координаты ДО истечения задержки уведомления.
+            rerender(
+                <OffersMap
+                    offersData={[offer({ id: 1 }), offer({ id: 2 })]}
+                    isOffersLoading={false}
+                    selectedOfferId={2}
+                    selectedOfferCoordinates={null}
+                />,
+            );
+            expect(screen.queryByText(/местоположение/)).not.toBeInTheDocument();
+
+            act(() => {
+                vi.advanceTimersByTime(200);
+            });
+            rerender(
+                <OffersMap
+                    offersData={[offer({ id: 1 }), offer({ id: 2 })]}
+                    isOffersLoading={false}
+                    selectedOfferId={2}
+                    selectedOfferCoordinates={{ latitude: 60, longitude: 30 }}
+                />,
+            );
+
+            act(() => {
+                vi.advanceTimersByTime(1000);
+            });
+
+            expect(screen.queryByText(/местоположение/)).not.toBeInTheDocument();
+        } finally {
+            vi.useRealTimers();
+        }
     });
 
     it("не показывает подсказку, пока координаты ещё не разрешены (undefined)", () => {
