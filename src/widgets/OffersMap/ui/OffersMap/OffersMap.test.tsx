@@ -18,6 +18,8 @@ const balloonOpen = vi.fn().mockResolvedValue(undefined);
 const getById = vi.fn((): object | undefined => ({}));
 let capturedFeatures: any[] = [];
 let capturedObjectsOptions: Record<string, unknown> | undefined;
+let capturedOptionsProp: Record<string, unknown> | undefined;
+let capturedClustersProp: Record<string, unknown> | undefined;
 // Тесты на тайм-аут/onError загрузки карты не должны давать моку Map
 // самому вызывать onLoad — иначе карта "успевает" загрузиться раньше, чем
 // успеет сработать проверяемое поведение.
@@ -76,10 +78,16 @@ vi.mock("@pbe/react-yandex-maps", () => ({
     ObjectManager: (props: {
         instanceRef?: { current: unknown } | ((instance: unknown) => void);
         objects?: Record<string, unknown>;
+        options?: Record<string, unknown>;
+        clusters?: Record<string, unknown>;
     }) => {
-        const { instanceRef, objects } = props;
+        const {
+            instanceRef, objects, options, clusters,
+        } = props;
         const [mounted, setMounted] = useState<any[]>([]);
         capturedObjectsOptions = objects;
+        capturedOptionsProp = options;
+        capturedClustersProp = clusters;
 
         // useLayoutEffect (не useEffect) — реальный react-yandex-maps
         // регистрирует инстанс синхронно в componentDidMount, т.е. раньше,
@@ -138,6 +146,8 @@ describe("OffersMap", () => {
         boundsChangeHandlers.length = 0;
         capturedFeatures = [];
         capturedObjectsOptions = undefined;
+        capturedOptionsProp = undefined;
+        capturedClustersProp = undefined;
         skipAutoLoad = false;
         capturedOnError = undefined;
     });
@@ -676,6 +686,39 @@ describe("OffersMap", () => {
         // ObjectManager делал remove()+add() по всей коллекции (старое
         // поведение), это был бы новый объект и тест бы упал.
         expect(capturedFeatures.find((f: any) => f.id === "2")).toBe(unchangedFeature);
+    });
+
+    it("держит те же ссылки на options/objects/clusters у ObjectManager между рендерами (регресс: инлайновые "
+        + "объектные литералы в JSX пересоздаются на КАЖДЫЙ рендер компонента, включая каждое движение карты "
+        + "— react-yandex-maps сравнивает эти пропы по ссылке и на любое изменение зовёт .options.set() на "
+        + "реальном инстансе, из-за чего кластеры на мгновение сбрасывались к дефолтному белому кружку без "
+        + "цвета и тут же перерисовывались обратно — видимое моргание при любом движении карты, а не только "
+        + "при реальном изменении набора маркеров)", async () => {
+        const { rerender } = render(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(capturedOptionsProp).toBeDefined());
+        const firstOptions = capturedOptionsProp;
+        const firstObjects = capturedObjectsOptions;
+        const firstClusters = capturedClustersProp;
+
+        // Ре-рендер с абсолютно тем же содержимым — именно так выглядит любое
+        // движение карты, которое не меняет набор маркеров (bounds ещё не
+        // успели дебаунситься/дойти до бэкенда).
+        rerender(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        expect(capturedOptionsProp).toBe(firstOptions);
+        expect(capturedObjectsOptions).toBe(firstObjects);
+        expect(capturedClustersProp).toBe(firstClusters);
     });
 
     it("строит маркер с реальным iconContentLayout (не пустым), даже если offersData уже пришли ДО того, "

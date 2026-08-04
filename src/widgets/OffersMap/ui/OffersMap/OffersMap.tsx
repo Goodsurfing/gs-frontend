@@ -25,6 +25,40 @@ const FOCUS_ZOOM = 10;
 const BOUNDS_CHANGE_DEBOUNCE_MS = 400;
 const MAP_LOAD_TIMEOUT_MS = 15_000;
 
+// Модульные константы, а не инлайновые объекты в JSX — react-yandex-maps
+// сравнивает props объекта ObjectManager (options/objects/clusters) ПО
+// ССЫЛКЕ и на любое изменение зовёт .options.set() на реальном инстансе.
+// Инлайновый литерал в JSX создаёт новую ссылку на КАЖДЫЙ рендер компонента
+// (а он перерендеривается при каждом движении карты), из-за чего кластеры
+// и маркеры на мгновение сбрасывались к дефолтному виду (белый кружок без
+// цвета) и тут же перерисовывались обратно — то самое видимое моргание при
+// любом движении карты, а не только при реальном изменении набора маркеров.
+const OBJECT_MANAGER_OPTIONS = { clusterize: true, gridSize: 64 };
+const OBJECT_MANAGER_OBJECTS = {
+    openBalloonOnClick: true,
+    // Яндекс.Карты по умолчанию скрывают иконку маркера, пока открыт его
+    // balloon (hideIconOnBalloonOpen: true) — обычно незаметно, т.к. balloon
+    // перекрывает то же место. Но при заходе по прямой ссылке на конкретную
+    // вакансию balloon открывается программно сразу при загрузке карты, и
+    // без этого флага маркер остаётся невидимым навсегда, пока пользователь
+    // сам не закроет balloon вручную.
+    hideIconOnBalloonOpen: false,
+};
+const MAP_OPTIONS = {
+    suppressMapOpenBlock: true,
+    restrictMapArea: [
+        [83.23618, -178.9],
+        [-73.87011, 181],
+    ],
+    maxZoom: 18,
+    copyrightProvidersVisible: false,
+    copyrightLogoVisible: false,
+    copyrightUaVisible: false,
+    yandexMapDisablePoiInteractivity: false,
+    suppressObsoleteBrowserNotifier: false,
+};
+const ZOOM_CONTROL_OPTIONS = { position: { right: 10, top: 10 } };
+
 export interface MapViewportBounds {
     boundsSwLat: number;
     boundsSwLng: number;
@@ -470,6 +504,38 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const showEmptyNotice = !isOffersError && !isOffersLoading
         && !!ymapState && features.length === 0;
 
+    // См. комментарий у OBJECT_MANAGER_OPTIONS/OBJECT_MANAGER_OBJECTS выше —
+    // тот же принцип: без useMemo этот объект (и вложенные createClass())
+    // пересоздавался бы на каждый рендер, и клaстеры мигали бы дефолтной
+    // иконкой при любом движении карты, даже если реально ничего не менялось.
+    const clusters = useMemo(() => (ymapState?.templateLayoutFactory ? {
+        iconLayout: "default#imageWithContent",
+        clusterIconLayout: ymapState.templateLayoutFactory.createClass(
+            `<div class="${styles.customClusterIcon}">
+                {{ properties.geoObjects.length }}
+            </div>`,
+        ),
+        clusterIconShape: {
+            type: "Circle",
+            coordinates: [20, 20],
+            radius: 20,
+        },
+        clusterIconSize: [40, 40],
+        clusterIconOffset: [-20, -20],
+        clusterBalloonContentLayout: ymapState.templateLayoutFactory.createClass(`
+            <div class="${styles.clusterBalloon}">
+                <h3>${vacancyListTitle}</h3>
+                <ul>
+                    {% for geoObject in properties.geoObjects %}
+                        <li> <a href="{{geoObject.properties.url}}">{{ geoObject.properties.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        `),
+        clusterBalloonPanelMaxMapArea: Infinity,
+        clusterBalloonContentLayoutHeight: 200,
+    } : undefined), [ymapState?.templateLayoutFactory, vacancyListTitle]);
+
     return (
         <div className={cn(className, styles.wrapper)}>
             {mapLoadTimedOut && (
@@ -521,19 +587,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                 width="100%"
                 height="100%"
                 instanceRef={mapRef}
-                options={{
-                    suppressMapOpenBlock: true,
-                    restrictMapArea: [
-                        [83.23618, -178.9],
-                        [-73.87011, 181],
-                    ],
-                    maxZoom: 18,
-                    copyrightProvidersVisible: false,
-                    copyrightLogoVisible: false,
-                    copyrightUaVisible: false,
-                    yandexMapDisablePoiInteractivity: false,
-                    suppressObsoleteBrowserNotifier: false,
-                }}
+                options={MAP_OPTIONS}
                 onLoad={(ymap) => {
                     setYmapState(ymap);
                 }}
@@ -547,54 +601,14 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                 onError={() => setMapLoadTimedOut(true)}
                 className={cn(styles.map, classNameMap)}
             >
-                <ZoomControl options={{ position: { right: 10, top: 10 } }} />
-                {(ymapState && (features.length > 0)) && (
+                <ZoomControl options={ZOOM_CONTROL_OPTIONS} />
+                {(ymapState && clusters && (features.length > 0)) && (
                     <ObjectManager
                         instanceRef={setObjectManagerRef}
                         features={objectManagerFeaturesSeedRef.current}
-                        options={{
-                            clusterize: true,
-                            gridSize: 64,
-                        }}
-                        objects={{
-                            openBalloonOnClick: true,
-                            // Яндекс.Карты по умолчанию скрывают иконку маркера, пока
-                            // открыт его balloon (hideIconOnBalloonOpen: true) — обычно
-                            // незаметно, т.к. balloon перекрывает то же место. Но при
-                            // заходе по прямой ссылке на конкретную вакансию balloon
-                            // открывается программно сразу при загрузке карты, и без
-                            // этого флага маркер остаётся невидимым навсегда, пока
-                            // пользователь сам не закроет balloon вручную.
-                            hideIconOnBalloonOpen: false,
-                        }}
-                        clusters={{
-                            iconLayout: "default#imageWithContent",
-                            clusterIconLayout: ymapState.templateLayoutFactory.createClass(
-                                `<div class="${styles.customClusterIcon}">
-                                    {{ properties.geoObjects.length }}
-                                </div>`,
-                            ),
-                            clusterIconShape: {
-                                type: "Circle",
-                                coordinates: [20, 20],
-                                radius: 20,
-                            },
-                            clusterIconSize: [40, 40],
-                            clusterIconOffset: [-20, -20],
-                            clusterBalloonContentLayout: ymapState.templateLayoutFactory.createClass(`
-                        <div class="${styles.clusterBalloon}">
-                            <h3>${vacancyListTitle}</h3>
-                            <ul>
-                                {% for geoObject in properties.geoObjects %}
-                                    <li> <a href="{{geoObject.properties.url}}">{{ geoObject.properties.name }}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    `),
-                            clusterBalloonPanelMaxMapArea: Infinity,
-                            clusterBalloonContentLayoutHeight: 200,
-                        }}
-
+                        options={OBJECT_MANAGER_OPTIONS}
+                        objects={OBJECT_MANAGER_OBJECTS}
+                        clusters={clusters}
                     />
                 )}
             </Map>
