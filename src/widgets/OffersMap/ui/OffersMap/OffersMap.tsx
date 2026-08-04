@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { YmapType } from "@/entities/Map";
+import { GeolocationControl, YmapType } from "@/entities/Map";
 import defaultImage from "@/shared/assets/images/default-offer-image.png";
 
 import "./yandex-map-restyle-ballon.scss";
@@ -685,6 +685,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
             {showNoLocationNotice && (
                 <div className={styles.noLocationNotice}>{noLocationText}</div>
             )}
+            {!mapLoadTimedOut && ymapState && <GeolocationControl mapInstance={mapRef.current} />}
             <Map
                 defaultState={{
                     center: [50, 50], zoom: 2.05, controls: [],

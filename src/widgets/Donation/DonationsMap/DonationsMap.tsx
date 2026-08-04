@@ -8,7 +8,7 @@ import React, {
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { YmapType } from "@/entities/Map";
+import { GeolocationControl, YmapType } from "@/entities/Map";
 import defaultImage from "@/shared/assets/images/default-offer-image.png";
 
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -95,6 +95,7 @@ export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProp
 
     return (
         <div className={cn(className, styles.wrapper)}>
+            {ymapState && <GeolocationControl mapInstance={mapRef.current} />}
             <Map
                 defaultState={{
                     center: [50, 50], zoom: 2.05, controls: ["zoomControl"],
