@@ -1,4 +1,5 @@
 export { YMap } from "./ui/YMap/YMap";
+export { GeolocationControl } from "./ui/GeolocationControl/GeolocationControl";
 
 export type {
     FeatureMember,
