@@ -56,12 +56,15 @@
     transition: background-color 0.15s ease-in-out;
 }
 
+// !important: Яндекс.Карты сами вешают фон на hover/current состояния
+// этого таба (по умолчанию серый) с той же или более высокой
+// специфичностью — без !important наши цвета проигрывают его собственным.
 .ymaps-2-1-79-b-cluster-tabs__menu-item:hover {
-    background-color: var(--bg-field);
+    background-color: var(--bg-field) !important;
 }
 
 .ymaps-2-1-79-b-cluster-tabs__menu-item_current_yes {
-    background-color: var(--accent-color);
+    background-color: var(--accent-color) !important;
 }
 
 .ymaps-2-1-79-b-cluster-tabs__menu-item-text {
@@ -72,7 +75,7 @@
 }
 
 .ymaps-2-1-79-b-cluster-tabs__menu-item_current_yes .ymaps-2-1-79-b-cluster-tabs__menu-item-text {
-    color: var(--color-white);
+    color: var(--color-white) !important;
 }
 
 // Дефолтная кнопка закрытия balloon у Яндекса — тёмный "×" с opacity: 0.3,
