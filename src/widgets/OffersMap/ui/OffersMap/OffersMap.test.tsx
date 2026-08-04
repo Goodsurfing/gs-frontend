@@ -899,7 +899,7 @@ describe("OffersMap", () => {
         // пустом результате он должен размонтироваться (а не остаться висеть со
         // старым содержимым), поэтому проверяем именно его отсутствие в дереве.
         await waitFor(() => expect(screen.queryByTestId("object-manager")).not.toBeInTheDocument());
-        expect(screen.getByText("По вашему запросу вакансий на карте не найдено")).toBeInTheDocument();
+        await waitFor(() => expect(screen.getByText("По вашему запросу вакансий на карте не найдено")).toBeInTheDocument());
     });
 
     it("отключает hideIconOnBalloonOpen у ObjectManager (регресс: Яндекс.Карты по умолчанию скрывают иконку "
@@ -947,7 +947,54 @@ describe("OffersMap", () => {
         );
 
         await waitFor(() => expect(onLoadCalls).toHaveBeenCalled());
-        expect(screen.getByText("По вашему запросу вакансий на карте не найдено")).toBeInTheDocument();
+        await waitFor(() => expect(screen.getByText("По вашему запросу вакансий на карте не найдено")).toBeInTheDocument());
+    });
+
+    it("не мигает уведомлением \"не найдено\", если пустой результат — лишь промежуточная волна "
+        + "bounds-рефетча за один pan (регресс: та же природа гонки, что и с уведомлением "
+        + "\"нет местоположения\" — итоговая непустая волна должна успеть прийти раньше, чем мелькнёт "
+        + "уведомление)", async () => {
+        const { rerender } = render(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+            />,
+        );
+        await waitFor(() => expect(capturedFeatures).toHaveLength(1));
+
+        vi.useFakeTimers();
+        try {
+            // Промежуточная волна во время pan — bounds на миг не содержат
+            // маркеров.
+            rerender(
+                <OffersMap
+                    offersData={[]}
+                    isOffersLoading={false}
+                />,
+            );
+            expect(screen.queryByText("По вашему запросу вакансий на карте не найдено")).not.toBeInTheDocument();
+
+            act(() => {
+                vi.advanceTimersByTime(200);
+            });
+
+            // Финальная волна — реальные маркеры под итоговые bounds пришли
+            // раньше истечения дебаунса.
+            rerender(
+                <OffersMap
+                    offersData={[offer({ id: 2 })]}
+                    isOffersLoading={false}
+                />,
+            );
+
+            act(() => {
+                vi.advanceTimersByTime(1000);
+            });
+
+            expect(screen.queryByText("По вашему запросу вакансий на карте не найдено")).not.toBeInTheDocument();
+        } finally {
+            vi.useRealTimers();
+        }
     });
 
     it("не показывает «вакансий не найдено», пока карта ещё грузится", () => {

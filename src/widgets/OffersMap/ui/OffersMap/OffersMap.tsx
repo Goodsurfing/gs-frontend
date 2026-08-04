@@ -550,8 +550,25 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     // Пустая карта (0 маркеров) отличается от карты, которая ещё грузится
     // или упала с ошибкой — без этого условия пользователь видел бы то же
     // самое молчаливое пустое место в обоих случаях.
-    const showEmptyNotice = !isOffersError && !isOffersLoading
+    const isEmptyResult = !isOffersError && !isOffersLoading
         && !!ymapState && features.length === 0;
+    const [showEmptyNotice, setShowEmptyNotice] = useState(false);
+
+    useEffect(() => {
+        if (!isEmptyResult) {
+            setShowEmptyNotice(false);
+            return undefined;
+        }
+        // Дебаунс, а не мгновенный показ: bounds-дебаунс может дать ДВЕ волны
+        // обновления маркеров за один pan/zoom (см. тот же комментарий у
+        // openBalloon выше) — промежуточная волна иногда на миг отдаёт пустой
+        // результат (например, пан через область карты без вакансий), прежде
+        // чем финальная волна приносит реальный набор маркеров под итоговые
+        // bounds. Без задержки здесь уведомление "не найдено" успевало бы
+        // мигнуть между этими волнами, даже когда вакансии на самом деле есть.
+        const timeoutId = setTimeout(() => setShowEmptyNotice(true), BOUNDS_CHANGE_DEBOUNCE_MS);
+        return () => clearTimeout(timeoutId);
+    }, [isEmptyResult]);
 
     // См. комментарий у OBJECT_MANAGER_OPTIONS/OBJECT_MANAGER_OBJECTS выше —
     // тот же принцип: без useMemo этот объект (и вложенные createClass())
