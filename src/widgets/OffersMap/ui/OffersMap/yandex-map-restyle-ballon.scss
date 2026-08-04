@@ -30,6 +30,51 @@
     display: none !important;
 }
 
+// Balloon кластера (открывается кликом по кружку с числом на карте) на деле
+// НЕ использует наш clusterBalloonContentLayout из OffersMap.tsx —
+// Яндекс.Карты по умолчанию рендерят мультиобъектный balloon через СВОЙ
+// собственный layout "b-cluster-tabs": слева список вакансий (табы), справа
+// превью выбранной (нашим же balloonContent — та карточка с фото уже
+// стилизована нормально). clusterBalloonContentLayout попросту не
+// вызывается этим дефолтным layout'ом — вся конфигурация в JS была мёртвым
+// кодом.
+//
+// .ymaps-2-1-79-balloon__layout выше намеренно сделан прозрачным (наша
+// собственная карточка справа уже рисует свой фон/тень) — но у списка слева
+// СВОЕГО фона никогда не было, и он наследовал эту прозрачность: голый
+// текст без подложки, повисший прямо на карте поверх тайлов — та самая
+// "прозрачная хуйня", которую поймал пользователь.
+.ymaps-2-1-79-b-cluster-tabs__section_type_nav {
+    background-color: var(--color-white);
+    overflow-y: auto;
+}
+
+.ymaps-2-1-79-b-cluster-tabs__menu-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--bg-field);
+    transition: background-color 0.15s ease-in-out;
+}
+
+.ymaps-2-1-79-b-cluster-tabs__menu-item:hover {
+    background-color: var(--bg-field);
+}
+
+.ymaps-2-1-79-b-cluster-tabs__menu-item_current_yes {
+    background-color: var(--accent-color);
+}
+
+.ymaps-2-1-79-b-cluster-tabs__menu-item-text {
+    font-family: "Lato", sans-serif;
+    font-size: 13px;
+    line-height: 1.3;
+    color: var(--color-black-primary);
+}
+
+.ymaps-2-1-79-b-cluster-tabs__menu-item_current_yes .ymaps-2-1-79-b-cluster-tabs__menu-item-text {
+    color: var(--color-white);
+}
+
 // Дефолтная кнопка закрытия balloon у Яндекса — тёмный "×" с opacity: 0.3,
 // рассчитанный на светлый фон обычного balloon. Наша карточка (.balloonWrapper)
 // начинается сразу с фото на всю ширину — та же кнопка ложится прямо на фото и
