@@ -16,6 +16,8 @@ const getBounds = vi.fn(() => [[54, 36], [57, 39]]);
 const boundsChangeHandlers: Array<() => void> = [];
 const onLoadCalls = vi.fn();
 const balloonOpen = vi.fn().mockResolvedValue(undefined);
+const objectsBalloonClose = vi.fn();
+const clustersBalloonClose = vi.fn();
 const getById = vi.fn((): object | undefined => ({}));
 const getObjectState = vi.fn((): { isClustered: boolean } => ({ isClustered: false }));
 // Симулирует нативный клик по маркеру (или наш собственный balloon.open()) —
@@ -23,6 +25,13 @@ const getObjectState = vi.fn((): { isClustered: boolean } => ({ isClustered: fal
 const objectsBalloonOpenHandlers: Array<(e: { get: (key: string) => unknown }) => void> = [];
 const simulateBalloonOpen = (objectId: number | string) => {
     objectsBalloonOpenHandlers.forEach((handler) => handler({ get: (key) => (key === "objectId" ? objectId : undefined) }));
+};
+// Симулирует нативный клик по кластеру (открывает ЕГО собственный balloon
+// со списком вакансий) — см. подписку OffersMap на "balloonopen" в
+// clusters.events.
+const clustersBalloonOpenHandlers: Array<() => void> = [];
+const simulateClusterBalloonOpen = () => {
+    clustersBalloonOpenHandlers.forEach((handler) => handler());
 };
 let capturedFeatures: any[] = [];
 let capturedObjectsOptions: Record<string, unknown> | undefined;
@@ -112,7 +121,7 @@ vi.mock("@pbe/react-yandex-maps", () => ({
             const instance = {
                 getObjectState,
                 objects: {
-                    balloon: { open: balloonOpen },
+                    balloon: { open: balloonOpen, close: objectsBalloonClose },
                     getById,
                     events: {
                         add: (_event: string, handler: (e: any) => void) => {
@@ -121,6 +130,18 @@ vi.mock("@pbe/react-yandex-maps", () => ({
                         remove: (_event: string, handler: (e: any) => void) => {
                             const index = objectsBalloonOpenHandlers.indexOf(handler);
                             if (index !== -1) objectsBalloonOpenHandlers.splice(index, 1);
+                        },
+                    },
+                },
+                clusters: {
+                    balloon: { close: clustersBalloonClose },
+                    events: {
+                        add: (_event: string, handler: () => void) => {
+                            clustersBalloonOpenHandlers.push(handler);
+                        },
+                        remove: (_event: string, handler: () => void) => {
+                            const index = clustersBalloonOpenHandlers.indexOf(handler);
+                            if (index !== -1) clustersBalloonOpenHandlers.splice(index, 1);
                         },
                     },
                 },
@@ -170,12 +191,15 @@ describe("OffersMap", () => {
         onLoadCalls.mockClear();
         balloonOpen.mockClear();
         balloonOpen.mockResolvedValue(undefined);
+        objectsBalloonClose.mockClear();
+        clustersBalloonClose.mockClear();
         getById.mockClear();
         getById.mockImplementation(() => ({}));
         getObjectState.mockClear();
         getObjectState.mockReturnValue({ isClustered: false });
         boundsChangeHandlers.length = 0;
         objectsBalloonOpenHandlers.length = 0;
+        clustersBalloonOpenHandlers.length = 0;
         capturedFeatures = [];
         capturedObjectsOptions = undefined;
         capturedOptionsProp = undefined;
@@ -269,6 +293,81 @@ describe("OffersMap", () => {
             } finally {
                 vi.useRealTimers();
             }
+        },
+    );
+
+    it(
+        "закрывает balloon кластера, открывая balloon отдельной вакансии (регресс: пользователь "
+        + "кликал по кластеру — открывался его собственный balloon со списком вакансий — а затем "
+        + "открывался balloon конкретной вакансии из списка/deep-link: objects.balloon и "
+        + "clusters.balloon — это ДВЕ независимые коллекции у ObjectManager, открытие одной не "
+        + "закрывает другую саму по себе, обе таблички повисали на карте разом, одна поверх другой)",
+        async () => {
+            render(
+                <OffersMap
+                    offersData={[offer({ id: 1 })]}
+                    isOffersLoading={false}
+                    selectedOfferId={1}
+                    selectedOfferCoordinates={{ latitude: 55.75, longitude: 37.61 }}
+                />,
+            );
+
+            await waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+
+            act(() => {
+                boundsChangeHandlers.forEach((handler) => handler());
+            });
+
+            expect(balloonOpen).toHaveBeenCalledWith("1");
+            expect(clustersBalloonClose).toHaveBeenCalledTimes(1);
+        },
+    );
+
+    it(
+        "закрывает balloon отдельной вакансии при клике по кластеру (симметричный случай — "
+        + "клик по кластеру открывает ЕГО собственный balloon нативно, минуя наш код, и должен "
+        + "убрать со сцены табличку конкретной вакансии, которая была открыта раньше)",
+        async () => {
+            const coordinates = { latitude: 55.75, longitude: 37.61 };
+            const { rerender } = render(
+                <OffersMap
+                    offersData={[offer({ id: 1 })]}
+                    isOffersLoading={false}
+                    selectedOfferId={1}
+                    selectedOfferCoordinates={coordinates}
+                />,
+            );
+
+            await waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+
+            act(() => {
+                boundsChangeHandlers.forEach((handler) => handler());
+            });
+            expect(balloonOpen).toHaveBeenCalledWith("1");
+            objectsBalloonClose.mockClear();
+
+            act(() => {
+                simulateClusterBalloonOpen();
+            });
+
+            expect(objectsBalloonClose).toHaveBeenCalledTimes(1);
+
+            // Следующее обновление маркеров (реактивный триггер на features)
+            // не должно молча переоткрыть табличку старой вакансии поверх
+            // того, что пользователь сейчас видит (список вакансий кластера)
+            // — отложенный выбор должен был сброситься.
+            balloonOpen.mockClear();
+            act(() => {
+                rerender(
+                    <OffersMap
+                        offersData={[offer({ id: 1, name: "Обновлённое название" })]}
+                        isOffersLoading={false}
+                        selectedOfferId={1}
+                        selectedOfferCoordinates={coordinates}
+                    />,
+                );
+            });
+            expect(balloonOpen).not.toHaveBeenCalled();
         },
     );
 
