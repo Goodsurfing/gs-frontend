@@ -126,6 +126,9 @@ export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProp
                         }}
                         objects={{
                             openBalloonOnClick: true,
+                            // Яндекс.Карты по умолчанию скрывают иконку маркера, пока
+                            // открыт его balloon — см. тот же фикс в OffersMap.tsx.
+                            hideIconOnBalloonOpen: false,
                         }}
                         clusters={{
                             iconLayout: "default#imageWithContent",

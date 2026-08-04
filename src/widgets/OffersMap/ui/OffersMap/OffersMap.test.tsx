@@ -17,6 +17,7 @@ const onLoadCalls = vi.fn();
 const balloonOpen = vi.fn().mockResolvedValue(undefined);
 const getById = vi.fn((): object | undefined => ({}));
 let capturedFeatures: any[] = [];
+let capturedObjectsOptions: Record<string, unknown> | undefined;
 // Тесты на тайм-аут/onError загрузки карты не должны давать моку Map
 // самому вызывать onLoad — иначе карта "успевает" загрузиться раньше, чем
 // успеет сработать проверяемое поведение.
@@ -67,9 +68,14 @@ vi.mock("@pbe/react-yandex-maps", () => ({
     },
     ZoomControl: () => null,
     // eslint-disable-next-line react/no-unused-prop-types
-    ObjectManager: (props: { features: unknown[]; instanceRef?: { current: unknown } }) => {
-        const { features, instanceRef } = props;
+    ObjectManager: (props: {
+        features: unknown[];
+        instanceRef?: { current: unknown };
+        objects?: Record<string, unknown>;
+    }) => {
+        const { features, instanceRef, objects } = props;
         capturedFeatures = features;
+        capturedObjectsOptions = objects;
         if (instanceRef) {
             instanceRef.current = { objects: { balloon: { open: balloonOpen }, getById } };
         }
@@ -100,6 +106,7 @@ describe("OffersMap", () => {
         getById.mockImplementation(() => ({}));
         boundsChangeHandlers.length = 0;
         capturedFeatures = [];
+        capturedObjectsOptions = undefined;
         skipAutoLoad = false;
         capturedOnError = undefined;
     });
@@ -651,6 +658,21 @@ describe("OffersMap", () => {
         // старым содержимым), поэтому проверяем именно его отсутствие в дереве.
         await waitFor(() => expect(screen.queryByTestId("object-manager")).not.toBeInTheDocument());
         expect(screen.getByText("По вашему запросу вакансий на карте не найдено")).toBeInTheDocument();
+    });
+
+    it("отключает hideIconOnBalloonOpen у ObjectManager (регресс: Яндекс.Карты по умолчанию скрывают иконку "
+        + "маркера, пока открыт его balloon — при заходе по прямой ссылке на вакансию balloon открывается "
+        + "программно сразу же, и без этого флага маркер оставался невидимым, пока пользователь сам не "
+        + "закрывал balloon вручную)", async () => {
+        render(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(capturedObjectsOptions).toBeDefined());
+        expect(capturedObjectsOptions?.hideIconOnBalloonOpen).toBe(false);
     });
 
     it("показывает отдельное сообщение об ошибке (не «вакансий не найдено»), если загрузка маркеров упала, "
