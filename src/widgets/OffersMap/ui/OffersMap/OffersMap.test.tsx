@@ -330,6 +330,52 @@ describe("OffersMap", () => {
         await waitFor(() => expect(screen.getByTestId("object-manager")).toHaveTextContent("1"));
     });
 
+    it("не показывает оверлей-спиннер поверх карты во время фонового bounds-рефетча, только на самом первом "
+        + "заходе (регресс: isOffersLoading = isLoading || isFetching у родителя, т.е. становится true и на "
+        + "КАЖДОМ последующем bounds-рефетче после pan — оверлей закрывал всю карту полупрозрачным белым на миг "
+        + "при любом движении, хотя сами маркеры уже не терялись благодаря анти-мигающему кэшу)", async () => {
+        const { rerender } = render(
+            <OffersMap
+                offersData={[]}
+                isOffersLoading
+            />,
+        );
+
+        expect(screen.getByRole("progressbar")).toBeInTheDocument();
+
+        rerender(
+            <OffersMap
+                offersData={[offer({ id: 1 }), offer({ id: 2 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(screen.getByTestId("object-manager")).toHaveTextContent("2"));
+        expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
+
+        // Пользователь подвинул карту -> onBoundsChange -> родитель начал
+        // фоновый bounds-рефетч: isOffersLoading снова true, но карта уже
+        // показывала маркеры раньше — спиннер поверх нее больше не нужен.
+        rerender(
+            <OffersMap
+                offersData={[]}
+                isOffersLoading
+            />,
+        );
+
+        expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
+
+        rerender(
+            <OffersMap
+                offersData={[offer({ id: 3 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(screen.getByTestId("object-manager")).toHaveTextContent("1"));
+        expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
+    });
+
     it("не падает и повторяет попытку, если balloon.open синхронно бросает даже когда объект уже числится в ObjectManager (регресс: getById подтверждал существование объекта раньше, чем его геометрия готова для balloon — пойманное исключение раньше тихо считалось успехом, и табличка так и не появлялась, хотя маркер по прямому клику уже открывался)", async () => {
         balloonOpen.mockImplementationOnce(() => {
             throw new TypeError("Cannot read properties of null (reading 'geometry')");

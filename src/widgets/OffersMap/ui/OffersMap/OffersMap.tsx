@@ -106,6 +106,16 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const objectManagerRef = useRef<any>(null);
     const onBoundsChangeRef = useRef(onBoundsChange);
     onBoundsChangeRef.current = onBoundsChange;
+    // isOffersLoading — это isLoading || isFetching у родителя, т.е. становится
+    // true не только на самом первом заходе, но и на КАЖДОМ последующем
+    // фоновом рефетче маркеров при bounds-change (после любого pan/zoom).
+    // Сами маркеры уже переживают такой рефетч без моргания (см.
+    // lastFeaturesRef ниже) — а вот оверлей-спиннер ниже раньше показывался
+    // при каждом isOffersLoading===true без разбора, перекрывая всю карту
+    // полупрозрачным белым (.loadingPlaceholder) на миг при любом движении.
+    // Показываем его только пока карта не показала маркеры вообще ни разу.
+    const hasLoadedOnceRef = useRef(false);
+    if (!isOffersLoading) hasLoadedOnceRef.current = true;
 
     useEffect(() => {
         if (ymapState) return undefined;
@@ -596,7 +606,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                     </div>
                 </div>
             )}
-            {!mapLoadTimedOut && isOffersLoading && (
+            {!mapLoadTimedOut && isOffersLoading && !hasLoadedOnceRef.current && (
                 <div className={styles.loadingPlaceholder}>
                     <MiniLoader />
                 </div>
