@@ -24,6 +24,13 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 const FOCUS_ZOOM = 10;
 const BOUNDS_CHANGE_DEBOUNCE_MS = 400;
 const MAP_LOAD_TIMEOUT_MS = 15_000;
+// На сколько уровней зумить, если выбранная вакансия всё ещё смёржена в
+// кластер (см. attemptOpenBalloon) — шаг, а не целевой зум, т.к. заранее
+// неизвестно, сколько зума нужно конкретной паре/группе маркеров, чтобы
+// разъехаться (gridSize у кластеризатора считается в экранных пикселях, не
+// в метрах). Подбирается повторно на каждой попытке, пока не раскластерится
+// или не упрёмся в MAP_OPTIONS.maxZoom.
+const DECLUSTER_ZOOM_STEP = 2;
 
 // Модульные константы, а не инлайновые объекты в JSX — react-yandex-maps
 // сравнивает props объекта ObjectManager (options/objects/clusters) ПО
@@ -378,6 +385,26 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         // не повторял попытку, табличка так и не появлялась. getById даёт
         // однозначный ответ вместо гадания по побочному эффекту open().
         if (!objectManager.objects.getById(offerId.toString())) return false;
+        // Объект зарегистрирован, но может всё ещё визуально быть смёржен в
+        // кластер (например, ссылка с ?offerId= на вакансию, у которой рядом
+        // есть соседи, — FOCUS_ZOOM сам по себе не гарантирует расклайстеринг
+        // именно этой пары/группы, т.к. gridSize кластеризатора считается в
+        // экранных пикселях, а не в метрах). open() в этом случае технически
+        // срабатывает, но balloon повисает над безликим кружком-кластером
+        // ("2" и т.п.) вместо своего реального маркера — выглядит как баг.
+        // Дозумируемся и ждём следующей попытки вместо того чтобы открывать
+        // balloon в таком виде.
+        if (objectManager.getObjectState(offerId.toString())?.isClustered) {
+            const map = mapRef.current;
+            const currentZoom = map?.getZoom();
+            if (map && typeof currentZoom === "number" && currentZoom < MAP_OPTIONS.maxZoom) {
+                map.setZoom(
+                    Math.min(currentZoom + DECLUSTER_ZOOM_STEP, MAP_OPTIONS.maxZoom),
+                    { duration: 400, checkZoomRange: true },
+                );
+            }
+            return false;
+        }
         // Пятое живое наблюдение на стейдже: getById может подтвердить, что
         // объект уже числится в коллекции, ДО того как его геометрия/DOM
         // реально готовы для показа balloon — open() в этот момент всё ещё
