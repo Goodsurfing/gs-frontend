@@ -147,7 +147,13 @@ export const SearchDonations = forwardRef<SearchDonationsRef, SearchDonationsPro
                                 handleSubmit();
                             }
                         }}
-                        inputProps={{ "aria-label": t("Поиск сборов") }}
+                        // autoComplete: "off" — см. тот же фикс в
+                        // widgets/OffersMap/ui/SearchOffers/SearchOffers.tsx:
+                        // без него браузер сам предлагает нативный,
+                        // никак не стилизованный список автозаполнения
+                        // (прошлые значения этого поля), который может
+                        // наложиться на карту поверх открытого balloon.
+                        inputProps={{ "aria-label": t("Поиск сборов"), autoComplete: "off" }}
                     />
                     {searchInput.length > 0 && <CloseButton onClick={handleClear} />}
                     <IconButton onClick={handleSubmit} type="button" sx={{ p: "10px" }} aria-label="search">

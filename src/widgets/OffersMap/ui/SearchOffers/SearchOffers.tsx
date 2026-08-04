@@ -151,7 +151,16 @@ export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
                                 handleSubmit();
                             }
                         }}
-                        inputProps={{ "aria-label": t("Поиск вакансий") }}
+                        // autoComplete: "off" — без этого браузер копит и
+                        // потом сам предлагает СВОЙ нативный список
+                        // автозаполнения (прошлые введённые в это поле
+                        // значения), который рендерится ВНЕ нашего DOM, никак
+                        // не стилизован (обычные синие ссылки/системный шрифт)
+                        // и может визуально наложиться на карту с открытым
+                        // balloon — выглядит как сломанный кусок интерфейса,
+                        // хотя на деле это браузер, а не наш дропдаун с
+                        // подсказками (styles.dropdown ниже).
+                        inputProps={{ "aria-label": t("Поиск вакансий"), autoComplete: "off" }}
                     />
                     {searchInput.length > 0 && <CloseButton onClick={handleClear} />}
                     <IconButton onClick={handleSubmit} type="button" sx={{ p: "10px" }} aria-label="search">
