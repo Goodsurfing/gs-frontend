@@ -69,7 +69,11 @@ export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProp
                     },
                     options: {
                         iconLayout: "default#imageWithContent",
-                        iconContentLayout: ymapState?.templateLayoutFactory.createClass(
+                        // Второй ?. обязателен: ymapState может быть truthy
+                        // (onLoad уже сработал), но templateLayoutFactory
+                        // на нём — ещё нет. Без него .createClass бросал бы
+                        // TypeError прямо во время рендера.
+                        iconContentLayout: ymapState?.templateLayoutFactory?.createClass(
                             `<div style="background-color: ${categoryColor || "var(--accent-color)"};" class="${styles.customPlacemarkIcon}"></div>`,
                         ),
                         iconImageSize: [30, 30],
@@ -132,7 +136,12 @@ export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProp
                         }}
                         clusters={{
                             iconLayout: "default#imageWithContent",
-                            clusterIconLayout: ymapState.templateLayoutFactory.createClass(
+                            // ?. на templateLayoutFactory обязателен: ymapState
+                            // здесь уже точно truthy, но само
+                            // templateLayoutFactory на нём может быть ещё не
+                            // готово — без него .createClass бросал бы
+                            // TypeError прямо во время рендера, роняя всю карту.
+                            clusterIconLayout: ymapState.templateLayoutFactory?.createClass(
                                 `<div class="${styles.customClusterIcon}">
                                     {{ properties.geoObjects.length }}
                                 </div>`,
@@ -144,7 +153,7 @@ export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProp
                             },
                             clusterIconSize: [40, 40],
                             clusterIconOffset: [-20, -20],
-                            clusterBalloonContentLayout: ymapState.templateLayoutFactory.createClass(`
+                            clusterBalloonContentLayout: ymapState.templateLayoutFactory?.createClass(`
                         <div class="${styles.clusterBalloon}">
                             <h3>Список вакансий:</h3>
                             <ul>
