@@ -491,6 +491,14 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                         }}
                         objects={{
                             openBalloonOnClick: true,
+                            // Яндекс.Карты по умолчанию скрывают иконку маркера, пока
+                            // открыт его balloon (hideIconOnBalloonOpen: true) — обычно
+                            // незаметно, т.к. balloon перекрывает то же место. Но при
+                            // заходе по прямой ссылке на конкретную вакансию balloon
+                            // открывается программно сразу при загрузке карты, и без
+                            // этого флага маркер остаётся невидимым навсегда, пока
+                            // пользователь сам не закроет balloon вручную.
+                            hideIconOnBalloonOpen: false,
                         }}
                         clusters={{
                             iconLayout: "default#imageWithContent",
