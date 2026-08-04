@@ -10,12 +10,14 @@ import { OffersMap } from "./OffersMap";
 import { OfferMap } from "@/entities/Offer";
 
 const setCenter = vi.fn();
+const setZoom = vi.fn();
 const getZoom = vi.fn(() => 5);
 const getBounds = vi.fn(() => [[54, 36], [57, 39]]);
 const boundsChangeHandlers: Array<() => void> = [];
 const onLoadCalls = vi.fn();
 const balloonOpen = vi.fn().mockResolvedValue(undefined);
 const getById = vi.fn((): object | undefined => ({}));
+const getObjectState = vi.fn((): { isClustered: boolean } => ({ isClustered: false }));
 // Симулирует нативный клик по маркеру (или наш собственный balloon.open()) —
 // см. подписку OffersMap на "balloonopen" в objects.events.
 const objectsBalloonOpenHandlers: Array<(e: { get: (key: string) => unknown }) => void> = [];
@@ -57,6 +59,7 @@ vi.mock("@pbe/react-yandex-maps", () => ({
         } = props;
         instanceRef.current = {
             setCenter,
+            setZoom,
             getZoom,
             getBounds,
             events: {
@@ -107,6 +110,7 @@ vi.mock("@pbe/react-yandex-maps", () => ({
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useLayoutEffect(() => {
             const instance = {
+                getObjectState,
                 objects: {
                     balloon: { open: balloonOpen },
                     getById,
@@ -158,7 +162,9 @@ const offer = (overrides: Partial<OfferMap> = {}): OfferMap => ({
 describe("OffersMap", () => {
     beforeEach(() => {
         setCenter.mockClear();
+        setZoom.mockClear();
         getZoom.mockClear();
+        getZoom.mockReturnValue(5);
         getBounds.mockReset();
         getBounds.mockReturnValue([[54, 36], [57, 39]]);
         onLoadCalls.mockClear();
@@ -166,6 +172,8 @@ describe("OffersMap", () => {
         balloonOpen.mockResolvedValue(undefined);
         getById.mockClear();
         getById.mockImplementation(() => ({}));
+        getObjectState.mockClear();
+        getObjectState.mockReturnValue({ isClustered: false });
         boundsChangeHandlers.length = 0;
         objectsBalloonOpenHandlers.length = 0;
         capturedFeatures = [];
@@ -211,6 +219,58 @@ describe("OffersMap", () => {
 
         expect(balloonOpen).toHaveBeenCalledWith("1");
     });
+
+    it(
+        "дозумируется, а не открывает balloon поверх кластера, если выбранная вакансия всё ещё "
+        + "смёржена в кластер (регресс: ?offerId= на вакансию с соседями открывал balloon.open() "
+        + "успешно, но табличка повисала над безликим числовым кружком-кластером вместо своего "
+        + "реального маркера — выглядело как баг)",
+        async () => {
+            getObjectState.mockReturnValue({ isClustered: true });
+            const coordinates = { latitude: 55.75, longitude: 37.61 };
+
+            vi.useFakeTimers();
+            try {
+                const { rerender } = render(
+                    <OffersMap
+                        offersData={[offer({ id: 1 })]}
+                        isOffersLoading={false}
+                        selectedOfferId={1}
+                        selectedOfferCoordinates={coordinates}
+                    />,
+                );
+
+                await vi.waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+
+                act(() => {
+                    boundsChangeHandlers.forEach((handler) => handler());
+                });
+
+                expect(balloonOpen).not.toHaveBeenCalled();
+                expect(setZoom).toHaveBeenCalledWith(7, { duration: 400, checkZoomRange: true });
+
+                // Кластер расклеился (например, после того как карта
+                // дозумилась и новые bounds-scoped маркеры пришли) —
+                // реактивный триггер на изменившиеся features должен
+                // подхватить это сразу, не дожидаясь тика таймера-ретрая.
+                getObjectState.mockReturnValue({ isClustered: false });
+                act(() => {
+                    rerender(
+                        <OffersMap
+                            offersData={[offer({ id: 1, name: "Обновлённое название" })]}
+                            isOffersLoading={false}
+                            selectedOfferId={1}
+                            selectedOfferCoordinates={coordinates}
+                        />,
+                    );
+                });
+
+                expect(balloonOpen).toHaveBeenCalledWith("1");
+            } finally {
+                vi.useRealTimers();
+            }
+        },
+    );
 
     it("показывает подсказку вместо тишины, если координаты точно отсутствуют (null)", () => {
         vi.useFakeTimers();
