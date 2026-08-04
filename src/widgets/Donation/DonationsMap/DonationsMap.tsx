@@ -1,5 +1,5 @@
 import {
-    Map, ObjectManager, YMaps,
+    Map, ObjectManager,
 } from "@pbe/react-yandex-maps";
 import cn from "classnames";
 import React, {
@@ -91,75 +91,73 @@ export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProp
 
     return (
         <div className={cn(className, styles.wrapper)}>
-            <YMaps query={{ apikey: import.meta.env.VITE_API_YANDEX_KEY, load: "package.full" }}>
-                <Map
-                    defaultState={{
-                        center: [50, 50], zoom: 2.05, controls: ["zoomControl"],
-                    }}
-                    width="100%"
-                    height="100%"
-                    instanceRef={mapRef}
-                    options={{
-                        suppressMapOpenBlock: true,
-                        restrictMapArea: [
-                            [83.23618, -178.9],
-                            [-73.87011, 181],
-                        ],
-                        maxZoom: 18,
-                        copyrightProvidersVisible: false,
-                        copyrightLogoVisible: false,
-                        copyrightUaVisible: false,
-                        yandexMapDisablePoiInteractivity: false,
-                        suppressObsoleteBrowserNotifier: false,
-                    }}
-                    onLoad={(ymap) => {
-                        setYmapState(ymap);
-                    }}
-                    className={cn(styles.map, classNameMap)}
-                >
-                    {(ymapState && (features.length > 0)) && (
-                        <ObjectManager
-                            instanceRef={objectManagerRef}
-                            features={features}
-                            options={{
-                                clusterize: true,
-                                gridSize: 64,
-                            }}
-                            objects={{
-                                openBalloonOnClick: true,
-                            }}
-                            clusters={{
-                                iconLayout: "default#imageWithContent",
-                                clusterIconLayout: ymapState.templateLayoutFactory.createClass(
-                                    `<div class="${styles.customClusterIcon}">
-                                        {{ properties.geoObjects.length }}
-                                    </div>`,
-                                ),
-                                clusterIconShape: {
-                                    type: "Circle",
-                                    coordinates: [20, 20],
-                                    radius: 20,
-                                },
-                                clusterIconSize: [40, 40],
-                                clusterIconOffset: [-20, -20],
-                                clusterBalloonContentLayout: ymapState.templateLayoutFactory.createClass(`
-                            <div class="${styles.clusterBalloon}">
-                                <h3>Список вакансий:</h3>
-                                <ul>
-                                    {% for geoObject in properties.geoObjects %}
-                                        <li> <a href="{{geoObject.properties.url}}">{{ geoObject.properties.name }}</a></li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        `),
-                                clusterBalloonPanelMaxMapArea: Infinity,
-                                clusterBalloonContentLayoutHeight: 200,
-                            }}
+            <Map
+                defaultState={{
+                    center: [50, 50], zoom: 2.05, controls: ["zoomControl"],
+                }}
+                width="100%"
+                height="100%"
+                instanceRef={mapRef}
+                options={{
+                    suppressMapOpenBlock: true,
+                    restrictMapArea: [
+                        [83.23618, -178.9],
+                        [-73.87011, 181],
+                    ],
+                    maxZoom: 18,
+                    copyrightProvidersVisible: false,
+                    copyrightLogoVisible: false,
+                    copyrightUaVisible: false,
+                    yandexMapDisablePoiInteractivity: false,
+                    suppressObsoleteBrowserNotifier: false,
+                }}
+                onLoad={(ymap) => {
+                    setYmapState(ymap);
+                }}
+                className={cn(styles.map, classNameMap)}
+            >
+                {(ymapState && (features.length > 0)) && (
+                    <ObjectManager
+                        instanceRef={objectManagerRef}
+                        features={features}
+                        options={{
+                            clusterize: true,
+                            gridSize: 64,
+                        }}
+                        objects={{
+                            openBalloonOnClick: true,
+                        }}
+                        clusters={{
+                            iconLayout: "default#imageWithContent",
+                            clusterIconLayout: ymapState.templateLayoutFactory.createClass(
+                                `<div class="${styles.customClusterIcon}">
+                                    {{ properties.geoObjects.length }}
+                                </div>`,
+                            ),
+                            clusterIconShape: {
+                                type: "Circle",
+                                coordinates: [20, 20],
+                                radius: 20,
+                            },
+                            clusterIconSize: [40, 40],
+                            clusterIconOffset: [-20, -20],
+                            clusterBalloonContentLayout: ymapState.templateLayoutFactory.createClass(`
+                        <div class="${styles.clusterBalloon}">
+                            <h3>Список вакансий:</h3>
+                            <ul>
+                                {% for geoObject in properties.geoObjects %}
+                                    <li> <a href="{{geoObject.properties.url}}">{{ geoObject.properties.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    `),
+                            clusterBalloonPanelMaxMapArea: Infinity,
+                            clusterBalloonContentLayoutHeight: 200,
+                        }}
 
-                        />
-                    )}
-                </Map>
-            </YMaps>
+                    />
+                )}
+            </Map>
         </div>
     );
 });
