@@ -419,6 +419,18 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         } catch {
             return false;
         }
+        // objects и clusters — ДВЕ независимые balloon-коллекции у
+        // ObjectManager, каждая со своим открытым/закрытым состоянием.
+        // Открытие balloon отдельного маркера НЕ закрывает balloon кластера
+        // сам по себе, если тот уже был открыт раньше (например, пользователь
+        // только что кликнул по кластеру, увидел список вакансий, а потом
+        // сработал этот код) — обе таблички повисают на карте одновременно,
+        // одна поверх другой. Закрываем кластерную явно.
+        try {
+            objectManager.clusters.balloon.close();
+        } catch {
+            // no-op: balloon кластера мог и не быть открыт
+        }
         // Шестое живое наблюдение на стейдже: даже успешный open() не значит
         // "готово навсегда". Bounds-дебаунс может дать ДВЕ волны обновления
         // маркеров за один pan (промежуточная позиция во время анимации +
@@ -563,6 +575,34 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         objectManager.objects.events.add("balloonopen", handleBalloonOpen);
         return () => {
             objectManager.objects.events.remove("balloonopen", handleBalloonOpen);
+        };
+    }, [objectManagerMountTick]);
+
+    // Симметричный случай: клик по кластеру открывает ЕГО собственный
+    // balloon (список вакансий) — тоже целиком внутри Яндекс.Карт, тоже
+    // отдельная от objects.balloon коллекция. Если в этот момент уже была
+    // открыта табличка конкретной вакансии (например, из списка/deep-link),
+    // она никуда не девается сама — обе таблички оказываются на карте разом,
+    // одна поверх другой. Закрываем balloon отдельного маркера и сбрасываем
+    // отложенный выбор — раз пользователь сейчас смотрит на кластер, не
+    // нужно, чтобы следующий bounds-рефетч молча переоткрыл старую табличку
+    // поверх того, что он видит.
+    useEffect(() => {
+        const objectManager = objectManagerRef.current;
+        if (!objectManager) return undefined;
+
+        const handleClusterBalloonOpen = () => {
+            pendingBalloonOfferIdRef.current = null;
+            try {
+                objectManager.objects.balloon.close();
+            } catch {
+                // no-op: balloon отдельного маркера мог и не быть открыт
+            }
+        };
+
+        objectManager.clusters.events.add("balloonopen", handleClusterBalloonOpen);
+        return () => {
+            objectManager.clusters.events.remove("balloonopen", handleClusterBalloonOpen);
         };
     }, [objectManagerMountTick]);
 
