@@ -509,6 +509,36 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [features]);
 
+    // Клик прямо по маркеру на карте открывает его balloon через нативный
+    // openBalloonOnClick у ObjectManager — это происходит целиком внутри
+    // Яндекс.Карт, никак не проходя через selectedOfferId/pendingBalloonOfferIdRef
+    // выше. Без синхронизации ниже pendingBalloonOfferIdRef так и остаётся
+    // указывать на СТАРЫЙ выбор (например, из списка) — и следующий же
+    // bounds-рефетч маркеров (любой pan/zoom) реактивным триггером выше
+    // молча переоткрывает balloon старого маркера, отбирая его у того,
+    // что пользователь только что открыл прямым кликом. Слушаем balloonopen
+    // на самой коллекции objects (а не на отдельных фичах) — событие
+    // одинаково стреляет и от нативного клика, и от нашего собственного
+    // attemptOpenBalloon(), так что pendingBalloonOfferIdRef всегда отражает
+    // ДЕЙСТВИТЕЛЬНО открытый сейчас balloon, кто бы его ни открыл.
+    useEffect(() => {
+        const objectManager = objectManagerRef.current;
+        if (!objectManager) return undefined;
+
+        const handleBalloonOpen = (e: any) => {
+            const objectId = Number(e.get("objectId"));
+            if (!Number.isNaN(objectId)) {
+                pendingBalloonOfferIdRef.current = objectId;
+                panActionEndedRef.current = true;
+            }
+        };
+
+        objectManager.objects.events.add("balloonopen", handleBalloonOpen);
+        return () => {
+            objectManager.objects.events.remove("balloonopen", handleBalloonOpen);
+        };
+    }, [objectManagerMountTick]);
+
     useEffect(() => {
         if (!ymapState || !mapRef.current) return undefined;
 

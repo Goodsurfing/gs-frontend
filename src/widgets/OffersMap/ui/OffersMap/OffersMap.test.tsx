@@ -16,6 +16,12 @@ const boundsChangeHandlers: Array<() => void> = [];
 const onLoadCalls = vi.fn();
 const balloonOpen = vi.fn().mockResolvedValue(undefined);
 const getById = vi.fn((): object | undefined => ({}));
+// Симулирует нативный клик по маркеру (или наш собственный balloon.open()) —
+// см. подписку OffersMap на "balloonopen" в objects.events.
+const objectsBalloonOpenHandlers: Array<(e: { get: (key: string) => unknown }) => void> = [];
+const simulateBalloonOpen = (objectId: number | string) => {
+    objectsBalloonOpenHandlers.forEach((handler) => handler({ get: (key) => (key === "objectId" ? objectId : undefined) }));
+};
 let capturedFeatures: any[] = [];
 let capturedObjectsOptions: Record<string, unknown> | undefined;
 let capturedOptionsProp: Record<string, unknown> | undefined;
@@ -101,7 +107,19 @@ vi.mock("@pbe/react-yandex-maps", () => ({
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useLayoutEffect(() => {
             const instance = {
-                objects: { balloon: { open: balloonOpen }, getById },
+                objects: {
+                    balloon: { open: balloonOpen },
+                    getById,
+                    events: {
+                        add: (_event: string, handler: (e: any) => void) => {
+                            objectsBalloonOpenHandlers.push(handler);
+                        },
+                        remove: (_event: string, handler: (e: any) => void) => {
+                            const index = objectsBalloonOpenHandlers.indexOf(handler);
+                            if (index !== -1) objectsBalloonOpenHandlers.splice(index, 1);
+                        },
+                    },
+                },
                 add: (toAdd: any[]) => setMounted((prev) => {
                     const next = [...prev, ...toAdd];
                     capturedFeatures = next;
@@ -149,6 +167,7 @@ describe("OffersMap", () => {
         getById.mockClear();
         getById.mockImplementation(() => ({}));
         boundsChangeHandlers.length = 0;
+        objectsBalloonOpenHandlers.length = 0;
         capturedFeatures = [];
         capturedObjectsOptions = undefined;
         capturedOptionsProp = undefined;
@@ -524,6 +543,66 @@ describe("OffersMap", () => {
         } finally {
             vi.useRealTimers();
         }
+    });
+
+    it("не переоткрывает balloon старой (списочной) вакансии после того, как пользователь напрямую кликнул по "
+        + "ДРУГОМУ маркеру на карте и затем подвинул её (регресс: прямой клик по маркеру открывает balloon "
+        + "целиком через нативный openBalloonOnClick у Яндекс.Карт, минуя selectedOfferId/pendingBalloonOfferIdRef "
+        + "— без синхронизации следующий же bounds-рефетч маркеров молча переоткрывал balloon СТАРОЙ вакансии, "
+        + "выбранной раньше из списка, отбирая табличку у той, что пользователь только что открыл кликом)", async () => {
+        // Та же ссылка на coordinates для ОБОИХ рендеров — как оно и бывает в
+        // проде: selectedOfferCoordinates пересчитывается в родителе только
+        // при смене selectedOfferId/списочных данных, а не от одного лишь
+        // pan'а карты. Если бы объект пересоздавался на каждый рендер (как в
+        // первой версии этого теста), эффект на [selectedOfferId,
+        // selectedOfferCoordinates, ymapState] ложно решил бы, что выбор
+        // изменился, и сам сбросил pendingBalloonOfferIdRef/panActionEndedRef
+        // — тест бы ничего не проверял.
+        const coordinates = { latitude: 55.75, longitude: 37.61 };
+
+        const { rerender } = render(
+            <OffersMap
+                offersData={[offer({ id: 1 }), offer({ id: 2 })]}
+                isOffersLoading={false}
+                selectedOfferId={1}
+                selectedOfferCoordinates={coordinates}
+            />,
+        );
+
+        await waitFor(() => expect(screen.getByTestId("object-manager")).toHaveTextContent("2"));
+
+        act(() => {
+            boundsChangeHandlers.forEach((handler) => handler());
+        });
+        expect(balloonOpen).toHaveBeenCalledWith("1");
+        balloonOpen.mockClear();
+
+        // Пользователь кликает НАПРЯМУЮ по маркеру оффера 2 на карте — это
+        // открывает его balloon целиком нативно у Яндекс.Карт, никак не меняя
+        // selectedOfferId (кликов по маркерам React вообще не видит).
+        act(() => {
+            simulateBalloonOpen(2);
+        });
+        expect(balloonOpen).not.toHaveBeenCalled();
+
+        // Пользователь подвинул карту — bounds-рефетч приносит новый набор
+        // маркеров. Меняем name, чтобы сигнатура features реально
+        // пересчиталась (анти-мигающий кэш иначе отдал бы ту же ссылку).
+        act(() => {
+            rerender(
+                <OffersMap
+                    offersData={[offer({ id: 1 }), offer({ id: 2, name: "Обновлённые данные" })]}
+                    isOffersLoading={false}
+                    selectedOfferId={1}
+                    selectedOfferCoordinates={coordinates}
+                />,
+            );
+        });
+
+        // Должен переоткрыться balloon оффера 2 (то, что пользователь реально
+        // выбрал последним), а НЕ оффера 1 (устаревший списочный выбор).
+        expect(balloonOpen).toHaveBeenCalledWith("2");
+        expect(balloonOpen).not.toHaveBeenCalledWith("1");
     });
 
     it("открывает balloon реактивно при обновлении маркеров, не дожидаясь следующего тика таймера-ретрая (регресс: на медленной сети/бэкенде реальный round-trip мог не уложиться в весь таймерный бюджет)", async () => {
