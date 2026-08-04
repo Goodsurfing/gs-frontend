@@ -25,6 +25,9 @@ let capturedClustersProp: Record<string, unknown> | undefined;
 // успеет сработать проверяемое поведение.
 let skipAutoLoad = false;
 let capturedOnError: (() => void) | undefined;
+// Симулирует GS-112/GS-114-race: onLoad карты срабатывает, но
+// templateLayoutFactory ещё не готов на этом же тике.
+let onLoadWithoutTemplateFactory = false;
 
 vi.mock("react-i18next", () => ({
     useTranslation: () => ({ t: (key: string) => key }),
@@ -63,7 +66,9 @@ vi.mock("@pbe/react-yandex-maps", () => ({
         useEffect(() => {
             if (skipAutoLoad) return;
             onLoadCalls();
-            onLoad?.({ templateLayoutFactory: { createClass: () => "layout-class-sentinel" } });
+            onLoad?.(onLoadWithoutTemplateFactory
+                ? {}
+                : { templateLayoutFactory: { createClass: () => "layout-class-sentinel" } });
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
         return <div>{children}</div>;
@@ -150,6 +155,7 @@ describe("OffersMap", () => {
         capturedClustersProp = undefined;
         skipAutoLoad = false;
         capturedOnError = undefined;
+        onLoadWithoutTemplateFactory = false;
     });
 
     it("фокусирует карту, если у выбранной вакансии известны координаты", () => {
@@ -719,6 +725,26 @@ describe("OffersMap", () => {
         expect(capturedOptionsProp).toBe(firstOptions);
         expect(capturedObjectsOptions).toBe(firstObjects);
         expect(capturedClustersProp).toBe(firstClusters);
+    });
+
+    it("монтирует ObjectManager (и показывает маркер), даже если templateLayoutFactory ещё не готов в момент "
+        + "onLoad карты (регресс: мемоизированный clusters временно вычисляется как undefined, пока фабрика не "
+        + "готова — если условие монтирования ObjectManager зависит от truthy clusters, а не только от "
+        + "ymapState/features, виджет мог навсегда остаться немонтированным без единой ошибки, потому что "
+        + "ymapState как ссылка на объект после onLoad больше не меняется и без ДРУГОГО повода для ре-рендера "
+        + "переоценить условие просто нечем — маркер и balloon молча пропадали бы навсегда при заходе по "
+        + "прямой ссылке на вакансию)", async () => {
+        onLoadWithoutTemplateFactory = true;
+        render(
+            <OffersMap
+                offersData={[offer({ id: 1 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(onLoadCalls).toHaveBeenCalled());
+        await waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+        expect(capturedFeatures).toHaveLength(1);
     });
 
     it("строит маркер с реальным iconContentLayout (не пустым), даже если offersData уже пришли ДО того, "

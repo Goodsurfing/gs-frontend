@@ -218,7 +218,15 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                     },
                     options: {
                         iconLayout: "default#imageWithContent",
-                        iconContentLayout: ymapState?.templateLayoutFactory.createClass(
+                        // Второй ?. здесь обязателен: ymapState может быть truthy
+                        // (onLoad уже сработал), но само templateLayoutFactory —
+                        // ещё нет (см. комментарий у clusters ниже). Без него
+                        // .createClass бросал бы TypeError прямо во время
+                        // рендера, и всё дерево карты падало бы вместо того чтобы
+                        // просто временно остаться без цветной иконки до
+                        // следующего пересчёта (см. |ready"/"|pending" в
+                        // сигнатуре ниже).
+                        iconContentLayout: ymapState?.templateLayoutFactory?.createClass(
                             `<div style="background-color: ${categoryColor || "var(--accent-color)"};" class="${styles.customPlacemarkIcon}"></div>`,
                         ),
                         // Без iconContentSize Яндекс.Карты по умолчанию заводят под
@@ -278,11 +286,21 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const mountedSignaturesRef = useRef<Record<string, string>>({});
     const objectManagerFeaturesSeedRef = useRef<any[]>([]);
 
+    // Триггерим пересчёт эффекта ниже не только при смене features, но и
+    // при (пере)монтировании самого ObjectManager: ymapState появляется
+    // асинхронно (эффект внутри <Map>), поэтому <ObjectManager> нередко
+    // монтируется ПОЗЖЕ первого рендера, на котором features уже посчитан
+    // и получил тот же самый (мемоизированный) объект — без этого тика
+    // эффект ниже не перезапустился бы и свежесмонтированный ObjectManager
+    // остался бы без единого маркера.
+    const [objectManagerMountTick, setObjectManagerMountTick] = useState(0);
+
     const setObjectManagerRef = useCallback((instance: any) => {
         objectManagerRef.current = instance;
         if (instance) {
             mountedFeaturesRef.current = {};
             mountedSignaturesRef.current = {};
+            setObjectManagerMountTick((tick) => tick + 1);
         }
     }, []);
 
@@ -318,7 +336,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
             features.map((feature) => [feature.id, feature]),
         );
         mountedSignaturesRef.current = { ...nextSignatures };
-    }, [features]);
+    }, [features, objectManagerMountTick]);
 
     // Оффер, для которого нужно открыть balloon, как только его маркер
     // реально появится в ObjectManager. null — нечего открывать / уже открыли.
@@ -508,6 +526,15 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     // тот же принцип: без useMemo этот объект (и вложенные createClass())
     // пересоздавался бы на каждый рендер, и клaстеры мигали бы дефолтной
     // иконкой при любом движении карты, даже если реально ничего не менялось.
+    // Намеренно НЕ участвует в условии монтирования ObjectManager ниже (по
+    // аналогии с GS-112: templateLayoutFactory иногда ещё не готов к моменту
+    // onLoad) — если бы монтирование зависело от truthy clusters, и
+    // templateLayoutFactory оказался бы не готов именно на этом рендере,
+    // ObjectManager мог бы навсегда остаться немонтированным: ymapState как
+    // ссылка на объект после onLoad больше не меняется, и без дальнейших
+    // ре-рендеров (например, если пользователь просто открыл карту по прямой
+    // ссылке и не трогал её) переоценить условие было бы просто нечем —
+    // маркер и balloon молча пропадали бы навсегда, без единой ошибки.
     const clusters = useMemo(() => (ymapState?.templateLayoutFactory ? {
         iconLayout: "default#imageWithContent",
         clusterIconLayout: ymapState.templateLayoutFactory.createClass(
@@ -602,7 +629,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                 className={cn(styles.map, classNameMap)}
             >
                 <ZoomControl options={ZOOM_CONTROL_OPTIONS} />
-                {(ymapState && clusters && (features.length > 0)) && (
+                {(ymapState && (features.length > 0)) && (
                     <ObjectManager
                         instanceRef={setObjectManagerRef}
                         features={objectManagerFeaturesSeedRef.current}
