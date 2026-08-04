@@ -1,7 +1,7 @@
 import {
     describe, it, expect, vi, beforeEach,
 } from "vitest";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import {
     render, screen, act, waitFor,
 } from "@testing-library/react";
@@ -67,19 +67,50 @@ vi.mock("@pbe/react-yandex-maps", () => ({
         return <div>{children}</div>;
     },
     ZoomControl: () => null,
+    // Реальный ObjectManager из react-yandex-maps теперь монтируется с
+    // ПОСТОЯННОЙ пустой ссылкой на features (см. OffersMap.tsx) — весь набор
+    // маркеров управляется императивно через add()/remove() на инстансе, а не
+    // через prop. Мок повторяет это: features prop игнорируется, единственный
+    // источник правды — что реально "добавили"/"убрали" через инстанс.
     // eslint-disable-next-line react/no-unused-prop-types
     ObjectManager: (props: {
-        features: unknown[];
-        instanceRef?: { current: unknown };
+        instanceRef?: { current: unknown } | ((instance: unknown) => void);
         objects?: Record<string, unknown>;
     }) => {
-        const { features, instanceRef, objects } = props;
-        capturedFeatures = features;
+        const { instanceRef, objects } = props;
+        const [mounted, setMounted] = useState<any[]>([]);
         capturedObjectsOptions = objects;
-        if (instanceRef) {
-            instanceRef.current = { objects: { balloon: { open: balloonOpen }, getById } };
-        }
-        return <div data-testid="object-manager">{features.length}</div>;
+
+        // useLayoutEffect (не useEffect) — реальный react-yandex-maps
+        // регистрирует инстанс синхронно в componentDidMount, т.е. раньше,
+        // чем сработает useLayoutEffect родителя (OffersMap), который сразу
+        // же вызывает add()/remove() на этом инстансе.
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useLayoutEffect(() => {
+            const instance = {
+                objects: { balloon: { open: balloonOpen }, getById },
+                add: (toAdd: any[]) => setMounted((prev) => {
+                    const next = [...prev, ...toAdd];
+                    capturedFeatures = next;
+                    return next;
+                }),
+                remove: (toRemove: any[]) => setMounted((prev) => {
+                    const removedIds = new Set(toRemove.map((f: any) => f.id));
+                    const next = prev.filter((f: any) => !removedIds.has(f.id));
+                    capturedFeatures = next;
+                    return next;
+                }),
+            };
+            if (typeof instanceRef === "function") instanceRef(instance);
+            else if (instanceRef) instanceRef.current = instance;
+            return () => {
+                if (typeof instanceRef === "function") instanceRef(null);
+                else if (instanceRef) instanceRef.current = null;
+            };
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []);
+
+        return <div data-testid="object-manager">{mounted.length}</div>;
     },
 }));
 
@@ -613,6 +644,38 @@ describe("OffersMap", () => {
         );
 
         expect(capturedFeatures).not.toBe(firstFeatures);
+    });
+
+    it("трогает через ObjectManager.add()/remove() только реально изменившиеся маркеры, а не весь набор "
+        + "разом (регресс: на мобильном viewport покрывает заметно меньшую площадь, чем на десктопе, и почти "
+        + "любой pan меняет хотя бы один маркер — при декларативном features prop ObjectManager сносил и "
+        + "пересоздавал ВСЕ маркеры на каждое такое изменение, даже если 9 из 10 не изменились, отчего вся "
+        + "карта на мгновение мигала пустой)", async () => {
+        const { rerender } = render(
+            <OffersMap
+                offersData={[offer({ id: 1 }), offer({ id: 2 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(capturedFeatures).toHaveLength(2));
+        const unchangedFeature = capturedFeatures.find((f: any) => f.id === "2");
+
+        // id=1 пропадает из viewport, id=2 остаётся без изменений, id=3 внось
+        // появляется — типичная картина частичного pan'а на мобильном.
+        rerender(
+            <OffersMap
+                offersData={[offer({ id: 2 }), offer({ id: 3 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(capturedFeatures.map((f: any) => f.id).sort()).toEqual(["2", "3"]));
+        // Ключевая проверка: маркер id=2 — ТА ЖЕ ссылка на объект, что и до
+        // обновления, т.е. его никто не снимал и не добавлял заново. Если бы
+        // ObjectManager делал remove()+add() по всей коллекции (старое
+        // поведение), это был бы новый объект и тест бы упал.
+        expect(capturedFeatures.find((f: any) => f.id === "2")).toBe(unchangedFeature);
     });
 
     it("строит маркер с реальным iconContentLayout (не пустым), даже если offersData уже пришли ДО того, "

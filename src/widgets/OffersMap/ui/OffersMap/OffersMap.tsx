@@ -3,7 +3,7 @@ import {
 } from "@pbe/react-yandex-maps";
 import cn from "classnames";
 import React, {
-    FC, memo, useEffect, useMemo, useRef, useState,
+    FC, memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -95,6 +95,12 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     // последнего построенного набора, чтобы при том же содержимом отдавать ту
     // же ссылку на features и не трогать ObjectManager вовсе.
     const lastFeaturesSignatureRef = useRef<string>("");
+    // Сигнатура КАЖДОГО отдельного маркера (не всего набора разом) — нужна
+    // ObjectManager-diff эффекту ниже, чтобы понять, какие именно маркеры
+    // реально изменились между обновлениями, а какие можно оставить как есть.
+    // Обычный Record, а не Map, — компонент Map из react-yandex-maps выше
+    // затеняет глобальный конструктор Map в этом файле.
+    const featureSignaturesRef = useRef<Record<string, string>>({});
 
     const noTitle = t("Без названия");
     const noCategory = t("Без категории");
@@ -118,12 +124,14 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         const relevantOffers = offersData
             .filter((offer) => typeof offer.latitude === "number" && typeof offer.longitude === "number");
 
+        const offerSignature = (offer: OfferMap) => [
+            offer.id, offer.latitude, offer.longitude, offer.name,
+            offer.categories[0]?.name ?? "", offer.categories[0]?.color ?? "",
+            offer.image?.contentUrl ?? "",
+        ].join(":");
+
         const signature = relevantOffers
-            .map((offer) => [
-                offer.id, offer.latitude, offer.longitude, offer.name,
-                offer.categories[0]?.name ?? "", offer.categories[0]?.color ?? "",
-                offer.image?.contentUrl ?? "",
-            ].join(":"))
+            .map(offerSignature)
             .sort()
             .join("|")
             // templateLayoutFactory становится доступен только после onLoad
@@ -141,8 +149,10 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         }
         lastFeaturesSignatureRef.current = signature;
 
+        const newFeatureSignatures: Record<string, string> = {};
         const computed = relevantOffers
             .map((offer) => {
+                newFeatureSignatures[offer.id.toString()] = offerSignature(offer);
                 const imgSrc = offer?.image ?? undefined;
                 const title = offer.name || noTitle;
                 const categoryName = offer.categories[0]?.name ?? noCategory;
@@ -212,12 +222,69 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                 };
             });
 
+        featureSignaturesRef.current = newFeatureSignatures;
         lastFeaturesRef.current = computed;
         return computed;
     }, [
         isOffersLoading, offersData, locale, ymapState?.templateLayoutFactory,
         noTitle, noCategory, offerWithoutName, learnMore,
     ]);
+
+    // ObjectManager (react-yandex-maps) на каждое изменение ССЫЛКИ на features
+    // делает remove(ВСЕ старые) + add(ВСЕ новые) — не diff. На десктопе это
+    // почти незаметно, но на мобильном viewport геометрически покрывает
+    // заметно меньшую площадь при том же пикселе pan'а — почти любое
+    // перетаскивание меняет хотя бы один маркер, и вся карта на мгновение
+    // мигает пустой, даже если 9 из 10 маркеров не изменились. Держим
+    // ObjectManager напрямую через нативные add()/remove() и передаём ему в
+    // features стабильную (никогда не меняющуюся) пустую ссылку — тогда
+    // декларативная remove+add ветка самой обёртки не срабатывает вовсе, а
+    // добавляем/удаляем только те маркеры, что реально изменились.
+    const mountedFeaturesRef = useRef<Record<string, any>>({});
+    const mountedSignaturesRef = useRef<Record<string, string>>({});
+    const objectManagerFeaturesSeedRef = useRef<any[]>([]);
+
+    const setObjectManagerRef = useCallback((instance: any) => {
+        objectManagerRef.current = instance;
+        if (instance) {
+            mountedFeaturesRef.current = {};
+            mountedSignaturesRef.current = {};
+        }
+    }, []);
+
+    useLayoutEffect(() => {
+        const objectManager = objectManagerRef.current;
+        if (!objectManager) return;
+
+        const nextSignatures = featureSignaturesRef.current;
+        const prevFeatures = mountedFeaturesRef.current;
+        const prevSignatures = mountedSignaturesRef.current;
+
+        const toRemove: any[] = [];
+        const toAdd: any[] = [];
+
+        Object.entries(prevFeatures).forEach(([id, feature]) => {
+            if (!(id in nextSignatures)) toRemove.push(feature);
+        });
+
+        features.forEach((feature) => {
+            const prevSignature = prevSignatures[feature.id];
+            if (prevSignature === undefined) {
+                toAdd.push(feature);
+            } else if (prevSignature !== nextSignatures[feature.id]) {
+                toRemove.push(prevFeatures[feature.id]);
+                toAdd.push(feature);
+            }
+        });
+
+        if (toRemove.length) objectManager.remove(toRemove);
+        if (toAdd.length) objectManager.add(toAdd);
+
+        mountedFeaturesRef.current = Object.fromEntries(
+            features.map((feature) => [feature.id, feature]),
+        );
+        mountedSignaturesRef.current = { ...nextSignatures };
+    }, [features]);
 
     // Оффер, для которого нужно открыть balloon, как только его маркер
     // реально появится в ObjectManager. null — нечего открывать / уже открыли.
@@ -483,8 +550,8 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                 <ZoomControl options={{ position: { right: 10, top: 10 } }} />
                 {(ymapState && (features.length > 0)) && (
                     <ObjectManager
-                        instanceRef={objectManagerRef}
-                        features={features}
+                        instanceRef={setObjectManagerRef}
+                        features={objectManagerFeaturesSeedRef.current}
                         options={{
                             clusterize: true,
                             gridSize: 64,
