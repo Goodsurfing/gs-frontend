@@ -75,9 +75,11 @@ export const OffersSlider: FC<OffersSliderProps> = (props) => {
     }, [getOffersData, isProfileLoading, myProfileData]);
 
     if (isLoading) {
-        <div className={cn(className, styles.wrapper)}>
-            <MiniLoader />
-        </div>;
+        return (
+            <div className={cn(className, styles.wrapper)}>
+                <MiniLoader />
+            </div>
+        );
     }
 
     return (

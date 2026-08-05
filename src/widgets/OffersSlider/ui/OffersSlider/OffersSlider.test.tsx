@@ -1,7 +1,7 @@
 import {
     describe, it, expect, vi, beforeEach,
 } from "vitest";
-import { render, waitFor } from "@testing-library/react";
+import { render, waitFor, screen } from "@testing-library/react";
 import { OffersSlider } from "./OffersSlider";
 
 /**
@@ -14,6 +14,7 @@ import { OffersSlider } from "./OffersSlider";
 let mockIsAuth: unknown;
 let mockProfileData: { favoriteCategories: number[] } | undefined;
 let mockProfileLoading: boolean;
+let mockOffersIsLoading: boolean;
 const getOffersData = vi.fn();
 
 vi.mock("@/shared/hooks/redux", () => ({
@@ -32,12 +33,16 @@ vi.mock("@/entities/Offer", async () => {
     const actual = await vi.importActual<typeof import("@/entities/Offer")>("@/entities/Offer");
     return {
         ...actual,
-        useLazyGetOffersQuery: () => [getOffersData, false],
+        useLazyGetOffersQuery: () => [getOffersData, mockOffersIsLoading],
     };
 });
 
 vi.mock("../Offer/Offer", () => ({
     default: () => null,
+}));
+
+vi.mock("@/shared/ui/MiniLoader/MiniLoader", () => ({
+    MiniLoader: () => <div data-testid="mini-loader" />,
 }));
 
 const okResult = (ids: number[]) => ({
@@ -49,8 +54,17 @@ describe("OffersSlider", () => {
         mockIsAuth = undefined;
         mockProfileData = undefined;
         mockProfileLoading = false;
+        mockOffersIsLoading = false;
         getOffersData.mockReset();
         getOffersData.mockReturnValue(okResult([1]));
+    });
+
+    it("показывает лоадер, пока идёт запрос вакансий", () => {
+        mockOffersIsLoading = true;
+
+        render(<OffersSlider />);
+
+        expect(screen.getByTestId("mini-loader")).toBeInTheDocument();
     });
 
     it("для анонимного пользователя сразу берёт admin isFeatured, не запрашивая категории", async () => {
