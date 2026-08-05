@@ -42,7 +42,7 @@ async function setup(): Promise<void> {
         });
 
         // Получаем JWT через API
-        const loginResp = await ctx.request.post(`${API_URL}/api/v2/token`, {
+        const loginResp = await ctx.request.post(`${API_URL}/api/v1/token`, {
             data: { email: account.email, password: account.password },
         });
 
@@ -50,7 +50,7 @@ async function setup(): Promise<void> {
             throw new Error(`Логин ${account.email} не удался: ${loginResp.status()}`);
         }
 
-        const { token, roles } = await loginResp.json();
+        const { accessToken, roles } = await loginResp.json();
 
         // Записываем токен в localStorage так, как ожидает приложение
         await ctx.addInitScript(
@@ -58,7 +58,7 @@ async function setup(): Promise<void> {
                 localStorage.setItem('token', JSON.stringify(t));
                 localStorage.setItem('roles', JSON.stringify(r));
             },
-            { t: token, r: roles ?? [] },
+            { t: accessToken, r: roles ?? [] },
         );
 
         // Открываем главную, чтобы localStorage "осел" в origin
