@@ -15,7 +15,7 @@ export const adminVideoApi = createApi({
     endpoints: (build) => ({
         getAdminVideoList: build.query<GetAdminVideosResponse, Partial<GetAdminVideosParams>>({
             query: (params) => ({
-                url: "video/list",
+                url: "video",
                 method: "GET",
                 params,
             }),
@@ -23,7 +23,7 @@ export const adminVideoApi = createApi({
         }),
         getAdminVideoById: build.query<GetAdminVideo, string>({
             query: (id) => ({
-                url: `video/element/${id}`,
+                url: `video/${id}`,
                 method: "GET",
             }),
             providesTags: ["video"],
@@ -38,7 +38,7 @@ export const adminVideoApi = createApi({
         }),
         updateAdminVideo: build.mutation<void, UpdateAdminVideoParams>({
             query: ({ id, body }) => ({
-                url: `video/edit/${id}`,
+                url: `video/${id}`,
                 method: "PATCH",
                 body,
             }),
@@ -55,7 +55,7 @@ export const adminVideoApi = createApi({
         getAdminReviewsVideo: build.query<GetAdminReviewsVideoResponse,
         Partial<GetAdminReviewsVideoParams>>({
             query: (params) => ({
-                url: "review-video/list",
+                url: "review-video",
                 method: "GET",
                 params,
             }),
@@ -64,14 +64,14 @@ export const adminVideoApi = createApi({
         getAdminReviewVideoById: build.query<GetAdminReviewVideo,
         string>({
             query: (id) => ({
-                url: `review-video/element/${id}`,
+                url: `review-video/${id}`,
                 method: "GET",
             }),
             providesTags: ["review"],
         }),
         updateAdminReviewVideo: build.mutation<void, UpdateAdminReviewVideoParams>({
             query: ({ id, body }) => ({
-                url: `review-video/edit/${id}`,
+                url: `review-video/${id}`,
                 method: "PATCH",
                 body,
             }),

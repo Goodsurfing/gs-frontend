@@ -246,7 +246,7 @@ describe("FundraiseStepPage — шаг auto-messages", () => {
                 ctx.json({ wordsGratitude: "", urlProgressWork: [], status: "draft" }),
             )),
             rest.patch("*/fundraise/automatic-messages/:id", (req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-            rest.patch("*/fundraise/toggle-status/:id", async (req, res, ctx) => {
+            rest.patch("*/fundraise/:id/toggle-status", async (req, res, ctx) => {
                 statusBody = await req.json();
                 return res(ctx.status(200), ctx.json({}));
             }),
@@ -270,7 +270,7 @@ describe("FundraiseStepPage — шаг auto-messages", () => {
                 ctx.json({ wordsGratitude: "", urlProgressWork: [], status: "draft" }),
             )),
             rest.patch("*/fundraise/automatic-messages/:id", (req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-            rest.patch("*/fundraise/toggle-status/:id", async (req, res, ctx) => {
+            rest.patch("*/fundraise/:id/toggle-status", async (req, res, ctx) => {
                 statusBody = await req.json();
                 return res(ctx.status(200), ctx.json({}));
             }),

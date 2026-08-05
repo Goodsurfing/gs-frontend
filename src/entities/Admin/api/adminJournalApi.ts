@@ -15,7 +15,7 @@ export const adminJournalApi = createApi({
         getAdminJournalList: build.query<GetAdminJournalsResponse,
         Partial<GetAdminJournalsParams>>({
             query: (params) => ({
-                url: "journal/list",
+                url: "journal",
                 method: "GET",
                 params,
             }),
@@ -23,14 +23,14 @@ export const adminJournalApi = createApi({
         }),
         getAdminJournalById: build.query<GetAdminJournal, string>({
             query: (journalId) => ({
-                url: `journal/element/${journalId}`,
+                url: `journal/${journalId}`,
                 method: "GET",
             }),
             providesTags: ["journal"],
         }),
         createAdminJournal: build.mutation<void, CreateAdminJournal>({
             query: (body) => ({
-                url: "journal/create",
+                url: "journal",
                 method: "POST",
                 body,
             }),
@@ -38,7 +38,7 @@ export const adminJournalApi = createApi({
         }),
         updateAdminJournal: build.mutation<void, UpdateAdminJournalParams>({
             query: ({ id, body }) => ({
-                url: `journal/edit/${id}`,
+                url: `journal/${id}`,
                 method: "PATCH",
                 body,
             }),
@@ -55,7 +55,7 @@ export const adminJournalApi = createApi({
         getAdminReviewsJournal: build.query<GetAdminReviewsJournalResponse,
         Partial<GetAdminReviewsJournalParams>>({
             query: (params) => ({
-                url: "review-journal/list",
+                url: "review-journal",
                 method: "GET",
                 params,
             }),
@@ -63,14 +63,14 @@ export const adminJournalApi = createApi({
         }),
         getAdminReviewJournalById: build.query<GetAdminReviewJournal, string>({
             query: (reviewId) => ({
-                url: `review-journal/element/${reviewId}`,
+                url: `review-journal/${reviewId}`,
                 method: "GET",
             }),
             providesTags: ["review"],
         }),
         updateAdminReviewJournal: build.mutation<void, UpdateAdminReviewJournalParams>({
             query: ({ id, body }) => ({
-                url: `review-journal/edit/${id}`,
+                url: `review-journal/${id}`,
                 method: "PATCH",
                 body,
             }),

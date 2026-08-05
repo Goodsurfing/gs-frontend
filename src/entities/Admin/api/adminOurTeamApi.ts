@@ -15,7 +15,7 @@ export const adminOurTeamApi = createApi({
     endpoints: (build) => ({
         getOurTeamList: build.query<GetOurTeamResponse, GetOurTeamParams>({
             query: (params) => ({
-                url: `${API_BASE_URL_ABSOLUTE}our-team/list`,
+                url: `${API_BASE_URL_ABSOLUTE}our-team`,
                 method: "GET",
                 params,
             }),
@@ -23,7 +23,7 @@ export const adminOurTeamApi = createApi({
         }),
         getAdminOurTeamList: build.query<GetAdminOurTeamResponse, GetAdminOurTeamParams>({
             query: (params) => ({
-                url: "our-team/list",
+                url: "our-team",
                 method: "GET",
                 params,
             }),
@@ -31,14 +31,14 @@ export const adminOurTeamApi = createApi({
         }),
         getAdminOurTeamById: build.query<GetAdminOurTeam, string>({
             query: (id) => ({
-                url: `our-team/element/${id}`,
+                url: `our-team/${id}`,
                 method: "GET",
             }),
             providesTags: ["ourTeam"],
         }),
         createAdminOurTeam: build.mutation<void, CreateAdminOurTeam>({
             query: (body) => ({
-                url: "our-team/create",
+                url: "our-team",
                 method: "POST",
                 body,
             }),
@@ -46,7 +46,7 @@ export const adminOurTeamApi = createApi({
         }),
         updateAdminOurTeam: build.mutation<void, UpdateAdminOurTeamRequest>({
             query: ({ id, body }) => ({
-                url: `our-team/edit/${id}`,
+                url: `our-team/${id}`,
                 method: "PATCH",
                 body,
             }),

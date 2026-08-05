@@ -24,7 +24,7 @@ export const adminCourseApi = createApi({
         // Courses
         getAdminCourses: build.query<GetAdminCoursesResponse, Partial<GetAdminCoursesParams>>({
             query: (params) => ({
-                url: "course/list",
+                url: "course",
                 method: "GET",
                 params,
             }),
@@ -32,14 +32,14 @@ export const adminCourseApi = createApi({
         }),
         getAdminCourseById: build.query<GetAdminCourse, string>({
             query: (courseId) => ({
-                url: `course/element/${courseId}`,
+                url: `course/${courseId}`,
                 method: "GET",
             }),
             providesTags: ["course"],
         }),
         createAdminCourse: build.mutation<void, CreateAdminCourseRequest>({
             query: (body) => ({
-                url: "course/create",
+                url: "course",
                 method: "POST",
                 body,
             }),
@@ -47,7 +47,7 @@ export const adminCourseApi = createApi({
         }),
         updateAdminCourse: build.mutation<void, UpdateAdminCourseRequest>({
             query: ({ id, body }) => ({
-                url: `course/edit/${id}`,
+                url: `course/${id}`,
                 method: "PATCH",
                 body,
             }),
@@ -64,7 +64,7 @@ export const adminCourseApi = createApi({
         getAdminReviewsCourses: build.query<GetAdminReviewsCoursesResponse,
         Partial<GetAdminReviewsCoursesParams>>({
             query: (params) => ({
-                url: "review-video-course/list",
+                url: "review-video-course",
                 method: "GET",
                 params,
             }),
@@ -72,14 +72,14 @@ export const adminCourseApi = createApi({
         }),
         getAdminReviewLessonById: build.query<GetAdminReviewLesson, string>({
             query: (reviewId) => ({
-                url: `review-video-course/element/${reviewId}`,
+                url: `review-video-course/${reviewId}`,
                 method: "GET",
             }),
             providesTags: ["review"],
         }),
         updateAdminReviewLesson: build.mutation<void, UpdateAdminReviewCourseRequest>({
             query: ({ id, body }) => ({
-                url: `review-video-course/edit/${id}`,
+                url: `review-video-course/${id}`,
                 method: "PATCH",
                 body,
             }),
@@ -105,14 +105,14 @@ export const adminCourseApi = createApi({
         getAdminCourseLesson: build.query<GetAdminCourseLesson,
         string>({
             query: (lessonId) => ({
-                url: `video-course/element/${lessonId}`,
+                url: `video-course/${lessonId}`,
                 method: "GET",
             }),
             providesTags: ["lesson"],
         }),
         createAdminCourseLesson: build.mutation<void, CreateAdminCourseLesson>({
             query: (body) => ({
-                url: "video-course/create",
+                url: "video-course",
                 method: "POST",
                 body,
             }),
@@ -120,7 +120,7 @@ export const adminCourseApi = createApi({
         }),
         updateAdminCourseLesson: build.mutation<void, UpdateAdminCourseLesson>({
             query: ({ id, body }) => ({
-                url: `video-course/edit/${id}`,
+                url: `video-course/${id}`,
                 method: "PATCH",
                 body,
             }),
@@ -136,7 +136,7 @@ export const adminCourseApi = createApi({
         // Experts
         getCourseExperts: build.query<GetAdminExpertsResponse, Partial<GetAdminExpertsRequest>>({
             query: (params) => ({
-                url: "expert/list",
+                url: "expert",
                 method: "GET",
                 params,
             }),
@@ -144,7 +144,7 @@ export const adminCourseApi = createApi({
         }),
         getCourseExpertById: build.query<GetAdminExpert, string>({
             query: (expertId) => ({
-                url: `expert/element/${expertId}`,
+                url: `expert/${expertId}`,
                 method: "GET",
             }),
             providesTags: ["expert"],
@@ -167,7 +167,7 @@ export const adminCourseApi = createApi({
         }),
         createAdminExpert: build.mutation<void, CreateAdminExpert>({
             query: (body) => ({
-                url: "expert/create",
+                url: "expert",
                 method: "POST",
                 body,
             }),
@@ -175,7 +175,7 @@ export const adminCourseApi = createApi({
         }),
         updateAdminExpert: build.mutation<void, UpdateAdminExpertRequest>({
             query: ({ expertId, body }) => ({
-                url: `expert/edit/${expertId}`,
+                url: `expert/${expertId}`,
                 method: "PATCH",
                 body,
             }),

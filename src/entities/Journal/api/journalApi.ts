@@ -12,7 +12,7 @@ export const journalApi = createApi({
     endpoints: (build) => ({
         getJournalList: build.query<GetJournalsResponse, Partial<GetJournalsParams>>({
             query: (params) => ({
-                url: "journal/list",
+                url: "journal",
                 method: "GET",
                 params,
             }),
@@ -43,7 +43,7 @@ export const journalApi = createApi({
         }),
         createReviewJournal: build.mutation<void, CreateReviewJournal>({
             query: (body) => ({
-                url: "review-journal/create",
+                url: "review-journal",
                 method: "POST",
                 body,
             }),

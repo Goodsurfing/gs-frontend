@@ -22,7 +22,7 @@ export const donationApi = createApi({
     endpoints: (build) => ({
         getDonations: build.query<GetDonationsResponse, Partial<GetDonationsParams>>({
             query: (params) => ({
-                url: "fundraise/list",
+                url: "fundraise",
                 method: "GET",
                 params,
             }),
@@ -57,7 +57,7 @@ export const donationApi = createApi({
         }),
         createDonation: build.mutation<CreateDonationResponse, void>({
             query: () => ({
-                url: "fundraise/create",
+                url: "fundraise",
                 method: "POST",
             }),
             invalidatesTags: ["donation"],
@@ -139,7 +139,7 @@ export const donationApi = createApi({
         }),
         updateDonationStatus: build.mutation<void, UpdateDonationStatusRequest>({
             query: ({ id, body }) => ({
-                url: `fundraise/toggle-status/${id}`,
+                url: `fundraise/${id}/toggle-status`,
                 method: "PATCH",
                 body,
             }),
@@ -147,7 +147,7 @@ export const donationApi = createApi({
         }),
         getDonationPublicReports: build.query<GetDonationReports[], void>({
             query: () => ({
-                url: "report/list",
+                url: "report",
                 method: "GET",
             }),
             providesTags: ["report"],

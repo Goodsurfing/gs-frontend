@@ -15,7 +15,7 @@ vi.mock("@/app/providers/LocaleProvider", () => ({
 }));
 
 const mockCategories = () => server.use(
-    rest.get(`*${API_BASE_URL_ABSOLUTE}category/list`, (req, res, ctx) => res(ctx.status(200), ctx.json([
+    rest.get(`*${API_BASE_URL_ABSOLUTE}category`, (req, res, ctx) => res(ctx.status(200), ctx.json([
         { id: 10, name: "Археология", color: "#fff" },
         { id: 8, name: "Спорт", color: "#fff" },
     ]))),

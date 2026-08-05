@@ -8,7 +8,7 @@ export const feedbackApi = createApi({
     endpoints: (build) => ({
         createFeedback: build.mutation<void, CreateFeedback>({
             query: (body) => ({
-                url: "feedback/create",
+                url: "feedback",
                 method: "POST",
                 body,
             }),

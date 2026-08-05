@@ -63,12 +63,12 @@ describe("OffersSearchFilter — регресс: категория не дол�
     it("не переотправляет снятую категорию при клике Применить", async () => {
         const requestedUrls: string[] = [];
         server.use(
-            rest.get("*/vacancy/list", (req, res, ctx) => {
+            rest.get("*/vacancy", (req, res, ctx) => {
                 requestedUrls.push(req.url.toString());
                 return res(ctx.status(200), ctx.json({ data: [], pagination: { total: 0 } }));
             }),
             rest.get("*/vacancy/for-map/list", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
-            rest.get("*/category/list", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
+            rest.get("*/category", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
         );
 
         renderWithProviders(
