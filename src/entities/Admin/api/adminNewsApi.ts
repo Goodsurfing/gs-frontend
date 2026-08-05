@@ -16,21 +16,21 @@ export const adminNewsApi = createApi({
     endpoints: (build) => ({
         getAdminNewsList: build.query<GetAdminNewsListResponse, Partial<GetAdminNewsListParams>>({
             query: () => ({
-                url: "news/list",
+                url: "news",
                 method: "GET",
             }),
             providesTags: ["news"],
         }),
         getAdminNewsById: build.query<GetAdminNews, string>({
             query: (newsid) => ({
-                url: `news/element/${newsid}`,
+                url: `news/${newsid}`,
                 method: "GET",
             }),
             providesTags: ["news"],
         }),
         createAdminNews: build.mutation<void, CreateAdminNews>({
             query: (body) => ({
-                url: "news/create",
+                url: "news",
                 method: "POST",
                 body,
             }),
@@ -38,7 +38,7 @@ export const adminNewsApi = createApi({
         }),
         updateAdminNews: build.mutation<void, UpdateAdminNewsParams>({
             query: ({ id, body }) => ({
-                url: `news/edit/${id}`,
+                url: `news/${id}`,
                 method: "PATCH",
                 body,
             }),
@@ -55,21 +55,21 @@ export const adminNewsApi = createApi({
         getAdminReviewsNews: build.query<GetAdminReviewsNewsResponse,
         Partial<GetAdminReviewsNewsParams>>({
             query: () => ({
-                url: "review-news/list",
+                url: "review-news",
                 method: "GET",
             }),
             providesTags: ["review"],
         }),
         getAdminReviewNewsById: build.query<GetAdminReviewNews, string>({
             query: (reviewId) => ({
-                url: `review-news/element/${reviewId}`,
+                url: `review-news/${reviewId}`,
                 method: "GET",
             }),
             providesTags: ["review"],
         }),
         updateAdminReviewNews: build.mutation<void, UpdateAdminReviewNewsParams>({
             query: ({ id, body }) => ({
-                url: `review-news/edit/${id}`,
+                url: `review-news/${id}`,
                 method: "PATCH",
                 body,
             }),

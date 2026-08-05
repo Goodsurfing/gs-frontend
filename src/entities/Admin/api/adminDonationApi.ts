@@ -13,7 +13,7 @@ export const adminDonationApi = createApi({
     endpoints: (build) => ({
         getAdminDonations: build.query<GetAdminDonations[], GetAdminDonationsParams>({
             query: (params) => ({
-                url: "fundraise/list",
+                url: "fundraise",
                 method: "GET",
                 params,
             }),
@@ -32,21 +32,21 @@ export const adminDonationApi = createApi({
         }),
         getAdminDonationReports: build.query<GetAdminDonationReports[], void>({
             query: () => ({
-                url: "report/list",
+                url: "report",
                 method: "GET",
             }),
             providesTags: ["report"],
         }),
         getAdminDonationReport: build.query<GetAdminDonationReport, string>({
             query: (id) => ({
-                url: `report/element/${id}`,
+                url: `report/${id}`,
                 method: "GET",
             }),
             providesTags: ["report"],
         }),
         createAdminDonationReport: build.mutation<void, CreateAdminDonationReport>({
             query: (body) => ({
-                url: "report/create",
+                url: "report",
                 method: "POST",
                 body,
             }),
@@ -54,7 +54,7 @@ export const adminDonationApi = createApi({
         }),
         updateAdminDonationReport: build.mutation<void, UpdateAdminDonationReportRequest>({
             query: ({ id, body }) => ({
-                url: `report/edit/${id}`,
+                url: `report/${id}`,
                 method: "PATCH",
                 body,
             }),

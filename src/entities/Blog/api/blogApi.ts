@@ -22,7 +22,7 @@ export const blogApi = createApi({
     endpoints: (build) => ({
         getBlogList: build.query<GetBlogListResponse, Partial<GetBlogListParams>>({
             query: (params) => ({
-                url: "blog/list",
+                url: "blog",
                 method: "GET",
                 params,
             }),
@@ -38,7 +38,7 @@ export const blogApi = createApi({
         }),
         publicBlogById: build.mutation<void, PublicBlogParams>({
             query: ({ id, body }) => ({
-                url: `blog/toggle-active/${id}`,
+                url: `blog/${id}/toggle-active`,
                 method: "PATCH",
                 body,
             }),
@@ -46,7 +46,7 @@ export const blogApi = createApi({
         }),
         createBlog: build.mutation<void, CreateBlog>({
             query: (body) => ({
-                url: "blog/create",
+                url: "blog",
                 method: "POST",
                 body,
             }),
@@ -54,7 +54,7 @@ export const blogApi = createApi({
         }),
         updateBlog: build.mutation<void, UpdateBlogParams>({
             query: ({ id, body }) => ({
-                url: `blog/edit/${id}`,
+                url: `blog/${id}`,
                 method: "PATCH",
                 body,
             }),
@@ -77,7 +77,7 @@ export const blogApi = createApi({
         // Categories
         getBlogCategories: build.query<BlogCategory[], GetBlogCategoriesParams>({
             query: (params) => ({
-                url: "blog-category/list",
+                url: "blog-category",
                 method: "GET",
                 params,
             }),
@@ -94,7 +94,7 @@ export const blogApi = createApi({
         }),
         createReviewBlog: build.mutation<void, CreateReviewBlog>({
             query: (body) => ({
-                url: "review-blog/create",
+                url: "review-blog",
                 method: "POST",
                 body,
             }),

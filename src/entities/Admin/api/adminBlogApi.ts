@@ -18,7 +18,7 @@ export const adminBlogApi = createApi({
     endpoints: (build) => ({
         getAdminBlogList: build.query<GetAdminBlogListResponse, Partial<GetAdminBlogListParams>>({
             query: (params) => ({
-                url: "blog/list",
+                url: "blog",
                 method: "GET",
                 params,
             }),
@@ -26,14 +26,14 @@ export const adminBlogApi = createApi({
         }),
         getAdminBlogById: build.query<GetAdminBlog, number>({
             query: (id) => ({
-                url: `blog/element/${id}`,
+                url: `blog/${id}`,
                 method: "GET",
             }),
             providesTags: ["blog"],
         }),
         createAdminBlog: build.mutation<void, UpdateAdminBlog>({
             query: (body) => ({
-                url: "blog/create",
+                url: "blog",
                 method: "POST",
                 body,
             }),
@@ -41,7 +41,7 @@ export const adminBlogApi = createApi({
         }),
         updateAdminBlog: build.mutation<void, UpdateAdminBlogParams>({
             query: ({ id, body }) => ({
-                url: `blog/edit/${id}`,
+                url: `blog/${id}`,
                 method: "PATCH",
                 body,
             }),
@@ -58,7 +58,7 @@ export const adminBlogApi = createApi({
         getAdminBlogCategories: build.query<GetAdminBlogCategoriesResponse,
         GetAdminBlogCategoriesParams>({
             query: (params) => ({
-                url: "blog-category/list",
+                url: "blog-category",
                 method: "GET",
                 params,
             }),
@@ -66,14 +66,14 @@ export const adminBlogApi = createApi({
         }),
         getAdminBlogCategoryById: build.query<GetAdminBlogCategory, number>({
             query: (id) => ({
-                url: `blog-category/element/${id}`,
+                url: `blog-category/${id}`,
                 method: "GET",
             }),
             providesTags: ["category"],
         }),
         createAdminBlogCategory: build.mutation<void, CreateBlogCategory>({
             query: (body) => ({
-                url: "blog-category/create",
+                url: "blog-category",
                 method: "POST",
                 body,
             }),
@@ -81,8 +81,8 @@ export const adminBlogApi = createApi({
         }),
         updateAdminBlogCategory: build.mutation<void, UpdateBlogCategoryParams>({
             query: ({ id, body }) => ({
-                url: `blog-category/edit/${id}`,
-                method: "POST",
+                url: `blog-category/${id}`,
+                method: "PATCH",
                 body,
             }),
             invalidatesTags: ["category"],
@@ -90,7 +90,7 @@ export const adminBlogApi = createApi({
         deleteAdminBlogCategory: build.mutation<void, number>({
             query: (id) => ({
                 url: `blog-category/${id}`,
-                method: "POST",
+                method: "DELETE",
             }),
             invalidatesTags: ["category"],
         }),
@@ -98,7 +98,7 @@ export const adminBlogApi = createApi({
         getAdminReviewsBlog: build.query<GetAdminReviewsBlogResponse,
         Partial<GetAdminReviewBlogParams>>({
             query: (params) => ({
-                url: "review-blog/list",
+                url: "review-blog",
                 method: "GET",
                 params,
             }),
@@ -107,14 +107,14 @@ export const adminBlogApi = createApi({
         getAdminReviewBlogById: build.query<GetAdminReviewBlog,
         string>({
             query: (id) => ({
-                url: `review-blog/element/${id}`,
+                url: `review-blog/${id}`,
                 method: "GET",
             }),
             providesTags: ["review"],
         }),
         updateAdminReviewBlog: build.mutation<void, UpdateAdminReviewBlogParams>({
             query: ({ id, body }) => ({
-                url: `review-blog/edit/${id}`,
+                url: `review-blog/${id}`,
                 method: "PATCH",
                 body,
             }),

@@ -91,7 +91,7 @@ export const adminApi = createApi({
                 formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
-                    url: "skill/create",
+                    url: "skill",
                     method: "POST",
                     body: formData,
                 };
@@ -111,7 +111,7 @@ export const adminApi = createApi({
                     formData.append("image", image);
                 }
                 return {
-                    url: `skill/edit/${skillId}`,
+                    url: `skill/${skillId}`,
                     method: "POST",
                     body: formData,
                 };
@@ -127,7 +127,7 @@ export const adminApi = createApi({
         }),
         getPublicSkills: build.query<Skill[], GetPublicSkillRequest>({
             query: (params) => ({
-                url: `${API_BASE_URL_ABSOLUTE}skill/list`,
+                url: `${API_BASE_URL_ABSOLUTE}skill`,
                 method: "GET",
                 params,
             }),
@@ -135,7 +135,7 @@ export const adminApi = createApi({
         }),
         getSkills: build.query<GetAdminSkillsResponse, undefined | Partial<GetAdminSkillsParams>>({
             query: (params) => ({
-                url: "skill/list",
+                url: "skill",
                 method: "GET",
                 params,
             }),
@@ -159,7 +159,7 @@ export const adminApi = createApi({
                 formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
-                    url: "achievement/create",
+                    url: "achievement",
                     method: "POST",
                     body: formData,
                 };
@@ -179,7 +179,7 @@ export const adminApi = createApi({
                     formData.append("image", image);
                 }
                 return {
-                    url: `achievement/edit/${achievementId}`,
+                    url: `achievement/${achievementId}`,
                     method: "POST",
                     body: formData,
                 };
@@ -196,7 +196,7 @@ export const adminApi = createApi({
         getPublicAchievements: build.query<Achievement[],
         GetAchievementRequest>({
             query: (params) => ({
-                url: `${API_BASE_URL_ABSOLUTE}achievement/list`,
+                url: `${API_BASE_URL_ABSOLUTE}achievement`,
                 method: "GET",
                 params,
             }),
@@ -205,7 +205,7 @@ export const adminApi = createApi({
         getAchievements: build.query<GetAdminAchievementsResponse,
         undefined | Partial<GetAdminAchievementsParams>>({
             query: (params) => ({
-                url: "achievement/list",
+                url: "achievement",
                 method: "GET",
                 params,
             }),
@@ -229,7 +229,7 @@ export const adminApi = createApi({
                 formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
-                    url: "transfer/create",
+                    url: "transfer",
                     method: "POST",
                     body: formData,
                 };
@@ -249,7 +249,7 @@ export const adminApi = createApi({
                     formData.append("image", image);
                 }
                 return {
-                    url: `transfer/edit/${transferId}`,
+                    url: `transfer/${transferId}`,
                     method: "POST",
                     body: formData,
                 };
@@ -266,7 +266,7 @@ export const adminApi = createApi({
         getPublicTransfers: build.query<Transfer[],
         GetAdminTransferRequest>({
             query: (params) => ({
-                url: `${API_BASE_URL_ABSOLUTE}transfer/list`,
+                url: `${API_BASE_URL_ABSOLUTE}transfer`,
                 method: "GET",
                 params,
             }),
@@ -275,7 +275,7 @@ export const adminApi = createApi({
         getTransfers: build.query<GetAdminTransfersResponse,
         undefined | Partial<GetAdminTransfersParams>>({
             query: (params) => ({
-                url: "transfer/list",
+                url: "transfer",
                 method: "GET",
                 params,
             }),
@@ -299,7 +299,7 @@ export const adminApi = createApi({
                 formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
-                    url: "house/create",
+                    url: "house",
                     method: "POST",
                     body: formData,
                 };
@@ -319,7 +319,7 @@ export const adminApi = createApi({
                     formData.append("image", image);
                 }
                 return {
-                    url: `house/edit/${houseId}`,
+                    url: `house/${houseId}`,
                     method: "POST",
                     body: formData,
                 };
@@ -336,7 +336,7 @@ export const adminApi = createApi({
         getPublicHouses: build.query<House[],
         GetHouseRequest>({
             query: (params) => ({
-                url: `${API_BASE_URL_ABSOLUTE}house/list`,
+                url: `${API_BASE_URL_ABSOLUTE}house`,
                 method: "GET",
                 params,
             }),
@@ -345,7 +345,7 @@ export const adminApi = createApi({
         getHouses: build.query<GetAdminHouseResponse,
         undefined | Partial<GetAdminHouseParams>>({
             query: (params) => ({
-                url: "house/list",
+                url: "house",
                 method: "GET",
                 params,
             }),
@@ -369,7 +369,7 @@ export const adminApi = createApi({
                 formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
-                    url: "food/create",
+                    url: "food",
                     method: "POST",
                     body: formData,
                 };
@@ -389,7 +389,7 @@ export const adminApi = createApi({
                     formData.append("image", image);
                 }
                 return {
-                    url: `food/edit/${foodId}`,
+                    url: `food/${foodId}`,
                     method: "POST",
                     body: formData,
                 };
@@ -406,7 +406,7 @@ export const adminApi = createApi({
         getPublicFoods: build.query<Food[],
         GetFoodRequest>({
             query: (params) => ({
-                url: `${API_BASE_URL_ABSOLUTE}food/list`,
+                url: `${API_BASE_URL_ABSOLUTE}food`,
                 method: "GET",
                 params,
             }),
@@ -415,7 +415,7 @@ export const adminApi = createApi({
         getFoods: build.query<GetAdminFoodResponse,
         undefined | Partial<GetAdminFoodParams>>({
             query: (params) => ({
-                url: "food/list",
+                url: "food",
                 method: "GET",
                 params,
             }),
@@ -450,8 +450,8 @@ export const adminApi = createApi({
             query: (data) => {
                 const { id, body } = data;
                 return {
-                    url: `user/edit/${id}`,
-                    method: "POST",
+                    url: `user/${id}`,
+                    method: "PATCH",
                     body,
                 };
             },
@@ -459,7 +459,7 @@ export const adminApi = createApi({
         }),
         toggleAdminUserActive: build.mutation<void, { id: string; isActive: boolean; }>({
             query: ({ id, isActive }) => ({
-                url: `user/toggle-active/${id}`,
+                url: `user/${id}/toggle-active`,
                 method: "POST",
                 body: { isActive },
             }),
@@ -481,7 +481,7 @@ export const adminApi = createApi({
         }),
         getUsers: build.query<GetAdminUserResponse, Partial<GetAdminUserParams>>({
             query: (params) => ({
-                url: "user/list",
+                url: "user",
                 method: "GET",
                 params,
             }),
@@ -498,8 +498,8 @@ export const adminApi = createApi({
             query: (data) => {
                 const { id, body } = data;
                 return {
-                    url: `organization/edit/${id}`,
-                    method: "POST",
+                    url: `organization/${id}`,
+                    method: "PATCH",
                     body,
                 };
             },
@@ -507,7 +507,7 @@ export const adminApi = createApi({
         }),
         toggleAdminOrganizationActive: build.mutation<void, string>({
             query: (organizationId) => ({
-                url: `organization/toggle-active/${organizationId}`,
+                url: `organization/${organizationId}/toggle-active`,
                 method: "POST",
             }),
             invalidatesTags: ["organization"],
@@ -522,7 +522,7 @@ export const adminApi = createApi({
         getOrganizations: build.query<GetAdminOrganizationResponse,
         Partial<GetAdminOrganizationParams>>({
             query: (params) => ({
-                url: "organization/list",
+                url: "organization",
                 method: "GET",
                 params,
             }),
@@ -537,8 +537,8 @@ export const adminApi = createApi({
         }),
         editAdminReviewVacancy: build.mutation<void, EditReviewVacancy>({
             query: (data) => ({
-                url: `review-vacancy/edit/${data.reviewId}`,
-                method: "POST",
+                url: `review-vacancy/${data.reviewId}`,
+                method: "PATCH",
                 body: data.body,
             }),
             invalidatesTags: ["reviewVacancy"],
@@ -553,7 +553,7 @@ export const adminApi = createApi({
         getAdminReviewVacanciesList: build.query<GetAdminReviewVacancyListResponse,
         GetAdminReviewVacancyListParams>({
             query: (params) => ({
-                url: "review-vacancy/list",
+                url: "review-vacancy",
                 method: "GET",
                 params,
             }),
@@ -569,8 +569,8 @@ export const adminApi = createApi({
         }),
         editAdminReviewVolunteer: build.mutation<void, EditAdminReviewVolunteerRequest>({
             query: (data) => ({
-                url: `review-volunteer/edit/${data.reviewId}`,
-                method: "POST",
+                url: `review-volunteer/${data.reviewId}`,
+                method: "PATCH",
                 body: data.body,
             }),
             invalidatesTags: ["reviewVolunteer"],
@@ -585,7 +585,7 @@ export const adminApi = createApi({
         getAdminReviewVolunteerList: build.query<GetAdminReviewVolunteerListResponse,
         GetAdminReviewVolunteerListParams>({
             query: (params) => ({
-                url: "review-volunteer/list",
+                url: "review-volunteer",
                 method: "GET",
                 params,
             }),
@@ -602,7 +602,7 @@ export const adminApi = createApi({
         getAdminOffers: build.query<GetAdminOffersRequest,
         GetAdminOffersParams>({
             query: (params) => ({
-                url: "vacancy/list",
+                url: "vacancy",
                 method: "GET",
                 params,
             }),
@@ -627,7 +627,7 @@ export const adminApi = createApi({
                 formData.append("image", image);
 
                 return {
-                    url: "category/create",
+                    url: "category",
                     method: "POST",
                     body: formData,
                 };
@@ -648,7 +648,7 @@ export const adminApi = createApi({
                     formData.append("image", image);
                 }
                 return {
-                    url: `category/edit/${id}`,
+                    url: `category/${id}`,
                     method: "POST",
                     body: formData,
                 };
@@ -665,7 +665,7 @@ export const adminApi = createApi({
         getCategoriesVacancy: build.query<GetCategoryResponse,
         PaginationParams>({
             query: (params) => ({
-                url: "category/list",
+                url: "category",
                 method: "GET",
                 params,
             }),
@@ -682,7 +682,7 @@ export const adminApi = createApi({
         getPublicCategoriesVacancy: build.query<CategoryCountVacancy[],
         GetCategoryRequest>({
             query: (params) => ({
-                url: `${API_BASE_URL_ABSOLUTE}category/list`,
+                url: `${API_BASE_URL_ABSOLUTE}category`,
                 method: "GET",
                 params,
             }),
@@ -805,7 +805,7 @@ export const adminApi = createApi({
         updateAdminVacancyStatus: build.mutation<UpdateOfferStatusResponse,
         UpdateOfferStatusRequest>({
             query: (data) => ({
-                url: `vacancy/toggle-status/${data.id}`,
+                url: `vacancy/${data.id}/toggle-status`,
                 method: "PATCH",
                 body: { status: data.status },
             }),
@@ -813,7 +813,7 @@ export const adminApi = createApi({
         }),
         updateAdminVacancyFeatured: build.mutation<void, UpdateAdminVacancyFeaturedRequest>({
             query: (data) => ({
-                url: `vacancy/toggle-featured/${data.id}`,
+                url: `vacancy/${data.id}/toggle-featured`,
                 method: "PATCH",
                 body: { isFeatured: data.isFeatured },
             }),
@@ -830,14 +830,14 @@ export const adminApi = createApi({
         // Ambassadors
         getAmbassadors: build.query<GetAmbassadorsResponse, GetAmbassadorsParams>({
             query: () => ({
-                url: `${API_BASE_URL_ABSOLUTE}leader/list`,
+                url: `${API_BASE_URL_ABSOLUTE}leader`,
                 method: "GET",
             }),
             providesTags: ["ambassadors"],
         }),
         getAdminAmbassadors: build.query<GetAdminAmbassadorsResponse, GetAdminAmbassadorsParams>({
             query: (params) => ({
-                url: "leader/list",
+                url: "leader",
                 method: "GET",
                 params,
             }),
@@ -845,7 +845,7 @@ export const adminApi = createApi({
         }),
         getAdminAmbassadorById: build.query<GetAdminAmbassador, string>({
             query: (id) => ({
-                url: `leader/element/${id}`,
+                url: `leader/${id}`,
                 method: "GET",
             }),
             providesTags: ["ambassadors"],
@@ -853,7 +853,7 @@ export const adminApi = createApi({
         createAdminAmbassador: build.mutation<void,
         CreateAdminAmbassador>({
             query: (body) => ({
-                url: "leader/create",
+                url: "leader",
                 method: "POST",
                 body,
             }),
@@ -862,7 +862,7 @@ export const adminApi = createApi({
         updateAdminAmbassador: build.mutation<void,
         UpdateAdminAmbassador>({
             query: ({ id, body }) => ({
-                url: `leader/edit/${id}`,
+                url: `leader/${id}`,
                 method: "PATCH",
                 body,
             }),

@@ -14,7 +14,7 @@ export const newsApi = createApi({
     endpoints: (build) => ({
         getNewsList: build.query<GetNewsListResponse, Partial<GetNewsListParams>>({
             query: (params) => ({
-                url: "news/list",
+                url: "news",
                 method: "GET",
                 params,
             }),
@@ -46,7 +46,7 @@ export const newsApi = createApi({
         }),
         createReviewNews: build.mutation<void, CreateReviewNewsRequest>({
             query: (body) => ({
-                url: "review-news/create",
+                url: "review-news",
                 method: "POST",
                 body,
             }),

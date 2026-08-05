@@ -23,7 +23,7 @@ export const adminBannerMarketingApi = createApi({
         getAdminBannerMarketingList: build.query<GetAdminBannerMarketingListResponse,
         Partial<GetAdminBannerMarketingListParams>>({
             query: (params) => ({
-                url: "marketing-banner/list",
+                url: "marketing-banner",
                 method: "GET",
                 params,
             }),
@@ -32,14 +32,14 @@ export const adminBannerMarketingApi = createApi({
         getAdminBannerMarketing: build.query<GetAdminMarketingBanner,
         string>({
             query: (id) => ({
-                url: `marketing-banner/element/${id}`,
+                url: `marketing-banner/${id}`,
                 method: "GET",
             }),
             providesTags: ["banner"],
         }),
         createAdminBannerMarketing: build.mutation<void, CreateAdminBannerMarketing>({
             query: (body) => ({
-                url: "marketing-banner/create",
+                url: "marketing-banner",
                 method: "POST",
                 body,
             }),
@@ -47,7 +47,7 @@ export const adminBannerMarketingApi = createApi({
         }),
         updateAdminBannerMarketing: build.mutation<void, UpdateAdminBannerMarketingParams>({
             query: ({ id, body }) => ({
-                url: `marketing-banner/edit/${id}`,
+                url: `marketing-banner/${id}`,
                 method: "PATCH",
                 body,
             }),

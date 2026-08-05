@@ -16,7 +16,7 @@ export const videoApi = createApi({
     endpoints: (build) => ({
         getVideoList: build.query<GetVideosResponse, Partial<GetVideosParams>>({
             query: (params) => ({
-                url: "video/list",
+                url: "video",
                 method: "GET",
                 params,
             }),
@@ -32,7 +32,7 @@ export const videoApi = createApi({
         }),
         createVideo: build.mutation<void, CreateVideo>({
             query: (body) => ({
-                url: "video/create",
+                url: "video",
                 method: "POST",
                 body,
             }),
@@ -40,7 +40,7 @@ export const videoApi = createApi({
         }),
         updateVideo: build.mutation<void, UpdateVideoParams>({
             query: ({ id, body }) => ({
-                url: `video/edit/${id}`,
+                url: `video/${id}`,
                 method: "PATCH",
                 body,
             }),
@@ -71,7 +71,7 @@ export const videoApi = createApi({
         }),
         createReviewVideo: build.mutation<void, CreateReviewVideo>({
             query: (body) => ({
-                url: "review-video/create",
+                url: "review-video",
                 method: "POST",
                 body,
             }),

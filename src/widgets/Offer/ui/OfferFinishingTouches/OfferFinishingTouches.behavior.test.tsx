@@ -57,7 +57,7 @@ describe("OfferFinishingTouches", () => {
                 ctx.json({ id: 42, status: "draft", finishingTouche: null }),
             )),
             rest.patch("*/vacancies/42", (req, res, ctx) => res(ctx.status(200), ctx.json({ id: 42 }))),
-            rest.patch("*/vacancy/toggle-status/42", (req, res, ctx) => {
+            rest.patch("*/vacancy/42/toggle-status", (req, res, ctx) => {
                 statusCalled = true;
                 return res(ctx.status(200), ctx.json({}));
             }),
@@ -84,7 +84,7 @@ describe("OfferFinishingTouches", () => {
                 ctx.json({ id: 42, status: "draft", finishingTouche: null }),
             )),
             rest.patch("*/vacancies/42", (req, res, ctx) => res(ctx.status(200), ctx.json({ id: 42 }))),
-            rest.patch("*/vacancy/toggle-status/42", async (req, res, ctx) => {
+            rest.patch("*/vacancy/42/toggle-status", async (req, res, ctx) => {
                 statusBody = await req.json();
                 return res(ctx.status(200), ctx.json({}));
             }),
@@ -116,7 +116,7 @@ describe("OfferFinishingTouches", () => {
                 ctx.json({ id: 42, status: "draft", finishingTouche: null }),
             )),
             rest.patch("*/vacancies/42", (req, res, ctx) => res(ctx.status(200), ctx.json({ id: 42 }))),
-            rest.patch("*/vacancy/toggle-status/42", (req, res, ctx) => {
+            rest.patch("*/vacancy/42/toggle-status", (req, res, ctx) => {
                 statusCalled = true;
                 return res(ctx.status(200), ctx.json({}));
             }),
@@ -144,7 +144,7 @@ describe("OfferFinishingTouches", () => {
                 ctx.json({ id: 42, status: "active", finishingTouche: null }),
             )),
             rest.patch("*/vacancies/42", (req, res, ctx) => res(ctx.status(200), ctx.json({ id: 42 }))),
-            rest.patch("*/vacancy/toggle-status/42", (req, res, ctx) => {
+            rest.patch("*/vacancy/42/toggle-status", (req, res, ctx) => {
                 statusCalled = true;
                 return res(ctx.status(200), ctx.json({}));
             }),

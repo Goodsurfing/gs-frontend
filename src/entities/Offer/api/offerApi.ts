@@ -114,7 +114,7 @@ export const offerApi = createApi({
         updateOfferStatus: build.mutation<UpdateOfferStatusResponse, UpdateOfferStatusRequest>({
             query: (data) => ({
                 // url: `/vacancies/${data.id}/status`,
-                url: `${API_BASE_URL_ABSOLUTE}vacancy/toggle-status/${data.id}`,
+                url: `${API_BASE_URL_ABSOLUTE}vacancy/${data.id}/toggle-status`,
                 method: "PATCH",
                 headers: {
                     // "Content-Type": "application/merge-patch+json",
@@ -148,7 +148,7 @@ export const offerApi = createApi({
         }),
         getOffers: build.query<GetOffersResponse, Partial<GetOffersFilters> | undefined>({
             query: (params) => ({
-                url: `${API_BASE_URL_ABSOLUTE}vacancy/list`,
+                url: `${API_BASE_URL_ABSOLUTE}vacancy`,
                 method: "GET",
                 params,
             }),

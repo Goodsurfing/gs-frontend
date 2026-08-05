@@ -21,7 +21,7 @@ export const courseApi = createApi({
         // Course
         getCourses: build.query<GetCoursesResponse, GetCoursesParams>({
             query: (params) => ({
-                url: "course/list",
+                url: "course",
                 method: "GET",
                 params,
             }),
@@ -52,7 +52,7 @@ export const courseApi = createApi({
         }),
         createReviewLesson: build.mutation<void, CreateReviewLessonRequest>({
             query: (body) => ({
-                url: "review-video-course/create",
+                url: "review-video-course",
                 method: "POST",
                 body,
             }),
