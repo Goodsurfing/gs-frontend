@@ -704,7 +704,16 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                 </ul>
             </div>
         `),
-        clusterBalloonPanelMaxMapArea: Infinity,
+        // Infinity forced Yandex to ALWAYS render clusters through its own
+        // native two-pane panel UI (a list of items + selected item's
+        // content) instead of ever calling clusterBalloonContentLayout
+        // above — that template was dead code. The native panel's list
+        // pane has no background of its own (relies on our .clusterBalloon
+        // styling that never applied to it), rendering as unstyled text
+        // floating over the map. 0 disables panel mode entirely, so
+        // clusters always go through our own fully-styled template instead
+        // of Yandex's version-pinned internal markup.
+        clusterBalloonPanelMaxMapArea: 0,
         clusterBalloonContentLayoutHeight: 200,
     } : undefined), [ymapState?.templateLayoutFactory, vacancyListTitle]);
 
