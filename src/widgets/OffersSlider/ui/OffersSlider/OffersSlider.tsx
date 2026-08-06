@@ -26,7 +26,7 @@ export const OffersSlider: FC<OffersSliderProps> = (props) => {
     const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
     const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
     const [offers, setOffers] = useState<OfferApi[]>([]);
-    const [getOffersData, isLoading] = useLazyGetOffersQuery();
+    const [getOffersData, { isLoading }] = useLazyGetOffersQuery();
     const { locale } = useLocale();
 
     const isAuth = useAppSelector(getUserAuthData);
