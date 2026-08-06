@@ -43,6 +43,13 @@ export const chatApi = createApi({
                 method: "POST",
                 body,
             }),
+            // Отправленное сообщение появляется в открытом чате только через
+            // Mercure-подписку (useGetChatMessages) — своего локального
+            // добавления в список нет. Если SSE-пуш задержится/оборвётся,
+            // отправитель не увидит собственное сообщение без перезагрузки
+            // страницы. invalidatesTags форсирует рефетч списка сообщений
+            // как страховку, не завязанную на реальное время.
+            invalidatesTags: ["chat"],
         }),
         readMessage: build.mutation<ChatType, MessageRequest>({
             query: (data) => ({
