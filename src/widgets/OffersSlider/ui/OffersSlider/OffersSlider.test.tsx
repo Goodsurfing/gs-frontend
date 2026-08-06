@@ -33,12 +33,17 @@ vi.mock("@/entities/Offer", async () => {
     const actual = await vi.importActual<typeof import("@/entities/Offer")>("@/entities/Offer");
     return {
         ...actual,
-        useLazyGetOffersQuery: () => [getOffersData, mockOffersIsLoading],
+        // useLazyQuery's second tuple element is the full RTK Query result
+        // object (isLoading is a property on it, not the element itself) —
+        // mocked with the same shape here on purpose, so a regression to
+        // `const [trigger, isLoading] = useLazyGetOffersQuery()` (destructuring
+        // the whole object as a boolean, always truthy) gets caught.
+        useLazyGetOffersQuery: () => [getOffersData, { isLoading: mockOffersIsLoading }],
     };
 });
 
 vi.mock("../Offer/Offer", () => ({
-    default: () => null,
+    default: ({ offer }: { offer: { id: number } }) => <div data-testid={`offer-${offer.id}`} />,
 }));
 
 vi.mock("@/shared/ui/MiniLoader/MiniLoader", () => ({
@@ -65,6 +70,15 @@ describe("OffersSlider", () => {
         render(<OffersSlider />);
 
         expect(screen.getByTestId("mini-loader")).toBeInTheDocument();
+    });
+
+    it("после загрузки показывает вакансии, а не лоадер вечно", async () => {
+        getOffersData.mockReturnValue(okResult([1, 2]));
+
+        render(<OffersSlider />);
+
+        await waitFor(() => expect(screen.getByTestId("offer-1")).toBeInTheDocument());
+        expect(screen.queryByTestId("mini-loader")).not.toBeInTheDocument();
     });
 
     it("для анонимного пользователя сразу берёт admin isFeatured, не запрашивая категории", async () => {
