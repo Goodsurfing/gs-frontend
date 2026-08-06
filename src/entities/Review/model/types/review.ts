@@ -111,6 +111,7 @@ export interface GetOfferReviewByVacancy {
     }
     description: string;
     rating: number;
+    createdAt: string | null;
     images: Image[];
 }
 

@@ -6,11 +6,13 @@ import { useTranslation } from "react-i18next";
 
 import { Rating } from "@mui/material";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 import { ReviewWidget } from "@/widgets/ReviewWidget";
 
 import {
-    GetOfferReviewByVacancy, useCreateOfferReviewMutation, useLazyGetOfferReviewByVacancyIdQuery,
+    GetOfferReviewByVacancy, useCreateOfferReviewMutation, useDeleteOfferReviewMutation,
+    useLazyGetOfferReviewByVacancyIdQuery,
 } from "@/entities/Review";
 
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
@@ -30,6 +32,8 @@ interface OfferReviewsCardProps {
 }
 
 const VISIBLE_COUNT = 5;
+// Держим в синхроне с DeleteHandler::DELETE_WINDOW на бэкенде (GS-132).
+const DELETE_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
     (props: OfferReviewsCardProps) => {
@@ -44,9 +48,11 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         const [reviews, setReviews] = useState<GetOfferReviewByVacancy[]>([]);
         const { locale } = useLocale();
         const { getFullName } = useGetFullName();
+        const { myProfile } = useAuth();
 
         const [getReviewsData, { data: reviewsData }] = useLazyGetOfferReviewByVacancyIdQuery();
         const [createOfferReview] = useCreateOfferReviewMutation();
+        const [deleteOfferReview] = useDeleteOfferReviewMutation();
 
         const fetchReviews = useCallback(async (pageItem: number) => {
             try {
@@ -101,17 +107,36 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
             canReview, commentInput, rating, reviewImages, createOfferReview, offerId, fetchReviews,
         ]);
 
-        const renderReviews = reviews.map((review) => (
-            <ReviewWidget
-                name={getFullName(review.author.firstName, review.author.lastName)}
-                avatar={getMediaContent(review.author.image ?? undefined, "SMALL")}
-                reviewText={review.description}
-                stars={review.rating}
-                url={getVolunteerPersonalPageUrl(locale, review.author.id)}
-                images={review.images}
-                key={review.id}
-            />
-        ));
+        const handleDeleteReview = useCallback(async (reviewId: string) => {
+            if (!window.confirm("Удалить отзыв? Это действие нельзя отменить.")) return;
+
+            try {
+                await deleteOfferReview(reviewId).unwrap();
+                setReviews((prev) => prev.filter((review) => review.id !== reviewId));
+            } catch {
+                setError("Не удалось удалить отзыв. Попробуйте позже.");
+            }
+        }, [deleteOfferReview]);
+
+        const renderReviews = reviews.map((review) => {
+            const canDelete = myProfile?.id === review.author.id
+                && !!review.createdAt
+                && (Date.now() - new Date(review.createdAt).getTime()) < DELETE_WINDOW_MS;
+
+            return (
+                <ReviewWidget
+                    name={getFullName(review.author.firstName, review.author.lastName)}
+                    avatar={getMediaContent(review.author.image ?? undefined, "SMALL")}
+                    reviewText={review.description}
+                    stars={review.rating}
+                    url={getVolunteerPersonalPageUrl(locale, review.author.id)}
+                    images={review.images}
+                    canDelete={canDelete}
+                    onDelete={() => handleDeleteReview(review.id)}
+                    key={review.id}
+                />
+            );
+        });
 
         const renderContent = () => {
             if (error) {

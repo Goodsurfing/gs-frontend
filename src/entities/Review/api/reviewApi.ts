@@ -175,6 +175,13 @@ export const reviewApi = createApi({
             }),
             invalidatesTags: ["host", "volunteer"],
         }),
+        deleteOfferReview: build.mutation<void, string>({
+            query: (reviewId) => ({
+                url: `${API_BASE_URL_ABSOLUTE}review-vacancy/${reviewId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["host", "volunteer"],
+        }),
         getOfferReviews: build.query<GetOfferReviewRequest,
         GetOfferReviewParams>({
             query: (params) => ({
@@ -247,6 +254,7 @@ export const {
     useCreateVolunteerReviewMutation,
     useLazyGetAboutVolunteerReviewsQuery,
     useCreateOfferReviewMutation,
+    useDeleteOfferReviewMutation,
     useLazyGetOfferReviewsQuery,
     useGetMyVolunteerReviewsQuery,
     useLazyGetMyVolunteerReviewsQuery,
