@@ -12,6 +12,7 @@ export {
     useCreateVolunteerReviewMutation,
     useLazyGetAboutVolunteerReviewsQuery,
     useCreateOfferReviewMutation,
+    useDeleteOfferReviewMutation,
     useLazyGetOfferReviewsQuery,
     useGetMyVolunteerReviewsQuery,
     useLazyGetMyVolunteerReviewsQuery,
