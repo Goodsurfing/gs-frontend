@@ -17,6 +17,7 @@ import { OfferMap } from "@/entities/Offer";
 import styles from "./OffersMap.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { Modal } from "@/shared/ui/Modal/Modal";
 import { Text } from "@/shared/ui/Text/Text";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -73,6 +74,15 @@ export interface MapViewportBounds {
     boundsNeLng: number;
 }
 
+interface ClusterOfferItem {
+    id: string;
+    name: string;
+    url: string;
+    image: string;
+    categoryName: string;
+    categoryColor: string;
+}
+
 interface OffersMapProps {
     className?: string;
     classNameMap?: string;
@@ -101,6 +111,12 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const { t } = useTranslation();
     const [ymapState, setYmapState] = useState<YmapType | undefined>(undefined);
     const [showNoLocationNotice, setShowNoLocationNotice] = useState(false);
+    // Список вакансий кластера — целиком наш React-компонент (Modal),
+    // не нативный balloon Яндекса. См. комментарий у clusterOpenBalloonOnClick
+    // ниже: попытки стилизовать/сконфигурировать нативный кластерный balloon
+    // не работали на практике, поэтому клик по кластеру обрабатывается вручную
+    // и открывает это состояние вместо какого-либо Яндекс-layout.
+    const [activeClusterOffers, setActiveClusterOffers] = useState<ClusterOfferItem[] | null>(null);
     // Скрипт Яндекс.Карт грузится извне (<script> тег, не React-дерево) —
     // если он падает или зависает (сеть, блокировщик, сбой самого сервиса),
     // это происходит ВНЕ цикла рендера React, и никакой Error Boundary (в
@@ -232,6 +248,16 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                         balloonContent,
                         clusterCaption: offer.name ?? offerWithoutName,
                         hintContent: offer.name ?? offerWithoutName,
+                        // Наш собственный кластер-попап (см. handleClusterClick
+                        // ниже) читает эти три поля напрямую из
+                        // geoObject.properties — раньше их тут не было вообще,
+                        // а старый (нативный, недокументированный) шаблон
+                        // кластера ссылался на несуществующий properties.url,
+                        // из-за чего ссылки в списке вели на "undefined".
+                        offerUrl,
+                        offerImage: getMediaContent(imgSrc, "SMALL") ?? defaultImage,
+                        categoryName,
+                        categoryColor,
                     },
                     options: {
                         iconLayout: "default#imageWithContent",
@@ -419,18 +445,12 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         } catch {
             return false;
         }
-        // objects и clusters — ДВЕ независимые balloon-коллекции у
-        // ObjectManager, каждая со своим открытым/закрытым состоянием.
-        // Открытие balloon отдельного маркера НЕ закрывает balloon кластера
-        // сам по себе, если тот уже был открыт раньше (например, пользователь
-        // только что кликнул по кластеру, увидел список вакансий, а потом
-        // сработал этот код) — обе таблички повисают на карте одновременно,
-        // одна поверх другой. Закрываем кластерную явно.
-        try {
-            objectManager.clusters.balloon.close();
-        } catch {
-            // no-op: balloon кластера мог и не быть открыт
-        }
+        // Открытие balloon отдельного маркера само по себе не закрывает наш
+        // React-попап со списком вакансий кластера, если тот уже был открыт
+        // раньше (пользователь только что кликнул по кластеру, увидел
+        // список, а потом сработал этот код) — обе таблички повисали бы на
+        // экране одновременно, одна поверх другой.
+        setActiveClusterOffers(null);
         // Шестое живое наблюдение на стейдже: даже успешный open() не значит
         // "готово навсегда". Bounds-дебаунс может дать ДВЕ волны обновления
         // маркеров за один pan (промежуточная позиция во время анимации +
@@ -578,20 +598,34 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         };
     }, [objectManagerMountTick]);
 
-    // Симметричный случай: клик по кластеру открывает ЕГО собственный
-    // balloon (список вакансий) — тоже целиком внутри Яндекс.Карт, тоже
-    // отдельная от objects.balloon коллекция. Если в этот момент уже была
-    // открыта табличка конкретной вакансии (например, из списка/deep-link),
-    // она никуда не девается сама — обе таблички оказываются на карте разом,
-    // одна поверх другой. Закрываем balloon отдельного маркера и сбрасываем
-    // отложенный выбор — раз пользователь сейчас смотрит на кластер, не
-    // нужно, чтобы следующий bounds-рефетч молча переоткрыл старую табличку
-    // поверх того, что он видит.
+    // Симметричный случай: клик по кластеру должен показать список вакансий
+    // внутри него. Обрабатываем клик вручную вместо нативного balloon
+    // Яндекса (clusterOpenBalloonOnClick: false у clusters выше) — читаем
+    // geoObjects прямо из кликнутого кластера и открываем наш Modal.
+    // properties.offerUrl/offerImage/categoryName/categoryColor — то, что мы
+    // сами положили в properties каждого маркера при построении features.
+    // Заодно закрываем balloon отдельного маркера и сбрасываем отложенный
+    // выбор — раз пользователь сейчас смотрит на кластер, не нужно, чтобы
+    // следующий bounds-рефетч молча переоткрыл старую табличку поверх того,
+    // что он видит.
     useEffect(() => {
         const objectManager = objectManagerRef.current;
         if (!objectManager) return undefined;
 
-        const handleClusterBalloonOpen = () => {
+        const handleClusterClick = (e: any) => {
+            const objectId = e.get("objectId");
+            const clusterObject = objectManager.clusters.getById(objectId);
+            const geoObjects = clusterObject?.properties?.geoObjects ?? [];
+            const items: ClusterOfferItem[] = geoObjects.map((geoObject: any) => ({
+                id: String(geoObject.id),
+                name: geoObject.properties.name,
+                url: geoObject.properties.offerUrl,
+                image: geoObject.properties.offerImage,
+                categoryName: geoObject.properties.categoryName,
+                categoryColor: geoObject.properties.categoryColor,
+            }));
+            setActiveClusterOffers(items);
+
             pendingBalloonOfferIdRef.current = null;
             try {
                 objectManager.objects.balloon.close();
@@ -600,9 +634,9 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
             }
         };
 
-        objectManager.clusters.events.add("balloonopen", handleClusterBalloonOpen);
+        objectManager.clusters.events.add("click", handleClusterClick);
         return () => {
-            objectManager.clusters.events.remove("balloonopen", handleClusterBalloonOpen);
+            objectManager.clusters.events.remove("click", handleClusterClick);
         };
     }, [objectManagerMountTick]);
 
@@ -694,28 +728,20 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         },
         clusterIconSize: [40, 40],
         clusterIconOffset: [-20, -20],
-        clusterBalloonContentLayout: ymapState.templateLayoutFactory.createClass(`
-            <div class="${styles.clusterBalloon}">
-                <h3>${vacancyListTitle}</h3>
-                <ul>
-                    {% for geoObject in properties.geoObjects %}
-                        <li> <a href="{{geoObject.properties.url}}">{{ geoObject.properties.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-        `),
-        // Infinity forced Yandex to ALWAYS render clusters through its own
-        // native two-pane panel UI (a list of items + selected item's
-        // content) instead of ever calling clusterBalloonContentLayout
-        // above — that template was dead code. The native panel's list
-        // pane has no background of its own (relies on our .clusterBalloon
-        // styling that never applied to it), rendering as unstyled text
-        // floating over the map. 0 disables panel mode entirely, so
-        // clusters always go through our own fully-styled template instead
-        // of Yandex's version-pinned internal markup.
-        clusterBalloonPanelMaxMapArea: 0,
-        clusterBalloonContentLayoutHeight: 200,
-    } : undefined), [ymapState?.templateLayoutFactory, vacancyListTitle]);
+        // Ни clusterBalloonContentLayout (наш шаблон), ни
+        // clusterBalloonPanelMaxMapArea: 0 не помогли — Яндекс всё равно
+        // где-то уходил в свой нативный двухпанельный layout ("b-cluster-
+        // tabs": список слева без подложки + превью выбранного элемента
+        // справа), поверх которого наши стили не применялись — тот самый
+        // нечитаемый текст прямо на тайлах карты, который поймал
+        // пользователь на скриншоте. Это версии/сборки-специфичное
+        // поведение самого Яндекса, а не что-то, что можно надёжно
+        // задавить конфигом снаружи. clusterOpenBalloonOnClick: false
+        // отключает нативный balloon для кластеров целиком — вместо него
+        // клик обрабатывается вручную (см. handleClusterClick ниже),
+        // который открывает полностью наш React Modal.
+        clusterOpenBalloonOnClick: false,
+    } : undefined), [ymapState?.templateLayoutFactory]);
 
     return (
         <div className={cn(className, styles.wrapper)}>
@@ -794,6 +820,35 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                     />
                 )}
             </Map>
+            {activeClusterOffers && (
+                <Modal onClose={() => setActiveClusterOffers(null)} className={styles.clusterModal}>
+                    <h3 className={styles.clusterModalTitle}>{vacancyListTitle}</h3>
+                    <ul className={styles.clusterModalList}>
+                        {activeClusterOffers.map((offer) => (
+                            <li key={offer.id} className={styles.clusterModalItem}>
+                                <a href={offer.url} className={styles.clusterModalLink}>
+                                    <img
+                                        src={offer.image}
+                                        alt={offer.name}
+                                        className={styles.clusterModalImage}
+                                    />
+                                    <div className={styles.clusterModalText}>
+                                        <span className={styles.clusterModalName}>
+                                            {offer.name}
+                                        </span>
+                                        <span
+                                            className={styles.clusterModalCategory}
+                                            style={{ color: offer.categoryColor }}
+                                        >
+                                            {offer.categoryName}
+                                        </span>
+                                    </div>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </Modal>
+            )}
         </div>
     );
 });
