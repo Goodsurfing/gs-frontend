@@ -336,6 +336,22 @@ describe("OffersMap", () => {
             });
             expect(screen.getByText("Вакансия в кластере")).toBeInTheDocument();
 
+            // Регресс: className={styles.clusterModal} передавался в Modal
+            // как className самого Modal — а он ложится на fixed-оверлей
+            // ВЕСЬ_ЭКРАН (Modal.module.scss .wrapper), а не на карточку
+            // внутри него, так что card-стили clusterModal (width: 280px,
+            // белый фон, border-radius) перетирали позиционирование самого
+            // оверлея. Правильно — свой div с этим классом ВНУТРИ Modal.
+            // [class~=...] ищет ТОЧНЫЙ класс-токен, а не подстроку — иначе
+            // closest('[class*="clusterModal"]') сработал бы уже на первом
+            // попавшемся потомке вроде clusterModalName/clusterModalList
+            // (они все начинаются с "clusterModal"), даже не поднимаясь до
+            // реального контейнера, и тест ничего бы не проверял.
+            const clusterModalBox = screen.getByText("Вакансия в кластере")
+                .closest("[class~=\"clusterModal\"]");
+            expect(clusterModalBox).not.toBeNull();
+            expect(clusterModalBox?.className).not.toMatch(/\bwrapper\b/);
+
             act(() => {
                 boundsChangeHandlers.forEach((handler) => handler());
             });
@@ -406,6 +422,31 @@ describe("OffersMap", () => {
                 );
             });
             expect(balloonOpen).not.toHaveBeenCalled();
+        },
+    );
+
+    it(
+        "передаёт ObjectManager clusterDisableClickZoom: true вместе с "
+        + "clusterOpenBalloonOnClick: false (регресс GS-119: без него клик по кластеру "
+        + "в реальных Яндекс.Картах ловит только встроенный zoom-in — событие \"click\" "
+        + "на clusters.events, которое слушает handleClusterClick, до кода приложения "
+        + "просто не доходит, хотя мок в этих тестах эмулирует его напрямую и не "
+        + "ловит такую регрессию)",
+        async () => {
+            render(
+                <OffersMap
+                    offersData={[offer({ id: 1 })]}
+                    isOffersLoading={false}
+                    selectedOfferCoordinates={null}
+                />,
+            );
+
+            await waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+
+            expect(capturedClustersProp).toMatchObject({
+                clusterOpenBalloonOnClick: false,
+                clusterDisableClickZoom: true,
+            });
         },
     );
 

@@ -741,6 +741,12 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         // клик обрабатывается вручную (см. handleClusterClick ниже),
         // который открывает полностью наш React Modal.
         clusterOpenBalloonOnClick: false,
+        // Без этого клик по кластеру ловит только встроенный zoom-in
+        // Яндекса — он поглощает событие раньше, чем до него доходит наш
+        // clusters.events.add("click", ...) ниже, и Modal никогда не
+        // открывается (обнаружено живой проверкой на стейдже: клик всегда
+        // просто зумил карту).
+        clusterDisableClickZoom: true,
     } : undefined), [ymapState?.templateLayoutFactory]);
 
     return (
@@ -821,32 +827,34 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                 )}
             </Map>
             {activeClusterOffers && (
-                <Modal onClose={() => setActiveClusterOffers(null)} className={styles.clusterModal}>
-                    <h3 className={styles.clusterModalTitle}>{vacancyListTitle}</h3>
-                    <ul className={styles.clusterModalList}>
-                        {activeClusterOffers.map((offer) => (
-                            <li key={offer.id} className={styles.clusterModalItem}>
-                                <a href={offer.url} className={styles.clusterModalLink}>
-                                    <img
-                                        src={offer.image}
-                                        alt={offer.name}
-                                        className={styles.clusterModalImage}
-                                    />
-                                    <div className={styles.clusterModalText}>
-                                        <span className={styles.clusterModalName}>
-                                            {offer.name}
-                                        </span>
-                                        <span
-                                            className={styles.clusterModalCategory}
-                                            style={{ color: offer.categoryColor }}
-                                        >
-                                            {offer.categoryName}
-                                        </span>
-                                    </div>
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
+                <Modal onClose={() => setActiveClusterOffers(null)}>
+                    <div className={styles.clusterModal}>
+                        <h3 className={styles.clusterModalTitle}>{vacancyListTitle}</h3>
+                        <ul className={styles.clusterModalList}>
+                            {activeClusterOffers.map((offer) => (
+                                <li key={offer.id} className={styles.clusterModalItem}>
+                                    <a href={offer.url} className={styles.clusterModalLink}>
+                                        <img
+                                            src={offer.image}
+                                            alt={offer.name}
+                                            className={styles.clusterModalImage}
+                                        />
+                                        <div className={styles.clusterModalText}>
+                                            <span className={styles.clusterModalName}>
+                                                {offer.name}
+                                            </span>
+                                            <span
+                                                className={styles.clusterModalCategory}
+                                                style={{ color: offer.categoryColor }}
+                                            >
+                                                {offer.categoryName}
+                                            </span>
+                                        </div>
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </Modal>
             )}
         </div>
