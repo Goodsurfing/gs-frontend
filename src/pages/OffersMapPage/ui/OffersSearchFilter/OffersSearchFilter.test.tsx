@@ -66,12 +66,12 @@ describe("OffersSearchFilter", () => {
     it("сбрасывает выбранную категорию при внешней навигации на чистый урл (\"Все вакансии\")", async () => {
         const requestedUrls: string[] = [];
         server.use(
-            rest.get("*/vacancy/list", (req, res, ctx) => {
+            rest.get("*/vacancy", (req, res, ctx) => {
                 requestedUrls.push(req.url.toString());
                 return res(ctx.status(200), ctx.json({ data: [], pagination: { total: 0 } }));
             }),
             rest.get("*/vacancy/for-map/list", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
-            rest.get("*/category/list", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
+            rest.get("*/category", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
         );
 
         renderWithProviders(
@@ -104,12 +104,12 @@ describe("OffersSearchFilter", () => {
     it("подмешивает границы viewport карты в запрос маркеров после onBoundsChange", async () => {
         const requestedForMapUrls: string[] = [];
         server.use(
-            rest.get("*/vacancy/list", (req, res, ctx) => res(ctx.status(200), ctx.json({ data: [], pagination: { total: 0 } }))),
+            rest.get("*/vacancy", (req, res, ctx) => res(ctx.status(200), ctx.json({ data: [], pagination: { total: 0 } }))),
             rest.get("*/vacancy/for-map/list", (req, res, ctx) => {
                 requestedForMapUrls.push(req.url.toString());
                 return res(ctx.status(200), ctx.json([]));
             }),
-            rest.get("*/category/list", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
+            rest.get("*/category", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
         );
 
         renderPage();
@@ -133,7 +133,7 @@ describe("OffersSearchFilter", () => {
     it("запрашивает координаты для offer id именно текущей страницы списка", async () => {
         const requestedIdsUrls: string[] = [];
         server.use(
-            rest.get("*/vacancy/list", (req, res, ctx) => res(ctx.status(200), ctx.json({
+            rest.get("*/vacancy", (req, res, ctx) => res(ctx.status(200), ctx.json({
                 data: [{
                     id: 42,
                     title: "Test",
@@ -156,7 +156,7 @@ describe("OffersSearchFilter", () => {
                 }
                 return res(ctx.status(200), ctx.json([]));
             }),
-            rest.get("*/category/list", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
+            rest.get("*/category", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
         );
 
         renderPage();
@@ -169,7 +169,7 @@ describe("OffersSearchFilter", () => {
         const requestedListUrls: string[] = [];
         const requestedIdsUrls: string[] = [];
         server.use(
-            rest.get("*/vacancy/list", (req, res, ctx) => {
+            rest.get("*/vacancy", (req, res, ctx) => {
                 requestedListUrls.push(req.url.toString());
                 return res(ctx.status(200), ctx.json({
                     data: [{
@@ -193,7 +193,7 @@ describe("OffersSearchFilter", () => {
                 }
                 return res(ctx.status(200), ctx.json([]));
             }),
-            rest.get("*/category/list", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
+            rest.get("*/category", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
         );
 
         renderWithProviders(
@@ -217,7 +217,7 @@ describe("OffersSearchFilter", () => {
 
     it("сбрасывает выбранную вакансию при смене страницы списка", async () => {
         server.use(
-            rest.get("*/vacancy/list", (req, res, ctx) => res(ctx.status(200), ctx.json({
+            rest.get("*/vacancy", (req, res, ctx) => res(ctx.status(200), ctx.json({
                 data: [{
                     id: 7,
                     title: "Test",
@@ -233,7 +233,7 @@ describe("OffersSearchFilter", () => {
                 pagination: { total: 40 },
             }))),
             rest.get("*/vacancy/for-map/list", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
-            rest.get("*/category/list", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
+            rest.get("*/category", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
         );
 
         renderPage();

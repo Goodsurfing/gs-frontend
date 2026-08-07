@@ -46,4 +46,33 @@ describe("OfferWhenCard", () => {
         expect(screen.getByText("30")).toBeInTheDocument();
         expect(screen.queryByText("personalOffer.notSpecified")).not.toBeInTheDocument();
     });
+
+    /**
+     * Регресс-guard: список periods рендерился без key (React варнинг
+     * "Each child in a list should have a unique key prop" на странице
+     * вакансии), что ломает корректную сверку списка react при изменении
+     * периодов.
+     */
+    it("не выдаёт React-предупреждение об отсутствии key при рендере нескольких периодов", () => {
+        const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+        renderWithProviders(
+            <OfferWhenCard
+                offerWhen={{
+                    ...baseOfferWhen,
+                    periods: [
+                        { start: "2026-06-01", end: "2026-06-10" },
+                        { start: "2026-07-01", end: "2026-07-10" },
+                    ],
+                }}
+            />,
+        );
+
+        const hasKeyWarning = consoleErrorSpy.mock.calls.some(
+            (call) => typeof call[0] === "string" && call[0].includes("unique \"key\" prop"),
+        );
+        expect(hasKeyWarning).toBe(false);
+
+        consoleErrorSpy.mockRestore();
+    });
 });

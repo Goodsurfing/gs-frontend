@@ -439,6 +439,8 @@ export interface EditReviewVacancy {
     body: {
         rating: number;
         description: string;
+        isFeatured?: boolean;
+        imageIds?: string[];
     }
 }
 
@@ -447,6 +449,7 @@ export interface GetAdminReviewVacancyListParams {
     authorLastName?: string;
     authorFirstName?: string;
     vacancyName?: string;
+    isFeatured?: boolean;
     page: number;
     limit: number;
 }
@@ -460,7 +463,8 @@ export interface AdminReviewVacancy {
     rating: number;
     description: string;
     created: string;
-
+    isFeatured: boolean;
+    images: Image[];
 }
 
 export interface GetAdminReviewVacancyListResponse {
@@ -472,6 +476,7 @@ export interface EditAdminReviewVolunteerRequest {
     body: {
         rating: number;
         description: string;
+        imageIds?: string[];
     }
     reviewId: string;
 }
@@ -495,6 +500,7 @@ export interface AdminReviewVolunteer {
     rating: number;
     description: string;
     created: string;
+    images: Image[];
 }
 
 export interface GetAdminReviewVolunteerListResponse {
@@ -507,6 +513,7 @@ export interface GetAdminOffersParams {
     userId?: string;
     organizationName?: string;
     vacancyName?: string;
+    isFeatured?: boolean;
     page: number;
     limit: number;
 }
@@ -525,11 +532,17 @@ export interface GetAdminOffers {
     countTotalApplication: number;
     countAcceptApplication: number;
     countCanselApplication: number;
+    isFeatured: boolean;
 }
 
 export interface GetAdminOffersRequest {
     data: GetAdminOffers[];
     pagination: Pagination;
+}
+
+export interface UpdateAdminVacancyFeaturedRequest {
+    id: string;
+    isFeatured: boolean;
 }
 
 export interface AdminVacancyWhere {

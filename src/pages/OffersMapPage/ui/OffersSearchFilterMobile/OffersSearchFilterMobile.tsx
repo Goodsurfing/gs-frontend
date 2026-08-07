@@ -13,6 +13,7 @@ import {
     OffersMap,
     SwitchClosedOffers,
 } from "@/widgets/OffersMap";
+import type { MapViewportBounds } from "@/widgets/OffersMap/ui/OffersMap/OffersMap";
 import { OfferCard } from "@/widgets/OffersMap/ui/OfferCard/OfferCard";
 import { SearchOffers } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 import { SelectSort } from "@/widgets/OffersMap/ui/SelectSort/SelectSort";
@@ -22,6 +23,7 @@ import { OfferApi, OfferMap } from "@/entities/Offer";
 // import { getUserAuthData } from "@/entities/User";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 // import { useAppSelector } from "@/shared/hooks/redux";
+import Button from "@/shared/ui/Button/Button";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { SquareButton } from "@/shared/ui/SquareButton/SquareButton";
 import { Text } from "@/shared/ui/Text/Text";
@@ -35,8 +37,12 @@ interface OffersSearchFilterMobileProps {
     className?: string;
     allOffersMapData: OfferMap[];
     isLoadingAllOffersMap: boolean;
+    isMapError?: boolean;
+    onRetryMap?: () => void;
     data?: OfferApi[];
     isLoading: boolean;
+    isError?: boolean;
+    onRetry?: () => void;
     onApplySearch: (search: string) => void;
     onSubmit: () => void;
     onResetFilters: () => void;
@@ -44,6 +50,11 @@ interface OffersSearchFilterMobileProps {
     currentPage: number;
     offersPerPage: number;
     onChangePage: (pageItem: number) => void;
+    selectedOfferId?: number;
+    onSelectOffer?: (offerId: number) => void;
+    selectedOfferCoordinates?: { latitude: number; longitude: number } | null;
+    offerIdsWithoutLocation?: Set<number>;
+    onBoundsChange?: (bounds: MapViewportBounds) => void;
 }
 
 const MemoizedOfferCard = React.memo(OfferCard);
@@ -54,7 +65,11 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
     data,
     allOffersMapData,
     isLoadingAllOffersMap,
+    isMapError,
+    onRetryMap,
     isLoading,
+    isError,
+    onRetry,
     onApplySearch,
     onSubmit,
     onResetFilters,
@@ -62,11 +77,21 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
     offersPerPage,
     total,
     onChangePage,
+    selectedOfferId,
+    onSelectOffer,
+    selectedOfferCoordinates,
+    offerIdsWithoutLocation,
+    onBoundsChange,
 }) => {
     const { control } = useFormContext();
     const { t } = useTranslation("offers-map");
     const { locale } = useLocale();
-    const [selectedTab, setSelectedTab] = useState<SelectedTabType>("offers");
+    // Ссылка вида /offers-map?offerId=... (шеринг конкретной вакансии) должна
+    // сразу показывать её на карте — иначе человек попадает в список вакансий
+    // и должен ещё сам догадаться вручную переключиться на вкладку "Карта".
+    const [selectedTab, setSelectedTab] = useState<SelectedTabType>(
+        () => (selectedOfferId ? "map" : "offers"),
+    );
 
     const [isPending, startTransition] = useTransition();
 
@@ -105,6 +130,18 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
         setSelectedTab("map");
     }, []);
 
+    // На десктопе список и карта видны бок о бок, поэтому клик по карточке
+    // просто выделяет метку на уже открытой карте. На мобильном они на
+    // разных вкладках — без переключения на "Карта" клик по карточке в
+    // списке визуально не приводил бы ни к чему (карту пользователь тогда
+    // не видит), хотя выбор внутри состояния уже происходил бы. Тот же
+    // сценарий, что и на десктопе ("фокус на точке → табличка с фото"), но
+    // с явным переходом на вкладку карты вместо соседней колонки.
+    const handleSelectOffer = useCallback((offerId: number) => {
+        onSelectOffer?.(offerId);
+        setSelectedTab("map");
+    }, [onSelectOffer]);
+
     const tabStates = useMemo(
         () => ({
             isOffersTabOpened: selectedTab === "offers",
@@ -115,6 +152,31 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
     );
 
     const renderOfferCards = useMemo(() => {
+        if (isError) {
+            return (
+                <div className={styles.error}>
+                    <Text
+                        textSize="primary"
+                        text={t("Не удалось загрузить вакансии")}
+                    />
+                    <Text
+                        textSize="secondary"
+                        text={t("Проверьте соединение и попробуйте ещё раз")}
+                    />
+                    {onRetry && (
+                        <Button
+                            className={styles.retryButton}
+                            color="BLUE"
+                            size="MEDIUM"
+                            variant="OUTLINE"
+                            onClick={onRetry}
+                        >
+                            {t("Попробовать снова")}
+                        </Button>
+                    )}
+                </div>
+            );
+        }
         if (isLoading || isPending) {
             return (
                 <div className={cn(styles.wrapper, className)}>
@@ -152,10 +214,16 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                     reviewsCount: offer.reviewsCount,
                 }}
                 key={offer.id}
+                isSelected={offer.id === selectedOfferId}
+                onSelect={handleSelectOffer}
+                hasLocation={!offerIdsWithoutLocation?.has(offer.id)}
             />
         ));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [locale, t, isLoading, isPending, data]);
+    }, [
+        locale, t, isLoading, isPending, isError, onRetry, data, selectedOfferId,
+        handleSelectOffer, offerIdsWithoutLocation,
+    ]);
 
     const totalPages = useMemo(
         () => (data ? Math.ceil(total / offersPerPage) : 1),
@@ -248,8 +316,13 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                 <OffersMap
                     offersData={allOffersMapData}
                     isOffersLoading={isLoadingAllOffersMap}
+                    isOffersError={isMapError}
+                    onRetry={onRetryMap}
                     className={styles.offersMap}
                     classNameMap={styles.offersMap}
+                    selectedOfferId={selectedOfferId}
+                    selectedOfferCoordinates={selectedOfferCoordinates}
+                    onBoundsChange={onBoundsChange}
                 />
             )}
             {tabStates.isFilterTabOpened && (

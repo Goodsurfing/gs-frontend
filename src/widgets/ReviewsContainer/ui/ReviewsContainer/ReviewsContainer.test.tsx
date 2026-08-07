@@ -1,0 +1,83 @@
+import {
+    describe, it, expect, vi,
+} from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import ReviewsContainer from "./ReviewsContainer";
+
+const navigateMock = vi.fn();
+
+let mockFeaturedReviews: unknown[] | undefined;
+
+vi.mock("@/entities/Review", () => ({
+    useGetFeaturedReviewsQuery: () => ({ data: mockFeaturedReviews }),
+}));
+
+vi.mock("react-router-dom", () => ({
+    useNavigate: () => navigateMock,
+}));
+
+vi.mock("@/app/providers/LocaleProvider", () => ({
+    useLocale: () => ({ locale: "ru" }),
+}));
+
+/**
+ * GS-84: раньше этот блок на главной был захардкожен (Reviews.data.ts,
+ * фейковые тексты со стоковыми фото), никак не связан с реальными
+ * отзывами. Теперь тянет featured-отзывы через API — блок должен
+ * прятаться, если избранных отзывов с фото нет (а не рендерить пустой
+ * слайдер), и показывать реальные данные, когда они есть.
+ */
+describe("ReviewsContainer", () => {
+    it("не рендерится, если избранных отзывов нет", () => {
+        mockFeaturedReviews = [];
+        const { container } = render(<ReviewsContainer />);
+        expect(container).toBeEmptyDOMElement();
+    });
+
+    it("не рендерится, если у избранных отзывов нет фото", () => {
+        mockFeaturedReviews = [{
+            id: "1",
+            title: "Без фото",
+            description: "Текст",
+            rating: 5,
+            authorName: "Тест",
+            authorAvatar: null,
+            images: [],
+        }];
+        const { container } = render(<ReviewsContainer />);
+        expect(container).toBeEmptyDOMElement();
+    });
+
+    it("рендерит отзыв, когда есть фото", () => {
+        mockFeaturedReviews = [{
+            id: "1",
+            title: "Отзыв с фото",
+            vacancyId: 42,
+            description: "Отличная поездка",
+            rating: 5,
+            authorName: "Тест Волонтёр",
+            authorAvatar: null,
+            images: [{ id: "img1", contentUrl: "https://example.com/1.jpg" }],
+        }];
+        render(<ReviewsContainer />);
+        expect(screen.getByText("Отзыв с фото")).toBeInTheDocument();
+    });
+
+    it("переходит на страницу вакансии по клику на карточку отзыва", () => {
+        navigateMock.mockClear();
+        mockFeaturedReviews = [{
+            id: "1",
+            title: "Отзыв с фото",
+            vacancyId: 42,
+            description: "Отличная поездка",
+            rating: 5,
+            authorName: "Тест Волонтёр",
+            authorAvatar: null,
+            images: [{ id: "img1", contentUrl: "https://example.com/1.jpg" }],
+        }];
+        render(<ReviewsContainer />);
+        fireEvent.click(screen.getByText("Отзыв с фото"));
+
+        expect(navigateMock).toHaveBeenCalledWith("/ru/offers/42");
+    });
+});

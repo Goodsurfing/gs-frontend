@@ -2,7 +2,7 @@ import cn from "classnames";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 
-import whyMembershipImage from "@/shared/assets/images/membership/why.png";
+import whyMembershipImage from "@/shared/assets/images/membership/why.webp";
 
 import styles from "./WhyMembership.module.scss";
 

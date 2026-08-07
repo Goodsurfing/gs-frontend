@@ -10,11 +10,17 @@
 
 .balloonWrapper {
     display: flex;
-    gap: 8px;
-    align-items: flex-start;
-    padding: 4px;
+    flex-direction: column;
+    width: 220px;
     cursor: pointer;
-    min-width: 200px;
+    background: var(--color-white);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.balloonImageLink {
+    display: block;
+    line-height: 0;
 }
 
 .text {
@@ -22,6 +28,7 @@
     flex-direction: column;
     gap: 4px;
     overflow: hidden;
+    padding: 10px 12px 12px;
 }
 
 .map {
@@ -47,24 +54,103 @@
     transition: all 0.3s ease;
 }
 
-.clusterBalloon  a {
+// Список вакансий кластера — целиком наш React Modal (см. OffersMap.tsx),
+// не нативный balloon Яндекса. Тот же .clusterBalloon, что рендерился через
+// clusterBalloonContentLayout, на практике не всегда получал применение:
+// Яндекс где-то уходил в свой недокументированный двухпанельный layout
+// ("b-cluster-tabs"), поверх которого эти стили не действовали — голый
+// синий текст без подложки прямо на тайлах карты. Modal рендерится через
+// портал в document.body, полностью вне DOM Яндекс.Карт — эта проблема
+// структурно невозможна.
+.clusterModal {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    max-width: calc(100vw - 32px);
+    max-height: 70vh;
+    background: var(--color-white);
+    border-radius: 12px;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.clusterModalTitle {
+    margin: 0 0 12px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.clusterModalList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+}
+
+.clusterModalItem {
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.clusterModalItem:hover {
+    background-color: var(--bg-secondary-1, rgba(0, 0, 0, 0.04));
+}
+
+.clusterModalLink {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px;
     text-decoration: none;
     color: var(--text-primary-1);
 }
 
-.balloonLink {
-    color: var(--accent-color);
+.clusterModalImage {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.clusterModalText {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.clusterModalName {
+    font-size: 14px;
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.clusterModalCategory {
+    font-size: 12px;
+    font-weight: 700;
 }
 
 .balloonImage {
-    width: 100px;
-    height: 50px;
+    display: block;
+    width: 100%;
+    height: 120px;
     object-fit: cover;
 }
 
 .balloonTitle {
     font-weight: 700;
     font-size: 14px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 }
 
 .balloonCategory {
@@ -116,5 +202,29 @@
     font-size: 14px;
     font-weight: 500;
     color: var(--color-black-primary);
-    white-space: nowrap;
+    max-width: calc(100% - 32px);
+    text-align: center;
+}
+
+.errorContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    padding: 0 16px;
+}
+
+.mapErrorOverlay {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background-color: var(--color-white);
+    text-align: center;
+    padding: 0 16px;
 }

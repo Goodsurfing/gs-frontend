@@ -19,8 +19,7 @@ export const App: FC = () => {
     return (
         <YMaps query={{
             apikey: import.meta.env.VITE_API_YANDEX_KEY,
-            ns: "use-load-option",
-            load: "Map,Placemark,control.ZoomControl,geocode,geoObject.addon.hint",
+            load: "package.full",
         }}
         >
             <div className="app app_default_theme">

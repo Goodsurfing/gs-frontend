@@ -35,7 +35,7 @@ const AMBASSADOR = {
 describe("Ambassador — превью вместо оригинала", () => {
     it("грузит thumbnails.medium, а не многомегабайтный оригинал", async () => {
         server.use(
-            rest.get("*/leader/list", (req, res, ctx) => res(
+            rest.get("*/leader", (req, res, ctx) => res(
                 ctx.status(200),
                 ctx.json({ data: [AMBASSADOR], pagination: { total: 1 } }),
             )),
@@ -54,7 +54,7 @@ describe("Ambassador — превью вместо оригинала", () => {
 
     it("без thumbnails откатывается на оригинал (легаси-фото без миниатюр)", async () => {
         server.use(
-            rest.get("*/leader/list", (req, res, ctx) => res(
+            rest.get("*/leader", (req, res, ctx) => res(
                 ctx.status(200),
                 ctx.json({
                     data: [{

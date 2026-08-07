@@ -13,7 +13,7 @@ export const adminFeedbackApi = createApi({
         getAdminFeedbackList: build.query<GetAdminFeedbackListResponse,
         Partial<GetAdminFeedbackListParams>>({
             query: (params) => ({
-                url: "feedback/list",
+                url: "feedback",
                 method: "GET",
                 params,
             }),
@@ -21,14 +21,14 @@ export const adminFeedbackApi = createApi({
         }),
         getAdminFeedbackById: build.query<GetAdminFeedback, string>({
             query: (id) => ({
-                url: `feedback/element/${id}`,
+                url: `feedback/${id}`,
                 method: "GET",
             }),
             providesTags: ["feedback"],
         }),
         updateAdminFeedback: build.mutation<void, UpdateAdminFeedbackParams>({
             query: ({ id, body }) => ({
-                url: `feedback/edit/${id}`,
+                url: `feedback/${id}`,
                 method: "PATCH",
                 body,
             }),

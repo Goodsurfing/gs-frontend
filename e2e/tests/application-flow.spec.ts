@@ -21,7 +21,7 @@ import { API_URL, IAP_TOKEN } from '../config';
  * E2ETestFixtures::ORG_ID/VOL_ID/HOST_ID) молча игнорируется и никогда не
  * долетает до БД. Поэтому id организации хоста берём из его же профиля
  * (GET /api/v1/personal/profile → host — IRI), а вакансии находим по
- * названию через публичный GET /api/v3/vacancy/list/{organizationId}.
+ * названию через публичный GET /api/v1/vacancy/list/{organizationId}.
  *
  * Заявка на вакансию уникальна по паре (volunteer, vacancy), у Application
  * нет DELETE-операции — тесты не идемпотентны против уже созданных заявок.
@@ -46,9 +46,9 @@ test.describe('Волонтёр и хост: заявки на вакансию'
         : {};
 
     const login = async (api: APIRequestContext, email: string, password: string) => {
-        const resp = await api.post('/api/v2/token', { data: { email, password } });
+        const resp = await api.post('/api/v1/token', { data: { email, password } });
         expect(resp.ok(), await resp.text()).toBeTruthy();
-        return { Authorization: `Bearer ${(await resp.json()).token}` };
+        return { Authorization: `Bearer ${(await resp.json()).accessToken}` };
     };
 
     /**
@@ -89,7 +89,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
     };
 
     const findVacancyByTitle = async (api: APIRequestContext, orgId: string, title: string) => {
-        const resp = await api.get(`/api/v3/vacancy/list/${orgId}`);
+        const resp = await api.get(`/api/v1/vacancy/list/${orgId}`);
         expect(resp.ok(), await resp.text()).toBeTruthy();
         const list = await resp.json();
         const vacancies = Array.isArray(list) ? list : list.data ?? list['hydra:member'];

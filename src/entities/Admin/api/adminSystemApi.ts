@@ -10,7 +10,7 @@ export const adminSystemApi = createApi({
         getSystemAdminList: build.query<GetAdminSystemListResponse,
         Partial<GetAdminSystemListParams>>({
             query: (params) => ({
-                url: "system-admin/list",
+                url: "system-admin",
                 method: "GET",
                 params,
             }),

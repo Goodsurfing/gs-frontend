@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, { FC, memo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 
 import { useTranslation } from "react-i18next";
@@ -62,16 +62,31 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
     } = props;
     const { t } = useTranslation();
     const [imageFailed, setImageFailed] = useState(false);
+    const navigate = useNavigate();
+
+    // onSelect означает, что карточка используется в контексте карты
+    // (клик подсвечивает метку, а не уводит со страницы) — переход тогда
+    // только по ссылке "Подробнее". Без onSelect (списки в личном
+    // кабинете/профиле) клик по всей карточке должен сразу вести на
+    // страницу вакансии — иначе кликабельна только крошечная ссылка
+    // "Подробнее", что выглядит как сломанная карточка.
+    const handleCardClick = () => {
+        if (onSelect) {
+            onSelect(offerId);
+        } else {
+            navigate(link ?? getMainPageUrl(locale));
+        }
+    };
 
     return (
         <div
             role="button"
             tabIndex={0}
-            onClick={() => onSelect?.(offerId)}
+            onClick={handleCardClick}
             onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    onSelect?.(offerId);
+                    handleCardClick();
                 }
             }}
             className={cn(styles.wrapper, className, { [styles.selected]: isSelected })}

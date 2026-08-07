@@ -3,6 +3,22 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    position: relative;
+}
+
+.deleteBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 4px;
+
+    img {
+        width: 16px;
+        height: 16px;
+    }
 }
 
 .reviewInfo {

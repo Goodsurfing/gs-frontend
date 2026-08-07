@@ -1,0 +1,127 @@
+import {
+    describe, it, expect, vi, beforeEach,
+} from "vitest";
+import { render, waitFor, screen } from "@testing-library/react";
+import { OffersSlider } from "./OffersSlider";
+
+/**
+ * GS-90: волонтёр с выбранными на дашборде избранными категориями должен
+ * видеть на главной персональные вакансии вместо admin-подборки
+ * (isFeatured) — приоритет и фолбэки покрыты через мок useLazyGetOffersQuery,
+ * без реального Redux/API.
+ */
+
+let mockIsAuth: unknown;
+let mockProfileData: { favoriteCategories: number[] } | undefined;
+let mockProfileLoading: boolean;
+let mockOffersIsLoading: boolean;
+const getOffersData = vi.fn();
+
+vi.mock("@/shared/hooks/redux", () => ({
+    useAppSelector: () => mockIsAuth,
+}));
+
+vi.mock("@/app/providers/LocaleProvider", () => ({
+    useLocale: () => ({ locale: "ru" }),
+}));
+
+vi.mock("@/entities/Profile", () => ({
+    useGetProfileInfoQuery: () => ({ data: mockProfileData, isLoading: mockProfileLoading }),
+}));
+
+vi.mock("@/entities/Offer", async () => {
+    const actual = await vi.importActual<typeof import("@/entities/Offer")>("@/entities/Offer");
+    return {
+        ...actual,
+        // useLazyQuery's second tuple element is the full RTK Query result
+        // object (isLoading is a property on it, not the element itself) —
+        // mocked with the same shape here on purpose, so a regression to
+        // `const [trigger, isLoading] = useLazyGetOffersQuery()` (destructuring
+        // the whole object as a boolean, always truthy) gets caught.
+        useLazyGetOffersQuery: () => [getOffersData, { isLoading: mockOffersIsLoading }],
+    };
+});
+
+vi.mock("../Offer/Offer", () => ({
+    default: ({ offer }: { offer: { id: number } }) => <div data-testid={`offer-${offer.id}`} />,
+}));
+
+vi.mock("@/shared/ui/MiniLoader/MiniLoader", () => ({
+    MiniLoader: () => <div data-testid="mini-loader" />,
+}));
+
+const okResult = (ids: number[]) => ({
+    unwrap: () => Promise.resolve({ data: ids.map((id) => ({ id })) }),
+});
+
+describe("OffersSlider", () => {
+    beforeEach(() => {
+        mockIsAuth = undefined;
+        mockProfileData = undefined;
+        mockProfileLoading = false;
+        mockOffersIsLoading = false;
+        getOffersData.mockReset();
+        getOffersData.mockReturnValue(okResult([1]));
+    });
+
+    it("показывает лоадер, пока идёт запрос вакансий", () => {
+        mockOffersIsLoading = true;
+
+        render(<OffersSlider />);
+
+        expect(screen.getByTestId("mini-loader")).toBeInTheDocument();
+    });
+
+    it("после загрузки показывает вакансии, а не лоадер вечно", async () => {
+        getOffersData.mockReturnValue(okResult([1, 2]));
+
+        render(<OffersSlider />);
+
+        await waitFor(() => expect(screen.getByTestId("offer-1")).toBeInTheDocument());
+        expect(screen.queryByTestId("mini-loader")).not.toBeInTheDocument();
+    });
+
+    it("для анонимного пользователя сразу берёт admin isFeatured, не запрашивая категории", async () => {
+        render(<OffersSlider />);
+
+        await waitFor(() => expect(getOffersData).toHaveBeenCalledWith({ isFeatured: true }));
+        expect(getOffersData).not.toHaveBeenCalledWith(
+            expect.objectContaining({ categoryIds: expect.anything() }),
+        );
+    });
+
+    it("для волонтёра с избранными категориями запрашивает персональные вакансии вместо admin-подборки", async () => {
+        mockIsAuth = "token";
+        mockProfileData = { favoriteCategories: [3, 7] };
+
+        render(<OffersSlider />);
+
+        await waitFor(() => expect(getOffersData).toHaveBeenCalledWith({
+            categoryIds: [3, 7],
+            sort: "recommendation",
+        }));
+        expect(getOffersData).not.toHaveBeenCalledWith({ isFeatured: true });
+    });
+
+    it("если по избранным категориям ничего не найдено, падает обратно на admin isFeatured", async () => {
+        mockIsAuth = "token";
+        mockProfileData = { favoriteCategories: [3] };
+        getOffersData
+            .mockReturnValueOnce(okResult([]))
+            .mockReturnValueOnce(okResult([9]));
+
+        render(<OffersSlider />);
+
+        await waitFor(() => expect(getOffersData).toHaveBeenCalledWith({ isFeatured: true }));
+    });
+
+    it("ждёт загрузку профиля прежде чем решать, какие вакансии запрашивать", async () => {
+        mockIsAuth = "token";
+        mockProfileLoading = true;
+
+        render(<OffersSlider />);
+
+        await new Promise((resolve) => { setTimeout(resolve, 0); });
+        expect(getOffersData).not.toHaveBeenCalled();
+    });
+});

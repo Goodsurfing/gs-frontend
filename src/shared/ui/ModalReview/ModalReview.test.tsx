@@ -50,4 +50,36 @@ describe("ModalReview", () => {
             screen.queryByText("Поставьте оценку, чтобы оставить отзыв"),
         ).not.toBeInTheDocument();
     });
+
+    it("не показывает загрузку фото без onImagesChange (GS-83)", () => {
+        renderWithProviders(
+            <ModalReview
+                isOpen
+                onClose={() => {}}
+                titleText="Отзыв"
+                sendReview={() => {}}
+                value={{ stars: undefined, text: "" }}
+                onChange={() => {}}
+            />,
+        );
+
+        expect(screen.queryByText("Добавить фото")).not.toBeInTheDocument();
+    });
+
+    it("показывает загрузку фото, когда передан onImagesChange (GS-83)", () => {
+        renderWithProviders(
+            <ModalReview
+                isOpen
+                onClose={() => {}}
+                titleText="Отзыв"
+                sendReview={() => {}}
+                value={{ stars: undefined, text: "" }}
+                onChange={() => {}}
+                images={[]}
+                onImagesChange={() => {}}
+            />,
+        );
+
+        expect(screen.getByText("Добавить фото")).toBeInTheDocument();
+    });
 });

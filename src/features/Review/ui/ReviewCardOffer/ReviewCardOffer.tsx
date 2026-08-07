@@ -4,6 +4,7 @@ import { Rating } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import cn from "classnames";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
+import { ReviewGallery } from "@/shared/ui/ReviewGallery/ReviewGallery";
 import { MyReviewVolunteer } from "@/entities/Review";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getOfferPersonalPageUrl, getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
@@ -21,7 +22,7 @@ interface ReviewCardOfferProps {
 export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOfferProps) => {
     const { reviewOffer, locale, className } = props;
     const {
-        vacancy, description, rating, created, author,
+        vacancy, description, rating, created, author, images,
     } = reviewOffer;
 
     const { getFullName } = useGetFullName();
@@ -55,6 +56,7 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOffer
                 </span>
             </div>
             <p className={styles.textReview}>{description}</p>
+            <ReviewGallery images={images} />
             <div className={styles.ratingUserContainer}>
                 <Rating
                     value={rating}

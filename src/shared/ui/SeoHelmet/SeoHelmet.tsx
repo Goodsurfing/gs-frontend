@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Helmet } from "react-helmet-async";
-import ogImageDefault from "@/shared/assets/images/og-image.png";
+import ogImageDefault from "@/shared/assets/images/og-image.jpg";
 
 interface SeoHelmetProps {
     title: string;

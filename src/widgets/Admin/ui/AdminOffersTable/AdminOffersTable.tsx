@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import {
-    FormControl, InputLabel, MenuItem, Select, Stack, TextField,
+    Checkbox,
+    FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, Switch, TextField, Tooltip,
 } from "@mui/material";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
@@ -13,7 +14,9 @@ import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {
     AdminSort, useDeleteAdminOfferMutation, useLazyGetAdminOffersQuery,
+    useGetAdminOffersQuery,
     useUpdateAdminVacancyStatusMutation,
+    useUpdateAdminVacancyFeaturedMutation,
 } from "@/entities/Admin";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
@@ -26,11 +29,13 @@ import {
 import { getAdminVacancyWherePageUrl, getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 import styles from "./AdminOffersTable.module.scss";
+import { isFeaturedCapReached, MAX_FEATURED_OFFERS } from "./featuredToggle";
 
 interface OfferFilters {
     userId?: string;
     organizationName?: string;
     vacancyName?: string;
+    isFeatured?: string;
     sort?: AdminSort;
 }
 
@@ -74,6 +79,22 @@ const offerCustomFields: CustomFilterField<keyof OfferFilters>[] = [
                 fullWidth
                 size="small"
                 disabled={disabled}
+            />
+        ),
+    },
+    {
+        key: "isFeatured",
+        label: "Только на главной",
+        render: ({ value, onChange, disabled }) => (
+            <FormControlLabel
+                disabled={disabled}
+                control={(
+                    <Checkbox
+                        checked={value === "true"}
+                        onChange={(e) => onChange(e.target.checked ? "true" : undefined)}
+                    />
+                )}
+                label="Только на главной"
             />
         ),
     },
@@ -150,6 +171,7 @@ export const AdminOffersTable = () => {
         organizationName: undefined,
         userId: undefined,
         vacancyName: undefined,
+        isFeatured: undefined,
     });
 
     const [getOffers, {
@@ -159,6 +181,15 @@ export const AdminOffersTable = () => {
     }] = useLazyGetAdminOffersQuery();
     const [deleteOffer, { isLoading: isDeleting }] = useDeleteAdminOfferMutation();
     const [publishOffer, { isLoading: isPublishing }] = useUpdateAdminVacancyStatusMutation();
+    const [setFeatured, {
+        isLoading: isTogglingFeatured,
+    }] = useUpdateAdminVacancyFeaturedMutation();
+    const { data: featuredCountData } = useGetAdminOffersQuery({
+        page: 1,
+        limit: 1,
+        isFeatured: true,
+    });
+    const featuredCount = featuredCountData?.pagination.total ?? 0;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -170,6 +201,7 @@ export const AdminOffersTable = () => {
                     organizationName: filters.organizationName,
                     userId: filters.userId,
                     vacancyName: filters.vacancyName,
+                    isFeatured: filters.isFeatured === "true" ? true : undefined,
                 }).unwrap();
             } catch {
                 setToast({
@@ -179,7 +211,7 @@ export const AdminOffersTable = () => {
             }
         };
         fetchData();
-    }, [filters.organizationName, filters.page, filters.sort,
+    }, [filters.isFeatured, filters.organizationName, filters.page, filters.sort,
         filters.userId, filters.vacancyName, getOffers]);
 
     const handleOpenDeleteModal = (id: string, name: string) => {
@@ -242,6 +274,33 @@ export const AdminOffersTable = () => {
             });
         } finally {
             handleClosePublishModal();
+        }
+    };
+
+    const handleToggleFeatured = async (row: { id: string; isFeatured: boolean }) => {
+        setToast(undefined);
+        const nextValue = !row.isFeatured;
+
+        if (isFeaturedCapReached(featuredCount, nextValue)) {
+            setToast({
+                text: `На главной уже выбрано максимум вакансий (${MAX_FEATURED_OFFERS}). `
+                    + "Уберите одну, чтобы добавить другую.",
+                type: HintType.Error,
+            });
+            return;
+        }
+
+        try {
+            await setFeatured({ id: row.id, isFeatured: nextValue }).unwrap();
+            setToast({
+                text: nextValue ? "Вакансия добавлена на главную страницу" : "Вакансия убрана с главной страницы",
+                type: HintType.Success,
+            });
+        } catch {
+            setToast({
+                text: "Не удалось изменить показ вакансии на главной",
+                type: HintType.Error,
+            });
         }
     };
 
@@ -328,6 +387,26 @@ export const AdminOffersTable = () => {
             width: 180,
         },
         {
+            field: "isFeatured",
+            headerName: "На главной",
+            width: 130,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            renderCell: (params) => (
+                <Tooltip title={params.row.isFeatured ? "Убрать с главной" : "Показать на главной"}>
+                    <span>
+                        <Switch
+                            checked={params.row.isFeatured}
+                            disabled={isTogglingFeatured}
+                            onChange={() => handleToggleFeatured(params.row)}
+                        />
+                    </span>
+                </Tooltip>
+            ),
+        },
+        {
             field: "actions",
             headerName: "Действия",
             width: 220,
@@ -410,7 +489,7 @@ export const AdminOffersTable = () => {
                 id, name, categories,
                 organizationName, status, countTotalApplication,
                 countAcceptApplication, countCanselApplication,
-                user,
+                user, isFeatured,
             } = offer;
             return {
                 id,
@@ -422,6 +501,7 @@ export const AdminOffersTable = () => {
                 countTotalApplication,
                 countAcceptApplication,
                 countCanselApplication,
+                isFeatured,
             };
         });
         return (
@@ -451,6 +531,9 @@ export const AdminOffersTable = () => {
                     disabled={isLoading}
                     customFields={offerCustomFields}
                 />
+                <span className={styles.featuredCounter}>
+                    {`На главной: ${featuredCount} из ${MAX_FEATURED_OFFERS}`}
+                </span>
             </div>
             <div className={styles.table}>
                 {renderTable()}

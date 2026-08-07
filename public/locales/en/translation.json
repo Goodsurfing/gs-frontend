@@ -14,6 +14,7 @@
         "Invalid password": "Invalid login or password",
         "User not found": "User not found",
         "Данный пользователь уже существует": "This user already exists",
+        "Возможно, вы уже регистрировались.": "You may have already registered.",
         "Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту.": "To log in, you need to confirm your email address. Please check your inbox.",
         "Некорректно введены данные": "Incorrect data entered",
         "Нажимая кнопку «Зарегистрироваться», я принимаю": "By clicking the 'Register' button, I accept",
@@ -239,7 +240,8 @@
     "errors": {
         "freeAccountApplicationsLimit": "Free account allows up to 3 applications. Get a membership to apply without limits.",
         "freeAccountPublishedVacancyLimit": "Free account allows up to 1 published vacancy. Get a membership to publish without limits.",
-        "onlyVerifiedVolunteersAllowed": "This vacancy only accepts applications from verified participants. Get a membership to apply."
+        "onlyVerifiedVolunteersAllowed": "This vacancy only accepts applications from verified participants. Get a membership to apply.",
+        "vacancyIncomplete": "Fill in the vacancy title, description and address before publishing."
     },
     "Не задано": "Not specified",
     "Ок": "Ok",
@@ -262,6 +264,7 @@
     "Популярное": "Popular",
     "Поиск": "Search",
     "Найти": "Search",
+    "Посмотреть все": "View all",
     "Данные вакансии отсутсвуют": "No offers found",
     "Поиск вакансий": "Search offers",
     "Без названия": "Untitled",

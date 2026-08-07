@@ -9,6 +9,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { OfferApi } from "@/entities/Offer";
 import { getOfferImagePath } from "./getOfferImagePath";
 
+import Button from "@/shared/ui/Button/Button";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Text } from "@/shared/ui/Text/Text";
 
@@ -23,6 +24,8 @@ interface OffersListProps {
     onChangeMapOpen: () => void;
     data?: OfferApi[];
     isLoading: boolean;
+    isError?: boolean;
+    onRetry?: () => void;
     currentPage: number;
     offersPerPage: number;
     total: number;
@@ -43,6 +46,8 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
         total,
         onChangePage,
         isLoading,
+        isError,
+        onRetry,
         selectedOfferId,
         onSelectOffer,
         offerIdsWithoutLocation,
@@ -66,6 +71,35 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
     );
 
     const renderOfferCards = useMemo(() => {
+        // Отдельно от "вакансий не найдены": иначе реальный сбой запроса
+        // (500, обрыв сети) выглядит для человека так же, как "по вашим
+        // фильтрам ничего нет" — он решает, что раздела просто нет, а не
+        // пробует обновить страницу.
+        if (isError) {
+            return (
+                <div className={styles.error}>
+                    <Text
+                        textSize="primary"
+                        text={t("Не удалось загрузить вакансии")}
+                    />
+                    <Text
+                        textSize="secondary"
+                        text={t("Проверьте соединение и попробуйте ещё раз")}
+                    />
+                    {onRetry && (
+                        <Button
+                            className={styles.retryButton}
+                            color="BLUE"
+                            size="MEDIUM"
+                            variant="OUTLINE"
+                            onClick={onRetry}
+                        >
+                            {t("Попробовать снова")}
+                        </Button>
+                    )}
+                </div>
+            );
+        }
         if (isLoading || isPending) {
             return <MiniLoader className={styles.miniLoader} />;
         }
@@ -115,7 +149,7 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
         );
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
-        data, isLoading, locale, mapOpenValue, t, selectedOfferId,
+        data, isLoading, isError, onRetry, locale, mapOpenValue, t, selectedOfferId,
         onSelectOffer, offerIdsWithoutLocation,
     ]);
 

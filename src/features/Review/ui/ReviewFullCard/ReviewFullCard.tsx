@@ -5,6 +5,7 @@ import cn from "classnames";
 import { MyReviewHost } from "@/entities/Review";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
+import { ReviewGallery } from "@/shared/ui/ReviewGallery/ReviewGallery";
 import { getFullAddress, useGetFullName } from "@/shared/lib/getFullName";
 import styles from "./ReviewFullCard.module.scss";
 
@@ -17,7 +18,7 @@ export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardPro
     const { review, className } = props;
     const {
         description, rating,
-        volunteer,
+        volunteer, images,
     } = review;
     const { getFullName } = useGetFullName();
     const userName = getFullName(volunteer.firstName, volunteer.lastName);
@@ -62,6 +63,7 @@ export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardPro
                 </div>
             </div>
             <p className={styles.textReview}>{description}</p>
+            <ReviewGallery images={images} />
         </div>
     );
 };

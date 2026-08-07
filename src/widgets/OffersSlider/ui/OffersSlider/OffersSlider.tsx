@@ -10,8 +10,12 @@ import arrowSliderIcon from "@/shared/assets/icons/slider-arrow.svg";
 import { OfferApi, OfferSort, useLazyGetOffersQuery } from "@/entities/Offer";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { useAppSelector } from "@/shared/hooks/redux";
+import { getUserAuthData } from "@/entities/User";
+import { useGetProfileInfoQuery } from "@/entities/Profile";
 import Offer from "../Offer/Offer";
 import styles from "./OffersSlider.module.scss";
+import { pickSliderOffers } from "./pickSliderOffers";
 
 interface OffersSliderProps {
     className?: string;
@@ -22,29 +26,60 @@ export const OffersSlider: FC<OffersSliderProps> = (props) => {
     const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
     const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
     const [offers, setOffers] = useState<OfferApi[]>([]);
-    const [getOffersData, isLoading] = useLazyGetOffersQuery();
+    const [getOffersData, { isLoading }] = useLazyGetOffersQuery();
     const { locale } = useLocale();
 
+    const isAuth = useAppSelector(getUserAuthData);
+    const { data: myProfileData, isLoading: isProfileLoading } = useGetProfileInfoQuery(
+        undefined,
+        { skip: !isAuth },
+    );
+
     useEffect(() => {
+        if (isProfileLoading) return;
+
         const fetchOffers = async () => {
-            await getOffersData({
-                sort: OfferSort.Recommendation,
-            })
-                .unwrap()
-                .then((result) => {
-                    setOffers(result.data.slice(0, 10));
-                })
-                .catch(() => {
-                    setOffers([]);
-                });
+            try {
+                let personal: OfferApi[] = [];
+                const favoriteCategories = myProfileData?.favoriteCategories ?? [];
+                // GS-90: волонтёр сам выбрал интересующие его категории на
+                // дашборде (тот же выбор, что двигает
+                // OffersRecomendationsWidget) — это точнее общей
+                // admin-подборки, поэтому приоритетнее isFeatured.
+                if (favoriteCategories.length > 0) {
+                    const personalResult = await getOffersData({
+                        categoryIds: favoriteCategories,
+                        sort: OfferSort.Recommendation,
+                    }).unwrap();
+                    personal = personalResult.data;
+                }
+                if (personal.length > 0) {
+                    setOffers(pickSliderOffers(personal));
+                    return;
+                }
+
+                const featured = await getOffersData({ isFeatured: true }).unwrap();
+                if (featured.data.length > 0) {
+                    setOffers(pickSliderOffers(featured.data));
+                    return;
+                }
+                const recommended = await getOffersData({
+                    sort: OfferSort.Recommendation,
+                }).unwrap();
+                setOffers(pickSliderOffers(recommended.data));
+            } catch {
+                setOffers([]);
+            }
         };
         fetchOffers();
-    }, [getOffersData]);
+    }, [getOffersData, isProfileLoading, myProfileData]);
 
     if (isLoading) {
-        <div className={cn(className, styles.wrapper)}>
-            <MiniLoader />
-        </div>;
+        return (
+            <div className={cn(className, styles.wrapper)}>
+                <MiniLoader />
+            </div>
+        );
     }
 
     return (

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import {
-    FormControl, InputLabel, MenuItem, Select, Stack, TextField,
+    Checkbox,
+    FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, Switch, TextField, Tooltip,
 } from "@mui/material";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
@@ -12,7 +13,8 @@ import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getAdminReviewVacancyPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import {
-    AdminSort, useDeleteAdminReviewVacancyMutation,
+    AdminSort, useDeleteAdminReviewVacancyMutation, useEditAdminReviewVacancyMutation,
+    useGetAdminReviewVacanciesListQuery,
     useLazyGetAdminReviewVacanciesListQuery,
 } from "@/entities/Admin";
 import { OfferPagination } from "@/widgets/OffersMap";
@@ -27,12 +29,14 @@ import { useGetFullName } from "@/shared/lib/getFullName";
 import { textSlice } from "@/shared/lib/textSlice";
 import styles from "./AdminReviewVacanciesTable.module.scss";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import { buildFeaturedEditBody, isFeaturedCapReached, MAX_FEATURED_REVIEWS } from "./featuredToggle";
 
 interface ReviewVacancyFilters {
     sort?: AdminSort;
     authorLastName?: string;
     authorFirstName?: string;
     vacancyName?: string;
+    isFeatured?: string;
 }
 
 const reviewVacancyCustomFields: CustomFilterField<keyof ReviewVacancyFilters>[] = [
@@ -75,6 +79,22 @@ const reviewVacancyCustomFields: CustomFilterField<keyof ReviewVacancyFilters>[]
                 fullWidth
                 size="small"
                 disabled={disabled}
+            />
+        ),
+    },
+    {
+        key: "isFeatured",
+        label: "Только на главной",
+        render: ({ value, onChange, disabled }) => (
+            <FormControlLabel
+                disabled={disabled}
+                control={(
+                    <Checkbox
+                        checked={value === "true"}
+                        onChange={(e) => onChange(e.target.checked ? "true" : undefined)}
+                    />
+                )}
+                label="Только на главной"
             />
         ),
     },
@@ -127,6 +147,7 @@ export const AdminReviewVacanciesTable = () => {
         authorLastName: undefined,
         authorFirstName: undefined,
         vacancyName: undefined,
+        isFeatured: undefined,
     });
 
     const { getFullName } = useGetFullName();
@@ -136,6 +157,13 @@ export const AdminReviewVacanciesTable = () => {
         isFetching,
     }] = useLazyGetAdminReviewVacanciesListQuery();
     const [deleteReview, { isLoading: isDeleting }] = useDeleteAdminReviewVacancyMutation();
+    const [editReview, { isLoading: isTogglingFeatured }] = useEditAdminReviewVacancyMutation();
+    const { data: featuredCountData } = useGetAdminReviewVacanciesListQuery({
+        page: 1,
+        limit: 1,
+        isFeatured: true,
+    });
+    const featuredCount = featuredCountData?.pagination.total ?? 0;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -148,6 +176,7 @@ export const AdminReviewVacanciesTable = () => {
                     authorFirstName: filters.authorFirstName,
                     authorLastName: filters.authorLastName,
                     vacancyName: filters.vacancyName,
+                    isFeatured: filters.isFeatured === "true" ? true : undefined,
                 }).unwrap();
             } catch {
                 setToast({
@@ -158,7 +187,39 @@ export const AdminReviewVacanciesTable = () => {
         };
         fetchData();
     }, [filters.authorFirstName, filters.authorLastName,
-        filters.page, filters.sort, filters.vacancyName, getReviews]);
+        filters.isFeatured, filters.page, filters.sort, filters.vacancyName, getReviews]);
+
+    const handleToggleFeatured = async (row: {
+        id: string; rating: number; description: string; isFeatured: boolean;
+    }) => {
+        setToast(undefined);
+        const nextValue = !row.isFeatured;
+
+        if (isFeaturedCapReached(featuredCount, nextValue)) {
+            setToast({
+                text: `На главной уже выбрано максимум отзывов (${MAX_FEATURED_REVIEWS}). `
+                    + "Уберите один, чтобы добавить другой.",
+                type: HintType.Error,
+            });
+            return;
+        }
+
+        try {
+            await editReview({
+                reviewId: row.id,
+                body: buildFeaturedEditBody(row, nextValue),
+            }).unwrap();
+            setToast({
+                text: nextValue ? "Отзыв добавлен на главную страницу" : "Отзыв убран с главной страницы",
+                type: HintType.Success,
+            });
+        } catch {
+            setToast({
+                text: "Не удалось изменить показ отзыва на главной",
+                type: HintType.Error,
+            });
+        }
+    };
 
     const handleOpenDeleteModal = (id: string) => {
         setReviewlToDelete({ id });
@@ -243,6 +304,26 @@ export const AdminReviewVacanciesTable = () => {
             width: 180,
         },
         {
+            field: "isFeatured",
+            headerName: "На главной",
+            width: 130,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            renderCell: (params) => (
+                <Tooltip title={params.row.isFeatured ? "Убрать с главной" : "Показать на главной"}>
+                    <span>
+                        <Switch
+                            checked={params.row.isFeatured}
+                            disabled={isTogglingFeatured}
+                            onChange={() => handleToggleFeatured(params.row)}
+                        />
+                    </span>
+                </Tooltip>
+            ),
+        },
+        {
             field: "actions",
             headerName: "Действия",
             width: 160,
@@ -308,7 +389,7 @@ export const AdminReviewVacanciesTable = () => {
             const {
                 id, authorFirstName, authorLastName,
                 vacancyName,
-                rating, description, created, authorId,
+                rating, description, created, authorId, isFeatured,
             } = review;
             return {
                 id,
@@ -318,6 +399,7 @@ export const AdminReviewVacanciesTable = () => {
                 rating,
                 description,
                 created,
+                isFeatured,
             };
         });
         return (
@@ -348,6 +430,9 @@ export const AdminReviewVacanciesTable = () => {
                     disabled={isLoading}
                     customFields={reviewVacancyCustomFields}
                 />
+                <span className={styles.featuredCounter}>
+                    {`На главной: ${featuredCount} из ${MAX_FEATURED_REVIEWS}`}
+                </span>
             </div>
             <div className={styles.table}>
                 {renderTable()}

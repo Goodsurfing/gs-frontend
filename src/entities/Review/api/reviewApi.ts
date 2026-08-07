@@ -5,6 +5,7 @@ import {
     ApplicationReview, ApplicationReviewResponse,
     CreateOfferReview,
     CreateVolunteerReview,
+    FeaturedReview,
     GetAboutVolunteerReviewParams, GetAboutVolunteerReviewRequest,
     GetOfferReviewByHostIdParams,
     GetOfferReviewByHostResponse,
@@ -126,7 +127,7 @@ export const reviewApi = createApi({
         createVolunteerReview: build.mutation<void,
         CreateVolunteerReview>({
             query: (body) => ({
-                url: `${API_BASE_URL_ABSOLUTE}review-volunteer/create`,
+                url: `${API_BASE_URL_ABSOLUTE}review-volunteer`,
                 method: "POST",
                 body,
             }),
@@ -135,7 +136,7 @@ export const reviewApi = createApi({
         getAboutVolunteerReviews: build.query<GetAboutVolunteerReviewRequest,
         GetAboutVolunteerReviewParams>({
             query: (params) => ({
-                url: `${API_BASE_URL_ABSOLUTE}review-volunteer/list`,
+                url: `${API_BASE_URL_ABSOLUTE}review-volunteer`,
                 method: "GET",
                 params,
             }),
@@ -158,19 +159,33 @@ export const reviewApi = createApi({
             }),
             providesTags: ["volunteer", "host"],
         }),
+        getFeaturedReviews: build.query<FeaturedReview[], void>({
+            query: () => ({
+                url: `${API_BASE_URL_ABSOLUTE}review-vacancy/featured`,
+                method: "GET",
+            }),
+            providesTags: ["host", "volunteer"],
+        }),
         createOfferReview: build.mutation<void,
         CreateOfferReview>({
             query: (body) => ({
-                url: `${API_BASE_URL_ABSOLUTE}review-vacancy/create`,
+                url: `${API_BASE_URL_ABSOLUTE}review-vacancy`,
                 method: "POST",
                 body,
+            }),
+            invalidatesTags: ["host", "volunteer"],
+        }),
+        deleteOfferReview: build.mutation<void, string>({
+            query: (reviewId) => ({
+                url: `${API_BASE_URL_ABSOLUTE}review-vacancy/${reviewId}`,
+                method: "DELETE",
             }),
             invalidatesTags: ["host", "volunteer"],
         }),
         getOfferReviews: build.query<GetOfferReviewRequest,
         GetOfferReviewParams>({
             query: (params) => ({
-                url: `${API_BASE_URL_ABSOLUTE}review-vacancy/list`,
+                url: `${API_BASE_URL_ABSOLUTE}review-vacancy`,
                 method: "GET",
                 params,
             }),
@@ -239,6 +254,7 @@ export const {
     useCreateVolunteerReviewMutation,
     useLazyGetAboutVolunteerReviewsQuery,
     useCreateOfferReviewMutation,
+    useDeleteOfferReviewMutation,
     useLazyGetOfferReviewsQuery,
     useGetMyVolunteerReviewsQuery,
     useLazyGetMyVolunteerReviewsQuery,
@@ -249,4 +265,5 @@ export const {
     useLazyGetHostReviewByHostIdQuery,
     useLazyGetVolunteerReviewByVolunteerIdQuery,
     useGetOfferReviewsQuery,
+    useGetFeaturedReviewsQuery,
 } = reviewApi;

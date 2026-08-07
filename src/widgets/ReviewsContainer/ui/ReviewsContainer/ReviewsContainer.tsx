@@ -6,7 +6,8 @@ import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import ReviewItem from "@/widgets/ReviewsContainer/ui/ReviewItem/ReviewItem";
-import { reviewsData } from "@/widgets/ReviewsContainer/ui/ReviewsContainer/Reviews.data";
+import { useGetFeaturedReviewsQuery } from "@/entities/Review";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 import arrowIcon from "@/shared/assets/images/reviews/arrow.svg";
 
@@ -15,6 +16,16 @@ import styles from "./ReviewsContainer.module.scss";
 const ReviewsContainer: FC = () => {
     const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
     const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
+    const { data: featuredReviews } = useGetFeaturedReviewsQuery();
+
+    // Отзыв без фото на этой витрине смотрится как дыра — фото тут главное.
+    const reviewsWithPhotos = (featuredReviews ?? []).filter(
+        (review) => review.images.length > 0,
+    );
+
+    if (reviewsWithPhotos.length === 0) {
+        return null;
+    }
 
     return (
         <div className={styles.wrapper}>
@@ -49,12 +60,18 @@ const ReviewsContainer: FC = () => {
                         pauseOnMouseEnter: true,
                     }}
                 >
-                    {reviewsData
-                        && reviewsData.map((item, index) => (
-                            <SwiperSlide key={index}>
-                                <ReviewItem {...item} />
-                            </SwiperSlide>
-                        ))}
+                    {reviewsWithPhotos.map((review) => (
+                        <SwiperSlide key={review.id}>
+                            <ReviewItem
+                                title={review.title}
+                                text={review.description}
+                                image={getMediaContent(review.images[0], "LARGE") ?? ""}
+                                author={review.authorName}
+                                avatar={getMediaContent(review.authorAvatar ?? undefined, "SMALL")}
+                                vacancyId={review.vacancyId}
+                            />
+                        </SwiperSlide>
+                    ))}
                 </Swiper>
             </div>
         </div>

@@ -29,10 +29,13 @@ export const AdminReviewVacancyInfo: FC<AdminReviewVacancyInfoProps> = (props) =
         if (reviewData) {
             const {
                 rating, description, id, authorFirstName, authorLastName, vacancyName, created,
+                isFeatured, images,
             } = reviewData;
             setReviewFields({
                 rating,
                 description,
+                isFeatured,
+                images,
             });
             setReviewInfoTable({
                 id,
@@ -49,7 +52,9 @@ export const AdminReviewVacancyInfo: FC<AdminReviewVacancyInfoProps> = (props) =
 
     const onSubmit = async (data: AdminReviewFields) => {
         setToast(undefined);
-        const { rating, description } = data;
+        const {
+            rating, description, isFeatured, images,
+        } = data;
         if (!rating) return;
         try {
             await updateReview({
@@ -57,6 +62,8 @@ export const AdminReviewVacancyInfo: FC<AdminReviewVacancyInfoProps> = (props) =
                 body: {
                     description,
                     rating,
+                    isFeatured,
+                    imageIds: (images ?? []).map((image) => image.id),
                 },
             }).unwrap();
             setToast({
@@ -101,6 +108,7 @@ export const AdminReviewVacancyInfo: FC<AdminReviewVacancyInfoProps> = (props) =
                 review={reviewFields}
                 onSubmit={onSubmit}
                 isLoading={isUpdateLoading}
+                showFeaturedToggle
             />
         </div>
     );

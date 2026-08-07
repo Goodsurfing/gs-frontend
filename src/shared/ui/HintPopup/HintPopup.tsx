@@ -1,5 +1,7 @@
 import cn from "classnames";
-import React, { FC, useEffect, useState } from "react";
+import React, {
+    FC, useEffect, useRef, useState,
+} from "react";
 import { CSSTransition } from "react-transition-group";
 
 import { IHintPopup } from "./HintPopup.interface";
@@ -12,6 +14,7 @@ const HintPopup: FC<IHintPopup> = ({
     timeout = 3000,
 }) => {
     const [isActive, setActive] = useState(false);
+    const nodeRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setActive(true);
@@ -26,6 +29,7 @@ const HintPopup: FC<IHintPopup> = ({
             <CSSTransition
                 in={isActive}
                 timeout={timeout}
+                nodeRef={nodeRef}
                 classNames={{
                     enterActive: styles.enterActive,
                     exitDone: styles.exitDone,
@@ -33,6 +37,7 @@ const HintPopup: FC<IHintPopup> = ({
                 }}
             >
                 <div
+                    ref={nodeRef}
                     className={cn(styles.popup, {
                         [styles.error]: type === "error",
                         [styles.success]: type === "success",

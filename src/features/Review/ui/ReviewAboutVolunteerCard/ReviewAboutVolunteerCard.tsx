@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { Rating } from "@mui/material";
 import { GetAboutVolunteerReview } from "@/entities/Review";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
+import { ReviewGallery } from "@/shared/ui/ReviewGallery/ReviewGallery";
 import { getFullAddress, getFullName } from "@/shared/lib/getFullName";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./ReviewAboutVolunteerCard.module.scss";
@@ -12,7 +13,9 @@ interface ReviewAboutVolunteerCardProps {
 
 export const ReviewAboutVolunteerCard: FC<ReviewAboutVolunteerCardProps> = (props) => {
     const { data } = props;
-    const { author, description, rating } = data;
+    const {
+        author, description, rating, images,
+    } = data;
     const username = getFullName(author.firstName, author.lastName);
     const fullAddress = getFullAddress(author.city, author.country);
 
@@ -53,6 +56,7 @@ export const ReviewAboutVolunteerCard: FC<ReviewAboutVolunteerCardProps> = (prop
                 </div>
             </div>
             <p className={styles.textReview}>{description}</p>
+            <ReviewGallery images={images} />
         </div>
     );
 };

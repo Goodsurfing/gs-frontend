@@ -4,6 +4,7 @@ const errorTranslationKeys: Record<string, string> = {
     "Free account allows up to 3 applications. Get a membership to apply without limits.": "errors.freeAccountApplicationsLimit",
     "Free account allows up to 1 published vacancy. Get a membership to publish without limits.": "errors.freeAccountPublishedVacancyLimit",
     "This vacancy only accepts applications from verified participants. Get a membership to apply.": "errors.onlyVerifiedVolunteersAllowed",
+    "Fill in the vacancy title, description and address before publishing.": "errors.vacancyIncomplete",
 };
 
 const getTranslatedErrorText = (message: string): string => {

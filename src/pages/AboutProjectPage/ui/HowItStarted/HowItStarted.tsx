@@ -3,6 +3,7 @@ import React, { FC } from "react";
 
 import { useTranslation } from "react-i18next";
 import styles from "./HowItStarted.module.scss";
+import { renderBoldText } from "@/shared/lib/renderBoldText";
 
 interface HowItStartedProps {
     className?: string;
@@ -18,7 +19,7 @@ export const HowItStarted: FC<HowItStartedProps> = (
         <section className={cn(className, styles.wrapper)}>
             <h2 className={styles.title}>{t("Как всё началось")}</h2>
             <p className={styles.description}>
-                {description}
+                {description && renderBoldText(description)}
             </p>
         </section>
     );

@@ -54,7 +54,7 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
         }, [additionalSkills, t]);
 
         return (
-            <div className={cn(className, styles.wrapper)}>
+            <div id="skills" className={cn(className, styles.wrapper)}>
                 <div className={styles.card}>
                     <Text title={t("personal.Умения")} titleSize="h3" />
                     <div className={styles.cards}>{renderSkillsCard}</div>

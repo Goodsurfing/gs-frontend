@@ -1,33 +1,79 @@
-// .ymaps-2-1-79-balloon {
-//     box-shadow: none !important;
-// }
+// Наша карточка (.balloonWrapper в OffersMap.module.scss) уже сама рисует
+// фон/скругление/тень — снимаем дефолтные отступы и рамку balloon у Яндекса,
+// иначе вокруг карточки остаётся некрасивый белый паддинг. border-radius +
+// overflow: hidden вешаем на __layout, а не на внешний .ymaps-2-1-79-balloon,
+// чтобы не обрезать хвостик-указатель (он рендерится соседним элементом).
+.ymaps-2-1-79-balloon {
+    box-shadow: none !important;
+}
 
-// .ymaps-2-1-79-balloon__content {
-//     padding: 0 !important;
-//     background: transparent !important;
-//     margin: 0 !important;
-// }
+.ymaps-2-1-79-balloon__content {
+    padding: 0 !important;
+    background: transparent !important;
+    margin: 0 !important;
+}
 
-// .ymaps-2-1-79-balloon__layout {
-//     background: transparent !important;
-//     border: none !important;
-//     width: auto !important;
-//     height: auto;
-// }
-
-// .offer-card {
-//     width: 200px;
-//     height: auto;
-// }
-// .ymaps-2-1-79-balloon__content > ymaps {
-//     height: auto;
-// }
+.ymaps-2-1-79-balloon__layout {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: 0 8px 24px rgba(33, 33, 33, 0.16) !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+    width: auto !important;
+    height: auto;
+}
 
 .ymaps-2-1-79-map-copyrights-promo {
     display: none;
 }
-.ymaps-2-1-79-b-cluster-content__header {
-    display: none !important;
+
+// Balloon кластера (открывается кликом по кружку с числом на карте) —
+// история двух неудачных попыток заставить Яндекс рендерить его читаемо:
+// сначала clusterBalloonPanelMaxMapArea: Infinity, потом clusterBalloonContentLayout
+// + clusterBalloonPanelMaxMapArea: 0. Оба раза Яндекс.Карты в каких-то
+// сценариях всё равно уходили в свой собственный недокументированный
+// version-pinned layout "b-cluster-tabs" (список вакансий слева без
+// подложки + превью выбранной справа) вместо нашего шаблона — список
+// наследовал прозрачность .ymaps-2-1-79-balloon__layout выше (она
+// задумывалась для нашей карточки, которая сама рисует фон) и рендерился
+// голым текстом поверх тайлов карты. Стилизовать сам b-cluster-tabs
+// напрямую (классы вида .ymaps-2-1-79-b-cluster-tabs__*) тоже не помогало
+// на практике — поведение не поддавалось надёжному контролю снаружи.
+//
+// Финальный фикс отказался от нативного balloon у кластеров вообще:
+// clusterOpenBalloonOnClick: false в OffersMap.tsx полностью его
+// отключает, клик обрабатывается вручную и открывает наш собственный
+// React Modal (.clusterModal в OffersMap.module.scss), который рендерится
+// через портал в document.body — вне DOM Яндекс.Карт, так что этот класс
+// проблем структурно больше не может повториться. b-cluster-tabs больше
+// никогда не рендерится, поэтому специфичных для панельного режима правил
+// здесь больше нет.
+
+// Дефолтная кнопка закрытия balloon у Яндекса — тёмный "×" с opacity: 0.3,
+// рассчитанный на светлый фон обычного balloon. Наша карточка (.balloonWrapper)
+// начинается сразу с фото на всю ширину — та же кнопка ложится прямо на фото и
+// на тёмных/пёстрых снимках становится практически невидимой. Даём ей
+// НЕПРОЗРАЧНУЮ (не полупрозрачную!) белую подложку-кружок — сам крестик у
+// Яндекса и так чёрный (SVG без явного fill = чёрный по умолчанию), контраста
+// с белым кружком достаточно без доп. манипуляций с цветом.
+//
+// Раньше здесь стояли rgba(0,0,0,.55) + filter: invert(1) — казалось бы,
+// тёмный кружок с выбеленным крестиком, но filter применяется к УЖЕ
+// СКОМПОНОВАННОМУ битмапу элемента целиком, включая наш собственный
+// background-color: инверсия переворачивала rgba(0,0,0,.55) в rgba(255,255,
+// 255,.55) — получался ПОЛУПРОЗРАЧНЫЙ БЕЛЫЙ кружок, а не непрозрачный тёмный.
+// На светлом фоне (например, белая надпись прямо на фото вакансии) такой
+// полупрозрачный белый кружок сливался с подложкой почти так же, как и
+// исходный крестик без фикса — тот самый баг, который поймал пользователь.
+.ymaps-2-1-79-balloon__close-button {
+    opacity: 1 !important;
+    background-color: #fff !important;
+    background-size: 10px 10px !important;
+    border-radius: 50%;
+    width: 22px !important;
+    height: 22px !important;
+    margin: 8px 8px 0 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 
 // Zoom control (+/- slider): Yandex positions it via an inline `inset`

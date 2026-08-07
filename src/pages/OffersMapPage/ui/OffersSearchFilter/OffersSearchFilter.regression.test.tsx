@@ -20,7 +20,10 @@ vi.mock("../OffersSearchFilterMobile/OffersSearchFilterMobile", () => ({
 }));
 vi.mock("@/widgets/OffersMap/ui/SearchOffers/SearchOffers", () => ({
     SearchOffers: React.forwardRef(
-        (_props: unknown, ref: React.Ref<HTMLDivElement>) => <div ref={ref} />,
+        (_props: unknown, ref: React.Ref<{ clearSearch: () => void }>) => {
+            React.useImperativeHandle(ref, () => ({ clearSearch: () => {} }));
+            return <div />;
+        },
     ),
 }));
 // A minimal stand-in for the real OffersFilter that exposes just enough of the
@@ -60,12 +63,12 @@ describe("OffersSearchFilter — регресс: категория не дол�
     it("не переотправляет снятую категорию при клике Применить", async () => {
         const requestedUrls: string[] = [];
         server.use(
-            rest.get("*/vacancy/list", (req, res, ctx) => {
+            rest.get("*/vacancy", (req, res, ctx) => {
                 requestedUrls.push(req.url.toString());
                 return res(ctx.status(200), ctx.json({ data: [], pagination: { total: 0 } }));
             }),
             rest.get("*/vacancy/for-map/list", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
-            rest.get("*/category/list", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
+            rest.get("*/category", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
         );
 
         renderWithProviders(

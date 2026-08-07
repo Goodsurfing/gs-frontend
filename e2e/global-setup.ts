@@ -42,7 +42,7 @@ async function setup(): Promise<void> {
         });
 
         // Получаем JWT через API
-        const loginResp = await ctx.request.post(`${API_URL}/api/v2/token`, {
+        const loginResp = await ctx.request.post(`${API_URL}/api/v1/token`, {
             data: { email: account.email, password: account.password },
         });
 
@@ -50,15 +50,27 @@ async function setup(): Promise<void> {
             throw new Error(`Логин ${account.email} не удался: ${loginResp.status()}`);
         }
 
-        const { token, roles } = await loginResp.json();
+        const { accessToken, mercureToken, roles } = await loginResp.json();
 
-        // Записываем токен в localStorage так, как ожидает приложение
+        // Записываем токен в localStorage так, как ожидает приложение —
+        // userSlice.initAuthData() хидрирует authData только если ВСЕ
+        // четыре ключа на месте (user/token/mercureToken/roles), иначе
+        // PrivateRouteGuard считает сессию разлогиненной и уводит на
+        // /signin, даже если JWT в localStorage валидный.
         await ctx.addInitScript(
-            ({ t, r }: { t: string; r: string[] }) => {
+            ({
+                email, t, mt, r,
+            }: {
+                email: string; t: string; mt: string; r: string[];
+            }) => {
+                localStorage.setItem('user', JSON.stringify({ username: email }));
                 localStorage.setItem('token', JSON.stringify(t));
+                localStorage.setItem('mercureToken', JSON.stringify(mt));
                 localStorage.setItem('roles', JSON.stringify(r));
             },
-            { t: token, r: roles ?? [] },
+            {
+                email: account.email, t: accessToken, mt: mercureToken, r: roles ?? [],
+            },
         );
 
         // Открываем главную, чтобы localStorage "осел" в origin
