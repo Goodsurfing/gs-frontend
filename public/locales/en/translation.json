@@ -14,6 +14,7 @@
         "Invalid password": "Invalid login or password",
         "User not found": "User not found",
         "Данный пользователь уже существует": "This user already exists",
+        "Возможно, вы уже регистрировались.": "You may have already registered.",
         "Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту.": "To log in, you need to confirm your email address. Please check your inbox.",
         "Некорректно введены данные": "Incorrect data entered",
         "Нажимая кнопку «Зарегистрироваться», я принимаю": "By clicking the 'Register' button, I accept",

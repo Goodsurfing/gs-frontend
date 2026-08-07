@@ -8,10 +8,11 @@ import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import AuthInputField from "@/shared/ui/AuthInputField/AuthInputField";
+import LocaleLink from "@/shared/ui/LocaleLink/LocaleLink";
 
 import { useAppDispatch } from "@/shared/hooks/redux";
 
-import { getConfirmEmailPageUrl } from "@/shared/config/routes/AppUrls";
+import { getConfirmEmailPageUrl, getResetPasswordPageUrl, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
 
 import { authApi } from "@/store/api/authApi";
 import { setRegisterUserData } from "@/store/reducers/registerSlice";
@@ -26,6 +27,7 @@ const SignUpForm: FC = () => {
 
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
+    const [isDuplicateEmail, setIsDuplicateEmail] = useState(false);
     const { t } = useTranslation();
 
     const dispatch = useAppDispatch();
@@ -49,7 +51,9 @@ const SignUpForm: FC = () => {
                 navigate(getConfirmEmailPageUrl(locale));
             })
             .catch((e: any) => {
-                const textError = (e.status === 422) ? t("login.Данный пользователь уже существует") : t("login.Некорректно введены данные");
+                const isDuplicate = e.status === 422;
+                const textError = isDuplicate ? t("login.Данный пользователь уже существует") : t("login.Некорректно введены данные");
+                setIsDuplicateEmail(isDuplicate);
                 setToast({
                     text: textError,
                     type: HintType.Error,
@@ -62,6 +66,21 @@ const SignUpForm: FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             {isError && toast && (
                 <HintPopup text={toast.text} type={toast.type} />
+            )}
+            {isError && isDuplicateEmail && (
+                <div className={styles.duplicateEmailHint}>
+                    {t("login.Возможно, вы уже регистрировались.")}
+                    {" "}
+                    <LocaleLink to={getSignInPageUrl(locale)}>
+                        {t("login.Войти")}
+                    </LocaleLink>
+                    {" "}
+                    /
+                    {" "}
+                    <LocaleLink to={getResetPasswordPageUrl(locale)}>
+                        {t("login.Забыли пароль?")}
+                    </LocaleLink>
+                </div>
             )}
             <Controller
                 control={control}
