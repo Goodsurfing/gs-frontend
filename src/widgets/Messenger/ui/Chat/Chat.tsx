@@ -44,7 +44,12 @@ import { ChatFormFields } from "../../model/types/chatForm";
 import { Message } from "../Message/Message";
 import { SendMessage } from "../SendMessage/SendMessage";
 import { API_BASE_URL } from "@/shared/constants/api";
-import { getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
+import {
+    getHostPersonalPageUrl,
+    getMessengerPageIdUrl,
+    getVolunteerPersonalPageUrl,
+} from "@/shared/config/routes/AppUrls";
+import CustomLink from "@/shared/ui/Link/Link";
 import { useMessenger } from "@/app/providers/MessengerProvider";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import styles from "./Chat.module.scss";
@@ -455,12 +460,32 @@ export const Chat: FC<ChatProps> = (props) => {
                             className={styles.back}
                             onClick={handleBackButton}
                         />
-                        <span className={styles.userName}>
-                            {getFullName(
-                                (companionData ?? chatData?.otherParticipants?.[0])?.firstName,
-                                (companionData ?? chatData?.otherParticipants?.[0])?.lastName,
-                            )}
-                        </span>
+                        {(() => {
+                            const companion = companionData ?? chatData?.otherParticipants?.[0];
+                            const companionName = getFullName(
+                                companion?.firstName,
+                                companion?.lastName,
+                            );
+                            const companionProfileUrl = (() => {
+                                if (!companion) return undefined;
+                                if (companion.hostId && !companion.volunteer) {
+                                    return getHostPersonalPageUrl(locale, companion.hostId);
+                                }
+                                return getVolunteerPersonalPageUrl(locale, companion.id);
+                            })();
+
+                            return companionProfileUrl ? (
+                                <CustomLink
+                                    to={companionProfileUrl}
+                                    variant="DEFAULT"
+                                    className={styles.userName}
+                                >
+                                    {companionName}
+                                </CustomLink>
+                            ) : (
+                                <span className={styles.userName}>{companionName}</span>
+                            );
+                        })()}
                     </div>
                     <div className={styles.settingsInfo}>
                         {/* <UserSettings /> */}
