@@ -45,6 +45,13 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE }}:staging
             ${{ env.REGISTRY }}/${{ env.IMAGE }}:sha-${{ github.sha }}
           push: true
+          # buildx с версии 0.10 по умолчанию пушит provenance-attestation
+          # доп. манифестом в OCI image index — Yandex Container Registry
+          # такой manifest list не переваривает и роняет весь push с
+          # "unknown: Cannot read manifest data" (живой сбой на стейдже
+          # 2026-08-15, до этого недели пушилось нормально — судя по всему
+          # GitHub обновил бандленный buildx на раннерах).
+          provenance: false
           cache-from: type=gha,scope=gs-frontend
           cache-to: type=gha,mode=max,scope=gs-frontend
 
