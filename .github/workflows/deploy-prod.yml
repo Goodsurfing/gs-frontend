@@ -49,6 +49,10 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ github.ref_name }}
             ${{ env.REGISTRY }}/${{ env.IMAGE }}:sha-${{ github.sha }}
           push: true
+          # См. тот же provenance: false в deploy-staging.yml — Yandex
+          # Container Registry не переваривает OCI attestation-манифест,
+          # который buildx с 0.10 добавляет по умолчанию при push.
+          provenance: false
           cache-from: type=gha,scope=gs-frontend-prod
           cache-to: type=gha,mode=max,scope=gs-frontend-prod
 
