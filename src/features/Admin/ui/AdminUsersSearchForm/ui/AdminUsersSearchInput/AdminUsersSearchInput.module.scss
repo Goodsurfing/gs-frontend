@@ -54,6 +54,12 @@
     border-bottom-right-radius: 3px;
 }
 
+.notFound {
+    font-size: 14px;
+    color: var(--error-color);
+    padding: 6px 4px;
+}
+
 .wrapperCard {
     background: none;
     border: none;
