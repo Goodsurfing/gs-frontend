@@ -25,7 +25,9 @@ let searchResult: { id: string; firstName: string; lastName: string }[] = [];
 // это на каждый рендер меняет ссылку getUsers — а она в зависимостях
 // useEffect в компоненте, так что эффект перезапускается бесконечно
 // (пойман вживую: тест реально зависал, а не просто медленно шёл).
-const getUsersMock = vi.fn().mockImplementation(() => ({ unwrap: () => Promise.resolve(searchResult) }));
+const getUsersMock = vi.fn().mockImplementation(
+    () => ({ unwrap: () => Promise.resolve(searchResult) }),
+);
 
 vi.mock("@/entities/Admin", async () => {
     const actual = await vi.importActual<typeof import("@/entities/Admin")>("@/entities/Admin");
