@@ -125,6 +125,16 @@ export const AdminUsersSearchInput: FC<AdminUsersSearchInputProps> = (props) => 
         }
     }, [onChange, refreshData, selectedUser]);
 
+    // Поиск ищет ТОЛЬКО точное совпадение (по id или email) — без этого
+    // блока пустой результат рендерил реально пустой <div>, а
+    // ".dropdown:empty { visibility: hidden }" в стилях прятал его
+    // целиком. Человек вводил несуществующий/опечатанный id, ничего не
+    // происходило (кнопка "Добавить пользователя" так и оставалась
+    // недоступна — она блокируется до клика по карточке из выпадающего
+    // списка), и выглядело это как "поиск пользователя вообще не
+    // работает", хотя на деле просто такого пользователя не было.
+    const showNotFound = debouncedValue.length > 3 && !isLoading && searchedUsers.length === 0;
+
     const renderUsers = useCallback(
         (users?: GetAdminUsersResponse[]) => {
             if (!users) return null;
@@ -175,7 +185,9 @@ export const AdminUsersSearchInput: FC<AdminUsersSearchInputProps> = (props) => 
                         className={styles.dropdown}
                         onMouseDown={(e) => e.preventDefault()}
                     >
-                        {renderUsers(searchedUsers)}
+                        {showNotFound
+                            ? <p className={styles.notFound}>Пользователь не найден</p>
+                            : renderUsers(searchedUsers)}
                     </div>
                 </div>
                 <AddButton
