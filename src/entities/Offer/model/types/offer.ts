@@ -164,6 +164,7 @@ export interface GetOffersFilters {
     id: number;
     startDate: string;
     endDate: string;
+    hidePassed: boolean;
     minDurationDays: string;
     maxDurationDays: string;
     search: string;

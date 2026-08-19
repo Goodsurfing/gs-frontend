@@ -27,8 +27,6 @@ export const offersFilterApiAdapter = (
     } else if (sortValue === "novelty") {
         sort = OfferSort.UpdatedDesc;
     }
-    const currentDate = new Date();
-
     const minDurationDays = participationPeriod[0] !== 1
         ? participationPeriod[0].toString()
         : undefined;
@@ -39,18 +37,21 @@ export const offersFilterApiAdapter = (
     const start_date = formattingDate(periods.start);
     const end_date = formattingDate(periods.end);
 
-    let result_start_date = start_date;
-
-    if (!showClosedOffers) {
-        const [datePart] = currentDate.toISOString().split("T");
-        result_start_date = datePart;
-    }
-
+    // showClosedOffers=false ("Показать прошедшие" выключен) — это НЕ то же
+    // самое, что пользователь выбрал дату начала участия "от сегодня".
+    // Раньше тумблер просто подставлял startDate=сегодня в тот же фильтр
+    // periods.start >= startDate, из-за чего вакансии, которые УЖЕ ИДУТ
+    // (период начался в прошлом, но ещё не закончился — например
+    // 01.04–31.08 при сегодняшнем 19.08), ошибочно пропадали из выдачи,
+    // хотя они ещё вполне актуальны. hidePassed — отдельный параметр,
+    // бэкенд проверяет periods.ending >= сегодня (закончилось ли), а не
+    // periods.start >= сегодня (началось ли).
     const queryParams: Partial<GetOffersFilters> = {
         minDurationDays,
         maxDurationDays,
-        startDate: result_start_date ?? undefined,
+        startDate: start_date ?? undefined,
         endDate: end_date ?? undefined,
+        hidePassed: !showClosedOffers ? true : undefined,
         sort,
     };
 
