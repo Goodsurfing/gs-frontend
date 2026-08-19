@@ -1,3 +1,7 @@
+import {
+    describe, it, expect,
+} from "vitest";
+
 import { offersFilterApiAdapter } from "./offersFilterAdapter";
 import { OffersFilterFields } from "../model/types";
 
