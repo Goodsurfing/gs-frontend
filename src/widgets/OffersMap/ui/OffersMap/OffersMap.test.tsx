@@ -19,7 +19,9 @@ const balloonOpen = vi.fn().mockResolvedValue(undefined);
 const objectsBalloonClose = vi.fn();
 const getById = vi.fn((): object | undefined => ({}));
 const clustersGetById = vi.fn(
-    (): { properties: { geoObjects: any[] } } => ({ properties: { geoObjects: [] } }),
+    (): { properties: { geoObjects: any[] }; geometry?: { coordinates: number[] } } => (
+        { properties: { geoObjects: [] } }
+    ),
 );
 const getObjectState = vi.fn((): { isClustered: boolean } => ({ isClustered: false }));
 // Симулирует нативный клик по маркеру (или наш собственный balloon.open()) —
@@ -74,6 +76,12 @@ vi.mock("@pbe/react-yandex-maps", () => ({
             setZoom,
             getZoom,
             getBounds,
+            // computeClusterPopupAnchor (OffersMap.tsx) читает текущую проекцию
+            // карты через options.get("projection") и переводит гео-координаты
+            // кластера в пиксели — тождественные заглушки ниже достаточно,
+            // тесты на позицию попапа не проверяют реальную гео-математику.
+            options: { get: () => ({ toGlobalPixels: (coords: number[]) => coords }) },
+            converter: { globalToPage: (pixels: number[]) => pixels },
             events: {
                 add: (_event: string, handler: () => void) => boundsChangeHandlers.push(handler),
                 remove: (_event: string, handler: () => void) => {
@@ -198,7 +206,9 @@ describe("OffersMap", () => {
         getById.mockClear();
         getById.mockImplementation(() => ({}));
         clustersGetById.mockClear();
-        clustersGetById.mockImplementation(() => ({ properties: { geoObjects: [] } }));
+        clustersGetById.mockImplementation(() => ({
+            properties: { geoObjects: [] }, geometry: { coordinates: [55.75, 37.61] },
+        }));
         getObjectState.mockClear();
         getObjectState.mockReturnValue({ isClustered: false });
         boundsChangeHandlers.length = 0;
@@ -319,6 +329,7 @@ describe("OffersMap", () => {
                         },
                     }],
                 },
+                geometry: { coordinates: [55.75, 37.61] },
             });
             render(
                 <OffersMap
@@ -336,21 +347,16 @@ describe("OffersMap", () => {
             });
             expect(screen.getByText("Вакансия в кластере")).toBeInTheDocument();
 
-            // Регресс: className={styles.clusterModal} передавался в Modal
-            // как className самого Modal — а он ложится на fixed-оверлей
-            // ВЕСЬ_ЭКРАН (Modal.module.scss .wrapper), а не на карточку
-            // внутри него, так что card-стили clusterModal (width: 280px,
-            // белый фон, border-radius) перетирали позиционирование самого
-            // оверлея. Правильно — свой div с этим классом ВНУТРИ Modal.
-            // [class~=...] ищет ТОЧНЫЙ класс-токен, а не подстроку — иначе
-            // closest('[class*="clusterModal"]') сработал бы уже на первом
-            // попавшемся потомке вроде clusterModalName/clusterModalList
-            // (они все начинаются с "clusterModal"), даже не поднимаясь до
+            // Попап анкорится напрямую в OffersMap.tsx (не портал в body,
+            // не centered-модалка на весь экран) — carточка несёт класс
+            // clusterPopup. [class~=...] ищет ТОЧНЫЙ класс-токен, а не
+            // подстроку — иначе closest('[class*="clusterPopup"]')
+            // сработал бы уже на первом попавшемся потомке вроде
+            // clusterPopupClose/clusterPopupTail, даже не поднимаясь до
             // реального контейнера, и тест ничего бы не проверял.
-            const clusterModalBox = screen.getByText("Вакансия в кластере")
-                .closest("[class~=\"clusterModal\"]");
-            expect(clusterModalBox).not.toBeNull();
-            expect(clusterModalBox?.className).not.toMatch(/\bwrapper\b/);
+            const clusterPopupBox = screen.getByText("Вакансия в кластере")
+                .closest("[class~=\"clusterPopup\"]");
+            expect(clusterPopupBox).not.toBeNull();
 
             act(() => {
                 boundsChangeHandlers.forEach((handler) => handler());
@@ -398,6 +404,7 @@ describe("OffersMap", () => {
                         },
                     }],
                 },
+                geometry: { coordinates: [55.75, 37.61] },
             });
             act(() => {
                 simulateClusterClick();
@@ -422,6 +429,171 @@ describe("OffersMap", () => {
                 );
             });
             expect(balloonOpen).not.toHaveBeenCalled();
+        },
+    );
+
+    it(
+        "позиционирует попап-список кластера у точки клика, а не по центру всего экрана "
+        + "(регресс: раньше рендерился через общий на всё приложение centered Modal — карточка "
+        + "всегда съезжала в центр viewport независимо от того, где на карте реально находится "
+        + "кластер, по которому кликнули)",
+        async () => {
+            // jsdom по умолчанию не считает лэйаут — getBoundingClientRect()
+            // отдаёт нулевой width/height у любого элемента, из-за чего
+            // клэмпинг по ширине карты (см. handleClusterClick) всегда
+            // прижимал бы карточку к левому краю независимо от clientPixels.
+            // Подставляем реалистичный размер контейнера, чтобы тест
+            // действительно проверял позиционирование, а не клэмпинг.
+            const rectSpy = vi.spyOn(HTMLElement.prototype, "getBoundingClientRect")
+                .mockReturnValue({
+                    width: 1000,
+                    height: 800,
+                    left: 0,
+                    top: 0,
+                    right: 1000,
+                    bottom: 800,
+                    x: 0,
+                    y: 0,
+                    toJSON: () => {},
+                });
+
+            try {
+                // Мок map.options.get("projection").toGlobalPixels и
+                // map.converter.globalToPage (см. мок Map выше) — тождественные
+                // функции, так что координаты кластера напрямую становятся
+                // "пикселями" — x=500 нарочно выбран подальше от обоих краёв
+                // 1000px-контейнера, чтобы клэмпинг по ширине карты (см.
+                // computeClusterPopupAnchor) не подменял собой то, что реально
+                // проверяет тест — позицию по самой геоточке кластера.
+                clustersGetById.mockReturnValue({
+                    properties: {
+                        geoObjects: [{
+                            id: "2",
+                            properties: {
+                                name: "Вакансия в кластере",
+                                offerUrl: "/offer/2",
+                                offerImage: "image.png",
+                                categoryName: "Категория",
+                                categoryColor: "#000",
+                            },
+                        }],
+                    },
+                    geometry: { coordinates: [500, 460] },
+                });
+                render(
+                    <OffersMap
+                        offersData={[offer({ id: 1 })]}
+                        isOffersLoading={false}
+                    />,
+                );
+
+                await waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+
+                act(() => {
+                    simulateClusterClick();
+                });
+
+                const clusterPopupBox = screen.getByText("Вакансия в кластере")
+                    .closest("[class~=\"clusterPopup\"]") as HTMLElement;
+                expect(clusterPopupBox).not.toBeNull();
+                // Контейнер сидит в (0,0), поэтому left/top карточки должны
+                // совпасть напрямую с координатами кластера — не с центром
+                // экрана и не с каким-то фиксированным местом, никак не
+                // зависящим от того, где реально находится кластер.
+                expect(clusterPopupBox.style.left).toBe("500px");
+                expect(clusterPopupBox.style.top).toBe(`${460 - 26}px`);
+            } finally {
+                rectSpy.mockRestore();
+            }
+        },
+    );
+
+    it(
+        "закрывает попап-список кластера по клику вне карточки (регресс: раньше это делал "
+        + "backdrop общего Modal — при переходе на свой позиционируемый попап без backdrop "
+        + "поведение \"клик мимо — закрыть\" легко потерять)",
+        async () => {
+            clustersGetById.mockReturnValue({
+                properties: {
+                    geoObjects: [{
+                        id: "2",
+                        properties: {
+                            name: "Вакансия в кластере",
+                            offerUrl: "/offer/2",
+                            offerImage: "image.png",
+                            categoryName: "Категория",
+                            categoryColor: "#000",
+                        },
+                    }],
+                },
+                geometry: { coordinates: [55.75, 37.61] },
+            });
+            render(
+                <OffersMap
+                    offersData={[offer({ id: 1 })]}
+                    isOffersLoading={false}
+                />,
+            );
+
+            await waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+
+            act(() => {
+                simulateClusterClick();
+            });
+            expect(screen.getByText("Вакансия в кластере")).toBeInTheDocument();
+
+            act(() => {
+                document.body.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+            });
+
+            expect(screen.queryByText("Вакансия в кластере")).not.toBeInTheDocument();
+        },
+    );
+
+    it(
+        "не закрывает попап-список кластера сам от себя, когда клик по этому же кластеру "
+        + "запускает pan карты (регресс, живая проверка на стейдже: клик по кластеру у "
+        + "Яндекс.Карт всегда чуть паннит карту, подводя кластер ближе к центру, даже с "
+        + "clusterDisableClickZoom: true — та опция отключает только смену зума, не сам pan; "
+        + "закрытие попапа по map actionbegin закрывало его в тот же момент, когда он только "
+        + "что открылся, от pan'а, вызванного этим же самым кликом)",
+        async () => {
+            clustersGetById.mockReturnValue({
+                properties: {
+                    geoObjects: [{
+                        id: "2",
+                        properties: {
+                            name: "Вакансия в кластере",
+                            offerUrl: "/offer/2",
+                            offerImage: "image.png",
+                            categoryName: "Категория",
+                            categoryColor: "#000",
+                        },
+                    }],
+                },
+                geometry: { coordinates: [55.75, 37.61] },
+            });
+            render(
+                <OffersMap
+                    offersData={[offer({ id: 1 })]}
+                    isOffersLoading={false}
+                />,
+            );
+
+            await waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+
+            act(() => {
+                simulateClusterClick();
+            });
+            expect(screen.getByText("Вакансия в кластере")).toBeInTheDocument();
+
+            // Симулирует actionend от pan'а, который сам клик по кластеру
+            // и вызвал — попап должен пережить это, просто пересчитав позицию.
+            act(() => {
+                boundsChangeHandlers.forEach((handler) => handler());
+            });
+
+            expect(screen.getByText("Вакансия в кластере")).toBeInTheDocument();
         },
     );
 

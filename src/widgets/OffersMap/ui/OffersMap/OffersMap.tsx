@@ -16,9 +16,10 @@ import "./yandex-map-restyle-ballon.scss";
 import { OfferMap } from "@/entities/Offer";
 import styles from "./OffersMap.module.scss";
 import Button from "@/shared/ui/Button/Button";
+import IconComponent from "@/shared/ui/IconComponent/IconComponent";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import { Modal } from "@/shared/ui/Modal/Modal";
 import { Text } from "@/shared/ui/Text/Text";
+import closeIcon from "@/shared/assets/icons/delete.svg";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 
@@ -32,6 +33,26 @@ const MAP_LOAD_TIMEOUT_MS = 15_000;
 // в метрах). Подбирается повторно на каждой попытке, пока не раскластерится
 // или не упрёмся в MAP_OPTIONS.maxZoom.
 const DECLUSTER_ZOOM_STEP = 2;
+
+// Список вакансий кластера раньше рендерился в общем на всё приложение
+// центрированном Modal (тёмная подложка на весь экран, карточка всегда по
+// центру viewport) — визуально он вообще никак не был связан с картой:
+// съезжал в угол экрана, а не к тому кластеру, по которому кликнули (живая
+// жалоба пользователя со скриншотом). Ниже — свой позиционируемый попап
+// с хвостиком, "приклеенный" к пиксельным координатам клика (см.
+// handleClusterClick), а не centered-модалка поверх всего.
+const CLUSTER_POPUP_WIDTH = 280;
+const CLUSTER_POPUP_HALF_WIDTH = CLUSTER_POPUP_WIDTH / 2;
+const CLUSTER_POPUP_EDGE_PADDING = 16;
+// Отступ от точки клика до карточки — половина диаметра кластерной иконки
+// (40px, см. .customClusterIcon) плюс сам хвостик, чтобы не перекрывать иконку.
+const CLUSTER_POPUP_VERTICAL_GAP = 26;
+// Примерная минимальная высота карточки — если над точкой клика меньше места,
+// открываем попап вниз вместо вверх, чтобы не срезало верхним краем экрана.
+const CLUSTER_POPUP_MIN_TOP_SPACE = 260;
+// Насколько хвостик может отъехать от центра карточки при клэмпинге позиции
+// по горизонтали у края карты — не даём ему вылезти на скруглённый угол.
+const CLUSTER_POPUP_TAIL_MARGIN = 20;
 
 // Модульные константы, а не инлайновые объекты в JSX — react-yandex-maps
 // сравнивает props объекта ObjectManager (options/objects/clusters) ПО
@@ -83,6 +104,22 @@ interface ClusterOfferItem {
     categoryColor: string;
 }
 
+interface ClusterPopupState {
+    offers: ClusterOfferItem[];
+    // Географические координаты кластера — источник истины для позиции.
+    // Клик по кластеру у Яндекс.Карт всегда чуть паннит карту (подводит
+    // кластер ближе к центру), даже с clusterDisableClickZoom: true (тот
+    // отключает только смену ЗУМА, не сам pan) — живая проверка на
+    // стейдже. Пиксельная позиция клика устаревает уже к концу этого
+    // pan'а; держим геокоординаты и пересчитываем экранную позицию заново
+    // на каждый "actionend" (см. эффект ниже), а не одну статичную точку.
+    left: number;
+    top: number;
+    tailOffset: number;
+    placement: "top" | "bottom";
+    coords: [number, number];
+}
+
 interface OffersMapProps {
     className?: string;
     classNameMap?: string;
@@ -111,12 +148,14 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const { t } = useTranslation();
     const [ymapState, setYmapState] = useState<YmapType | undefined>(undefined);
     const [showNoLocationNotice, setShowNoLocationNotice] = useState(false);
-    // Список вакансий кластера — целиком наш React-компонент (Modal),
-    // не нативный balloon Яндекса. См. комментарий у clusterOpenBalloonOnClick
-    // ниже: попытки стилизовать/сконфигурировать нативный кластерный balloon
-    // не работали на практике, поэтому клик по кластеру обрабатывается вручную
+    // Список вакансий кластера — целиком наш React-компонент, не нативный
+    // balloon Яндекса. См. комментарий у clusterOpenBalloonOnClick ниже:
+    // попытки стилизовать/сконфигурировать нативный кластерный balloon не
+    // работали на практике, поэтому клик по кластеру обрабатывается вручную
     // и открывает это состояние вместо какого-либо Яндекс-layout.
-    const [activeClusterOffers, setActiveClusterOffers] = useState<ClusterOfferItem[] | null>(null);
+    const [clusterPopup, setClusterPopup] = useState<ClusterPopupState | null>(null);
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
+    const clusterPopupRef = useRef<HTMLDivElement | null>(null);
     // Скрипт Яндекс.Карт грузится извне (<script> тег, не React-дерево) —
     // если он падает или зависает (сеть, блокировщик, сбой самого сервиса),
     // это происходит ВНЕ цикла рендера React, и никакой Error Boundary (в
@@ -450,7 +489,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         // раньше (пользователь только что кликнул по кластеру, увидел
         // список, а потом сработал этот код) — обе таблички повисали бы на
         // экране одновременно, одна поверх другой.
-        setActiveClusterOffers(null);
+        setClusterPopup(null);
         // Шестое живое наблюдение на стейдже: даже успешный open() не значит
         // "готово навсегда". Bounds-дебаунс может дать ДВЕ волны обновления
         // маркеров за один pan (промежуточная позиция во время анимации +
@@ -598,10 +637,77 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         };
     }, [objectManagerMountTick]);
 
+    // Экранная позиция попапа кластера строится из его ГЕОГРАФИЧЕСКИХ
+    // координат заново при каждом вызове — не запоминает пиксели одного
+    // конкретного момента. geo -> глобальные пиксели (через текущую
+    // проекцию карты и зум) -> пиксели страницы (map.converter) -> пиксели
+    // относительно wrapperRef. null — карта/wrapperRef ещё не готовы
+    // (например, projection недоступен на первом рендере).
+    const computeClusterPopupAnchor = (coords: [number, number]): {
+        left: number; top: number; tailOffset: number; placement: "top" | "bottom";
+    } | null => {
+        const map = mapRef.current;
+        const wrapperRect = wrapperRef.current?.getBoundingClientRect();
+        if (!map || !wrapperRect) return null;
+
+        let anchorX: number;
+        let anchorY: number;
+        try {
+            const projection = map.options.get("projection");
+            const globalPixels = projection.toGlobalPixels(coords, map.getZoom());
+            const [pageX, pageY] = map.converter.globalToPage(globalPixels);
+            anchorX = pageX - (wrapperRect.left + window.scrollX);
+            anchorY = pageY - (wrapperRect.top + window.scrollY);
+        } catch {
+            return null;
+        }
+
+        const minX = CLUSTER_POPUP_HALF_WIDTH + CLUSTER_POPUP_EDGE_PADDING;
+        const maxAvailableX = wrapperRect.width
+            - CLUSTER_POPUP_HALF_WIDTH - CLUSTER_POPUP_EDGE_PADDING;
+        const maxX = Math.max(minX, maxAvailableX);
+        const clampedX = Math.min(Math.max(anchorX, minX), maxX);
+        const tailOffset = Math.min(
+            Math.max(anchorX - clampedX, -CLUSTER_POPUP_TAIL_MARGIN),
+            CLUSTER_POPUP_TAIL_MARGIN,
+        );
+
+        const placement: "top" | "bottom" = anchorY < CLUSTER_POPUP_MIN_TOP_SPACE ? "bottom" : "top";
+        const top = placement === "top"
+            ? anchorY - CLUSTER_POPUP_VERTICAL_GAP
+            : anchorY + CLUSTER_POPUP_VERTICAL_GAP;
+
+        return {
+            left: clampedX, top, tailOffset, placement,
+        };
+    };
+
+    // Пересчитывает позицию уже открытого попапа кластера на каждый
+    // "actionend" — сам клик по кластеру уже панит карту (см. коммент у
+    // ClusterPopupState), плюс пользователь может двигать карту дальше,
+    // пока попап открыт. Держим его буквально приклеенным к геоточке
+    // кластера, а не закрываем при первом же движении карты — тот самый
+    // "чтобы это было всё же на карте", а не одноразовая табличка, которая
+    // тут же пропадает от собственного pan'а клика её открывшего.
+    useEffect(() => {
+        if (!clusterPopup || !mapRef.current) return undefined;
+        const map = mapRef.current;
+        const reposition = () => {
+            setClusterPopup((prev) => {
+                if (!prev) return prev;
+                const anchor = computeClusterPopupAnchor(prev.coords);
+                return anchor ? { ...prev, ...anchor } : prev;
+            });
+        };
+        map.events.add("actionend", reposition);
+        return () => map.events.remove("actionend", reposition);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [!!clusterPopup]);
+
     // Симметричный случай: клик по кластеру должен показать список вакансий
     // внутри него. Обрабатываем клик вручную вместо нативного balloon
     // Яндекса (clusterOpenBalloonOnClick: false у clusters выше) — читаем
-    // geoObjects прямо из кликнутого кластера и открываем наш Modal.
+    // geoObjects прямо из кликнутого кластера и открываем наш попап.
     // properties.offerUrl/offerImage/categoryName/categoryColor — то, что мы
     // сами положили в properties каждого маркера при построении features.
     // Заодно закрываем balloon отдельного маркера и сбрасываем отложенный
@@ -624,7 +730,28 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                 categoryName: geoObject.properties.categoryName,
                 categoryColor: geoObject.properties.categoryColor,
             }));
-            setActiveClusterOffers(items);
+
+            // ObjectManager отдаёт geometry кластера как ПЛОСКИЕ GeoJSON-данные
+            // ({ type: "Point", coordinates: [...] }) — не обёрнутый
+            // ymaps.IGeometry с методом .getCoordinates(), в отличие от
+            // geometry обычных GeoObject. Живая проверка: вызов
+            // .getCoordinates?.() на этом объекте всегда молча возвращает
+            // undefined (метода просто нет), из-за чего coords здесь
+            // раньше был неизменно null.
+            const coords: [number, number] | null = clusterObject?.geometry?.coordinates ?? null;
+            const anchor = coords && computeClusterPopupAnchor(coords);
+
+            if (coords && anchor) {
+                setClusterPopup({ offers: items, coords, ...anchor });
+            } else if (coords) {
+                // Карта/wrapperRef ещё не готовы разово посчитать пиксели
+                // (например, самый первый рендер) — покажем по центру,
+                // эффект на actionend ниже поправит позицию при первой же
+                // возможности.
+                setClusterPopup({
+                    offers: items, coords, left: 0, top: 0, tailOffset: 0, placement: "top",
+                });
+            }
 
             pendingBalloonOfferIdRef.current = null;
             try {
@@ -639,6 +766,29 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
             objectManager.clusters.events.remove("click", handleClusterClick);
         };
     }, [objectManagerMountTick]);
+
+    // Клик/тап вне попапа или Escape закрывают его — тот же UX, что был у
+    // старого Modal (клик по подложке закрывал карточку), но без самой
+    // подложки: карта под попапом остаётся видимой и кликабельной везде,
+    // кроме самой карточки.
+    useEffect(() => {
+        if (!clusterPopup) return undefined;
+        const handlePointerDown = (event: MouseEvent) => {
+            if (!clusterPopupRef.current?.contains(event.target as Node)) {
+                setClusterPopup(null);
+            }
+        };
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") setClusterPopup(null);
+        };
+        document.addEventListener("mousedown", handlePointerDown);
+        document.addEventListener("keydown", handleKeyDown);
+        return () => {
+            document.removeEventListener("mousedown", handlePointerDown);
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [!!clusterPopup]);
 
     useEffect(() => {
         if (!ymapState || !mapRef.current) return undefined;
@@ -739,18 +889,18 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         // задавить конфигом снаружи. clusterOpenBalloonOnClick: false
         // отключает нативный balloon для кластеров целиком — вместо него
         // клик обрабатывается вручную (см. handleClusterClick ниже),
-        // который открывает полностью наш React Modal.
+        // который открывает наш собственный попап, приклеенный к карте.
         clusterOpenBalloonOnClick: false,
         // Без этого клик по кластеру ловит только встроенный zoom-in
         // Яндекса — он поглощает событие раньше, чем до него доходит наш
-        // clusters.events.add("click", ...) ниже, и Modal никогда не
+        // clusters.events.add("click", ...) ниже, и попап никогда не
         // открывается (обнаружено живой проверкой на стейдже: клик всегда
         // просто зумил карту).
         clusterDisableClickZoom: true,
     } : undefined), [ymapState?.templateLayoutFactory]);
 
     return (
-        <div className={cn(className, styles.wrapper)}>
+        <div className={cn(className, styles.wrapper)} ref={wrapperRef}>
             {mapLoadTimedOut && (
                 <div className={styles.mapErrorOverlay}>
                     <Text textSize="primary" text={mapLoadErrorTitle} />
@@ -826,36 +976,55 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                     />
                 )}
             </Map>
-            {activeClusterOffers && (
-                <Modal onClose={() => setActiveClusterOffers(null)}>
-                    <div className={styles.clusterModal}>
-                        <h3 className={styles.clusterModalTitle}>{vacancyListTitle}</h3>
-                        <ul className={styles.clusterModalList}>
-                            {activeClusterOffers.map((offer) => (
-                                <li key={offer.id} className={styles.clusterModalItem}>
-                                    <a href={offer.url} className={styles.clusterModalLink}>
-                                        <img
-                                            src={offer.image}
-                                            alt={offer.name}
-                                            className={styles.clusterModalImage}
-                                        />
-                                        <div className={styles.clusterModalText}>
-                                            <span className={styles.clusterModalName}>
-                                                {offer.name}
-                                            </span>
-                                            <span
-                                                className={styles.clusterModalCategory}
-                                                style={{ color: offer.categoryColor }}
-                                            >
-                                                {offer.categoryName}
-                                            </span>
-                                        </div>
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </Modal>
+            {clusterPopup && (
+                <div
+                    ref={clusterPopupRef}
+                    className={styles.clusterPopup}
+                    style={{
+                        left: clusterPopup.left,
+                        top: clusterPopup.top,
+                        transform: clusterPopup.placement === "top" ? "translate(-50%, -100%)" : "translate(-50%, 0)",
+                    }}
+                >
+                    <IconComponent
+                        icon={closeIcon}
+                        alt="close"
+                        className={styles.clusterPopupClose}
+                        onClick={() => setClusterPopup(null)}
+                    />
+                    <h3 className={styles.clusterModalTitle}>{vacancyListTitle}</h3>
+                    <ul className={styles.clusterModalList}>
+                        {clusterPopup.offers.map((offer) => (
+                            <li key={offer.id} className={styles.clusterModalItem}>
+                                <a href={offer.url} className={styles.clusterModalLink}>
+                                    <img
+                                        src={offer.image}
+                                        alt={offer.name}
+                                        className={styles.clusterModalImage}
+                                    />
+                                    <div className={styles.clusterModalText}>
+                                        <span className={styles.clusterModalName}>
+                                            {offer.name}
+                                        </span>
+                                        <span
+                                            className={styles.clusterModalCategory}
+                                            style={{ color: offer.categoryColor }}
+                                        >
+                                            {offer.categoryName}
+                                        </span>
+                                    </div>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                    <div
+                        className={cn(styles.clusterPopupTail, {
+                            [styles.clusterPopupTailBottom]: clusterPopup.placement === "top",
+                            [styles.clusterPopupTailTop]: clusterPopup.placement === "bottom",
+                        })}
+                        style={{ left: `calc(50% + ${clusterPopup.tailOffset}px)` }}
+                    />
+                </div>
             )}
         </div>
     );

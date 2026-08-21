@@ -54,24 +54,60 @@
     transition: all 0.3s ease;
 }
 
-// Список вакансий кластера — целиком наш React Modal (см. OffersMap.tsx),
-// не нативный balloon Яндекса. Тот же .clusterBalloon, что рендерился через
+// Список вакансий кластера — целиком наш React-компонент, не нативный
+// balloon Яндекса. Тот же .clusterBalloon, что рендерился через
 // clusterBalloonContentLayout, на практике не всегда получал применение:
 // Яндекс где-то уходил в свой недокументированный двухпанельный layout
 // ("b-cluster-tabs"), поверх которого эти стили не действовали — голый
-// синий текст без подложки прямо на тайлах карты. Modal рендерится через
-// портал в document.body, полностью вне DOM Яндекс.Карт — эта проблема
-// структурно невозможна.
-.clusterModal {
+// синий текст без подложки прямо на тайлах карты.
+//
+// Абсолютно позиционируется внутри .wrapper (не портал в body, не
+// центрированная на весь экран модалка) — левый/верхний край и хвостик
+// выставляются инлайново из handleClusterClick в OffersMap.tsx, привязаны
+// к пиксельным координатам клика по кластеру, а не "плавают" где-то в углу
+// экрана независимо от того, где на карте кластер реально находится.
+.clusterPopup {
+    position: absolute;
+    z-index: 30;
     display: flex;
     flex-direction: column;
     width: 280px;
     max-width: calc(100vw - 32px);
-    max-height: 70vh;
+    max-height: min(70vh, 420px);
     background: var(--color-white);
     border-radius: 12px;
     padding: 16px;
     box-sizing: border-box;
+    box-shadow: 0px 5px 20px 0px rgba(33, 33, 33, 0.15);
+}
+
+.clusterPopupClose {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+}
+
+// Хвостик-указатель — квадрат 16x16, повёрнутый на 45°, наполовину заходит
+// за край карточки в сторону точки клика (bottom/top: -8px = -half).
+.clusterPopupTail {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: var(--color-white);
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.clusterPopupTailBottom {
+    bottom: -8px;
+    box-shadow: 4px 4px 6px -2px rgba(33, 33, 33, 0.1);
+}
+
+.clusterPopupTailTop {
+    top: -8px;
+    box-shadow: -4px -4px 6px -2px rgba(33, 33, 33, 0.1);
 }
 
 .clusterModalTitle {
