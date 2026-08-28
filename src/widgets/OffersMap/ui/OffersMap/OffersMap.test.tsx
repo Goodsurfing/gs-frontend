@@ -311,6 +311,58 @@ describe("OffersMap", () => {
     );
 
     it(
+        "не зумит карту сама, если пользователь вручную отзумил уже показанную вакансию так, что "
+        + "она смёржилась в кластер (регресс, живой репорт: выбрал вакансию, зум-балун показался, "
+        + "потом вручную нажал \"минус\" — карта тут же сама приближала зум обратно, отменяя "
+        + "действие пользователя, потому что реактивный эффект на features раз за разом пытался "
+        + "раскластеризовать уже когда-то показанную вакансию; авто-дозум легитимен только в "
+        + "ограниченном по попыткам retry-цикле сразу после САМОГО выбора, а не бесконечно потом)",
+        async () => {
+            const coordinates = { latitude: 55.75, longitude: 37.61 };
+
+            const { rerender } = render(
+                <OffersMap
+                    offersData={[offer({ id: 1 })]}
+                    isOffersLoading={false}
+                    selectedOfferId={1}
+                    selectedOfferCoordinates={coordinates}
+                />,
+            );
+
+            await waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+
+            // Первое открытие — обычный путь, маркер НЕ смёржен, balloon
+            // успешно открывается через retry-цикл (actionend).
+            act(() => {
+                boundsChangeHandlers.forEach((handler) => handler());
+            });
+            expect(balloonOpen).toHaveBeenCalledWith("1");
+            setZoom.mockClear();
+
+            // Пользователь вручную отзумил карту (например, кнопкой "минус")
+            // так, что та же вакансия смёржилась в кластер — новый bounds-
+            // рефетч приносит другой набор offersData, реактивный эффект на
+            // features срабатывает.
+            getObjectState.mockReturnValue({ isClustered: true });
+            act(() => {
+                rerender(
+                    <OffersMap
+                        offersData={[offer({ id: 1, name: "После ручного зума" })]}
+                        isOffersLoading={false}
+                        selectedOfferId={1}
+                        selectedOfferCoordinates={coordinates}
+                    />,
+                );
+            });
+
+            // Карта не должна сама менять зум в ответ — это уже не "доводим
+            // до первого показа", а самостоятельное действие пользователя
+            // спустя время после того, как balloon уже показывался.
+            expect(setZoom).not.toHaveBeenCalled();
+        },
+    );
+
+    it(
         "закрывает наш попап-список кластера, открывая balloon отдельной вакансии (регресс: "
         + "пользователь кликал по кластеру — открывался список вакансий — а затем открывался "
         + "balloon конкретной вакансии из списка/deep-link: обе таблички повисали на карте "
@@ -546,6 +598,58 @@ describe("OffersMap", () => {
                 document.body.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
             });
 
+            expect(screen.queryByText("Вакансия в кластере")).not.toBeInTheDocument();
+        },
+    );
+
+    it(
+        "не закрывает попап-список кластера от mousedown на самой карте (регресс, живая "
+        + "проверка: drag карты мышью тоже начинается с mousedown вне попапа — попап рвался "
+        + "в первую же миллисекунду перетаскивания, даже не дав карте сдвинуться, хотя за это "
+        + "и отвечает repositioning-эффект на actionend; клик по-настоящему ВНЕ карты — "
+        + "например по сайдбару — по-прежнему должен закрывать)",
+        async () => {
+            clustersGetById.mockReturnValue({
+                properties: {
+                    geoObjects: [{
+                        id: "2",
+                        properties: {
+                            name: "Вакансия в кластере",
+                            offerUrl: "/offer/2",
+                            offerImage: "image.png",
+                            categoryName: "Категория",
+                            categoryColor: "#000",
+                        },
+                    }],
+                },
+                geometry: { coordinates: [55.75, 37.61] },
+            });
+            render(
+                <OffersMap
+                    offersData={[offer({ id: 1 })]}
+                    isOffersLoading={false}
+                />,
+            );
+
+            await waitFor(() => expect(screen.getByTestId("object-manager")).toBeInTheDocument());
+
+            act(() => {
+                simulateClusterClick();
+            });
+            expect(screen.getByText("Вакансия в кластере")).toBeInTheDocument();
+
+            // mousedown на самой карте (внутри wrapperRef, не на попапе) —
+            // как в начале drag'а или клика по пустому месту карты.
+            act(() => {
+                screen.getByTestId("object-manager")
+                    .dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+            });
+            expect(screen.getByText("Вакансия в кластере")).toBeInTheDocument();
+
+            // А по-настоящему ВНЕ карты (например сайдбар/фильтры) — закрывает.
+            act(() => {
+                document.body.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+            });
             expect(screen.queryByText("Вакансия в кластере")).not.toBeInTheDocument();
         },
     );

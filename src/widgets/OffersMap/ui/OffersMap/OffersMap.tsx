@@ -433,7 +433,23 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     // Пытается открыть balloon прямо сейчас. Возвращает true, если маркер уже
     // зарегистрирован в ObjectManager и open() не бросил — таймер-цикл ниже
     // на этом остановится. false — маркера пока нет, надо ждать/повторить.
-    const attemptOpenBalloon = (offerId: number): boolean => {
+    //
+    // allowDeclusterZoom — можно ли в процессе САМОСТОЯТЕЛЬНО зумить карту,
+    // чтобы раскластеризовать маркер (см. ветку isClustered ниже). true —
+    // только для retry-цикла tryOpenBalloon ниже, который живёт ограниченное
+    // время (до 30 попыток) сразу после САМОГО выбора вакансии — это его
+    // законная задача, "довести" карту до состояния, где маркер виден.
+    // false — для реактивного эффекта на features (см. ниже): тот эффект
+    // живёт НЕОГРАНИЧЕННО долго, пока выбрана та же вакансия, и реагирует
+    // на ЛЮБОЕ следующее обновление маркеров — включая те, что пользователь
+    // вызвал сам явным зумом/паном спустя долгое время после того, как
+    // balloon уже показывался. Живая проверка: выбрал вакансию → вручную
+    // отзумил карту так, что маркер смёржился в кластер → карта тут же САМА
+    // приближала зум обратно, отменяя действие пользователя, потому что
+    // pendingBalloonOfferIdRef всё ещё указывал на ту же вакансию и эффект
+    // на features раз за разом пытался её раскластеризовать — пользователь
+    // жал "минус", а карта сама жала "плюс" в ответ.
+    const attemptOpenBalloon = (offerId: number, allowDeclusterZoom: boolean = true): boolean => {
         const objectManager = objectManagerRef.current;
         if (!objectManager) return false;
         // Даже после actionend объект может ещё не попасть в ObjectManager:
@@ -462,7 +478,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         if (objectManager.getObjectState(offerId.toString())?.isClustered) {
             const map = mapRef.current;
             const currentZoom = map?.getZoom();
-            if (map && typeof currentZoom === "number" && currentZoom < MAP_OPTIONS.maxZoom) {
+            if (allowDeclusterZoom && map && typeof currentZoom === "number" && currentZoom < MAP_OPTIONS.maxZoom) {
                 map.setZoom(
                     Math.min(currentZoom + DECLUSTER_ZOOM_STEP, MAP_OPTIONS.maxZoom),
                     { duration: 400, checkZoomRange: true },
@@ -597,12 +613,18 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     // таймеру (300мс), и на медленной сети/бэкенде реальный round-trip до
     // vacancy/for-map/list мог не уложиться в весь отведённый бюджет —
     // табличка молча не появлялась, хотя маркер уже был на карте.
+    //
+    // allowDeclusterZoom: false — этот эффект живёт неограниченно долго,
+    // пока выбрана та же вакансия (см. комментарий у attemptOpenBalloon), и
+    // не должен САМ зумить карту в ответ на действия пользователя,
+    // случившиеся спустя долгое время после исходного выбора — тем этим
+    // занимается только ограниченный по попыткам retry-цикл выше.
     useEffect(() => {
         // panActionEndedRef: не пытаться открыть balloon раньше, чем
         // закончится сам pan — иначе табличка выскакивала бы мгновенно при
         // клике, до того как карта успевала визуально долететь до маркера.
         if (panActionEndedRef.current && pendingBalloonOfferIdRef.current !== null) {
-            attemptOpenBalloon(pendingBalloonOfferIdRef.current);
+            attemptOpenBalloon(pendingBalloonOfferIdRef.current, false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [features]);
@@ -767,16 +789,29 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         };
     }, [objectManagerMountTick]);
 
-    // Клик/тап вне попапа или Escape закрывают его — тот же UX, что был у
-    // старого Modal (клик по подложке закрывал карточку), но без самой
-    // подложки: карта под попапом остаётся видимой и кликабельной везде,
-    // кроме самой карточки.
+    // Клик/тап вне попапа и вне самой карты, или Escape, закрывают его —
+    // тот же UX, что был у старого Modal (клик по подложке закрывал
+    // карточку), но без самой подложки: карта под попапом остаётся видимой
+    // и кликабельной везде, кроме самой карточки.
+    //
+    // "Вне самой карты" — намеренно, а не только "вне попапа": иначе
+    // mousedown в начале drag'а карты (drag тоже стартует с mousedown,
+    // и стартует он ВНЕ попапа, поскольку попап — не карта) рвал бы попап в
+    // первую же миллисекунду перетаскивания, даже не дав карте сдвинуться,
+    // хотя ровно для этого случая (пользователь двигает карту дальше, пока
+    // попап открыт) и существует repositioning-эффект выше. Клик по ДРУГОМУ
+    // кластеру/маркеру на карте всё равно откроет свой balloon/попап через
+    // собственные обработчики ниже независимо от этой проверки — она нужна
+    // только чтобы не закрывать попап на mousedown, который старта drag'а
+    // или клика по пустому месту карты. Живая проверка: старая версия (клик
+    // где угодно вне попапа) рвала попап сразу при начале любого drag'а.
     useEffect(() => {
         if (!clusterPopup) return undefined;
         const handlePointerDown = (event: MouseEvent) => {
-            if (!clusterPopupRef.current?.contains(event.target as Node)) {
-                setClusterPopup(null);
-            }
+            const target = event.target as Node;
+            if (clusterPopupRef.current?.contains(target)) return;
+            if (wrapperRef.current?.contains(target)) return;
+            setClusterPopup(null);
         };
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === "Escape") setClusterPopup(null);
