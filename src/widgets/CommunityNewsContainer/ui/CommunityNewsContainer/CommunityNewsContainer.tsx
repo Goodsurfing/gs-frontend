@@ -21,10 +21,13 @@ const CommunityNewsContainer: FC = () => {
     const [getBlogList, { data, isLoading }] = useLazyGetBlogListQuery();
 
     useEffect(() => {
+        // Чек-лист правок: "на главной не выводится новое из сообщества" —
+        // сортировка была по лайкам, из-за чего новый пост с 0 лайков
+        // никогда не всплывал выше старых популярных.
         getBlogList({
             page: 1,
             limit: 20,
-            sort: AdminSort.LikeBlogDesc,
+            sort: AdminSort.CreatedDesc,
             lang: locale,
         });
     }, [locale, getBlogList]);

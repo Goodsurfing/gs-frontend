@@ -15,6 +15,7 @@ export const adminDonationsAdapter = (data: GetAdminDonations[]) => data.map((do
         name,
         author: getFullName(firstName, lastName),
         category,
+        status,
         isActive: status !== "draft",
         amount,
         minAmount,

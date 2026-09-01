@@ -1,10 +1,16 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
+import { DonationStatus } from "@/entities/Donation";
 import {
     CreateAdminDonationReport, GetAdminDonationReport,
     GetAdminDonationReports, GetAdminDonations,
     GetAdminDonationsParams, UpdateAdminDonationReportRequest,
 } from "../model/types/adminDonationSchema";
+
+export interface ToggleAdminDonationStatusRequest {
+    id: string;
+    status: DonationStatus;
+}
 
 export const adminDonationApi = createApi({
     reducerPath: "adminDoantionApi",
@@ -27,6 +33,17 @@ export const adminDonationApi = createApi({
             query: (id) => ({
                 url: `fundraise/${id}`,
                 method: "DELETE",
+            }),
+            invalidatesTags: ["donation"],
+        }),
+        // Чек-лист правок: тестовый сбор висел без возможности закрыть его
+        // в админке — сама возможность (fundraise/{id}/toggle-status,
+        // статус close) на бэкенде уже была, просто не было кнопки.
+        toggleAdminDonationStatus: build.mutation<void, ToggleAdminDonationStatusRequest>({
+            query: ({ id, status }) => ({
+                url: `fundraise/${id}/toggle-status`,
+                method: "PATCH",
+                body: { status },
             }),
             invalidatesTags: ["donation"],
         }),
@@ -73,6 +90,7 @@ export const adminDonationApi = createApi({
 export const {
     useLazyGetAdminDonationsQuery,
     useDeleteAdminDonationMutation,
+    useToggleAdminDonationStatusMutation,
     useGetAdminDonationReportsQuery,
     useGetAdminDonationReportQuery,
     useCreateAdminDonationReportMutation,

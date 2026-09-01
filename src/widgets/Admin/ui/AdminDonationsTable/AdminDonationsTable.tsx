@@ -13,12 +13,14 @@ import { ReactSVG } from "react-svg";
 import cn from "classnames";
 import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
+import blockIcon from "@/shared/assets/icons/admin/block.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {
     adminDonationsAdapter,
     AdminSort,
     useDeleteAdminDonationMutation,
     useLazyGetAdminDonationsQuery,
+    useToggleAdminDonationStatusMutation,
 } from "@/entities/Admin";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
@@ -118,6 +120,8 @@ export const AdminDonationsTable = () => {
     const [toast, setToast] = useState<ToastAlert>();
     const [donationToDelete, setDonationToDelete] = useState<
     { id: string; name: string } | null>(null);
+    const [donationToClose, setDonationToClose] = useState<
+    { id: string; name: string } | null>(null);
     const [getDonations, {
         data: donationsData,
         isLoading,
@@ -125,6 +129,7 @@ export const AdminDonationsTable = () => {
         isError,
     }] = useLazyGetAdminDonationsQuery();
     const [deleteDonations, { isLoading: isDeleting }] = useDeleteAdminDonationMutation();
+    const [toggleDonationStatus, { isLoading: isClosing }] = useToggleAdminDonationStatusMutation();
     const {
         filters, setFilters,
     } = useQueryFilters({
@@ -191,6 +196,34 @@ export const AdminDonationsTable = () => {
             });
         } finally {
             handleCloseDeleteModal();
+        }
+    };
+
+    const handleOpenCloseModal = (id: string, name: string) => {
+        setDonationToClose({ id, name });
+    };
+
+    const handleCloseCloseModal = () => {
+        setDonationToClose(null);
+    };
+
+    const handleConfirmClose = async () => {
+        setToast(undefined);
+        if (!donationToClose) return;
+
+        try {
+            await toggleDonationStatus({ id: donationToClose.id, status: "close" }).unwrap();
+            setToast({
+                text: "Сбор был закрыт",
+                type: HintType.Success,
+            });
+        } catch {
+            setToast({
+                text: "Произошла ошибка при закрытии сбора",
+                type: HintType.Error,
+            });
+        } finally {
+            handleCloseCloseModal();
         }
     };
 
@@ -302,7 +335,7 @@ export const AdminDonationsTable = () => {
         {
             field: "actions",
             headerName: "Действия",
-            width: 160,
+            width: 200,
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -314,6 +347,10 @@ export const AdminDonationsTable = () => {
                 const handleDeleteClick = () => {
                     handleOpenDeleteModal(params.row.id, params.row.name || `ID: ${params.row.id}`);
                 };
+                const handleCloseClick = () => {
+                    handleOpenCloseModal(params.row.id, params.row.name || `ID: ${params.row.id}`);
+                };
+                const isAlreadyClosed = params.row.status === "close";
 
                 return (
                     <Stack direction="row" spacing={1}>
@@ -324,6 +361,15 @@ export const AdminDonationsTable = () => {
                             className={cn(styles.btnIcon, styles.btnShow)}
                         >
                             <ReactSVG src={showIcon} />
+                        </button>
+                        <button
+                            onClick={handleCloseClick}
+                            type="button"
+                            title={isAlreadyClosed ? "Сбор уже закрыт" : "Закрыть сбор"}
+                            disabled={isAlreadyClosed}
+                            className={cn(styles.btnIcon, styles.btnBlock)}
+                        >
+                            <ReactSVG src={blockIcon} />
                         </button>
                         <button
                             onClick={handleDeleteClick}
@@ -384,6 +430,16 @@ export const AdminDonationsTable = () => {
                 cancelTextButton="Отмена"
                 isLoading={isDeleting}
                 buttonsDisabled={isDeleting}
+            />
+            <ConfirmActionModal
+                isModalOpen={!!donationToClose}
+                description={`Вы уверены, что хотите закрыть сбор "${donationToClose?.name}"? Сбор перестанет принимать пожертвования.`}
+                onConfirm={handleConfirmClose}
+                onClose={handleCloseCloseModal}
+                confirmTextButton="Закрыть сбор"
+                cancelTextButton="Отмена"
+                isLoading={isClosing}
+                buttonsDisabled={isClosing}
             />
         </div>
     );

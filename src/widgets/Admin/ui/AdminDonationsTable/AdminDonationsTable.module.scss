@@ -43,6 +43,15 @@
     fill: var(--text-caption);
 }
 
+.btnIcon:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+.btnIcon:disabled:hover {
+    scale: 1;
+}
+
 .btnDelete g {
     fill: var(--error-color);
 }

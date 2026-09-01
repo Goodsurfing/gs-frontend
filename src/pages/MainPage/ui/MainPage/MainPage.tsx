@@ -8,6 +8,7 @@ import Section from "@/shared/ui/Section/Section";
 import { BecomeHostContainer } from "@/widgets/BecomeHostContainer";
 import { CommunityNewsContainer } from "@/widgets/CommunityNewsContainer";
 import { Footer } from "@/widgets/Footer";
+import { GoodsurfingStats } from "@/widgets/GoodsurfingStats";
 // import { PopularPlacesContainer } from "@/widgets/PopularPlacesContainer";
 import { ReviewsContainer } from "@/widgets/ReviewsContainer";
 import { VolunteerContainer } from "@/widgets/VolunteerContainer";
@@ -28,6 +29,7 @@ const mainPageLocales = ["ru", "en", "es"] as const;
 
 const MainPage: FC = () => {
     const { t, ready } = useTranslation("main");
+    const { t: tAboutProject } = useTranslation("about-project");
     const { locale } = useLocale();
 
     if (!ready) {
@@ -91,6 +93,9 @@ const MainPage: FC = () => {
             />
             <WelcomeContainer />
             {/* <NewMainSliderContainer /> */}
+            <Section title={tAboutProject("ГудСёрфинг сегодня")}>
+                <GoodsurfingStats />
+            </Section>
             <Section title={t("Как это работает?")}>
                 <HowItWorkContainer />
             </Section>
