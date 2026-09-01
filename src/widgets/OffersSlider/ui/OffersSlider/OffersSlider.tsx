@@ -19,10 +19,16 @@ import { pickSliderOffers } from "./pickSliderOffers";
 
 interface OffersSliderProps {
     className?: string;
+    // Чек-лист правок: "Интересные вакансии" на /find-job показывали тот
+    // же персонально-подобранный набор, что и на главной, хотя на
+    // странице про оплачиваемую работу ожидаются вакансии именно из
+    // категории "Оплачиваемая работа" — без этого пропа сохраняется
+    // прежнее поведение (персональные категории → featured → рекомендации).
+    categoryIds?: number[];
 }
 
 export const OffersSlider: FC<OffersSliderProps> = (props) => {
-    const { className } = props;
+    const { className, categoryIds } = props;
     const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
     const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
     const [offers, setOffers] = useState<OfferApi[]>([]);
@@ -40,6 +46,15 @@ export const OffersSlider: FC<OffersSliderProps> = (props) => {
 
         const fetchOffers = async () => {
             try {
+                if (categoryIds && categoryIds.length > 0) {
+                    const byCategory = await getOffersData({
+                        categoryIds,
+                        sort: OfferSort.Recommendation,
+                    }).unwrap();
+                    setOffers(pickSliderOffers(byCategory.data));
+                    return;
+                }
+
                 let personal: OfferApi[] = [];
                 const favoriteCategories = myProfileData?.favoriteCategories ?? [];
                 // GS-90: волонтёр сам выбрал интересующие его категории на
@@ -72,7 +87,7 @@ export const OffersSlider: FC<OffersSliderProps> = (props) => {
             }
         };
         fetchOffers();
-    }, [getOffersData, isProfileLoading, myProfileData]);
+    }, [getOffersData, isProfileLoading, myProfileData, categoryIds]);
 
     if (isLoading) {
         return (

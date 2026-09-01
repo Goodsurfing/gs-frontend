@@ -287,6 +287,7 @@ export {
     adminDonationApi,
     useLazyGetAdminDonationsQuery,
     useDeleteAdminDonationMutation,
+    useToggleAdminDonationStatusMutation,
     useGetAdminDonationReportsQuery,
     useGetAdminDonationReportQuery,
     useCreateAdminDonationReportMutation,

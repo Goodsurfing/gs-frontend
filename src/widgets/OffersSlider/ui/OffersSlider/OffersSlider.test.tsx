@@ -115,6 +115,22 @@ describe("OffersSlider", () => {
         await waitFor(() => expect(getOffersData).toHaveBeenCalledWith({ isFeatured: true }));
     });
 
+    it("с явным categoryIds (find-job) игнорирует персонализацию и admin-подборку", async () => {
+        mockIsAuth = "token";
+        mockProfileData = { favoriteCategories: [3, 7] };
+
+        render(<OffersSlider categoryIds={[13]} />);
+
+        await waitFor(() => expect(getOffersData).toHaveBeenCalledWith({
+            categoryIds: [13],
+            sort: "recommendation",
+        }));
+        expect(getOffersData).not.toHaveBeenCalledWith({ isFeatured: true });
+        expect(getOffersData).not.toHaveBeenCalledWith(
+            expect.objectContaining({ categoryIds: [3, 7] }),
+        );
+    });
+
     it("ждёт загрузку профиля прежде чем решать, какие вакансии запрашивать", async () => {
         mockIsAuth = "token";
         mockProfileLoading = true;

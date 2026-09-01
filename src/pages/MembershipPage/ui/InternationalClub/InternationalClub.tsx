@@ -7,7 +7,8 @@ import internationalClubImage from "@/shared/assets/images/membership/internatio
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getPaymentPageUrl } from "@/shared/config/routes/AppUrls";
-import { TARIFF_CODE } from "@/shared/constants/membership";
+import { TARIFF_CODE, TARIFF_FALLBACK_PRICE_RUB } from "@/shared/constants/membership";
+import { useGetTariffsQuery } from "@/store/api/membershipApi";
 
 import styles from "./InternationalClub.module.scss";
 
@@ -23,6 +24,13 @@ const INTERNATIONAL_CLUB_URL = "https://international.goodsurfing.org/";
 export const InternationalClub: FC<InternationalClubProps> = ({ className }) => {
     const { t } = useTranslation("membership");
     const { locale } = useLocale();
+
+    // forRole="BOTH" — тариф international_5000 сам forRole=BOTH, а
+    // findActiveForRole(BOTH) отдаёт вообще все активные тарифы, так что
+    // просто фильтруем по коду, как это уже делают ForVolunteer/ForHost.
+    const { data: tariffs } = useGetTariffsQuery("BOTH");
+    const tariff = tariffs?.find((item) => item.code === TARIFF_CODE.INTERNATIONAL);
+    const priceRub = tariff?.priceRub ?? TARIFF_FALLBACK_PRICE_RUB[TARIFF_CODE.INTERNATIONAL];
 
     const joinPath = `${getPaymentPageUrl(locale)}?tariff=${TARIFF_CODE.INTERNATIONAL}`;
 
@@ -60,6 +68,13 @@ export const InternationalClub: FC<InternationalClubProps> = ({ className }) => 
                 <div className={styles.clubContent}>
                     <div className={styles.card}>
                         <h3 className={styles.cardTitle}>{t("international-club.includes-title")}</h3>
+                        <span className={styles.cardPrice}>
+                            {priceRub.toLocaleString("ru-RU")}
+                            {" "}
+                            <span className={styles.cardPriceUnit}>
+                                {t("international-club.price-unit", "руб/год")}
+                            </span>
+                        </span>
                         <ul className={styles.membershipList}>
                             {membershipBenefits.map((benefit) => (
                                 <li key={benefit}>{benefit}</li>
