@@ -4,6 +4,7 @@ export interface User {
     username: string;
     token: string;
     mercureToken: string;
+    refreshToken?: string;
     roles: UserRole[];
     rememberMe: boolean,
 }

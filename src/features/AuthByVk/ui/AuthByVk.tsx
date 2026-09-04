@@ -116,6 +116,7 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
                             dispatch(userActions.setAuthData({
                                 token: data.accessToken,
                                 mercureToken: data.mercureToken,
+                                refreshToken: data.refresh_token,
                                 rememberMe: true,
                                 username: data.user.email,
                                 roles: data.user.roles,
