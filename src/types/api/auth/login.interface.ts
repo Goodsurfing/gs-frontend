@@ -14,6 +14,7 @@ export type UserRole = "ROLE_USER" | "ROLE_ADMIN";
 export interface LoginResponse {
     accessToken: string;
     mercureToken: string;
+    refresh_token: string;
     roles: UserRole[];
 }
 

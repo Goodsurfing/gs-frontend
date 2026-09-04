@@ -46,6 +46,7 @@ const VerifyEmailHashPage = () => {
             dispatch(userActions.setAuthData({
                 token: data.accessToken,
                 mercureToken: data.mercureToken,
+                refreshToken: data.refresh_token,
                 rememberMe: true,
                 username: "",
                 roles: isUserAdmin ? ["ROLE_USER", "ROLE_ADMIN"] : ["ROLE_USER"],
