@@ -1,6 +1,37 @@
 [![Deploy](https://github.com/Goodsurfing/gs-frontend/actions/workflows/deploy.yml/badge.svg)](https://github.com/Goodsurfing/gs-frontend/actions/workflows/deploy.yml)
 
-# Локальный запуск против staging
+# gs-frontend
+
+SPA GoodSurfing: React 18 + TypeScript + **Vite** (не Webpack — миграция произошла, но не все внешние заметки об этом знают), Redux Toolkit, react-router-dom, i18next. Структура — Feature-Sliced Design: `app/` → `pages/` → `widgets/` → `features/` → `entities/` → `shared/`.
+
+Актуализировано 2026-09-18 по факту `package.json`/`src/`.
+
+## Архитектура (FSD)
+
+- `pages/` — маршрутизируемые страницы (публичный сайт, кабинеты волонтёра/хоста, админка — префикс `Admin*`)
+- `widgets/` — крупные независимые блоки страницы (Header, Footer, сайдбары, списки)
+- `features/` — конкретные пользовательские сценарии (форма регистрации, добавление отзыва, карта предложений и т.д.)
+- `entities/` — бизнес-сущности с собственным стейтом/типами (User, Offer, Volunteer, Host, Academy...)
+- `shared/` — переиспользуемые UI-кит компоненты, хуки, утилиты, без бизнес-логики
+- `store/` — Redux Toolkit store и слайсы
+- `routes/` — конфигурация маршрутов
+
+## Разделы приложения (по `src/pages/`)
+
+| Раздел | Примеры страниц |
+|---|---|
+| Публичный сайт | `MainPage`, `OffersMapPage`, `OfferPersonalPage`, `BlogPage`, `NewsPage`, `AboutProjectPage`, `OurTeamPage`, `NPOPage`, `RulesPage` |
+| Регистрация/аутентификация | `SignInPage`, `SignUpPage`, `ResetPasswordPage`, `VerifyEmailPage`, `ConfirmEmailPage` |
+| Кабинет волонтёра | `VolunteerDashboardPage`, `VolunteerPersonalPage`, `VolunteerSkillsPage`, `VolunteerGalleryPage`, `VolunteerArticlesPage` |
+| Кабинет хоста | `HostDashboardPage`, `HostOffersPage`, `HostFundraisePage`, `HostTeamPage`, `HostRegisterPage` |
+| Академия | `AcademyMainPage`, `AcademyCoursePage`, `AcademyLessonPage` |
+| Платное членство и оплата | `MembershipPage`, `PaymentPage`, `PaymentSuccessPage`, `PaymentFailPage`, `DonationPersonalPage`, `DonationsMapPage` |
+| Сбор средств | `FundraiseWelcomePage`, `FundraiseStepPage`, `FundraiseLayoutPage` |
+| Профиль | `ProfileInfoPage`, `ProfilePrivacyPage`, `ProfileRolePage`, `ProfilePreferencesPage` |
+| Мессенджер | `MessengerPage` |
+| Админка | ~60 страниц с префиксом `Admin*` — отдельная CRUD-панель почти под каждый модуль бэкенда (блог, курсы, баннеры, пользователи, отзывы и т.д.) |
+
+## Локальный запуск против staging
 
 Полный путь от чистого клона до работающего фронта на staging-данных:
 
@@ -37,4 +68,4 @@ VITE_DEV_IAP_TOKEN="yiap_..."
 
 # Build / deploy
 
-Прод-сборка через `npm run build:prod` собирает SPA с зашитыми `VITE_API_BASE_URL` etc. (Docker `ARG` в `Dockerfile`). Реальные значения для каждого env живут в `.github/workflows/deploy-{dev,staging,prod}.yml`. Локальный `.env`/`.env.development` на build не влияют (Docker берёт значения из CI).
+Прод-сборка через `npm run build:prod` собирает SPA с зашитыми `VITE_API_BASE_URL` etc. (Docker `ARG` в `Dockerfile`). Реальные значения для каждого env живут в `.github/workflows/deploy-{staging,prod}.yml` — `deploy-dev.yml` больше не существует, `dev`-окружение снесено 2026-07-10. Локальный `.env`/`.env.development` на build не влияют (Docker берёт значения из CI). staging деплоится по пушу в `main`/`master`, prod — по git-тегу `v*.*.*` (см. `rollback.yml` для отката).
