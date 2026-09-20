@@ -235,7 +235,8 @@
         "Написать отзыв": "Write a review",
         "Принять": "Accept",
         "Отклонить": "Reject",
-        "Адрес не указан": "Address not specified"
+        "Адрес не указан": "Address not specified",
+        "Заявка получена": "Application received"
     },
     "errors": {
         "freeAccountApplicationsLimit": "Free account allows up to 3 applications. Get a membership to apply without limits.",
