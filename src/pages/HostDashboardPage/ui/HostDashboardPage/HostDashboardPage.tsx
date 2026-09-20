@@ -7,6 +7,7 @@ import { RequestsWidget } from "@/widgets/RequestsWidget";
 
 import { DashboardNotifications } from "@/widgets/DashboardNotifications/";
 import { MemberBanner } from "@/features/MemberBanner";
+import { useGetProfileOccupancyQuery } from "@/entities/Profile";
 
 import styles from "./HostDashboard.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -16,6 +17,7 @@ const HostDashboardPage: FC = () => {
     const { t, ready } = useTranslation("host");
     const { ready: volunteerReady } = useTranslation("volunteer");
     const { locale } = useLocale();
+    const { data: profileOccupancy } = useGetProfileOccupancyQuery();
 
     if (!ready || !volunteerReady) {
         return (
@@ -31,11 +33,13 @@ const HostDashboardPage: FC = () => {
             <div className={styles.columns}>
                 <RequestsWidget locale={locale} />
                 {/* <CalendarWidget /> add this logic in future */}
-                <MemberBanner
-                    title={t("host-dashboard.Зарегистрируй членство организатора и получи больше возможностей для своего проекта!")}
-                    buttonText={t("host-dashboard.Получить членство")}
-                    anchor="host"
-                />
+                {!profileOccupancy?.isMembership && (
+                    <MemberBanner
+                        title={t("host-dashboard.Зарегистрируй членство организатора и получи больше возможностей для своего проекта!")}
+                        buttonText={t("host-dashboard.Получить членство")}
+                        anchor="host"
+                    />
+                )}
                 <DashboardNotifications />
             </div>
         </div>
