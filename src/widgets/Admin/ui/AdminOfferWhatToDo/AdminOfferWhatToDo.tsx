@@ -4,7 +4,7 @@ import {
 
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { getAdminConditionsVacanciesPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminVacancyConditionsPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { OfferWhatToDoForm, OfferWhatToDoFormFields } from "@/features/OfferWhatToDo";
 import {
@@ -66,7 +66,7 @@ export const AdminOfferWhatToDo = memo(
                     onComplete={onSubmit}
                     isLoadingGetData={isLoadingGet}
                     isLoadingUpdateData={isLoadingUpdate}
-                    linkNext={getAdminConditionsVacanciesPageUrl(locale, offerId)}
+                    linkNext={getAdminVacancyConditionsPageUrl(locale, offerId)}
                 />
             </>
         );
