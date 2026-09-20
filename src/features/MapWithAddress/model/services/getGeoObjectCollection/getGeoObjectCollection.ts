@@ -62,9 +62,15 @@ export const getGeoObjectByAddress = async (address: string) => {
 };
 
 export const getGeoObjectByCoordinates = async (
-    longitude: number,
-    latitude: number,
+    longitude: number | null | undefined,
+    latitude: number | null | undefined,
 ): Promise<GeoObject | undefined> => {
+    if (
+        longitude === null || longitude === undefined
+        || latitude === null || latitude === undefined
+    ) {
+        return undefined;
+    }
     try {
         const roundedLongitude = longitude.toFixed(6);
         const roundedLatitude = latitude.toFixed(6);
