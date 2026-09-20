@@ -235,7 +235,8 @@
         "Написать отзыв": "Escribir una reseña",
         "Принять": "Aceptar",
         "Отклонить": "Rechazar",
-        "Адрес не указан": "Dirección no especificada"
+        "Адрес не указан": "Dirección no especificada",
+        "Заявка получена": "Solicitud recibida"
     },
     "errors": {
         "freeAccountApplicationsLimit": "La cuenta gratuita permite enviar hasta 3 solicitudes. Obtén una membresía para postularte sin límites.",
