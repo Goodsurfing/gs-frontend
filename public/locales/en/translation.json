@@ -242,7 +242,8 @@
         "freeAccountApplicationsLimit": "Free account allows up to 3 applications. Get a membership to apply without limits.",
         "freeAccountPublishedVacancyLimit": "Free account allows up to 1 published vacancy. Get a membership to publish without limits.",
         "onlyVerifiedVolunteersAllowed": "This vacancy only accepts applications from verified participants. Get a membership to apply.",
-        "vacancyIncomplete": "Fill in the vacancy title, description and address before publishing."
+        "vacancyIncomplete": "Fill in the vacancy title, description and address before publishing.",
+        "fundraiseRequiresMembership": "Creating fundraising campaigns requires an active membership."
     },
     "Не задано": "Not specified",
     "Ок": "Ok",

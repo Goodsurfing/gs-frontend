@@ -242,7 +242,8 @@
         "freeAccountApplicationsLimit": "La cuenta gratuita permite enviar hasta 3 solicitudes. Obtén una membresía para postularte sin límites.",
         "freeAccountPublishedVacancyLimit": "La cuenta gratuita permite publicar hasta 1 vacante. Obtén una membresía para publicar sin límites.",
         "onlyVerifiedVolunteersAllowed": "Esta vacante solo acepta solicitudes de participantes verificados. Obtén una membresía para postularte.",
-        "vacancyIncomplete": "Completa el título, la descripción y la dirección de la vacante antes de publicarla."
+        "vacancyIncomplete": "Completa el título, la descripción y la dirección de la vacante antes de publicarla.",
+        "fundraiseRequiresMembership": "Crear recaudaciones de fondos requiere una membresía activa."
     },
     "Не задано": "No especificado",
     "Ок": "Aceptar",

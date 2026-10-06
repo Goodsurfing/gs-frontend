@@ -13,6 +13,7 @@ import {
     useLazyGetDonationsQuery,
     useUpdateDonationStatusMutation,
 } from "@/entities/Donation";
+import { useGetProfileOccupancyQuery } from "@/entities/Profile";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {
     getDonationPersonalPage,
@@ -21,6 +22,7 @@ import {
 import Button from "@/shared/ui/Button/Button";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { MemberBanner } from "@/features/MemberBanner";
 import { HostFundraiseCard } from "../HostFundraiseCard/HostFundraiseCard";
 import styles from "./HostFundraisePage.module.scss";
 
@@ -30,6 +32,8 @@ const HostFundraisePage: FC = () => {
     const { t, ready } = useTranslation("host");
     const { locale } = useLocale();
     const navigate = useNavigate();
+
+    const { data: profileOccupancy } = useGetProfileOccupancyQuery();
 
     const [fetchActive, {
         data: activeData,
@@ -138,16 +142,23 @@ const HostFundraisePage: FC = () => {
                     </div>
                 </div>
             )}
-            <Button
-                variant="FILL"
-                color="BLUE"
-                size="MEDIUM"
-                className={styles.addButton}
-                onClick={handleAddFundraise}
-                disabled={isCreating}
-            >
-                {t("hostFundraises.Добавить сбор")}
-            </Button>
+            {profileOccupancy?.isMembership ? (
+                <Button
+                    variant="FILL"
+                    color="BLUE"
+                    size="MEDIUM"
+                    className={styles.addButton}
+                    onClick={handleAddFundraise}
+                    disabled={isCreating}
+                >
+                    {t("hostFundraises.Добавить сбор")}
+                </Button>
+            ) : (
+                <MemberBanner
+                    title={t("hostFundraises.Возможность создавать сборы и получать финансовую поддержку для реализации своих проектов есть только у пользователей с оформленным членством Гудсёрфинга")}
+                    anchor="host"
+                />
+            )}
             <ConfirmActionModal
                 isModalOpen={isModalOpen}
                 description={t("hostFundraises.Вы уверены что хотите изменить сбор?")}
