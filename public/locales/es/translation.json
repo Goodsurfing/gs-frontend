@@ -238,6 +238,11 @@
         "Адрес не указан": "Dirección no especificada",
         "Заявка получена": "Solicitud recibida"
     },
+    "freeApplicationsCounter": {
+        "Можно бесплатно откликнуться на:": "Solicitudes gratuitas restantes:",
+        "Нужно больше? Оформите членство!": "¿Necesitas más? ¡Hazte miembro!",
+        "Не забудьте продлить членство, чтобы сохранить привилегии": "No olvides renovar tu membresía para conservar tus privilegios"
+    },
     "errors": {
         "freeAccountApplicationsLimit": "La cuenta gratuita permite enviar hasta 3 solicitudes. Obtén una membresía para postularte sin límites.",
         "freeAccountPublishedVacancyLimit": "La cuenta gratuita permite publicar hasta 1 vacante. Obtén una membresía para publicar sin límites.",

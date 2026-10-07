@@ -7,6 +7,7 @@ import { Categories, ExtraFilters } from "@/widgets/OffersMap";
 import { ButtonFilter } from "@/widgets/OffersMap/ui/ButtonFilter/ButtonFilter";
 import { ParticipationPeriod } from "@/widgets/OffersMap/ui/ParticipationPeriod/ParticipationPeriod";
 import { PeriodsFilter } from "@/widgets/OffersMap/ui/PeriodsFilter/PeriodsFilter";
+import { FreeApplicationsCounter } from "@/features/FreeApplicationsCounter";
 
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
@@ -147,6 +148,7 @@ export const OffersFilter: FC<OffersFilterProps> = (props) => {
                         {t("Очистить все")}
                     </Button>
                 </div>
+                <FreeApplicationsCounter className={styles.applicationsCounter} />
             </div>
             <div className={cn(styles.bottom, { [styles.open]: dropdownOpened.isPeriodsOpened })}>
                 <Controller

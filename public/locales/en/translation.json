@@ -238,6 +238,11 @@
         "Адрес не указан": "Address not specified",
         "Заявка получена": "Application received"
     },
+    "freeApplicationsCounter": {
+        "Можно бесплатно откликнуться на:": "Free applications left:",
+        "Нужно больше? Оформите членство!": "Need more? Get a membership!",
+        "Не забудьте продлить членство, чтобы сохранить привилегии": "Don't forget to renew your membership to keep your privileges"
+    },
     "errors": {
         "freeAccountApplicationsLimit": "Free account allows up to 3 applications. Get a membership to apply without limits.",
         "freeAccountPublishedVacancyLimit": "Free account allows up to 1 published vacancy. Get a membership to publish without limits.",

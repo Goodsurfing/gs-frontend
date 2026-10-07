@@ -27,6 +27,13 @@ vi.mock("@/app/providers/LocaleProvider", () => ({
     useLocale: () => ({ locale: "ru" }),
 }));
 
+// FreeApplicationsCounter (GS-171) reads auth state directly via useAppSelector —
+// this test suite renders without a real <Provider>, so stub it unauthenticated
+// (the component itself renders null in that case, same as before its addition).
+vi.mock("@/shared/hooks/redux", () => ({
+    useAppSelector: () => undefined,
+}));
+
 /**
  * Живьём поймано на staging 2026-09-20: после оплаты членства баннер
  * «Оформи членство Гудсёрфинга» продолжал висеть на дашборде — MemberBanner

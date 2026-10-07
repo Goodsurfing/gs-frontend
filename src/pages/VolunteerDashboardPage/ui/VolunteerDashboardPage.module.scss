@@ -16,6 +16,10 @@
     flex-direction: column;
 }
 
+.applicationsCounter {
+    margin-bottom: 12px;
+}
+
 @media (max-width: 992px) {
     .banner {
         max-width: none;
