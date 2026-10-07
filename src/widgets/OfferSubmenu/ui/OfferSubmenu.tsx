@@ -9,8 +9,10 @@ import { Submenu } from "@/widgets/Submenu";
 import { Offer } from "@/entities/Offer";
 
 import {
+    getMembershipPageUrl,
     getMessengerPageCreateUrl, getOffersWherePageUrl, getProfileRolePageUrl, getSignInPageUrl,
 } from "@/shared/config/routes/AppUrls";
+import LocaleLink from "@/shared/ui/LocaleLink/LocaleLink";
 import { useTranslateSubmenu } from "@/shared/hooks/useTranslateSubmenu";
 import Button, { ButtonColor, ButtonSize, ButtonVariant } from "@/shared/ui/Button/Button";
 
@@ -25,7 +27,9 @@ interface OfferSubmenuProps {
 
 export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
     const { offerData, isVolunteer } = props;
-    const { id, canEdit, canParticipate } = offerData;
+    const {
+        id, canEdit, canParticipate, requiresMembershipToParticipate,
+    } = offerData;
     const { t } = useTranslation("offer");
     const { SubmenuItemsOffer, textParticipateLib } = useTranslateSubmenu();
     const navigate = useNavigate();
@@ -82,6 +86,15 @@ export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
                     <Button {...buttonProps}>
                         {buttonText}
                     </Button>
+                    {requiresMembershipToParticipate && (
+                        <p className={styles.membershipRequiredHint}>
+                            {t("personalOffer.У вас закончились бесплатные отклики.")}
+                            {" "}
+                            <LocaleLink to={getMembershipPageUrl(locale)}>
+                                {t("personalOffer.Оформите членство, чтобы отправить заявку")}
+                            </LocaleLink>
+                        </p>
+                    )}
                     {canEdit && (
                         <Button
                             disabled={!canEdit}

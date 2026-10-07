@@ -9,6 +9,7 @@ import { OfferStatus as OfferStatusType } from "@/entities/Offer";
 
 import star from "@/shared/assets/icons/star.svg";
 import {
+    getMembershipPageUrl,
     getMessengerPageCreateUrl,
     getOffersWherePageUrl,
     getProfileRolePageUrl,
@@ -16,6 +17,7 @@ import {
 } from "@/shared/config/routes/AppUrls";
 import Button, { ButtonSize, ButtonColor, ButtonVariant } from "@/shared/ui/Button/Button";
 import IconComponent from "@/shared/ui/IconComponent/IconComponent";
+import LocaleLink from "@/shared/ui/LocaleLink/LocaleLink";
 import { OfferStatus } from "@/shared/ui/OfferStatus/OfferStatus";
 
 import { useAppSelector } from "@/shared/hooks/redux";
@@ -37,6 +39,7 @@ interface PersonalCardProps {
     canEdit: boolean;
     canParticipate: boolean;
     textParticipate: string | null;
+    requiresMembershipToParticipate: boolean;
     status: OfferStatusType;
     isVolunteer: boolean;
 }
@@ -57,6 +60,7 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
         status,
         isVolunteer,
         textParticipate,
+        requiresMembershipToParticipate,
     } = props;
     const { t } = useTranslation("offer");
     const isAuth = useAppSelector(getUserAuthData);
@@ -185,6 +189,15 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
                     <Button {...buttonProps}>
                         {buttonText}
                     </Button>
+                    {requiresMembershipToParticipate && (
+                        <p className={styles.membershipRequiredHint}>
+                            {t("personalOffer.У вас закончились бесплатные отклики.")}
+                            {" "}
+                            <LocaleLink to={getMembershipPageUrl(locale)}>
+                                {t("personalOffer.Оформите членство, чтобы отправить заявку")}
+                            </LocaleLink>
+                        </p>
+                    )}
                     {/* {(!!isAuth && !isVolunteer) ? (
                         <Button
                             size="SMALL"
