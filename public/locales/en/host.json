@@ -37,7 +37,8 @@
         "Ок": "Ok",
         "Отмена": "Cancel",
         "Удалить": "Delete",
-        "Вакансию удалить нельзя": "Cannot delete an offer with submitted applications"
+        "Вакансию удалить нельзя": "Cannot delete an offer with submitted applications",
+        "Бесплатно можно опубликовать только 1 вакансию. Оформите членство, чтобы публиковать без ограничений": "Free account allows publishing only 1 vacancy. Get a membership to publish without limits"
     },
     "hostNotes": {
         "Мои заявки": "My applications",

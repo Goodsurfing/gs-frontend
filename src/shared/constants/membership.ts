@@ -15,3 +15,7 @@ export type TariffCode = typeof TARIFF_CODE[keyof typeof TARIFF_CODE];
 /** Бесплатных откликов в год без членства — должно совпадать с
  * ApplicationConstant::FREE_APPLICATION_LIMIT на бэкенде (GS-168, GS-169, GS-171). */
 export const FREE_APPLICATIONS_LIMIT = 3;
+
+/** Бесплатных опубликованных вакансий без членства — должно совпадать с
+ * VacancyConstant::FREE_VACANCY_LIMIT на бэкенде (GS-172). */
+export const FREE_VACANCIES_LIMIT = 1;

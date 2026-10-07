@@ -11,6 +11,7 @@ import {
 } from "@/entities/Offer";
 
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import { Modal } from "@/shared/ui/Modal/Modal";
 
 import { HostOffersList } from "../HostOffersList/HostOffersList";
 import { useGetMyHostQuery } from "@/entities/Host";
@@ -18,6 +19,8 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { MemberBanner } from "@/features/MemberBanner";
+import { isVacancyLimitExceededError } from "@/shared/lib/getErrorText";
 import styles from "./HostOffersPage.module.scss";
 
 type SeletecBtnType = "delete" | "every_open" | "close";
@@ -46,6 +49,7 @@ const HostOffersPage = () => {
     const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
     const [selectedBtnOffer, setSelectedBtnOffer] = useState<SeletecBtnType | null>(null);
     const [deleteOfferError, setDeleteOfferError] = useState<boolean>(false);
+    const [isVacancyLimitModalOpen, setIsVacancyLimitModalOpen] = useState<boolean>(false);
 
     const [currentOpenPage, setCurrentOpenPage] = useState(1);
     const [currentDraftPage, setCurrentDraftPage] = useState(1);
@@ -137,6 +141,8 @@ const HostOffersPage = () => {
         } catch (err) {
             if (selectedBtnOffer === "delete") {
                 setDeleteOfferError(true);
+            } else if (isVacancyLimitExceededError(err)) {
+                setIsVacancyLimitModalOpen(true);
             }
         } finally {
             handleModalClose();
@@ -193,6 +199,14 @@ const HostOffersPage = () => {
                 </div>
             )}
             <AddOffer />
+            {isVacancyLimitModalOpen && (
+                <Modal onClose={() => setIsVacancyLimitModalOpen(false)}>
+                    <MemberBanner
+                        title={t("hostOffers.Бесплатно можно опубликовать только 1 вакансию. Оформите членство, чтобы публиковать без ограничений")}
+                        anchor="host"
+                    />
+                </Modal>
+            )}
             <ConfirmActionModal
                 isModalOpen={isModalOpen}
                 description={t("hostOffers.Вы уверены что хотите изменить вакансию?")}
