@@ -7,20 +7,22 @@ import { join } from "path";
  * было подсказки, что означает эта иконка. Фикс: обёрнут в MUI Tooltip с
  * текстом «Верифицированный гудсёрфер». PR gs-frontend#331.
  *
+ * GS-150: текст сноски называл только одну роль («гудсёрфер»), хотя тот
+ * же значок стоит и у организаторов (HostlHeaderCard) — вынесено в общий
+ * `MembershipVerifiedBadge` с ролью-нейтральным текстом «пользователь» +
+ * ссылкой на /membership, используется и волонтёром, и хостом.
+ *
  * Компонент слишком тяжёлый для полного рендер-теста (ProfileById,
- * AchievementModal, медали и т.д.) — проверяем исходник, что Tooltip
+ * AchievementModal, медали и т.д.) — проверяем исходник, что бейдж
  * не потерялся при рефакторинге.
  */
-describe("VolunteerHeaderCard member badge tooltip (source regress-guard)", () => {
-    it("иконка member обёрнута в Tooltip с текстом «Верифицированный гудсёрфер»", () => {
+describe("VolunteerHeaderCard member badge (source regress-guard)", () => {
+    it("иконка member рендерится через общий MembershipVerifiedBadge", () => {
         const tsxPath = join(__dirname, "VolunteerHeaderCard.tsx");
         const source = readFileSync(tsxPath, "utf-8");
 
-        expect(source).toMatch(/import\s*{\s*Tooltip\s*}\s*from\s*"@mui\/material"/);
-
-        const memberIconBlock = source.split("alt=\"member\"")[0]?.slice(-400) ?? "";
-        expect(memberIconBlock).toMatch(/<Tooltip/);
-        expect(memberIconBlock).toMatch(/Верифицированный гудсёрфер/);
+        expect(source).toMatch(/import\s*{\s*MembershipVerifiedBadge\s*}\s*from\s*"@\/features\/MembershipVerifiedBadge"/);
+        expect(source).toMatch(/isMember\s*&&\s*\(\s*<MembershipVerifiedBadge/);
     });
 });
 

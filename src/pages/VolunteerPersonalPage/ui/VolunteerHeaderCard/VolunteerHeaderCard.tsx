@@ -5,12 +5,11 @@ import React, {
 
 import { useTranslation } from "react-i18next";
 
-import { Tooltip } from "@mui/material";
 // import { medalsData } from "@/shared/data/medals";
 import { ReactSVG } from "react-svg";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getSocialLink } from "@/shared/lib/getSocialLink";
-import memberIcon from "@/shared/assets/icons/select-check.svg";
+import { MembershipVerifiedBadge } from "@/features/MembershipVerifiedBadge";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 import {
@@ -183,13 +182,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                                     {getAge(birthDate)}
                                 </span>
                                 {isMember && (
-                                    <Tooltip title={t("personal.Верифицированный гудсёрфер", "Верифицированный гудсёрфер")}>
-                                        <img
-                                            src={memberIcon}
-                                            className={styles.memberIcon}
-                                            alt="member"
-                                        />
-                                    </Tooltip>
+                                    <MembershipVerifiedBadge />
                                 )}
                             </div>
                             <h3 className={styles.name}>
