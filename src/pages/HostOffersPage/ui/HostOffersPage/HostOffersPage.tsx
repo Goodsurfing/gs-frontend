@@ -20,6 +20,7 @@ import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { MemberBanner } from "@/features/MemberBanner";
+import { HostUpsellBanner } from "@/features/HostUpsellBanner";
 import { isVacancyLimitExceededError } from "@/shared/lib/getErrorText";
 import styles from "./HostOffersPage.module.scss";
 
@@ -164,6 +165,7 @@ const HostOffersPage = () => {
                 />
             )}
             <h2 className={styles.abilities}>{t("hostOffers.Мои вакансии")}</h2>
+            <HostUpsellBanner kind="mediaSupport" />
             <HostOffersList
                 offers={activeDisabledHostOffersData?.data ?? []}
                 onCloseClick={(offerId) => handleCloseClick(offerId)}

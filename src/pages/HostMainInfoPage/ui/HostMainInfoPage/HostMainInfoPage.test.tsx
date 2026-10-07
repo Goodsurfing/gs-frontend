@@ -22,6 +22,8 @@ vi.mock("@/features/HostDescription", () => ({
     },
 }));
 
+vi.mock("@/features/HostUpsellBanner", () => ({ HostUpsellBanner: () => null }));
+
 describe("HostMainInfoPage", () => {
     it("передаёт hostId и данные профиля в HostDescriptionForm после загрузки", async () => {
         server.use(
