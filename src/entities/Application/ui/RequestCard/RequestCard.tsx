@@ -15,6 +15,7 @@ import { Locale } from "@/entities/Locale";
 import Button from "@/shared/ui/Button/Button";
 import { getFullAddress, useGetFullName } from "@/shared/lib/getFullName";
 import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
+import { MembershipBadge } from "@/features/MembershipBadge";
 import styles from "./RequestCard.module.scss";
 
 interface RequestCardProps {
@@ -87,6 +88,9 @@ export const RequestCard = memo((props: RequestCardProps) => {
                             className={styles.name}
                         >
                             {userName}
+                            {volunteer.isMember && (
+                                <MembershipBadge variant="volunteer" />
+                            )}
                         </span>
                         <span className={styles.location}>
                             {address}

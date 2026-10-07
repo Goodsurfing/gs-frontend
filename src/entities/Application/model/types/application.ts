@@ -88,6 +88,8 @@ export interface Application {
         image: Image | null;
         city: string | null;
         country: string | null;
+        /** GS-28: значок "Член сообщества" у заявителей с активным членством. */
+        isMember: boolean;
     }
     startDate: string;
     endDate: string;
