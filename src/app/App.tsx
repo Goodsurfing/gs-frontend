@@ -5,6 +5,7 @@ import { SidebarProvider } from "@/widgets/Sidebar";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import { getUserInited, userActions } from "@/entities/User";
 import { LangRouter } from "@/routes";
+import { MembershipTimedPopup } from "@/features/MembershipTimedPopup";
 import { MessengerProvider } from "./providers/MessengerProvider/ui/MessengerProvider";
 import { AuthProvider } from "@/routes/model/guards/AuthProvider";
 
@@ -27,6 +28,7 @@ export const App: FC = () => {
                     <MessengerProvider>
                         <SidebarProvider initialValue={{ isOpen: true }}>
                             {inited && <LangRouter />}
+                            {inited && <MembershipTimedPopup />}
                         </SidebarProvider>
                     </MessengerProvider>
                 </AuthProvider>
