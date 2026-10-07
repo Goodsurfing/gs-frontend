@@ -1,0 +1,42 @@
+.wrapper {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    max-width: 480px;
+}
+
+.column {
+    flex: 1 1 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: #F5F5F5;
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+.columnText {
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--text-secondary-2);
+}
+
+.active {
+    align-items: center;
+    background: #F5F5F5;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+}
+
+.activeText {
+    font-size: 14px;
+    color: var(--text-secondary-2);
+    white-space: nowrap;
+}
+
+@media (max-width: 992px) {
+    .wrapper {
+        max-width: 100%;
+        width: 100%;
+    }
+}
