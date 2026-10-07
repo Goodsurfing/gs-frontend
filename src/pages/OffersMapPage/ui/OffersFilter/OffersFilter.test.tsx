@@ -5,6 +5,7 @@ import {
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FormProvider, useForm } from "react-hook-form";
+import { MemoryRouter } from "react-router-dom";
 import { renderWithProviders } from "@/test-utils";
 import { OffersFilter } from "./OffersFilter";
 
@@ -23,6 +24,9 @@ vi.mock("@/widgets/OffersMap/ui/PeriodsFilter/PeriodsFilter", () => ({
         <input aria-label="Не задано" onChange={() => onChange({ start: undefined, end: undefined })} />
     ),
 }));
+vi.mock("@/app/providers/LocaleProvider", () => ({
+    useLocale: () => ({ locale: "ru" }),
+}));
 
 interface WrapperProps {
     onSubmit: () => void;
@@ -34,9 +38,11 @@ const Wrapper = ({ onSubmit, onResetFilters }: WrapperProps) => {
         defaultValues: { periods: {}, category: [], participationPeriod: [1, 190] },
     });
     return (
-        <FormProvider {...form}>
-            <OffersFilter onSubmit={onSubmit} onResetFilters={onResetFilters} />
-        </FormProvider>
+        <MemoryRouter>
+            <FormProvider {...form}>
+                <OffersFilter onSubmit={onSubmit} onResetFilters={onResetFilters} />
+            </FormProvider>
+        </MemoryRouter>
     );
 };
 

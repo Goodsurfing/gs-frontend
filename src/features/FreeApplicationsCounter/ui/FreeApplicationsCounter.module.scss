@@ -1,0 +1,20 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary-1);
+    white-space: nowrap;
+}
+
+.hint {
+    font-size: 13px;
+    color: var(--color-blue);
+    text-decoration: underline;
+    white-space: nowrap;
+}

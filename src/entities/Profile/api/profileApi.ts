@@ -33,11 +33,13 @@ interface UnreadMessagesResponse {
 }
 
 interface ProfileOccupancyResponse {
-    isSkill: false,
-    isPhoto: false,
-    isVideo: false,
-    isBlogPost: false,
-    isMembership: false
+    isSkill: boolean,
+    isPhoto: boolean,
+    isVideo: boolean,
+    isBlogPost: boolean,
+    isMembership: boolean,
+    /** null — активное членство, лимита нет (GS-169, GS-171) */
+    remainingFreeApplications: number | null,
 }
 
 interface ProfilePasswordIsChangeResponse {
