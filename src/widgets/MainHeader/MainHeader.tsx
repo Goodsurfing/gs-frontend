@@ -13,13 +13,13 @@ import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 import logotypeIcon from "@/shared/assets/icons/logo-black.svg";
 import {
     getMainPageUrl,
-    getMembershipPageUrl,
     getMessengerPageUrl,
     getSignInPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
+import { MembershipNavItem } from "./MembershipNavItem/MembershipNavItem";
 import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
 import { MessangerInfo } from "./MessangerInfo/MessangerInfo";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
@@ -112,12 +112,7 @@ const MainHeader: FC<MainHeaderProps> = ({ variant = "floating" }) => {
                     <MainHeaderNav />
                 </div>
                 <div className={styles.right}>
-                    <LocaleLink
-                        to={getMembershipPageUrl(locale)}
-                        className={styles.membershipCta}
-                    >
-                        {t("main.welcome.header.membership", "Членство")}
-                    </LocaleLink>
+                    <MembershipNavItem />
                     <ChangeLanguage localeApi={myProfile?.locale} profileData={myProfile} />
                     {(isAuth && myProfile) ? (
                         <>

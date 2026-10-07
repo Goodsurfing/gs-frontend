@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
+import { ProfileMembershipBanner } from "@/features/ProfileMembershipBanner";
 
 import { getUserAuthData, userActions } from "@/entities/User";
 
@@ -337,6 +338,9 @@ const MobileHeader: FC = () => {
                 >
                     {t("main.welcome.header.membership", "Членство")}
                 </Button>
+                {/* GS-149: hover недоступен на мобильных — вместо попапа
+                    тот же баннер встроен прямо в пункт меню. */}
+                <ProfileMembershipBanner className={styles.membershipBanner} />
                 {authData ? (
                     <>
                         <Button

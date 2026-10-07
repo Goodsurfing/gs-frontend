@@ -43,6 +43,10 @@ vi.mock("./MainHeaderNav/MainHeaderNav", () => ({
     MainHeaderNav: () => <nav />,
 }));
 
+vi.mock("./MembershipNavItem/MembershipNavItem", () => ({
+    MembershipNavItem: () => <div />,
+}));
+
 vi.mock("./MainHeaderProfile/MainHeaderProfile", () => ({
     default: () => <div />,
 }));
