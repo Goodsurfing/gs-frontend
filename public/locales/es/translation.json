@@ -238,6 +238,10 @@
         "Адрес не указан": "Dirección no especificada",
         "Заявка получена": "Solicitud recibida"
     },
+    "membershipBadge": {
+        "Член сообщества": "Miembro de la comunidad",
+        "Партнёр Гудсёрфинга": "Socio de Goodsurfing"
+    },
     "freeApplicationsCounter": {
         "Можно бесплатно откликнуться на:": "Solicitudes gratuitas restantes:",
         "Нужно больше? Оформите членство!": "¿Necesitas más? ¡Hazte miembro!",

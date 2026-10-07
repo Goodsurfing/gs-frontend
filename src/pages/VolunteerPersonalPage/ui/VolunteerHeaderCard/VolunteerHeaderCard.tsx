@@ -10,6 +10,7 @@ import { ReactSVG } from "react-svg";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getSocialLink } from "@/shared/lib/getSocialLink";
 import { MembershipVerifiedBadge } from "@/features/MembershipVerifiedBadge";
+import { MembershipBadge } from "@/features/MembershipBadge";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 import {
@@ -187,6 +188,9 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                             </div>
                             <h3 className={styles.name}>
                                 {renderName}
+                                {isMember && (
+                                    <MembershipBadge variant="volunteer" />
+                                )}
                             </h3>
                             <div className={styles.info}>
                                 <span className={styles.address}>
