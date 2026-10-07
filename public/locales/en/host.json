@@ -195,5 +195,15 @@
         "Произошла ошибка": "An error occurred",
         "Организация недоступна": "Organization unavailable",
         "Произошла ошибка загрузки отзывов": "An error occurred while loading reviews"
+    },
+    "hostUpsellBanner": {
+        "Консультация по продвижению": "Promotion consultation",
+        "Медиаподдержка": "Media support",
+        "Организаторы с оформленным членством могут получить бесплатную консультацию по продвижению своего проекта": "Members get a free promotion consultation for their project",
+        "Организаторы с оформленным членством получают медиаподдержку своего проекта": "Members get media support for their project",
+        "Вы можете получить консультацию по продвижению": "You can get a promotion consultation, send a request to",
+        "Вы можете получить медиаподдержку проекта": "You can get media support for your project, send a request to",
+        "с темой письма": "with subject",
+        "ответ в течение {{days}} рабочих дней": "reply within {{days}} business days"
     }
 }
