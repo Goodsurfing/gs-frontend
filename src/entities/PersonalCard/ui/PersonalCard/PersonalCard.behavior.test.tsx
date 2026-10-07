@@ -17,6 +17,7 @@ const baseProps = {
     canEdit: false,
     canParticipate: true,
     textParticipate: null,
+    requiresMembershipToParticipate: false,
     status: "active" as const,
     isVolunteer: true,
 };
