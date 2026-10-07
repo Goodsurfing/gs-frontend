@@ -7,6 +7,7 @@ import { RequestsWidget } from "@/widgets/RequestsWidget";
 
 import { DashboardNotifications } from "@/widgets/DashboardNotifications/";
 import { MemberBanner } from "@/features/MemberBanner";
+import { PublishedVacanciesCounter } from "@/features/PublishedVacanciesCounter";
 import { useGetProfileOccupancyQuery } from "@/entities/Profile";
 
 import styles from "./HostDashboard.module.scss";
@@ -30,6 +31,7 @@ const HostDashboardPage: FC = () => {
     return (
         <div className={styles.dashboard}>
             <HostFill />
+            <PublishedVacanciesCounter className={styles.vacanciesCounter} />
             <div className={styles.columns}>
                 <RequestsWidget locale={locale} />
                 {/* <CalendarWidget /> add this logic in future */}

@@ -40,6 +40,8 @@ interface ProfileOccupancyResponse {
     isMembership: boolean,
     /** null — активное членство, лимита нет (GS-169, GS-171) */
     remainingFreeApplications: number | null,
+    /** null — активное членство или пользователь не хост (GS-172) */
+    remainingFreeVacancies: number | null,
 }
 
 interface ProfilePasswordIsChangeResponse {

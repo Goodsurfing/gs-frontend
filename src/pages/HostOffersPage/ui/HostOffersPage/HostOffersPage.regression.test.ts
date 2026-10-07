@@ -30,3 +30,27 @@ describe("HostOffersPage delete error (regress-guard)", () => {
         expect(handler).toMatch(/setDeleteOfferError\(false\)/);
     });
 });
+
+/**
+ * GS-172: до фикса превышение бесплатного лимита вакансий при повторной
+ * публикации/открытии на /host/my-offers падало полностью без обратной
+ * связи — catch-блок обрабатывал только selectedBtnOffer === "delete",
+ * ошибку toggle-status молча проглатывал. Фикс: показывать попап со
+ * ссылкой на /membership, см. isVacancyLimitExceededError в getErrorText.tsx.
+ */
+describe("HostOffersPage vacancy limit popup (regress-guard)", () => {
+    it("handleConfirmClick открывает попап членства при vacancy_limit_exceeded", () => {
+        const source = readFileSync(join(__dirname, "HostOffersPage.tsx"), "utf-8");
+        const handler = source.split("const handleConfirmClick")[1]?.split("};")[0] ?? "";
+
+        expect(handler).toMatch(/isVacancyLimitExceededError\(err\)/);
+        expect(handler).toMatch(/setIsVacancyLimitModalOpen\(true\)/);
+    });
+
+    it("попап рендерит MemberBanner со ссылкой на /membership", () => {
+        const source = readFileSync(join(__dirname, "HostOffersPage.tsx"), "utf-8");
+
+        expect(source).toMatch(/isVacancyLimitModalOpen && \(/);
+        expect(source).toMatch(/<MemberBanner/);
+    });
+});

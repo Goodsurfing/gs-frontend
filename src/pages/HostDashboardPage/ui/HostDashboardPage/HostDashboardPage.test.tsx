@@ -14,6 +14,7 @@ vi.mock("@/entities/Profile", () => ({
 vi.mock("@/features/HostFill", () => ({ HostFill: () => null }));
 vi.mock("@/widgets/RequestsWidget", () => ({ RequestsWidget: () => null }));
 vi.mock("@/widgets/DashboardNotifications/", () => ({ DashboardNotifications: () => null }));
+vi.mock("@/features/PublishedVacanciesCounter", () => ({ PublishedVacanciesCounter: () => null }));
 
 vi.mock("react-i18next", () => ({
     useTranslation: () => ({ t: (key: string) => key, ready: true }),

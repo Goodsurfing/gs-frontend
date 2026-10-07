@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getErrorText } from "./getErrorText";
+import { getErrorText, isVacancyLimitExceededError, VACANCY_LIMIT_EXCEEDED_DETAIL } from "./getErrorText";
 
 /**
  * Регресс-guard для row 36: при входе через ВК страница смены пароля
@@ -39,5 +39,29 @@ describe("getErrorText", () => {
         };
 
         expect(getErrorText(error)).not.toBe("Произошла неизвестная ошибка.");
+    });
+});
+
+/**
+ * GS-172: HostOffersPage показывает попап со ссылкой на /membership только
+ * для этой конкретной ошибки toggle-status, не для любого сбоя — иначе
+ * пользователь получал бы призыв оформить членство даже на обрыве сети.
+ */
+describe("isVacancyLimitExceededError", () => {
+    it("распознаёт ошибку превышения лимита вакансий", () => {
+        const error = { data: { detail: VACANCY_LIMIT_EXCEEDED_DETAIL } };
+
+        expect(isVacancyLimitExceededError(error)).toBe(true);
+    });
+
+    it("не распознаёт прочие ошибки как превышение лимита", () => {
+        const error = { data: { detail: "Fill in the vacancy title, description and address before publishing." } };
+
+        expect(isVacancyLimitExceededError(error)).toBe(false);
+    });
+
+    it("не падает на ошибках без data.detail", () => {
+        expect(isVacancyLimitExceededError(new Error("network error"))).toBe(false);
+        expect(isVacancyLimitExceededError(undefined)).toBe(false);
     });
 });
