@@ -12,7 +12,7 @@ import {
     telegramIcon,
     vkIcon,
 } from "@/shared/data/icons/socialIcons";
-import memberIcon from "@/shared/assets/icons/select-check.svg";
+import { MembershipVerifiedBadge } from "@/features/MembershipVerifiedBadge";
 
 import styles from "./HostlHeaderCard.module.scss";
 import { useGetTypeOrganization } from "@/shared/hooks/useGetTypeOrganization";
@@ -86,11 +86,7 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
                     <div className={styles.nameWrapper}>
                         <h3 className={styles.name}>{name}</h3>
                         {owner?.isMember && (
-                            <img
-                                src={memberIcon}
-                                className={styles.memberIcon}
-                                alt="member"
-                            />
+                            <MembershipVerifiedBadge />
                         )}
                     </div>
                     <span className={styles.address}>{address}</span>
