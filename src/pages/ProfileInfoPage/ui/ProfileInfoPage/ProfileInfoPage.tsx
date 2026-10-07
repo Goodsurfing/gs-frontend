@@ -3,6 +3,7 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
 import { ProfileInfoForm } from "@/features/ProfileInfo";
+import { ProfileMembershipBanner } from "@/features/ProfileMembershipBanner";
 
 import styles from "./ProfileInfoPage.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -22,6 +23,7 @@ const ProfileInfoPage: FC = () => {
         <main className={styles.wrapper}>
             <div className={styles.titleWrapper}>
                 <h2 className={styles.title}>{t("info.Основная информация")}</h2>
+                <ProfileMembershipBanner />
             </div>
             <ProfileInfoForm className={styles.info} />
         </main>

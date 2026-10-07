@@ -43,7 +43,12 @@
         "Данные успешно изменены": "Datos actualizados con éxito",
         "Не более 1000 знаков": "No más de 1000 caracteres",
         "Вам нужно подтвердить вашу электронную почту.": "Necesitas confirmar tu correo electrónico.",
-        "Подтвердить": "Confirmar"
+        "Подтвердить": "Confirmar",
+        "Членство активно до {{date}}": "Membresía activa hasta {{date}}",
+        "Продлить членство": "Renovar membresía",
+        "Получи возможность оставлять неограниченное количество откликов и путешествовать без лимитов — {{price}} руб/год": "Obtén solicitudes ilimitadas y viaja sin límites — {{price}} rub/año",
+        "Создавай неограниченное количество вакансий и получи больше возможностей для своего проекта — {{price}} руб/год": "Crea vacantes ilimitadas y obtén más oportunidades para tu proyecto — {{price}} rub/año",
+        "Оформить членство": "Hazte miembro"
     },
     "preferences": {
         "Куда бы вы хотели поехать": "¿A dónde le gustaría ir?",

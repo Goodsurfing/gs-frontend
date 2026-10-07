@@ -47,7 +47,10 @@
 
 @media (max-width: 992px) {
 	.titleWrapper {
+		flex-direction: column-reverse;
+		align-items: center;
 		justify-content: center;
 		text-align: center;
+		gap: 1rem;
 	}
 }
