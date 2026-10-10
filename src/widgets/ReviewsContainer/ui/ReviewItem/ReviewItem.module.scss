@@ -37,6 +37,11 @@
 		font-size: 1.125rem;
 		font-weight: 500;
 		line-height: 122%;
+
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 	}
 
 	.text {
@@ -46,6 +51,17 @@
 
 		font-size: 0.8125rem;
 		line-height: 146%;
+
+		// Без этого длинный отзыв растягивал карточку по высоте — на
+		// fade-слайдере (ReviewsContainer) это оставляло огромный пустой
+		// промежуток под короткими соседними слайдами, плюс сам текст
+		// превращался в нечитаемую портянку. 6 строк с троеточием — карточка
+		// кликабельна целиком (см. ReviewItem.tsx), полный текст открывается
+		// на странице вакансии.
+		display: -webkit-box;
+		-webkit-line-clamp: 6;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 	}
 
 	.user {
