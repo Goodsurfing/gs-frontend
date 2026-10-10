@@ -60,7 +60,8 @@ export const ProfileMembershipBanner: FC<ProfileMembershipBannerProps> = memo((
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            <div className={styles.column}>
+            <div className={cn(styles.column, styles.columnVolunteer)}>
+                <span className={styles.columnLabel}>{t("info.Волонтёрам")}</span>
                 <p className={styles.columnText}>
                     {t(
                         "info.Получи возможность оставлять неограниченное количество откликов и путешествовать без лимитов — {{price}} руб/год",
@@ -71,14 +72,15 @@ export const ProfileMembershipBanner: FC<ProfileMembershipBannerProps> = memo((
                     {t("info.Оформить членство")}
                 </Button>
             </div>
-            <div className={styles.column}>
+            <div className={cn(styles.column, styles.columnHost)}>
+                <span className={styles.columnLabel}>{t("info.Организаторам")}</span>
                 <p className={styles.columnText}>
                     {t(
                         "info.Создавай неограниченное количество вакансий и получи больше возможностей для своего проекта — {{price}} руб/год",
                         { price: TARIFF_FALLBACK_PRICE_RUB[TARIFF_CODE.HOST] },
                     )}
                 </p>
-                <Button color="BLUE" size="SMALL" variant="FILL" onClick={() => goToMembership("host")}>
+                <Button color="GREEN" size="SMALL" variant="FILL" onClick={() => goToMembership("host")}>
                     {t("info.Оформить членство")}
                 </Button>
             </div>
