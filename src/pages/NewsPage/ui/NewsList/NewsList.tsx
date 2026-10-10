@@ -4,6 +4,7 @@ import { ArticleCard } from "@/entities/Article/";
 import { getNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { GetNewsList, newsArticleCardAdapter } from "@/entities/News";
+import { Text } from "@/shared/ui/Text/Text";
 import styles from "./NewsList.module.scss";
 
 interface NewsListProps {
@@ -25,8 +26,16 @@ export const NewsList: FC<NewsListProps> = (props) => {
     )), [data, locale]);
 
     if (!data) {
+        return null;
+    }
+
+    if (data.length === 0) {
         return (
-            <div>Новостей не было найдено</div>
+            <Text
+                className={styles.empty}
+                textSize="primary"
+                text="Новости не найдены"
+            />
         );
     }
 

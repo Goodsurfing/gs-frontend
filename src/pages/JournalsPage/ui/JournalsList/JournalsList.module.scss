@@ -15,3 +15,9 @@
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
 }
+
+.empty {
+    width: 100%;
+    text-align: center;
+    padding: 40px 20px;
+}

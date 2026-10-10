@@ -7,6 +7,7 @@ import { ArticleCardType } from "@/entities/Article";
 import { ArticleCard } from "@/entities/Article/";
 
 import { getBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { Text } from "@/shared/ui/Text/Text";
 
 import styles from "./ArticlesList.module.scss";
 
@@ -32,7 +33,17 @@ export const ArticlesList: FC<ArticlesListProps> = (props) => {
     );
 
     if (!data) {
-        return <div>Статей не было найдено</div>;
+        return null;
+    }
+
+    if (data.length === 0) {
+        return (
+            <Text
+                className={styles.empty}
+                textSize="primary"
+                text="Статьи не найдены"
+            />
+        );
     }
 
     return <div className={cn(className, styles.wrapper)}>{renderNews}</div>;

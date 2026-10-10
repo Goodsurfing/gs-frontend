@@ -1,6 +1,7 @@
 import React, { FC, useMemo } from "react";
 import cn from "classnames";
 import { JournalCard, JournalCardType } from "@/entities/Article";
+import { Text } from "@/shared/ui/Text/Text";
 import styles from "./JournalsList.module.scss";
 
 interface JournalsListProps {
@@ -19,8 +20,16 @@ export const JournalsList: FC<JournalsListProps> = (props) => {
     )), [data]);
 
     if (!data) {
+        return null;
+    }
+
+    if (data.length === 0) {
         return (
-            <div>Журналов не было найдено</div>
+            <Text
+                className={styles.empty}
+                textSize="primary"
+                text="Журналы не найдены"
+            />
         );
     }
 
