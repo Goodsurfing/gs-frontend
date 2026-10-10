@@ -46,6 +46,8 @@
         "Подтвердить": "Confirm",
         "Членство активно до {{date}}": "Membership active until {{date}}",
         "Продлить членство": "Renew membership",
+        "Волонтёрам": "For volunteers",
+        "Организаторам": "For hosts",
         "Получи возможность оставлять неограниченное количество откликов и путешествовать без лимитов — {{price}} руб/год": "Get unlimited applications and travel without limits — {{price}} rub/year",
         "Создавай неограниченное количество вакансий и получи больше возможностей для своего проекта — {{price}} руб/год": "Create unlimited vacancies and get more opportunities for your project — {{price}} rub/year",
         "Оформить членство": "Get a membership"
@@ -140,7 +142,7 @@
         "Здесь будут размещены видео волонтера.": "Volunteer videos will be displayed here.",
         "Добавленные видео": "Uploaded Videos",
         "Профиль недоступен": "Profile unavailable",
-         "Ещё": "More",
+        "Ещё": "More",
         "Произошла ошибка загрузки отзывов": "An error occurred while loading reviews",
         "Все достижения пользователя": "All user achievements",
         "Статьи об организации": "Articles about the organization"
