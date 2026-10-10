@@ -2,6 +2,7 @@ import cn from "classnames";
 import React, { FC, useMemo } from "react";
 
 import { VideoCard, VideoCardType } from "@/entities/Video";
+import { Text } from "@/shared/ui/Text/Text";
 import styles from "./VideoList.module.scss";
 
 interface VideoListProps {
@@ -19,7 +20,17 @@ export const VideoList: FC<VideoListProps> = (props) => {
     );
 
     if (!data) {
-        return <div>Видео не было найдено</div>;
+        return null;
+    }
+
+    if (data.length === 0) {
+        return (
+            <Text
+                className={styles.empty}
+                textSize="primary"
+                text="Видео не найдены"
+            />
+        );
     }
 
     return (
