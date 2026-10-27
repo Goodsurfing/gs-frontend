@@ -10,8 +10,11 @@ import { App } from "@/app/App";
 import "@/app/styles/index.scss";
 
 import "@/shared/config/i18n/i18n";
+import { initErrorTracking } from "@/shared/lib/initErrorTracking";
 
 import { LocaleProvider } from "./app/providers/LocaleProvider";
+
+initErrorTracking();
 
 const root = createRoot(document.getElementById("root")!);
 

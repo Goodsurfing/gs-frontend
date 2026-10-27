@@ -26,6 +26,8 @@ interface ImportMetaEnv {
     readonly VITE_MAIN_URL: string;
     readonly VITE_API_YANDEX_KEY: string;
     readonly VITE_VKID_CLIENT_ID: string;
+    readonly VITE_SENTRY_DSN?: string;
+    readonly VITE_SENTRY_ENVIRONMENT?: string;
 }
 
 interface ImportMeta {
