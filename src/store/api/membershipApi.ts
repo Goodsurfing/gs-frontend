@@ -11,7 +11,9 @@ export type MembershipStatus =
     | "ACTIVE"
     | "EXPIRED"
     | "CANCELLED"
-    | "REFUNDED";
+    | "REFUNDED"
+    // Период продлён заранее и заменён следующим (бэкенд gs-backend #391)
+    | "RENEWED";
 
 export interface Tariff {
     id: string;
