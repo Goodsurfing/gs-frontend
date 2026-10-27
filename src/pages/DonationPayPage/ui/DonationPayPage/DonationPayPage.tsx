@@ -79,6 +79,12 @@ const DonationPayPage: React.FC = () => {
                 window.location.href = result.paymentUrl;
             }
         } catch (err: any) {
+            // 502/503/504 — недоступна ЮКасса: говорим об этом прямо, а не «ошибка»
+            const status = typeof err?.status === "number" ? err.status : 0;
+            if (status >= 502 && status <= 504) {
+                setApiError(t("Сервис оплаты временно недоступен Попробуйте позже"));
+                return;
+            }
             setApiError(err?.data?.error || t("Произошла ошибка при создании платежа"));
         }
     };
