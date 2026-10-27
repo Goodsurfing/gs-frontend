@@ -1,11 +1,9 @@
 import { test, expect, request, APIRequestContext } from '@playwright/test';
-import { API_URL, IAP_TOKEN } from '../config';
+import { API_URL } from '../config';
 
 /**
  * Пакет e2e-сценариев взаимодействия волонтёра и хоста вокруг заявок на
- * вакансию. Живая проверка на стейдже через API (без открытия SPA — см.
- * обоснование CORS/IAP в payment.spec.ts, та же проблема применима к
- * любому кросс-origin запросу с нестандартным заголовком).
+ * вакансию. Живая проверка на стейдже через API, без открытия SPA.
  *
  * Использует тестовые вакансии из E2ETestFixtures::makeVacancy() (5 шт.,
  * "E2E Тестовая вакансия 1..5 — не удалять"; 5-я — с закрытым приёмом
@@ -40,10 +38,6 @@ import { API_URL, IAP_TOKEN } from '../config';
  */
 test.describe('Волонтёр и хост: заявки на вакансию', () => {
     test.describe.configure({ retries: 0 });
-
-    const iapHeaders: Record<string, string> = IAP_TOKEN
-        ? { 'X-Forwarded-Authorization': `Bearer ${IAP_TOKEN}` }
-        : {};
 
     const login = async (api: APIRequestContext, email: string, password: string) => {
         const resp = await api.post('/api/v1/token', { data: { email, password } });
@@ -131,7 +125,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
         test.skip(testInfo.project.name !== 'vol', 'чистый API-тест, не нужно дублировать по storageState-проектам');
 
         const api = await request.newContext({
-            baseURL: API_URL, extraHTTPHeaders: iapHeaders, ignoreHTTPSErrors: true,
+            baseURL: API_URL, ignoreHTTPSErrors: true,
         });
 
         const volAuth = await login(api, 'vol@test.com', 'Test1234!');
@@ -174,7 +168,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
         test.skip(testInfo.project.name !== 'vol', 'чистый API-тест, не нужно дублировать по storageState-проектам');
 
         const api = await request.newContext({
-            baseURL: API_URL, extraHTTPHeaders: iapHeaders, ignoreHTTPSErrors: true,
+            baseURL: API_URL, ignoreHTTPSErrors: true,
         });
 
         const hostAuth = await login(api, 'host@test.com', 'Test1234!');
@@ -206,7 +200,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
         test.skip(testInfo.project.name !== 'vol', 'чистый API-тест, не нужно дублировать по storageState-проектам');
 
         const api = await request.newContext({
-            baseURL: API_URL, extraHTTPHeaders: iapHeaders, ignoreHTTPSErrors: true,
+            baseURL: API_URL, ignoreHTTPSErrors: true,
         });
 
         const hostAuth = await login(api, 'host@test.com', 'Test1234!');
@@ -229,7 +223,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
         test.skip(testInfo.project.name !== 'vol', 'чистый API-тест, не нужно дублировать по storageState-проектам');
 
         const api = await request.newContext({
-            baseURL: API_URL, extraHTTPHeaders: iapHeaders, ignoreHTTPSErrors: true,
+            baseURL: API_URL, ignoreHTTPSErrors: true,
         });
 
         const hostAuth = await login(api, 'host@test.com', 'Test1234!');
@@ -259,7 +253,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
         test.skip(testInfo.project.name !== 'vol', 'чистый API-тест, не нужно дублировать по storageState-проектам');
 
         const api = await request.newContext({
-            baseURL: API_URL, extraHTTPHeaders: iapHeaders, ignoreHTTPSErrors: true,
+            baseURL: API_URL, ignoreHTTPSErrors: true,
         });
 
         // host@test.com в фикстуре одновременно и хост, и волонтёр —
@@ -280,7 +274,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
         test.skip(testInfo.project.name !== 'vol', 'чистый API-тест, не нужно дублировать по storageState-проектам');
 
         const api = await request.newContext({
-            baseURL: API_URL, extraHTTPHeaders: iapHeaders, ignoreHTTPSErrors: true,
+            baseURL: API_URL, ignoreHTTPSErrors: true,
         });
 
         const hostAuth = await login(api, 'host@test.com', 'Test1234!');
@@ -301,7 +295,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
         test.skip(testInfo.project.name !== 'vol', 'чистый API-тест, не нужно дублировать по storageState-проектам');
 
         const api = await request.newContext({
-            baseURL: API_URL, extraHTTPHeaders: iapHeaders, ignoreHTTPSErrors: true,
+            baseURL: API_URL, ignoreHTTPSErrors: true,
         });
 
         const hostAuth = await login(api, 'host@test.com', 'Test1234!');

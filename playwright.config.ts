@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-import { BASE_URL, IAP_TOKEN } from './e2e/config';
+import { BASE_URL } from './e2e/config';
 
 export default defineConfig({
     testDir: './e2e/tests',
@@ -13,9 +13,6 @@ export default defineConfig({
 
     use: {
         baseURL: BASE_URL,
-        extraHTTPHeaders: {
-            ...(IAP_TOKEN ? { Authorization: `Bearer ${IAP_TOKEN}` } : {}),
-        },
         ignoreHTTPSErrors: true,
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
