@@ -36,3 +36,23 @@ jobs:
       # из-за пропавшей зависимости @testing-library/dom.
       - name: Unit tests
         run: npm run test:run
+
+      # Известные уязвимости в зависимостях, которые попадают в сборку.
+      # Пока не блокирует: остались swiper/react-router/tiptap, их закрывают
+      # мажорные обновления (см. docs/roadmap). Потом — убрать continue-on-error.
+      - name: Dependency audit
+        continue-on-error: true
+        run: npm audit --omit=dev --audit-level=high
+
+  secrets:
+    # Действующие токены и ключи, случайно попавшие в коммит.
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
+

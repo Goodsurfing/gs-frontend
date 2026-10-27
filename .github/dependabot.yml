@@ -1,0 +1,27 @@
+# Обновления зависимостей: GitHub сам открывает PR в develop.
+# Уязвимые зависимости — сразу (security updates), обычные — раз в неделю,
+# мелкие обновления сгруппированы, чтобы не было десятка PR.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Moscow
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+    # Мажорные обновления (react-router 7, swiper 12+, tiptap 3) — вручную,
+    # с визуальной проверкой: они ломают API библиотек.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: monthly
