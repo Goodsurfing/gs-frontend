@@ -41,11 +41,13 @@ import { Modal } from "@/shared/ui/Modal/Modal";
 
 import { applicationOfferAdapter } from "../../lib/applicationOfferAdapter";
 import { getEffectiveCompanion } from "./getEffectiveCompanion";
+import { getCompanionProfileUrl } from "./getCompanionProfileUrl";
 import { ChatFormFields } from "../../model/types/chatForm";
 import { Message } from "../Message/Message";
 import { SendMessage } from "../SendMessage/SendMessage";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
+import CustomLink from "@/shared/ui/Link/Link";
 import { useMessenger } from "@/app/providers/MessengerProvider";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import styles from "./Chat.module.scss";
@@ -470,6 +472,14 @@ export const Chat: FC<ChatProps> = (props) => {
         return processedMessages;
     };
 
+    const headerCompanion = getEffectiveCompanion(companionData, chatData);
+    const companionName = getFullName(headerCompanion?.firstName, headerCompanion?.lastName);
+    const companionProfileUrl = getCompanionProfileUrl(
+        headerCompanion,
+        locale,
+        Boolean(myProfileData?.hostId),
+    );
+
     return (
         <div className={cn(styles.wrapper, className)}>
             {toast && (
@@ -486,12 +496,17 @@ export const Chat: FC<ChatProps> = (props) => {
                             className={styles.back}
                             onClick={handleBackButton}
                         />
-                        <span className={styles.userName}>
-                            {getFullName(
-                                getEffectiveCompanion(companionData, chatData)?.firstName,
-                                getEffectiveCompanion(companionData, chatData)?.lastName,
-                            )}
-                        </span>
+                        {companionProfileUrl ? (
+                            <CustomLink
+                                to={companionProfileUrl}
+                                variant="DEFAULT"
+                                className={styles.userName}
+                            >
+                                {companionName}
+                            </CustomLink>
+                        ) : (
+                            <span className={styles.userName}>{companionName}</span>
+                        )}
                     </div>
                     <div className={styles.settingsInfo}>
                         {/* <UserSettings /> */}

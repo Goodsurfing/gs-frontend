@@ -1,5 +1,5 @@
 // In dev (`npm start`) the SPA must hit the Vite dev-server (which proxies
-// to staging) so CORS/IAP doesn't kick in. We use the running page origin
+// to staging) so CORS doesn't kick in. We use the running page origin
 // (typically http://localhost:3000) — NOT an empty string — because several
 // RTK Query endpoints inject API_BASE_URL_ABSOLUTE directly into `url:` while
 // using `baseQuery` with baseUrl=API_BASE_URL. Both now point at /api/v1/,
@@ -24,7 +24,7 @@ export const API_USER_BASE_URL = `${API_ORIGIN}/api/users/`;
 export const API_MEDIA_BASE_URL = `${API_ORIGIN}/api/media_objects/`;
 export const API_TRANSLATION_BASE_URL = `${API_ORIGIN}/api/v1/translation`;
 export const API_YANDEX_BASE_URL = `${API_ORIGIN}/api/v1/geocode`;
-// Used for OAuth/IAP redirect-back URLs. In dev — origin of the running
+// Used for OAuth redirect-back URLs. In dev — origin of the running
 // dev-server (typically http://localhost:3000), not a baked-in production URL.
 export const MAIN_URL = import.meta.env.DEV && typeof window !== "undefined"
     ? window.location.origin

@@ -44,7 +44,7 @@ npm start          # http://localhost:3000
 
 Никаких `.env` создавать не нужно — все умолчания committed в `.env.development`.
 
-Под капотом dev-сервер проксирует `/api`, `/admin`, `/auth`, `/oauth2`, `/static-media`, `/media` на `https://api-staging.goodsurfing.org` и подкладывает IAP-токен в `Authorization: Bearer …` — обходим CORS и oauth2-proxy одним движением. Конфиг — в `.env.development`, проксирование — в `vite.config.ts`.
+Под капотом dev-сервер проксирует `/api`, `/admin`, `/auth`, `/oauth2`, `/static-media`, `/media` на `https://api-staging.goodsurfing.org` — так браузер не упирается в CORS. Конфиг — в `.env.development`, проксирование — в `vite.config.ts`.
 
 ## Логин
 
@@ -59,11 +59,10 @@ VK-auth flow локально не работает (callback зарегистр
 
 ## Кастомизация
 
-Чтобы переключить target или подложить свой IAP-токен — скопируй `.env.development.local.example` в `.env.development.local` (gitignored) и переопредели:
+Чтобы переключить target — скопируй `.env.development.local.example` в `.env.development.local` (gitignored) и переопредели:
 
 ```env
-VITE_DEV_API_TARGET="https://api-dev.goodsurfing.org"
-VITE_DEV_IAP_TOKEN="yiap_..."
+VITE_DEV_API_TARGET="https://api-staging.goodsurfing.org"
 ```
 
 # Build / deploy
