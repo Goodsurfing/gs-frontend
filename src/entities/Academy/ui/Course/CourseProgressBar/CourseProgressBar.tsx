@@ -1,6 +1,7 @@
 import { Slider, styled } from "@mui/material";
 import cn from "classnames";
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 import styles from "./CourseProgressBar.module.scss";
 
@@ -28,6 +29,7 @@ const CustomSlider = styled(Slider)({
 
 export const CourseProgressBar: FC<CourseProgressBarProps> = (props) => {
     const { className, finishedLessons, totalLessons } = props;
+    const { t } = useTranslation("academy");
 
     const step = 100 / totalLessons;
 
@@ -60,7 +62,7 @@ export const CourseProgressBar: FC<CourseProgressBarProps> = (props) => {
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            <h2>Прогресс по курсу</h2>
+            <h2>{t("Прогресс по курсу")}</h2>
             <div className={styles.sliderWrapper}>
                 <CustomSlider
                     aria-label="Course progress"

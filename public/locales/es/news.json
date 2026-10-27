@@ -5,5 +5,11 @@
         "keywords": "GoodSurfing, noticias, proyectos de voluntariado, voluntariado, viajes con sentido, expediciones, comunidades",
         "ogTitle": "Noticias de GoodSurfing",
         "ogDescription": "Eventos, proyectos y noticias de la comunidad GoodSurfing."
-    }
+    },
+    "Новости не найдены": "No se encontraron noticias",
+    "Новости": "Noticias",
+    "Произошла ошибка при подгрузке комментариев": "Se produjo un error al cargar los comentarios",
+    "Чтобы поставить лайк, нужно авторизоваться": "Para dar me gusta, debe iniciar sesión",
+    "Произошла ошибка": "Se produjo un error",
+    "Чтобы оставить комментарий, нужно авторизоваться": "Para dejar un comentario, debe iniciar sesión"
 }

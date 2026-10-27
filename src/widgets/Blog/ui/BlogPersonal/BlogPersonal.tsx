@@ -46,7 +46,7 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
     const { getFullName } = useGetFullName();
 
     const { data, isLoading } = useGetBlogByIdQuery({ id: blogIdOrSlug, lang: locale });
-    const articleContent = data?.description ?? "<p>Данная статья пустая</p>";
+    const articleContent = data?.description ?? `<p>${t("Данная статья пустая")}</p>`;
     const [putLike] = usePutLikeBlogMutation();
     const [createBlog] = useCreateReviewBlogMutation();
     const [getReviews, { data: reviewsData }] = useLazyGetReviewsBlogQuery();
@@ -67,11 +67,11 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
             }).unwrap();
         } catch {
             setToast({
-                text: "Произошла ошибка при подгрузке комментариев",
+                text: t("Произошла ошибка при подгрузке комментариев"),
                 type: HintType.Error,
             });
         }
-    }, [getReviews, blogId]);
+    }, [getReviews, blogId, t]);
 
     useEffect(() => {
         fetchReviews(page);
@@ -91,7 +91,7 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
     const onLike = async () => {
         if (!isAuth) {
             setToast({
-                text: "Чтобы поставить лайк, нужно авторизоваться",
+                text: t("Чтобы поставить лайк, нужно авторизоваться"),
                 type: HintType.Error,
             });
             return;
@@ -104,7 +104,7 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
             await putLike(blogId).unwrap();
         } catch {
             setToast({
-                text: "Произошла ошибка",
+                text: t("Произошла ошибка"),
                 type: HintType.Error,
             });
         }
@@ -119,7 +119,7 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
             await fetchReviews(1);
         } catch {
             setToast({
-                text: "Произошла ошибка",
+                text: t("Произошла ошибка"),
                 type: HintType.Error,
             });
         }
@@ -163,7 +163,7 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
             {data && (
                 <Navigation
                     breadcrumbs={[
-                        { name: "Блог", link: getBlogPageUrl(locale) },
+                        { name: t("Блог"), link: getBlogPageUrl(locale) },
                         { name: data.name },
                     ]}
                     className={styles.navigation}

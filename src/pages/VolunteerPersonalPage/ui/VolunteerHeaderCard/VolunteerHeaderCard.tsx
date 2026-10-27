@@ -213,7 +213,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                                     {((vk !== "") && (vk !== null)) && (
                                         <a href={getSocialLink(vk, "vk")} target="_blank" rel="noreferrer" className={styles.social}>
                                             <ReactSVG src={vkIcon} />
-                                            <p className={styles.socialLabel}>Вконтакте</p>
+                                            <p className={styles.socialLabel}>{t("Вконтакте")}</p>
                                         </a>
                                     )}
                                     {((telegram !== "") && (telegram !== null)) && (

@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 import styles from "./OfferQuestions.module.scss";
 import Input from "@/shared/ui/Input/Input";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
@@ -11,6 +12,7 @@ interface OfferQuestionsProps {
 
 export const OfferQuestions: FC<OfferQuestionsProps> = (props) => {
     const { value, onChange } = props;
+    const { t } = useTranslation("offer");
 
     const handleInputChange = (index: number, newValue: string) => {
         const updatedValues = [...value];
@@ -44,7 +46,7 @@ export const OfferQuestions: FC<OfferQuestionsProps> = (props) => {
                 </div>
             ))}
             <AddButton
-                text="Добавить вопрос"
+                text={t("Добавить вопрос")}
                 onClick={handleAddQuestion}
             />
         </div>

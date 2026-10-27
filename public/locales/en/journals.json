@@ -5,5 +5,12 @@
         "keywords": "GoodSurfing, journal, travel stories, volunteering, meaningful travel, articles, experience, community",
         "ogTitle": "GoodSurfing Journal",
         "ogDescription": "Stories, experience, and useful articles about meaningful travel."
-    }
+    },
+    "Журналы не найдены": "No journals found",
+    "Данная статья пустая": "This article is empty",
+    "Журналы": "Journals",
+    "Произошла ошибка при подгрузке комментариев": "An error occurred while loading comments",
+    "Чтобы поставить лайк, нужно авторизоваться": "You need to sign in to like",
+    "Произошла ошибка": "An error occurred",
+    "Чтобы оставить комментарий, нужно авторизоваться": "You need to sign in to leave a comment"
 }

@@ -1,4 +1,5 @@
 import React, { FC, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 import { GetExpert } from "@/entities/Academy";
 
@@ -17,6 +18,7 @@ interface ExpertsCardProps {
 export const ExpertsCard: FC<ExpertsCardProps> = (props) => {
     const { experts } = props;
     const { locale } = useLocale();
+    const { t } = useTranslation("academy");
 
     const renderItems = useMemo(
         () => experts.map((item, index) => (
@@ -40,7 +42,7 @@ export const ExpertsCard: FC<ExpertsCardProps> = (props) => {
         <Section
             className={styles.wrapper}
             classNameContent={styles.content}
-            title="Эксперты"
+            title={t("Эксперты")}
         >
             {renderItems}
         </Section>

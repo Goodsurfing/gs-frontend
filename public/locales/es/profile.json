@@ -146,5 +146,12 @@
         "Произошла ошибка загрузки отзывов": "Se produjo un error al cargar las reseñas",
         "Все достижения пользователя": "Todos los logros del usuario",
         "Статьи об организации": "Artículos sobre la organización"
-    }
+    },
+    "Произошла ошибка при загрузке изображения": "Se produjo un error al cargar la imagen",
+    "Удалить изображение": "Eliminar imagen",
+    "Популярные места": "Lugares populares",
+    "Вконтакте": "VKontakte",
+    "Выберите страны": "Seleccione los países",
+    "Укажите страны через запятую": "Indique los países separados por comas",
+    "По России": "Por Rusia"
 }

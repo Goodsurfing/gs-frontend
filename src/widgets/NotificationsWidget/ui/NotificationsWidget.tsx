@@ -1,5 +1,6 @@
 import { memo } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 
 import styles from "./NotificationsWidget.module.scss";
 import CalendarComponent from "@/shared/ui/CalendarComponent/CalendarComponent";
@@ -11,10 +12,11 @@ interface NotificationsWidgetProps {
 
 export const NotificationsWidget = memo((props: NotificationsWidgetProps) => {
     const { className } = props;
+    const { t } = useTranslation();
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.titleWrapper}>
-                <h3 className={styles.title}>Календарь</h3>
+                <h3 className={styles.title}>{t("Календарь")}</h3>
             </div>
             <div className={styles.calendarWrapper}>
                 <CalendarComponent onChange={() => {}} value={new Date()} />
@@ -25,7 +27,7 @@ export const NotificationsWidget = memo((props: NotificationsWidgetProps) => {
                         variant="FILL"
                         size="MEDIUM"
                     >
-                        Посмотреть все
+                        {t("Посмотреть все")}
                     </Button>
                 </div>
             </div>

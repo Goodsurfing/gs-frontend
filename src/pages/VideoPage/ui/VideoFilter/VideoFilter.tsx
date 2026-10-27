@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import { Filter, TagsOption } from "@/features/Article";
 import Button from "@/shared/ui/Button/Button";
 
@@ -14,6 +15,7 @@ export const VideoFilter: FC<FilterProps> = (props) => {
     const {
         className, value, onChange, onAddVideoClick,
     } = props;
+    const { t } = useTranslation("video");
 
     const onAddVideoClickHandler = () => {
         onAddVideoClick();
@@ -28,7 +30,7 @@ export const VideoFilter: FC<FilterProps> = (props) => {
                 size="SMALL"
                 onClick={onAddVideoClickHandler}
             >
-                Добавить видео
+                {t("Добавить видео")}
             </Button>
         </div>
     );

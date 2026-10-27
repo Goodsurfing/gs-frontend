@@ -25,9 +25,9 @@ export const DashboardNotifications: FC<DashboardNotificationsProps> = (props) =
             </div>
             <div className={styles.notificationItems}>
                 <DashboardNotificationItem
-                    title="Добро пожаловать!"
+                    title={t("Добро пожаловать!")}
                     date={notificationDateStorage.getSavedDate()}
-                    content="Рады приветствовать вас на нашем сайте. Для вашего удобства предлагаем максимально подробно заполнить свой профиль."
+                    content={t("Рады приветствовать вас на нашем сайте Для вашего удобства предлагаем максимально подробно заполнить свой профиль")}
                 />
             </div>
         </div>

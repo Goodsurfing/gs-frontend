@@ -1,5 +1,6 @@
 import cn from "classnames";
 import React, { FC, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 import { VideoCard, VideoCardType } from "@/entities/Video";
 import { Text } from "@/shared/ui/Text/Text";
@@ -11,6 +12,7 @@ interface VideoListProps {
 }
 
 export const VideoList: FC<VideoListProps> = (props) => {
+    const { t } = useTranslation("video");
     const { data, className } = props;
     const renderVideoList = useMemo(
         () => data?.map((video, key) => (
@@ -28,7 +30,7 @@ export const VideoList: FC<VideoListProps> = (props) => {
             <Text
                 className={styles.empty}
                 textSize="primary"
-                text="Видео не найдены"
+                text={t("Видео не найдены")}
             />
         );
     }

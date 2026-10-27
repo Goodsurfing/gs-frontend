@@ -29,5 +29,6 @@
     "Волонтёр не участвовал в проектах": "The volunteer did not participate in projects",
     "Загрузка...": "Loading...",
     "Участвовал в проектах:": "Participated in projects:",
-    "Укажите даты, чтобы отправить заявку": "Specify the dates to send the application"
+    "Укажите даты, чтобы отправить заявку": "Specify the dates to send the application",
+    "Произошла ошибка при отправке сообщения": "An error occurred while sending the message"
 }

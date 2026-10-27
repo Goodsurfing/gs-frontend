@@ -1,6 +1,7 @@
 import cn from "classnames";
 import { memo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import ProfileInput from "@/shared/ui/ProfileInput/ProfileInput";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -30,6 +31,7 @@ export const ProfileInfoFormAvatar = memo(
             control,
         } = useFormContext<ProfileInfoFields>();
         const { locale } = useLocale();
+        const { t } = useTranslation("profile");
         const dispatch = useAppDispatch();
         const [toast, setToast] = useState<ToastAlert>();
 
@@ -54,7 +56,7 @@ export const ProfileInfoFormAvatar = memo(
                 }
             } catch {
                 setToast({
-                    text: "Произошла ошибка при загрузке изображения",
+                    text: t("Произошла ошибка при загрузке изображения"),
                     type: HintType.Error,
                 });
             }
@@ -85,7 +87,7 @@ export const ProfileInfoFormAvatar = memo(
                                         dispatch(profileActions.setReadonly(false));
                                     }}
                                 >
-                                    Удалить изображение
+                                    {t("Удалить изображение")}
                                 </button>
                             )}
                         </div>

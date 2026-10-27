@@ -6,5 +6,11 @@
         "description": "Read GoodSurfing articles about volunteer travel, projects, communities, and meaningful travel experiences.",
         "ogTitle": "GoodSurfing Blog",
         "ogDescription": "Stories, news, and useful articles about meaningful travel."
-    }
+    },
+    "Статьи не найдены": "No articles found",
+    "Произошла ошибка при подгрузке комментариев": "An error occurred while loading comments",
+    "Чтобы поставить лайк, нужно авторизоваться": "To like, you need to sign in",
+    "Произошла ошибка": "An error occurred",
+    "Данная статья пустая": "This article is empty",
+    "Категория": "Category"
 }

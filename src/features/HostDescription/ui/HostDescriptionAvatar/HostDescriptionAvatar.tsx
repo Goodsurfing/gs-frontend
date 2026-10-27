@@ -1,4 +1,5 @@
 import { memo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Controller, useFormContext } from "react-hook-form";
 import cn from "classnames";
 import ProfileInput from "@/shared/ui/ProfileInput/ProfileInput";
@@ -22,6 +23,7 @@ interface HostDescriptionAvatarProps {
 export const HostDescriptionAvatar = memo(
     (props: HostDescriptionAvatarProps) => {
         const { className, hostId } = props;
+        const { t } = useTranslation("host");
         const { locale } = useLocale();
         const [toast, setToast] = useState<ToastAlert>();
         const {
@@ -51,7 +53,7 @@ export const HostDescriptionAvatar = memo(
                 }
             } catch {
                 setToast({
-                    text: "Произошла ошибка при загрузке изображения",
+                    text: t("Произошла ошибка при загрузке изображения"),
                     type: HintType.Error,
                 });
             }
@@ -82,7 +84,7 @@ export const HostDescriptionAvatar = memo(
                                         field.onChange(null);
                                     }}
                                 >
-                                    Удалить изображение
+                                    {t("Удалить изображение")}
                                 </button>
                             )}
                         </div>
