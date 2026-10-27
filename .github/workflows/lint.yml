@@ -31,3 +31,8 @@ jobs:
 
       - name: Type-check
         run: npm run type-check
+
+      # Раньше тесты в CI не запускались совсем, и 23 файла незаметно сломались
+      # из-за пропавшей зависимости @testing-library/dom.
+      - name: Unit tests
+        run: npm run test:run
