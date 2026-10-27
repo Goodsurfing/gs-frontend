@@ -43,3 +43,16 @@ jobs:
       - name: Dependency audit
         continue-on-error: true
         run: npm audit --omit=dev --audit-level=high
+
+  secrets:
+    # Действующие токены и ключи, случайно попавшие в коммит.
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
+
