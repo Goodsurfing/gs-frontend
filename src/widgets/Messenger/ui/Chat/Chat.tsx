@@ -474,7 +474,11 @@ export const Chat: FC<ChatProps> = (props) => {
 
     const headerCompanion = getEffectiveCompanion(companionData, chatData);
     const companionName = getFullName(headerCompanion?.firstName, headerCompanion?.lastName);
-    const companionProfileUrl = getCompanionProfileUrl(headerCompanion, locale);
+    const companionProfileUrl = getCompanionProfileUrl(
+        headerCompanion,
+        locale,
+        Boolean(myProfileData?.hostId),
+    );
 
     return (
         <div className={cn(styles.wrapper, className)}>
