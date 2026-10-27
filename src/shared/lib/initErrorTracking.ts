@@ -27,6 +27,13 @@ export const initErrorTracking = () => {
             "ResizeObserver loop completed with undelivered notifications",
             "Non-Error promise rejection captured",
         ],
-        denyUrls: [/^chrome-extension:\/\//, /^moz-extension:\/\//, /mc\.yandex\.ru/],
+        denyUrls: [
+            /^chrome-extension:\/\//,
+            /^moz-extension:\/\//,
+            /mc\.yandex\.ru/,
+            // Внутренние ошибки JS API Яндекс.Карт (например, «map.action.Continuous:
+            // ticking while inactive» в Mobile Safari при зуме) — не наш код, исправить их нельзя
+            /yastatic\.net\/s3\/front-maps-static\//,
+        ],
     });
 };
