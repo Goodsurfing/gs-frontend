@@ -1,6 +1,6 @@
 import React, { FormEvent, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 import Button from "@/shared/ui/Button/Button";
@@ -192,15 +192,21 @@ const DonationPayPage: React.FC = () => {
                                 </Button>
                             </div>
                             <p className={styles.offerNote}>
-                                {"Нажимая кнопку, вы принимаете условия "}
-                                <a
-                                    href="/assets/docs/npo/Публичная_оферта.pdf"
-                                    target="_blank"
-                                    rel="noreferrer"
+                                <Trans
+                                    t={t}
+                                    i18nKey="Нажимая кнопку, вы принимаете условия <1>публичной оферты</1> о заключении договора пожертвования"
                                 >
-                                    публичной оферты
-                                </a>
-                                {" о заключении договора пожертвования."}
+                                    {"Нажимая кнопку, вы принимаете условия "}
+                                    <a
+                                        href="/assets/docs/npo/Публичная_оферта.pdf"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        публичной оферты
+                                    </a>
+                                    {" о заключении договора пожертвования"}
+                                </Trans>
+                                .
                             </p>
                         </section>
                     </div>

@@ -15,6 +15,7 @@ declare module "*.module.scss" {
 }
 
 declare const __IS_DEV__: boolean;
+declare const __BUILD_ID__: string;
 
 declare module "swiper/css";
 declare module "swiper/css/navigation";
