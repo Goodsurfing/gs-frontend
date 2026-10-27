@@ -11,12 +11,14 @@ import "@/app/styles/index.scss";
 
 import "@/shared/config/i18n/i18n";
 import { initChunkLoadErrorHandler } from "@/shared/lib/handleChunkLoadError";
+import { installDomTranslationGuard } from "@/shared/lib/domTranslationGuard";
 import { initErrorTracking } from "@/shared/lib/initErrorTracking";
 
 import { LocaleProvider } from "./app/providers/LocaleProvider";
 
 initErrorTracking();
 initChunkLoadErrorHandler();
+installDomTranslationGuard();
 
 const root = createRoot(document.getElementById("root")!);
 
