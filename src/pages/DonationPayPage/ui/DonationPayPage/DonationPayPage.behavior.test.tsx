@@ -25,6 +25,7 @@ vi.mock("@/routes/model/guards/AuthProvider", () => ({
 
 const FUNDRAISE_ID = "0199aaaa-0000-7000-8000-000000000001";
 const DONATION_URL = "*/api/v1/donation";
+const PAY_URL = "https://yoomoney.ru/checkout/payments/v2/contract?orderId=abc";
 
 const renderPage = () => renderWithProviders(
     <MemoryRouter initialEntries={[`/ru/donation/${FUNDRAISE_ID}/pay`]}>
@@ -68,7 +69,7 @@ describe("DonationPayPage — оплата пожертвования", () => {
                 donationRequests.push(await req.json());
                 return res(ctx.status(201), ctx.json({
                     donationId: "d1",
-                    paymentUrl: "https://yoomoney.ru/checkout/payments/v2/contract?orderId=abc",
+                    paymentUrl: PAY_URL,
                     status: "pending",
                 }));
             }),
@@ -79,9 +80,11 @@ describe("DonationPayPage — оплата пожертвования", () => {
         submit();
 
         await waitFor(() => {
-            expect(window.location.href).toBe("https://yoomoney.ru/checkout/payments/v2/contract?orderId=abc");
+            expect(window.location.href).toBe(PAY_URL);
         });
-        expect(donationRequests).toEqual([{ fundraiseId: FUNDRAISE_ID, amount: 1500, isAnonymous: false }]);
+        expect(donationRequests).toEqual([
+            { fundraiseId: FUNDRAISE_ID, amount: 1500, isAnonymous: false },
+        ]);
     });
 
     it("сумму меньше 100 ₽ не отправляет и показывает ошибку", async () => {
