@@ -8,14 +8,20 @@
 }
 
 .cover {
-    width: 100%;
-    max-width: 530px;
-    height: 100%;
-    max-height: 300px;
+    // Фиксированная ширина: раньше картинка была width: 100% внутри flex-строки
+    // и сжималась по-разному в зависимости от длины описания рядом —
+    // в списке курсов обложки и тексты «скакали» от карточки к карточке.
+    flex: 0 0 320px;
+    width: 320px;
+    // Пропорция превью, которое приходит в список (307×222) — без обрезки подписи на обложке
+    aspect-ratio: 307 / 222;
+    height: auto;
     object-fit: cover;
 }
 
 .content {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -65,6 +71,11 @@
     .wrapper {
         flex-direction: column;
         max-width: 575px;
+    }
+
+    .cover {
+        flex-basis: auto;
+        width: 100%;
     }
 
     .button {
