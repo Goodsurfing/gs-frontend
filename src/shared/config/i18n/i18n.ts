@@ -29,7 +29,9 @@ i18n.use(Backend)
             escapeValue: false,
         },
         backend: {
-            loadPath: "/locales/{{lng}}/{{ns}}.json",
+            // Словари кэшируются браузером на час — версия сборки в URL, чтобы после
+            // выкатки сразу подтягивались новые ключи, а не старые из кэша.
+            loadPath: `/locales/{{lng}}/{{ns}}.json?v=${__BUILD_ID__}`,
         },
         react: {
             bindI18n: "languageChanged",

@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import { JournalCard, JournalCardType } from "@/entities/Article";
 import { Text } from "@/shared/ui/Text/Text";
 import styles from "./JournalsList.module.scss";
@@ -11,6 +12,7 @@ interface JournalsListProps {
 
 export const JournalsList: FC<JournalsListProps> = (props) => {
     const { data, className } = props;
+    const { t } = useTranslation("journals");
     const renderJournals = useMemo(() => data?.map((journal, key) => (
         <JournalCard
             journal={journal}
@@ -28,7 +30,7 @@ export const JournalsList: FC<JournalsListProps> = (props) => {
             <Text
                 className={styles.empty}
                 textSize="primary"
-                text="Журналы не найдены"
+                text={t("Журналы не найдены")}
             />
         );
     }

@@ -1,11 +1,13 @@
 import React, {
     FC, KeyboardEvent, useState, ChangeEvent, memo,
 } from "react";
+import { useTranslation } from "react-i18next";
 
 import styles from "./InputSelectedCountries.module.scss";
 import { TagComponent } from "../TagComponent/TagComponent";
 
 export const InputSelectedCountries: FC = memo(() => {
+    const { t } = useTranslation("profile");
     const [tags, setTags] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState<string>("");
 
@@ -40,7 +42,7 @@ export const InputSelectedCountries: FC = memo(() => {
 
     return (
         <div className={styles.wrapper}>
-            <h3 className={styles.title}>Выберите страны</h3>
+            <h3 className={styles.title}>{t("Выберите страны")}</h3>
             <div className={styles.tagInput}>
                 <ul className={styles.tagList}>
                     {tags.map((tag, index) => (
@@ -54,7 +56,7 @@ export const InputSelectedCountries: FC = memo(() => {
                 </ul>
                 <input
                     type="text"
-                    placeholder="Укажите страны через запятую"
+                    placeholder={t("Укажите страны через запятую")}
                     value={inputValue}
                     onKeyDown={handleKeyDown}
                     onBlur={handleOnBlur}

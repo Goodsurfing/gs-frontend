@@ -1,6 +1,7 @@
 import cn from "classnames";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { Locale } from "@/entities/Locale";
 
@@ -27,6 +28,7 @@ interface CourseCardProps {
 }
 
 export const CourseCard: FC<CourseCardProps> = (props) => {
+    const { t } = useTranslation("academy");
     const { course, className, locale } = props;
     const {
         id,
@@ -56,7 +58,7 @@ export const CourseCard: FC<CourseCardProps> = (props) => {
                         <div className={styles.gray}>
                             {numberLessons}
                             {" "}
-                            видео
+                            {t("видео")}
                         </div>
                         <div className={styles.gray}>•</div>
                         {duration !== "" && (
@@ -71,7 +73,8 @@ export const CourseCard: FC<CourseCardProps> = (props) => {
                         </div>
                     </div>
                     <span className={styles.gray}>
-                        Автор:
+                        {t("Автор")}
+                        :
                         {" "}
                         {author}
                     </span>
@@ -82,7 +85,7 @@ export const CourseCard: FC<CourseCardProps> = (props) => {
                     type="primary"
                     path={getAcademyCoursePageUrl(locale, id.toString())}
                 >
-                    Пройти курс
+                    {t("Пройти курс")}
                 </ButtonLink>
             </div>
         </Link>

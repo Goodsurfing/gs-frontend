@@ -32,14 +32,12 @@ const AcademyMainPage = () => {
             )}
             <div className={styles.wrapper}>
                 <Header />
-                <Section title="Как это работает?">
+                <Section title={t("Как это работает?")}>
                     <HowItWorkContainer showButton={false} />
                 </Section>
-                <Section title="Курсы" classNameWrapper={styles.courseList} id="courses">
+                <Section title={t("Курсы")} classNameWrapper={styles.courseList} id="courses">
                     <p className={styles.description}>
-                        Авторские курсы от экспертов помогут вам научиться новому в
-                        путешествиях и волонтерстве. Смотрите, выполняйте домашние
-                        задания, получайте сертификацию.
+                        {t("Авторские курсы от экспертов помогут вам научиться новому в путешествиях и волонтерстве Смотрите, выполняйте домашние задания, получайте сертификацию")}
                     </p>
 
                     <CoursesList className={styles.list} />

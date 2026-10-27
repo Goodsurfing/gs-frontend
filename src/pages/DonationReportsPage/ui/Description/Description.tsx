@@ -1,5 +1,6 @@
 import cn from "classnames";
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 import styles from "./Description.module.scss";
 
@@ -9,16 +10,17 @@ interface DescriptionProps {
 
 export const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
     const { className } = props;
+    const { t } = useTranslation("donation");
     return (
         <section className={cn(className, styles.wrapper)}>
             <h2 className={styles.title}>
-                Гудсёрфинг — официально зарегистрированная некоммерческая организация,
-                осуществляющая свою деятельность с 2018 года.
-                Ниже можно ознакомиться с соответствующими отчётами
-                о деятельности и реквизитами организации.
+                {t("Гудсёрфинг — официально зарегистрированная некоммерческая организация, осуществляющая свою деятельность с 2018 года Ниже можно ознакомиться с соответствующими отчётами о деятельности и реквизитами организации")}
             </h2>
             <br />
-            <p className={styles.title}>Реквизиты организации:</p>
+            <p className={styles.title}>
+                {t("Реквизиты организации")}
+                :
+            </p>
             <p className={styles.description}>
                 Полное название: АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ
                 «ИНФОРМАЦИОННЫЙ ЦЕНТР РАЗВИТИЯ ДОБРОВОЛЬЧЕСТВА «ГУДСЁРФИНГ – ДОБРЫЕ ПУТЕШЕСТВИЯ»
@@ -42,7 +44,10 @@ export const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
                 support@goodsurfing.org
             </p>
             <br />
-            <p className={styles.title}>Банковские реквизиты:</p>
+            <p className={styles.title}>
+                {t("Банковские реквизиты")}
+                :
+            </p>
             <p className={styles.description}>
                 Счёт (₽) 40703810207500000136
                 <br />

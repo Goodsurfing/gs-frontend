@@ -1,4 +1,5 @@
 import React, { FC, useState } from "react";
+import { useTranslation } from "react-i18next";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import ResetPasswordFirstStep from "@/features/ResetPasswordContainer/ui/ResetPasswordFirstStep/ResetPasswordFirstStep";
@@ -7,6 +8,7 @@ import ResetPasswordSecondStep from "@/features/ResetPasswordContainer/ui/ResetP
 import styles from "./ResetPasswordContainer.module.scss";
 
 const ResetPasswordContainer: FC = () => {
+    const { t } = useTranslation();
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [userEmail, setUserEmail] = useState<string>("");
 
@@ -17,7 +19,7 @@ const ResetPasswordContainer: FC = () => {
 
     return (
         <div className={styles.wrapper}>
-            <SignTitle>Восстановление пароля</SignTitle>
+            <SignTitle>{t("Восстановление пароля")}</SignTitle>
             {currentStep === 1 ? (
                 <ResetPasswordFirstStep changeStep={onChangeStep} />
             ) : null}

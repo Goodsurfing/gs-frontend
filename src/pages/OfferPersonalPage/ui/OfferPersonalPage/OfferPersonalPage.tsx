@@ -62,14 +62,14 @@ export const OfferPersonalPage = () => {
                     <Text
                         className={styles.error}
                         textSize="primary"
-                        text="Вакансия не найдена или произошла ошибка"
+                        text={tMain("Вакансия не найдена или произошла ошибка")}
                     />
                     <button
                         type="button"
                         className={styles.backButton}
                         onClick={() => navigate(-1)}
                     >
-                        Назад
+                        {tMain("Назад")}
                     </button>
                 </div>
                 <Footer />
@@ -86,7 +86,7 @@ export const OfferPersonalPage = () => {
                         <Text
                             className={styles.error}
                             textSize="primary"
-                            text="Вакансия не опубликована"
+                            text={tMain("Вакансия не опубликована")}
                         />
                     </div>
                     <Footer />

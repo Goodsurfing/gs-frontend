@@ -88,13 +88,13 @@ export const AgeComponent: FC<AgeProps> = (props) => {
                 {t("whoNeeds.Возраст")}
             </Typography>
             <div className={styles.inputWrapper}>
-                <Input className={styles.from} value={minAge.toString()} onChange={onFromMinAgeChange} onBlur={onFromMinAgeBlur} type="number" placeholder="от" />
+                <Input className={styles.from} value={minAge.toString()} onChange={onFromMinAgeChange} onBlur={onFromMinAgeBlur} type="number" placeholder={t("от")} />
                 {isNoUpperLimit ? (
                     <Typography sx={{ fontFamily: "Lato", fontSize: "14px" }}>
                         {t("whoNeeds.и старше")}
                     </Typography>
                 ) : (
-                    <Input className={styles.to} value={maxAge.toString()} onChange={onFromMaxAgeChange} onBlur={onFromMaxAgeBlur} type="number" placeholder="до" />
+                    <Input className={styles.to} value={maxAge.toString()} onChange={onFromMaxAgeChange} onBlur={onFromMaxAgeBlur} type="number" placeholder={t("до")} />
                 )}
             </div>
             <FormControlLabel

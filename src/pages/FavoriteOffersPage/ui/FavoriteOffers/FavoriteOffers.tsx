@@ -2,6 +2,7 @@ import cn from "classnames";
 import React, { FC } from "react";
 
 import { ReactSVG } from "react-svg";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 
@@ -22,6 +23,7 @@ export const FavoriteOffers: FC<FavoriteOffersProps> = (props) => {
     const { className } = props;
     const navigate = useNavigate();
     const { locale } = useLocale();
+    const { t } = useTranslation("offer");
 
     const viewOffersClick = () => {
         navigate(getOffersMapPageUrl(locale));
@@ -31,8 +33,7 @@ export const FavoriteOffers: FC<FavoriteOffersProps> = (props) => {
         return (
             <div className={styles.empty}>
                 <p>
-                    Вы пока не добавили ни одну вакансию в избранное, давайте
-                    это исправим?
+                    {t("Вы пока не добавили ни одну вакансию в избранное, давайте это исправим?")}
                 </p>
                 <Button
                     className={styles.viewOffers}
@@ -41,7 +42,7 @@ export const FavoriteOffers: FC<FavoriteOffersProps> = (props) => {
                     variant="OUTLINE"
                     onClick={viewOffersClick}
                 >
-                    Посмотреть вакансии
+                    {t("Посмотреть вакансии")}
                 </Button>
                 <ReactSVG src={emptyIcon} className={styles.emptyIcon} />
             </div>

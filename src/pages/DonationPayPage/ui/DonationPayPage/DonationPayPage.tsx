@@ -1,5 +1,6 @@
 import React, { FormEvent, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Trans, useTranslation } from "react-i18next";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 import Button from "@/shared/ui/Button/Button";
@@ -22,6 +23,7 @@ interface FormErrors {
 }
 
 const DonationPayPage: React.FC = () => {
+    const { t } = useTranslation("donation");
     const { locale } = useLocale();
     const navigate = useNavigate();
     const { id: fundraiseId } = useParams<{ id: string }>();
@@ -54,7 +56,7 @@ const DonationPayPage: React.FC = () => {
     const validate = (): boolean => {
         const nextErrors: FormErrors = {};
         if (!Number.isFinite(amount) || amount < 100) {
-            nextErrors.amount = "Минимальная сумма пожертвования — 100 ₽";
+            nextErrors.amount = t("Минимальная сумма пожертвования — 100 ₽");
         }
         setErrors(nextErrors);
         return Object.keys(nextErrors).length === 0;
@@ -77,7 +79,7 @@ const DonationPayPage: React.FC = () => {
                 window.location.href = result.paymentUrl;
             }
         } catch (err: any) {
-            setApiError(err?.data?.error || "Произошла ошибка при создании платежа");
+            setApiError(err?.data?.error || t("Произошла ошибка при создании платежа"));
         }
     };
 
@@ -94,9 +96,9 @@ const DonationPayPage: React.FC = () => {
     return (
         <MainPageLayout>
             <div className={styles.container}>
-                <h1 className={styles.title}>Пожертвование</h1>
+                <h1 className={styles.title}>{t("Пожертвование")}</h1>
                 <p className={styles.subtitle}>
-                    Поддержите проект — любая сумма важна
+                    {t("Поддержите проект — любая сумма важна")}
                 </p>
 
                 {fundraise && (
@@ -109,7 +111,7 @@ const DonationPayPage: React.FC = () => {
                             />
                         )}
                         <div className={styles.projectContent}>
-                            <span className={styles.projectTag}>Сбор пожертвований</span>
+                            <span className={styles.projectTag}>{t("Сбор пожертвований")}</span>
                             <h2 className={styles.projectTitle}>{fundraise.name}</h2>
                             <p className={styles.projectOrg}>{fundraise.organization?.name}</p>
                         </div>
@@ -119,7 +121,7 @@ const DonationPayPage: React.FC = () => {
                 <form className={styles.formCard} onSubmit={handleSubmit}>
                     <div className={styles.grid}>
                         <section>
-                            <h3 className={styles.sectionTitle}>Размер пожертвования</h3>
+                            <h3 className={styles.sectionTitle}>{t("Размер пожертвования")}</h3>
                             <div className={styles.amountButtons}>
                                 {PRESET_AMOUNTS.map((presetAmount) => (
                                     <button
@@ -148,7 +150,7 @@ const DonationPayPage: React.FC = () => {
                                     id="custom-amount"
                                     type="number"
                                     min={100}
-                                    label="Другая сумма, ₽"
+                                    label={t("Другая сумма, ₽")}
                                     value={customAmount}
                                     onChange={(e) => {
                                         setSelectedAmount(null);
@@ -164,7 +166,7 @@ const DonationPayPage: React.FC = () => {
                         </section>
 
                         <section>
-                            <h3 className={styles.sectionTitle}>Настройки</h3>
+                            <h3 className={styles.sectionTitle}>{t("Настройки")}</h3>
 
                             <div className={styles.checkboxes}>
                                 <label htmlFor="anonymous-check" className={styles.checkboxRow}>
@@ -174,7 +176,7 @@ const DonationPayPage: React.FC = () => {
                                         checked={isAnonymous}
                                         onChange={(e) => setIsAnonymous(e.target.checked)}
                                     />
-                                    <span>Анонимное пожертвование</span>
+                                    <span>{t("Анонимное пожертвование")}</span>
                                 </label>
                             </div>
 
@@ -186,19 +188,25 @@ const DonationPayPage: React.FC = () => {
                                     type="submit"
                                     disabled={isCreating}
                                 >
-                                    {isCreating ? "Создание платежа..." : `Поддержать — ${amount} ₽`}
+                                    {isCreating ? t("Создание платежа") : t("Поддержать — {{amount}} ₽", { amount })}
                                 </Button>
                             </div>
                             <p className={styles.offerNote}>
-                                {"Нажимая кнопку, вы принимаете условия "}
-                                <a
-                                    href="/assets/docs/npo/Публичная_оферта.pdf"
-                                    target="_blank"
-                                    rel="noreferrer"
+                                <Trans
+                                    t={t}
+                                    i18nKey="Нажимая кнопку, вы принимаете условия <1>публичной оферты</1> о заключении договора пожертвования"
                                 >
-                                    публичной оферты
-                                </a>
-                                {" о заключении договора пожертвования."}
+                                    {"Нажимая кнопку, вы принимаете условия "}
+                                    <a
+                                        href="/assets/docs/npo/Публичная_оферта.pdf"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        публичной оферты
+                                    </a>
+                                    {" о заключении договора пожертвования"}
+                                </Trans>
+                                .
                             </p>
                         </section>
                     </div>
@@ -215,7 +223,7 @@ const DonationPayPage: React.FC = () => {
                         variant="TEXT"
                         onClick={() => navigate(getDonationPersonalPage(locale, fundraiseId))}
                     >
-                        Вернуться на страницу сбора
+                        {t("Вернуться на страницу сбора")}
                     </Button>
                 </div>
             </div>

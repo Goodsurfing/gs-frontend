@@ -2,6 +2,7 @@ import React, {
     ChangeEventHandler, FC, useCallback, useEffect, useState,
 } from "react";
 import { Rating } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { CommentInput } from "@/features/Article";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
@@ -36,6 +37,7 @@ export const LessonReview: FC<LessonReviewProps> = (props) => {
     const [getReviewsData, { data: reviewsData }] = useLazyGetReviewsLessonQuery();
     const [createLessonReview] = useCreateReviewLessonMutation();
     const { isAuth } = useAuth();
+    const { t } = useTranslation("academy");
 
     const fetchReviews = useCallback(async (pageItem: number) => {
         try {
@@ -46,9 +48,9 @@ export const LessonReview: FC<LessonReviewProps> = (props) => {
             }).unwrap();
             setError(null);
         } catch {
-            setError("Произошла ошибка загрузки отзывов");
+            setError(t("Произошла ошибка загрузки отзывов"));
         }
-    }, [getReviewsData, lessonId]);
+    }, [getReviewsData, lessonId, t]);
 
     useEffect(() => {
         fetchReviews(page);
@@ -82,9 +84,9 @@ export const LessonReview: FC<LessonReviewProps> = (props) => {
             setPage(1);
             await fetchReviews(1);
         } catch (err) {
-            setError("Не удалось отправить отзыв. Попробуйте позже.");
+            setError(t("Не удалось отправить отзыв Попробуйте позже"));
         }
-    }, [canReview, commentInput, rating, createLessonReview, lessonId, fetchReviews]);
+    }, [canReview, commentInput, rating, createLessonReview, lessonId, fetchReviews, t]);
 
     const renderReviews = reviews.map((review, index) => (
         <ReviewWidget
@@ -102,7 +104,7 @@ export const LessonReview: FC<LessonReviewProps> = (props) => {
             return <div className={styles.error}>{error}</div>;
         }
         if (reviews.length === 0) {
-            return "На данный момент отзывов нет";
+            return t("На данный момент отзывов нет");
         }
         return renderReviews;
     };
@@ -123,12 +125,12 @@ export const LessonReview: FC<LessonReviewProps> = (props) => {
             <span className={styles.commentsCount}>
                 {reviewsData?.pagination.total ?? 0}
                 {" "}
-                комментариев
+                {t("комментариев")}
             </span>
             {!isAuth ? (
                 <div className={styles.notAuth}>
-                    <p>Чтобы оставить отзыв на курс нужно авторизоваться</p>
-                    <ButtonLink className={styles.signInBtn} type="primary" path={getSignInPageUrl(locale)}>Авторизоваться</ButtonLink>
+                    <p>{t("Чтобы оставить отзыв на курс нужно авторизоваться")}</p>
+                    <ButtonLink className={styles.signInBtn} type="primary" path={getSignInPageUrl(locale)}>{t("Авторизоваться")}</ButtonLink>
                 </div>
             ) : (
                 <>
@@ -145,10 +147,10 @@ export const LessonReview: FC<LessonReviewProps> = (props) => {
                     />
                     <CommentInput
                         onSend={handleSendReview}
-                        btnText="Написать отзыв"
+                        btnText={t("Написать отзыв")}
                         disabled={!canReview || isSendReview}
                         disabledBtn={!commentInput.trim() || rating === null}
-                        placeholder="Ваш отзыв"
+                        placeholder={t("Ваш отзыв")}
                         className={styles.commentInput}
                         value={commentInput}
                         onChange={handleCommentInput}

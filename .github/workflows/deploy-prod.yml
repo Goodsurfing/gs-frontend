@@ -47,6 +47,7 @@ jobs:
             # DSN проекта в Bugsink (публичный по природе, попадает в JS); пусто — сбор ошибок выключен
             VITE_SENTRY_DSN=${{ vars.SENTRY_DSN }}
             VITE_SENTRY_ENVIRONMENT=prod
+            VITE_SENTRY_RELEASE=${{ github.ref_name }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE }}:prod
             ${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ github.ref_name }}

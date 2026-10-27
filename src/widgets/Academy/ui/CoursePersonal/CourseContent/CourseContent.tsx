@@ -1,5 +1,6 @@
 import cn from "classnames";
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
     CourseProgressBar, ExpertsCard, GetCourse, TextCard,
@@ -17,6 +18,7 @@ interface CourseContentProps {
 
 export const CourseContent: FC<CourseContentProps> = (props) => {
     const { course, className, courseId } = props;
+    const { t } = useTranslation("academy");
     const {
         description, aboutAuthor, courseFor, experts,
     } = course;
@@ -24,13 +26,13 @@ export const CourseContent: FC<CourseContentProps> = (props) => {
     return (
         <div className={cn(styles.wrapper, className)}>
             {description !== "" && (
-                <TextCard title="О курсе" text={description} />
+                <TextCard title={t("О курсе")} text={description} />
             )}
             {aboutAuthor !== "" && (
-                <TextCard title="Об авторе" text={aboutAuthor} />
+                <TextCard title={t("Об авторе")} text={aboutAuthor} />
             )}
             {courseFor !== "" && (
-                <TextCard title="Для кого подходит курс" text={courseFor} />
+                <TextCard title={t("Для кого подходит курс")} text={courseFor} />
             )}
             {experts.length !== 0 && (
                 <ExpertsCard experts={experts} />
@@ -43,7 +45,7 @@ export const CourseContent: FC<CourseContentProps> = (props) => {
                     />
                 </Section>
             )}
-            <Section title="Видео" classNameWrapper={styles.courseList} id="lessons">
+            <Section title={t("Видео")} classNameWrapper={styles.courseList} id="lessons">
                 <LessonsList className={styles.list} courseId={courseId} />
             </Section>
         </div>

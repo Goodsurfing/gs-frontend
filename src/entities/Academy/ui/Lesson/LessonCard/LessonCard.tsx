@@ -1,6 +1,7 @@
 import cn from "classnames";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Locale } from "@/entities/Locale";
 
 import star from "@/shared/assets/icons/offers/star.svg";
@@ -27,6 +28,7 @@ export const LessonCard: FC<LessonCardProps> = (props) => {
     const {
         title, description, duration, thumbnail, id, rating,
     } = lesson;
+    const { t } = useTranslation("academy");
 
     return (
         <Link
@@ -60,7 +62,7 @@ export const LessonCard: FC<LessonCardProps> = (props) => {
                     className={styles.button}
                     path={getAcademyLessonPageUrl(locale, id.toString())}
                 >
-                    Смотреть лекцию
+                    {t("Смотреть лекцию")}
                 </ButtonLink>
             </div>
         </Link>

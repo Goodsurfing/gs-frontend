@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
@@ -51,6 +52,7 @@ const FAIL_STATUSES = new Set(["CANCELLED", "FAILED", "REFUNDED"]);
 
 const PaymentSuccessPage: React.FC = () => {
     const { locale } = useLocale();
+    const { t } = useTranslation("donation");
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const { myProfile, isAuth } = useAuth();
@@ -145,11 +147,9 @@ const PaymentSuccessPage: React.FC = () => {
             <MainPageLayout>
                 <div className={styles.container}>
                     <div className={styles.content}>
-                        <h1 className={styles.title}>Платёж обрабатывается</h1>
+                        <h1 className={styles.title}>{t("Платёж обрабатывается")}</h1>
                         <p className={styles.subtitle}>
-                            Подтверждение занимает дольше обычного.
-                            Проверьте статус на странице членства через несколько минут
-                            или обратитесь в службу поддержки.
+                            {t("Подтверждение занимает дольше обычного Проверьте статус на странице членства через несколько минут или обратитесь в службу поддержки")}
                         </p>
                         <div className={styles.buttonWrapper}>
                             <Button
@@ -158,7 +158,7 @@ const PaymentSuccessPage: React.FC = () => {
                                 variant="FILL"
                                 onClick={() => navigate(getMembershipPageUrl(locale))}
                             >
-                                На страницу членства
+                                {t("На страницу членства")}
                             </Button>
                         </div>
                     </div>
@@ -167,7 +167,7 @@ const PaymentSuccessPage: React.FC = () => {
         );
     }
 
-    const userName = myProfile.firstName || myProfile.email || "пользователь";
+    const userName = myProfile.firstName || myProfile.email || t("пользователь");
 
     // Раньше "какой тариф купили" определяли по /membership/current — но с
     // тех пор как у юзера может быть больше одного активного членства
@@ -190,28 +190,28 @@ const PaymentSuccessPage: React.FC = () => {
     // международный клуб не должен читаться как рядовая оплата членства.
     const PURCHASE_KIND_CONFIG = {
         international: {
-            title: "Добро пожаловать,",
-            subtitle: "вы вступили в Международный клуб GoodSurfing",
+            title: t("Добро пожаловать,"),
+            subtitle: t("вы вступили в Международный клуб GoodSurfing"),
             benefits: INTERNATIONAL_BENEFITS,
-            ctaText: "На страницу членства",
+            ctaText: t("На страницу членства"),
             ctaUrl: getMembershipPageUrl(locale),
-            callToAction: "Впереди — закрытые встречи и международные программы для участников клуба.",
+            callToAction: t("Впереди — закрытые встречи и международные программы для участников клуба"),
         },
         host: {
-            title: "Спасибо,",
-            subtitle: "вы успешно оплатили членство в сообществе Гудсёрфинга",
+            title: t("Спасибо,"),
+            subtitle: t("вы успешно оплатили членство в сообществе Гудсёрфинга"),
             benefits: HOST_BENEFITS,
-            ctaText: "Перейти к объявлениям",
+            ctaText: t("Перейти к объявлениям"),
             ctaUrl: getMyOffersPageUrl(locale),
-            callToAction: "Самое время опубликовать объявление и принять волонтёров.",
+            callToAction: t("Самое время опубликовать объявление и принять волонтёров"),
         },
         volunteer: {
-            title: "Спасибо,",
-            subtitle: "вы успешно оплатили членство в сообществе Гудсёрфинга",
+            title: t("Спасибо,"),
+            subtitle: t("вы успешно оплатили членство в сообществе Гудсёрфинга"),
             benefits: VOLUNTEER_BENEFITS,
-            ctaText: "Искать путешествия",
+            ctaText: t("Искать путешествия"),
             ctaUrl: getOffersMapPageUrl(locale),
-            callToAction: "Самое время подобрать для себя идеальное путешествие со смыслом в этом году.",
+            callToAction: t("Самое время подобрать для себя идеальное путешествие со смыслом в этом году"),
         },
     } as const;
 
@@ -236,31 +236,25 @@ const PaymentSuccessPage: React.FC = () => {
                     <div className={styles.info}>
                         {isInternational ? (
                             <p>
-                                Международное членство — это отдельный статус, не связанный
-                                {" "}
-                                с обычными правами на платформе goodsurfing.org.
+                                {t("Международное членство — это отдельный статус, не связанный с обычными правами на платформе goodsurfing org")}
                             </p>
                         ) : (
                             <>
                                 <p>
-                                    Теперь вы можете пользоваться всеми возможностями портала
-                                    {" "}
-                                    goodsurfing.org.
+                                    {t("Теперь вы можете пользоваться всеми возможностями портала goodsurfing org")}
                                 </p>
                                 <p>
-                                    Уже сейчас на вашем аккаунте появилась специальная метка
-                                    {" "}
-                                    верифицированного пользователя.
+                                    {t("Уже сейчас на вашем аккаунте появилась специальная метка верифицированного пользователя")}
                                 </p>
                             </>
                         )}
                     </div>
 
                     <div className={styles.benefits}>
-                        <h2 className={styles.benefitsTitle}>Теперь для вас доступно:</h2>
+                        <h2 className={styles.benefitsTitle}>{t("Теперь для вас доступно")}</h2>
                         <ul className={styles.benefitsList}>
                             {benefits.map((item) => (
-                                <li key={item}>{item}</li>
+                                <li key={item}>{t(item)}</li>
                             ))}
                         </ul>
                     </div>

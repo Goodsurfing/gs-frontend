@@ -1,5 +1,6 @@
 import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Profile } from "@/entities/Profile";
 import { VolunteerSubscriberCard } from "@/entities/Volunteer";
@@ -13,6 +14,7 @@ interface SubscribersWidgetProps {
 
 export const SubscribersWidget: FC<SubscribersWidgetProps> = memo(
     (props: SubscribersWidgetProps) => {
+        const { t } = useTranslation();
         const { subscribers, className } = props;
 
         const renderCards = useMemo(
@@ -29,7 +31,7 @@ export const SubscribersWidget: FC<SubscribersWidgetProps> = memo(
         if (!subscribers) {
             return (
                 <div className={styles.emptyWrapper}>
-                    <h2>На данный момент у вас нет подпсичсиков</h2>
+                    <h2>{t("На данный момент у вас нет подписчиков")}</h2>
                 </div>
             );
         }

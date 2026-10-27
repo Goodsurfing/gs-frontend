@@ -1,7 +1,7 @@
 import { AdminSort } from "@/entities/Admin";
 import { Review } from "@/entities/Review";
 import { Pagination } from "@/types/api/pagination";
-import { Image } from "@/types/media";
+import { AttachedFile, Image } from "@/types/media";
 
 export interface Exptert {
     image: string;
@@ -154,7 +154,7 @@ export interface GetLesson {
     averageRating: number;
     image: Image;
     isCanReview: boolean;
-    files?: Image[];
+    files?: AttachedFile[];
     course: {
         id: string;
         name: string;

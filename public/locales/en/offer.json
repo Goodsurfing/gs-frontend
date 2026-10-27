@@ -245,5 +245,17 @@
     "Дальше": "Next",
     "Избранные вакансии": "Favorite vacancies",
     "Кол-во отзывов:": "Number of reviews:",
-    "Пока нет отзывов": "No reviews yet"
+    "Пока нет отзывов": "No reviews yet",
+    "от": "from",
+    "до": "to",
+    "Вы пока не добавили ни одну вакансию в избранное, давайте это исправим?": "You haven't added any opportunities to your favorites yet. Shall we fix that?",
+    "Посмотреть вакансии": "View opportunities",
+    "Описание вакансии": "Opportunity description",
+    "В нашем сообществе вы можете поговорить с волонтерами, которые уже сотрудничали с этим хостом, и получить прямые ответы на свои вопросы.": "In our community, you can talk to volunteers who have already worked with this host and get direct answers to your questions.",
+    "Сообщения": "Messages",
+    "Вы уверены, что хотите опубликовать это предложение? После публикации его увидят другие пользователи": "Are you sure you want to publish this offer? After publication, other users will see it.",
+    "Опубликовать": "Publish",
+    "Отмена": "Cancel",
+    "Добавить вопрос": "Add question",
+    "Черновик сохранён": "Draft saved"
 }

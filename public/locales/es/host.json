@@ -38,7 +38,8 @@
         "Отмена": "Cancelar",
         "Удалить": "Borrar",
         "Вакансию удалить нельзя": "No se puede eliminar una oferta con solicitudes enviadas",
-        "Бесплатно можно опубликовать только 1 вакансию. Оформите членство, чтобы публиковать без ограничений": "La cuenta gratuita permite publicar solo 1 vacante. Obtén una membresía para publicar sin límites"
+        "Бесплатно можно опубликовать только 1 вакансию. Оформите членство, чтобы публиковать без ограничений": "La cuenta gratuita permite publicar solo 1 vacante. Obtén una membresía para publicar sin límites",
+        "Ошибка создания вакансии": "Error al crear la oportunidad"
     },
     "hostNotes": {
         "Мои заявки": "Mis aplicaciones",
@@ -163,7 +164,8 @@
         "Не более 200 знаков": "No más de 200 caracteres",
         "Не более 1000 знаков": "No más de 1000 caracteres",
         "Это поле является обязательным": "Este campo es obligatorio",
-        "Сохранить": "Guardar"
+        "Сохранить": "Guardar",
+        "Произошла ошибка": "Se produjo un error"
     },
     "hostReviews": {
         "Отзывы": "Reseñas",
@@ -203,5 +205,18 @@
         "Вы можете получить медиаподдержку проекта": "Puedes obtener apoyo mediático para tu proyecto, envía una solicitud a",
         "с темой письма": "con el asunto",
         "ответ в течение {{days}} рабочих дней": "respuesta en {{days}} días hábiles"
-    }
+    },
+    "Загрузка": "Cargando...",
+    "Ошибка": "Error",
+    "Описание": "Descripción",
+    "Вакансии": "Oportunidades",
+    "Фото": "Fotos",
+    "Видео": "Video",
+    "Отзывы": "Reseñas",
+    "Вконтакте": "VK",
+    "Ссылки на Facebook и Instagram не отображаются на публичной странице — эти сервисы заблокированы на территории РФ": "Los enlaces a Facebook e Instagram no se muestran en la página pública, ya que estos servicios están bloqueados en Rusia.",
+    "Функция станет доступна позже": "Esta función estará disponible más adelante",
+    "personal.На данный момент отзывов нет": "Todavía no hay reseñas",
+    "Произошла ошибка при загрузке изображения": "Se produjo un error al cargar la imagen",
+    "Удалить изображение": "Eliminar imagen"
 }

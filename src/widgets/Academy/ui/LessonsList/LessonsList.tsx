@@ -1,6 +1,7 @@
 import cn from "classnames";
 import React, { FC, useEffect } from "react";
 
+import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { LessonCard } from "@/entities/Academy";
@@ -21,6 +22,7 @@ const LIMIT = 10;
 export const LessonsList: FC<LessonsListProps> = (props) => {
     const { className, courseId } = props;
     const { locale } = useLocale();
+    const { t } = useTranslation("academy");
     const { page, setPage } = useNewsFilters();
 
     const [fetchLessons, {
@@ -61,12 +63,12 @@ export const LessonsList: FC<LessonsListProps> = (props) => {
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            {(isFetching || isLoading) && <div>Загрузка уроков...</div>}
+            {(isFetching || isLoading) && <div>{t("Загрузка уроков")}</div>}
             {!isFetching && !isLoading && renderLessons.length > 0 && renderLessons}
             {!isFetching && !isLoading && renderLessons.length === 0 && (
-                <div>На данный момент нет ни одного урока</div>
+                <div>{t("На данный момент нет ни одного урока")}</div>
             )}
-            {error && <div>Ошибка загрузки уроков</div>}
+            {error && <div>{t("Ошибка загрузки уроков")}</div>}
             {!isFetching && !isLoading && totalPages > 1 && (
                 <OfferPagination
                     currentPage={page}

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
@@ -19,6 +20,7 @@ const isFetchError = (err: unknown): err is FetchBaseQueryError => (
 );
 
 const PaymentPage: React.FC = () => {
+    const { t } = useTranslation("donation");
     const { locale } = useLocale();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -49,7 +51,7 @@ const PaymentPage: React.FC = () => {
                     setPaymentUrl(result.paymentUrl);
                     window.location.href = result.paymentUrl;
                 } else {
-                    setErrorMessage("Не удалось получить ссылку на оплату");
+                    setErrorMessage(t("Не удалось получить ссылку на оплату"));
                 }
             })
             .catch((err: unknown) => {
@@ -57,7 +59,7 @@ const PaymentPage: React.FC = () => {
                     // Раньше здесь был молчаливый переход на страницу членства
                     // без сообщения — выглядело так, будто клик по оплате
                     // "просто возвращает на начало страницы" (row 95).
-                    setErrorMessage("У вас уже есть активное членство.");
+                    setErrorMessage(t("У вас уже есть активное членство"));
                     return;
                 }
 
@@ -73,18 +75,18 @@ const PaymentPage: React.FC = () => {
                     || status === "FETCH_ERROR" || status === "TIMEOUT_ERROR";
 
                 const fallback = providerUnavailable
-                    ? "Сервис оплаты временно недоступен. Попробуйте позже."
-                    : "Произошла ошибка при создании платежа";
+                    ? t("Сервис оплаты временно недоступен Попробуйте позже")
+                    : t("Произошла ошибка при создании платежа");
 
                 setErrorMessage(data?.detail || data?.title || fallback);
             });
-    }, [isAuth, myProfile, checkoutMembership, navigate, locale, tariffCode]);
+    }, [isAuth, myProfile, checkoutMembership, navigate, locale, tariffCode, t]);
 
     const handlePayClick = () => {
         if (paymentUrl) {
             window.location.href = paymentUrl;
         } else {
-            setErrorMessage("Ссылка на оплату не доступна");
+            setErrorMessage(t("Ссылка на оплату не доступна"));
         }
     };
 
@@ -107,7 +109,7 @@ const PaymentPage: React.FC = () => {
             <MainPageLayout>
                 <div className={styles.container}>
                     <div className={styles.error}>
-                        <h2>Ошибка</h2>
+                        <h2>{t("Ошибка")}</h2>
                         <p>{errorMessage}</p>
                         <Button
                             color="BLUE"
@@ -115,7 +117,7 @@ const PaymentPage: React.FC = () => {
                             variant="FILL"
                             onClick={() => navigate(getMembershipPageUrl(locale))}
                         >
-                            Вернуться на страницу членства
+                            {t("Вернуться на страницу членства")}
                         </Button>
                     </div>
                 </div>
@@ -128,15 +130,15 @@ const PaymentPage: React.FC = () => {
             <div className={styles.container}>
                 <div className={styles.content}>
                     <p className={styles.text}>
-                        Списание средств происходит в российских рублях.
+                        {t("Списание средств происходит в российских рублях")}
                     </p>
                     <p className={styles.text}>
-                        Банк автоматически произведет конвертацию в валюту, используемой вами карты.
+                        {t("Банк автоматически произведет конвертацию в валюту, используемой вами карты")}
                     </p>
                     <p className={styles.text}>
-                        Сейчас вы будете перенаправлены на страницу оплаты.
+                        {t("Сейчас вы будете перенаправлены на страницу оплаты")}
                         {" "}
-                        Если это не произошло, нажмите на ссылку ниже.
+                        {t("Если это не произошло, нажмите на ссылку ниже")}
                     </p>
                     <div className={styles.buttonWrapper}>
                         <Button
@@ -146,7 +148,7 @@ const PaymentPage: React.FC = () => {
                             onClick={handlePayClick}
                             disabled={!paymentUrl || isLoading}
                         >
-                            Оплатить
+                            {t("Оплатить")}
                         </Button>
                     </div>
                 </div>

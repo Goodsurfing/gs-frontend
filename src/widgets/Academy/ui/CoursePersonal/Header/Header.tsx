@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 import { GetCourse } from "@/entities/Academy";
 
@@ -15,6 +16,7 @@ interface HeaderProps {
 
 export const Header: FC<HeaderProps> = (props) => {
     const { course } = props;
+    const { t } = useTranslation("academy");
     const {
         name,
         videoCount,
@@ -46,7 +48,7 @@ export const Header: FC<HeaderProps> = (props) => {
                         <span>
                             {videoCount}
                             {" "}
-                            уроков
+                            {t("уроков")}
                         </span>
                         {duration !== "" && (
                             <>
@@ -54,7 +56,7 @@ export const Header: FC<HeaderProps> = (props) => {
                                 <span>
                                     {duration}
                                     {" "}
-                                    на прохождение
+                                    {t("на прохождение")}
                                 </span>
                             </>
                         )}
@@ -65,7 +67,8 @@ export const Header: FC<HeaderProps> = (props) => {
                         </div>
                     </div>
                     <span className={styles.author}>
-                        Автор:
+                        {t("Автор")}
+                        :
                         {" "}
                         {getFullName(author.firstName, author.lastName)}
                     </span>
@@ -76,7 +79,7 @@ export const Header: FC<HeaderProps> = (props) => {
                         variant="FILL"
                         onClick={handleScrollToCourses}
                     >
-                        Начать обучение
+                        {t("Начать обучение")}
                     </Button>
                 </div>
                 <img className={styles.cover} src={getMediaContent(image, "LARGE")} alt={name} />

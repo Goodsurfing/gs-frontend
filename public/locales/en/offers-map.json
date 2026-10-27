@@ -24,5 +24,11 @@
     "Знание языка": "Language Knowledge",
     "Вакансии не были найдены": "No vacancies were found",
     "Поиск": "Search",
-    "Посмотреть все": "View all"
+    "Посмотреть все": "View all",
+    "Не удалось загрузить вакансии": "Failed to load opportunities",
+    "Проверьте соединение и попробуйте ещё раз": "Check your connection and try again",
+    "Попробовать снова": "Try again",
+    "Загрузка": "Loading...",
+    "Произошла ошибка": "An error occurred",
+    "Без названия": "Untitled"
 }

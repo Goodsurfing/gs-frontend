@@ -123,9 +123,9 @@ export const OfferFinishingTouches: FC<OfferFinishingTouchesProps> = (props) => 
             />
             <ConfirmActionModal
                 isModalOpen={isConfirmModalOpen}
-                description="Вы уверены, что хотите опубликовать это предложение? После публикации его увидят другие пользователи."
-                confirmTextButton="Опубликовать"
-                cancelTextButton="Отмена"
+                description={t("Вы уверены, что хотите опубликовать это предложение? После публикации его увидят другие пользователи")}
+                confirmTextButton={t("Опубликовать")}
+                cancelTextButton={t("Отмена")}
                 onConfirm={handleConfirmPublish}
                 onClose={() => {
                     setIsConfirmModalOpen(false);

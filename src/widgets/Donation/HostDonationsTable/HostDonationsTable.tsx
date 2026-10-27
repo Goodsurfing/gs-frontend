@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { ReactSVG } from "react-svg";
@@ -28,6 +29,7 @@ const defaultValues: DefaultValues<HostDonationRatingFields> = {
 };
 
 export const HostDonationsTable = () => {
+    const { t } = useTranslation("donation");
     const { locale } = useLocale();
     const { data: hostData, isLoading } = useGetHostDonationsQuery({ limit: 100 });
     const form = useForm<HostDonationRatingFields>({
@@ -82,7 +84,7 @@ export const HostDonationsTable = () => {
         },
         {
             field: "author",
-            headerName: "ФИО",
+            headerName: t("ФИО"),
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -101,7 +103,7 @@ export const HostDonationsTable = () => {
         },
         {
             field: "nameDonation",
-            headerName: "Название сбора",
+            headerName: t("Название сбора"),
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -110,7 +112,7 @@ export const HostDonationsTable = () => {
         },
         {
             field: "totalAmountDonations",
-            headerName: "Сумма пожертвования, руб.",
+            headerName: t("Сумма пожертвования, руб"),
             width: 260,
             sortable: false,
             filterable: false,
@@ -119,7 +121,7 @@ export const HostDonationsTable = () => {
         },
         {
             field: "date",
-            headerName: "Дата",
+            headerName: t("Дата"),
             width: 200,
             sortable: false,
             filterable: false,
@@ -151,7 +153,7 @@ export const HostDonationsTable = () => {
                             <div className={styles.sortWrapper}>
                                 <button
                                     type="button"
-                                    aria-label="По убыванию"
+                                    aria-label={t("По убыванию")}
                                     className={cn(styles.sort, { [styles.active]: field.value === "desc" })}
                                     onClick={() => field.onChange("desc")}
                                 >
@@ -159,7 +161,7 @@ export const HostDonationsTable = () => {
                                 </button>
                                 <button
                                     type="button"
-                                    aria-label="По возрастанию"
+                                    aria-label={t("По возрастанию")}
                                     className={cn(styles.sort, { [styles.active]: field.value === "asc" })}
                                     onClick={() => field.onChange("asc")}
                                 >
@@ -177,7 +179,7 @@ export const HostDonationsTable = () => {
                             sx={{ maxWidth: "370px" }}
                             value={field.value}
                             onChange={(value) => { field.onChange(value); }}
-                            placeholder="Название сбора"
+                            placeholder={t("Название сбора")}
                         />
                     )}
                 />
@@ -189,7 +191,7 @@ export const HostDonationsTable = () => {
                             sx={{ maxWidth: "370px" }}
                             value={field.value}
                             onChange={(value) => { field.onChange(value); }}
-                            placeholder="Поиск участника"
+                            placeholder={t("Поиск участника")}
                         />
                     )}
                 />

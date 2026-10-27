@@ -1,5 +1,6 @@
 import cn from "classnames";
 import React, { FC, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import { CourseCard } from "@/entities/Academy";
 import { useLazyGetCoursesQuery } from "@/entities/Academy/api/courseApi";
@@ -20,6 +21,7 @@ const coursesLimit = 10;
 
 export const CoursesList: FC<CoursesListProps> = (props) => {
     const { className } = props;
+    const { t } = useTranslation("academy");
     const { locale } = useLocale();
     const { page, setPage } = useNewsFilters();
 
@@ -64,12 +66,17 @@ export const CoursesList: FC<CoursesListProps> = (props) => {
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            {(isFetching || isLoading) && <div>Загрузка курсов...</div>}
+            {(isFetching || isLoading) && (
+                <div>
+                    {t("Загрузка курсов")}
+                    ...
+                </div>
+            )}
             {!isFetching && !isLoading && renderCourses.length > 0 && renderCourses}
             {!isFetching && !isLoading && renderCourses.length === 0 && (
-                <div>На данный момент нет ни одного курса</div>
+                <div>{t("На данный момент нет ни одного курса")}</div>
             )}
-            {error && <div>Ошибка загрузки курсов</div>}
+            {error && <div>{t("Ошибка загрузки курсов")}</div>}
             {!isFetching && !isLoading && totalPages > 1 && (
                 <OfferPagination
                     currentPage={page}

@@ -15,6 +15,7 @@ declare module "*.module.scss" {
 }
 
 declare const __IS_DEV__: boolean;
+declare const __BUILD_ID__: string;
 
 declare module "swiper/css";
 declare module "swiper/css/navigation";
@@ -28,6 +29,7 @@ interface ImportMetaEnv {
     readonly VITE_VKID_CLIENT_ID: string;
     readonly VITE_SENTRY_DSN?: string;
     readonly VITE_SENTRY_ENVIRONMENT?: string;
+    readonly VITE_SENTRY_RELEASE?: string;
 }
 
 interface ImportMeta {

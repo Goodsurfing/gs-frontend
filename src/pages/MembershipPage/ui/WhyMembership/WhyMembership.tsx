@@ -43,7 +43,7 @@ export const WhyMembership: FC<WhyMembershipProps> = ({ className }) => {
                     <img
                         className={styles.image}
                         src={whyMembershipImage}
-                        alt="Волонтёры Гудсёрфинга"
+                        alt={t("Волонтёры Гудсёрфинга")}
                     />
                 </div>
             </div>

@@ -1,5 +1,6 @@
 import { memo } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 
 import styles from "./HostFill.module.scss";
 import { HostFillTitle } from "../HostFillTitle/HostFillTitle";
@@ -17,6 +18,7 @@ interface HostFillProps {
 
 export const HostFill = memo((props: HostFillProps) => {
     const { className } = props;
+    const { t } = useTranslation("host");
     const { data: getHost } = useGetMyHostQuery();
     const { myProfile, profileIsLoading, profileIsError } = useAuth();
     const { data: reviewsData } = useGetOfferReviewsQuery({ limit: 1, page: 1 });
@@ -31,7 +33,7 @@ export const HostFill = memo((props: HostFillProps) => {
     if (profileIsLoading) {
         return (
             <div className={cn(styles.wrapper, className)}>
-                Загрузка...
+                {t("Загрузка")}
             </div>
         );
     }
@@ -39,7 +41,7 @@ export const HostFill = memo((props: HostFillProps) => {
     if (profileIsError) {
         return (
             <div className={cn(styles.wrapper, className)}>
-                Ошибка
+                {t("Ошибка")}
             </div>
         );
     }
@@ -47,23 +49,23 @@ export const HostFill = memo((props: HostFillProps) => {
     // todo no backend here
     const pointsData: StatsChartPoints[] = [
         {
-            text: "Описание",
+            text: t("Описание"),
             completed: isDescirption,
         },
         {
-            text: "Вакансии",
+            text: t("Вакансии"),
             completed: isOffers,
         },
         {
-            text: "Фото",
+            text: t("Фото"),
             completed: isGallery,
         },
         {
-            text: "Видео",
+            text: t("Видео"),
             completed: isVideoGallery,
         },
         {
-            text: "Отзывы",
+            text: t("Отзывы"),
             completed: isReviews,
         }];
 

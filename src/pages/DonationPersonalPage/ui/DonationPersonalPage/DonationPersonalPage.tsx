@@ -60,7 +60,7 @@ export const DonationPersonalPage = () => {
                     <Text
                         className={styles.error}
                         textSize="primary"
-                        text="Произошла ошибка"
+                        text={tDonation("Произошла ошибка")}
                     />
                 </div>
                 <Footer />
@@ -77,7 +77,7 @@ export const DonationPersonalPage = () => {
                         <Text
                             className={styles.error}
                             textSize="primary"
-                            text="Сбор не опубликован"
+                            text={tDonation("Сбор не опубликован")}
                         />
                     </div>
                     <Footer />
