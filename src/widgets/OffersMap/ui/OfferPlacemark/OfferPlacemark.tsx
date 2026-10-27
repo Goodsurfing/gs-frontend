@@ -4,6 +4,7 @@ import React, {
     useRef,
 } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { useCategories } from "@/shared/data/categories";
@@ -28,6 +29,7 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo((props: OfferPlacema
         id, categoryColor, name, geometry, locale, imageUrl,
     } = props;
 
+    const { t } = useTranslation("offers-map");
     const navigate = useNavigate();
     const [, setSearchParams] = useSearchParams();
     const ymaps = useYMaps();
@@ -55,20 +57,20 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo((props: OfferPlacema
         if (!element) return;
 
         if (isLoading) {
-            element.innerHTML = `<div class="${styles.loading}">Загрузка...</div>`;
+            element.innerHTML = `<div class="${styles.loading}">${t("Загрузка")}</div>`;
             element.removeEventListener("click", handleClick);
             return;
         }
 
         if (error || (!offerData && !isUninitialized)) {
-            element.innerHTML = `<div class="${styles.error}">Произошла ошибка</div>`;
+            element.innerHTML = `<div class="${styles.error}">${t("Произошла ошибка")}</div>`;
             element.removeEventListener("click", handleClick);
             return;
         }
 
         if (offerData) {
             const imgSrc = offerData.description?.image?.contentUrl ?? defaultImage;
-            const title = offerData.description?.title || "Без названия";
+            const title = offerData.description?.title || t("Без названия");
             const categoryName = (offerData.description?.categories?.[0]?.name
                     && getTranslation(offerData.description.categories[0].name))
                 || "";
@@ -85,7 +87,7 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo((props: OfferPlacema
 
             element.addEventListener("click", handleClick);
         }
-    }, [id, isLoading, isUninitialized, offerData, error, getTranslation, handleClick]);
+    }, [id, isLoading, isUninitialized, offerData, error, getTranslation, handleClick, t]);
 
     const handleBalloonOpen = useCallback(() => {
         getOffer(id);
@@ -109,7 +111,7 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo((props: OfferPlacema
             instanceRef={placemarkRef}
             geometry={geometry}
             properties={{
-                balloonContent: `<div id="ballon-offer-${id}" class="offer-card"><div class="${styles.loading}">Загрузка...</div></div>`,
+                balloonContent: `<div id="ballon-offer-${id}" class="offer-card"><div class="${styles.loading}">${t("Загрузка")}</div></div>`,
                 name,
                 url: getOfferPersonalPageUrl(locale, id),
             }}

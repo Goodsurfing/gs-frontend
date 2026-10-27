@@ -33,7 +33,7 @@ export const CoursePersonal: FC<CoursePersonalProps> = (props) => {
         return (
             <MainPageLayout headerVariant="static">
                 <div className={styles.wrapper}>
-                    <p>Курс не был найден</p>
+                    <p>{t("Курс не был найден")}</p>
                 </div>
             </MainPageLayout>
         );

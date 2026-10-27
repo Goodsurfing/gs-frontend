@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { OfferCategories } from "@/widgets/OfferCategories";
 import styles from "./Category.module.scss";
@@ -15,10 +16,11 @@ export const Category: FC<CategoryProps> = (props) => {
     const {
         className, locale, value, onChange,
     } = props;
+    const { t } = useTranslation("video");
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            <span className={styles.title}>Категория</span>
+            <span className={styles.title}>{t("Категория")}</span>
             <OfferCategories
                 locale={locale}
                 exclusive

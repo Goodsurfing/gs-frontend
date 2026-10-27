@@ -5,5 +5,11 @@
         "keywords": "GoodSurfing, news, volunteer projects, volunteering, meaningful travel, expeditions, communities",
         "ogTitle": "GoodSurfing News",
         "ogDescription": "Events, projects, and news from the GoodSurfing community."
-    }
+    },
+    "Новости не найдены": "No news found",
+    "Новости": "News",
+    "Произошла ошибка при подгрузке комментариев": "An error occurred while loading comments",
+    "Чтобы поставить лайк, нужно авторизоваться": "To like, you need to sign in",
+    "Произошла ошибка": "An error occurred",
+    "Чтобы оставить комментарий, нужно авторизоваться": "To leave a comment, you need to sign in"
 }

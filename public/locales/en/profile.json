@@ -146,5 +146,12 @@
         "Произошла ошибка загрузки отзывов": "An error occurred while loading reviews",
         "Все достижения пользователя": "All user achievements",
         "Статьи об организации": "Articles about the organization"
-    }
+    },
+    "Произошла ошибка при загрузке изображения": "An error occurred while uploading the image",
+    "Удалить изображение": "Delete image",
+    "Популярные места": "Popular places",
+    "Вконтакте": "VKontakte",
+    "Выберите страны": "Select countries",
+    "Укажите страны через запятую": "Enter countries separated by commas",
+    "По России": "Across Russia"
 }

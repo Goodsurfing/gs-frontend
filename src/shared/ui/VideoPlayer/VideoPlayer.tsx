@@ -179,7 +179,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
 
     return (
         <div className={styles.error}>
-            <p>Неподдерживаемая ссылка на видео.</p>
+            <p>{t("Неподдерживаемая ссылка на видео")}</p>
         </div>
     );
 };

@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getSignInPageUrl } from "@/shared/config/routes/AppUrls";
@@ -18,15 +19,16 @@ export const LessonVideo: FC<LessonVideoProps> = (props) => {
     const { isAuth } = useAuth();
     const { locale } = useLocale();
     const { width } = useWindowDimensions();
+    const { t } = useTranslation("academy");
 
     const videoWidth = width <= 1000 ? "100%" : "750px";
 
     if (!isAuth) {
         return (
             <div className={cn(styles.wrapper, styles.notAuth, className)}>
-                <p>Видео доступно только для зарегистрированных пользователей</p>
+                <p>{t("Видео доступно только для зарегистрированных пользователей")}</p>
                 <ButtonLink path={getSignInPageUrl(locale)} type="primary" className={styles.button}>
-                    Авторизоваться
+                    {t("Авторизоваться")}
                 </ButtonLink>
             </div>
         );
@@ -43,7 +45,7 @@ export const LessonVideo: FC<LessonVideoProps> = (props) => {
                     playing={false}
                 />
             ) : (
-                <p>Видео не было найдено</p>
+                <p>{t("Видео не было найдено")}</p>
             )}
         </div>
     );

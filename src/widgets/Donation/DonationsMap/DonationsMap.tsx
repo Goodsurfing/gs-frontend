@@ -5,6 +5,7 @@ import cn from "classnames";
 import React, {
     FC, memo, useMemo, useRef, useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -30,6 +31,7 @@ export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProp
         className, classNameMap, isDonationsLoading,
         donationsData,
     } = props;
+    const { t } = useTranslation("donation");
     const { locale } = useLocale();
     const [ymapState, setYmapState] = useState<YmapType | undefined>(undefined);
     const mapRef = useRef<any>(null);
@@ -42,8 +44,8 @@ export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProp
             .filter((donation) => typeof donation.latitude === "number" && typeof donation.longitude === "number")
             .map((donation) => {
                 const imgSrc = donation?.image ?? undefined;
-                const title = donation.name || "Без названия";
-                const categoryName = donation.categories[0]?.name ?? "Без категории";
+                const title = donation.name || t("Без названия");
+                const categoryName = donation.categories[0]?.name ?? t("Без категории");
                 const categoryColor = donation.categories[0]?.color ?? "var(--text-caption)";
 
                 const balloonContent = `
@@ -52,7 +54,7 @@ export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProp
             <div class="${styles.text}">
               <div class="${styles.balloonTitle}">${title}</div>
               <div class="${styles.balloonCategory}" style="color: ${categoryColor};">${categoryName}</div>
-              <a href="${getOfferPersonalPageUrl(locale, donation.id.toString())}" class="${styles.balloonLink}">Подробнее</a>
+              <a href="${getOfferPersonalPageUrl(locale, donation.id.toString())}" class="${styles.balloonLink}">${t("Подробнее")}</a>
             </div>
           </div>
         `;
@@ -62,10 +64,10 @@ export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProp
                     id: donation.id,
                     geometry: { type: "Point", coordinates: [donation.latitude, donation.longitude] },
                     properties: {
-                        name: donation.name ?? "Сбор без названия",
+                        name: donation.name ?? t("Сбор без названия"),
                         balloonContent,
-                        clusterCaption: donation.name ?? "Сбор без названия",
-                        hintContent: donation.name ?? "Сбор без названия",
+                        clusterCaption: donation.name ?? t("Сбор без названия"),
+                        hintContent: donation.name ?? t("Сбор без названия"),
                     },
                     options: {
                         iconLayout: "default#imageWithContent",
@@ -81,7 +83,7 @@ export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProp
                     },
                 };
             });
-    }, [isDonationsLoading, donationsData, locale, ymapState?.templateLayoutFactory]);
+    }, [isDonationsLoading, donationsData, locale, ymapState?.templateLayoutFactory, t]);
 
     if (isDonationsLoading) {
         return (
@@ -156,7 +158,7 @@ export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProp
                             clusterIconOffset: [-20, -20],
                             clusterBalloonContentLayout: ymapState.templateLayoutFactory?.createClass(`
                         <div class="${styles.clusterBalloon}">
-                            <h3>Список вакансий:</h3>
+                            <h3>${t("Список вакансий")}</h3>
                             <ul>
                                 {% for geoObject in properties.geoObjects %}
                                     <li> <a href="{{geoObject.properties.url}}">{{ geoObject.properties.name }}</a></li>

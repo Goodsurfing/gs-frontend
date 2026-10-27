@@ -24,5 +24,11 @@
     "Знание языка": "Conocimiento del idioma",
     "Вакансии не были найдены": "No se encontraron vacantes",
     "Поиск": "Buscar",
-    "Посмотреть все": "Ver todo"
+    "Посмотреть все": "Ver todo",
+    "Не удалось загрузить вакансии": "No se pudieron cargar las oportunidades",
+    "Проверьте соединение и попробуйте ещё раз": "Compruebe su conexión e inténtelo de nuevo",
+    "Попробовать снова": "Intentar de nuevo",
+    "Загрузка": "Cargando...",
+    "Произошла ошибка": "Se produjo un error",
+    "Без названия": "Sin título"
 }

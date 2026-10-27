@@ -1,10 +1,13 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./Header.module.scss";
 
 export const Header = () => {
+    const { t } = useTranslation("academy");
+
     const handleScrollToCourses = () => {
         const coursesSection = document.getElementById("courses");
         if (coursesSection) {
@@ -21,10 +24,9 @@ export const Header = () => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.content}>
-                <h1>Учитесь гудсёрфингу вместе с нами!</h1>
+                <h1>{t("Учитесь гудсёрфингу вместе с нами!")}</h1>
                 <p>
-                    Goodsurfing — способ путешествовать недорого, занимаясь
-                    интересным и важным делом с помощью волонтёрства или экспедиций
+                    {t("Goodsurfing — способ путешествовать недорого, занимаясь интересным и важным делом с помощью волонтёрства или экспедиций")}
                 </p>
                 <Button
                     className={styles.button}
@@ -33,7 +35,7 @@ export const Header = () => {
                     variant="FILL"
                     onClick={handleScrollToCourses}
                 >
-                    Выбрать курс
+                    {t("Выбрать курс")}
                 </Button>
             </div>
         </div>

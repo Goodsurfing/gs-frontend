@@ -6,5 +6,11 @@
         "description": "Lee artículos de GoodSurfing sobre viajes de voluntariado, proyectos, comunidades y experiencias con sentido.",
         "ogTitle": "Blog de GoodSurfing",
         "ogDescription": "Historias, noticias y artículos útiles sobre viajes con sentido."
-    }
+    },
+    "Статьи не найдены": "No se encontraron artículos",
+    "Произошла ошибка при подгрузке комментариев": "Se produjo un error al cargar los comentarios",
+    "Чтобы поставить лайк, нужно авторизоваться": "Para dar me gusta, debe iniciar sesión",
+    "Произошла ошибка": "Se produjo un error",
+    "Данная статья пустая": "Este artículo está vacío",
+    "Категория": "Categoría"
 }

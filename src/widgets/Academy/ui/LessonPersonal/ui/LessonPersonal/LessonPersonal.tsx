@@ -61,7 +61,7 @@ export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
             {data && (
                 <Navigation
                     breadcrumbs={[
-                        { name: "Курсы", link: getAcademyMainPageUrl(locale) },
+                        { name: t("Курсы"), link: getAcademyMainPageUrl(locale) },
                         {
                             name: data.course.name,
                             link: getAcademyCoursePageUrl(locale, data.course.id),
@@ -86,7 +86,7 @@ export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
                             if (!validFiles.length) return null;
                             return (
                                 <div className={styles.filesSection}>
-                                    <h3 className={styles.filesTitle}>Материалы к уроку</h3>
+                                    <h3 className={styles.filesTitle}>{t("Материалы к уроку")}</h3>
                                     <ul className={styles.filesList}>
                                         {validFiles.map((file) => {
                                             // скачивание файла: нужен оригинал
@@ -119,7 +119,7 @@ export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
                             to={getAcademyLessonPageUrl(locale, prevLessonId)}
                             variant="DEFAULT"
                         >
-                            🠐 Предыдущая лекция
+                            {`🠐 ${t("Предыдущая лекция")}`}
                         </CustomLink>
                     )}
                     {nextLessonId && (
@@ -128,7 +128,7 @@ export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
                             variant="DEFAULT"
                             style={{ marginLeft: prevLessonId === null ? "auto" : 0 }}
                         >
-                            Следующая лекция 🠒
+                            {`${t("Следующая лекция")} 🠒`}
                         </CustomLink>
                     )}
                 </div>

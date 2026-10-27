@@ -5,5 +5,24 @@
         "keywords": "GoodSurfing, video, volunteer travel, volunteering, meaningful travel, projects, communities",
         "ogTitle": "GoodSurfing Video",
         "ogDescription": "Video stories, projects, and useful materials about meaningful travel."
-    }
+    },
+    "Добавить видео": "Add video",
+    "Название видео": "Video title",
+    "Название обязательно": "Title is required",
+    "Минимум 2 символа": "Minimum 2 characters",
+    "Максимум 100 символов": "Maximum 100 characters",
+    "Введите название видео": "Enter video title",
+    "Описание видео": "Video description",
+    "Описание обязательно": "Description is required",
+    "Введите описание видео": "Enter video description",
+    "Ссылка на видео": "Video link",
+    "Ссылка обязательна": "Link is required",
+    "Введите ссылку на видео": "Enter video link",
+    "Загрузите обложку": "Upload a cover image",
+    "Категория видео": "Video category",
+    "Выберите категорию": "Select a category",
+    "Опубликовать": "Publish",
+    "Видео": "Videos",
+    "Категория": "Category",
+    "Видео не найдены": "No videos found"
 }

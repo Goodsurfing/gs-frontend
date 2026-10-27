@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import { ArticleCard } from "@/entities/Article/";
 import { getNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -15,6 +16,7 @@ interface NewsListProps {
 export const NewsList: FC<NewsListProps> = (props) => {
     const { data, className } = props;
     const { locale } = useLocale();
+    const { t } = useTranslation("news");
 
     const renderNews = useMemo(() => data?.map((article) => (
         <ArticleCard
@@ -34,7 +36,7 @@ export const NewsList: FC<NewsListProps> = (props) => {
             <Text
                 className={styles.empty}
                 textSize="primary"
-                text="Новости не найдены"
+                text={t("Новости не найдены")}
             />
         );
     }

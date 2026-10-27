@@ -118,7 +118,7 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <Text />
-            <h3>Функция станет доступна позже.</h3>
+            <h3>{t("Функция станет доступна позже")}</h3>
             {/* <TeamInput
                 hostId={hostId}
                 hostEmail={hostEmail}

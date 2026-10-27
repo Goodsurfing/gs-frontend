@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 import Button from "@/shared/ui/Button/Button";
@@ -10,6 +11,7 @@ import { getDonationPayPageUrl, getDonationPersonalPage } from "@/shared/config/
 import styles from "./DonationPayFailPage.module.scss";
 
 const DonationPayFailPage: React.FC = () => {
+    const { t } = useTranslation("donation");
     const { locale } = useLocale();
     const navigate = useNavigate();
     const { id: fundraiseId } = useParams<{ id: string }>();
@@ -18,9 +20,9 @@ const DonationPayFailPage: React.FC = () => {
     const reason = searchParams.get("reason") || "error";
 
     const reasonText: Record<string, string> = {
-        error: "Произошла ошибка при обработке платежа.",
-        cancelled: "Платёж был отменён.",
-        not_found: "Платёж не найден.",
+        error: t("Произошла ошибка при обработке платежа"),
+        cancelled: t("Платёж был отменён"),
+        not_found: t("Платёж не найден"),
     };
 
     return (
@@ -28,7 +30,7 @@ const DonationPayFailPage: React.FC = () => {
             <div className={styles.container}>
                 <div className={styles.card}>
                     <div className={styles.icon}>&#10007;</div>
-                    <h1 className={styles.title}>Платёж не прошёл</h1>
+                    <h1 className={styles.title}>{t("Платёж не прошёл")}</h1>
                     <p className={styles.text}>
                         {reasonText[reason] || reasonText.error}
                     </p>
@@ -39,7 +41,7 @@ const DonationPayFailPage: React.FC = () => {
                             variant="FILL"
                             onClick={() => navigate(getDonationPayPageUrl(locale, fundraiseId))}
                         >
-                            Попробовать снова
+                            {t("Попробовать снова")}
                         </Button>
                         <Button
                             color="GRAY"
@@ -47,7 +49,7 @@ const DonationPayFailPage: React.FC = () => {
                             variant="TEXT"
                             onClick={() => navigate(getDonationPersonalPage(locale, fundraiseId))}
                         >
-                            Вернуться к сбору
+                            {t("Вернуться к сбору")}
                         </Button>
                     </div>
                 </div>

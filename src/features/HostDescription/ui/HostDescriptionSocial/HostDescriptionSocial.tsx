@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { useFormContext } from "react-hook-form";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
 
@@ -18,10 +19,11 @@ interface HostDescriptionSocialProps {
 export const HostDescriptionSocial = memo((props: HostDescriptionSocialProps) => {
     const { className } = props;
     const { control } = useFormContext();
+    const { t } = useTranslation("host");
     return (
         <div className={cn(styles.wrapper, className)}>
             <InputControl
-                label="Вконтакте"
+                label={t("Вконтакте")}
                 img={vkIcon}
                 id="vk"
                 name="socialMedia.vk"
@@ -38,8 +40,7 @@ export const HostDescriptionSocial = memo((props: HostDescriptionSocialProps) =>
                 type="url"
             />
             <p className={styles.bannedNotice}>
-                {"Ссылки на Facebook и Instagram не отображаются на публичной "
-                + "странице — эти сервисы заблокированы на территории РФ."}
+                {t("Ссылки на Facebook и Instagram не отображаются на публичной странице — эти сервисы заблокированы на территории РФ")}
             </p>
         </div>
     );

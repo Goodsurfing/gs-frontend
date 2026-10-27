@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 import Button from "@/shared/ui/Button/Button";
@@ -12,6 +13,7 @@ import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./PaymentFailPage.module.scss";
 
 const PaymentFailPage: React.FC = () => {
+    const { t } = useTranslation("donation");
     const { locale } = useLocale();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -31,12 +33,12 @@ const PaymentFailPage: React.FC = () => {
 
     const getErrorMessage = () => {
         if (reason === "not_found") {
-            return "Платеж не найден";
+            return t("Платеж не найден");
         }
         if (reason === "cancelled") {
-            return "Оплата была отменена";
+            return t("Оплата была отменена");
         }
-        return "Произошла ошибка при обработке платежа";
+        return t("Произошла ошибка при обработке платежа");
     };
 
     return (
@@ -44,14 +46,13 @@ const PaymentFailPage: React.FC = () => {
             <div className={styles.container}>
                 <div className={styles.content}>
                     <div className={styles.errorIcon}>⚠️</div>
-                    <h1 className={styles.title}>Ошибка оплаты</h1>
+                    <h1 className={styles.title}>{t("Ошибка оплаты")}</h1>
                     <p className={styles.message}>
                         {getErrorMessage()}
                     </p>
                     <p className={styles.description}>
-                        Пожалуйста, попробуйте еще раз или обратитесь в службу поддержки,
-                        {" "}
-                        если проблема сохраняется.
+                        {t("Пожалуйста, попробуйте еще раз или обратитесь в службу поддержки, если проблема сохраняется")}
+                        .
                     </p>
                     <div className={styles.buttonWrapper}>
                         <Button
@@ -60,7 +61,7 @@ const PaymentFailPage: React.FC = () => {
                             variant="FILL"
                             onClick={() => navigate(getMembershipPageUrl(locale))}
                         >
-                            Вернуться на страницу членства
+                            {t("Вернуться на страницу членства")}
                         </Button>
                     </div>
                 </div>

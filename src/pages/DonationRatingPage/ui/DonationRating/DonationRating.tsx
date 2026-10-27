@@ -3,6 +3,7 @@ import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { useTranslation } from "react-i18next";
 import { SelectRatingSort } from "@/widgets/Donation";
 import sortDownIcon from "@/shared/assets/icons/donation/sort-down.svg";
 import sortUpIcon from "@/shared/assets/icons/donation/sort-up.svg";
@@ -28,6 +29,7 @@ const defaultValues: DefaultValues<DonationRatingFields> = {
 };
 
 export const DonationRating = () => {
+    const { t } = useTranslation("donation");
     const { locale } = useLocale();
     const { isAuth } = useAuth();
     const { data: ratingData, isLoading } = useGetDonationRatingQuery({ limit: 100 });
@@ -78,7 +80,7 @@ export const DonationRating = () => {
         },
         {
             field: "name",
-            headerName: "ФИО",
+            headerName: t("ФИО"),
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -99,7 +101,7 @@ export const DonationRating = () => {
         },
         {
             field: "numberDonations",
-            headerName: "Количество пожертвований, руб.",
+            headerName: t("Количество пожертвований, руб"),
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -108,7 +110,7 @@ export const DonationRating = () => {
         },
         {
             field: "totalAmountDonations",
-            headerName: "Общая сумма пожертвований, руб.",
+            headerName: t("Общая сумма пожертвований, руб"),
             width: 260,
             sortable: false,
             filterable: false,
@@ -140,7 +142,7 @@ export const DonationRating = () => {
                             <div className={styles.sortWrapper}>
                                 <button
                                     type="button"
-                                    aria-label="По убыванию"
+                                    aria-label={t("По убыванию")}
                                     className={cn(styles.sort, { [styles.active]: field.value === "desc" })}
                                     onClick={() => field.onChange("desc")}
                                 >
@@ -148,7 +150,7 @@ export const DonationRating = () => {
                                 </button>
                                 <button
                                     type="button"
-                                    aria-label="По возрастанию"
+                                    aria-label={t("По возрастанию")}
                                     className={cn(styles.sort, { [styles.active]: field.value === "asc" })}
                                     onClick={() => field.onChange("asc")}
                                 >
@@ -166,7 +168,7 @@ export const DonationRating = () => {
                             sx={{ maxWidth: "370px" }}
                             value={field.value}
                             onChange={(value) => { field.onChange(value); }}
-                            placeholder="Поиск участника"
+                            placeholder={t("Поиск участника")}
                         />
                     )}
                 />

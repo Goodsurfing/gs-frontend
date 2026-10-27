@@ -165,17 +165,15 @@ export const NewMainSliderContainer = () => {
                     onMouseLeave={() => { if (sliderState === "LEFT-HALF") setSliderState("MIDDLE"); }}
                 >
                     <div className={cn(styles.content, { [styles.contentCollapsed]: sliderState === "RIGHT-FULL" }, { [styles.contentFull]: sliderState === "LEFT-FULL" })}>
-                        <h2>Путешествуй, помогай, меняй мир</h2>
+                        <h2>{t("Путешествуй, помогай, меняй мир")}</h2>
                         <p>
-                            Goodsurfing — способ путешествовать недорого,
-                            занимаясь интересным и важным делом
-                            с помощью волонтёрства или экспедиций.
+                            {t("Goodsurfing — способ путешествовать недорого, занимаясь интересным и важным делом с помощью волонтёрства или экспедиций")}
                         </p>
                         <div className={styles.volunteersWrapper}>
                             <img src={sliderVolunteerImg} alt="slider volunteers" />
-                            <p>С нами уже 90 000 путешественников со смыслом со всего мира</p>
+                            <p>{t("С нами уже 90 000 путешественников со смыслом со всего мира")}</p>
                         </div>
-                        <Button onClick={handleLeftClick} className={styles.buttonLeft} color="BLUE" size="MEDIUM" variant="OUTLINE">Присоединиться к сообществу</Button>
+                        <Button onClick={handleLeftClick} className={styles.buttonLeft} color="BLUE" size="MEDIUM" variant="OUTLINE">{t("Присоединиться к сообществу")}</Button>
                     </div>
                     <div className={styles.cornerLeft}>
                         <ReactSVG
@@ -203,16 +201,15 @@ export const NewMainSliderContainer = () => {
                     onMouseLeave={() => { if (sliderState === "RIGHT-HALF") setSliderState("MIDDLE"); }}
                 >
                     <div className={cn(styles.content, { [styles.contentCollapsed]: sliderState === "LEFT-FULL" }, { [styles.contentFull]: sliderState === "RIGHT-FULL" })}>
-                        <h2>Примите тех, кто хочет помогать и делайте мир лучше вместе</h2>
+                        <h2>{t("Примите тех, кто хочет помогать и делайте мир лучше вместе")}</h2>
                         <p>
-                            Мы соединяем вас с людьми, готовыми приехать к вам и помочь на месте.
-                            Найдите помощников для задач на сезон, экспедицию или долгий проект.
+                            {t("Мы соединяем вас с людьми, готовыми приехать к вам и помочь на месте Найдите помощников для задач на сезон, экспедицию или долгий проект")}
                         </p>
                         <div className={styles.volunteersWrapper}>
                             <img src={sliderVolunteerImg} alt="slider volunteers" />
-                            <p>С нами уже больше 1500 проектов</p>
+                            <p>{t("С нами уже больше 1500 проектов")}</p>
                         </div>
-                        <Button onClick={handleRightClick} className={styles.buttonRight} color="GREEN" size="MEDIUM" variant="OUTLINE">Присоединиться к сообществу</Button>
+                        <Button onClick={handleRightClick} className={styles.buttonRight} color="GREEN" size="MEDIUM" variant="OUTLINE">{t("Присоединиться к сообществу")}</Button>
                     </div>
                     <div className={cn(styles.cornerRight)}>
                         <ReactSVG src={arrowIcon} className={cn(styles.arrow, styles.arrowRight, { [styles.arrowRightRotated]: sliderState === "LEFT-FULL" }, { [styles.arrowHidden]: sliderState === "RIGHT-FULL" })} />

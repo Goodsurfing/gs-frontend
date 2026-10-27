@@ -62,11 +62,11 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
             }).unwrap();
         } catch {
             setToast({
-                text: "Произошла ошибка при подгрузке комментариев",
+                text: t("Произошла ошибка при подгрузке комментариев"),
                 type: HintType.Error,
             });
         }
-    }, [getReviews, realNewsId]);
+    }, [getReviews, realNewsId, t]);
 
     useEffect(() => {
         fetchReviews(page);
@@ -86,7 +86,7 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
     const onLike = async () => {
         if (!isAuth) {
             setToast({
-                text: "Чтобы поставить лайк, нужно авторизоваться",
+                text: t("Чтобы поставить лайк, нужно авторизоваться"),
                 type: HintType.Error,
             });
             return;
@@ -99,7 +99,7 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
             await putLike(realNewsId).unwrap();
         } catch {
             setToast({
-                text: "Произошла ошибка",
+                text: t("Произошла ошибка"),
                 type: HintType.Error,
             });
         }
@@ -108,7 +108,7 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
     const onComment = async (description: string) => {
         if (!isAuth) {
             setToast({
-                text: "Чтобы оставить комментарий, нужно авторизоваться",
+                text: t("Чтобы оставить комментарий, нужно авторизоваться"),
                 type: HintType.Error,
             });
             return;
@@ -121,7 +121,7 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
             await fetchReviews(1);
         } catch {
             setToast({
-                text: "Произошла ошибка",
+                text: t("Произошла ошибка"),
                 type: HintType.Error,
             });
         }
@@ -171,7 +171,7 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
             {data && (
                 <Navigation
                     breadcrumbs={[
-                        { name: "Новости", link: getNewsPageUrl(locale) },
+                        { name: t("Новости"), link: getNewsPageUrl(locale) },
                         { name: data.name },
                     ]}
                     className={styles.navigation}

@@ -69,5 +69,8 @@
             "travel": "Meaningful travel",
             "expeditions": "Expeditions and internships"
         }
-    }
+    },
+    "Вакансия не найдена или произошла ошибка": "Opportunity not found or an error occurred",
+    "Назад": "Back",
+    "Вакансия не опубликована": "Opportunity is not published"
 }

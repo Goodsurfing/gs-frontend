@@ -55,7 +55,7 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
     const [reviews, setReviews] = useState<GetReviewsJournal[]>([]);
 
     const { data, isLoading } = useGetJournalByIdQuery(journalIdOrSlug);
-    const articleContent = data?.description ?? "<p>Данная статья пустая</p>";
+    const articleContent = data?.description ?? `<p>${t("Данная статья пустая")}</p>`;
     const embedUrl = getCalameoEmbedUrl(data?.url);
     const [putLike] = usePutLikeJournalMutation();
     const [createReview] = useCreateReviewJournalMutation();
@@ -77,11 +77,11 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
             }).unwrap();
         } catch {
             setToast({
-                text: "Произошла ошибка при подгрузке комментариев",
+                text: t("Произошла ошибка при подгрузке комментариев"),
                 type: HintType.Error,
             });
         }
-    }, [getReviews, journalId]);
+    }, [getReviews, journalId, t]);
 
     useEffect(() => {
         fetchReviews(page);
@@ -101,7 +101,7 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
     const onLike = async () => {
         if (!isAuth) {
             setToast({
-                text: "Чтобы поставить лайк, нужно авторизоваться",
+                text: t("Чтобы поставить лайк, нужно авторизоваться"),
                 type: HintType.Error,
             });
             return;
@@ -114,7 +114,7 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
             await putLike(journalId).unwrap();
         } catch {
             setToast({
-                text: "Произошла ошибка",
+                text: t("Произошла ошибка"),
                 type: HintType.Error,
             });
         }
@@ -123,7 +123,7 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
     const onComment = async (description: string) => {
         if (!isAuth) {
             setToast({
-                text: "Чтобы оставить комментарий, нужно авторизоваться",
+                text: t("Чтобы оставить комментарий, нужно авторизоваться"),
                 type: HintType.Error,
             });
             return;
@@ -136,7 +136,7 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
             await fetchReviews(1);
         } catch {
             setToast({
-                text: "Произошла ошибка",
+                text: t("Произошла ошибка"),
                 type: HintType.Error,
             });
         }
@@ -185,7 +185,7 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
             {data && (
                 <Navigation
                     breadcrumbs={[
-                        { name: "Журналы", link: getJournalsPageUrl(locale) },
+                        { name: t("Журналы"), link: getJournalsPageUrl(locale) },
                         { name: data.name },
                     ]}
                     className={styles.navigation}

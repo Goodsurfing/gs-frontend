@@ -1,4 +1,5 @@
 import React, { FC, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Controller, FormProvider, SubmitHandler, useForm,
 } from "react-hook-form";
@@ -26,6 +27,7 @@ export const VideoModalForm: FC<VideoModalFormProps> = (props) => {
         isOpen, onClose, onSubmit, initialData, isLoading,
         locale,
     } = props;
+    const { t } = useTranslation("video");
     const form = useForm<VideoFields>({
         mode: "onChange",
         defaultValues: {
@@ -58,20 +60,20 @@ export const VideoModalForm: FC<VideoModalFormProps> = (props) => {
         <Modal onClose={onClose}>
             <div className={styles.modalContent}>
                 <h2 className={styles.modalTitle}>
-                    Добавить видео
+                    {t("Добавить видео")}
                 </h2>
                 <FormProvider {...form}>
                     <form className={styles.form}>
                         <InputControl
-                            label="Название видео"
+                            label={t("Название видео")}
                             rules={{
-                                required: "Название обязательно",
-                                minLength: { value: 2, message: "Минимум 2 символа" },
-                                maxLength: { value: 100, message: "Максимум 100 символов" },
+                                required: t("Название обязательно"),
+                                minLength: { value: 2, message: t("Минимум 2 символа") },
+                                maxLength: { value: 100, message: t("Максимум 100 символов") },
                             }}
                             control={control}
                             name="name"
-                            placeholder="Введите название видео"
+                            placeholder={t("Введите название видео")}
                             isError={!!errors.name}
                         />
                         {errors.name && (
@@ -81,15 +83,15 @@ export const VideoModalForm: FC<VideoModalFormProps> = (props) => {
                             />
                         )}
                         <InputControl
-                            label="Описание видео"
+                            label={t("Описание видео")}
                             rules={{
-                                required: "Описание обязательно",
-                                minLength: { value: 2, message: "Минимум 2 символа" },
-                                maxLength: { value: 100, message: "Максимум 100 символов" },
+                                required: t("Описание обязательно"),
+                                minLength: { value: 2, message: t("Минимум 2 символа") },
+                                maxLength: { value: 100, message: t("Максимум 100 символов") },
                             }}
                             control={control}
                             name="description"
-                            placeholder="Введите описание видео"
+                            placeholder={t("Введите описание видео")}
                             isError={!!errors.description}
                         />
                         {errors.description && (
@@ -99,13 +101,13 @@ export const VideoModalForm: FC<VideoModalFormProps> = (props) => {
                             />
                         )}
                         <InputControl
-                            label="Ссылка на видео"
+                            label={t("Ссылка на видео")}
                             rules={{
-                                required: "Ссылка обязательна",
+                                required: t("Ссылка обязательна"),
                             }}
                             control={control}
                             name="url"
-                            placeholder="Введите ссылку на видео"
+                            placeholder={t("Введите ссылку на видео")}
                             isError={!!errors.url}
                         />
                         {errors.url && (
@@ -118,7 +120,7 @@ export const VideoModalForm: FC<VideoModalFormProps> = (props) => {
                             name="image"
                             control={control}
                             rules={{
-                                required: "Загрузите обложку",
+                                required: t("Загрузите обложку"),
                             }}
                             render={({ field, fieldState }) => (
                                 <div className={styles.imgWrapper}>
@@ -137,12 +139,12 @@ export const VideoModalForm: FC<VideoModalFormProps> = (props) => {
                         />
                         <div className={styles.field}>
                             <span className={styles.title}>
-                                Категория видео
+                                {t("Категория видео")}
                             </span>
                             <Controller
                                 name="categoryId"
                                 control={control}
-                                rules={{ required: "Выберите категорию" }}
+                                rules={{ required: t("Выберите категорию") }}
                                 render={({ field, fieldState }) => (
                                     <div className={styles.categoryWrapper}>
                                         <OfferCategories
@@ -170,7 +172,7 @@ export const VideoModalForm: FC<VideoModalFormProps> = (props) => {
                             size="SMALL"
                             disabled={isLoading}
                         >
-                            Опубликовать
+                            {t("Опубликовать")}
                         </Button>
                     </form>
                 </FormProvider>

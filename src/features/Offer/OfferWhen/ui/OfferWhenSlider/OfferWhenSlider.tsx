@@ -76,9 +76,9 @@ export const OfferWhenSlider = memo(({
                     {t("when.Срок участия (от-до)")}
                 </Typography>
                 <div className={styles.inputs}>
-                    <Input value={value[0]} onChange={handleStartDateChange} type="number" className={styles.input} placeholder="от" />
+                    <Input value={value[0]} onChange={handleStartDateChange} type="number" className={styles.input} placeholder={t("от")} />
                     —
-                    <Input value={value[1]} onChange={handleEndDateChange} type="number" className={styles.input} placeholder="до" />
+                    <Input value={value[1]} onChange={handleEndDateChange} type="number" className={styles.input} placeholder={t("до")} />
                 </div>
                 <Box className={cn(styles.sliderWrapper, styles.mobile)}>
                     <RangeSlider
@@ -100,7 +100,7 @@ export const OfferWhenSlider = memo(({
                 {t("when.Срок участия (от-до)")}
             </Typography>
             <Box className={styles.innerWrapper}>
-                <Input onChange={handleStartDateChange} value={value[0]} type="number" className={styles.input} placeholder="от" />
+                <Input onChange={handleStartDateChange} value={value[0]} type="number" className={styles.input} placeholder={t("от")} />
                 <Box className={styles.sliderWrapper}>
                     <RangeSlider
                         className={styles.slider}
@@ -111,7 +111,7 @@ export const OfferWhenSlider = memo(({
                         max={190}
                     />
                 </Box>
-                <Input value={value[1]} onChange={handleEndDateChange} type="number" className={styles.input} placeholder="до" />
+                <Input value={value[1]} onChange={handleEndDateChange} type="number" className={styles.input} placeholder={t("до")} />
             </Box>
         </Box>
     );

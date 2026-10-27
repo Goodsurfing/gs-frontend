@@ -38,7 +38,8 @@
         "Отмена": "Cancel",
         "Удалить": "Delete",
         "Вакансию удалить нельзя": "Cannot delete an offer with submitted applications",
-        "Бесплатно можно опубликовать только 1 вакансию. Оформите членство, чтобы публиковать без ограничений": "Free account allows publishing only 1 vacancy. Get a membership to publish without limits"
+        "Бесплатно можно опубликовать только 1 вакансию. Оформите членство, чтобы публиковать без ограничений": "Free account allows publishing only 1 vacancy. Get a membership to publish without limits",
+        "Ошибка создания вакансии": "Error creating opportunity"
     },
     "hostNotes": {
         "Мои заявки": "My applications",
@@ -140,7 +141,8 @@
         "Это поле является обязательным": "This field is required",
         "Не более 200 знаков": "No more than 200 characters",
         "Не более 1000 знаков": "No more than 1000 characters",
-        "Сохранить": "Save"
+        "Сохранить": "Save",
+        "Произошла ошибка": "An error occurred"
     },
     "hostGallery": {
         "Фотогалерея организации": "Organization photo gallery",
@@ -205,5 +207,18 @@
         "Вы можете получить медиаподдержку проекта": "You can get media support for your project, send a request to",
         "с темой письма": "with subject",
         "ответ в течение {{days}} рабочих дней": "reply within {{days}} business days"
-    }
+    },
+    "Загрузка": "Loading...",
+    "Ошибка": "Error",
+    "Описание": "Description",
+    "Вакансии": "Opportunities",
+    "Фото": "Photos",
+    "Видео": "Video",
+    "Отзывы": "Reviews",
+    "Вконтакте": "VK",
+    "Ссылки на Facebook и Instagram не отображаются на публичной странице — эти сервисы заблокированы на территории РФ": "Facebook and Instagram links are not shown on the public page because these services are blocked in Russia.",
+    "Функция станет доступна позже": "This feature will be available later",
+    "personal.На данный момент отзывов нет": "There are no reviews yet",
+    "Произошла ошибка при загрузке изображения": "An error occurred while uploading the image",
+    "Удалить изображение": "Delete image"
 }

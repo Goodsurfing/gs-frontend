@@ -1,5 +1,6 @@
 import cn from "classnames";
 import React, { FC, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -19,6 +20,7 @@ interface ArticlesListProps {
 export const ArticlesList: FC<ArticlesListProps> = (props) => {
     const { data, className } = props;
     const { locale } = useLocale();
+    const { t } = useTranslation("blog");
 
     const renderNews = useMemo(
         () => data?.map((article, key) => (
@@ -41,7 +43,7 @@ export const ArticlesList: FC<ArticlesListProps> = (props) => {
             <Text
                 className={styles.empty}
                 textSize="primary"
-                text="Статьи не найдены"
+                text={t("Статьи не найдены")}
             />
         );
     }

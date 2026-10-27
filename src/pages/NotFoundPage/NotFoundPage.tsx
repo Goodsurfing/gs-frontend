@@ -1,4 +1,5 @@
 import { ReactSVG } from "react-svg";
+import { useTranslation } from "react-i18next";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
@@ -9,6 +10,7 @@ import { MainPageLayout } from "@/widgets/MainPageLayout";
 import styles from "./NotFoundPage.module.scss";
 
 const NotFoundPage = () => {
+    const { t } = useTranslation();
     const { locale } = useLocale();
     return (
         <MainPageLayout headerVariant="static">
@@ -27,7 +29,7 @@ const NotFoundPage = () => {
                     size="MEDIUM"
                     path={getMainPageUrl(locale)}
                 >
-                    На главную
+                    {t("На главную")}
                 </ButtonLink>
             </div>
         </MainPageLayout>

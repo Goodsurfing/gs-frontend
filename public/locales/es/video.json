@@ -5,5 +5,24 @@
         "keywords": "GoodSurfing, videos, viajes de voluntariado, voluntariado, viajes con sentido, proyectos, comunidades",
         "ogTitle": "Videos de GoodSurfing",
         "ogDescription": "Historias en video, proyectos y materiales útiles sobre viajes con sentido."
-    }
+    },
+    "Добавить видео": "Añadir video",
+    "Название видео": "Título del video",
+    "Название обязательно": "El título es obligatorio",
+    "Минимум 2 символа": "Mínimo 2 caracteres",
+    "Максимум 100 символов": "Máximo 100 caracteres",
+    "Введите название видео": "Introduzca el título del video",
+    "Описание видео": "Descripción del video",
+    "Описание обязательно": "La descripción es obligatoria",
+    "Введите описание видео": "Introduzca la descripción del video",
+    "Ссылка на видео": "Enlace al video",
+    "Ссылка обязательна": "El enlace es obligatorio",
+    "Введите ссылку на видео": "Introduzca el enlace del video",
+    "Загрузите обложку": "Suba una imagen de portada",
+    "Категория видео": "Categoría del video",
+    "Выберите категорию": "Seleccione una categoría",
+    "Опубликовать": "Publicar",
+    "Видео": "Videos",
+    "Категория": "Categoría",
+    "Видео не найдены": "No se encontraron vídeos"
 }

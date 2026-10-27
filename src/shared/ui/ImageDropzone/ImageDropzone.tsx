@@ -3,6 +3,7 @@ import {
 } from "react";
 import { useDropzone, Accept } from "react-dropzone";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import { ReactSVG } from "react-svg";
 import { ErrorText } from "../ErrorText/ErrorText";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -34,6 +35,7 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
     className,
     isLoading = false,
 }) => {
+    const { t } = useTranslation();
     const [preview, setPreview] = useState<string | null>(null);
     const [internalError, setInternalError] = useState<string | null>(null);
 
@@ -56,7 +58,7 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
         if (file.size > maxSize) {
             return {
                 valid: false,
-                message: "Размер файла не должен превышать 2 МБ",
+                message: t("Размер файла не должен превышать 2 МБ"),
             };
         }
 
@@ -71,12 +73,12 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
         if (!hasValidMimeType && !hasValidExtension) {
             return {
                 valid: false,
-                message: "Разрешены только JPG, PNG, SVG и PDF",
+                message: t("Разрешены только JPG, PNG, SVG и PDF"),
             };
         }
 
         return { valid: true, message: null };
-    }, [maxSize]);
+    }, [maxSize, t]);
 
     const onDrop = useCallback(
         (acceptedFiles: File[]) => {
@@ -130,7 +132,7 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
     // Пустое состояние: только текст, без иконки
         dropzoneContent = (
             <p className={styles.placeholder}>
-                Перетащите изображение сюда или кликните для выбора
+                {t("Перетащите изображение сюда или кликните для выбора")}
             </p>
         );
     }
