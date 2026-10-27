@@ -27,3 +27,11 @@ export interface Image {
         small: string;
     }
 }
+
+/** Прикреплённый файл (материалы к уроку). name — имя, с которым файл загрузили;
+ * null у файлов, загруженных до 2026-10-27. */
+export interface AttachedFile {
+    id: string;
+    contentUrl: string;
+    name?: string | null;
+}

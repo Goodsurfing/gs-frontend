@@ -13,6 +13,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { SeoHelmet } from "@/shared/ui/SeoHelmet";
 import { LessonVideo } from "../LessonVideo/LessonVideo";
 import styles from "./LessonPersonal.module.scss";
+import { getAttachmentName } from "@/shared/lib/getAttachmentName";
 
 interface LessonPersonalProps {
     lessonId: string;
@@ -91,7 +92,7 @@ export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
                                             // скачивание файла: нужен оригинал
                                             // eslint-disable-next-line no-restricted-syntax
                                             const url = getMediaContent(file.contentUrl);
-                                            const fileName = file.contentUrl.split("/").pop() || "Файл";
+                                            const fileName = getAttachmentName(file);
                                             return (
                                                 <li key={file.id} className={styles.filesItem}>
                                                     <a
