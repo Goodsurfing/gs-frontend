@@ -15,7 +15,6 @@ import { userOrganizationInfoApi } from "./api/userOrganizationInfoApi";
 import { organizationApi } from "./api/organizationApi";
 import { hostApi } from "@/entities/Host";
 import { offerApi } from "@/entities/Offer";
-import { authMiddleware } from "./middlewares/authMiddleware";
 import { reviewApi } from "@/entities/Review";
 import { volunteerApi } from "@/entities/Volunteer";
 import { chatApi } from "@/entities/Chat";
@@ -84,9 +83,10 @@ const combinedReducer = combineReducers({
 // предыдущего пользователя не «смешивались» после смены аккаунта (баг П27).
 //
 // ВАЖНО: полный сброс делаем ТОЛЬКО при выходе из активной сессии (был authData).
-// authMiddleware дёргает logout() на любой ответ code:401 — в т.ч. на /profile у
-// гостя. Без этой проверки такой logout обнулял бы RTK Query-кэш при активной
-// подписке, и запрос профиля залипал в isFetching → форма входа висела на спиннере.
+// withReauthOn401 (shared/api/baseQuery) дёргает logout(), если на 401 не удалось
+// обновить сессию — в т.ч. на /profile у гостя. Без этой проверки такой logout
+// обнулял бы RTK Query-кэш при активной подписке, и запрос профиля залипал
+// в isFetching → форма входа висела на спиннере.
 // Для гостя logout проходит обычным slice-редьюсером, кэш не трогаем.
 const rootReducer: typeof combinedReducer = (state, action) => {
     if (action.type === userActions.logout.type && state?.user?.authData) {
@@ -138,7 +138,6 @@ export const setupStore = () => configureStore({
         adminBannerMarketingApi.middleware,
         feedbackApi.middleware,
         adminFeedbackApi.middleware,
-        authMiddleware,
     ]),
 });
 
