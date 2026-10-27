@@ -6,6 +6,8 @@ export interface MediaObjectType {
     isImage: boolean;
     originalHeight: number;
     originalWidth: number;
+    /** Имя, с которым файл загрузили; null у файлов, загруженных до 2026-10-27 */
+    originalName?: string | null;
     thumbnails?: {
         large: string;
         medium: string;

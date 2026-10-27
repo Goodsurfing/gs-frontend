@@ -13,6 +13,7 @@ import fileIcon from "@/shared/assets/icons/skills/administration.svg";
 
 import styles from "./Message.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { getAttachmentName } from "@/shared/lib/getAttachmentName";
 import { useLazyGetMediaObjectByIdQuery } from "@/entities/Gallery";
 import CustomLink from "@/shared/ui/Link/Link";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
@@ -133,6 +134,8 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
     ) : <Avatar icon={avatar} text={username} className={styles.avatar} size="SMALL" />;
 
     if (file) {
+        const { contentUrl, originalName } = file;
+        const fileName = getAttachmentName({ contentUrl, name: originalName });
         return (
             <div className={messageClass}>
                 {renderAvatar}
@@ -152,7 +155,7 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
                         <div className={styles.fileWrapper}>
                             <ReactSVG src={fileIcon} />
                         </div>
-                        <span>{file.contentUrl.split("/").pop()}</span>
+                        <span>{fileName}</span>
                     </a>
                     <p className={styles.text}>{text}</p>
                     <span className={styles.date}>
