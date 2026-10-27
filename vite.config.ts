@@ -9,20 +9,11 @@ export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), "");
 
     // When developers run `npm start`, route the API calls through the Vite
-    // dev-server proxy so they hit staging without CORS pain. The IAP token
-    // is injected as a Bearer header — same trick the e2e suite uses
-    // (see e2e/global-setup.ts).
+    // dev-server proxy so they hit staging without CORS pain.
     //
-    // Behaviour selectors:
-    // - VITE_DEV_API_TARGET (default https://api-staging.goodsurfing.org) — where the
-    //   proxy forwards to. Override to dev/prod if needed.
-    // - VITE_DEV_IAP_TOKEN — the yiap-prefixed bypass token. If empty, the
-    //   proxy still works (you'll get 302 to /auth/login from IAP — clear signal).
+    // VITE_DEV_API_TARGET (default https://api-staging.goodsurfing.org) — where
+    // the proxy forwards to.
     const devProxyTarget = env.VITE_DEV_API_TARGET || "https://api-staging.goodsurfing.org";
-    const devIapToken = env.VITE_DEV_IAP_TOKEN || "";
-    const devProxyHeaders: Record<string, string> = devIapToken
-        ? { Authorization: `Bearer ${devIapToken}` }
-        : {};
 
     return {
         plugins: [react()],
@@ -71,26 +62,16 @@ export default defineConfig(({ mode }) => {
         server: {
             port: 3000,
             open: true,
-            // Forward backend/IAP paths to the chosen target. Matches every
-            // path the SPA actually uses against the API (REST + admin +
-            // IAP login flow + uploaded media). Everything else (HTML,
-            // /assets/*, /locales/*) stays on the Vite dev server.
-            //
-            // IAP only inspects X-Forwarded-Authorization for the bypass
-            // token — Authorization is passed through untouched, so this
-            // never clobbers a real user JWT set via baseQuery prepareHeaders.
+            // Forward backend paths to the chosen target. Matches every path
+            // the SPA actually uses against the API (REST + admin + OAuth +
+            // uploaded media). Everything else (HTML, /assets/*, /locales/*)
+            // stays on the Vite dev server.
             proxy: {
                 "^/(api|admin|auth|oauth2|static-media|media)(/|$)": {
                     target: devProxyTarget,
                     changeOrigin: true,
                     secure: true,
                     cookieDomainRewrite: { "*": "" },
-                    configure: (proxy) => {
-                        proxy.on("proxyReq", (proxyReq) => {
-                            if (!devIapToken) return;
-                            proxyReq.setHeader("X-Forwarded-Authorization", `Bearer ${devIapToken}`);
-                        });
-                    },
                 },
             },
         },

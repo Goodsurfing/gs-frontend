@@ -1,7 +1,7 @@
 import { chromium, request } from '@playwright/test';
 import path from 'path';
 import fs from 'fs';
-import { BASE_URL, API_URL, IAP_TOKEN } from './config';
+import { BASE_URL, API_URL } from './config';
 
 const AUTH_DIR = path.join(__dirname, '.auth');
 
@@ -13,14 +13,9 @@ const ACCOUNTS = [
 async function setup(): Promise<void> {
     fs.mkdirSync(AUTH_DIR, { recursive: true });
 
-    const iapHeaders: Record<string, string> = IAP_TOKEN
-        ? { Authorization: `Bearer ${IAP_TOKEN}` }
-        : {};
-
     // Сброс БД до чистого состояния
     const api = await request.newContext({
         baseURL: API_URL,
-        extraHTTPHeaders: iapHeaders,
         ignoreHTTPSErrors: true,
     });
 
@@ -37,8 +32,7 @@ async function setup(): Promise<void> {
     for (const account of ACCOUNTS) {
         const ctx = await browser.newContext({
             baseURL: BASE_URL,
-            extraHTTPHeaders: iapHeaders,
-            ignoreHTTPSErrors: true,
+                ignoreHTTPSErrors: true,
         });
 
         // Получаем JWT через API
