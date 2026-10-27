@@ -55,15 +55,10 @@ test.describe('Волонтёр и хост: заявки на вакансию'
         const email = `e2e-${tag}-${Date.now()}@test.local`;
         const password = 'E2eVolunteer2026!';
 
-        const registerResp = await api.post('/api/v1/users', {
-            data: {
-                email, plainPassword: password, locale: 'ru', isActive: true,
-            },
-        });
-        expect(registerResp.ok(), await registerResp.text()).toBeTruthy();
-
-        const verifyResp = await api.post('/api/test/verify-email', { data: { email } });
-        expect(verifyResp.ok(), await verifyResp.text()).toBeTruthy();
+        // Служебный эндпоинт стейджа: сразу подтверждённый пользователь, без
+        // лимита регистраций (10/час с IP) — иначе повторный прогон за час падал на 429.
+        const createResp = await api.post('/api/test/create-user', { data: { email, password } });
+        expect(createResp.ok(), await createResp.text()).toBeTruthy();
 
         const auth = await login(api, email, password);
 
@@ -128,7 +123,9 @@ test.describe('Волонтёр и хост: заявки на вакансию'
             baseURL: API_URL, ignoreHTTPSErrors: true,
         });
 
-        const volAuth = await login(api, 'vol@test.com', 'Test1234!');
+        // Одноразовый волонтёр: заявка уникальна по паре (волонтёр, вакансия),
+        // с общим vol@test.com повторный прогон за день падал бы.
+        const volAuth = await registerFreshVolunteer(api, 'accept');
         const hostAuth = await login(api, 'host@test.com', 'Test1234!');
         const orgId = await getHostOrgId(api, hostAuth);
         const vacancyId = await findVacancyByTitle(api, orgId, 'E2E Тестовая вакансия 1 — не удалять');

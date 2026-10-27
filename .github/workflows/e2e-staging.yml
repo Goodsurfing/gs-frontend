@@ -1,0 +1,82 @@
+name: E2E staging
+
+# Сквозная проверка стейджа как пользователь: вход, карта, отклик и переписка
+# с организатором, оплата членства тестовой картой ЮKassa. Ловит то, что
+# не видят юнит-тесты: поломки на стыке фронта, бэка, конфигов и внешних
+# сервисов. Данные стейджа не очищаются (E2E_RESET не задан) — сценарии
+# работают на обычной копии прода с одноразовыми @test.local пользователями.
+
+on:
+  workflow_run:
+    workflows: ['Deploy to staging']
+    types: [completed]
+  workflow_dispatch:
+  schedule:
+    # 04:30 UTC = 07:30 МСК: после ночного restore (06:00) и включения VM (06:55)
+    - cron: '30 4 * * *'
+
+concurrency:
+  group: e2e-staging
+  cancel-in-progress: false
+
+jobs:
+  e2e:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Wait for staging to answer
+        run: |
+          for i in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "https://api-staging.goodsurfing.org/api/v1/membership/tariffs" || true)
+            [ "$code" = "200" ] && exit 0
+            echo "staging API: $code, ждём…"; sleep 10
+          done
+          echo "Стейдж не ответил за 5 минут"; exit 1
+
+      - name: Run E2E
+        run: npx playwright test --reporter=list,html
+
+      - name: Upload report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  notify:
+    needs: e2e
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Telegram
+        continue-on-error: true
+        run: |
+          if [ -z "${{ secrets.TELEGRAM_BOT_TOKEN }}" ] || [ -z "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
+            echo "Telegram secrets not set, skipping notification"
+            exit 0
+          fi
+          TEXT="🔴 *E2E стейджа* не прошли — что-то сломалось для пользователя, в прод не выкатывать
+          ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            --data-urlencode chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            --data-urlencode parse_mode="Markdown" \
+            --data-urlencode text="$TEXT"
