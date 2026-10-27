@@ -10,6 +10,9 @@ export const initErrorTracking = () => {
     Sentry.init({
         dsn,
         environment: import.meta.env.VITE_SENTRY_ENVIRONMENT || "prod",
+        // Тег релиза (v*.*.* на проде, develop-<sha> на стейдже) — чтобы закрывать
+        // задачи в Bugsink «исправлено в следующем релизе»
+        release: import.meta.env.VITE_SENTRY_RELEASE || undefined,
         // Без данных пользователя, cookies, заголовков, тел и параметров запросов —
         // в событиях не должно быть ПДн
         dataCollection: {
