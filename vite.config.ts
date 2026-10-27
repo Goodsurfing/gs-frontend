@@ -47,6 +47,7 @@ export default defineConfig(({ mode }) => {
 
         define: {
             __IS_DEV__: JSON.stringify(isDev),
+            __BUILD_ID__: JSON.stringify(Date.now().toString(36)),
         },
 
         esbuild: {

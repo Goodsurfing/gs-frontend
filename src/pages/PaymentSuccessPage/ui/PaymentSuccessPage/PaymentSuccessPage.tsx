@@ -254,7 +254,7 @@ const PaymentSuccessPage: React.FC = () => {
                         <h2 className={styles.benefitsTitle}>{t("Теперь для вас доступно")}</h2>
                         <ul className={styles.benefitsList}>
                             {benefits.map((item) => (
-                                <li key={item}>{item}</li>
+                                <li key={item}>{t(item)}</li>
                             ))}
                         </ul>
                     </div>

@@ -31,7 +31,7 @@ export const SubscribersWidget: FC<SubscribersWidgetProps> = memo(
         if (!subscribers) {
             return (
                 <div className={styles.emptyWrapper}>
-                    <h2>{t("На данный момент у вас нет подпсичсиков")}</h2>
+                    <h2>{t("На данный момент у вас нет подписчиков")}</h2>
                 </div>
             );
         }

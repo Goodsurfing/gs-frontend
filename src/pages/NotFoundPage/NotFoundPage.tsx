@@ -1,5 +1,5 @@
 import { ReactSVG } from "react-svg";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
@@ -18,10 +18,13 @@ const NotFoundPage = () => {
                 <ReactSVG src={documentSearchIcon} className={styles.icon} />
                 <h1 className={styles.title}>404</h1>
                 <p className={styles.subtitle}>
-                    Извините, но страница, на которую вы хотели перейти,
-                    {" "}
-                    <br />
-                    не существует.
+                    <Trans t={t} i18nKey="Извините, но страница, на которую вы хотели перейти, <br/>не существует">
+                        Извините, но страница, на которую вы хотели перейти,
+                        {" "}
+                        <br />
+                        не существует
+                    </Trans>
+                    .
                 </p>
                 <ButtonLink
                     className={styles.link}
