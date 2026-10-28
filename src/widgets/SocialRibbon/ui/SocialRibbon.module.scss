@@ -27,23 +27,28 @@
 
 .link {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--text-secondary-1);
+    // Белая обводка — чтобы цветные иконки не сливались с фоном плашки.
+    box-shadow: 0 0 0 2px var(--text-secondary-1);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 
     &:hover,
     &:focus-visible {
         transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(14, 29, 39, 0.25);
+        box-shadow: 0 0 0 2px var(--text-secondary-1), 0 2px 8px rgba(14, 29, 39, 0.25);
     }
 
     img {
         display: block;
+        border-radius: inherit;
     }
+}
+
+.circle {
+    border-radius: 50%;
+}
+
+.square {
+    border-radius: 22%;
 }
 
 @media (max-width: 576px) {
