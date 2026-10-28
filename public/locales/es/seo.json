@@ -1,0 +1,46 @@
+{
+    "offersMap": {
+        "title": "Mapa de oportunidades de voluntariado — GoodSurfing",
+        "description": "Proyectos de voluntariado en Rusia y en todo el mundo en un mapa: ecología, reservas naturales, granjas, arqueología, proyectos sociales. Elige destino, fechas y condiciones."
+    },
+    "categories": {
+        "title": "Categorías de proyectos de voluntariado — GoodSurfing",
+        "description": "Ecología y reservas naturales, granjas, expediciones arqueológicas, trabajo con niños y animales: encuentra un proyecto de voluntariado según tus intereses."
+    },
+    "findJob": {
+        "title": "Trabajo de temporada mientras viajas — GoodSurfing",
+        "description": "Combina trabajo y viaje: trabajos de temporada junto al mar, en la montaña y en la naturaleza con alojamiento y comida."
+    },
+    "becomeHost": {
+        "title": "Hazte anfitrión y recibe voluntarios — GoodSurfing",
+        "description": "Reservas naturales, ONG, granjas, casas de huéspedes y expediciones encuentran voluntarios en GoodSurfing. Publica tu proyecto y consigue ayuda."
+    },
+    "rules": {
+        "title": "Reglas del servicio — GoodSurfing",
+        "description": "Reglas de uso de GoodSurfing para voluntarios y anfitriones."
+    },
+    "privacyPolicy": {
+        "title": "Política de privacidad — GoodSurfing",
+        "description": "Cómo GoodSurfing trata y protege los datos personales de los usuarios."
+    },
+    "paymentSecurityPolicy": {
+        "title": "Seguridad de los pagos — GoodSurfing",
+        "description": "Cómo se protegen los pagos en GoodSurfing: membresía y donaciones."
+    },
+    "donationsMap": {
+        "title": "Recaudaciones para buenas causas — GoodSurfing",
+        "description": "Apoya los proyectos de los anfitriones de GoodSurfing: recaudaciones en el mapa, objetivos e informes."
+    },
+    "donationReports": {
+        "title": "Informes de recaudaciones — GoodSurfing",
+        "description": "Informes de los anfitriones sobre en qué se gastaron las donaciones recaudadas a través de GoodSurfing."
+    },
+    "host": {
+        "title": "Organización — GoodSurfing",
+        "description": "Perfil de la organización en GoodSurfing: proyectos de voluntariado, condiciones y reseñas."
+    },
+    "volunteer": {
+        "title": "Perfil de voluntario — GoodSurfing",
+        "description": "Perfil de voluntario en GoodSurfing."
+    }
+}

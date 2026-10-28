@@ -12,6 +12,9 @@ vi.mock("@/app/providers/LocaleProvider", () => ({
     useLocale: () => localeState,
 }));
 
+// Мета-теги проверяются в SeoHelmet.test.tsx; здесь нет HelmetProvider
+vi.mock("@/shared/ui/SeoHelmet", () => ({ PageSeo: () => null }));
+
 vi.mock("@/widgets/MainPageLayout", () => ({
     MainPageLayout: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));

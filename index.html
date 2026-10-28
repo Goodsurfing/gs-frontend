@@ -1,12 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
         <link rel="icon" type="image/png" href="/favicon.png" />
-        <title>GoodSurfing</title>
+        <!--
+            Мета-теги по умолчанию для тех, кто не выполняет JavaScript
+            (превью в мессенджерах, часть поисковиков). data-rh — чтобы
+            react-helmet-async заменил их тегами конкретной страницы, а не
+            добавил дубли (GS-213).
+        -->
+        <title>GoodSurfing — волонтерские путешествия со смыслом</title>
+        <meta data-rh="true" name="description" content="GoodSurfing помогает находить волонтерские проекты, экспедиции и стажировки, чтобы путешествовать, помогать и менять мир." />
+        <meta data-rh="true" property="og:site_name" content="GoodSurfing" />
+        <meta data-rh="true" property="og:type" content="website" />
+        <meta data-rh="true" property="og:title" content="GoodSurfing — путешествуй, помогай, меняй мир" />
+        <meta data-rh="true" property="og:description" content="Ищите волонтерские вакансии и проекты по всему миру на GoodSurfing." />
+        <meta data-rh="true" property="og:image" content="%VITE_MAIN_URL%/og-image.jpg" />
+        <meta data-rh="true" name="twitter:card" content="summary_large_image" />
 
         <!-- Yandex.Metrika counter -->
         <script type="text/javascript">
