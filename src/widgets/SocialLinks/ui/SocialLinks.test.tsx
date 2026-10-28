@@ -9,12 +9,12 @@ vi.mock("react-i18next", () => ({
     useTranslation: () => ({ t: (key: string) => key }),
 }));
 
-/** GS-187: ссылки на соцсети в меню шапки. */
+/** GS-187: плашка со ссылками на соцсети над шапкой главной. */
 describe("SocialLinks", () => {
     it("показывает подпись и ссылки на Telegram, MAX и VK в новой вкладке", () => {
         render(<SocialLinks />);
 
-        expect(screen.getByText("main.welcome.header.socials")).toBeTruthy();
+        expect(screen.getByText("main.welcome.header.socials-cta")).toBeTruthy();
         const links = screen.getAllByRole("link");
         expect(links.map((a) => a.getAttribute("href"))).toEqual([
             "https://t.me/goodsurfing",

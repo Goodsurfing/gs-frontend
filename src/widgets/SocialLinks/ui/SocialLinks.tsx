@@ -9,10 +9,10 @@ import vkIcon from "@/shared/assets/icons/social-brand/vk.png";
 import styles from "./SocialLinks.module.scss";
 
 /**
- * GS-187: ссылки на соцсети Гудсёрфинга в меню шапки — в выпадающем
- * «Сообществе» на компьютере и внизу бургер-меню на телефоне. Иконки — как в
- * рассылках (присланы в задаче): Telegram и ВК круглые, MAX — скруглённый
- * квадрат.
+ * GS-187: заметная плашка со ссылками на соцсети Гудсёрфинга в самом верху
+ * главной, над шапкой (как «Подписывайтесь на наш телеграм-канал» на старом
+ * сайте). Не закреплена: уезжает при прокрутке. Иконки — как в рассылках
+ * (присланы в задаче): Telegram и ВК круглые, MAX — скруглённый квадрат.
  */
 export const SOCIAL_LINKS = [
     {
@@ -32,12 +32,12 @@ interface SocialLinksProps {
 
 export const SocialLinks: FC<SocialLinksProps> = ({ className }) => {
     const { t } = useTranslation();
-    const caption = t("main.welcome.header.socials");
+    const caption = t("main.welcome.header.socials-cta");
 
     return (
-        <div className={cn(styles.socials, className)}>
+        <aside className={cn(styles.ribbon, className)} aria-label={caption}>
             <span className={styles.caption}>{caption}</span>
-            <ul className={styles.links} aria-label={caption}>
+            <ul className={styles.links}>
                 {SOCIAL_LINKS.map(({
                     name, href, icon, shape,
                 }) => (
@@ -50,11 +50,11 @@ export const SocialLinks: FC<SocialLinksProps> = ({ className }) => {
                             aria-label={name}
                             title={name}
                         >
-                            <img src={icon} alt="" aria-hidden="true" width="32" height="32" />
+                            <img src={icon} alt="" aria-hidden="true" width="28" height="28" />
                         </a>
                     </li>
                 ))}
             </ul>
-        </div>
+        </aside>
     );
 };
