@@ -5,3 +5,7 @@ build
 **/.git
 **/.DS_Store
 **/node_modules
+
+# Новый фронт (эпик GS-212): сборки не нужны в образах
+apps/web/.next
+apps/web/locales

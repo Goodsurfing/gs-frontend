@@ -1,0 +1,5 @@
+node_modules
+.next
+locales
+next-env.d.ts
+*.tsbuildinfo

@@ -1,0 +1,38 @@
+{
+    "name": "@goodsurfing/web",
+    "private": true,
+    "version": "0.1.0",
+    "description": "Новый веб-фронт Goodsurfing (эпик GS-212): Next.js, серверный рендер",
+    "scripts": {
+        "locales": "node scripts/copy-locales.mjs",
+        "predev": "npm run locales",
+        "dev": "next dev --port 3100",
+        "prebuild": "npm run locales",
+        "build": "next build",
+        "start": "next start --port 3100",
+        "lint": "eslint .",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run"
+    },
+    "dependencies": {
+        "@goodsurfing/api": "file:../../packages/api",
+        "next": "16.4.3",
+        "react": "19.3.1",
+        "react-dom": "19.3.1",
+        "server-only": "^0.0.1"
+    },
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4.3.3",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "eslint": "^9",
+        "eslint-config-next": "16.4.3",
+        "tailwindcss": "^4.3.3",
+        "typescript": "^5.9.0",
+        "vitest": "^3.2.7"
+    },
+    "engines": {
+        "node": ">=20.9"
+    }
+}

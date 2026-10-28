@@ -1,0 +1,20 @@
+{
+    "name": "@goodsurfing/api",
+    "private": true,
+    "version": "0.1.0",
+    "description": "Типы и клиент API gs-backend, генерируются из OpenAPI (эпик GS-212). Общие для веба и мобилки.",
+    "type": "module",
+    "main": "src/index.ts",
+    "types": "src/index.ts",
+    "scripts": {
+        "generate": "node scripts/generate.mjs",
+        "check": "node scripts/generate.mjs --check"
+    },
+    "dependencies": {
+        "openapi-fetch": "^0.17.0"
+    },
+    "devDependencies": {
+        "openapi-typescript": "^7.13.0",
+        "typescript": "^5.9.0"
+    }
+}
