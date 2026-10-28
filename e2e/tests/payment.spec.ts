@@ -1,5 +1,6 @@
 import { test, expect, request } from '@playwright/test';
 import { API_URL } from '../config';
+import { payWithTestCard, replayPaymentSucceeded } from '../support/yookassa';
 import { e2eHeaders, hasE2eToken, NO_TOKEN_REASON } from '../support/testApi';
 
 /**
@@ -55,43 +56,10 @@ test.describe('Оплата членства — полный путь на ст
         expect(paymentUrl).toBeTruthy();
 
         await page.goto(paymentUrl);
-        await page.waitForURL(/yoomoney\.ru\/checkout/, { timeout: 15_000 });
-        await expect(page.locator('[data-qa="notification-informer"]')).toBeVisible({ timeout: 10_000 });
-
-        const orderId = new URL(page.url()).searchParams.get('orderId');
-        expect(orderId).toBeTruthy();
-
-        // Оплата тестовой картой ЮKassa (деньги не списываются):
-        // https://yookassa.ru/developers/payment-acceptance/testing/test-bank-card
-        await page.getByText(/Bank card|Банковская карта/).first().click();
-        // Форма ЮKassa с масками иногда теряет символы при быстром вводе
-        // (28.10 в CVC дошла одна цифра из трёх, «Check the CVC», оплата не
-        // ушла). Поэтому каждое поле вводим заново, пока значение не совпадёт.
-        const typeInto = async (name: string, value: string) => {
-            const input = page.locator(`input[name="${name}"]`);
-            await expect(async () => {
-                await input.fill('');
-                await input.pressSequentially(value, { delay: 40 });
-                expect((await input.inputValue()).replace(/\D/g, '')).toBe(value);
-            }).toPass({ timeout: 15_000 });
-        };
-        await typeInto('card-number', '5555555555554444');
-        await typeInto('expiry-month', '12');
-        await typeInto('expiry-year', '30');
-        await typeInto('security-code', '123');
-        await page.locator('button[type="submit"]').click();
-        // Тестовая ЮKassa иногда отвечает медленно — 30 с иногда не хватало.
-        await page.waitForURL(/checkout\/payments\/v2\/success/, { timeout: 60_000 });
+        const orderId = await payWithTestCard(page);
 
         // Реплеим уведомление сами (см. коммент в начале файла).
-        const notifyResp = await api.post('/api/v1/payments/yookassa/notification', {
-            data: {
-                type: 'notification',
-                event: 'payment.succeeded',
-                object: { id: orderId, status: 'succeeded' },
-            },
-        });
-        expect(notifyResp.ok(), await notifyResp.text()).toBeTruthy();
+        await replayPaymentSucceeded(api, orderId);
 
         const membershipResp = await api.get('/api/v1/membership/current', { headers: authHeader });
         const membership = await membershipResp.json();

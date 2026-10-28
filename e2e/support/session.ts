@@ -14,7 +14,10 @@ export interface E2eSession {
  * Одноразовый пользователь @test.local: сценарии, которые меняют данные,
  * не трогают общих vol@/host@. Ночной restore стейджа таких пользователей удаляет.
  */
-export const createSession = async (prefix: string, { admin = false } = {}): Promise<E2eSession> => {
+export const createSession = async (
+    prefix: string,
+    { admin = false, volunteer = false } = {},
+): Promise<E2eSession> => {
     const api = await request.newContext({ baseURL: API_URL, ignoreHTTPSErrors: true });
     try {
         const email = `e2e-${prefix}-${Date.now()}@test.local`;
@@ -27,6 +30,13 @@ export const createSession = async (prefix: string, { admin = false } = {}): Pro
         const login = await api.post('/api/v1/token', { data: { email, password } });
         expect(login.ok(), await login.text()).toBeTruthy();
         const { accessToken, mercureToken, roles } = await login.json();
+        if (volunteer) {
+            // Профиль волонтёра — без него нельзя откликаться и жертвовать в сборы
+            const created2 = await api.post('/api/v1/personal/volunteer', {
+                data: {}, headers: { Authorization: `Bearer ${accessToken}` },
+            });
+            expect(created2.ok(), await created2.text()).toBeTruthy();
+        }
         return { email, password, accessToken, mercureToken, roles: roles ?? [] };
     } finally {
         await api.dispose();
