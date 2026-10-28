@@ -37,6 +37,9 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
                 bulletList: false,
                 orderedList: false,
                 listItem: false,
+                // Новое в v3: пустой абзац в конце документа — попадал бы в
+                // сохраняемый HTML. В tiptap 2 его не было.
+                trailingNode: false,
             }),
             Underline.configure(),
             OrderedList,
@@ -45,7 +48,9 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
             TextAlign.configure({
                 types: ["heading", "paragraph"],
                 alignments: ["left", "center", "justify"],
-                defaultAlignment: "left",
+                // Без defaultAlignment: в v3 он пишется в каждый абзац как
+                // style="text-align: left". Выравнивание по умолчанию и так левое,
+                // а тулбар без явного выравнивания подсвечивает «left».
             }),
             Link,
             // Картинки — только через ResizableImageExtension (это тот же Image
@@ -62,8 +67,13 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
                 class: cn(styles.input),
             },
         },
-        onUpdate: () => {
-            onChange(editor?.getHTML() || "");
+        // Редактор берём из аргумента, а не из замыкания: в tiptap 3 onUpdate
+        // приходит раньше, чем useEditor вернул значение, и editor ещё
+        // undefined — наружу уходила пустая строка, эффект ниже видел
+        // расхождение и перезаписывал содержимое, сбивая курсор (после нажатия
+        // «список» текст печатался мимо списка).
+        onUpdate: ({ editor: current }) => {
+            onChange(current.getHTML());
         },
     });
 
