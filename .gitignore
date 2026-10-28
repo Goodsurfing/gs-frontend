@@ -14,7 +14,7 @@ localhost+1.pem
 .tsbuildinfo
 Agents.md
 .claude/
-scripts/
+/scripts/
 playwright-report/
 test-results/
 e2e/.auth/

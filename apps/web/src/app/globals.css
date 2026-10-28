@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/*
+ * Дизайн-токены — сняты со старого фронта (src/app/styles), чтобы новый
+ * внешне совпадал со старым (эпик GS-212). Единственный источник значений:
+ * в компонентах — только классы Tailwind на этих токенах, без «магических» цветов.
+ */
+@font-face { font-family: "Lato"; src: url("/fonts/Lato-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Lato"; src: url("/fonts/Lato-Medium.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Lato"; src: url("/fonts/Lato-Semibold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Lato"; src: url("/fonts/Lato-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+
+@theme {
+    --font-sans: "Lato", sans-serif;
+
+    /* Цвета */
+    --color-primary: #3dabf7;          /* --text-primary-1, --accent-color */
+    --color-primary-hover: #197dc2;    /* --hover-blue */
+    --color-ink: #0e1d27;              /* --text-primary-2, --footer */
+    --color-ink-secondary: #212121;    /* --text-secondary-2 */
+    --color-caption: #8494a1;          /* --text-caption */
+    --color-page: #fafcfe;             /* --page-color */
+    --color-surface: #ffffff;          /* --bg-primary-1 */
+    --color-surface-2: #fbfdfe;        /* --bg-primary-2 */
+    --color-accent-bg: #dfe6eb;        /* --bg-accent, --accent-elements */
+    --color-field: #ecf1f4;            /* --bg-field */
+    --color-cta: #02cc9b;              /* --button-1: зелёные CTA */
+    --color-cta-hover: #00aa74;        /* --hover-green */
+    --color-status-new: #79c8ff;
+    --color-status-accepted: #77eb98;
+    --color-status-confirmed: #5eecd2;
+    --color-status-rejected: #fcc3c3;
+    --color-error: #eb5757;
+    --color-disabled: #ebebe4;
+
+    /* Типографика: size / line-height / weight как в старом фронте */
+    --text-h1: 40px;  --text-h1--line-height: 1.2;  --text-h1--font-weight: 600;
+    --text-h2: 26px;  --text-h2--line-height: 1.2;  --text-h2--font-weight: 400;
+    --text-h3: 18px;  --text-h3--line-height: 1.2;  --text-h3--font-weight: 500;
+    --text-label: 16px; --text-label--line-height: 1.2;
+    --text-field: 16px; --text-field--line-height: 1.25;
+    --text-primary: 14px; --text-primary--line-height: 1.2; --text-primary--font-weight: 500;
+    --text-secondary: 14px; --text-secondary--line-height: 1;
+    --text-caption: 12px; --text-caption--line-height: 1.2; --text-caption--font-weight: 500;
+    --text-note: 10px; --text-note--line-height: 1.2;
+
+    /* Брейкпоинты старого фронта (max-width): 480, 576, 768, 992, 1200 */
+    --breakpoint-xs: 480px;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+
+    --radius-field: 10px;
+    --shadow-line: 0 1px 0 #dfe6eb;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    @apply bg-page text-ink font-sans antialiased;
+}

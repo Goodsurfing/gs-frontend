@@ -1,0 +1,48 @@
+name: Web (новый фронт)
+
+# Проверки нового фронта (эпик GS-212): apps/web и packages/api.
+# Старое SPA проверяет lint.yml.
+
+on:
+  pull_request:
+    paths:
+      - 'apps/web/**'
+      - 'packages/**'
+      - 'public/locales/**'
+      - '.github/workflows/web.yml'
+  push:
+    branches: [develop]
+    paths:
+      - 'apps/web/**'
+      - 'packages/**'
+      - 'public/locales/**'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: packages/api
+        working-directory: packages/api
+        run: npm ci --no-audit --no-fund
+      - name: Install
+        working-directory: apps/web
+        run: npm ci --no-audit --no-fund
+      - name: Lint
+        working-directory: apps/web
+        run: npm run lint
+      - name: Types
+        working-directory: apps/web
+        run: npm run locales && npm run typecheck
+      - name: Unit tests
+        working-directory: apps/web
+        run: npm test
+      - name: Build
+        working-directory: apps/web
+        run: npm run build
+      - name: Docker image builds
+        run: docker build -f apps/web/Dockerfile -t gs-web:check .
