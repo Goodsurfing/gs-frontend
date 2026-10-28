@@ -4,7 +4,6 @@ import {
 } from "vitest";
 
 import { userActions } from "@/entities/User/model/slice/userSlice";
-import { REFRESH_TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 
 import { createServerLogoutMiddleware } from "./serverLogout";
 
@@ -15,7 +14,6 @@ const makeStore = (authData: unknown, send: ReturnType<typeof vi.fn>) => {
         reducers: {},
         extraReducers: (builder) => builder.addCase(userActions.logout, (state) => {
             state.authData = undefined;
-            localStorage.removeItem(REFRESH_TOKEN_LOCALSTORAGE_KEY);
         }),
     });
     return configureStore({
@@ -27,10 +25,11 @@ const makeStore = (authData: unknown, send: ReturnType<typeof vi.fn>) => {
 describe("createServerLogoutMiddleware", () => {
     beforeEach(() => localStorage.clear());
 
-    it("при выходе из сессии зовёт /token/logout с refresh-токеном до очистки хранилища", () => {
-        localStorage.setItem(REFRESH_TOKEN_LOCALSTORAGE_KEY, "refresh-123");
+    it("при выходе из сессии зовёт /token/logout с refresh-токеном из сессии (без кавычек JSON)", () => {
+        // В localStorage токен лежит JSON-строкой — брать его оттуда как есть нельзя
+        localStorage.setItem("refreshToken", JSON.stringify("refresh-123"));
         const send = vi.fn(() => Promise.resolve());
-        makeStore({ id: "1" }, send).dispatch(userActions.logout());
+        makeStore({ id: "1", refreshToken: "refresh-123" }, send).dispatch(userActions.logout());
 
         expect(send).toHaveBeenCalledTimes(1);
         const [url, init] = send.mock.calls[0] as unknown as [string, RequestInit];
