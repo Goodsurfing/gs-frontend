@@ -102,8 +102,11 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                         />
                     ) : <div className={styles.imagePlaceholder} />}
                     {isFavoriteIconShow && (
-                        <ReactSVG
-                            src={heartIcon}
+                        // Кнопка, а не div: нажимается с клавиатуры, видна экранным читалкам
+                        <button
+                            type="button"
+                            aria-label={isFavorite ? t("Убрать из избранного") : t("Добавить в избранное")}
+                            aria-pressed={isFavorite}
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
@@ -112,7 +115,9 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                             className={cn(styles.favorite, {
                                 [styles.active]: isFavorite,
                             })}
-                        />
+                        >
+                            <ReactSVG src={heartIcon} />
+                        </button>
                     )}
                 </div>
             )}
