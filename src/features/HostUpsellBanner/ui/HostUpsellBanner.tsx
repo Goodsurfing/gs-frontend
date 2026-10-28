@@ -2,7 +2,7 @@ import { FC, memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useGetMyHostQuery } from "@/entities/Host";
-import { useGetProfileOccupancyQuery } from "@/entities/Profile";
+import { hasHostMembership, useGetProfileOccupancyQuery } from "@/entities/Profile";
 import { MemberBanner } from "@/features/MemberBanner";
 
 import styles from "./HostUpsellBanner.module.scss";
@@ -38,7 +38,7 @@ export const HostUpsellBanner: FC<HostUpsellBannerProps> = memo((props: HostUpse
     const subject = `${subjectPrefix} - ${host?.name ?? ""}`;
     const mailtoHref = `mailto:support@goodsurfing.org?subject=${encodeURIComponent(subject)}`;
 
-    if (!profileOccupancy.isMembership) {
+    if (!hasHostMembership(profileOccupancy)) {
         const title = kind === "consultation"
             ? t("hostUpsellBanner.Организаторы с оформленным членством могут получить бесплатную консультацию по продвижению своего проекта")
             : t("hostUpsellBanner.Организаторы с оформленным членством получают медиаподдержку своего проекта");

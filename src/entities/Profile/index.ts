@@ -26,6 +26,7 @@ export {
     useGetProfilePasswordIsChangeQuery,
     useChangePasswordWithoutOldPasswordMutation,
     useChangePasswordMutation,
+    hasHostMembership,
 } from "./api/profileApi";
 
 export type {
