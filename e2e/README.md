@@ -11,6 +11,7 @@ E2E_BASE_URL=https://… E2E_API_URL=https://… npm run e2e   # другой с
 ```
 
 - **Учётные записи.** `global-setup.ts` входит под vol@test.com и host@test.com и сохраняет сессии в `e2e/.auth/`. Ночной restore стейджа пересоздаёт этих пользователей. Сценарии, которые меняют состояние, создают одноразовых пользователей через `/api/test/create-user`.
+- **Почта.** Письма стейджа уходят в Mailpit (`support/mailpit.ts`). Нужны `MAILPIT_USER` и `MAILPIT_PASSWORD`: в CI это секреты репозитория, локально — `set -a; . ~/.config/goodsurfing/mailpit-staging.env; set +a`. Без них сценарии с письмами пропускаются.
 - **`/api/test/reset`** стирает данные стенда. Вызывается только при `E2E_RESET=1` и только на локальном стенде, никогда на стейдже.
 - **CI.** `.github/workflows/e2e-staging.yml` запускает сетку после каждого деплоя на стейдж и каждое утро. Падение — сообщение в Telegram и запрет выкатки в прод.
 
@@ -19,6 +20,7 @@ E2E_BASE_URL=https://… E2E_API_URL=https://… npm run e2e   # другой с
 | Файл | Что проверяет |
 |---|---|
 | `tests/public-pages.spec.ts` | Все публичные страницы у гостя открываются без JS-ошибок и экрана ошибки; 404; языки |
+| `tests/auth.spec.ts` | Регистрация → письмо → подтверждение почты → вход; неверный пароль; сброс пароля по ссылке из письма |
 | `tests/seo.spec.ts` | Мета-теги, hreflang, sitemap |
 | `tests/offers-map.spec.ts` | Карта вакансий: интерактивность |
 | `tests/application-flow.spec.ts` | Отклик волонтёра, принятие и отклонение хостом, переписка |
