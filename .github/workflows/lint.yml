@@ -38,11 +38,10 @@ jobs:
         run: npm run test:run
 
       # Известные уязвимости в зависимостях, которые попадают в сборку.
-      # Пока не блокирует: остались swiper/react-router/tiptap, их закрывают
-      # мажорные обновления (см. docs/roadmap). Потом — убрать continue-on-error.
+      # Блокирует на moderate и выше. Сейчас остаётся одна low (deepmerge через
+      # react-player и babel-plugin-i18next-extract, исправления нет) — её пропускаем.
       - name: Dependency audit
-        continue-on-error: true
-        run: npm audit --omit=dev --audit-level=high
+        run: npm audit --omit=dev --audit-level=moderate
 
   secrets:
     # Действующие токены и ключи, случайно попавшие в коммит.
