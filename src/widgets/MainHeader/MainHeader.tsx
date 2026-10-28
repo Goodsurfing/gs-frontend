@@ -9,6 +9,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
+import { SocialLinks } from "@/widgets/SocialLinks";
 
 import logotypeIcon from "@/shared/assets/icons/logo-black.svg";
 import {
@@ -30,18 +31,45 @@ type Variant = "floating" | "static";
 
 interface MainHeaderProps {
     variant?: Variant;
+    /** GS-187: плашка соцсетей над шапкой (только на главной). */
+    withSocialRibbon?: boolean;
 }
 
-const MainHeader: FC<MainHeaderProps> = ({ variant = "floating" }) => {
+const MainHeader: FC<MainHeaderProps> = ({ variant = "floating", withSocialRibbon = false }) => {
     const { locale } = useLocale();
     const { t } = useTranslation();
     const { myProfile, profileIsLoading, isAuth } = useAuth();
     const [scrolled, setScrolled] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
+    const ribbonRef = useRef<HTMLDivElement>(null);
 
     const { data } = useGetBannerMarketingQuery(
         { type: BannerMarketingType.UNDER_HEADER_ALL_PAGES },
     );
+
+    // Плашка соцсетей стоит в потоке над шапкой и уезжает при прокрутке.
+    // Плавающая шапка (fixed) должна стоять под ней, пока плашка видна, —
+    // отдаём её нижнюю границу в CSS-переменную.
+    useEffect(() => {
+        const ribbon = ribbonRef.current;
+        const wrapper = wrapperRef.current;
+        if (!ribbon || !wrapper) {
+            return undefined;
+        }
+
+        const updateRibbonOffset = () => {
+            const { bottom } = ribbon.getBoundingClientRect();
+            wrapper.style.setProperty("--ribbon-bottom", `${Math.max(bottom, 0)}px`);
+        };
+
+        updateRibbonOffset();
+        window.addEventListener("scroll", updateRibbonOffset, { passive: true });
+        window.addEventListener("resize", updateRibbonOffset);
+        return () => {
+            window.removeEventListener("scroll", updateRibbonOffset);
+            window.removeEventListener("resize", updateRibbonOffset);
+        };
+    }, [withSocialRibbon]);
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 20);
@@ -81,69 +109,76 @@ const MainHeader: FC<MainHeaderProps> = ({ variant = "floating" }) => {
     }, [data, variant, scrolled]);
 
     return (
-        <div
-            ref={wrapperRef}
-            className={cn(styles.wrapper, styles[variant], { [styles.scrolled]: scrolled })}
-        >
-            {data && (
-                <a
-                    href={data.url}
-                    className={styles.banner}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <span className={styles.bannerText}>{data.description}</span>
-                    <span className={styles.bannerCta}>
-                        {t("Подробнее")}
-                        {" →"}
-                    </span>
-                </a>
+        <>
+            {withSocialRibbon && (
+                <div ref={ribbonRef}>
+                    <SocialLinks />
+                </div>
             )}
-            <header className={styles.header}>
-                <div className={styles.left}>
-                    <LocaleLink
-                        to={getMainPageUrl(locale)}
-                        className={styles.logo}
+            <div
+                ref={wrapperRef}
+                className={cn(styles.wrapper, styles[variant], { [styles.scrolled]: scrolled })}
+            >
+                {data && (
+                    <a
+                        href={data.url}
+                        className={styles.banner}
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
-                        <img src={logotypeIcon} alt="GoodSurfing" />
-                    </LocaleLink>
-                </div>
-                <div className={styles.nav}>
-                    <MainHeaderNav />
-                </div>
-                <div className={styles.right}>
-                    <MembershipNavItem />
-                    <ChangeLanguage localeApi={myProfile?.locale} profileData={myProfile} />
-                    {(isAuth && myProfile) ? (
-                        <>
-                            <div className={styles.icons}>
-                                <LocaleLink
-                                    to={getMessengerPageUrl(locale)}
-                                    className={styles.icon}
-                                >
-                                    <MessangerInfo />
-                                </LocaleLink>
-                            </div>
-                            <MainHeaderProfile
-                                profileData={myProfile}
-                                isLoading={profileIsLoading}
-                            />
-                        </>
-                    ) : (
-                        <ButtonLink
-                            className={styles.btn}
-                            type="outlined"
-                            path={getSignInPageUrl(locale)}
+                        <span className={styles.bannerText}>{data.description}</span>
+                        <span className={styles.bannerCta}>
+                            {t("Подробнее")}
+                            {" →"}
+                        </span>
+                    </a>
+                )}
+                <header className={styles.header}>
+                    <div className={styles.left}>
+                        <LocaleLink
+                            to={getMainPageUrl(locale)}
+                            className={styles.logo}
                         >
-                            {t("main.welcome.header.sign-in")}
-                        </ButtonLink>
-                    )}
+                            <img src={logotypeIcon} alt="GoodSurfing" />
+                        </LocaleLink>
+                    </div>
+                    <div className={styles.nav}>
+                        <MainHeaderNav />
+                    </div>
+                    <div className={styles.right}>
+                        <MembershipNavItem />
+                        <ChangeLanguage localeApi={myProfile?.locale} profileData={myProfile} />
+                        {(isAuth && myProfile) ? (
+                            <>
+                                <div className={styles.icons}>
+                                    <LocaleLink
+                                        to={getMessengerPageUrl(locale)}
+                                        className={styles.icon}
+                                    >
+                                        <MessangerInfo />
+                                    </LocaleLink>
+                                </div>
+                                <MainHeaderProfile
+                                    profileData={myProfile}
+                                    isLoading={profileIsLoading}
+                                />
+                            </>
+                        ) : (
+                            <ButtonLink
+                                className={styles.btn}
+                                type="outlined"
+                                path={getSignInPageUrl(locale)}
+                            >
+                                {t("main.welcome.header.sign-in")}
+                            </ButtonLink>
+                        )}
+                    </div>
+                </header>
+                <div className={styles.mobile}>
+                    <MobileHeader />
                 </div>
-            </header>
-            <div className={styles.mobile}>
-                <MobileHeader />
             </div>
-        </div>
+        </>
     );
 };
 
