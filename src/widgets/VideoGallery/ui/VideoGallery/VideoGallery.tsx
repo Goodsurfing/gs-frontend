@@ -1,7 +1,7 @@
 import React, {
     FC, memo, useMemo,
 } from "react";
-import { Navigation } from "swiper";
+import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import cn from "classnames";
 

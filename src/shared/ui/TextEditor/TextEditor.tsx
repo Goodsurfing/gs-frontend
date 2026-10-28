@@ -4,7 +4,6 @@ import ListItem from "@tiptap/extension-list-item";
 import OrderedList from "@tiptap/extension-ordered-list";
 import TextAlign from "@tiptap/extension-text-align";
 import Underline from "@tiptap/extension-underline";
-import Image from "@tiptap/extension-image";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import cn from "classnames";
@@ -29,8 +28,19 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
     onErrorUploadImage,
 }) => {
     const editor = useEditor({
+        // tiptap 3: StarterKit сам включает ссылки, подчёркивание и списки —
+        // отключаем их там, чтобы не было дублей с отдельными расширениями ниже.
         extensions: [
-            StarterKit.configure(),
+            StarterKit.configure({
+                link: false,
+                underline: false,
+                bulletList: false,
+                orderedList: false,
+                listItem: false,
+                // Новое в v3: пустой абзац в конце документа — попадал бы в
+                // сохраняемый HTML. В tiptap 2 его не было.
+                trailingNode: false,
+            }),
             Underline.configure(),
             OrderedList,
             BulletList,
@@ -38,20 +48,32 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
             TextAlign.configure({
                 types: ["heading", "paragraph"],
                 alignments: ["left", "center", "justify"],
-                defaultAlignment: "left",
+                // Без defaultAlignment: в v3 он пишется в каждый абзац как
+                // style="text-align: left". Выравнивание по умолчанию и так левое,
+                // а тулбар без явного выравнивания подсвечивает «left».
             }),
             Link,
-            Image,
+            // Картинки — только через ResizableImageExtension (это тот же Image
+            // с изменением размера): с отдельным Image узел «image» регистрировался дважды.
             ResizableImageExtension,
         ],
         content: value,
+        // В tiptap 3 редактор по умолчанию не перерисовывает React на каждую
+        // транзакцию — тогда ToolBar не видит, что жирный/список/выравнивание
+        // включены (editor.isActive). Возвращаем поведение tiptap 2.
+        shouldRerenderOnTransaction: true,
         editorProps: {
             attributes: {
                 class: cn(styles.input),
             },
         },
-        onUpdate: () => {
-            onChange(editor?.getHTML() || "");
+        // Редактор берём из аргумента, а не из замыкания: в tiptap 3 onUpdate
+        // приходит раньше, чем useEditor вернул значение, и editor ещё
+        // undefined — наружу уходила пустая строка, эффект ниже видел
+        // расхождение и перезаписывал содержимое, сбивая курсор (после нажатия
+        // «список» текст печатался мимо списка).
+        onUpdate: ({ editor: current }) => {
+            onChange(current.getHTML());
         },
     });
 

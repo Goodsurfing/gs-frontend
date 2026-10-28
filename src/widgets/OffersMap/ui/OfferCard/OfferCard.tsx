@@ -1,7 +1,7 @@
 import cn from "classnames";
-import React, { FC, memo, useState } from "react";
+import React, { FC, memo } from "react";
 
-import { OfferApi, OfferCard as OfferCardComponent } from "@/entities/Offer";
+import { OfferApi, OfferCard as OfferCardComponent, useFavoriteOffers } from "@/entities/Offer";
 
 import { useCategories } from "@/shared/data/categories";
 
@@ -33,7 +33,6 @@ interface OfferCardProps {
     status: "opened" | "closed";
     className?: string;
     classNameCard?: string;
-    // isFavoriteIconShow: boolean;
     isSelected?: boolean;
     onSelect?: (offerId: number) => void;
     hasLocation?: boolean;
@@ -58,12 +57,8 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
     } = props;
 
     const { getTranslation } = useCategories();
-    const [isFavorite, setFavorite] = useState<boolean>(false);
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const onFavoriteClick = (offerId: number) => {
-        setFavorite((prev) => !prev);
-    };
+    // Сердечко — только вошедшим (избранное хранится на сервере, gs-backend #407).
+    const { enabled: isFavoriteEnabled, isFavorite, toggleFavorite } = useFavoriteOffers();
 
     return (
         <div
@@ -83,13 +78,13 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                 went={acceptedApplicationsCount}
                 link={getOfferPersonalPageUrl(locale, id.toString())}
                 className={classNameCard}
-                isFavoriteIconShow={false}
-                isFavorite={isFavorite}
+                isFavoriteIconShow={isFavoriteEnabled}
+                isFavorite={isFavorite(id)}
                 isSelected={isSelected}
                 onSelect={onSelect}
                 hasLocation={hasLocation}
                 locale={locale}
-                handleFavoriteClick={onFavoriteClick}
+                handleFavoriteClick={toggleFavorite}
             />
         </div>
     );

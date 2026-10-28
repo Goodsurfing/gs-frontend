@@ -13,18 +13,24 @@ const ACCOUNTS = [
 async function setup(): Promise<void> {
     fs.mkdirSync(AUTH_DIR, { recursive: true });
 
-    // Сброс БД до чистого состояния
-    const api = await request.newContext({
-        baseURL: API_URL,
-        ignoreHTTPSErrors: true,
-    });
+    // /api/test/reset ОЧИЩАЕТ пользовательские таблицы (TRUNCATE ... CASCADE) и
+    // грузит только e2e-фикстуры — на стейдже это стирает копию прода, на
+    // которой проверяют задачи. Поэтому только по явному флагу (локальный стенд).
+    // Тесты рассчитаны на обычные данные стейджа: одноразовые пользователи,
+    // vol@test.com / host@test.com, которые ночной restore пересоздаёт.
+    if (process.env.E2E_RESET === '1') {
+        const api = await request.newContext({
+            baseURL: API_URL,
+            ignoreHTTPSErrors: true,
+        });
 
-    const resetResp = await api.post('/api/test/reset');
-    if (!resetResp.ok()) {
-        throw new Error(`/api/test/reset вернул ${resetResp.status()}: ${await resetResp.text()}`);
+        const resetResp = await api.post('/api/test/reset');
+        if (!resetResp.ok()) {
+            throw new Error(`/api/test/reset вернул ${resetResp.status()}: ${await resetResp.text()}`);
+        }
+
+        await api.dispose();
     }
-
-    await api.dispose();
 
     // Логин под каждым аккаунтом и сохранение storageState
     const browser = await chromium.launch();

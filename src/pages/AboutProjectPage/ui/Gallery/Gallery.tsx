@@ -3,7 +3,6 @@ import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import "swiper/css";
 import "swiper/css/navigation";
-import "swiper/swiper.min.css";
 
 import { ImageGallerySlider } from "@/shared/ui/ImageGallerySlider/ImageGallerySlider";
 import { Image } from "@/types/media";

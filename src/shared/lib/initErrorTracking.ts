@@ -1,5 +1,7 @@
 import * as Sentry from "@sentry/react";
 
+import { browserFamily, isPageTranslatedByBrowser } from "./domTranslationGuard";
+
 // Сбор ошибок фронта в Bugsink (monitoring.goodsurfing.org, совместим с Sentry SDK).
 // DSN задаётся при сборке (VITE_SENTRY_DSN); без него — ничего не отправляем
 // (локальная разработка, тесты, стенды без мониторинга).
@@ -29,7 +31,19 @@ export const initErrorTracking = () => {
             "ResizeObserver loop limit exceeded",
             "ResizeObserver loop completed with undelivered notifications",
             "Non-Error promise rejection captured",
+            // Не догрузился скрипт входа через VK ID у пользователя — сеть/блокировщик
+            /Failed to fetch \(id\.vk\.ru\)/,
         ],
+        // Метки без ПДн: переведена ли страница браузером и каким браузером —
+        // чтобы отличать ошибки переводчиков (removeChild и т.п.) от наших.
+        beforeSend(event) {
+            event.tags = {
+                ...event.tags,
+                page_translated: String(isPageTranslatedByBrowser()),
+                browser_family: browserFamily(),
+            };
+            return event;
+        },
         denyUrls: [
             /^chrome-extension:\/\//,
             /^moz-extension:\/\//,

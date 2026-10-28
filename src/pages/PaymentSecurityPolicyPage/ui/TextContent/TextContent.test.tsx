@@ -10,24 +10,23 @@ describe("TextContent", () => {
         expect(screen.getByAltText("Visa")).toBeInTheDocument();
         expect(screen.getByAltText("MasterCard")).toBeInTheDocument();
         expect(screen.getByAltText("МИР")).toBeInTheDocument();
-        expect(screen.getByAltText("Best2Pay")).toBeInTheDocument();
     });
 
-    it("ссылается на best2pay.net при каждом упоминании Best2Pay в тексте", () => {
+    it("называет платёжным сервисом ЮKassa и ведёт на yookassa.ru", () => {
         render(<TextContent />);
 
-        const links = screen.getAllByRole("link", { name: "Best2Pay" });
-        expect(links).toHaveLength(3);
+        const links = screen.getAllByRole("link", { name: "ЮKassa" });
+        expect(links).toHaveLength(4);
         links.forEach((link) => {
-            expect(link).toHaveAttribute("href", "https://best2pay.net/");
+            expect(link).toHaveAttribute("href", "https://yookassa.ru/");
             expect(link).toHaveAttribute("target", "_blank");
         });
     });
 
-    it("сохраняет ссылку на страницу платёжного агрегатора", () => {
-        render(<TextContent />);
+    it("не упоминает Best2Pay — с ним больше не работаем", () => {
+        const { container } = render(<TextContent />);
 
-        const link = screen.getByRole("link", { name: "https://best2pay.net/support/raschetnyy-bank/" });
-        expect(link).toHaveAttribute("href", "https://best2pay.net/support/raschetnyy-bank/");
+        expect(container.textContent).not.toMatch(/best2pay/i);
+        expect(container.innerHTML).not.toMatch(/best2pay/i);
     });
 });
