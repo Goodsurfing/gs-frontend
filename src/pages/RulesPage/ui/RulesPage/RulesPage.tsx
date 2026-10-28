@@ -17,6 +17,8 @@ import { Сonditions } from "../Сonditions/Сonditions";
 import { СonditionsEn } from "../Сonditions/Сonditions.en";
 import { СonditionsEs } from "../Сonditions/Сonditions.es";
 import styles from "./RulesPage.module.scss";
+import { getRulesPageUrl } from "@/shared/config/routes/AppUrls";
+import { PageSeo } from "@/shared/ui/SeoHelmet";
 
 // Юридический текст — отдельный файл на каждый язык, а не сотни ключей в словарях.
 // Юридическую силу имеет русская версия, на en/es над текстом — плашка об этом.
@@ -31,6 +33,7 @@ const RulesPage = () => {
     const { Text, Conditions, menu } = CONTENT[locale] ?? CONTENT.ru;
     return (
         <MainPageLayout>
+            <PageSeo section="rules" path={getRulesPageUrl(locale)} />
             <div className={styles.wrapper}>
                 <Header />
                 {locale !== "ru" && <LegalTranslationNotice />}

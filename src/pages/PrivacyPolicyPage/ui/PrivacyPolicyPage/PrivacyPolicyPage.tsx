@@ -15,6 +15,8 @@ import { TextContentEn } from "../TextContent/TextContent.en";
 import { TextContentEs } from "../TextContent/TextContent.es";
 
 import styles from "./PrivacyPolicyPage.module.scss";
+import { getPrivacyPolicyPageUrl } from "@/shared/config/routes/AppUrls";
+import { PageSeo } from "@/shared/ui/SeoHelmet";
 
 // Юридический текст — отдельный файл на каждый язык (см. RulesPage).
 const CONTENT = {
@@ -28,6 +30,7 @@ const PrivacyPolicyPage = () => {
     const { Text, menu } = CONTENT[locale] ?? CONTENT.ru;
     return (
         <MainPageLayout>
+            <PageSeo section="privacyPolicy" path={getPrivacyPolicyPageUrl(locale)} />
             <div className={styles.wrapper}>
                 <Header />
                 {locale !== "ru" && <LegalTranslationNotice />}
