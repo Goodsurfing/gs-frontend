@@ -127,7 +127,10 @@
                 "expeditions": "Expediciones",
                 "international-volunteering": "Voluntariado Internacional",
                 "messages": "Mensajes",
-                "socials-cta": "Síguenos en las redes sociales"
+                "socials-cta": "Síguenos en las redes sociales",
+                "menu": "Menú",
+                "membership-active": "Activa hasta {{date}}",
+                "membership-from": "desde {{price}} ₽/año"
             },
             "title": "Encontrar el viaje soñado",
             "offers-btn": "Todas las ofertas",
