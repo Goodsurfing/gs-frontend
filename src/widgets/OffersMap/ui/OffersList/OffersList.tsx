@@ -136,7 +136,6 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
                     isSelected={offer.id === selectedOfferId}
                     onSelect={onSelectOffer}
                     hasLocation={!offerIdsWithoutLocation?.has(offer.id)}
-                    // isFavoriteIconShow={!!isAuth}
                 />
             ));
         }

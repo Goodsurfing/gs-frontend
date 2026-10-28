@@ -58,7 +58,7 @@ interface OfferGalleryItemRequest {
 export const offerApi = createApi({
     reducerPath: "offerApi",
     baseQuery: baseQueryAcceptJson,
-    tagTypes: ["offer"],
+    tagTypes: ["offer", "favorite"],
     endpoints: (build) => ({
         createOffer: build.mutation<CreateOfferResponse, FormData>({
             query: (data) => ({
@@ -154,6 +154,59 @@ export const offerApi = createApi({
             }),
             providesTags: ["offer"],
         }),
+        // Избранное (gs-backend #407). Список — в формате каталога (GET /vacancy).
+        getFavoriteOffers: build.query<
+        GetOffersResponse, { page?: number; limit?: number } | void
+        >({
+            query: (params) => ({
+                url: `${API_BASE_URL_ABSOLUTE}favorites/vacancies`,
+                method: "GET",
+                params: params ?? undefined,
+            }),
+            providesTags: ["favorite"],
+        }),
+        getFavoriteOfferIds: build.query<{ ids: number[] }, void>({
+            query: () => ({
+                url: `${API_BASE_URL_ABSOLUTE}favorites/vacancies/ids`,
+                method: "GET",
+            }),
+            providesTags: ["favorite"],
+        }),
+        addFavoriteOffer: build.mutation<void, number>({
+            query: (id) => ({
+                url: `${API_BASE_URL_ABSOLUTE}favorites/vacancies/${id}`,
+                method: "POST",
+            }),
+            // Сердечко включается сразу, не дожидаясь ответа; при ошибке — откат.
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                const patch = dispatch(offerApi.util.updateQueryData("getFavoriteOfferIds", undefined, (draft) => {
+                    if (!draft.ids.includes(id)) draft.ids.unshift(id);
+                }));
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patch.undo();
+                }
+            },
+            invalidatesTags: ["favorite"],
+        }),
+        removeFavoriteOffer: build.mutation<void, number>({
+            query: (id) => ({
+                url: `${API_BASE_URL_ABSOLUTE}favorites/vacancies/${id}`,
+                method: "DELETE",
+            }),
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                const patch = dispatch(offerApi.util.updateQueryData("getFavoriteOfferIds", undefined, (draft) => {
+                    draft.ids = draft.ids.filter((favoriteId) => favoriteId !== id);
+                }));
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patch.undo();
+                }
+            },
+            invalidatesTags: ["favorite"],
+        }),
         getAllOffersMap: build.query<OfferMap[], Partial<GetAllOffersMapFilters> | undefined>({
             query: (params) => ({
                 url: `${API_BASE_URL_ABSOLUTE}vacancy/for-map/list`,
@@ -246,4 +299,8 @@ export const {
     useGetAllOffersMapQuery,
     useLazyGetAllOffersMapQuery,
     useLazyGetOfferParticipantListByOfferIdQuery,
+    useGetFavoriteOffersQuery,
+    useGetFavoriteOfferIdsQuery,
+    useAddFavoriteOfferMutation,
+    useRemoveFavoriteOfferMutation,
 } = offerApi;
