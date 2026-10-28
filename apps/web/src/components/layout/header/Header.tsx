@@ -11,13 +11,35 @@ import { MobileHeader } from "./MobileHeader";
 import { buildNavigation } from "./navigation";
 import { ScrollState } from "./ScrollState";
 
+/**
+ * floating — плавающая капсула (главная, лендинги); static — обычная белая
+ * полоса с границей снизу (функциональные страницы, 404).
+ */
+export type HeaderVariant = "floating" | "static";
+
 interface HeaderProps {
     locale: Locale;
     t: Translate;
     /** Переводы из profile.json — тексты окна «Членство» */
     tProfile: Translate;
     banner: MarketingBanner | null;
+    variant?: HeaderVariant;
 }
+
+const LAYOUT: Record<HeaderVariant, { outer: string; inner: string; header: string; banner: string }> = {
+    floating: {
+        outer: "sticky top-2 z-50 h-0 down-2xl:top-0 down-2xl:h-auto down-2xl:bg-white",
+        inner: "pointer-events-none mx-4 pt-2 down-2xl:mx-0 down-2xl:pt-0",
+        header: "h-[60px] rounded-[10px] border border-white/60 bg-white/78 shadow-[0_8px_24px_rgba(14,29,39,0.12),0_1px_0_rgba(255,255,255,0.7)_inset] backdrop-blur-[16px] backdrop-saturate-[1.6] transition-[background-color,box-shadow] duration-200 [[data-scrolled]_&]:bg-white/94 [[data-scrolled]_&]:shadow-[0_12px_32px_rgba(14,29,39,0.16)]",
+        banner: "rounded-b-[10px] down-2xl:rounded-none",
+    },
+    static: {
+        outer: "sticky top-0 z-50 border-b border-accent-bg bg-white",
+        inner: "",
+        header: "mx-auto h-16 max-w-[1360px]",
+        banner: "",
+    },
+};
 
 /**
  * Шапка публичных страниц (как MainHeader старого фронта). Пока только для
@@ -29,22 +51,23 @@ interface HeaderProps {
  * + отступ 8 px) без скриптов — в старом фронте позицию считал JS на каждый
  * scroll. Уже — обычная белая полоса, прилипающая к верху.
  */
-export function Header({ locale, t, tProfile, banner }: HeaderProps) {
+export function Header({ locale, t, tProfile, banner, variant = "floating" }: HeaderProps) {
+    const layout = LAYOUT[variant];
     const navigation = buildNavigation(locale, t);
     const membershipLabel = t("main.welcome.header.membership");
     const signIn = { label: t("main.welcome.header.sign-in"), href: routes.signIn(locale) };
     const offerText = (key: string, price: number) => tProfile(`info.${key}`, { price });
 
     return (
-        <div className="sticky top-2 z-50 h-0 down-2xl:top-0 down-2xl:h-auto down-2xl:bg-white">
-            <ScrollState />
-            <div className="pointer-events-none mx-4 pt-2 down-2xl:mx-0 down-2xl:pt-0">
+        <div className={layout.outer}>
+            {variant === "floating" && <ScrollState />}
+            <div className={layout.inner}>
                 {banner && (
                     <a
                         href={banner.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="pointer-events-auto flex w-full flex-wrap items-center justify-center gap-3 rounded-b-[10px] bg-cta px-5 py-2.5 no-underline transition-colors duration-150 hover:bg-cta-deep down-2xl:gap-1.5 down-2xl:rounded-none down-2xl:px-4"
+                        className={`pointer-events-auto flex w-full flex-wrap items-center justify-center gap-3 bg-cta px-5 py-2.5 no-underline transition-colors duration-150 hover:bg-cta-deep down-2xl:gap-1.5 down-2xl:px-4 ${layout.banner}`}
                     >
                         <span className="text-center text-[14px] leading-[1.4] font-semibold text-white down-2xl:text-[13px]">
                             {banner.description}
@@ -55,7 +78,7 @@ export function Header({ locale, t, tProfile, banner }: HeaderProps) {
                         </span>
                     </a>
                 )}
-                <header className="pointer-events-auto flex h-[60px] items-center justify-between gap-4 rounded-[10px] border border-white/60 bg-white/78 px-5 shadow-[0_8px_24px_rgba(14,29,39,0.12),0_1px_0_rgba(255,255,255,0.7)_inset] backdrop-blur-[16px] backdrop-saturate-[1.6] transition-[background-color,box-shadow] duration-200 down-3xl:gap-3 down-3xl:px-3 down-2xl:hidden [[data-scrolled]_&]:bg-white/94 [[data-scrolled]_&]:shadow-[0_12px_32px_rgba(14,29,39,0.16)]">
+                <header className={`pointer-events-auto flex items-center justify-between gap-4 px-5 down-3xl:gap-3 down-3xl:px-3 down-2xl:hidden ${layout.header}`}>
                     <div className="flex shrink-0 items-center gap-3">
                         <a href={routes.main(locale)} className="flex items-center">
                             {/* eslint-disable-next-line @next/next/no-img-element -- svg-логотип */}
