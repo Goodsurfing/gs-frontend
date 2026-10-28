@@ -51,7 +51,7 @@ export const ProfileMembershipBanner: FC<ProfileMembershipBannerProps> = memo((
     const internationalBlock = international ? (
         <div className={cn(styles.active, styles.international)}>
             <p className={styles.activeText}>
-                {t("info.Международный клуб: активно до {{date}}", {
+                {t("info.Международный клуб — активно до {{date}}", {
                     date: formatDate(locale, international.endDate),
                 })}
             </p>

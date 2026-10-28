@@ -51,7 +51,7 @@
         "Получи возможность оставлять неограниченное количество откликов и путешествовать без лимитов — {{price}} руб/год": "Get unlimited applications and travel without limits — {{price}} rub/year",
         "Создавай неограниченное количество вакансий и получи больше возможностей для своего проекта — {{price}} руб/год": "Create unlimited vacancies and get more opportunities for your project — {{price}} rub/year",
         "Оформить членство": "Get a membership",
-        "Международный клуб: активно до {{date}}": "International Club: active until {{date}}",
+        "Международный клуб — активно до {{date}}": "International Club: active until {{date}}",
         "Продлить участие": "Renew membership"
     },
     "preferences": {
