@@ -30,8 +30,7 @@ const HostDashboardPage: FC = () => {
 
     return (
         <div className={styles.dashboard}>
-            <HostFill />
-            <PublishedVacanciesCounter className={styles.vacanciesCounter} />
+            <HostFill extra={<PublishedVacanciesCounter />} />
             <div className={styles.columns}>
                 <RequestsWidget locale={locale} />
                 {/* <CalendarWidget /> add this logic in future */}

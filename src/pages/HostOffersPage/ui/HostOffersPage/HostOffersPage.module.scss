@@ -31,3 +31,31 @@
     padding: 12px 100px;
   }
 }
+
+.layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+.aside {
+  position: sticky;
+  top: calc(var(--header-offset, 80px) + 16px);
+  flex-shrink: 0;
+  margin-top: 56px;
+}
+
+@media (max-width: 1200px) {
+  .layout {
+    flex-direction: column-reverse;
+  }
+  .aside {
+    position: static;
+    margin-top: 0;
+  }
+}

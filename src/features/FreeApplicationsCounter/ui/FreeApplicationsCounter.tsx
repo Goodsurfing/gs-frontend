@@ -9,11 +9,14 @@ import { useAppSelector } from "@/shared/hooks/redux";
 import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
 import { FREE_APPLICATIONS_LIMIT } from "@/shared/constants/membership";
 import LocaleLink from "@/shared/ui/LocaleLink/LocaleLink";
+import { QuotaDiagram } from "@/shared/ui/QuotaDiagram/QuotaDiagram";
 
 import styles from "./FreeApplicationsCounter.module.scss";
 
 interface FreeApplicationsCounterProps {
     className?: string;
+    /** GS-188: column — на дашборде рядом с диаграммой заполненности, row — в полосе фильтров. */
+    layout?: "column" | "row";
 }
 
 /**
@@ -25,7 +28,7 @@ interface FreeApplicationsCounterProps {
 export const FreeApplicationsCounter: FC<FreeApplicationsCounterProps> = memo((
     props: FreeApplicationsCounterProps,
 ) => {
-    const { className } = props;
+    const { className, layout = "column" } = props;
     const isAuth = useAppSelector(getUserAuthData);
     const { data: profileOccupancy } = useGetProfileOccupancyQuery(undefined, { skip: !isAuth });
     const { t } = useTranslation();
@@ -38,28 +41,22 @@ export const FreeApplicationsCounter: FC<FreeApplicationsCounterProps> = memo((
     const { isMembership, remainingFreeApplications } = profileOccupancy;
 
     return (
-        <div className={cn(styles.wrapper, className)}>
-            {isMembership ? (
-                <>
-                    <span className={styles.value}>&#8734;</span>
-                    <LocaleLink to={getMembershipPageUrl(locale)} className={styles.hint}>
-                        {t("freeApplicationsCounter.Не забудьте продлить членство, чтобы сохранить привилегии")}
-                    </LocaleLink>
-                </>
-            ) : (
-                <>
-                    <span className={styles.value}>
-                        {t("freeApplicationsCounter.Можно бесплатно откликнуться на:")}
-                        {" "}
-                        {remainingFreeApplications ?? 0}
-                        /
-                        {FREE_APPLICATIONS_LIMIT}
-                    </span>
-                    <LocaleLink to={getMembershipPageUrl(locale)} className={styles.hint}>
-                        {t("freeApplicationsCounter.Нужно больше? Оформите членство!")}
-                    </LocaleLink>
-                </>
+        <QuotaDiagram
+            className={cn(styles.wrapper, className)}
+            layout={layout}
+            size={layout === "row" ? 64 : 110}
+            remaining={isMembership ? null : (remainingFreeApplications ?? 0)}
+            limit={FREE_APPLICATIONS_LIMIT}
+            label={isMembership
+                ? t("freeApplicationsCounter.Без ограничений")
+                : t("freeApplicationsCounter.Откликов осталось")}
+            hint={(
+                <LocaleLink to={getMembershipPageUrl(locale)} className={styles.hint}>
+                    {isMembership
+                        ? t("freeApplicationsCounter.Не забудьте продлить членство, чтобы сохранить привилегии")
+                        : t("freeApplicationsCounter.Нужно больше? Оформите членство!")}
+                </LocaleLink>
             )}
-        </div>
+        />
     );
 });

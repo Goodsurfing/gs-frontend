@@ -5,6 +5,7 @@ import React, {
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ReactSVG } from "react-svg";
+import { FreeApplicationsCounter } from "@/features/FreeApplicationsCounter";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -232,6 +233,8 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
 
     return (
         <div className={cn(styles.wrapper, className)}>
+            {/* GS-188: остаток откликов — первым, над кнопками-фильтрами. */}
+            <FreeApplicationsCounter layout="row" className={styles.applicationsCounter} />
             <div className={styles.top}>
                 <SquareButton
                     className={cn(styles.button, styles.icon, {

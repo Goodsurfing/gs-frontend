@@ -1,5 +1,7 @@
 import cn from "classnames";
-import { memo, useEffect, useState } from "react";
+import {
+    ReactNode, memo, useEffect, useState,
+} from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -33,10 +35,12 @@ import styles from "./ProfileInfoForm.module.scss";
 interface ProfileInfoFormProps {
     className?: string;
     profile: Profile;
+    /** GS-188: блок под аватаром (баннер членства). */
+    aside?: ReactNode;
 }
 
 export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
-    const { className, profile } = props;
+    const { className, profile, aside } = props;
     const { t } = useTranslation("profile");
     const form = useForm<ProfileInfoFields>({
         mode: "onChange",
@@ -125,7 +129,10 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
                         </Button>
                     </div>
                 </form>
-                <ProfileInfoFormAvatar userId={profile.id} />
+                <div className={styles.side}>
+                    <ProfileInfoFormAvatar userId={profile.id} />
+                    {aside}
+                </div>
             </div>
         </FormProvider>
     );

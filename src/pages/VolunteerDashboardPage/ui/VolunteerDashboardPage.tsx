@@ -13,11 +13,10 @@ const VolunteerDashboardPage = () => {
 
     return (
         <div className={styles.dashboard}>
-            <VolunteerFill />
+            <VolunteerFill extra={<FreeApplicationsCounter />} />
             <div className={styles.columns}>
                 <OffersRecomendationsWidget />
                 <div className={styles.container}>
-                    <FreeApplicationsCounter className={styles.applicationsCounter} />
                     {!profileOccupancy?.isMembership && <MemberBanner className={styles.banner} />}
                     <DashboardNotifications className={styles.notifications} />
                 </div>
