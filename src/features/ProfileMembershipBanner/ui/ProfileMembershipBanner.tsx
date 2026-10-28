@@ -44,7 +44,14 @@ export const ProfileMembershipBanner: FC<ProfileMembershipBannerProps> = memo((
         const isHostTariff = membership.tariff?.forRole === "HOST";
 
         return (
-            <div className={cn(styles.wrapper, styles.active, { [styles.vertical]: vertical }, className)}>
+            <div
+                className={cn(
+                    styles.wrapper,
+                    styles.active,
+                    { [styles.vertical]: vertical },
+                    className,
+                )}
+            >
                 <p className={styles.activeText}>
                     {t("info.Членство активно до {{date}}", { date: formatDate(locale, membership.endDate) })}
                 </p>
