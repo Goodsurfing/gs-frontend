@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Navigation, Pagination } from "swiper";
+import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { useTranslation } from "react-i18next";

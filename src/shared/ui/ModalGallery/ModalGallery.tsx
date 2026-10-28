@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
-import { Navigation } from "swiper";
+import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import useWindowDimensions from "@/shared/hooks/useWindowDimensions";

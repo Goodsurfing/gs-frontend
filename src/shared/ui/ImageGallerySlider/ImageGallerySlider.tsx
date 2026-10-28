@@ -1,9 +1,9 @@
 import cn from "classnames";
 import React, { FC, useState } from "react";
-import { Navigation } from "swiper";
+import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/swiper-bundle.min.css";
-import "swiper/swiper.min.css";
+import "swiper/css/bundle";
+import "swiper/css";
 import { GalleryItem } from "@/types/media";
 
 import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
