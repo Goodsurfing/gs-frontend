@@ -62,10 +62,21 @@ test.describe('Оплата членства — полный путь на ст
         // Оплата тестовой картой ЮKassa (деньги не списываются):
         // https://yookassa.ru/developers/payment-acceptance/testing/test-bank-card
         await page.getByText(/Bank card|Банковская карта/).first().click();
-        await page.locator('input[name="card-number"]').pressSequentially('5555555555554444', { delay: 20 });
-        await page.locator('input[name="expiry-month"]').pressSequentially('12', { delay: 20 });
-        await page.locator('input[name="expiry-year"]').pressSequentially('30', { delay: 20 });
-        await page.locator('input[name="security-code"]').pressSequentially('123', { delay: 20 });
+        // Форма ЮKassa с масками иногда теряет символы при быстром вводе
+        // (28.10 в CVC дошла одна цифра из трёх, «Check the CVC», оплата не
+        // ушла). Поэтому каждое поле вводим заново, пока значение не совпадёт.
+        const typeInto = async (name: string, value: string) => {
+            const input = page.locator(`input[name="${name}"]`);
+            await expect(async () => {
+                await input.fill('');
+                await input.pressSequentially(value, { delay: 40 });
+                expect((await input.inputValue()).replace(/\D/g, '')).toBe(value);
+            }).toPass({ timeout: 15_000 });
+        };
+        await typeInto('card-number', '5555555555554444');
+        await typeInto('expiry-month', '12');
+        await typeInto('expiry-year', '30');
+        await typeInto('security-code', '123');
         await page.locator('button[type="submit"]').click();
         // Тестовая ЮKassa иногда отвечает медленно — 30 с иногда не хватало.
         await page.waitForURL(/checkout\/payments\/v2\/success/, { timeout: 60_000 });
