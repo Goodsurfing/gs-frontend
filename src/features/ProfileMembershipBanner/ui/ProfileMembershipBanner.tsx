@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { useGetCurrentMembershipQuery } from "@/store/api/membershipApi";
+import { CurrentMembership, useGetCurrentAllMembershipsQuery } from "@/store/api/membershipApi";
 import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
 import { formatDate } from "@/shared/lib/formatDate";
 import { TARIFF_FALLBACK_PRICE_RUB, TARIFF_CODE } from "@/shared/constants/membership";
@@ -33,12 +33,38 @@ export const ProfileMembershipBanner: FC<ProfileMembershipBannerProps> = memo((
     const { t } = useTranslation("profile");
     const { locale } = useLocale();
     const navigate = useNavigate();
-    const { data: membership } = useGetCurrentMembershipQuery();
+    // GS-198: у пользователя может быть сразу обычное членство и членство в
+    // Международном клубе. Раньше бралось «одно текущее» — участник только
+    // клуба видел «Членство активно», хотя обычного (безлимитные отклики) у
+    // него нет.
+    const { data: memberships } = useGetCurrentAllMembershipsQuery();
+    const findActive = (category: "REGULAR" | "INTERNATIONAL"): CurrentMembership | undefined => memberships
+        ?.find((item) => item.isActive && item.tariff?.category === category);
+    const membership = findActive("REGULAR");
+    const international = findActive("INTERNATIONAL");
 
-    const goToMembership = (anchor?: "host") => {
+    const goToMembership = (anchor?: "host" | "international") => {
         const url = getMembershipPageUrl(locale);
         navigate(anchor ? `${url}#${anchor}` : url);
     };
+
+    const internationalBlock = international ? (
+        <div className={cn(styles.active, styles.international)}>
+            <p className={styles.activeText}>
+                {t("info.Международный клуб: активно до {{date}}", {
+                    date: formatDate(locale, international.endDate),
+                })}
+            </p>
+            <Button
+                color="BLUE"
+                size="SMALL"
+                variant="OUTLINE"
+                onClick={() => goToMembership("international")}
+            >
+                {t("info.Продлить участие")}
+            </Button>
+        </div>
+    ) : null;
 
     if (membership?.isActive) {
         const isHostTariff = membership.tariff?.forRole === "HOST";
@@ -63,6 +89,7 @@ export const ProfileMembershipBanner: FC<ProfileMembershipBannerProps> = memo((
                 >
                     {t("info.Продлить членство")}
                 </Button>
+                {internationalBlock}
             </div>
         );
     }
@@ -93,6 +120,7 @@ export const ProfileMembershipBanner: FC<ProfileMembershipBannerProps> = memo((
                     {t("info.Оформить членство")}
                 </Button>
             </div>
+            {internationalBlock}
         </div>
     );
 });

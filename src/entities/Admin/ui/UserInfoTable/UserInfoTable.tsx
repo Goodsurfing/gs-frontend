@@ -18,6 +18,7 @@ export const UserInfoTable: FC<UserInfoTableProps> = (props) => {
     const {
         created, lastVisit, endPayment, isPayment, isActive,
         isVerified, isOrganization, isVolunteer, isDelete, isPrivilegedMembership,
+        internationalEndPayment,
     } = data;
 
     const rows = [
@@ -33,6 +34,13 @@ export const UserInfoTable: FC<UserInfoTableProps> = (props) => {
             // Бесплатное бессрочное по решению владельца — не аномалия, не отзывать.
             label: "Привилегированное членство",
             value: isPrivilegedMembership ? YesText : NoText,
+        },
+        {
+            // GS-198: отдельное членство, покупается на странице членства.
+            label: "Международный клуб",
+            value: internationalEndPayment
+                ? <div className={styles.yes}>{`Да, до ${internationalEndPayment}`}</div>
+                : NoText,
         },
         { label: "Пользователь удалён", value: isDelete ? YesText : NoText },
         { label: "Активный пользователь", value: isActive ? YesText : NoText },

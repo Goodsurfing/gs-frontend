@@ -36,6 +36,8 @@ export interface AdminUsersFields {
     isMembership: boolean;
     dataEndMembership: string;
     isPrivilegedMembership: boolean;
+    /** GS-198: до какого числа действует членство в Международном клубе. */
+    internationalEndMembership: string | null;
 }
 
 export interface AdminUserFields {
@@ -68,6 +70,8 @@ export interface AdminUsers {
     endPayment: string;
     /** Бесплатное бессрочное членство по решению владельца (gs-backend #420). */
     isPrivilegedMembership?: boolean;
+    /** GS-198: членство в Международном клубе (d.m.Y) или null. */
+    internationalEndPayment?: string | null;
 }
 
 export interface AdminUser {
@@ -99,10 +103,12 @@ export interface AdminUser {
     isDelete: boolean;
     endPayment: string;
     isPrivilegedMembership?: boolean;
+    /** GS-198: членство в Международном клубе (d.m.Y) или null. */
+    internationalEndPayment?: string | null;
 }
 
 export type UpdateAdminUser = Omit<AdminUser, "created" | "lastVisit" | "isVerified"
-| "isVolunteer" | "isOrganization" | "isActive" | "isDelete" | "isPayment" | "endPayment" | "imagePath" | "thumbnails"
+| "isVolunteer" | "isOrganization" | "isActive" | "isDelete" | "isPayment" | "endPayment" | "internationalEndPayment" | "imagePath" | "thumbnails"
 | "email" | "skills" | "image" | "achievements"> & {
     imageId: string | null;
     skillIds: number[];

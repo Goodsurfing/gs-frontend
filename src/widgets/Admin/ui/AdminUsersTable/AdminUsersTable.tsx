@@ -414,6 +414,18 @@ export const AdminUsersTable = () => {
                 : params.row.dataEndMembership),
         },
         {
+            // GS-198: Международный клуб — отдельное членство, раньше его не было видно.
+            field: "internationalEndMembership",
+            headerName: "Международный клуб",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            renderCell: (params) => (params.row.internationalEndMembership
+                ? `до ${params.row.internationalEndMembership}`
+                : "—"),
+        },
+        {
             field: "actions",
             headerName: "Действия",
             width: 160,
