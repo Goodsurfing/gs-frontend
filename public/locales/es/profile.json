@@ -56,7 +56,8 @@
         "Куда бы вы хотели поехать": "¿A dónde le gustaría ir?",
         "Какой тип путешествий вы предпочитаете": "¿Qué tipo de viaje prefiere?",
         "Сохранить": "Guardar",
-        "Данные успешно изменены": "Datos actualizados con éxito"
+        "Данные успешно изменены": "Datos actualizados con éxito",
+        "Удалить {{tag}}": "Eliminar {{tag}}"
     },
     "role": {
         "Заполните аккаунт гудсёрфера или организатора": "Completa tu cuenta de buen surfer o organizador",
