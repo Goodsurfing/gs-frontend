@@ -40,9 +40,22 @@ interface ProfileOccupancyResponse {
     isMembership: boolean,
     /** null — активное членство, лимита нет (GS-169, GS-171) */
     remainingFreeApplications: number | null,
-    /** null — активное членство или пользователь не хост (GS-172) */
+    /** null — хостовое членство или пользователь не хост (GS-172) */
     remainingFreeVacancies: number | null,
+    /**
+     * Хостовые права: хостовый тариф или привилегированное членство
+     * (gs-backend #421). Волонтёрский тариф их не даёт, хотя isMembership: true.
+     */
+    isHostMembership?: boolean,
 }
+
+/**
+ * Есть ли у хоста хостовое членство (больше одной вакансии, сборы, значок
+ * «Партнёр»). Пока бэкенд не отдаёт isHostMembership — как раньше, по isMembership.
+ */
+export const hasHostMembership = (
+    occupancy?: Pick<ProfileOccupancyResponse, "isMembership" | "isHostMembership">,
+): boolean => occupancy?.isHostMembership ?? occupancy?.isMembership ?? false;
 
 interface ProfilePasswordIsChangeResponse {
     isChangePassword: boolean;

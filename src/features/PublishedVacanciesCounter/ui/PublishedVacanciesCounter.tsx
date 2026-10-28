@@ -3,7 +3,7 @@ import { FC, memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { useGetProfileOccupancyQuery } from "@/entities/Profile";
+import { hasHostMembership, useGetProfileOccupancyQuery } from "@/entities/Profile";
 import { getUserAuthData } from "@/entities/User";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
@@ -38,11 +38,13 @@ export const PublishedVacanciesCounter: FC<PublishedVacanciesCounterProps> = mem
         return null;
     }
 
-    const { isMembership, remainingFreeVacancies } = profileOccupancy;
+    const { remainingFreeVacancies } = profileOccupancy;
+    // Безлимит вакансий — только у хостового членства, не у волонтёрского.
+    const isHostMember = hasHostMembership(profileOccupancy);
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            {isMembership ? (
+            {isHostMember ? (
                 <>
                     <span className={styles.value}>&#8734;</span>
                     <LocaleLink to={getMembershipPageUrl(locale)} className={styles.hint}>

@@ -14,6 +14,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { useGetTariffsQuery } from "@/store/api/membershipApi";
 import { TARIFF_CODE, TARIFF_FALLBACK_PRICE_RUB } from "@/shared/constants/membership";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { useGetProfileInfoQuery } from "@/entities/Profile";
 import checkIcon from "@/shared/assets/images/membership/check.svg";
 
 interface ForVolunteerProps {
@@ -26,6 +27,11 @@ export const ForVolunteer: FC<ForVolunteerProps> = (props: ForVolunteerProps) =>
     const navigate = useNavigate();
     const { locale } = useLocale();
     const { isAuth } = useAuth();
+    // Хосту поясняем, что волонтёрский тариф не даёт хостовых возможностей
+    // (gs-backend #421). Купить его при этом можно — например, чтобы ездить
+    // волонтёром самому.
+    const { data: profile } = useGetProfileInfoQuery(undefined, { skip: !isAuth });
+    const isHost = Boolean(profile?.hostId);
 
     const { data: tariffs } = useGetTariffsQuery("VOLUNTEER");
     const tariff = tariffs?.find((item) => item.code === TARIFF_CODE.VOLUNTEER);
@@ -130,6 +136,16 @@ export const ForVolunteer: FC<ForVolunteerProps> = (props: ForVolunteerProps) =>
                                 </li>
                             ))}
                         </ul>
+                        {isHost && (
+                            <p className={styles.hostNote}>
+                                {t("for-volunteer.host-note", "Это членство даёт возможности волонтёра. Чтобы публиковать больше одной вакансии и создавать сборы, нужно")}
+                                {" "}
+                                <a href="#host" className={styles.hostNoteLink}>
+                                    {t("for-volunteer.host-note-link", "членство для организаторов")}
+                                </a>
+                                .
+                            </p>
+                        )}
                         <Button
                             color="GREEN"
                             size="SMALL"
