@@ -236,6 +236,10 @@ export interface AdminOrganization {
     telegram: string;
     countVacancies: number;
     countApplications: number;
+    /** GS-199: членство владельца организации. */
+    isHostMembership?: boolean;
+    membershipEndDate?: string | null;
+    isPrivilegedMembership?: boolean;
 }
 
 export interface AdminOrganizations {

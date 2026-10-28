@@ -17,7 +17,15 @@ export const OrganizationInfoTable: FC<OrganizationInfoTableProps> = (props) => 
     const { organizationId, data } = props;
     const {
         countApplications, countVacancies, isActive,
+        isHostMembership, membershipEndDate, isPrivilegedMembership,
     } = data;
+
+    let membershipText = NoText;
+    if (isHostMembership) {
+        membershipText = isPrivilegedMembership
+            ? <div className={styles.yes}>Да, привилегированное (бессрочно)</div>
+            : <div className={styles.yes}>{`Да, до ${membershipEndDate ?? "—"}`}</div>;
+    }
 
     const rows = [
         { label: "ID", value: organizationId },
@@ -26,6 +34,7 @@ export const OrganizationInfoTable: FC<OrganizationInfoTableProps> = (props) => 
         { label: "Кол-во вакансий", value: countVacancies },
         // { label: "Кол-во волонтёров", value: organization.countVolunteers },
         { label: "Организация активна", value: isActive ? YesText : NoText },
+        { label: "Членство организатора", value: membershipText },
     ];
 
     return (

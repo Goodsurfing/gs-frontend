@@ -99,6 +99,7 @@ export {
     useUpdateAdminOrganizationMutation,
     useToggleAdminOrganizationActiveMutation,
     useDeleteOrganizationMutation,
+    useActivateOrganizationMembershipMutation,
     useLazyGetOrganizationsQuery,
     useGetOrganizationByIdQuery,
     useGetPublicAchievementsQuery, useGetPublicCategoriesVacancyQuery,
