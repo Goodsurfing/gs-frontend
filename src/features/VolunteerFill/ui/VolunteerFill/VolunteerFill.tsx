@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { memo } from "react";
+import { ReactNode, memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -17,10 +17,12 @@ import { useGetProfileOccupancyQuery } from "@/entities/Profile";
 
 interface VolunteerFillProps {
     className?: string;
+    /** GS-188: виджет рядом с диаграммой заполненности (счётчик лимита). */
+    extra?: ReactNode;
 }
 
 export const VolunteerFill = memo((props: VolunteerFillProps) => {
-    const { className } = props;
+    const { className, extra } = props;
     const { locale } = useLocale();
     const { t } = useTranslation("volunteer");
 
@@ -80,6 +82,7 @@ export const VolunteerFill = memo((props: VolunteerFillProps) => {
                 </div>
                 <div className={styles.rightSide}>
                     <FillDiagram pointsData={pointsData} />
+                    {extra}
                 </div>
             </div>
         </div>

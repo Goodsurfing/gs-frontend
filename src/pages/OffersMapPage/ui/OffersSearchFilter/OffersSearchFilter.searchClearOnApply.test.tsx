@@ -12,6 +12,11 @@ import { OffersSearchFilter } from "./OffersSearchFilter";
 
 const clearSearchSpy = vi.fn();
 
+// GS-188: счётчик откликов читает Redux — в этих тестах он не нужен.
+vi.mock("@/features/FreeApplicationsCounter", () => ({
+    FreeApplicationsCounter: () => null,
+}));
+
 vi.mock("@/widgets/OffersMap", () => ({
     OffersList: () => <div />,
     OffersMap: () => <div />,

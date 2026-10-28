@@ -1,3 +1,4 @@
+import cn from "classnames";
 import { FC, memo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -14,6 +15,8 @@ const RESPONSE_DAYS = 14;
 interface HostUpsellBannerProps {
     kind: "consultation" | "mediaSupport";
     className?: string;
+    /** GS-188: вертикальный вариант для боковой колонки. */
+    vertical?: boolean;
 }
 
 /**
@@ -23,7 +26,7 @@ interface HostUpsellBannerProps {
  * инструкция написать на поддержку с готовой темой письма.
  */
 export const HostUpsellBanner: FC<HostUpsellBannerProps> = memo((props: HostUpsellBannerProps) => {
-    const { kind, className } = props;
+    const { kind, className, vertical = false } = props;
     const { t } = useTranslation("host");
     const { data: profileOccupancy } = useGetProfileOccupancyQuery();
     const { data: host } = useGetMyHostQuery();
@@ -44,12 +47,12 @@ export const HostUpsellBanner: FC<HostUpsellBannerProps> = memo((props: HostUpse
             : t("hostUpsellBanner.Организаторы с оформленным членством получают медиаподдержку своего проекта");
 
         return (
-            <MemberBanner className={className} title={title} anchor="host" />
+            <MemberBanner className={className} title={title} anchor="host" vertical={vertical} />
         );
     }
 
     return (
-        <div className={className ? `${styles.wrapper} ${className}` : styles.wrapper}>
+        <div className={cn(styles.wrapper, { [styles.vertical]: vertical }, className)}>
             <p className={styles.text}>
                 {kind === "consultation"
                     ? t("hostUpsellBanner.Вы можете получить консультацию по продвижению")
