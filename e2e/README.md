@@ -12,6 +12,7 @@ E2E_BASE_URL=https://… E2E_API_URL=https://… npm run e2e   # другой с
 
 - **Учётные записи.** `global-setup.ts` входит под vol@test.com и host@test.com и сохраняет сессии в `e2e/.auth/`. Ночной restore стейджа пересоздаёт этих пользователей. Сценарии, которые меняют состояние, создают одноразовых пользователей через `/api/test/create-user`.
 - **Почта.** Письма стейджа уходят в Mailpit (`support/mailpit.ts`). Нужны `MAILPIT_USER` и `MAILPIT_PASSWORD`: в CI это секреты репозитория, локально — `set -a; . ~/.config/goodsurfing/mailpit-staging.env; set +a`. Без них сценарии с письмами пропускаются.
+- **Служебные эндпоинты.** `/api/test/*` стейджа требуют заголовок `X-E2E-Token` (`support/testApi.ts`): стейдж публичный. Токен — `E2E_TOKEN`; в CI это секрет репозитория, локально — `set -a; . ~/.config/goodsurfing/e2e-token.env; set +a`. Без него сценарии с одноразовыми пользователями пропускаются.
 - **`/api/test/reset`** стирает данные стенда. Вызывается только при `E2E_RESET=1` и только на локальном стенде, никогда на стейдже.
 - **CI.** `.github/workflows/e2e-staging.yml` запускает сетку после каждого деплоя на стейдж и каждое утро. Падение — сообщение в Telegram и запрет выкатки в прод.
 

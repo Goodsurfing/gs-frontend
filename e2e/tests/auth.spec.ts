@@ -1,6 +1,7 @@
 import { test, expect, request } from '@playwright/test';
 import { API_URL } from '../config';
 import { hasMailpit, linkByText, waitForEmail } from '../support/mailpit';
+import { e2eHeaders, hasE2eToken, NO_TOKEN_REASON } from '../support/testApi';
 
 /**
  * GS-214: вход и регистрация через интерфейс, письма — из Mailpit стейджа.
@@ -50,10 +51,14 @@ test.describe('Авторизация', () => {
 
     test('сброс пароля по ссылке из письма', async ({ page }) => {
         test.skip(!hasMailpit(), 'нет MAILPIT_USER / MAILPIT_PASSWORD');
+        test.skip(!hasE2eToken(), NO_TOKEN_REASON);
         test.setTimeout(120_000);
         const api = await request.newContext({ baseURL: API_URL, ignoreHTTPSErrors: true });
         const email = `e2e-reset-${Date.now()}@test.local`;
-        const created = await api.post('/api/test/create-user', { data: { email, password: 'E2eOld2026' } });
+        const created = await api.post('/api/test/create-user', {
+            data: { email, password: 'E2eOld2026' },
+            headers: e2eHeaders(),
+        });
         expect(created.ok(), await created.text()).toBeTruthy();
 
         await page.goto('/ru/reset-password');
