@@ -55,11 +55,38 @@
     --shadow-line: 0 1px 0 #dfe6eb;
 }
 
+/*
+ * Адаптив как в старом фронте: @media (max-width: Npx) — ВКЛЮЧИТЕЛЬНО.
+ * Стандартные max-* в Tailwind 4 — это width < N, и ровно на 768/992 px вёрстка
+ * разошлась бы со старой. Поэтому в компонентах — только down-*.
+ */
+@custom-variant down-xl (@media (max-width: 1180px));
+@custom-variant down-lg (@media (max-width: 992px));
+@custom-variant down-md (@media (max-width: 768px));
+@custom-variant down-sm (@media (max-width: 576px));
+@custom-variant down-xs (@media (max-width: 480px));
+
 html {
     font-size: 16px;
+    /* Как в старом фронте: межстрочный интервал браузера, а не 1.5 из preflight */
+    line-height: normal;
     scroll-behavior: smooth;
 }
 
 body {
-    @apply bg-page text-ink font-sans antialiased;
+    @apply bg-page text-ink font-sans;
+}
+
+/*
+ * Картинки как в старом фронте: строчные, по базовой линии (preflight Tailwind
+ * делает их блочными и выравнивает по середине — строки с иконками становятся
+ * ниже на 1–2 px). Блочность, где нужна, — явным классом block.
+ */
+@layer base {
+    img,
+    svg,
+    video {
+        display: inline;
+        vertical-align: baseline;
+    }
 }
