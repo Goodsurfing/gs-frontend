@@ -31,11 +31,9 @@ type Variant = "floating" | "static";
 
 interface MainHeaderProps {
     variant?: Variant;
-    /** GS-187: плашка соцсетей над шапкой (только на главной). */
-    withSocialRibbon?: boolean;
 }
 
-const MainHeader: FC<MainHeaderProps> = ({ variant = "floating", withSocialRibbon = false }) => {
+const MainHeader: FC<MainHeaderProps> = ({ variant = "floating" }) => {
     const { locale } = useLocale();
     const { t } = useTranslation();
     const { myProfile, profileIsLoading, isAuth } = useAuth();
@@ -69,7 +67,7 @@ const MainHeader: FC<MainHeaderProps> = ({ variant = "floating", withSocialRibbo
             window.removeEventListener("scroll", updateRibbonOffset);
             window.removeEventListener("resize", updateRibbonOffset);
         };
-    }, [withSocialRibbon]);
+    }, []);
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 20);
@@ -101,20 +99,23 @@ const MainHeader: FC<MainHeaderProps> = ({ variant = "floating", withSocialRibbo
         const resizeObserver = new ResizeObserver(updateHeaderOffset);
         resizeObserver.observe(element);
         window.addEventListener("resize", updateHeaderOffset);
+        // Плашка соцсетей над шапкой уезжает при прокрутке — нижняя граница
+        // шапки меняется плавно, а не только при переключении scrolled.
+        window.addEventListener("scroll", updateHeaderOffset, { passive: true });
 
         return () => {
             resizeObserver.disconnect();
             window.removeEventListener("resize", updateHeaderOffset);
+            window.removeEventListener("scroll", updateHeaderOffset);
         };
     }, [data, variant, scrolled]);
 
     return (
         <>
-            {withSocialRibbon && (
-                <div ref={ribbonRef}>
-                    <SocialLinks />
-                </div>
-            )}
+            {/* GS-187: плашка соцсетей над шапкой на всех страницах. */}
+            <div ref={ribbonRef}>
+                <SocialLinks />
+            </div>
             <div
                 ref={wrapperRef}
                 className={cn(styles.wrapper, styles[variant], { [styles.scrolled]: scrolled })}
