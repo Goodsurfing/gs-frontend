@@ -26,7 +26,7 @@ AdminPersonalOrganizationInfoFormProps> = (props) => {
 
     return (
         <div>
-            <AdminOrganizationSettings />
+            <AdminOrganizationSettings organizationId={organizationId} data={data} />
             <OrganizationInfoTable organizationId={organizationId} data={data} />
             <AdminOrganizationInfo organizationId={organizationId} data={data} />
         </div>

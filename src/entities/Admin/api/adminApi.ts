@@ -512,6 +512,15 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["organization"],
         }),
+        // GS-199: членство организации = членство её владельца по тарифу
+        // организатора, бесплатно и бессрочно.
+        activateOrganizationMembership: build.mutation<void, string>({
+            query: (organizationId) => ({
+                url: `organization/${organizationId}/activate-membership`,
+                method: "POST",
+            }),
+            invalidatesTags: ["organization", "user"],
+        }),
         deleteOrganization: build.mutation<void, string>({
             query: (organizationId) => ({
                 url: `organization/${organizationId}`,
@@ -959,6 +968,7 @@ export const {
     useUpdateAdminOrganizationMutation,
     useToggleAdminOrganizationActiveMutation,
     useDeleteOrganizationMutation,
+    useActivateOrganizationMembershipMutation,
     useLazyGetOrganizationsQuery,
     useGetOrganizationByIdQuery,
     useGetPublicAchievementsQuery,
