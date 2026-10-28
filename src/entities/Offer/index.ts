@@ -19,7 +19,10 @@ export {
     useLazyGetAllOffersMapQuery,
     useLazyGetOfferParticipantListByOfferIdQuery,
     useGetOfferGalleryItemsQuery,
+    useGetFavoriteOffersQuery,
 } from "./api/offerApi";
+
+export { useFavoriteOffers } from "./lib/useFavoriteOffers";
 
 export type {
     UpdateOfferImageGallery, UpdateOfferStatusRequest,
