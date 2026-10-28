@@ -55,6 +55,8 @@ jobs:
           # Письма стейджа уходят в Mailpit (GS-204) — регистрация и сброс пароля читают их оттуда
           MAILPIT_USER: ${{ secrets.MAILPIT_USER }}
           MAILPIT_PASSWORD: ${{ secrets.MAILPIT_PASSWORD }}
+          # /api/test/* стейджа закрыты токеном (gs-backend #439)
+          E2E_TOKEN: ${{ secrets.E2E_TOKEN }}
 
       - name: Upload report
         if: failure()

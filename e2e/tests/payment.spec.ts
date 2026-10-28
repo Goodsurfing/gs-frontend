@@ -1,5 +1,6 @@
 import { test, expect, request } from '@playwright/test';
 import { API_URL } from '../config';
+import { e2eHeaders, hasE2eToken, NO_TOKEN_REASON } from '../support/testApi';
 
 /**
  * Живая проверка полного платёжного пути на стейдже (row 95, row 106-соседние
@@ -21,6 +22,7 @@ import { API_URL } from '../config';
 test.describe('Оплата членства — полный путь на стейдже', () => {
     test('чекаут → тестовая оплата ЮКасса → (replay вебхука) → членство ACTIVE', async ({ page }, testInfo) => {
         test.skip(testInfo.project.name !== 'vol', 'один настоящий платёж на прогон — не дублировать по проектам');
+        test.skip(!hasE2eToken(), NO_TOKEN_REASON);
         test.setTimeout(120_000);
         const api = await request.newContext({
             baseURL: API_URL,
@@ -34,7 +36,7 @@ test.describe('Оплата членства — полный путь на ст
 
         // Служебный эндпоинт стейджа (гейт E2E_TESTING_ENABLED): сразу
         // подтверждённый пользователь, без лимита регистраций.
-        const createResp = await api.post('/api/test/create-user', { data: { email, password } });
+        const createResp = await api.post('/api/test/create-user', { data: { email, password }, headers: e2eHeaders() });
         expect(createResp.ok(), await createResp.text()).toBeTruthy();
 
         const loginResp = await api.post('/api/v1/token', { data: { email, password } });

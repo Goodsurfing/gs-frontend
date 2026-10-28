@@ -1,5 +1,6 @@
 import { test, expect, request, APIRequestContext } from '@playwright/test';
 import { API_URL } from '../config';
+import { e2eHeaders, hasE2eToken, NO_TOKEN_REASON } from '../support/testApi';
 
 /**
  * Пакет e2e-сценариев взаимодействия волонтёра и хоста вокруг заявок на
@@ -38,6 +39,9 @@ import { API_URL } from '../config';
  */
 test.describe('Волонтёр и хост: заявки на вакансию', () => {
     test.describe.configure({ retries: 0 });
+    test.beforeEach(() => {
+        test.skip(!hasE2eToken(), NO_TOKEN_REASON);
+    });
 
     const login = async (api: APIRequestContext, email: string, password: string) => {
         const resp = await api.post('/api/v1/token', { data: { email, password } });
@@ -57,7 +61,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
 
         // Служебный эндпоинт стейджа: сразу подтверждённый пользователь, без
         // лимита регистраций (10/час с IP) — иначе повторный прогон за час падал на 429.
-        const createResp = await api.post('/api/test/create-user', { data: { email, password } });
+        const createResp = await api.post('/api/test/create-user', { data: { email, password }, headers: e2eHeaders() });
         expect(createResp.ok(), await createResp.text()).toBeTruthy();
 
         const auth = await login(api, email, password);
