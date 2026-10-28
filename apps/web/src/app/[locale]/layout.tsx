@@ -8,8 +8,12 @@ import "../globals.css";
 
 export const metadata: Metadata = {
     title: "GoodSurfing",
+    icons: { icon: "/favicon.png" },
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://goodsurfing.org"),
 };
+
+// Другие первые сегменты — не язык: такие адреса уходят в app/global-not-found.tsx
+export const dynamicParams = false;
 
 export function generateStaticParams() {
     return LOCALES.map((locale) => ({ locale }));

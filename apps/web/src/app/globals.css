@@ -19,6 +19,7 @@
     --color-ink: #0e1d27;              /* --text-primary-2, --footer */
     --color-ink-secondary: #212121;    /* --text-secondary-2 */
     --color-caption: #8494a1;          /* --text-caption */
+    --color-ink-tertiary: #484848;     /* --color-black-tertiary */
     --color-page: #fafcfe;             /* --page-color */
     --color-surface: #ffffff;          /* --bg-primary-1 */
     --color-surface-2: #fbfdfe;        /* --bg-primary-2 */

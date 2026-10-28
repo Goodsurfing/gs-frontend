@@ -11,6 +11,11 @@ const config: NextConfig = {
     poweredByHeader: false,
     // Пакеты монорепо — исходники TypeScript, их собирает Next
     transpilePackages: ["@goodsurfing/api"],
+    experimental: {
+        // Страница 404 для неизвестных адресов на уровне маршрутизации
+        // (app/global-not-found.tsx): не вкладывается в страницы и не делает их динамическими
+        globalNotFound: true,
+    },
     images: {
         remotePatterns: [
             { protocol: "https", hostname: "storage.yandexcloud.net" },
