@@ -1,0 +1,113 @@
+import type { Locale } from "@/i18n/config";
+import type { Translate } from "@/i18n/dictionary";
+import type { MarketingBanner } from "@/lib/marketingBanner";
+import { MEMBERSHIP_PRICE_RUB } from "@/lib/membership";
+import { routes } from "@/lib/routes";
+
+import { LanguageSwitcher } from "../LanguageSwitcher";
+import { DesktopNav } from "./DesktopNav";
+import { MembershipHoverCard } from "./MembershipHoverCard";
+import { MobileHeader } from "./MobileHeader";
+import { buildNavigation } from "./navigation";
+import { ScrollState } from "./ScrollState";
+
+interface HeaderProps {
+    locale: Locale;
+    t: Translate;
+    /** Переводы из profile.json — тексты окна «Членство» */
+    tProfile: Translate;
+    banner: MarketingBanner | null;
+}
+
+/**
+ * Шапка публичных страниц (как MainHeader старого фронта). Пока только для
+ * гостя: профиль, сообщения и язык из профиля появятся со входом через cookie
+ * (GS-218).
+ *
+ * Шире 1280 px — плавающая капсула: под лентой соцсетей, при прокрутке
+ * прилипает в 16 px от верха. Это делает sticky-обёртка нулевой высоты (top 8 px
+ * + отступ 8 px) без скриптов — в старом фронте позицию считал JS на каждый
+ * scroll. Уже — обычная белая полоса, прилипающая к верху.
+ */
+export function Header({ locale, t, tProfile, banner }: HeaderProps) {
+    const navigation = buildNavigation(locale, t);
+    const membershipLabel = t("main.welcome.header.membership");
+    const signIn = { label: t("main.welcome.header.sign-in"), href: routes.signIn(locale) };
+    const offerText = (key: string, price: number) => tProfile(`info.${key}`, { price });
+
+    return (
+        <div className="sticky top-2 z-50 h-0 down-2xl:top-0 down-2xl:h-auto down-2xl:bg-white">
+            <ScrollState />
+            <div className="pointer-events-none mx-4 pt-2 down-2xl:mx-0 down-2xl:pt-0">
+                {banner && (
+                    <a
+                        href={banner.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="pointer-events-auto flex w-full flex-wrap items-center justify-center gap-3 rounded-b-[10px] bg-cta px-5 py-2.5 no-underline transition-colors duration-150 hover:bg-cta-deep down-2xl:gap-1.5 down-2xl:rounded-none down-2xl:px-4"
+                    >
+                        <span className="text-center text-[14px] leading-[1.4] font-semibold text-white down-2xl:text-[13px]">
+                            {banner.description}
+                        </span>
+                        <span className="shrink-0 text-[14px] font-bold whitespace-nowrap text-white underline down-2xl:text-[13px]">
+                            {t("Подробнее")}
+                            {" →"}
+                        </span>
+                    </a>
+                )}
+                <header className="pointer-events-auto flex h-[60px] items-center justify-between gap-4 rounded-[10px] border border-white/60 bg-white/78 px-5 shadow-[0_8px_24px_rgba(14,29,39,0.12),0_1px_0_rgba(255,255,255,0.7)_inset] backdrop-blur-[16px] backdrop-saturate-[1.6] transition-[background-color,box-shadow] duration-200 down-3xl:gap-3 down-3xl:px-3 down-2xl:hidden [[data-scrolled]_&]:bg-white/94 [[data-scrolled]_&]:shadow-[0_12px_32px_rgba(14,29,39,0.16)]">
+                    <div className="flex shrink-0 items-center gap-3">
+                        <a href={routes.main(locale)} className="flex items-center">
+                            {/* eslint-disable-next-line @next/next/no-img-element -- svg-логотип */}
+                            <img src="/icons/header/logo.svg" alt="GoodSurfing" width={152} height={36} className="block h-9 w-auto" />
+                        </a>
+                    </div>
+                    <nav aria-label={t("main.welcome.header.menu")} className="flex min-w-0 flex-1 justify-center">
+                        <DesktopNav navigation={navigation} />
+                    </nav>
+                    <div className="flex shrink-0 items-center gap-3">
+                        <MembershipHoverCard
+                            label={membershipLabel}
+                            href={routes.membership(locale)}
+                            offers={[
+                                {
+                                    tone: "volunteer",
+                                    label: tProfile("info.Волонтёрам"),
+                                    text: offerText("Получи возможность оставлять неограниченное количество откликов и путешествовать без лимитов — {{price}} руб/год", MEMBERSHIP_PRICE_RUB.volunteer),
+                                    cta: tProfile("info.Оформить членство"),
+                                    href: routes.membership(locale),
+                                },
+                                {
+                                    tone: "host",
+                                    label: tProfile("info.Организаторам"),
+                                    text: offerText("Создавай неограниченное количество вакансий и получи больше возможностей для своего проекта — {{price}} руб/год", MEMBERSHIP_PRICE_RUB.host),
+                                    cta: tProfile("info.Оформить членство"),
+                                    href: `${routes.membership(locale)}#host`,
+                                },
+                            ]}
+                        />
+                        <LanguageSwitcher locale={locale} label={t("Язык")} />
+                        <a
+                            href={signIn.href}
+                            className="inline-flex h-10 items-center justify-center rounded-[10px] border border-primary px-[18px] text-center text-[14px] leading-[1.375rem] font-semibold whitespace-nowrap text-primary no-underline transition-all duration-300 ease-in-out hover:bg-primary hover:text-white"
+                        >
+                            {signIn.label}
+                        </a>
+                    </div>
+                </header>
+                <MobileHeader
+                    locale={locale}
+                    homeHref={routes.main(locale)}
+                    navigation={navigation}
+                    membership={{
+                        label: membershipLabel,
+                        href: routes.membership(locale),
+                        hint: t("main.welcome.header.membership-from", { price: MEMBERSHIP_PRICE_RUB.volunteer }),
+                    }}
+                    signIn={signIn}
+                    labels={{ menu: t("main.welcome.header.menu"), language: t("Язык") }}
+                />
+            </div>
+        </div>
+    );
+}

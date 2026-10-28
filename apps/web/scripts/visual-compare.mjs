@@ -8,6 +8,10 @@
 // Фиксированные элементы (шапка) перед снимком скрываются. Размеры элементов
 // на РАЗНЫХ страницах могут отличаться на 1 px из-за дробной координаты начала —
 // в этом случае сравнивать getBoundingClientRect, итоговая проверка — e2e/visual.
+//
+//   --keep-fixed      не скрывать fixed/sticky (для сравнения самой шапки)
+//   --css "правила"   стили для обеих страниц: например, сплошной фон вместо
+//                     полупрозрачного, чтобы не мешала разная картинка под ним
 import { chromium } from "@playwright/test";
 import fs from "node:fs";
 import pixelmatch from "pixelmatch";
@@ -19,6 +23,8 @@ const [oldUrl] = get("old");
 const [newUrl] = get("new");
 const parts = Object.fromEntries(get("part").map((p) => p.split(/=(.*)/s).slice(0, 2)));
 const widths = (get("widths")[0] ?? "390,768,1280").split(",").map(Number);
+const keepFixed = args.includes("--keep-fixed");
+const [css] = get("css");
 if (!oldUrl || !newUrl || !Object.keys(parts).length) {
     console.error("нужно: --old URL --new URL --part имя=селектор [--widths 390,768,1280]");
     process.exit(2);
@@ -34,7 +40,8 @@ for (const width of widths) {
         const page = await (await browser.newContext({ viewport: { width, height: 900 } })).newPage();
         await page.goto(url, { waitUntil: "networkidle" }).catch(() => undefined);
         await page.evaluate(() => document.fonts.ready);
-        await page.evaluate(() => {
+        if (css) await page.addStyleTag({ content: css });
+        if (!keepFixed) await page.evaluate(() => {
             for (const el of document.querySelectorAll("body *")) {
                 const { position } = getComputedStyle(el);
                 if (position === "fixed" || position === "sticky") el.style.visibility = "hidden";
