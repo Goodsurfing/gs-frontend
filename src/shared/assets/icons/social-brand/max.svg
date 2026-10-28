@@ -1,0 +1,11 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="gs-max-gradient" x1="0" y1="0" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+<stop stop-color="#3D8BFF"/>
+<stop offset="1" stop-color="#9B3DFF"/>
+</linearGradient>
+</defs>
+<rect width="20" height="20" rx="5" fill="url(#gs-max-gradient)"/>
+<path d="M3.5 15V5H5.8L8.5 11.2L11.2 5H13.5V15H11.5V8.6L9.2 13.8H7.8L5.5 8.6V15H3.5Z" fill="white"/>
+<path d="M14.5 15L12.3 10L14.5 5H16.6L14.9 9.2L17.1 15H14.5Z" fill="white"/>
+</svg>
