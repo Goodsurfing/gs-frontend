@@ -1,7 +1,7 @@
 import {
     describe, it, expect, vi,
 } from "vitest";
-import { handleChunkLoadError } from "./handleChunkLoadError";
+import { handleChunkLoadError, isChunkLoadError } from "./handleChunkLoadError";
 
 const makeStorage = (initial: Record<string, string> = {}) => {
     const data = { ...initial };
@@ -44,5 +44,18 @@ describe("handleChunkLoadError", () => {
         handleChunkLoadError(event, storage, reload, 1_070_000);
 
         expect(reload).toHaveBeenCalledTimes(1);
+    });
+});
+
+describe("isChunkLoadError", () => {
+    it("узнаёт ошибки загрузки модулей в разных браузерах", () => {
+        expect(isChunkLoadError(new TypeError("Failed to fetch dynamically imported module: https://x/a.js"))).toBe(true);
+        expect(isChunkLoadError(new TypeError("Importing a module script failed."))).toBe(true);
+        expect(isChunkLoadError(new TypeError("error loading dynamically imported module"))).toBe(true);
+        expect(isChunkLoadError(new Error("Unable to preload CSS for /assets/a.css"))).toBe(true);
+    });
+
+    it("не путает с обычными ошибками", () => {
+        expect(isChunkLoadError(new TypeError("Cannot read properties of undefined"))).toBe(false);
     });
 });

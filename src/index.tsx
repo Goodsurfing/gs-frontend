@@ -14,6 +14,7 @@ import { initChunkLoadErrorHandler } from "@/shared/lib/handleChunkLoadError";
 import { installDomTranslationGuard } from "@/shared/lib/domTranslationGuard";
 import { initErrorTracking } from "@/shared/lib/initErrorTracking";
 
+import { AppErrorBoundary } from "./app/providers/ErrorBoundary";
 import { LocaleProvider } from "./app/providers/LocaleProvider";
 
 initErrorTracking();
@@ -40,7 +41,9 @@ const Root = (
                 <HelmetProvider>
                     <StyledEngineProvider injectFirst>
                         <LocaleProvider>
-                            <App />
+                            <AppErrorBoundary>
+                                <App />
+                            </AppErrorBoundary>
                         </LocaleProvider>
                     </StyledEngineProvider>
                 </HelmetProvider>
