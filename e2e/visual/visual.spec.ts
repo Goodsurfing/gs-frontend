@@ -53,6 +53,17 @@ for (const viewport of VIEWPORTS) {
                 });
                 await page.waitForLoadState('networkidle', { timeout: 10_000 }).catch(() => undefined);
                 await page.addStyleTag({ content: FREEZE_CSS });
+                // Дождаться картинок и шрифтов: иначе блок, догрузившийся позже,
+                // сдвигает всю страницу и снимок «плавает» между прогонами
+                await page.evaluate(async () => {
+                    await document.fonts.ready;
+                    await Promise.all([...document.images]
+                        .filter((img) => !img.complete)
+                        .map((img) => new Promise((resolve) => {
+                            img.addEventListener('load', resolve, { once: true });
+                            img.addEventListener('error', resolve, { once: true });
+                        })));
+                });
 
                 await expect.soft(page).toHaveScreenshot(`${name}-${viewport.name}-${locale}.png`, {
                     fullPage: true,

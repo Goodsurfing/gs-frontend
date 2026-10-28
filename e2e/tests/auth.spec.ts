@@ -6,8 +6,7 @@ import { e2eHeaders, hasE2eToken, NO_TOKEN_REASON } from '../support/testApi';
 /**
  * GS-214: вход и регистрация через интерфейс, письма — из Mailpit стейджа.
  * Пользователи одноразовые (@test.local), общие vol@/host@ не трогаем.
- * Поля форм в старом фронте не подписаны (у всех name="main"), поэтому ищем
- * их по типу; в новом фронте у полей будут label и name.
+ * Поля ищутся по подписи (getByLabel) — так же будет и в новом фронте.
  */
 test.describe('Авторизация', () => {
     test.use({ storageState: { cookies: [], origins: [] } });
@@ -23,8 +22,8 @@ test.describe('Авторизация', () => {
         const password = 'E2eSignup2026';
 
         await page.goto('/ru/signup');
-        await page.locator('form input[type="email"]').fill(email);
-        await page.locator('form input[type="password"]').first().fill(password);
+        await page.getByLabel('E-mail').fill(email);
+        await page.getByLabel('Пароль', { exact: true }).first().fill(password);
         await page.locator('form button[type="submit"]').click();
         await expect(page).toHaveURL(/\/ru\/confirm-email/);
 
@@ -33,8 +32,8 @@ test.describe('Авторизация', () => {
         await expect(page).toHaveURL(/confirm-email-success|profile/, { timeout: 20_000 });
 
         await page.goto('/ru/signin');
-        await page.locator('form input[type="email"]').fill(email);
-        await page.locator('form input[type="password"]').first().fill(password);
+        await page.getByLabel('E-mail').fill(email);
+        await page.getByLabel('Пароль', { exact: true }).first().fill(password);
         await page.locator('form button[type="submit"]').click();
         await expect(page).not.toHaveURL(/\/signin/, { timeout: 20_000 });
         expect(await page.evaluate(() => localStorage.getItem('token'))).toBeTruthy();
@@ -42,8 +41,8 @@ test.describe('Авторизация', () => {
 
     test('вход с неверным паролем — ошибка, остаёмся на странице входа', async ({ page }) => {
         await page.goto('/ru/signin');
-        await page.locator('form input[type="email"]').fill('vol@test.com');
-        await page.locator('form input[type="password"]').first().fill('wrong-password-1');
+        await page.getByLabel('E-mail').fill('vol@test.com');
+        await page.getByLabel('Пароль', { exact: true }).first().fill('wrong-password-1');
         await page.locator('form button[type="submit"]').click();
         await expect(page).toHaveURL(/\/ru\/signin/);
         await expect(page.locator('body')).toContainText(/неверн|Неверн|ошибк/);
@@ -62,7 +61,7 @@ test.describe('Авторизация', () => {
         expect(created.ok(), await created.text()).toBeTruthy();
 
         await page.goto('/ru/reset-password');
-        await page.locator('form input[type="email"]').fill(email);
+        await page.getByLabel('E-mail').fill(email);
         await page.getByRole('button', { name: 'Отправить' }).click();
 
         const { html } = await waitForEmail(email);
@@ -70,8 +69,8 @@ test.describe('Авторизация', () => {
         await expect(page).toHaveURL(/reset-password-verify/, { timeout: 20_000 });
 
         const newPassword = 'E2eNew2026x';
-        await page.locator('form input[type="password"]').first().fill(newPassword);
-        await page.locator('form input[type="password"]').nth(1).fill(newPassword);
+        await page.getByLabel('Новый пароль', { exact: true }).fill(newPassword);
+        await page.getByLabel('Повторите новый пароль').fill(newPassword);
         await page.locator('form button[type="submit"]').click();
 
         await expect.poll(async () => (await api.post('/api/v1/token', {
