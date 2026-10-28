@@ -6,6 +6,8 @@ import { screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { rest } from "msw";
 import { renderWithProviders } from "@/test-utils";
+import { setupStore } from "@/store/store";
+import { userActions } from "@/entities/User";
 import { server } from "@/mocks/server";
 import PaymentPage from "./PaymentPage";
 
@@ -22,6 +24,17 @@ vi.mock("@/routes/model/guards/AuthProvider", () => ({
 }));
 
 const CHECKOUT_URL = "*/api/v1/membership/checkout";
+
+/** Стор с сессией из localStorage — как после старта приложения у вошедшего пользователя. */
+const sessionStore = () => {
+    localStorage.setItem("user", JSON.stringify({ username: "u@test.com" }));
+    localStorage.setItem("token", JSON.stringify("access"));
+    localStorage.setItem("mercureToken", JSON.stringify("mercure"));
+    localStorage.setItem("roles", JSON.stringify(["ROLE_USER"]));
+    const store = setupStore();
+    store.dispatch(userActions.initAuthData());
+    return store;
+};
 
 /**
  * Поведенческий тест поверх старого PaymentPage.regression.test.ts
@@ -62,6 +75,7 @@ describe("PaymentPage — реальное поведение чекаута", (
             <MemoryRouter initialEntries={["/ru/payment?tariff=volunteer_990"]}>
                 <PaymentPage />
             </MemoryRouter>,
+            { store: sessionStore() },
         );
 
         await waitFor(() => expect(window.location.href).toBe("https://yookassa.ru/pay/p1"));
@@ -83,6 +97,7 @@ describe("PaymentPage — реальное поведение чекаута", (
             <MemoryRouter initialEntries={["/ru/payment?tariff=volunteer_990"]}>
                 <PaymentPage />
             </MemoryRouter>,
+            { store: sessionStore() },
         );
 
         expect(await screen.findByText(/уже есть активное членство/i)).toBeInTheDocument();
@@ -100,6 +115,7 @@ describe("PaymentPage — реальное поведение чекаута", (
             <MemoryRouter initialEntries={["/ru/payment?tariff=volunteer_990"]}>
                 <PaymentPage />
             </MemoryRouter>,
+            { store: sessionStore() },
         );
 
         expect(await screen.findByText(/сервис оплаты временно недоступен/i)).toBeInTheDocument();
@@ -116,6 +132,7 @@ describe("PaymentPage — реальное поведение чекаута", (
             <MemoryRouter initialEntries={["/ru/payment?tariff=volunteer_990"]}>
                 <PaymentPage />
             </MemoryRouter>,
+            { store: sessionStore() },
         );
 
         expect(await screen.findByText(/tariffCode: This value should not be blank/i)).toBeInTheDocument();

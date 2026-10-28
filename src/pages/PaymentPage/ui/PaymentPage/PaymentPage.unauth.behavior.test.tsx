@@ -7,6 +7,8 @@ import {
     MemoryRouter, Routes, Route, useLocation,
 } from "react-router-dom";
 import { renderWithProviders } from "@/test-utils";
+import { setupStore } from "@/store/store";
+import { userActions } from "@/entities/User";
 import PaymentPage from "./PaymentPage";
 
 vi.mock("@/app/providers/LocaleProvider", () => ({
@@ -17,9 +19,25 @@ vi.mock("@/widgets/MainPageLayout", () => ({
     MainPageLayout: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
+const auth = vi.hoisted(() => ({ myProfile: null as null | { id: string } }));
+
 vi.mock("@/routes/model/guards/AuthProvider", () => ({
-    useAuth: () => ({ isAuth: false, myProfile: null }),
+    useAuth: () => ({ isAuth: false, myProfile: auth.myProfile }),
 }));
+
+/** Стор после старта приложения: сессия прочитана из localStorage. */
+const initedStore = (withSession: boolean) => {
+    localStorage.clear();
+    if (withSession) {
+        localStorage.setItem("user", JSON.stringify({ username: "u@test.com" }));
+        localStorage.setItem("token", JSON.stringify("access"));
+        localStorage.setItem("mercureToken", JSON.stringify("mercure"));
+        localStorage.setItem("roles", JSON.stringify(["ROLE_USER"]));
+    }
+    const store = setupStore();
+    store.dispatch(userActions.initAuthData());
+    return store;
+};
 
 const LocationDisplay = () => {
     const location = useLocation();
@@ -50,10 +68,51 @@ describe("PaymentPage — редирект на signin для неавториз
                 </Routes>
                 <LocationDisplay />
             </MemoryRouter>,
+            { store: initedStore(false) },
         );
 
         expect(await screen.findByTestId("location")).toHaveTextContent(
             "/ru/signin?next=payment&nextId=host_4990",
         );
+    });
+
+    /**
+     * Вошедший пользователь, у которого профиль ещё грузится (прямой заход по
+     * ссылке, быстрый клик на /membership), не должен улетать на форму входа:
+     * раньше страница смотрела на isAuth/myProfile, а они появляются позже
+     * первого рендера (e2e «международный клуб» падал через раз).
+     */
+    it("вошедшего пользователя с недогруженным профилем не уводит на вход", async () => {
+        auth.myProfile = null;
+        renderWithProviders(
+            <MemoryRouter initialEntries={["/ru/payment?tariff=international_5000"]}>
+                <Routes>
+                    <Route path="/:locale/payment" element={<PaymentPage />} />
+                    <Route path="*" element={null} />
+                </Routes>
+                <LocationDisplay />
+            </MemoryRouter>,
+            { store: initedStore(true) },
+        );
+
+        await new Promise((resolve) => { setTimeout(resolve, 50); });
+        expect(screen.getByTestId("location")).toHaveTextContent("/ru/payment?tariff=international_5000");
+    });
+
+    it("пока сессия не прочитана из хранилища, никуда не уводит", async () => {
+        auth.myProfile = null;
+        renderWithProviders(
+            <MemoryRouter initialEntries={["/ru/payment?tariff=volunteer_990"]}>
+                <Routes>
+                    <Route path="/:locale/payment" element={<PaymentPage />} />
+                    <Route path="*" element={null} />
+                </Routes>
+                <LocationDisplay />
+            </MemoryRouter>,
+            { store: setupStore() },
+        );
+
+        await new Promise((resolve) => { setTimeout(resolve, 50); });
+        expect(screen.getByTestId("location")).toHaveTextContent("/ru/payment?tariff=volunteer_990");
     });
 });
