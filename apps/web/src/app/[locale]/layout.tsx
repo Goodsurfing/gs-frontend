@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { YandexMetrika } from "@/components/analytics/YandexMetrika";
 import { isLocale, LOCALES } from "@/i18n/config";
 
 import "../globals.css";
@@ -31,7 +32,10 @@ export default async function LocaleLayout({
 
     return (
         <html lang={locale}>
-            <body>{children}</body>
+            <body>
+                {children}
+                <YandexMetrika />
+            </body>
         </html>
     );
 }

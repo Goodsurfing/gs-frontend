@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 
+import { YandexMetrika } from "@/components/analytics/YandexMetrika";
 import { NotFound } from "@/components/NotFound";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { DEFAULT_LOCALE, isLocale } from "@/i18n/config";
@@ -36,6 +37,7 @@ export default async function RootNotFound() {
                 <PublicShell locale={locale} headerVariant="static">
                     <NotFound locale={locale} t={t} />
                 </PublicShell>
+                <YandexMetrika />
             </body>
         </html>
     );
