@@ -9,7 +9,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
-import { ProfileMembershipBanner } from "@/features/ProfileMembershipBanner";
 
 import { getUserAuthData, userActions } from "@/entities/User";
 
@@ -38,6 +37,9 @@ import {
     getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
+import { useGetCurrentMembershipQuery } from "@/store/api/membershipApi";
+import { TARIFF_CODE, TARIFF_FALLBACK_PRICE_RUB } from "@/shared/constants/membership";
+import { formatDate } from "@/shared/lib/formatDate";
 
 import { MobileSelect } from "../MobileSelect/MobileSelect";
 import styles from "./MobileHeader.module.scss";
@@ -54,6 +56,7 @@ const MobileHeader: FC = () => {
     const appDispatch = useAppDispatch();
 
     const authData = useAppSelector(getUserAuthData);
+    const { data: membership } = useGetCurrentMembershipQuery(undefined, { skip: !authData });
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
     const [dropdownOpened, dispatch] = useReducer(
         toggleDropdownReducer,
@@ -90,16 +93,19 @@ const MobileHeader: FC = () => {
                 <ChangeLanguage
                     className={cn({ [styles.changeLanguageOpen]: menuIsOpen })}
                 />
-                <div
+                <button
+                    type="button"
                     className={cn(styles.burger, {
                         [styles.open]: menuIsOpen,
                     })}
                     onClick={handleOpenMenu}
+                    aria-label={t("main.welcome.header.menu")}
+                    aria-expanded={menuIsOpen}
                 >
                     <span />
                     <span />
                     <span />
-                </div>
+                </button>
             </header>
 
             <div
@@ -333,14 +339,37 @@ const MobileHeader: FC = () => {
                     {t("main.welcome.header.for-organizers.become-a-host")}
                 </Button>
                 <Button
+                    href="https://expedition.goodsurfing.org/"
+                    className={styles.button}
+                >
+                    {t("main.welcome.header.expeditions", "Экспедиции")}
+                </Button>
+                <Button
+                    href="https://international.goodsurfing.org/"
+                    className={styles.button}
+                >
+                    {t("main.welcome.header.international-volunteering", "Международное волонтёрство")}
+                </Button>
+                {/* Вместо двух карточек тарифов (GS-149) — одна строка под
+                    кнопкой: подробности на странице членства. */}
+                <Button
                     onClick={() => navigate(getMembershipPageUrl(locale))}
                     className={styles.buttonMembership}
                 >
-                    {t("main.welcome.header.membership", "Членство")}
+                    <span className={styles.membershipTitle}>
+                        {t("main.welcome.header.membership", "Членство")}
+                    </span>
+                    <span className={styles.membershipHint}>
+                        {membership?.isActive
+                            ? t("main.welcome.header.membership-active", {
+                                date: formatDate(locale, membership.endDate),
+                            })
+                            : t("main.welcome.header.membership-from", {
+                                price: TARIFF_FALLBACK_PRICE_RUB[TARIFF_CODE.VOLUNTEER],
+                            })}
+                    </span>
                 </Button>
-                {/* GS-149: hover недоступен на мобильных — вместо попапа
-                    тот же баннер встроен прямо в пункт меню. */}
-                <ProfileMembershipBanner className={styles.membershipBanner} />
+                <div className={styles.divider} />
                 {authData ? (
                     <>
                         <Button

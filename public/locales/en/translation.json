@@ -127,7 +127,10 @@
                 "membership": "Membership",
                 "expeditions": "Expeditions",
                 "international-volunteering": "International Volunteering",
-                "socials-cta": "Follow us on social media"
+                "socials-cta": "Follow us on social media",
+                "menu": "Menu",
+                "membership-active": "Active until {{date}}",
+                "membership-from": "from {{price}} ₽/year"
             },
             "title": "Find the dream journey",
             "offers-btn": "Over the past 11 years, our Goodsurfers have completed over 25,000 meaningful journeys, participating in projects across a wide range of fields. Choose the direction that resonates with you.",

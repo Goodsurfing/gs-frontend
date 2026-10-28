@@ -127,7 +127,10 @@
                 "membership": "Членство",
                 "expeditions": "Экспедиции",
                 "international-volunteering": "Международное волонтёрство",
-                "socials-cta": "Подписывайтесь на наши соцсети"
+                "socials-cta": "Подписывайтесь на наши соцсети",
+                "menu": "Меню",
+                "membership-active": "Активно до {{date}}",
+                "membership-from": "от {{price}} ₽/год"
             },
             "title": "Найди своё путешествие со смыслом",
             "offers-btn": "Все вакансии",
