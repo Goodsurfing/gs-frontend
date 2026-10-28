@@ -60,7 +60,7 @@ export const ProfileInfoFormBirthDate = memo(
             || selectedYear
         );
 
-        const validateDay = (value: number) => {
+        const validateDay = (value?: number) => {
             if (!isAnyFieldFilled) return true;
             if (!value) return t("info.Укажите день");
             if (!selectedMonth || !selectedYear) return true;
@@ -70,13 +70,13 @@ export const ProfileInfoFormBirthDate = memo(
             return true;
         };
 
-        const validateMonth = (value: number) => {
+        const validateMonth = (value?: number) => {
             if (!isAnyFieldFilled) return true;
             if (!value) return t("info.Укажите месяц");
             return true;
         };
 
-        const validateYear = (value: number) => {
+        const validateYear = (value?: number) => {
             if (!isAnyFieldFilled) return true;
             if (!value) return t("info.Укажите год");
             if (value < 1900) return t("info.Год должен быть больше или равен 1900");
