@@ -8,6 +8,7 @@ import { DefaultValues, FormProvider, useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { OffersList, OffersMap } from "@/widgets/OffersMap";
+import { FreeApplicationsCounter } from "@/features/FreeApplicationsCounter";
 import type { MapViewportBounds } from "@/widgets/OffersMap/ui/OffersMap/OffersMap";
 
 import { OffersFilterFields } from "../../model/types";
@@ -394,17 +395,25 @@ export const OffersSearchFilter = () => {
                         />
                     </div>
                     {isMapOpened && (
-                        <OffersMap
-                            offersData={allOffersMap}
-                            isOffersLoading={isAllOffersMapLoading || isAllOffersMapFetching}
-                            isOffersError={isAllOffersMapError}
-                            onRetry={refetchOffersMap}
-                            className={styles.offersMap}
-                            classNameMap={styles.offersMap}
-                            selectedOfferId={selectedOfferId}
-                            selectedOfferCoordinates={selectedOfferCoordinates}
-                            onBoundsChange={handleBoundsChange}
-                        />
+                        <div className={styles.mapArea}>
+                            {/* GS-188: остаток откликов — заметной карточкой
+                                поверх карты, как на макете. */}
+                            <FreeApplicationsCounter
+                                layout="row"
+                                className={styles.applicationsCounter}
+                            />
+                            <OffersMap
+                                offersData={allOffersMap}
+                                isOffersLoading={isAllOffersMapLoading || isAllOffersMapFetching}
+                                isOffersError={isAllOffersMapError}
+                                onRetry={refetchOffersMap}
+                                className={styles.offersMap}
+                                classNameMap={styles.offersMap}
+                                selectedOfferId={selectedOfferId}
+                                selectedOfferCoordinates={selectedOfferCoordinates}
+                                onBoundsChange={handleBoundsChange}
+                            />
+                        </div>
                     )}
                 </div>
                 <OffersSearchFilterMobile

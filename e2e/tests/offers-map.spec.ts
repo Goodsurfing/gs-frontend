@@ -5,6 +5,15 @@ import { test, expect } from '@playwright/test';
 // прозрачный слой перехватывал все клики/драг, и карту вообще нельзя было
 // подвинуть мышью (зум-кнопки при этом продолжали работать, что маскировало
 // проблему при беглой проверке).
+// Классы Яндекс.Карт содержат версию API (ymaps-2-1-79-…), а Яндекс обновляет
+// 2.1.x сам — поэтому ищем по окончанию класса, без версии.
+const ymaps = (suffix: string) => `[class*="ymaps-2-1-"][class$="-${suffix}"], [class*="ymaps-2-1-"][class*="-${suffix} "]`;
+
+// Карта грузится со серверов Яндекса; из GitHub Actions (США) это бывает
+// заметно дольше, чем локально. 28.10 кнопка зума появилась позже 5 с
+// стандартного ожидания, и тест падал при живой карте.
+const MAP_TIMEOUT = 20_000;
+
 test.describe('Карта вакансий — интерактивность', () => {
     test.use({ storageState: 'e2e/.auth/vol.json' });
 
@@ -17,14 +26,14 @@ test.describe('Карта вакансий — интерактивность', 
 
         // .ymaps-2-1-79-map matches both an outer wrapper and Yandex's inner
         // map element — .first() is the outer one, whose box we want anyway.
-        const map = page.locator('.ymaps-2-1-79-map').first();
-        await expect(map).toBeVisible();
+        const map = page.locator(ymaps('map')).first();
+        await expect(map).toBeVisible({ timeout: MAP_TIMEOUT });
 
         // .ymaps-2-1-79-ground-pane сам по себе всегда 0x0 (абсолютно
         // спозиционирован, реальный размер несут дочерние тайлы с
         // отрицательными отступами) — toBeVisible() тут не показатель,
         // читаем transform напрямую.
-        const groundPane = page.locator('.ymaps-2-1-79-ground-pane');
+        const groundPane = page.locator(ymaps('ground-pane'));
         await expect(groundPane).toBeAttached();
 
         const transformBefore = await groundPane.evaluate((el) => getComputedStyle(el).transform);
@@ -51,7 +60,8 @@ test.describe('Карта вакансий — интерактивность', 
 
         // .ymaps-2-1-79-map matches both an outer wrapper and Yandex's inner
         // map element — .first() is the outer one, whose box we want anyway.
-        const map = page.locator('.ymaps-2-1-79-map').first();
+        const map = page.locator(ymaps('map')).first();
+        await expect(map).toBeVisible({ timeout: MAP_TIMEOUT });
         const box = await map.boundingBox();
         if (!box) throw new Error('Не удалось получить размеры карты');
 
@@ -66,8 +76,8 @@ test.describe('Карта вакансий — интерактивность', 
     test('зум-контрол остаётся кликабельным', async ({ page }) => {
         await page.goto('/ru/offers-map');
 
-        const zoomPlus = page.locator('.ymaps-2-1-79-zoom__plus');
-        await expect(zoomPlus).toBeVisible();
+        const zoomPlus = page.locator(ymaps('zoom__plus')).first();
+        await expect(zoomPlus).toBeVisible({ timeout: MAP_TIMEOUT });
         // .click() сам провалится, если кнопку перекрывает другой элемент
         await zoomPlus.click();
     });

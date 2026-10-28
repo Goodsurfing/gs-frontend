@@ -3,17 +3,20 @@ import { FC, memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { useGetProfileOccupancyQuery } from "@/entities/Profile";
+import { hasHostMembership, useGetProfileOccupancyQuery } from "@/entities/Profile";
 import { getUserAuthData } from "@/entities/User";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
 import { FREE_VACANCIES_LIMIT } from "@/shared/constants/membership";
 import LocaleLink from "@/shared/ui/LocaleLink/LocaleLink";
+import { QuotaDiagram } from "@/shared/ui/QuotaDiagram/QuotaDiagram";
 
 import styles from "./PublishedVacanciesCounter.module.scss";
 
 interface PublishedVacanciesCounterProps {
     className?: string;
+    /** GS-188: column — на дашборде рядом с диаграммой заполненности, row — в полосе фильтров. */
+    layout?: "column" | "row";
 }
 
 /**
@@ -28,7 +31,7 @@ interface PublishedVacanciesCounterProps {
 export const PublishedVacanciesCounter: FC<PublishedVacanciesCounterProps> = memo((
     props: PublishedVacanciesCounterProps,
 ) => {
-    const { className } = props;
+    const { className, layout = "column" } = props;
     const isAuth = useAppSelector(getUserAuthData);
     const { data: profileOccupancy } = useGetProfileOccupancyQuery(undefined, { skip: !isAuth });
     const { t } = useTranslation();
@@ -38,31 +41,27 @@ export const PublishedVacanciesCounter: FC<PublishedVacanciesCounterProps> = mem
         return null;
     }
 
-    const { isMembership, remainingFreeVacancies } = profileOccupancy;
+    const { remainingFreeVacancies } = profileOccupancy;
+    // Безлимит вакансий — только у хостового членства, не у волонтёрского.
+    const isHostMember = hasHostMembership(profileOccupancy);
 
     return (
-        <div className={cn(styles.wrapper, className)}>
-            {isMembership ? (
-                <>
-                    <span className={styles.value}>&#8734;</span>
-                    <LocaleLink to={getMembershipPageUrl(locale)} className={styles.hint}>
-                        {t("publishedVacanciesCounter.Не забудьте продлить членство, чтобы сохранить привилегии")}
-                    </LocaleLink>
-                </>
-            ) : (
-                <>
-                    <span className={styles.value}>
-                        {t("publishedVacanciesCounter.Можно бесплатно опубликовать вакансий:")}
-                        {" "}
-                        {remainingFreeVacancies ?? 0}
-                        /
-                        {FREE_VACANCIES_LIMIT}
-                    </span>
-                    <LocaleLink to={getMembershipPageUrl(locale)} className={styles.hint}>
-                        {t("publishedVacanciesCounter.Нужно больше? Оформите членство!")}
-                    </LocaleLink>
-                </>
+        <QuotaDiagram
+            className={cn(styles.wrapper, className)}
+            layout={layout}
+            size={layout === "row" ? 64 : 110}
+            remaining={isHostMember ? null : (remainingFreeVacancies ?? 0)}
+            limit={FREE_VACANCIES_LIMIT}
+            label={isHostMember
+                ? t("publishedVacanciesCounter.Без ограничений")
+                : t("publishedVacanciesCounter.Вакансий осталось")}
+            hint={(
+                <LocaleLink to={getMembershipPageUrl(locale)} className={styles.hint}>
+                    {isHostMember
+                        ? t("publishedVacanciesCounter.Не забудьте продлить членство, чтобы сохранить привилегии")
+                        : t("publishedVacanciesCounter.Нужно больше? Оформите членство!")}
+                </LocaleLink>
             )}
-        </div>
+        />
     );
 });

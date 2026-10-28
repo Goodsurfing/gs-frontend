@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { ReactNode, memo } from "react";
 
 import cn from "classnames";
 
@@ -10,10 +10,11 @@ import { ProfileInfoVerifyEmail } from "../ProfileInfoVerifyEmail/ProfileInfoVer
 
 interface ProfileInfoProps {
     className?: string;
+    aside?: ReactNode;
 }
 
 export const ProfileInfo = memo((props: ProfileInfoProps) => {
-    const { className } = props;
+    const { className, aside } = props;
     const { t } = useTranslation("profile");
     const {
         myProfile, profileIsLoading, profileIsError,
@@ -41,7 +42,7 @@ export const ProfileInfo = memo((props: ProfileInfoProps) => {
                 <ProfileInfoVerifyEmail />
             )}
             <div>
-                {myProfile && <ProfileInfoForm profile={myProfile} />}
+                {myProfile && <ProfileInfoForm profile={myProfile} aside={aside} />}
             </div>
         </div>
     );

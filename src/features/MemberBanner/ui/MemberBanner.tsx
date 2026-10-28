@@ -15,11 +15,13 @@ interface MemberBannerProps {
     title?: string;
     buttonText?: string;
     anchor?: string;
+    /** GS-188: узкий высокий вариант для боковой колонки. */
+    vertical?: boolean;
 }
 
 export const MemberBanner: FC<MemberBannerProps> = memo((props: MemberBannerProps) => {
     const {
-        className, title, buttonText, anchor,
+        className, title, buttonText, anchor, vertical = false,
     } = props;
     const { t } = useTranslation("volunteer");
     const navigate = useNavigate();
@@ -30,7 +32,7 @@ export const MemberBanner: FC<MemberBannerProps> = memo((props: MemberBannerProp
         navigate(anchor ? `${url}#${anchor}` : url);
     };
     return (
-        <div className={cn(styles.wrapper, className)} style={{ backgroundImage: `url(${banner})` }}>
+        <div className={cn(styles.wrapper, { [styles.vertical]: vertical }, className)} style={{ backgroundImage: `url(${banner})` }}>
             <h3 className={styles.title}>
                 {title ?? t("volunteer-dashboard.Оформи членство Гудсёрфинга и открой для себя бескрайний мир путешествий со смыслом!")}
             </h3>

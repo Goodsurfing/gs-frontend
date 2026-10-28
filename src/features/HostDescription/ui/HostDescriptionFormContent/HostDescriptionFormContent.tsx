@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { ReactNode, memo } from "react";
 
 import {
     HostDescriptionOrganization,
@@ -16,10 +16,12 @@ import { Host } from "@/entities/Host";
 
 interface HostDescriptionFormContentProps {
     host?: Host;
+    /** GS-188: блок под аватаром (баннер консультации). */
+    aside?: ReactNode;
 }
 
 export const HostDescriptionFormContent = memo((props: HostDescriptionFormContentProps) => {
-    const { host } = props;
+    const { host, aside } = props;
 
     return (
         <>
@@ -27,7 +29,10 @@ export const HostDescriptionFormContent = memo((props: HostDescriptionFormConten
                 <HostDescriptionOrganization />
                 <HostDescriptionSocial />
             </div>
-            <HostDescriptionAvatar hostId={host?.id} />
+            <div className={styles.side}>
+                <HostDescriptionAvatar hostId={host?.id} />
+                {aside}
+            </div>
         </>
     );
 });

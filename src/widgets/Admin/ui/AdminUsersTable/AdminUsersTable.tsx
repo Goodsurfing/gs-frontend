@@ -407,6 +407,11 @@ export const AdminUsersTable = () => {
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
+            // Привилегированные — бесплатные бессрочные по решению владельца:
+            // вместо «2126 год» пишем, что это такое.
+            renderCell: (params) => (params.row.isPrivilegedMembership
+                ? "Привилегированное, бессрочно"
+                : params.row.dataEndMembership),
         },
         {
             field: "actions",

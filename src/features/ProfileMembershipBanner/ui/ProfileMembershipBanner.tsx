@@ -14,6 +14,8 @@ import styles from "./ProfileMembershipBanner.module.scss";
 
 interface ProfileMembershipBannerProps {
     className?: string;
+    /** GS-188: карточки друг под другом — для узкой колонки под аватаром. */
+    vertical?: boolean;
 }
 
 /**
@@ -27,7 +29,7 @@ interface ProfileMembershipBannerProps {
 export const ProfileMembershipBanner: FC<ProfileMembershipBannerProps> = memo((
     props: ProfileMembershipBannerProps,
 ) => {
-    const { className } = props;
+    const { className, vertical = false } = props;
     const { t } = useTranslation("profile");
     const { locale } = useLocale();
     const navigate = useNavigate();
@@ -42,7 +44,14 @@ export const ProfileMembershipBanner: FC<ProfileMembershipBannerProps> = memo((
         const isHostTariff = membership.tariff?.forRole === "HOST";
 
         return (
-            <div className={cn(styles.wrapper, styles.active, className)}>
+            <div
+                className={cn(
+                    styles.wrapper,
+                    styles.active,
+                    { [styles.vertical]: vertical },
+                    className,
+                )}
+            >
                 <p className={styles.activeText}>
                     {t("info.Членство активно до {{date}}", { date: formatDate(locale, membership.endDate) })}
                 </p>
@@ -59,7 +68,7 @@ export const ProfileMembershipBanner: FC<ProfileMembershipBannerProps> = memo((
     }
 
     return (
-        <div className={cn(styles.wrapper, className)}>
+        <div className={cn(styles.wrapper, { [styles.vertical]: vertical }, className)}>
             <div className={cn(styles.column, styles.columnVolunteer)}>
                 <span className={styles.columnLabel}>{t("info.Волонтёрам")}</span>
                 <p className={styles.columnText}>

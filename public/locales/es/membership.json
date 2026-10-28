@@ -77,7 +77,9 @@
         "paid-feature-4": "Apoyo mediático para voluntarios",
         "paid-feature-5": "Mayor confianza por parte del anfitrión (etiqueta especial en el perfil)",
         "paid-feature-6": "Posibilidad de publicar en la Comunidad",
-        "price-unit": "RUB/año"
+        "price-unit": "RUB/año",
+        "host-note": "Esta membresía ofrece funciones de voluntario. Para publicar más de una vacante y crear colectas, necesitas la",
+        "host-note-link": "membresía para organizadores"
     },
     "for-host": {
         "Для организатора": "Para el anfitrión",

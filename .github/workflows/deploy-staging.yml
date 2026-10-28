@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: docker/setup-buildx-action@v3
 
@@ -32,7 +32,7 @@ jobs:
           yc-sa-json-credentials: ${{ secrets.YC_SA_KEY_JSON }}
 
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: .
           platforms: linux/amd64
@@ -60,7 +60,7 @@ jobs:
           cache-to: type=gha,mode=max,scope=gs-frontend
 
       - name: Deploy to VM
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.STAGING_HOST }}
           username: ubuntu

@@ -17,15 +17,23 @@ export const UserInfoTable: FC<UserInfoTableProps> = (props) => {
     const { userId, data } = props;
     const {
         created, lastVisit, endPayment, isPayment, isActive,
-        isVerified, isOrganization, isVolunteer, isDelete,
+        isVerified, isOrganization, isVolunteer, isDelete, isPrivilegedMembership,
     } = data;
 
     const rows = [
         { label: "ID", value: userId },
         { label: "Дата регистрации", value: created },
         { label: "Последний вход", value: lastVisit },
-        { label: "Окончание членства", value: endPayment },
+        {
+            label: "Окончание членства",
+            value: isPrivilegedMembership ? "Бессрочно" : endPayment,
+        },
         { label: "Активное членство", value: isPayment ? YesText : NoText },
+        {
+            // Бесплатное бессрочное по решению владельца — не аномалия, не отзывать.
+            label: "Привилегированное членство",
+            value: isPrivilegedMembership ? YesText : NoText,
+        },
         { label: "Пользователь удалён", value: isDelete ? YesText : NoText },
         { label: "Активный пользователь", value: isActive ? YesText : NoText },
         { label: "Подтверждён", value: isVerified ? YesText : NoText },

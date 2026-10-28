@@ -10,6 +10,11 @@ import { OffersSearchFilterMobile } from "./OffersSearchFilterMobile";
 
 const latestOffersMapProps: { current: Record<string, unknown> } = { current: {} };
 
+// GS-188: счётчик откликов читает Redux — в этих тестах он не нужен.
+vi.mock("@/features/FreeApplicationsCounter", () => ({
+    FreeApplicationsCounter: () => null,
+}));
+
 vi.mock("@/app/providers/LocaleProvider", () => ({
     useLocale: () => ({ locale: "ru" }),
 }));

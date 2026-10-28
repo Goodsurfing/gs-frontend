@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-    memo, useCallback, useEffect, useState,
+    ReactNode, memo, useCallback, useEffect, useState,
 } from "react";
 import {
     DefaultValues,
@@ -41,6 +41,8 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface HostDescriptionFormProps {
     className?: string;
+    /** GS-188: блок под аватаром (баннер консультации). */
+    aside?: ReactNode;
     host?: string | null;
     myProfile?: Profile;
     isLoading?: boolean;
@@ -73,7 +75,7 @@ const defaultValues: DefaultValues<HostDescriptionFormFields> = {
 export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
     const {
         className, host, myProfile, isLoading = true, isError, profileRefetch,
-        onCreateSuccess,
+        onCreateSuccess, aside,
     } = props;
 
     const { t } = useTranslation("host");
@@ -207,7 +209,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <div className={styles.form}>
-                    <HostDescriptionFormContent host={getHost} />
+                    <HostDescriptionFormContent host={getHost} aside={aside} />
                 </div>
                 <div>
                     <Button type="submit" disabled={isCreateHostLoading || isHostUpdateLoading} color="BLUE" size="MEDIUM" variant="FILL">

@@ -23,9 +23,9 @@ const ProfileInfoPage: FC = () => {
         <main className={styles.wrapper}>
             <div className={styles.titleWrapper}>
                 <h2 className={styles.title}>{t("info.Основная информация")}</h2>
-                <ProfileMembershipBanner />
             </div>
-            <ProfileInfoForm className={styles.info} />
+            {/* GS-188: тарифы — в правой колонке под аватаром, друг под другом. */}
+            <ProfileInfoForm className={styles.info} aside={<ProfileMembershipBanner vertical />} />
         </main>
     );
 };

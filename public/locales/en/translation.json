@@ -126,7 +126,11 @@
                 "exit": "Exit",
                 "membership": "Membership",
                 "expeditions": "Expeditions",
-                "international-volunteering": "International Volunteering"
+                "international-volunteering": "International Volunteering",
+                "socials-cta": "Follow us on social media",
+                "menu": "Menu",
+                "membership-active": "Active until {{date}}",
+                "membership-from": "from {{price}} ₽/year"
             },
             "title": "Find the dream journey",
             "offers-btn": "Over the past 11 years, our Goodsurfers have completed over 25,000 meaningful journeys, participating in projects across a wide range of fields. Choose the direction that resonates with you.",
@@ -245,12 +249,16 @@
     "freeApplicationsCounter": {
         "Можно бесплатно откликнуться на:": "Free applications left:",
         "Нужно больше? Оформите членство!": "Need more? Get a membership!",
-        "Не забудьте продлить членство, чтобы сохранить привилегии": "Don't forget to renew your membership to keep your privileges"
+        "Не забудьте продлить членство, чтобы сохранить привилегии": "Don't forget to renew your membership to keep your privileges",
+        "Откликов осталось": "Applications left",
+        "Без ограничений": "Unlimited applications"
     },
     "publishedVacanciesCounter": {
         "Можно бесплатно опубликовать вакансий:": "Free published vacancies left:",
         "Нужно больше? Оформите членство!": "Need more? Get a membership!",
-        "Не забудьте продлить членство, чтобы сохранить привилегии": "Don't forget to renew your membership to keep your privileges"
+        "Не забудьте продлить членство, чтобы сохранить привилегии": "Don't forget to renew your membership to keep your privileges",
+        "Вакансий осталось": "Vacancies left",
+        "Без ограничений": "Unlimited vacancies"
     },
     "errors": {
         "freeAccountApplicationsLimit": "Free account allows up to 3 applications. Get a membership to apply without limits.",

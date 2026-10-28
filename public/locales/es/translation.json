@@ -126,7 +126,11 @@
                 "membership": "Membresía",
                 "expeditions": "Expediciones",
                 "international-volunteering": "Voluntariado Internacional",
-                "messages": "Mensajes"
+                "messages": "Mensajes",
+                "socials-cta": "Síguenos en las redes sociales",
+                "menu": "Menú",
+                "membership-active": "Activa hasta {{date}}",
+                "membership-from": "desde {{price}} ₽/año"
             },
             "title": "Encontrar el viaje soñado",
             "offers-btn": "Todas las ofertas",
@@ -245,12 +249,16 @@
     "freeApplicationsCounter": {
         "Можно бесплатно откликнуться на:": "Solicitudes gratuitas restantes:",
         "Нужно больше? Оформите членство!": "¿Necesitas más? ¡Hazte miembro!",
-        "Не забудьте продлить членство, чтобы сохранить привилегии": "No olvides renovar tu membresía para conservar tus privilegios"
+        "Не забудьте продлить членство, чтобы сохранить привилегии": "No olvides renovar tu membresía para conservar tus privilegios",
+        "Откликов осталось": "Solicitudes restantes",
+        "Без ограничений": "Solicitudes ilimitadas"
     },
     "publishedVacanciesCounter": {
         "Можно бесплатно опубликовать вакансий:": "Vacantes gratuitas restantes:",
         "Нужно больше? Оформите членство!": "¿Necesitas más? ¡Hazte miembro!",
-        "Не забудьте продлить членство, чтобы сохранить привилегии": "No olvides renovar tu membresía para conservar tus privilegios"
+        "Не забудьте продлить членство, чтобы сохранить привилегии": "No olvides renovar tu membresía para conservar tus privilegios",
+        "Вакансий осталось": "Vacantes restantes",
+        "Без ограничений": "Vacantes ilimitadas"
     },
     "errors": {
         "freeAccountApplicationsLimit": "La cuenta gratuita permite enviar hasta 3 solicitudes. Obtén una membresía para postularte sin límites.",

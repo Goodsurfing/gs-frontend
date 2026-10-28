@@ -25,6 +25,7 @@ import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import { getErrorText } from "@/shared/lib/getErrorText";
 
 type OrganizationsFilters = Omit<Partial<GetAdminOrganizationParams>, "page" | "limit">;
 
@@ -211,9 +212,11 @@ export const AdminOrganizationsTable = () => {
                 text: "Организация была успешно удалена",
                 type: HintType.Success,
             });
-        } catch {
+        } catch (error) {
+            // 409 от бэкенда объясняет, почему нельзя удалить (пожертвования
+            // в сборах, участники, сообщения) — показываем его текст.
             setToast({
-                text: "Произошла ошибка при удалении",
+                text: getErrorText(error),
                 type: HintType.Error,
             });
         } finally {
