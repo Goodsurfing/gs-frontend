@@ -45,6 +45,9 @@ jobs:
           build-args: |
             NEXT_PUBLIC_SITE_URL=https://staging.goodsurfing.org
             NEXT_PUBLIC_API_URL=https://api-staging.goodsurfing.org
+            NEXT_PUBLIC_SENTRY_DSN=${{ vars.SENTRY_DSN }}
+            NEXT_PUBLIC_SENTRY_ENVIRONMENT=staging
+            NEXT_PUBLIC_SENTRY_RELEASE=web-develop-${{ github.sha }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE }}:staging
             ${{ env.REGISTRY }}/${{ env.IMAGE }}:sha-${{ github.sha }}
