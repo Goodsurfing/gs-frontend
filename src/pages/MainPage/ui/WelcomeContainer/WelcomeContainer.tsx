@@ -8,7 +8,7 @@ import styles from "./WelcomeContainer.module.scss";
 
 const WelcomeContainer: FC = memo(() => (
     <>
-        <MainHeader withSocialRibbon />
+        <MainHeader />
         <main className={styles.wrapper}>
             <div className={styles.info}>
                 <InfoSide />
