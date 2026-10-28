@@ -25,7 +25,12 @@ export const routes = {
     becomeHost: (l: Locale) => path(l, "/become-host"),
     paymentSecurityPolicy: (l: Locale) => path(l, "/payment-security-policy"),
     offer: (l: Locale, id: string | number) => path(l, `/offers/${id}`),
+    journals: (l: Locale) => path(l, "/journals"),
+    donationsMap: (l: Locale) => path(l, "/donation-map"),
+    donationRating: (l: Locale) => path(l, "/donation-rating"),
+    signIn: (l: Locale) => path(l, "/signin"),
 } as const;
 
 export const EXPEDITIONS_URL = "https://expedition.goodsurfing.org/";
+export const INTERNATIONAL_URL = "https://international.goodsurfing.org/";
 export const PUBLIC_OFFER_PDF = "/assets/docs/npo/Публичная_оферта.pdf";

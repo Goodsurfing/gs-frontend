@@ -32,6 +32,10 @@
     --color-status-rejected: #fcc3c3;
     --color-error: #eb5757;
     --color-disabled: #ebebe4;
+    --color-arrow: #007bff;            /* shared/ui/Arrow: треугольник у выпадающих списков */
+    --color-cta-deep: #00b589;         /* наведение на зелёные кнопки шапки и баннер под ней */
+    --color-host: #22e0a5;             /* --color-green: полоска «Организаторам» */
+    --color-card: #f5f5f5;             /* фон карточек тарифов в окне «Членство» */
 
     /* Типографика: size / line-height / weight как в старом фронте */
     --text-h1: 40px;  --text-h1--line-height: 1.2;  --text-h1--font-weight: 600;
@@ -60,6 +64,8 @@
  * Стандартные max-* в Tailwind 4 — это width < N, и ровно на 768/992 px вёрстка
  * разошлась бы со старой. Поэтому в компонентах — только down-*.
  */
+@custom-variant down-3xl (@media (max-width: 1366px));
+@custom-variant down-2xl (@media (max-width: 1280px)); /* шапка: десктопная капсула → мобильная */
 @custom-variant down-xl (@media (max-width: 1180px));
 @custom-variant down-lg (@media (max-width: 992px));
 @custom-variant down-md (@media (max-width: 768px));
@@ -89,4 +95,13 @@ body {
         display: inline;
         vertical-align: baseline;
     }
+}
+
+/* Появление выпадающих окон, как transition opacity 0.2s у Popup старого фронта */
+@keyframes fade-in {
+    from { opacity: 0; }
+}
+
+@utility animate-fade-in {
+    animation: fade-in 0.2s ease-in-out;
 }
