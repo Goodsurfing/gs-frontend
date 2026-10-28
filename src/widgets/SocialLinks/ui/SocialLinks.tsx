@@ -6,13 +6,13 @@ import maxIcon from "@/shared/assets/icons/social-brand/max.png";
 import tgIcon from "@/shared/assets/icons/social-brand/telegram.png";
 import vkIcon from "@/shared/assets/icons/social-brand/vk.png";
 
-import styles from "./SocialRibbon.module.scss";
+import styles from "./SocialLinks.module.scss";
 
 /**
- * GS-187: заметная плашка на главной со ссылками на соцсети Гудсёрфинга —
- * как «Подписывайтесь на наш телеграм-канал» на старом сайте, но со всеми
- * тремя каналами. Иконки — как в рассылках (присланы в задаче): Telegram и
- * ВК круглые, MAX — скруглённый квадрат.
+ * GS-187: ссылки на соцсети Гудсёрфинга в меню шапки — в выпадающем
+ * «Сообществе» на компьютере и внизу бургер-меню на телефоне. Иконки — как в
+ * рассылках (присланы в задаче): Telegram и ВК круглые, MAX — скруглённый
+ * квадрат.
  */
 export const SOCIAL_LINKS = [
     {
@@ -26,17 +26,18 @@ export const SOCIAL_LINKS = [
     },
 ] as const;
 
-interface SocialRibbonProps {
+interface SocialLinksProps {
     className?: string;
 }
 
-export const SocialRibbon: FC<SocialRibbonProps> = ({ className }) => {
-    const { t } = useTranslation("main");
+export const SocialLinks: FC<SocialLinksProps> = ({ className }) => {
+    const { t } = useTranslation();
+    const caption = t("main.welcome.header.socials");
 
     return (
-        <aside className={cn(styles.ribbon, className)} aria-label={t("Подписывайтесь на наши соцсети")}>
-            <span className={styles.text}>{t("Подписывайтесь на наши соцсети")}</span>
-            <ul className={styles.links}>
+        <div className={cn(styles.socials, className)}>
+            <span className={styles.caption}>{caption}</span>
+            <ul className={styles.links} aria-label={caption}>
                 {SOCIAL_LINKS.map(({
                     name, href, icon, shape,
                 }) => (
@@ -54,6 +55,6 @@ export const SocialRibbon: FC<SocialRibbonProps> = ({ className }) => {
                     </li>
                 ))}
             </ul>
-        </aside>
+        </div>
     );
 };

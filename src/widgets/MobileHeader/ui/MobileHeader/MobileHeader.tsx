@@ -10,6 +10,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import { ProfileMembershipBanner } from "@/features/ProfileMembershipBanner";
+import { SocialLinks } from "@/widgets/SocialLinks";
 
 import { getUserAuthData, userActions } from "@/entities/User";
 
@@ -388,6 +389,7 @@ const MobileHeader: FC = () => {
                         {t("main.welcome.header.sign-in")}
                     </Button>
                 )}
+                <SocialLinks className={styles.socials} />
             </div>
         </>
     );
