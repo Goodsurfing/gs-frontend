@@ -35,6 +35,7 @@ export interface AdminUsersFields {
     isActive: boolean;
     isMembership: boolean;
     dataEndMembership: string;
+    isPrivilegedMembership: boolean;
 }
 
 export interface AdminUserFields {
@@ -65,6 +66,8 @@ export interface AdminUsers {
     isActive: boolean; // is block
     isPayment: boolean;
     endPayment: string;
+    /** Бесплатное бессрочное членство по решению владельца (gs-backend #420). */
+    isPrivilegedMembership?: boolean;
 }
 
 export interface AdminUser {
@@ -95,6 +98,7 @@ export interface AdminUser {
     isPayment: boolean;
     isDelete: boolean;
     endPayment: string;
+    isPrivilegedMembership?: boolean;
 }
 
 export type UpdateAdminUser = Omit<AdminUser, "created" | "lastVisit" | "isVerified"
