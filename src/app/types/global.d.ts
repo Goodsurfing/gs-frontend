@@ -18,6 +18,7 @@ declare const __IS_DEV__: boolean;
 declare const __BUILD_ID__: string;
 
 declare module "swiper/css";
+declare module "swiper/css/bundle";
 declare module "swiper/css/navigation";
 declare module "swiper/css/pagination";
 declare module "swiper/css/effect-fade";
