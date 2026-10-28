@@ -1,7 +1,7 @@
 import {
     describe, it, expect, vi, afterEach,
 } from "vitest";
-import { render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { TextEditor } from "./TextEditor";
 
 /**
@@ -34,5 +34,21 @@ describe("TextEditor", () => {
 
         const duplicates = warn.mock.calls.filter((args) => String(args[0]).includes("Duplicate extension"));
         expect(duplicates).toEqual([]);
+    });
+
+    it("передаёт наружу настоящий HTML, а не пустую строку (иначе содержимое перезаписывалось и курсор вылетал из списка)", () => {
+        const onChange = vi.fn();
+        const { container } = render(
+            <TextEditor value="" onChange={onChange} onErrorUploadImage={() => {}} />,
+        );
+
+        fireEvent.click(container.querySelector("[value=\"bullet\"]")!);
+
+        expect(onChange).toHaveBeenCalled();
+        const last = onChange.mock.calls.at(-1)?.[0] as string;
+        expect(last).toContain("<ul>");
+        // Как в tiptap 2: без лишнего пустого абзаца в конце и без text-align: left.
+        expect(last).not.toContain("text-align: left");
+        expect(last.endsWith("</ul>")).toBe(true);
     });
 });
