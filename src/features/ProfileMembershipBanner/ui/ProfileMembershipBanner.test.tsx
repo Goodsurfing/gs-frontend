@@ -100,7 +100,7 @@ describe("ProfileMembershipBanner", () => {
         render(<ProfileMembershipBanner />);
 
         expect(screen.getAllByRole("button", { name: "info.Оформить членство" })).toHaveLength(2);
-        expect(screen.getByText(/info\.Международный клуб: активно до/)).toBeInTheDocument();
+        expect(screen.getByText(/info\.Международный клуб — активно до/)).toBeInTheDocument();
         expect(screen.queryByText(/info\.Членство активно до/)).toBeNull();
     });
 
