@@ -8,9 +8,7 @@
   },
   "scripts": {
     "start": "vite --port 3000",
-    "generate:sitemap": "node .sitemap-build/generate-sitemap.js",
     "build": "vite build",
-    "prebuild:prod": "npm run generate:sitemap",
     "build:prod": "vite build",
     "preview": "vite preview",
     "lint": "eslint src/ --cache --color --ext .jsx,.js,.tsx,.ts --ignore-pattern node_modules",
