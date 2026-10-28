@@ -1,0 +1,86 @@
+name: Deploy web (новый фронт) to staging
+
+# Новый фронт (эпик GS-212) на стейдже за канарейкой: Traefik отправляет в
+# него запрос только с cookie gs_web=1 и только по уже перенесённым адресам.
+# Пользователи без cookie видят старое SPA.
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - 'apps/web/**'
+      - 'packages/**'
+      - 'public/locales/**'
+      - '.github/workflows/deploy-web-staging.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-web-staging
+  cancel-in-progress: false
+
+env:
+  REGISTRY: cr.yandex/crpspj7jl594r3ekjv50
+  IMAGE: gs-web
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Login to Yandex Container Registry
+        uses: yc-actions/yc-cr-login@v3
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_KEY_JSON }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: apps/web/Dockerfile
+          platforms: linux/amd64
+          build-args: |
+            NEXT_PUBLIC_SITE_URL=https://staging.goodsurfing.org
+            NEXT_PUBLIC_API_URL=https://api-staging.goodsurfing.org
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE }}:staging
+            ${{ env.REGISTRY }}/${{ env.IMAGE }}:sha-${{ github.sha }}
+          push: true
+          # Yandex CR не принимает provenance-манифесты (см. deploy-staging.yml)
+          provenance: false
+          cache-from: type=gha,scope=gs-web
+          cache-to: type=gha,mode=max,scope=gs-web
+
+      - name: Deploy to VM
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ubuntu
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          script: |
+            set -e
+            cd /opt/gs
+            sudo docker compose pull web
+            sudo docker compose up -d web
+            sleep 5
+            sudo docker compose ps web
+
+      - name: Smoke test (через канарейку)
+        run: |
+          set -e
+          for i in 1 2 3 4 5 6; do
+            body=$(curl -s -m 10 -H 'Cookie: gs_web=1' https://staging.goodsurfing.org/healthz || true)
+            if echo "$body" | grep -q '"service":"web"'; then echo "web OK"; exit 0; fi
+            echo "attempt $i → $body"
+            sleep 10
+          done
+          echo "Новый фронт не ответил через канарейку"
+          exit 1
+      - name: Без cookie — по-прежнему старое SPA
+        run: |
+          body=$(curl -s -m 10 https://staging.goodsurfing.org/healthz)
+          if echo "$body" | grep -q '"service":"web"'; then echo "Канарейка пропускает запросы без cookie!"; exit 1; fi
+          echo "старое SPA OK"
