@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC, useState } from "react";
+import React, { FC, useId, useState } from "react";
 
 import { ReactSVG } from "react-svg";
 import eye from "@/shared/assets/icons/eye.svg";
@@ -21,9 +21,14 @@ const InputField: FC<InputFieldProps> = ({
     defaultValue,
     onChange,
     error,
+    id,
     ...rest
 }) => {
     const [showPassword, setShowPassword] = useState(false);
+    // Раньше у всех полей был name="main" и label htmlFor="main" без такого id —
+    // метка не была связана с полем
+    const generatedId = useId();
+    const fieldId = id ?? generatedId;
     const isPassword = type === "password";
     const inputType = isPassword && showPassword ? "text" : type;
     return (
@@ -35,7 +40,7 @@ const InputField: FC<InputFieldProps> = ({
                     onChange={onChange}
                     value={value}
                     defaultValue={defaultValue}
-                    name="main"
+                    id={fieldId}
                     {...rest}
                 />
                 {type === "password" && (
@@ -56,7 +61,7 @@ const InputField: FC<InputFieldProps> = ({
                 )}
             </div>
             <label
-                htmlFor="main"
+                htmlFor={fieldId}
                 className={cn({
                     [styles.empty]: value || defaultValue,
                 })}
