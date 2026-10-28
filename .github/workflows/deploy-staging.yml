@@ -60,7 +60,7 @@ jobs:
           cache-to: type=gha,mode=max,scope=gs-frontend
 
       - name: Deploy to VM
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.STAGING_HOST }}
           username: ubuntu

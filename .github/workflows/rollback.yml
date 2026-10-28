@@ -46,7 +46,7 @@ jobs:
           docker push "$REG/gs-frontend:$TAG"
 
       - name: SSH pull+up on VM
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ inputs.env == 'prod' && secrets.PROD_HOST || secrets.STAGING_HOST }}
           username: ubuntu

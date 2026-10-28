@@ -61,7 +61,7 @@ jobs:
           cache-to: type=gha,mode=max,scope=gs-frontend-prod
 
       - name: Deploy
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.PROD_HOST }}
           username: ubuntu
