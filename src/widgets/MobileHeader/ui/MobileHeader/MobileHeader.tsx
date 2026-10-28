@@ -37,7 +37,7 @@ import {
     getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
-import { useGetCurrentMembershipQuery } from "@/store/api/membershipApi";
+import { useGetCurrentAllMembershipsQuery } from "@/store/api/membershipApi";
 import { TARIFF_CODE, TARIFF_FALLBACK_PRICE_RUB } from "@/shared/constants/membership";
 import { formatDate } from "@/shared/lib/formatDate";
 
@@ -56,7 +56,9 @@ const MobileHeader: FC = () => {
     const appDispatch = useAppDispatch();
 
     const authData = useAppSelector(getUserAuthData);
-    const { data: membership } = useGetCurrentMembershipQuery(undefined, { skip: !authData });
+    // GS-198: срок показываем по обычному членству, не по Международному клубу.
+    const { data: memberships } = useGetCurrentAllMembershipsQuery(undefined, { skip: !authData });
+    const membership = memberships?.find((item) => item.isActive && item.tariff?.category === "REGULAR");
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
     const [dropdownOpened, dispatch] = useReducer(
         toggleDropdownReducer,

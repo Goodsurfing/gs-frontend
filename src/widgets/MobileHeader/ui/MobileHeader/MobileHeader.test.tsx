@@ -7,7 +7,8 @@ import { MemoryRouter } from "react-router-dom";
 import MobileHeader from "./MobileHeader";
 
 let authDataMock: object | undefined;
-let membershipMock: { isActive: boolean; endDate: string } | undefined;
+type MembershipMock = { isActive: boolean; endDate: string; tariff: { category: string } };
+let membershipMock: MembershipMock | undefined;
 
 vi.mock("react-i18next", () => ({
     useTranslation: () => ({
@@ -33,8 +34,8 @@ vi.mock("@/shared/hooks/redux", () => ({
 }));
 
 vi.mock("@/store/api/membershipApi", () => ({
-    useGetCurrentMembershipQuery: (_: unknown, opts: { skip: boolean }) => (
-        { data: opts.skip ? undefined : membershipMock }
+    useGetCurrentAllMembershipsQuery: (_: unknown, opts: { skip: boolean }) => (
+        { data: opts.skip || !membershipMock ? undefined : [membershipMock] }
     ),
 }));
 
@@ -67,7 +68,7 @@ describe("MobileHeader", () => {
 
     it("при активном членстве показывает срок", () => {
         authDataMock = { token: "x" };
-        membershipMock = { isActive: true, endDate: "2027-01-31" };
+        membershipMock = { isActive: true, endDate: "2027-01-31", tariff: { category: "REGULAR" } };
         renderHeader();
         expect(screen.getByText(/main\.welcome\.header\.membership-active/)).toBeTruthy();
     });
