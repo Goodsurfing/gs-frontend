@@ -27,6 +27,7 @@ import {
 } from "@/shared/config/routes/AppUrls";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 import Arrow from "@/shared/ui/Arrow/Arrow";
+import { SocialLinks } from "@/widgets/SocialLinks";
 
 import styles from "./MainHeaderNav.module.scss";
 
@@ -254,6 +255,7 @@ export const MainHeaderNav = () => {
                     >
                         {t("main.welcome.header.community.journal")}
                     </Link>
+                    <SocialLinks className={styles.socials} />
                 </Popup>
             </div>
             <div className={styles.btnDonation}>

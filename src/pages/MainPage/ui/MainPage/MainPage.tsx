@@ -20,7 +20,6 @@ import WelcomeContainer from "../WelcomeContainer/WelcomeContainer";
 import { HowItWorkContainer } from "../HowItWorkContainer/HowItWorkContainer";
 import { OffersSlider } from "@/widgets/OffersSlider";
 import { BenefitsContainer } from "@/widgets/BenefitsContainer";
-import { SocialRibbon } from "@/widgets/SocialRibbon";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { getSeoUrl } from "@/shared/lib/getSeoUrl";
 import { SeoHelmet } from "@/shared/ui/SeoHelmet";
@@ -93,7 +92,6 @@ const MainPage: FC = () => {
                 structuredData={structuredData}
             />
             <WelcomeContainer />
-            <SocialRibbon />
             {/* <NewMainSliderContainer /> */}
             {/* GS-142: временно скрыт, вернуть раскомментированием блока ниже */}
             {/* <Section title={tAboutProject("ГудСёрфинг сегодня")}>
