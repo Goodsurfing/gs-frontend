@@ -1,7 +1,8 @@
 import { test, expect, request } from '@playwright/test';
 import { API_URL } from '../config';
 import { expectPageWorks } from '../support/pageCheck';
-import { e2eHeaders, hasE2eToken, NO_TOKEN_REASON } from '../support/testApi';
+import { createSession, E2eSession, useSessionInPage } from '../support/session';
+import { hasE2eToken, NO_TOKEN_REASON } from '../support/testApi';
 
 /**
  * GS-214: разделы админки открываются у администратора без ошибок.
@@ -39,34 +40,17 @@ const SECTIONS = [
 test.describe('Админка', () => {
     test.use({ storageState: { cookies: [], origins: [] } });
 
-    let auth: { email: string; accessToken: string; mercureToken: string; roles: string[] };
+    let auth: E2eSession;
 
     test.beforeAll(async () => {
         test.skip(!hasE2eToken(), NO_TOKEN_REASON);
-        const api = await request.newContext({ baseURL: API_URL, ignoreHTTPSErrors: true });
-        const email = `e2e-admin-${Date.now()}@test.local`;
-        const password = 'E2eAdmin2026x';
-        const created = await api.post('/api/test/create-user', {
-            data: { email, password, admin: true },
-            headers: e2eHeaders(),
-        });
-        expect(created.ok(), await created.text()).toBeTruthy();
-        const login = await api.post('/api/v1/token', { data: { email, password } });
-        expect(login.ok(), await login.text()).toBeTruthy();
-        auth = { email, ...(await login.json()) };
+        auth = await createSession('admin', { admin: true });
         expect(auth.roles).toContain('ROLE_ADMIN');
-        await api.dispose();
     });
 
     test.beforeEach(async ({ page }, testInfo) => {
         test.skip(testInfo.project.name !== 'vol', 'один раз на прогон');
-        // Так же, как global-setup: приложение читает сессию из localStorage
-        await page.addInitScript((a) => {
-            localStorage.setItem('user', JSON.stringify({ username: a.email }));
-            localStorage.setItem('token', JSON.stringify(a.accessToken));
-            localStorage.setItem('mercureToken', JSON.stringify(a.mercureToken));
-            localStorage.setItem('roles', JSON.stringify(a.roles));
-        }, auth);
+        await useSessionInPage(page, auth);
     });
 
     for (const path of SECTIONS) {
