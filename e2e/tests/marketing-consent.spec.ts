@@ -60,10 +60,4 @@ test.describe('Согласие на рассылку', () => {
         expect(profile.marketingConsent).toBe(false);
         await api.dispose();
     });
-
-    test('испорченная ссылка из письма ведёт на «Ссылка устарела»', async ({ page }) => {
-        await page.goto(`${API_URL}/api/v1/marketing-consent/confirm?token=broken.token`);
-        await expect(page).toHaveURL(/\/subscription\?status=expired/);
-        await expect(page.getByRole('link', { name: 'Открыть настройки' })).toBeVisible();
-    });
 });

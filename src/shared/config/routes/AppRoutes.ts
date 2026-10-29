@@ -10,7 +10,6 @@ export enum AppRoutes {
     RESET_PASSWORD_VERIFY = "reset_password_verify",
     CONFIRM_EMAIL = "confirm_email",
     CONFIRM_EMAIL_SUCCESS = "confirm_email_success",
-    SUBSCRIPTION = "subscription",
     EMAIL_EXPIRED = "email_expired",
     EMAIL_ALREADY_CONFIRMED = "email_already_confirmed",
     VERIFY_EMAIL = "verify_email",
