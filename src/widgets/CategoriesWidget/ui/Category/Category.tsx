@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import threeDots from "@/shared/assets/icons/three-dots.svg";
 
 import styles from "./Category.module.scss";
-import { getVacancyText } from "@/shared/data/categories";
 import { Locale } from "@/entities/Locale";
 import { localePrefix } from "@/shared/config/routes/localePath";
 
@@ -30,11 +29,9 @@ export const Category: FC<CategoryProps> = memo((props: CategoryProps) => {
         navigate(`${localePrefix(locale)}${link}`);
     };
 
-    const translateLib: Record<string, string> = {
-        вакансий: t("category-offer.вакансий"),
-        вакансия: t("category-offer.вакансия"),
-        вакансии: t("category-offer.вакансии"),
-    };
+    // Склонение по правилам языка (i18next + Intl.PluralRules): раньше форма
+    // выбиралась по-русски и переводилась — в en выходило «101 vacancy» (GS-227)
+    const vacancyWord = t("category-offer.vacancyCount", { count: vacancyNumber });
 
     if (!image) {
         return (
@@ -48,7 +45,7 @@ export const Category: FC<CategoryProps> = memo((props: CategoryProps) => {
                     <span className={cn(styles.vacancy, styles.otherVacancy)}>
                         {vacancyNumber}
                         {" "}
-                        {translateLib[getVacancyText(vacancyNumber)]}
+                        {vacancyWord}
                     </span>
                 </div>
             </div>
@@ -69,7 +66,7 @@ export const Category: FC<CategoryProps> = memo((props: CategoryProps) => {
                 <span className={styles.vacancy}>
                     {vacancyNumber}
                     {" "}
-                    {translateLib[getVacancyText(vacancyNumber)]}
+                    {vacancyWord}
                 </span>
             </div>
         </div>

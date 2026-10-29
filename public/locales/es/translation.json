@@ -228,7 +228,10 @@
         "Другое": "Otros",
         "вакансий": "vacantes",
         "вакансия": "vacante",
-        "вакансии": "vacantes"
+        "вакансии": "vacantes",
+        "vacancyCount_one": "vacante",
+        "vacancyCount_many": "vacantes",
+        "vacancyCount_other": "vacantes"
     },
     "notes": {
         "Мои заявки": "Mis solicitudes",
@@ -267,6 +270,7 @@
         "freeAccountPublishedVacancyLimit": "La cuenta gratuita permite publicar hasta 1 vacante. Obtén una membresía para publicar sin límites.",
         "onlyVerifiedVolunteersAllowed": "Esta vacante solo acepta solicitudes de participantes verificados. Obtén una membresía para postularte.",
         "vacancyIncomplete": "Completa el título, la descripción y la dirección de la vacante antes de publicarla.",
+        "vacancyNotActive": "Esta oferta está cerrada: ya no es posible postularse.",
         "fundraiseRequiresMembership": "Crear recaudaciones de fondos requiere una membresía activa."
     },
     "Не задано": "No especificado",

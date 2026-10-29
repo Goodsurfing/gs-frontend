@@ -201,7 +201,7 @@ export const DonationsSearchFilterMobile: FC<DonationsSearchFilterMobileProps> =
                     <div className={styles.offersCount}>
                         {total}
                         {" "}
-                        {t("вариантов")}
+                        {t("variants", { count: total ?? 0 })}
                     </div>
                     <div className={styles.list}>{renderDonationCards}</div>
                     <OfferPagination

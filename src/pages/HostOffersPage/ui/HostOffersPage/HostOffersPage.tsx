@@ -217,7 +217,9 @@ const HostOffersPage = () => {
             )}
             <ConfirmActionModal
                 isModalOpen={isModalOpen}
-                description={t("hostOffers.Вы уверены что хотите изменить вакансию?")}
+                description={selectedBtnOffer === "delete"
+                    ? t("hostOffers.confirmDelete")
+                    : t("hostOffers.Вы уверены что хотите изменить вакансию?")}
                 onConfirm={() => handleConfirmClick()}
                 onClose={() => handleModalClose()}
                 isLoading={isOfferLoading}
