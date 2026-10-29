@@ -18,10 +18,9 @@ export async function PublicShell({ locale, headerVariant = "floating", topGap =
     locale: Locale;
     headerVariant?: HeaderVariant;
     /**
-     * Отступ 100 px над лентой соцсетей шире 992 px — как у страниц на
-     * MainPageLayout старого фронта (padding-top у всего каркаса под
-     * плавающую шапку; ленту позже добавили внутрь, и отступ оказался над ней).
-     * Вопрос об исправлении — у владельца; пока внешний вид повторяется.
+     * Отступ под плавающую шапку (шире 1280 px) — как у страниц на
+     * MainPageLayout старого фронта: содержимое начинается на 24 px ниже
+     * капсулы (92 px под лентой соцсетей). Уже 1280 px шапка в потоке.
      */
     topGap?: boolean;
     children: ReactNode;
@@ -34,10 +33,10 @@ export async function PublicShell({ locale, headerVariant = "floating", topGap =
 
     return (
         <SessionProvider>
-            <div className={`flex min-h-screen flex-col ${topGap ? "pt-[100px] down-lg:pt-0" : ""}`}>
+            <div className="flex min-h-screen flex-col">
                 <SocialRibbon t={t} />
                 <Header locale={locale} t={t} tProfile={tProfile} banner={banner} variant={headerVariant} />
-                <main className="flex-1">{children}</main>
+                <main className={`flex-1 ${topGap ? "pt-[92px] down-2xl:pt-0" : ""}`}>{children}</main>
                 <Footer locale={locale} t={t} />
             </div>
         </SessionProvider>
