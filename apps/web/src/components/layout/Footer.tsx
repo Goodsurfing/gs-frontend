@@ -1,3 +1,4 @@
+import { NavAnchor } from "@/components/ui/NavAnchor";
 import type { Locale } from "@/i18n/config";
 import type { Translate } from "@/i18n/dictionary";
 import { EXPEDITIONS_URL, PUBLIC_OFFER_PDF, routes } from "@/lib/routes";
@@ -13,8 +14,8 @@ const FOOTER_SOCIALS = [
 
 type FooterLink = { label: string; href: string; external?: boolean };
 
-const linkClass = "text-[12px] leading-[167%] font-medium text-[#82949F] underline";
-const copyrightLinkClass = "text-[14px] leading-[171%] font-medium text-[#82949F] underline hover:text-white";
+const linkClass = "text-[12px] leading-[167%] font-medium text-[#82949F] underline aria-[current=page]:no-underline";
+const copyrightLinkClass = "text-[14px] leading-[171%] font-medium text-[#82949F] underline hover:text-white aria-[current=page]:no-underline aria-[current=page]:hover:text-[#82949F]";
 
 /**
  * Подвал. Внешне — как в старом фронте (widgets/Footer): тёмный фон, логотип и
@@ -99,14 +100,14 @@ export function Footer({ locale, t }: { locale: Locale; t: Translate }) {
                                 <h4 className="mb-[25px] text-[18px] leading-[122%] font-medium text-white">{title}</h4>
                                 <div className="flex flex-col">
                                     {links.map(({ label, href, external }) => (
-                                        <a
+                                        <NavAnchor
                                             key={href + label}
                                             href={href}
                                             className={linkClass}
                                             {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
                                         >
                                             {label}
-                                        </a>
+                                        </NavAnchor>
                                     ))}
                                 </div>
                             </div>
@@ -122,8 +123,8 @@ export function Footer({ locale, t }: { locale: Locale; t: Translate }) {
                     {new Date().getFullYear()}
                 </p>
                 <div className="flex gap-4">
-                    <a className={copyrightLinkClass} href={routes.rules(locale)}>{t(`${h}.about-project.rules`)}</a>
-                    <a className={copyrightLinkClass} href={routes.privacyPolicy(locale)}>{t(`${h}.about-project.privacy-policy`)}</a>
+                    <NavAnchor className={copyrightLinkClass} href={routes.rules(locale)}>{t(`${h}.about-project.rules`)}</NavAnchor>
+                    <NavAnchor className={copyrightLinkClass} href={routes.privacyPolicy(locale)}>{t(`${h}.about-project.privacy-policy`)}</NavAnchor>
                 </div>
             </div>
         </>

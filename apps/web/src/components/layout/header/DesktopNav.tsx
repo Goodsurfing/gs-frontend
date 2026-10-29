@@ -3,6 +3,7 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 import { Arrow } from "@/components/ui/Arrow";
+import { NavAnchor } from "@/components/ui/NavAnchor";
 
 import type { Navigation } from "./navigation";
 import { SearchIcon } from "./SearchIcon";
@@ -31,7 +32,7 @@ export function DesktopNav({ navigation }: { navigation: Navigation }) {
             {entries.map((entry) => (
                 <li key={entry.label} className="relative flex">
                     {entry.kind === "link" ? (
-                        <a href={entry.href} className={itemClass}>{entry.label}</a>
+                        <NavAnchor href={entry.href} className={`${itemClass} aria-[current=page]:cursor-default aria-[current=page]:bg-field/70 aria-[current=page]:text-primary aria-[current=page]:hover:text-primary`}>{entry.label}</NavAnchor>
                     ) : (
                         <DropdownMenu.Root modal={false}>
                             <DropdownMenu.Trigger className={`group ${itemClass}`}>
@@ -46,12 +47,12 @@ export function DesktopNav({ navigation }: { navigation: Navigation }) {
                                 >
                                     {entry.items.map((item) => (
                                         <DropdownMenu.Item key={item.href + item.label} asChild>
-                                            <a
+                                            <NavAnchor
                                                 href={item.href}
-                                                className="py-1 text-[14px] font-medium whitespace-nowrap text-ink-secondary no-underline outline-none hover:text-primary-hover focus:text-primary-hover"
+                                                className="py-1 text-[14px] font-medium whitespace-nowrap text-ink-secondary no-underline outline-none hover:text-primary-hover focus:text-primary-hover aria-[current=page]:cursor-default aria-[current=page]:text-primary aria-[current=page]:hover:text-primary aria-[current=page]:focus:text-primary"
                                             >
                                                 {item.label}
-                                            </a>
+                                            </NavAnchor>
                                         </DropdownMenu.Item>
                                     ))}
                                 </DropdownMenu.Content>

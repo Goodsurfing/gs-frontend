@@ -151,6 +151,10 @@
 		&:hover {
 			color: var(--hover-blue);
 		}
+		&[aria-current="page"],
+		&[aria-current="page"]:hover {
+			color: var(--accent-color);
+		}
 	}
 }
 
