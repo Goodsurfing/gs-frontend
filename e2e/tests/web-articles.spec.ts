@@ -29,7 +29,7 @@ test.describe('Новый фронт: страницы материалов', ()
             await expect(page.getByRole('heading', { level: 1 })).toHaveText(item.name);
             await expect(page.getByRole('link', { name: kind.crumb, exact: true }).first()).toHaveAttribute('href', kind.path);
             await page.getByRole('button', { name: /likes/ }).click();
-            await expect(page.getByRole('alert')).toContainText('нужно авторизоваться');
+            await expect(page.getByRole('alert').filter({ hasText: 'нужно авторизоваться' })).toBeVisible();
             await expect(page.getByText(/\d+ комментариев/)).toBeVisible();
         });
     }
