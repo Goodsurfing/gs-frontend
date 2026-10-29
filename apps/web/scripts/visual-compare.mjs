@@ -10,6 +10,8 @@
 // в этом случае сравнивать getBoundingClientRect, итоговая проверка — e2e/visual.
 //
 //   --keep-fixed      не скрывать fixed/sticky (для сравнения самой шапки)
+//   --new-cookie имя=значение  cookie для новой страницы (канарейка gs_web=1 на стейдже:
+//                     старый и новый фронт по одному адресу)
 //   --css "правила"   стили для обеих страниц: например, сплошной фон вместо
 //                     полупрозрачного, чтобы не мешала разная картинка под ним
 import { chromium } from "@playwright/test";
@@ -25,6 +27,7 @@ const parts = Object.fromEntries(get("part").map((p) => p.split(/=(.*)/s).slice(
 const widths = (get("widths")[0] ?? "390,768,1280").split(",").map(Number);
 const keepFixed = args.includes("--keep-fixed");
 const [css] = get("css");
+const [newCookie] = get("new-cookie");
 if (!oldUrl || !newUrl || !Object.keys(parts).length) {
     console.error("нужно: --old URL --new URL --part имя=селектор [--widths 390,768,1280]");
     process.exit(2);
@@ -37,7 +40,13 @@ let worst = 0;
 for (const width of widths) {
     const shots = {};
     for (const [tag, url] of [["old", oldUrl], ["new", newUrl]]) {
-        const page = await (await browser.newContext({ viewport: { width, height: 900 } })).newPage();
+        const context = await browser.newContext({ viewport: { width, height: 900 } });
+        if (tag === "new" && newCookie) {
+            const [name, value] = newCookie.split("=");
+            // На корень сайта: иначе путь cookie берётся из адреса и статика уходит без неё
+            await context.addCookies([{ name, value, domain: new URL(url).hostname, path: "/" }]);
+        }
+        const page = await context.newPage();
         await page.goto(url, { waitUntil: "networkidle" }).catch(() => undefined);
         await page.evaluate(() => document.fonts.ready);
         if (css) await page.addStyleTag({ content: css });

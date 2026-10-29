@@ -80,8 +80,9 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Как в старом фронте: у body нет фона и цвета — белый фон и чёрный текст браузера */
 body {
-    @apply bg-page text-ink font-sans;
+    @apply font-sans;
 }
 
 /*

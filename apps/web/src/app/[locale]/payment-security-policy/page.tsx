@@ -34,7 +34,7 @@ export default async function PaymentSecurityPolicyPage({ params }: Props) {
     const t = await getTranslator(locale);
 
     return (
-        <PublicShell locale={locale}>
+        <PublicShell locale={locale} topGap>
             <div className="mx-auto flex max-w-[1920px] flex-col items-center justify-center pb-[100px] [@media(max-width:1200px)]:px-5">
                 <PageBanner title={t("Политика безопасности платежей")} />
                 {locale !== "ru" && <LegalTranslationNotice t={t} />}

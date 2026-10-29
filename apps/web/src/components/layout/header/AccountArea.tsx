@@ -67,7 +67,7 @@ export function AccountArea({ signIn, links }: { signIn: NavLink; links: Account
                 </a>
             </div>
             <DropdownMenu.Root modal={false}>
-                <DropdownMenu.Trigger className="group flex cursor-pointer items-center gap-[5px] border-0 bg-transparent p-0 text-[16px] text-ink">
+                <DropdownMenu.Trigger className="group flex cursor-pointer items-center gap-[5px] border-0 bg-transparent p-0 text-[16px]">
                     <span>{name}</span>
                     <Avatar src={mediaUrl(profile.image, "small")} name={profile.firstName} className="mx-2.5" />
                     <Arrow />
