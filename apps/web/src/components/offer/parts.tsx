@@ -52,8 +52,8 @@ export function IconGrid({ children }: { children: ReactNode }) {
 }
 
 /** Серая плашка с парами «подпись — значение» (InfoCard) */
-export function InfoCard({ children }: { children: ReactNode }) {
-    return <div className="flex w-full flex-wrap gap-[30px] rounded-[10px] bg-field px-[30px] py-4 down-md:flex-col">{children}</div>;
+export function InfoCard({ children, className = "flex-wrap" }: { children: ReactNode; className?: string }) {
+    return <div className={`flex w-full gap-[30px] rounded-[10px] bg-field px-[30px] py-4 down-md:flex-col ${className}`}>{children}</div>;
 }
 
 export function InfoCardItem({ title, text, className = "", children }: {
