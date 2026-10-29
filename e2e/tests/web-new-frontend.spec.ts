@@ -134,6 +134,35 @@ test.describe('Новый фронт: о некоммерческой орган
     });
 });
 
+test.describe('Новый фронт: найти работу', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test.beforeEach(async ({ context }, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'проверка без привязки к роли — один раз за прогон');
+        await enableNewFrontend(context);
+    });
+
+    test('/find-job: ссылки, шаги, слайдер вакансий листается', async ({ page }) => {
+        await page.setViewportSize({ width: 1440, height: 900 });
+        const response = await page.goto('/find-job');
+        expect(response?.status()).toBe(200);
+        await expect(page.locator('script[src*="/_next/"]').first()).toBeAttached();
+        await expect(page).toHaveTitle('Сезонная работа в путешествии — GoodSurfing');
+
+        await expect(page.getByRole('link', { name: 'Найти работу' })).toHaveAttribute('href', '/offers-map?category=13');
+        await expect(page.getByRole('main').getByRole('link', { name: 'Как это работает', exact: true })).toHaveAttribute('href', '/membership');
+        await expect(page.getByRole('link', { name: 'Разместить вакансию' })).toHaveAttribute('href', '/profile/role');
+        await expect(page.getByRole('heading', { level: 4, name: 'Путешествие' })).toBeVisible();
+
+        // Слайдер: карточки вакансий категории «Оплачиваемая работа», стрелка листает
+        const cards = page.locator('a[href^="/offers/"]').filter({ has: page.locator('h4') });
+        expect(await cards.count()).toBeGreaterThan(3);
+        const track = cards.first().locator('xpath=../..');
+        await page.getByRole('button', { name: 'Вперёд' }).click();
+        await expect.poll(() => track.evaluate((node) => node.scrollLeft)).toBeGreaterThan(300);
+    });
+});
+
 test.describe('Новый фронт: шапка вошедшего пользователя', () => {
     test.use({ storageState: { cookies: [], origins: [] } });
 

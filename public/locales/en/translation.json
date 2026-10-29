@@ -367,5 +367,9 @@
         "invalid": "This unsubscribe link is invalid. You can unsubscribe in your profile under “Privacy”.",
         "hint": "You’ll still receive emails about your applications, membership and account. You can subscribe again at any time in your settings.",
         "settings": "Open settings"
+    },
+    "slider": {
+        "previous": "Previous",
+        "next": "Next"
     }
 }

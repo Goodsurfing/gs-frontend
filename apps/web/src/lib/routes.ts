@@ -10,6 +10,7 @@ const path = (locale: Locale, rest = "") => `${localePrefix(locale)}${rest}` || 
 export const routes = {
     main: (l: Locale) => path(l),
     offersMap: (l: Locale) => path(l, "/offers-map"),
+    offersMapCategory: (l: Locale, categoryId: number) => path(l, `/offers-map?category=${categoryId}`),
     blog: (l: Locale) => path(l, "/blog"),
     video: (l: Locale) => path(l, "/video"),
     ambassadors: (l: Locale) => path(l, "/ambassadors"),
@@ -32,6 +33,7 @@ export const routes = {
     signIn: (l: Locale) => path(l, "/signin"),
     messenger: (l: Locale) => path(l, "/messenger"),
     profileInfo: (l: Locale) => path(l, "/profile/info"),
+    profileRole: (l: Locale) => path(l, "/profile/role"),
     hostDashboard: (l: Locale) => path(l, "/host/host-dashboard"),
     volunteerDashboard: (l: Locale) => path(l, "/volunteer/volunteer-dashboard"),
     /** Публичная страница волонтёра; {id} подставляется в браузере */
