@@ -97,9 +97,15 @@ test.describe('Новый фронт: шапка вошедшего пользо
         })).status, { api: API_URL, email: session.email, password: session.password });
         expect(status).toBe(201);
 
+        // Имя в шапке — как в старом фронте: имя профиля или начало email (13 символов)
+        const profile = await (await page.request.get(`${API_URL}/api/v1/profile`, {
+            headers: { Authorization: `Bearer ${session.accessToken}` },
+        })).json();
+        const shown = (profile.firstName || profile.email).slice(0, 13);
+
         await page.reload();
         const header = page.locator('header').first();
-        const profileButton = header.getByRole('button', { name: new RegExp(session.email.slice(0, 13).replace(/[.+]/g, '\\$&')) });
+        const profileButton = header.getByRole('button', { name: shown });
         await expect(profileButton).toBeVisible({ timeout: 15_000 });
         await profileButton.click();
         await expect(page.getByRole('menuitem', { name: 'Обо мне' })).toHaveAttribute('href', '/ru/profile/info');
