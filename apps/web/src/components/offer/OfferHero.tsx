@@ -14,15 +14,18 @@ export interface OfferHeroLabels {
  * Карточка вверху страницы вакансии (PersonalCard старого фронта): обложка
  * под затемнением, заголовок, статус, категории, адрес, отзывы и рейтинг;
  * внизу — стопка фото и кнопки. Без обложки — светлый фон и тёмный текст.
+ * Так же устроена карточка сбора (HeaderDonationCard) — со своими показателями.
  */
-export function OfferHero({ title, image, status, categories, address, reviews, rating, gallery, actions, labels }: {
+export function OfferHero({ title, image, status, categories, address, reviews, rating, stats, gallery, actions, labels }: {
     title: string;
     image?: string;
     status: string;
     categories: { id: number; name: string; color: string }[];
     address?: string;
-    reviews: number;
-    rating: number;
+    reviews?: number;
+    rating?: number;
+    /** Вместо отзывов и рейтинга — свои показатели (у сбора: поддержавшие, собрано, дней осталось) */
+    stats?: (tone: string) => ReactNode;
     gallery: ReactNode;
     actions: ReactNode;
     labels: OfferHeroLabels;
@@ -57,7 +60,7 @@ export function OfferHero({ title, image, status, categories, address, reviews, 
                                 ))}
                             </div>
                             <span className={`text-[14px] leading-[120%] font-medium ${tone}`}>{address}</span>
-                            {reviews > 0 ? (
+                            {stats ? stats(tone) : reviews ? (
                                 <>
                                     <p className={tone}>{labels.reviewsCount} {reviews}</p>
                                     <div className="flex items-start gap-1.5 text-[14px] leading-[120%] font-medium">

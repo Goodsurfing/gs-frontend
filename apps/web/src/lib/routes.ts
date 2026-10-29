@@ -40,6 +40,11 @@ export const routes = {
     donationsMap: (l: Locale) => path(l, "/donation-map"),
     donationRating: (l: Locale) => path(l, "/donation-rating"),
     donationReports: (l: Locale) => path(l, "/donation-reports"),
+    /** Публичная страница сбора */
+    fundraise: (l: Locale, id: string) => path(l, `/fundraise/${id}`),
+    /** Мастер сбора начинается с «Где» */
+    fundraiseEdit: (l: Locale, id: string) => path(l, `/fundraise/where/${id}`),
+    donationPay: (l: Locale, id: string) => path(l, `/donation/pay/${id}`),
     signIn: (l: Locale) => path(l, "/signin"),
     messenger: (l: Locale) => path(l, "/messenger"),
     profileInfo: (l: Locale) => path(l, "/profile/info"),
