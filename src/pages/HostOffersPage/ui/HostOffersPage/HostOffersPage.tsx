@@ -164,10 +164,11 @@ const HostOffersPage = () => {
                     type={HintType.Error}
                 />
             )}
-            {/* GS-188: баннер медиаподдержки — сбоку справа, вертикальный. */}
+            <h2 className={styles.abilities}>{t("hostOffers.Мои вакансии")}</h2>
+            {/* GS-188/GS-202: баннер медиаподдержки — справа вплотную к карточкам,
+                верх вровень с первой вакансией. */}
             <div className={styles.layout}>
                 <div className={styles.main}>
-                    <h2 className={styles.abilities}>{t("hostOffers.Мои вакансии")}</h2>
                     <HostOffersList
                         offers={activeDisabledHostOffersData?.data ?? []}
                         onCloseClick={(offerId) => handleCloseClick(offerId)}
