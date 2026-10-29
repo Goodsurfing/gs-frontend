@@ -61,9 +61,9 @@ describe("PaymentPage — редирект на signin для неавториз
         // и не перечитывает searchParams уже сброшенной локации (иначе
         // tariffCode откатывался бы к дефолту на втором рендере).
         renderWithProviders(
-            <MemoryRouter initialEntries={["/ru/payment?tariff=host_4990"]}>
+            <MemoryRouter initialEntries={["/payment?tariff=host_4990"]}>
                 <Routes>
-                    <Route path="/:locale/payment" element={<PaymentPage />} />
+                    <Route path="/payment" element={<PaymentPage />} />
                     <Route path="*" element={null} />
                 </Routes>
                 <LocationDisplay />
@@ -72,7 +72,7 @@ describe("PaymentPage — редирект на signin для неавториз
         );
 
         expect(await screen.findByTestId("location")).toHaveTextContent(
-            "/ru/signin?next=payment&nextId=host_4990",
+            "/signin?next=payment&nextId=host_4990",
         );
     });
 
@@ -85,9 +85,9 @@ describe("PaymentPage — редирект на signin для неавториз
     it("вошедшего пользователя с недогруженным профилем не уводит на вход", async () => {
         auth.myProfile = null;
         renderWithProviders(
-            <MemoryRouter initialEntries={["/ru/payment?tariff=international_5000"]}>
+            <MemoryRouter initialEntries={["/payment?tariff=international_5000"]}>
                 <Routes>
-                    <Route path="/:locale/payment" element={<PaymentPage />} />
+                    <Route path="/payment" element={<PaymentPage />} />
                     <Route path="*" element={null} />
                 </Routes>
                 <LocationDisplay />
@@ -96,15 +96,15 @@ describe("PaymentPage — редирект на signin для неавториз
         );
 
         await new Promise((resolve) => { setTimeout(resolve, 50); });
-        expect(screen.getByTestId("location")).toHaveTextContent("/ru/payment?tariff=international_5000");
+        expect(screen.getByTestId("location")).toHaveTextContent("/payment?tariff=international_5000");
     });
 
     it("пока сессия не прочитана из хранилища, никуда не уводит", async () => {
         auth.myProfile = null;
         renderWithProviders(
-            <MemoryRouter initialEntries={["/ru/payment?tariff=volunteer_990"]}>
+            <MemoryRouter initialEntries={["/payment?tariff=volunteer_990"]}>
                 <Routes>
-                    <Route path="/:locale/payment" element={<PaymentPage />} />
+                    <Route path="/payment" element={<PaymentPage />} />
                     <Route path="*" element={null} />
                 </Routes>
                 <LocationDisplay />
@@ -113,6 +113,6 @@ describe("PaymentPage — редирект на signin для неавториз
         );
 
         await new Promise((resolve) => { setTimeout(resolve, 50); });
-        expect(screen.getByTestId("location")).toHaveTextContent("/ru/payment?tariff=volunteer_990");
+        expect(screen.getByTestId("location")).toHaveTextContent("/payment?tariff=volunteer_990");
     });
 });

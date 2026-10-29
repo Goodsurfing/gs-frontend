@@ -335,6 +335,7 @@ import { AdminBannerMarketingCreatePage } from "@/pages/AdminBannerMarketingCrea
 import { AdminBannerMarketingPersonalPage } from "@/pages/AdminBannerMarketingPersonalPage";
 import { AdminFeedbackPage } from "@/pages/AdminFeedbackPage";
 import { AdminFeedbackPersonalPage } from "@/pages/AdminFeedbackPersonalPage";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 const publicRoutes: RouteType[] = [
     {
@@ -490,7 +491,7 @@ const publicRoutes: RouteType[] = [
     {
         label: "host-personal-legacy-redirect",
         element: <LegacyIdRedirect to={getHostPersonalPageUrl} />,
-        path: (locale: string) => `/${locale}/host-personal/:id`,
+        path: (locale: string) => `${localePrefix(locale)}/host-personal/:id`,
     },
     {
         label: "fundraise-layout",
@@ -564,7 +565,7 @@ const publicRoutes: RouteType[] = [
     {
         label: "offer-personal-legacy-redirect",
         element: <LegacyIdRedirect to={getOfferPersonalPageUrl} />,
-        path: (locale: string) => `/${locale}/offer-personal/:id`,
+        path: (locale: string) => `${localePrefix(locale)}/offer-personal/:id`,
     },
     {
         label: "volunteer-personal",
@@ -574,7 +575,7 @@ const publicRoutes: RouteType[] = [
     {
         label: "volunteer-personal-legacy-redirect",
         element: <LegacyIdRedirect to={getVolunteerPersonalPageUrl} />,
-        path: (locale: string) => `/${locale}/volunteer-personal/:id`,
+        path: (locale: string) => `${localePrefix(locale)}/volunteer-personal/:id`,
     },
     {
         label: "volunteer-layout",
@@ -818,7 +819,7 @@ const publicRoutes: RouteType[] = [
     {
         label: "donation-personal-legacy-redirect",
         element: <LegacyIdRedirect to={getDonationPersonalPage} />,
-        path: (locale: string) => `/${locale}/donation-personal/:id`,
+        path: (locale: string) => `${localePrefix(locale)}/donation-personal/:id`,
     },
     {
         label: "donation-reports",

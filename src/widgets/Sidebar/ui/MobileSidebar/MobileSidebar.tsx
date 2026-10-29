@@ -12,6 +12,7 @@ import {
 import { SidebarContentProps } from "../../model/types/sidebar";
 import { getHostInfoUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./MobileSidebar.module.scss";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 interface MobileSidebarProps {
     className?: string;
@@ -50,12 +51,12 @@ export const MobileSidebar: FC<MobileSidebarProps> = (props) => {
         () => (route: string) => {
             if (id) {
                 if (isSidebarLinkBack(route)) {
-                    return `/${locale}${route}`;
+                    return `${localePrefix(locale)}${route}`;
                 }
-                return `/${locale}${route}/${id}`;
+                return `${localePrefix(locale)}${route}/${id}`;
             }
             if (route === "/host") return getHostInfoUrl(locale);
-            return `/${locale}${route}`;
+            return `${localePrefix(locale)}${route}`;
         },
         [id, locale],
     );

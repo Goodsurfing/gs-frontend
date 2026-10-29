@@ -24,7 +24,7 @@ test.describe('Новый фронт: политика безопасности 
     });
 
     test('отдаёт новый фронт: заголовок, логотипы, ссылка на ЮKassa, мета-теги', async ({ page }) => {
-        const response = await page.goto(`/ru${PAGE}`);
+        const response = await page.goto(`${PAGE}`);
         expect(response?.status()).toBe(200);
         // Признак нового фронта — скрипты Next
         await expect(page.locator('script[src*="/_next/"]').first()).toBeAttached();
@@ -37,8 +37,9 @@ test.describe('Новый фронт: политика безопасности 
         await expect(page.getByRole('note')).toHaveCount(0);
 
         await expect(page).toHaveTitle('Безопасность платежей — GoodSurfing');
-        await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/ru\/payment-security-policy$/);
-        await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute('href', /\/ru\/payment-security-policy$/);
+        await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /^https?:\/\/[^/]+\/payment-security-policy$/);
+        await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute('href', /^https?:\/\/[^/]+\/payment-security-policy$/);
+        await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', /^https?:\/\/[^/]+\/en\/payment-security-policy$/);
         await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /og-image\.jpg$/);
     });
 
@@ -56,7 +57,7 @@ test.describe('Новый фронт: политика безопасности 
 
     test('гость видит «Вход», переключатель языка ведёт на ту же страницу', async ({ page }) => {
         await page.setViewportSize({ width: 1440, height: 900 });
-        await page.goto(`/ru${PAGE}`);
+        await page.goto(`${PAGE}`);
         await expect(page.locator('header').getByRole('link', { name: 'Вход' })).toBeVisible();
 
         await page.locator('header').first().getByRole('button', { name: 'Язык: Русский' }).click();
@@ -77,7 +78,7 @@ test.describe('Новый фронт: шапка вошедшего пользо
         const session = await createSession('web-legacy');
         await useSessionInPage(page, session);
         await page.setViewportSize({ width: 1440, height: 900 });
-        await page.goto(`/ru${PAGE}`);
+        await page.goto(`${PAGE}`);
 
         const header = page.locator('header').first();
         await expect(header.getByRole('link', { name: /^Сообщения/ })).toBeVisible({ timeout: 15_000 });
@@ -87,7 +88,7 @@ test.describe('Новый фронт: шапка вошедшего пользо
     test('вход через cookie: меню профиля и выход из обоих фронтов', async ({ page }) => {
         const session = await createSession('web-cookie');
         await page.setViewportSize({ width: 1440, height: 900 });
-        await page.goto(`/ru${PAGE}`);
+        await page.goto(`${PAGE}`);
         // Вход как в браузере: запрос со страницы стейджа — бэкенд ставит cookie входа
         const status = await page.evaluate(async ({ api, email, password }) => (await fetch(`${api}/api/v1/token`, {
             method: 'POST',
@@ -108,7 +109,7 @@ test.describe('Новый фронт: шапка вошедшего пользо
         const profileButton = header.getByRole('button', { name: shown });
         await expect(profileButton).toBeVisible({ timeout: 15_000 });
         await profileButton.click();
-        await expect(page.getByRole('menuitem', { name: 'Обо мне' })).toHaveAttribute('href', '/ru/profile/info');
+        await expect(page.getByRole('menuitem', { name: 'Обо мне' })).toHaveAttribute('href', '/profile/info');
 
         await page.getByRole('menuitem', { name: 'Выход' }).click();
         await expect(header.getByRole('link', { name: 'Вход' })).toBeVisible({ timeout: 15_000 });

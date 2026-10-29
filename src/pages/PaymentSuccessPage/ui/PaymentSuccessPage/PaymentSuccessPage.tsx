@@ -20,6 +20,7 @@ import {
 import { TARIFF_CODE } from "@/shared/constants/membership";
 
 import styles from "./PaymentSuccessPage.module.scss";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 const VOLUNTEER_BENEFITS = [
     "Неограниченный доступ ко всем направлениям и видам путешествий",
@@ -105,13 +106,13 @@ const PaymentSuccessPage: React.FC = () => {
     useEffect(() => {
         if (!payment) return;
         if (FAIL_STATUSES.has(payment.status)) {
-            navigate(`/${locale}/payment/fail?reason=cancelled`);
+            navigate(`${localePrefix(locale)}/payment/fail?reason=cancelled`);
         }
     }, [payment, navigate, locale]);
 
     useEffect(() => {
         if (!isAuth) {
-            navigate(`/${locale}/signin`);
+            navigate(`${localePrefix(locale)}/signin`);
         }
     }, [isAuth, navigate, locale]);
 

@@ -39,6 +39,6 @@ describe("AdminOfferWhatToDo — переход «Дальше»", () => {
         );
 
         const nextLink = screen.getByRole("link", { name: "Дальше" });
-        expect(nextLink).toHaveAttribute("href", "/ru/admin/vacancy/conditions/7241");
+        expect(nextLink).toHaveAttribute("href", "/admin/vacancy/conditions/7241");
     });
 });

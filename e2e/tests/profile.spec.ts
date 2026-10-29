@@ -24,7 +24,7 @@ test.describe('Профиль', () => {
         const profile = async () => (await api.get('/api/v1/profile', { headers: authHeaders(session) })).json();
 
         const about = `Проверка профиля ${Date.now()}`;
-        await page.goto('/ru/profile/info');
+        await page.goto('/profile/info');
         await page.getByLabel('Фамилия').fill('Проверкин');
         await page.getByLabel('Расскажите о себе').fill(about);
         await page.getByRole('button', { name: 'Сохранить' }).click();

@@ -8,12 +8,13 @@ import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 import styles from "./OfferWelcomePage.module.scss";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 const OfferWelcome: FC = () => {
     const { locale } = useLocale();
     const { t } = useTranslation("offer");
     const { id } = useParams();
-    const path = id ? `/${locale}/offers/where/${id}` : `${getMainPageUrl(locale)}`;
+    const path = id ? `${localePrefix(locale)}/offers/where/${id}` : `${getMainPageUrl(locale)}`;
 
     return (
         <div className={styles.wrapper}>

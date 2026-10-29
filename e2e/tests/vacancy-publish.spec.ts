@@ -15,9 +15,9 @@ test.describe('Публикация вакансии — хост', () => {
         test.setTimeout(180_000);
         const title = `E2E публикация ${Date.now()}`;
 
-        await page.goto('/ru/host/my-offers');
+        await page.goto('/host/my-offers');
         await page.getByRole('button', { name: 'Добавить вакансию' }).click();
-        await page.waitForURL(/\/ru\/offers\/welcome\/\d+/, { timeout: 20_000 });
+        await page.waitForURL(/\/offers\/welcome\/\d+/, { timeout: 20_000 });
         const id = page.url().match(/welcome\/(\d+)/)?.[1] as string;
         const token = await page.evaluate(() => JSON.parse(localStorage.getItem('token') ?? 'null'));
         const api = await request.newContext({ baseURL: API_URL, ignoreHTTPSErrors: true });
@@ -25,7 +25,7 @@ test.describe('Публикация вакансии — хост', () => {
 
         try {
             // Шаг «Где»
-            await page.goto(`/ru/offers/where/${id}`);
+            await page.goto(`/offers/where/${id}`);
             // Адрес принимается только из подсказок геокодера (/api/v1/geocode)
             await page.getByLabel('Введите адрес').pressSequentially('Казань, Баумана', { delay: 60 });
             await page.getByRole('option').first().click();
@@ -36,7 +36,7 @@ test.describe('Публикация вакансии — хост', () => {
             }, { timeout: 15_000 }).toMatch(/Баумана/);
 
             // Шаг «Описание»
-            await page.goto(`/ru/offers/description/${id}`);
+            await page.goto(`/offers/description/${id}`);
             await page.getByLabel('Название мероприятия').fill(title);
             await page.getByLabel('Краткое описание').fill('Короткое описание вакансии для проверки публикации.');
             await page.getByLabel('Полное описание').fill('Полное описание вакансии: что делать, условия, расписание. Создано e2e-тестом и удаляется после проверки.');
@@ -55,7 +55,7 @@ test.describe('Публикация вакансии — хост', () => {
             }, { timeout: 15_000 }).toBe(title);
 
             // Публикация
-            await page.goto(`/ru/offers/finishing-touches/${id}`);
+            await page.goto(`/offers/finishing-touches/${id}`);
             await page.getByRole('button', { name: 'Опубликовать' }).click();
             // Подтверждение в модальном окне. В старом фронте оно без role="dialog",
             // поэтому окно — самый вложенный блок с текстом вопроса и кнопкой «Отмена»
@@ -71,7 +71,7 @@ test.describe('Публикация вакансии — хост', () => {
                 return v?.status ?? null;
             }, { timeout: 20_000 }).toBe('active');
 
-            await expectPageWorks(page, `/ru/offers/${id}`);
+            await expectPageWorks(page, `/offers/${id}`);
             await expect(page.getByText(title).first()).toBeVisible();
         } finally {
             const removed = await api.delete(`/api/v1/vacancy/${id}`, { headers });

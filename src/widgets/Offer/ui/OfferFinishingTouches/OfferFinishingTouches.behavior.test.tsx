@@ -40,10 +40,10 @@ vi.mock("@/features/OfferFinishingTouches", async (importOriginal) => {
 });
 
 const renderWidget = (offerId = "42") => renderWithProviders(
-    <MemoryRouter initialEntries={["/ru/offer/finishing-touches/42"]}>
+    <MemoryRouter initialEntries={["/offer/finishing-touches/42"]}>
         <Routes>
-            <Route path="/ru/offer/finishing-touches/:id" element={<OfferFinishingTouches offerId={offerId} />} />
-            <Route path="/ru/host/my-offers" element={<div>Мои вакансии</div>} />
+            <Route path="/offer/finishing-touches/:id" element={<OfferFinishingTouches offerId={offerId} />} />
+            <Route path="/host/my-offers" element={<div>Мои вакансии</div>} />
         </Routes>
     </MemoryRouter>,
 );

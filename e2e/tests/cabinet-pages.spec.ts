@@ -49,7 +49,7 @@ test.describe('Кабинет — волонтёр', () => {
     for (const path of [...COMMON, ...VOLUNTEER]) {
         test(path, async ({ page }, testInfo) => {
             test.skip(testInfo.project.name !== 'vol', 'один раз на прогон');
-            await expectPageWorks(page, `/ru${path}`);
+            await expectPageWorks(page, `${path}`);
         });
     }
 });
@@ -60,7 +60,7 @@ test.describe('Кабинет — хост', () => {
     for (const path of [...COMMON, ...HOST]) {
         test(path, async ({ page }, testInfo) => {
             test.skip(testInfo.project.name !== 'host', 'один раз на прогон');
-            await expectPageWorks(page, `/ru${path}`);
+            await expectPageWorks(page, `${path}`);
         });
     }
 });
@@ -71,7 +71,7 @@ test.describe('Кабинет — гость', () => {
     test('личные страницы уводят на вход', async ({ page }, testInfo) => {
         test.skip(testInfo.project.name !== 'vol', 'один раз на прогон');
         for (const path of ['/profile/info', '/host/host-dashboard', '/messenger']) {
-            await page.goto(`/ru${path}`);
+            await page.goto(`${path}`);
             await page.waitForURL(/\/signin/, { timeout: 15_000 });
         }
     });

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./Header.module.scss";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 export const Header = () => {
     const { t } = useTranslation("find-job");
@@ -17,7 +18,7 @@ export const Header = () => {
             </h2>
             <div className={styles.buttonPrice}>
                 <ButtonLink
-                    path={`/${locale}/offers-map?category=13`}
+                    path={`${localePrefix(locale)}/offers-map?category=13`}
                     type="primary"
                     size="MEDIUM"
                     className={styles.button}

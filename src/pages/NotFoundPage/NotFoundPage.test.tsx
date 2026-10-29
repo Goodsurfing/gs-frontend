@@ -29,6 +29,6 @@ describe("NotFoundPage", () => {
         expect(screen.getByText(/не существует/i)).toBeInTheDocument();
 
         const link = screen.getByRole("link", { name: /на главную/i });
-        expect(link).toHaveAttribute("href", "/ru/");
+        expect(link).toHaveAttribute("href", "/");
     });
 });

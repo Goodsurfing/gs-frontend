@@ -10,6 +10,7 @@ import { useGetPublicCategoriesVacancyQuery } from "@/entities/Admin";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import ActivityItem from "./ActivityItem/ActivityItem";
 import styles from "./ActivityContainer.module.scss";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 interface ActivityContainerProps {
     locale: Locale;
@@ -42,7 +43,7 @@ const ActivityContainer: FC<ActivityContainerProps> = (props) => {
                 <ActivityItem
                     title={item.name}
                     image={item.imagePath}
-                    path={`/${locale}/offers-map?category=${item.id}`}
+                    path={`${localePrefix(locale)}/offers-map?category=${item.id}`}
                     key={index}
                     locale={locale}
                 />

@@ -1272,7 +1272,7 @@ describe("OffersMap", () => {
         const { balloonContent } = capturedFeatures[0].properties;
         expect(balloonContent).toContain("balloonImageLink");
         expect(balloonContent).toContain("balloonImage");
-        expect(balloonContent).toContain("/ru/offers/1");
+        expect(balloonContent).toContain("/offers/1");
     });
 
     it("использует MEDIUM-превью в balloon, а не крошечный SMALL (56x56, размывается при показе крупнее)", async () => {

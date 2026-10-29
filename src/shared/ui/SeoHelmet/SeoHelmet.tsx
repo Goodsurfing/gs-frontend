@@ -1,13 +1,14 @@
 import { FC } from "react";
 import { Helmet } from "react-helmet-async";
 import ogImageDefault from "@/shared/assets/images/og-image.jpg";
+import { localeFromPath, withLocalePath } from "@/shared/config/routes/localePath";
 
 const SITE_NAME = "GoodSurfing";
 const LOCALES = ["ru", "en", "es"] as const;
 const DEFAULT_LOCALE = "ru";
 const OG_LOCALE: Record<string, string> = { ru: "ru_RU", en: "en_US", es: "es_ES" };
-// /ru, /en или /es сразу после домена
-const LOCALE_SEGMENT = /^(https?:\/\/[^/]+)\/(ru|en|es)(?=\/|$)/;
+// Адрес страницы: домен + путь (у русского без префикса, у en/es — /en, /es)
+const ABSOLUTE_URL = /^(https?:\/\/[^/?#]+)([^?#]*)(.*)$/;
 
 interface SeoHelmetProps {
     title: string;
@@ -29,22 +30,22 @@ interface SeoHelmetProps {
 }
 
 /**
- * Языковые версии страницы по канонической ссылке: тот же путь с /ru, /en,
- * /es и x-default на русскую (GS-213). Пусто, если в ссылке нет языка.
+ * Языковые версии страницы по канонической ссылке: русская без префикса,
+ * /en и /es, x-default — на русскую (GS-213). Пусто, если ссылка не абсолютная.
  */
 export const getAlternateUrls = (canonicalUrl: string) => {
-    if (!LOCALE_SEGMENT.test(canonicalUrl)) return [];
-    const withLocale = (locale: string) => canonicalUrl
-        .replace(LOCALE_SEGMENT, `$1/${locale}`);
+    const match = canonicalUrl.match(ABSOLUTE_URL);
+    if (!match) return [];
+    const [, origin, path] = match;
+    // Без завершающего «/» (кроме корня) — как getSeoUrl у канонической ссылки
+    const withLocale = (locale: string) => `${origin}${withLocalePath(path || "/", locale).replace(/(.)\/$/, "$1")}`;
     return [
         ...LOCALES.map((locale) => ({ hrefLang: locale, href: withLocale(locale) })),
         { hrefLang: "x-default", href: withLocale(DEFAULT_LOCALE) },
     ];
 };
 
-const getLocale = (canonicalUrl: string) => (
-    canonicalUrl.match(LOCALE_SEGMENT)?.[2] ?? DEFAULT_LOCALE
-);
+const getLocale = (canonicalUrl: string) => localeFromPath(canonicalUrl.match(ABSOLUTE_URL)?.[2] ?? "/");
 
 export const SeoHelmet: FC<SeoHelmetProps> = (props) => {
     const {

@@ -12,21 +12,28 @@ vi.mock("react-i18next", () => ({
 }));
 
 describe("getAlternateUrls", () => {
-    it("строит ru/en/es и x-default из канонической ссылки", () => {
+    it("русская версия без префикса, en/es с префиксом, x-default — русская", () => {
         expect(getAlternateUrls("https://goodsurfing.org/en/offers/42")).toEqual([
-            { hrefLang: "ru", href: "https://goodsurfing.org/ru/offers/42" },
+            { hrefLang: "ru", href: "https://goodsurfing.org/offers/42" },
             { hrefLang: "en", href: "https://goodsurfing.org/en/offers/42" },
             { hrefLang: "es", href: "https://goodsurfing.org/es/offers/42" },
-            { hrefLang: "x-default", href: "https://goodsurfing.org/ru/offers/42" },
+            { hrefLang: "x-default", href: "https://goodsurfing.org/offers/42" },
         ]);
     });
 
-    it("работает для главной страницы языка", () => {
-        expect(getAlternateUrls("https://goodsurfing.org/es")[0].href).toBe("https://goodsurfing.org/ru");
+    it("с русской страницы — те же адреса", () => {
+        expect(getAlternateUrls("https://goodsurfing.org/offers/42")[1])
+            .toEqual({ hrefLang: "en", href: "https://goodsurfing.org/en/offers/42" });
     });
 
-    it("пусто, если в ссылке нет языка", () => {
-        expect(getAlternateUrls("https://goodsurfing.org/sitemap.xml")).toEqual([]);
+    it("главная: корень для русского, /en и /es без завершающего «/»", () => {
+        const urls = getAlternateUrls("https://goodsurfing.org/es");
+        expect(urls[0].href).toBe("https://goodsurfing.org/");
+        expect(urls[1].href).toBe("https://goodsurfing.org/en");
+    });
+
+    it("пусто, если ссылка не абсолютная", () => {
+        expect(getAlternateUrls("/offers/42")).toEqual([]);
     });
 });
 

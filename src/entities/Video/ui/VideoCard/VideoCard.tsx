@@ -6,6 +6,7 @@ import like from "@/shared/assets/icons/thumbsUp.svg";
 import comment from "@/shared/assets/icons/comment.svg";
 import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
 import styles from "./VideoCard.module.scss";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 export interface VideoCardType {
     id: string;
@@ -31,7 +32,7 @@ export const VideoCard: FC<VideoCardProps> = (props) => {
     const { locale } = useLocale();
     const { width } = useWindowDimensions();
     return (
-        <Link className={styles.link} to={`/${locale}/video/${id}`}>
+        <Link className={styles.link} to={`${localePrefix(locale)}/video/${id}`}>
             <div className={cn(className, styles.wrapper)}>
                 {image ? (
                     <img

@@ -8,6 +8,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { useSidebarContext } from "../SidebarContext/SidebarContext";
 import styles from "./SidebarLink.module.scss";
 import { isSidebarLinkBack } from "../../lib/isSidebarLinkBack";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 interface SidebarLinkProps {
     text: string;
@@ -22,10 +23,10 @@ export const SidebarLink = memo(({ icon, route, text }: SidebarLinkProps) => {
     const pathCheck = () => {
         if (id) {
             if (isSidebarLinkBack(route)) {
-                return `/${locale}${route}`;
-            } return `/${locale}${route}/${id}`;
+                return `${localePrefix(locale)}${route}`;
+            } return `${localePrefix(locale)}${route}/${id}`;
         }
-        return `/${locale}${route}`;
+        return `${localePrefix(locale)}${route}`;
     };
     const path = pathCheck();
 

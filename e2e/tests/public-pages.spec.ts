@@ -14,7 +14,7 @@ test.describe('Публичные страницы — гость', () => {
     for (const { name, path } of STATIC_PAGES) {
         test(`статичная: ${name}`, async ({ page }, testInfo) => {
             test.skip(testInfo.project.name !== 'vol', 'гостевые проверки — один раз на прогон');
-            await expectPageWorks(page, `/ru${path}`, { allowSignin: true });
+            await expectPageWorks(page, `${path}`, { allowSignin: true });
         });
     }
 
@@ -24,13 +24,13 @@ test.describe('Публичные страницы — гость', () => {
         const pages: PublicPage[] = await loadDataPages();
         expect(pages.length, 'API стенда не отдал ни одной записи').toBeGreaterThan(3);
         for (const { path } of pages) {
-            await expectPageWorks(page, `/ru${path}`, { allowSignin: true });
+            await expectPageWorks(page, `${path}`, { allowSignin: true });
         }
     });
 
     test('несуществующая страница — 404', async ({ page }, testInfo) => {
         test.skip(testInfo.project.name !== 'vol', 'гостевые проверки — один раз на прогон');
-        await page.goto('/ru/no-such-page-e2e');
+        await page.goto('/no-such-page-e2e');
         await expect(page.getByRole('heading', { name: '404' })).toBeVisible();
     });
 
