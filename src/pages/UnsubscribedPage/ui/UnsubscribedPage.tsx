@@ -22,7 +22,12 @@ const UnsubscribedPage: FC = () => {
     const invalid = params.get("status") === "invalid";
 
     return (
-        <SignLayout cancelText={t("login.Отменить")} cancelPath={getMainPageUrl(locale)}>
+        <SignLayout
+            cancelText={t("login.Отменить")}
+            cancelPath={getMainPageUrl(locale)}
+            // Из письма обычно приходят уже вошедшими — не уводить на главную
+            disableRedirectIfIsAuth
+        >
             <div className={styles.wrapper}>
                 <SignTitle>{t("unsubscribed.title")}</SignTitle>
                 <div className={styles.content}>
