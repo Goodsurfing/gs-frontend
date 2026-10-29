@@ -6,11 +6,12 @@ import { useSession } from "@/components/session/SessionProvider";
 import { browserApi } from "@/lib/browserApi";
 
 /**
- * «Редактировать профиль» (своя организация) или «Написать» (вошедшему, когда
- * узнали, есть ли уже переписка с владельцем: есть — в неё, нет — в новую).
- * Гостю кнопок нет — как в старом фронте.
+ * Кнопки публичной страницы организации или волонтёра: «Редактировать»
+ * (своя страница) или «Написать» (вошедшему, когда узнали, есть ли уже
+ * переписка с владельцем: есть — в неё, нет — в новую). Гостю кнопок нет —
+ * как в старом фронте.
  */
-export function OrganizationActions({ ownerId, hrefs, labels, className = "" }: {
+export function WriteOrEditActions({ ownerId, hrefs, labels, className = "" }: {
     ownerId: string | undefined;
     hrefs: { edit: string; messenger: string };
     labels: { edit: string; write: string };

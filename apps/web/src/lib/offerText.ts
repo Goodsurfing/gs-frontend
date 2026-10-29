@@ -180,3 +180,8 @@ export function participateText(
     if (needVolunteerRole) return labels.becomeVolunteer;
     return (textParticipate && labels.states[textParticipate]) || labels.participate;
 }
+
+/** Только названия языков через запятую (useLanguagesWithComma старого фронта) */
+export function languageNames(languages: { language: string }[], t: Translate): string {
+    return languages.map(({ language }) => (LANGUAGES[language] ? t(`whoNeeds.${LANGUAGES[language]}`) : language)).join(", ");
+}

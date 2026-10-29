@@ -5,11 +5,11 @@ import { GalleryCarousel } from "@/components/gallery/GalleryCarousel";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { MembershipBadges } from "@/components/membership/MembershipBadges";
 import { SectionTitle } from "@/components/offer/parts";
-import { OrganizationActions } from "@/components/organization/OrganizationActions";
 import { OrganizationOffers } from "@/components/organization/OrganizationOffers";
 import { OrganizationReviews } from "@/components/organization/OrganizationReviews";
 import { Avatar } from "@/components/ui/Avatar";
 import { SectionSubmenu } from "@/components/ui/SectionSubmenu";
+import { WriteOrEditActions } from "@/components/ui/WriteOrEditActions";
 import { VideoCarousel } from "@/components/video/VideoCarousel";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
@@ -80,7 +80,7 @@ export default async function OrganizationPage({ params }: Props) {
     const vk = socialLink(organization.vk, "vk");
     const telegram = socialLink(organization.telegram, "telegram");
     const actions = (
-        <OrganizationActions
+        <WriteOrEditActions
             ownerId={owner?.id}
             hrefs={{ edit: routes.hostInfo(locale), messenger: routes.messenger(locale) }}
             labels={{ edit: h("Редактировать профиль"), write: h("Написать") }}
