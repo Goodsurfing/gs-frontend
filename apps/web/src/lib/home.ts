@@ -6,10 +6,11 @@ import type { Locale } from "@/i18n/config";
 
 import { OPTIONAL_BLOCK_TIMEOUT_MS, serverApi } from "./api";
 
+import { type OfferCardData, SLIDER_OFFERS_LIMIT } from "./offers";
+
 // Направления, вакансии и статьи — основное содержимое главной: ждём дольше необязательных блоков,
 // иначе на сборке (девять запросов разом) страница кэшировалась пустой
 const MAIN_BLOCK_TIMEOUT_MS = 5000;
-import { type OfferCardData, SLIDER_OFFERS_LIMIT } from "./offers";
 
 export interface HomeCategory { id: number; name: string; image?: string }
 
