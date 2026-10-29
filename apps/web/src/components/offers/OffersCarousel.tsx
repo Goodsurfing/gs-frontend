@@ -46,7 +46,7 @@ export function OffersCarousel({ children, prevLabel, nextLabel, className = "" 
                 >
                     {Children.map(children, (child) => (
                         // Ширина в cqw, а не в %: calc с процентами Chrome округляет по слагаемым (359,98 px вместо 360, как у Swiper)
-                        <div className="w-[100cqw] shrink-0 snap-start [@media(min-width:480px)]:w-[calc((100cqw-10px)/2)] [@media(min-width:992px)]:w-[calc((100cqw-20px)/3)]">
+                        <div className="w-[100cqw] shrink-0 snap-start min-[480px]:w-[calc((100cqw-10px)/2)] min-[992px]:w-[calc((100cqw-20px)/3)]">
                             {child}
                         </div>
                     ))}

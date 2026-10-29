@@ -372,5 +372,9 @@
     "slider": {
         "previous": "Anterior",
         "next": "Siguiente"
+    },
+    "gallery": {
+        "open": "Abrir foto",
+        "photo": "Foto"
     }
 }

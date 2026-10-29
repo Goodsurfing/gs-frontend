@@ -163,6 +163,37 @@ test.describe('Новый фронт: найти работу', () => {
     });
 });
 
+test.describe('Новый фронт: о проекте', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test.beforeEach(async ({ context }, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'проверка без привязки к роли — один раз за прогон');
+        await enableNewFrontend(context);
+    });
+
+    test('/about-project: миссия, цифры, галерея открывается и листается', async ({ page }) => {
+        await page.setViewportSize({ width: 1280, height: 900 });
+        const response = await page.goto('/about-project');
+        expect(response?.status()).toBe(200);
+        await expect(page.locator('script[src*="/_next/"]').first()).toBeAttached();
+        await expect(page.getByRole('heading', { level: 2, name: 'Миссия ГудСёрфинга' })).toBeVisible();
+        await expect(page.getByRole('link', { name: 'О некоммерческой организации' })).toHaveAttribute('href', '/npo');
+        await expect(page.getByRole('link', { name: 'Присоединиться' })).toHaveAttribute('href', '/membership');
+
+        const photos = page.getByRole('button', { name: /^Открыть фото \d+$/ });
+        test.skip(await photos.count() === 0, 'в админке нет фото');
+        await expect(page.getByRole('button', { name: 'Назад' }).first()).toBeDisabled();
+        await photos.first().click();
+        const dialog = page.getByRole('dialog');
+        await expect(dialog).toBeVisible();
+        await expect(dialog.getByRole('img', { name: 'Фото 1', exact: true })).toBeInViewport();
+        await page.keyboard.press('ArrowRight');
+        await expect(dialog.getByRole('img', { name: 'Фото 2', exact: true })).toBeInViewport();
+        await page.keyboard.press('Escape');
+        await expect(dialog).toHaveCount(0);
+    });
+});
+
 test.describe('Новый фронт: шапка вошедшего пользователя', () => {
     test.use({ storageState: { cookies: [], origins: [] } });
 
