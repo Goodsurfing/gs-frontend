@@ -1,29 +1,23 @@
 import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
 
-import { LANGUAGE_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
-import LocalStorageManager from "@/shared/lib/localstorage/LocalStorageManager";
+import { localeFromPath } from "@/shared/config/routes/localePath";
 
-const languageDetector = new LanguageDetector();
-languageDetector.addDetector({
-    name: "customLocalStorageDetector",
-    lookup() {
-        return LocalStorageManager.getItem(LANGUAGE_LOCALSTORAGE_KEY);
-    },
-});
+// Язык — только из адреса (/en/…, /es/…, остальное — русский), как и в useLocale.
+// Раньше он определялся по браузеру: при английском браузере на русской странице
+// сначала грузился английский словарь, и часть интерфейса (меню кабинета
+// организатора) успевала отрисоваться и остаться на английском.
+const initialLanguage = typeof window === "undefined"
+    ? "ru"
+    : localeFromPath(window.location.pathname);
 
 i18n.use(Backend)
-    .use(languageDetector)
     .use(initReactI18next)
     .init({
         fallbackLng: "ru",
+        lng: initialLanguage,
         supportedLngs: ["ru", "en", "es"],
-        detection: {
-            order: ["customLocalStorageDetector", "navigator"],
-            caches: [],
-        },
         debug: __IS_DEV__,
         interpolation: {
             escapeValue: false,
