@@ -105,11 +105,31 @@ export interface AdminUser {
     isPrivilegedMembership?: boolean;
     /** GS-198: членство в Международном клубе (d.m.Y) или null. */
     internationalEndPayment?: string | null;
+    /** GS-203: согласие на рассылку и журнал изменений (новые сверху) */
+    marketingConsent?: AdminMarketingConsent;
+}
+
+export type MarketingConsentSource =
+    | "registration" | "profile" | "email_request" | "unisender" | "account_deleted";
+
+export interface AdminMarketingConsent {
+    consent: boolean;
+    /** ISO 8601; null — человек ни разу не отвечал */
+    at: string | null;
+    source: MarketingConsentSource | null;
+    history: {
+        consent: boolean;
+        source: MarketingConsentSource;
+        at: string;
+        ip: string | null;
+        /** Текст галочки, который видел человек */
+        wording: string | null;
+    }[];
 }
 
 export type UpdateAdminUser = Omit<AdminUser, "created" | "lastVisit" | "isVerified"
 | "isVolunteer" | "isOrganization" | "isActive" | "isDelete" | "isPayment" | "endPayment" | "internationalEndPayment" | "imagePath" | "thumbnails"
-| "email" | "skills" | "image" | "achievements"> & {
+| "email" | "skills" | "image" | "achievements" | "marketingConsent"> & {
     imageId: string | null;
     skillIds: number[];
     achievementIds: number[];

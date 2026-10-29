@@ -20,6 +20,7 @@ import { setRegisterUserData } from "@/store/reducers/registerSlice";
 
 import { IAuthFormData, IRegisterFormData } from "@/types/api/auth/register.interface";
 
+import { marketingConsentWording } from "../../lib/marketingConsentIntent";
 import styles from "./SignUpForm.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -54,6 +55,7 @@ const SignUpForm: FC<SignUpFormProps> = ({
             locale,
             isActive: true,
             marketingConsent,
+            ...(marketingConsent ? { marketingConsentWording: marketingConsentWording(t) } : {}),
         };
         await registerUser(formData)
             .unwrap()
@@ -133,6 +135,7 @@ const SignUpForm: FC<SignUpFormProps> = ({
                 onChange={() => onMarketingConsentChange?.(!marketingConsent)}
                 text={t("login.Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга")}
             />
+            <p className={styles.consentHint}>{t("login.marketingConsentHint")}</p>
             <Button
                 type="submit"
                 variant="FILL"

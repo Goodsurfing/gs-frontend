@@ -15,3 +15,12 @@
 	font-size: 14px;
 	color: var(--text-caption);
 }
+
+// Под галочкой согласия: как отписаться (лучшая практика — сказать об этом сразу).
+// Отступ слева — вровень с текстом галочки.
+.consentHint {
+	margin: 4px 0 0 32px;
+	font-size: 13px;
+	line-height: 1.4;
+	color: var(--text-caption);
+}

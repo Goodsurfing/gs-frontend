@@ -94,6 +94,7 @@ describe("SignUpForm", () => {
         await fillAndSubmit();
         await waitFor(() => expect(bodies).toHaveLength(1));
         expect(bodies[0].marketingConsent).toBe(false);
+        expect(bodies[0].marketingConsentWording).toBeUndefined();
     });
 
     it("с отметкой согласие уходит вместе с регистрацией", async () => {
@@ -103,5 +104,8 @@ describe("SignUpForm", () => {
         await fillAndSubmit();
         await waitFor(() => expect(bodies).toHaveLength(1));
         expect(bodies[0].marketingConsent).toBe(true);
+        // В журнал согласий уходит текст галочки вместе с подсказкой об отписке
+        expect(bodies[0].marketingConsentWording).toContain("Хочу получать письма");
+        expect(bodies[0].marketingConsentWording).toContain("marketingConsentHint");
     });
 });

@@ -11,6 +11,8 @@ export interface IRegisterFormData {
     isActive: boolean;
     /** Чекбокс «Хочу получать письма…» — по умолчанию снят (GS-203) */
     marketingConsent?: boolean;
+    /** Текст галочки, как его видел человек, — в журнал согласий */
+    marketingConsentWording?: string;
 }
 
 export interface IRegisterResponse {

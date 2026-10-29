@@ -17,3 +17,19 @@
 .no {
     background-color: var(--error-color);
 }
+
+// GS-203: журнал согласия на рассылку
+.consentHistory {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 13px;
+    line-height: 1.5;
+
+    li + li {
+        margin-top: 6px;
+    }
+}
+
+.consentWording {
+    color: var(--text-caption);
+}

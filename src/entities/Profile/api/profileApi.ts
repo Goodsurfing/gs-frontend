@@ -155,7 +155,12 @@ export const profileApi = createApi({
         }),
         // Согласие на рассылку (GS-203): переключатель в профиле и чекбокс при
         // первом входе через VK (source: "registration")
-        updateMarketingConsent: build.mutation<void, { consent: boolean; source?: "profile" | "registration" }>({
+        updateMarketingConsent: build.mutation<void, {
+            consent: boolean;
+            source?: "profile" | "registration";
+            /** Текст галочки/переключателя, как его видел человек, — в журнал согласий */
+            wording?: string;
+        }>({
             query: (body) => ({
                 url: `${API_BASE_URL_ABSOLUTE}profile/marketing-consent`,
                 method: "PATCH",
