@@ -58,7 +58,8 @@ export default async function DonationPayPage({ params }: Props) {
                         settings: t("Настройки"),
                         anonymous: t("Анонимное пожертвование"),
                         creating: t("Создание платежа"),
-                        submit: t("Поддержать — {{amount}} ₽"),
+                        // Сумму подставляет форма — шаблон передаётся с плейсхолдером
+                        submit: t("Поддержать — {{amount}} ₽", { amount: "{{amount}}" }),
                         offerBefore,
                         offerLink,
                         offerAfter,
