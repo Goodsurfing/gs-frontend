@@ -33,5 +33,9 @@
     "Попробовать снова": "Intentar de nuevo",
     "Загрузка": "Cargando...",
     "Произошла ошибка": "Se produjo un error",
-    "Без названия": "Sin título"
+    "Без названия": "Sin título",
+    "durationRange": "de {{min}} a {{max}} días",
+    "days": "días",
+    "Дата начала": "Fecha de inicio",
+    "Дата окончания": "Fecha de fin"
 }

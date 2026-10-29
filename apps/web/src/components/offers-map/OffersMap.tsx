@@ -185,6 +185,17 @@ export function OffersMap({ locale, filtersQuery, selectedOfferId, offerHref, la
         };
     }, [locale]);
 
+    // Карту показали или изменили её размер (свернули список, переключили вкладку на телефоне)
+    useEffect(() => {
+        const node = containerRef.current;
+        if (!api || !node) return;
+        const observer = new ResizeObserver(() => {
+            if (node.offsetWidth > 0 && node.offsetHeight > 0) api.map.container.fitToViewport();
+        });
+        observer.observe(node);
+        return () => observer.disconnect();
+    }, [api]);
+
     // Отметки по фильтрам
     useEffect(() => {
         const abort = new AbortController();
