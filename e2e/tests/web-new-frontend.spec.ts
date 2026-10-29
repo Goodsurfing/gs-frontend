@@ -164,6 +164,7 @@ test.describe('Новый фронт: найти работу', () => {
 });
 
 test.describe('Новый фронт: о проекте', () => {
+test.describe('Новый фронт: команда и амбассадоры', () => {
     test.use({ storageState: { cookies: [], origins: [] } });
 
     test.beforeEach(async ({ context }, testInfo) => {
@@ -191,6 +192,23 @@ test.describe('Новый фронт: о проекте', () => {
         await expect(dialog.getByRole('img', { name: 'Фото 2', exact: true })).toBeInViewport();
         await page.keyboard.press('Escape');
         await expect(dialog).toHaveCount(0);
+    test('/our-team: основатели, команда, ссылка на анкету', async ({ page }) => {
+        const response = await page.goto('/our-team');
+        expect(response?.status()).toBe(200);
+        await expect(page.locator('script[src*="/_next/"]').first()).toBeAttached();
+        await expect(page.getByRole('heading', { level: 1, name: 'Наша команда' })).toBeVisible();
+        await expect(page.getByRole('heading', { level: 2, name: 'Основатели' })).toBeVisible();
+        await expect(page.getByRole('heading', { level: 2, name: 'Команда Гудсёрфинга' })).toBeVisible();
+        expect(await page.locator('main img[loading="lazy"]').count()).toBeGreaterThan(0);
+        await expect(page.getByRole('link', { name: 'Хочу в команду' })).toHaveAttribute('href', /forms\.yandex\.ru/);
+    });
+
+    test('/ambassadors: текст и список амбассадоров', async ({ page }) => {
+        const response = await page.goto('/ambassadors');
+        expect(response?.status()).toBe(200);
+        await expect(page.getByRole('heading', { level: 1, name: 'Амбассадоры ГудСёрфинга' })).toBeVisible();
+        await expect(page.getByRole('heading', { level: 2, name: 'Наши Амбассадоры' })).toBeVisible();
+        expect(await page.locator('main img[loading="lazy"]').count()).toBeGreaterThan(0);
     });
 });
 
