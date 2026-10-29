@@ -15,12 +15,18 @@ describe("отметка согласия на рассылку при вход�
         saveMarketingConsentIntent(true);
         expect(hasMarketingConsentIntent()).toBe(true);
         expect(takeMarketingConsentIntent()).toBe(true);
-        expect(takeMarketingConsentIntent()).toBe(false);
     });
 
-    it("снятая отметка не сохраняется", () => {
-        saveMarketingConsentIntent(true);
+    it("по умолчанию отмечено", () => {
+        expect(hasMarketingConsentIntent()).toBe(true);
+        expect(takeMarketingConsentIntent()).toBe(true);
+    });
+
+    it("снятая отметка переживает уход на VK", () => {
         saveMarketingConsentIntent(false);
+        expect(hasMarketingConsentIntent()).toBe(false);
         expect(takeMarketingConsentIntent()).toBe(false);
+        // после использования — снова значение по умолчанию
+        expect(hasMarketingConsentIntent()).toBe(true);
     });
 });

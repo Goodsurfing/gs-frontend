@@ -1,37 +1,39 @@
 /**
- * Отметка «Хочу получать письма» на странице регистрации (GS-203). Вход через
- * VK уводит на сайт VK и возвращает обратно — состояние формы теряется,
- * поэтому отметка хранится в sessionStorage до возвращения.
+ * Отметка «Хочу получать письма» на странице регистрации (GS-203). По умолчанию
+ * стоит (решение владельца 29.10.2026). Вход через VK уводит на сайт VK и
+ * возвращает обратно — состояние формы теряется, поэтому выбор хранится в
+ * sessionStorage: "1" — отмечено, "0" — снято; нет записи — по умолчанию отмечено.
  */
 const KEY = "gs.marketingConsentIntent";
 
 export const saveMarketingConsentIntent = (consent: boolean) => {
     try {
-        if (consent) sessionStorage.setItem(KEY, "1");
-        else sessionStorage.removeItem(KEY);
+        sessionStorage.setItem(KEY, consent ? "1" : "0");
     } catch {
-        // приватный режим без sessionStorage — согласие просто не перенесётся
+        // приватный режим без sessionStorage — останется значение по умолчанию
     }
 };
 
-/** Отметка с прошлого шага (и сразу забывается). */
+const readIntent = (): boolean => {
+    try {
+        return sessionStorage.getItem(KEY) !== "0";
+    } catch {
+        return true;
+    }
+};
+
+/** Выбор с прошлого шага (и сразу забывается). */
 export const takeMarketingConsentIntent = (): boolean => {
+    const value = readIntent();
     try {
-        const value = sessionStorage.getItem(KEY) === "1";
         sessionStorage.removeItem(KEY);
-        return value;
     } catch {
-        return false;
+        // нечего забывать
     }
+    return value;
 };
 
-export const hasMarketingConsentIntent = (): boolean => {
-    try {
-        return sessionStorage.getItem(KEY) === "1";
-    } catch {
-        return false;
-    }
-};
+export const hasMarketingConsentIntent = (): boolean => readIntent();
 
 type Translate = (key: string) => string;
 
