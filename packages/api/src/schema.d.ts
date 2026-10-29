@@ -3405,6 +3405,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/marketing-consent/unsubscribe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Отписка от рассылки по ссылке из письма */
+        get: operations["get_app_api_v1_marketingconsent_unsubscribe"];
+        put?: never;
+        /** Отписка в один клик из почтового клиента (List-Unsubscribe-Post, RFC 8058) */
+        post: operations["post_app_api_v1_marketingconsent_unsubscribe"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/media_objects": {
         parameters: {
             query?: never;
@@ -4256,6 +4274,23 @@ export interface paths {
         patch: operations["patch_app_api_v1_profilelocale__invoke"];
         trace?: never;
     };
+    "/api/v1/profile/marketing-consent": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Согласие на рассылку: включить или выключить */
+        patch: operations["patch_app_api_v1_marketingconsent_update"];
+        trace?: never;
+    };
     "/api/v1/profile/occupancy": {
         parameters: {
             query?: never;
@@ -4955,6 +4990,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/unisender/webhook": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["get_unisender_webhook"];
+        put?: never;
+        post: operations["post_unisender_webhook"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/user_does_not_have_volunteer_profiles": {
         parameters: {
             query?: never;
@@ -5252,6 +5303,26 @@ export interface paths {
          * @description Retrieves a VacancyLimitExceededException resource.
          */
         get: operations["api_vacancy_limit_exceeded_exceptions_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vacancy_not_active_exceptions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves a VacancyNotActiveException resource.
+         * @description Retrieves a VacancyNotActiveException resource.
+         */
+        get: operations["api_vacancy_not_active_exceptions_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -9577,6 +9648,12 @@ export interface components {
             lastName: string;
             /** @example  */
             locale: string;
+            /**
+             * @description Согласие на рекламные и информационные письма (GS-203)
+             * @default false
+             * @example false
+             */
+            marketingConsent: Record<string, never>;
             /** @example  */
             phone: string;
             /** @example  */
@@ -9702,7 +9779,7 @@ export interface components {
         };
         ElementResult11: {
             /** @default [] */
-            galleryImages: string[];
+            galleryImages: components["schemas"]["ImageResultDto"][];
             /** @example  */
             howAllStart: string;
             /** @example  */
@@ -10207,6 +10284,18 @@ export interface components {
             lastVisit: string;
             /** @example  */
             locale: string;
+            /**
+             * Согласие на рассылку (GS-203): текущее состояние и журнал изменений —
+             *     чтобы поддержка видела, давал ли человек согласие, когда и как.
+             * @description Согласие на рассылку: consent, at (ISO 8601), source, history — последние 20 изменений, новые сверху
+             * @default {
+             *       "at": null,
+             *       "consent": false,
+             *       "history": [],
+             *       "source": null
+             *     }
+             */
+            marketingConsent: Record<string, never>;
             /** @example  */
             phone: string;
             /** @default [] */
@@ -15951,6 +16040,29 @@ export interface components {
             likeVideos?: components["schemas"]["Video"][];
             /** @default ru */
             locale: string;
+            /**
+             * @description Согласие на рекламные и информационные письма (GS-203). При регистрации
+             *     приходит из чекбокса (по умолчанию отмечен — решение владельца 29.10.2026); дальше меняется только через
+             *     App\Service\MarketingConsent — с датой, источником и записью в журнал.
+             * @default false
+             */
+            marketingConsent: boolean;
+            /** Format: date-time */
+            readonly marketingConsentAt?: string | null;
+            /**
+             * Format: date-time
+             * @description Когда последний раз отправляли письмо-запрос согласия — чтобы не слать повторно
+             */
+            readonly marketingConsentRequestedAt?: string | null;
+            /** @enum {string|null} */
+            readonly marketingConsentSource?: "registration" | "profile" | "email_request" | "unisender" | "existing_user" | "unsubscribe_link" | "account_deleted" | null;
+            /**
+             * Format: date-time
+             * @description Когда согласие последний раз перенесли в Unisender (GS-155)
+             */
+            readonly marketingConsentSyncedAt?: string | null;
+            /** @description Текст галочки согласия при регистрации, как его видел человек; не хранится в user — только в журнале */
+            marketingConsentWording?: string | null;
             memberProfiles?: string[];
             news?: components["schemas"]["News"][];
             oldPassword?: string | null;
@@ -16088,6 +16200,15 @@ export interface components {
             lastName?: string | null;
             /** @default ru */
             locale: string;
+            /**
+             * @description Согласие на рекламные и информационные письма (GS-203). При регистрации
+             *     приходит из чекбокса (по умолчанию отмечен — решение владельца 29.10.2026); дальше меняется только через
+             *     App\Service\MarketingConsent — с датой, источником и записью в журнал.
+             * @default false
+             */
+            marketingConsent: boolean;
+            /** @description Текст галочки согласия при регистрации, как его видел человек; не хранится в user — только в журнале */
+            marketingConsentWording?: string | null;
             phone?: string | null;
             plainPassword: string | null;
             telegram?: string | null;
@@ -16352,6 +16473,29 @@ export interface components {
             likeVideos?: components["schemas"]["Video.jsonld"][];
             /** @default ru */
             locale: string;
+            /**
+             * @description Согласие на рекламные и информационные письма (GS-203). При регистрации
+             *     приходит из чекбокса (по умолчанию отмечен — решение владельца 29.10.2026); дальше меняется только через
+             *     App\Service\MarketingConsent — с датой, источником и записью в журнал.
+             * @default false
+             */
+            marketingConsent: boolean;
+            /** Format: date-time */
+            readonly marketingConsentAt?: string | null;
+            /**
+             * Format: date-time
+             * @description Когда последний раз отправляли письмо-запрос согласия — чтобы не слать повторно
+             */
+            readonly marketingConsentRequestedAt?: string | null;
+            /** @enum {string|null} */
+            readonly marketingConsentSource?: "registration" | "profile" | "email_request" | "unisender" | "existing_user" | "unsubscribe_link" | "account_deleted" | null;
+            /**
+             * Format: date-time
+             * @description Когда согласие последний раз перенесли в Unisender (GS-155)
+             */
+            readonly marketingConsentSyncedAt?: string | null;
+            /** @description Текст галочки согласия при регистрации, как его видел человек; не хранится в user — только в журнале */
+            marketingConsentWording?: string | null;
             memberProfiles?: string[];
             news?: components["schemas"]["News.jsonld"][];
             oldPassword?: string | null;
@@ -16694,6 +16838,29 @@ export interface components {
             likeVideos?: components["schemas"]["Video.multipart"][];
             /** @default ru */
             locale: string;
+            /**
+             * @description Согласие на рекламные и информационные письма (GS-203). При регистрации
+             *     приходит из чекбокса (по умолчанию отмечен — решение владельца 29.10.2026); дальше меняется только через
+             *     App\Service\MarketingConsent — с датой, источником и записью в журнал.
+             * @default false
+             */
+            marketingConsent: boolean;
+            /** Format: date-time */
+            readonly marketingConsentAt?: string | null;
+            /**
+             * Format: date-time
+             * @description Когда последний раз отправляли письмо-запрос согласия — чтобы не слать повторно
+             */
+            readonly marketingConsentRequestedAt?: string | null;
+            /** @enum {string|null} */
+            readonly marketingConsentSource?: "registration" | "profile" | "email_request" | "unisender" | "existing_user" | "unsubscribe_link" | "account_deleted" | null;
+            /**
+             * Format: date-time
+             * @description Когда согласие последний раз перенесли в Unisender (GS-155)
+             */
+            readonly marketingConsentSyncedAt?: string | null;
+            /** @description Текст галочки согласия при регистрации, как его видел человек; не хранится в user — только в журнале */
+            marketingConsentWording?: string | null;
             memberProfiles?: string[];
             news?: components["schemas"]["News.multipart"][];
             oldPassword?: string | null;
@@ -18564,6 +18731,63 @@ export interface components {
             readonly type?: string;
         };
         "VacancyLimitExceededException.jsonld": components["schemas"]["HydraItemBaseSchema"] & {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable.jsonld"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            readonly type?: string;
+        };
+        /** @description Заявка на закрытую (disabled), черновую или удалённую вакансию (GS-230). */
+        VacancyNotActiveException: {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            readonly type?: string;
+        };
+        /** @description Заявка на закрытую (disabled), черновую или удалённую вакансию (GS-230). */
+        "VacancyNotActiveException.jsonapi": {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable.jsonapi"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            readonly type?: string;
+        };
+        /** @description Заявка на закрытую (disabled), черновую или удалённую вакансию (GS-230). */
+        "VacancyNotActiveException.jsonld": components["schemas"]["HydraItemBaseSchema"] & {
             /** @default 0 */
             readonly code: number;
             readonly detail?: string | null;
@@ -26469,6 +26693,53 @@ export interface operations {
             };
         };
     };
+    get_app_api_v1_marketingconsent_unsubscribe: {
+        parameters: {
+            query: {
+                token: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description На страницу «Вы отписались» (или «Ссылка неверна») */
+            302: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_marketingconsent_unsubscribe: {
+        parameters: {
+            query: {
+                token: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Отписан */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Неверная ссылка */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_media_objects_get_collection: {
         parameters: {
             query?: {
@@ -28217,6 +28488,44 @@ export interface operations {
             };
         };
     };
+    patch_app_api_v1_marketingconsent_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    consent: boolean;
+                    /**
+                     * @description registration — чекбокс при первом входе через VK
+                     * @enum {string}
+                     */
+                    source?: "profile" | "registration";
+                    /** @description Текст галочки/переключателя, как его видел человек — для журнала-доказательства */
+                    wording?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Сохранено */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Неверный запрос */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     get_app_api_v1_profile_occupancy: {
         parameters: {
             query?: never;
@@ -29217,6 +29526,40 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ListResult18"][];
                 };
+            };
+        };
+    };
+    get_unisender_webhook: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_unisender_webhook: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -30283,6 +30626,41 @@ export interface operations {
                     "application/ld+json": components["schemas"]["VacancyLimitExceededException.jsonld"];
                     "application/problem+json": components["schemas"]["VacancyLimitExceededException"];
                     "application/vnd.api+json": components["schemas"]["VacancyLimitExceededException.jsonapi"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/vnd.api+json": components["schemas"]["Error.jsonapi"];
+                };
+            };
+        };
+    };
+    api_vacancy_not_active_exceptions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description VacancyNotActiveException resource */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VacancyNotActiveException"];
+                    "application/ld+json": components["schemas"]["VacancyNotActiveException.jsonld"];
+                    "application/problem+json": components["schemas"]["VacancyNotActiveException"];
+                    "application/vnd.api+json": components["schemas"]["VacancyNotActiveException.jsonapi"];
                 };
             };
             /** @description Not found */
