@@ -249,14 +249,14 @@
     },
     "freeApplicationsCounter": {
         "Можно бесплатно откликнуться на:": "Free applications left:",
-        "Нужно больше? Оформите членство!": "Need more? Get a membership!",
+        "Нужно больше? Оформите членство!": "Need more?\nGet a membership!",
         "Не забудьте продлить членство, чтобы сохранить привилегии": "Don't forget to renew your membership to keep your privileges",
         "Откликов осталось": "Applications left",
         "Без ограничений": "Unlimited applications"
     },
     "publishedVacanciesCounter": {
         "Можно бесплатно опубликовать вакансий:": "Free published vacancies left:",
-        "Нужно больше? Оформите членство!": "Need more? Get a membership!",
+        "Нужно больше? Оформите членство!": "Need more?\nGet a membership!",
         "Не забудьте продлить членство, чтобы сохранить привилегии": "Don't forget to renew your membership to keep your privileges",
         "Вакансий осталось": "Vacancies left",
         "Без ограничений": "Unlimited vacancies"
