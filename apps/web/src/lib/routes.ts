@@ -37,6 +37,7 @@ export const routes = {
     hostDashboard: (l: Locale) => path(l, "/host/host-dashboard"),
     volunteerDashboard: (l: Locale) => path(l, "/volunteer/volunteer-dashboard"),
     /** Публичная страница волонтёра; {id} подставляется в браузере */
+    volunteerPublic: (l: Locale, id: string) => path(l, `/volunteers/${id}`),
     volunteerPublicTemplate: (l: Locale) => path(l, "/volunteers/{id}"),
 } as const;
 
