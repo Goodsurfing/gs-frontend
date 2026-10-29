@@ -70,6 +70,9 @@ jobs:
             cd /opt/gs
             sudo docker compose pull frontend
             sudo docker compose up -d frontend
+            # Старый образ после обновления остаётся «висящим» (1+ ГБ у бэкенда) — без
+            # очистки диск стейджа 29.10 заполнился на 90% (142 таких образа)
+            sudo docker image prune -f || true
             sleep 3
             sudo docker compose ps frontend
 

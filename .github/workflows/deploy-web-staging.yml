@@ -68,6 +68,9 @@ jobs:
             cd /opt/gs
             sudo docker compose pull web
             sudo docker compose up -d web
+            # Старый образ после обновления остаётся «висящим» (1+ ГБ у бэкенда) — без
+            # очистки диск стейджа 29.10 заполнился на 90% (142 таких образа)
+            sudo docker image prune -f || true
             sleep 5
             sudo docker compose ps web
 
