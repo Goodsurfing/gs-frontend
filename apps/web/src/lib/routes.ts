@@ -12,6 +12,7 @@ export const routes = {
     offersMap: (l: Locale) => path(l, "/offers-map"),
     offersMapCategory: (l: Locale, categoryId: number) => path(l, `/offers-map?category=${categoryId}`),
     blog: (l: Locale) => path(l, "/blog"),
+    createArticle: (l: Locale) => path(l, "/volunteer/create-article"),
     video: (l: Locale) => path(l, "/video"),
     ambassadors: (l: Locale) => path(l, "/ambassadors"),
     academy: (l: Locale) => path(l, "/academy-main"),
