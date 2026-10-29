@@ -8,15 +8,17 @@ import { useState } from "react";
  * пользователь…» (по наведению и по тапу) и плашка «Партнёр Гудсёрфинга» /
  * «Член сообщества».
  */
-export function MembershipBadges({ badge, labels, membershipHref }: {
+export function MembershipBadges({ badge, labels, membershipHref, only }: {
     badge: string;
     labels: { verified: string; howTo: string };
     membershipHref: string;
+    /** У волонтёра галочка и плашка стоят в разных строках */
+    only?: "verified" | "badge";
 }) {
     const [open, setOpen] = useState(false);
     return (
         <>
-            <span className="relative inline-flex shrink-0" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+            {only !== "badge" && <span className="relative inline-flex shrink-0" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
                 <button type="button" aria-expanded={open} aria-label={labels.verified} onClick={() => setOpen((value) => !value)} className="ml-2 inline-flex cursor-pointer align-middle">
                     {/* eslint-disable-next-line @next/next/no-img-element -- иконка */}
                     <img src="/web/icons/offer/select-check.svg" alt="member" className="h-8 w-8 shrink-0" />
@@ -27,8 +29,8 @@ export function MembershipBadges({ badge, labels, membershipHref }: {
                         <a href={membershipHref} className="text-inherit underline">{labels.howTo}</a>
                     </span>
                 )}
-            </span>
-            <span className="ml-2 inline-flex shrink-0 items-center rounded-[8px] bg-cta px-2 py-0.5 align-middle text-[11px] font-semibold whitespace-nowrap text-white">{badge}</span>
+            </span>}
+            {only !== "verified" && <span className="ml-2 inline-flex shrink-0 items-center rounded-[8px] bg-cta px-2 py-0.5 align-middle text-[11px] font-semibold whitespace-nowrap text-white">{badge}</span>}
         </>
     );
 }
