@@ -2,8 +2,10 @@
 
 import { useEffect, useId, useState } from "react";
 
+import { activeMembership, useSession } from "@/components/session/SessionProvider";
 import { Arrow } from "@/components/ui/Arrow";
 import type { Locale } from "@/i18n/config";
+import { formatDayMonthYear } from "@/lib/formatDate";
 
 import { LanguageSwitcher } from "../LanguageSwitcher";
 import type { NavLink, Navigation } from "./navigation";
@@ -15,8 +17,11 @@ interface MobileHeaderProps {
     locale: Locale;
     homeHref: string;
     navigation: Navigation;
-    membership: NavLink & { hint: string };
+    /** hint — «от 990 ₽/год»; activeHint — «Активно до {{date}}» для вошедшего с членством */
+    membership: NavLink & { hint: string; activeHint: string };
     signIn: NavLink;
+    /** Пункты для вошедшего: моя страница, сообщения, дашборды */
+    account: { links: NavLink[]; exit: string };
     labels: { menu: string; language: string };
 }
 
@@ -24,8 +29,10 @@ interface MobileHeaderProps {
  * Шапка на экранах до 1280 px: логотип, язык и «бургер», меню на весь экран
  * с раскрывающимися разделами.
  */
-export function MobileHeader({ locale, homeHref, navigation, membership, signIn, labels }: MobileHeaderProps) {
+export function MobileHeader({ locale, homeHref, navigation, membership, signIn, account, labels }: MobileHeaderProps) {
     const [open, setOpen] = useState(false);
+    const session = useSession();
+    const regular = activeMembership(session.memberships, "REGULAR");
     const [expanded, setExpanded] = useState<ReadonlySet<string>>(new Set());
     const menuId = useId();
     const above = open ? "relative z-[1001]" : "";
@@ -50,7 +57,7 @@ export function MobileHeader({ locale, homeHref, navigation, membership, signIn,
             <header className="flex w-full items-center justify-between">
                 <a href={homeHref} className={above}>
                     {/* eslint-disable-next-line @next/next/no-img-element -- svg-логотип */}
-                    <img src="/icons/header/logo-mobile.svg" alt="GoodSurfing" width={130} height={45} />
+                    <img src="/web/icons/header/logo-mobile.svg" alt="GoodSurfing" width={130} height={45} />
                 </a>
                 <LanguageSwitcher locale={locale} label={labels.language} className={open ? "z-[1001]" : ""} />
                 <button
@@ -112,10 +119,25 @@ export function MobileHeader({ locale, homeHref, navigation, membership, signIn,
                     className="flex w-full flex-col items-start rounded-[4px] bg-cta px-5 py-2.5 text-[18px] font-semibold tracking-[0.02857em] text-white no-underline hover:bg-cta-deep"
                 >
                     <span className="leading-[1.3]">{membership.label}</span>
-                    <span className="text-[14px] leading-[1.3] font-medium opacity-90">{membership.hint}</span>
+                    <span className="text-[14px] leading-[1.3] font-medium opacity-90">
+                        {regular ? membership.activeHint.replace("{{date}}", formatDayMonthYear(regular.endDate)) : membership.hint}
+                    </span>
                 </a>
                 <div className="my-2 h-px w-full bg-accent-bg" />
-                <a href={signIn.href} className={itemClass}>{signIn.label}</a>
+                {session.status === "user" ? (
+                    <>
+                        {account.links.map((link) => <a key={link.href} href={link.href} className={itemClass}>{link.label}</a>)}
+                        <button
+                            type="button"
+                            className={itemClass}
+                            onClick={() => void session.logout().then(() => window.location.reload())}
+                        >
+                            {account.exit}
+                        </button>
+                    </>
+                ) : (
+                    <a href={signIn.href} className={itemClass}>{signIn.label}</a>
+                )}
             </nav>
         </div>
     );

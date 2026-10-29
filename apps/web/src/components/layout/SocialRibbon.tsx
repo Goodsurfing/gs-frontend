@@ -2,9 +2,9 @@ import type { Translate } from "@/i18n/dictionary";
 
 /** Соцсети Гудсёрфинга — общий список для ленты над шапкой и подвала. */
 export const SOCIAL_RIBBON_LINKS = [
-    { name: "Telegram", href: "https://t.me/goodsurfing", icon: "/icons/social/telegram.png", round: true },
-    { name: "MAX", href: "https://max.ru/goodsurfing", icon: "/icons/social/max.png", round: false },
-    { name: "VK", href: "https://vk.com/goodsurfing", icon: "/icons/social/vk.png", round: true },
+    { name: "Telegram", href: "https://t.me/goodsurfing", icon: "/web/icons/social/telegram.png", round: true },
+    { name: "MAX", href: "https://max.ru/goodsurfing", icon: "/web/icons/social/max.png", round: false },
+    { name: "VK", href: "https://vk.com/goodsurfing", icon: "/web/icons/social/vk.png", round: true },
 ] as const;
 
 /**

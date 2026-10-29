@@ -5,10 +5,10 @@
  * внешне совпадал со старым (эпик GS-212). Единственный источник значений:
  * в компонентах — только классы Tailwind на этих токенах, без «магических» цветов.
  */
-@font-face { font-family: "Lato"; src: url("/fonts/Lato-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: "Lato"; src: url("/fonts/Lato-Medium.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: "Lato"; src: url("/fonts/Lato-Semibold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
-@font-face { font-family: "Lato"; src: url("/fonts/Lato-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Lato"; src: url("/web/fonts/Lato-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Lato"; src: url("/web/fonts/Lato-Medium.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Lato"; src: url("/web/fonts/Lato-Semibold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Lato"; src: url("/web/fonts/Lato-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
 
 @theme {
     --font-sans: "Lato", sans-serif;

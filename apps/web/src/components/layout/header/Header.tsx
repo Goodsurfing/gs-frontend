@@ -5,6 +5,7 @@ import { MEMBERSHIP_PRICE_RUB } from "@/lib/membership";
 import { routes } from "@/lib/routes";
 
 import { LanguageSwitcher } from "../LanguageSwitcher";
+import { AccountArea, type AccountLinks } from "./AccountArea";
 import { DesktopNav } from "./DesktopNav";
 import { MembershipHoverCard } from "./MembershipHoverCard";
 import { MobileHeader } from "./MobileHeader";
@@ -57,6 +58,17 @@ export function Header({ locale, t, tProfile, banner, variant = "floating" }: He
     const membershipLabel = t("main.welcome.header.membership");
     const signIn = { label: t("main.welcome.header.sign-in"), href: routes.signIn(locale) };
     const offerText = (key: string, price: number) => tProfile(`info.${key}`, { price });
+    const h = (key: string) => t(`main.welcome.header.${key}`);
+    // {{date}} остаётся в тексте — подставляется в браузере по данным членства
+    const keepDate = { date: "{{date}}" };
+    const account: AccountLinks = {
+        myPage: { label: h("my-page"), href: routes.volunteerPublicTemplate(locale) },
+        aboutMe: { label: h("about-me"), href: routes.profileInfo(locale) },
+        hostDashboard: { label: h("host-dashboard"), href: routes.hostDashboard(locale) },
+        volunteerDashboard: { label: h("volunteer-dashboard"), href: routes.volunteerDashboard(locale) },
+        messages: { label: h("messages"), href: routes.messenger(locale) },
+        exit: h("exit"),
+    };
 
     return (
         <div className={layout.outer}>
@@ -82,7 +94,7 @@ export function Header({ locale, t, tProfile, banner, variant = "floating" }: He
                     <div className="flex shrink-0 items-center gap-3">
                         <a href={routes.main(locale)} className="flex items-center">
                             {/* eslint-disable-next-line @next/next/no-img-element -- svg-логотип */}
-                            <img src="/icons/header/logo.svg" alt="GoodSurfing" width={152} height={36} className="block h-9 w-auto" />
+                            <img src="/web/icons/header/logo.svg" alt="GoodSurfing" width={152} height={36} className="block h-9 w-auto" />
                         </a>
                     </div>
                     <nav aria-label={t("main.welcome.header.menu")} className="flex min-w-0 flex-1 justify-center">
@@ -108,14 +120,15 @@ export function Header({ locale, t, tProfile, banner, variant = "floating" }: He
                                     href: `${routes.membership(locale)}#host`,
                                 },
                             ]}
+                            texts={{
+                                activeUntil: tProfile("info.Членство активно до {{date}}", keepDate),
+                                renew: tProfile("info.Продлить членство"),
+                                internationalUntil: tProfile("info.Международный клуб — активно до {{date}}", keepDate),
+                                internationalRenew: tProfile("info.Продлить участие"),
+                            }}
                         />
                         <LanguageSwitcher locale={locale} label={t("Язык")} />
-                        <a
-                            href={signIn.href}
-                            className="inline-flex h-10 items-center justify-center rounded-[10px] border border-primary px-[18px] text-center text-[14px] leading-[1.375rem] font-semibold whitespace-nowrap text-primary no-underline transition-all duration-300 ease-in-out hover:bg-primary hover:text-white"
-                        >
-                            {signIn.label}
-                        </a>
+                        <AccountArea signIn={signIn} links={account} />
                     </div>
                 </header>
                 <MobileHeader
@@ -126,8 +139,19 @@ export function Header({ locale, t, tProfile, banner, variant = "floating" }: He
                         label: membershipLabel,
                         href: routes.membership(locale),
                         hint: t("main.welcome.header.membership-from", { price: MEMBERSHIP_PRICE_RUB.volunteer }),
+                        activeHint: t("main.welcome.header.membership-active", keepDate),
                     }}
                     signIn={signIn}
+                    // В мобильном меню «Моя страница» ведёт в кабинет, как в старом фронте
+                    account={{
+                        links: [
+                            { label: h("my-page"), href: routes.profileInfo(locale) },
+                            account.messages,
+                            account.hostDashboard,
+                            account.volunteerDashboard,
+                        ],
+                        exit: account.exit,
+                    }}
                     labels={{ menu: t("main.welcome.header.menu"), language: t("Язык") }}
                 />
             </div>

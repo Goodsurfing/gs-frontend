@@ -4239,6 +4239,23 @@ export interface paths {
         patch: operations["patch_app_api_v1_profile_editimagegallery"];
         trace?: never;
     };
+    "/api/v1/profile/locale": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Сменить язык пользователя */
+        patch: operations["patch_app_api_v1_profilelocale__invoke"];
+        trace?: never;
+    };
     "/api/v1/profile/occupancy": {
         parameters: {
             query?: never;
@@ -4878,6 +4895,23 @@ export interface paths {
          * @description Creates a user token.
          */
         post: operations["login_check_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/token/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Выход: очистка cookie входа и отзыв refresh-токена */
+        post: operations["post_token_logout"];
         delete?: never;
         options?: never;
         head?: never;
@@ -28151,6 +28185,38 @@ export interface operations {
             };
         };
     };
+    patch_app_api_v1_profilelocale__invoke: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    locale: "ru" | "en" | "es";
+                };
+            };
+        };
+        responses: {
+            /** @description Сохранено */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Неизвестный язык */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     get_app_api_v1_profile_occupancy: {
         parameters: {
             query?: never;
@@ -29076,6 +29142,24 @@ export interface operations {
                         readonly token: string;
                     };
                 };
+            };
+        };
+    };
+    post_token_logout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Готово */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
