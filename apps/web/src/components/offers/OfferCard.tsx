@@ -1,23 +1,24 @@
-import type { Locale } from "@/i18n/config";
-import type { Translate } from "@/i18n/dictionary";
-import { categoryName } from "@/lib/categories";
 import { mediaUrl } from "@/lib/media";
 import type { OfferCardData } from "@/lib/offers";
-import { routes } from "@/lib/routes";
 import { textSlice } from "@/lib/textSlice";
 
 /**
  * Карточка вакансии в слайдере (как widgets/OffersSlider/ui/Offer старого
  * фронта). Подписи «Отзывов» и «Отправилось» в старом фронте не переводились —
  * оставлены как есть, перевод — отдельной правкой вместе со старым фронтом.
+ * Без серверных зависимостей: её рисует и браузер (подборка вошедшего).
  */
-export function OfferCard({ offer, locale, t }: { offer: OfferCardData; locale: Locale; t: Translate }) {
+export function OfferCard({ offer, href, category }: {
+    offer: Pick<OfferCardData, "title" | "address" | "image" | "averageRating" | "reviewsCount" | "acceptedApplicationsCount">;
+    href: string;
+    /** Название категории на языке страницы; нет — «Без категории» */
+    category: string | undefined;
+}) {
     const rating = Number(offer.averageRating) || 0;
-    const category = categoryName(offer.categories[0]?.name, t) ?? "Без категории";
 
     return (
         <a
-            href={routes.offer(locale, offer.id)}
+            href={href}
             className="box-border flex min-h-[438px] max-w-[347px] cursor-pointer flex-col justify-around border border-accent-bg px-[19px] py-[21px] text-inherit no-underline shadow-line down-lg:max-w-none"
         >
             {/* eslint-disable-next-line @next/next/no-img-element -- превью из хранилища, размеры задаёт карточка */}
@@ -30,7 +31,7 @@ export function OfferCard({ offer, locale, t }: { offer: OfferCardData; locale: 
             <div>
                 <h4 className="mt-[25px] mb-2.5 h-11 text-[1.125rem] leading-[122%] font-medium">{textSlice(offer.title, 30, "Без заголовка")}</h4>
                 <p className="text-[0.875rem] leading-[143%] text-ink opacity-50">{textSlice(offer.address, 30, "Без адреса")}</p>
-                <p className="mt-0.5 text-[0.875rem] leading-[143%] text-ink opacity-50">{category}</p>
+                <p className="mt-0.5 text-[0.875rem] leading-[143%] text-ink opacity-50">{category ?? "Без категории"}</p>
             </div>
             <div className="mt-[18px] flex flex-wrap items-center gap-2.5 down-xs:flex-col down-xs:items-start">
                 {rating ? (

@@ -7,6 +7,7 @@ import { OfferCard } from "@/components/offers/OfferCard";
 import { OffersCarousel } from "@/components/offers/OffersCarousel";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
+import { categoryName } from "@/lib/categories";
 import { getOffersByCategories } from "@/lib/offers";
 import { routes } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
@@ -64,7 +65,7 @@ export default async function FindJobPage({ params }: Props) {
                     <HowItWork locale={locale} className="mb-[120px] max-w-[1014px]" />
                     <h2 className={sectionTitle}>{t("Интересные вакансии")}</h2>
                     <OffersCarousel className="mb-[120px]" prevLabel={tCommon("slider.previous")} nextLabel={tCommon("slider.next")}>
-                        {offers.map((offer) => <OfferCard key={offer.id} offer={offer} locale={locale} t={tCommon} />)}
+                        {offers.map((offer) => <OfferCard key={offer.id} offer={offer} href={routes.offer(locale, offer.id)} category={categoryName(offer.categories[0]?.name, tCommon)} />)}
                     </OffersCarousel>
                 </div>
 
