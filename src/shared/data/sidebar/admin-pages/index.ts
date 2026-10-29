@@ -15,6 +15,10 @@ export const useAdminPagesSidebarData = () => {
                     text: "Все организации",
                 },
                 {
+                    route: "/membership-log",
+                    text: "Журнал членства",
+                },
+                {
                     route: "/skills-achievements",
                     text: "Навыки и достижения пользователей",
                 },

@@ -1,6 +1,7 @@
 import React, { FC } from "react";
-import { AdminUserInfo, AdminUserSettings } from "@/features/Admin";
+import { AdminUserInfo, AdminUserMembership, AdminUserSettings } from "@/features/Admin";
 import { useGetUserByIdQuery, UserInfoTable } from "@/entities/Admin";
+import { getFullName } from "@/shared/lib/getFullName";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -32,6 +33,10 @@ export const AdminPersonalUserInfoForm: FC<AdminPersonalUserInfoFormProps> = (pr
             <AdminUserSettings data={data} userId={userId} locale={locale} />
             <UserInfoTable data={data} userId={userId} />
             <AdminUserInfo data={data} userId={userId} />
+            <AdminUserMembership
+                userId={userId}
+                userName={getFullName(data.firstName, data.lastName)}
+            />
         </div>
     );
 };
