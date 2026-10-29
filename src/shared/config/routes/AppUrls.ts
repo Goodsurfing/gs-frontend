@@ -31,6 +31,7 @@ export const getFavoriteOffersPageUrl: RoutePathFunction = (locale) => (`${local
 // Auth bounded pages
 
 export const getConfirmEmailPageUrl: RoutePathFunction = (locale) => `${localePrefix(locale)}${RoutePath.confirm_email}`;
+export const getUnsubscribedPageUrl: RoutePathFunction = (locale) => `${localePrefix(locale)}${RoutePath.unsubscribed}`;
 
 export const getConfirmEmailSuccessPageUrl: RoutePathFunction = (locale) => `${localePrefix(locale)}${RoutePath.confirm_email_success}`;
 

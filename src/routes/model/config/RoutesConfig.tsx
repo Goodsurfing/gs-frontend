@@ -45,6 +45,7 @@ import { ProfileRolePage } from "@/pages/ProfileRolePage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { RulesPage } from "@/pages/RulesPage";
+import { UnsubscribedPage } from "@/pages/UnsubscribedPage";
 import { SignInPage } from "@/pages/SignInPage";
 import { SignUpPage } from "@/pages/SignUpPage";
 import { VideoPage } from "@/pages/VideoPage";
@@ -70,6 +71,7 @@ import {
     getBlogPersonalPageUrl,
     getCategoriesPageUrl,
     getConfirmEmailPageUrl,
+    getUnsubscribedPageUrl,
     getConfirmEmailSuccessPageUrl,
     getFavoriteOffersPageUrl,
     getFindJobPageUrl,
@@ -388,6 +390,11 @@ const publicRoutes: RouteType[] = [
         label: "confirm-email",
         element: <ConfirmEmailPage />,
         path: (locale: string) => getConfirmEmailPageUrl(locale),
+    },
+    {
+        label: "unsubscribed",
+        element: <UnsubscribedPage />,
+        path: (locale: string) => getUnsubscribedPageUrl(locale),
     },
     {
         label: "confirm-email-success",

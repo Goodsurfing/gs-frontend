@@ -110,7 +110,7 @@ export interface AdminUser {
 }
 
 export type MarketingConsentSource =
-    | "registration" | "profile" | "email_request" | "unisender" | "account_deleted" | "existing_user";
+    | "registration" | "profile" | "email_request" | "unisender" | "account_deleted" | "existing_user" | "unsubscribe_link";
 
 export interface AdminMarketingConsent {
     consent: boolean;
