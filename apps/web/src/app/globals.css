@@ -107,3 +107,24 @@ body {
 @utility animate-fade-in {
     animation: fade-in 0.2s ease-in-out;
 }
+
+/*
+ * Карта вакансий (components/offers-map): зум Яндекс.Карт — по центру справа,
+ * как в старом фронте. Позицию контрола API задаёт только от угла, а панель
+ * контролов схлопнута до нулевой высоты — растягиваем её и делаем «прозрачной»
+ * для мыши (иначе она перекрывает перетаскивание карты), а сам зум — кликабельным.
+ */
+.gs-offers-map [class*="-controls-pane"] {
+    bottom: 0 !important;
+    pointer-events: none;
+}
+
+.gs-offers-map [class*="-controls__control"]:has([class*="-zoom"]) {
+    inset: 50% 10px auto auto !important;
+    transform: translateY(-50%);
+    pointer-events: auto;
+}
+
+.gs-offers-map [class*="-map-copyrights-promo"] {
+    display: none;
+}
