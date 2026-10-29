@@ -13,6 +13,7 @@ describe("getTranslator", () => {
             seo: { title: "Заголовок" },
             "Фраза. С точкой": "Перевод фразы",
             greeting: "Привет, {{name}}!",
+            "category-offer": { "Заповедники и нац. парки": "Заповедники" },
         }));
         vi.spyOn(process, "cwd").mockReturnValue(dir);
     });
@@ -23,6 +24,12 @@ describe("getTranslator", () => {
         expect(t("seo.title")).toBe("Заголовок");
         expect(t("Фраза. С точкой")).toBe("Перевод фразы");
         expect(t("greeting", { name: "Анна" })).toBe("Привет, Анна!");
+    });
+
+    it("вложенный ключ, в имени которого есть точка (как deepFind в i18next)", async () => {
+        const { getTranslator } = await import("../dictionary");
+        const t = await getTranslator("ru", "main");
+        expect(t("category-offer.Заповедники и нац. парки")).toBe("Заповедники");
     });
 
     it("без перевода возвращает ключ, как i18next", async () => {

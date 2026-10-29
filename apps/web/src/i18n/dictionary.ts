@@ -19,18 +19,23 @@ const loadDictionary = cache(async (locale: Locale, namespace: string): Promise<
     }
 });
 
-const lookup = (dictionary: Dictionary, key: string): string | undefined => {
-    // Как в i18next: сначала ключ целиком (ключи-фразы с точками), затем путь по точкам
-    if (typeof dictionary[key] === "string") return dictionary[key] as string;
-    let node: unknown = dictionary;
-    for (const part of key.split(".")) {
-        if (node && typeof node === "object" && part in (node as Dictionary)) {
-            node = (node as Dictionary)[part];
-        } else {
-            return undefined;
+/**
+ * Как deepFind в i18next: сначала ключ целиком (ключи-фразы с точками), затем
+ * путь по точкам — причём часть пути сама может содержать точку
+ * («category-offer.Заповедники и нац. парки» → category-offer → «Заповедники и нац. парки»).
+ */
+export const lookup = (dictionary: Dictionary, key: string): string | undefined => {
+    const direct = dictionary[key];
+    if (typeof direct === "string") return direct;
+    const parts = key.split(".");
+    for (let i = 1; i < parts.length; i += 1) {
+        const node = dictionary[parts.slice(0, i).join(".")];
+        if (node && typeof node === "object") {
+            const found = lookup(node as Dictionary, parts.slice(i).join("."));
+            if (found !== undefined) return found;
         }
     }
-    return typeof node === "string" ? node : undefined;
+    return undefined;
 };
 
 export type Translate = (key: string, values?: Record<string, string | number>) => string;

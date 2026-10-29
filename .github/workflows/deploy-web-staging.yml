@@ -48,6 +48,7 @@ jobs:
             NEXT_PUBLIC_SENTRY_DSN=${{ vars.SENTRY_DSN }}
             NEXT_PUBLIC_SENTRY_ENVIRONMENT=staging
             NEXT_PUBLIC_SENTRY_RELEASE=web-develop-${{ github.sha }}
+            NEXT_PUBLIC_YANDEX_MAPS_KEY=${{ secrets.YANDEX_MAPS_API_KEY }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE }}:staging
             ${{ env.REGISTRY }}/${{ env.IMAGE }}:sha-${{ github.sha }}

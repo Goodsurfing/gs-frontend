@@ -107,3 +107,15 @@ body {
 @utility animate-fade-in {
     animation: fade-in 0.2s ease-in-out;
 }
+
+/*
+ * Карта вакансий (components/offers-map): подложка Яндекса чуть приглушена,
+ * чтобы цветные отметки читались лучше; промо-ссылку Яндекса прячем.
+ */
+.gs-offers-map [class*="-ground-pane"] {
+    filter: saturate(0.7) brightness(1.03);
+}
+
+.gs-offers-map [class*="-map-copyrights-promo"] {
+    display: none;
+}

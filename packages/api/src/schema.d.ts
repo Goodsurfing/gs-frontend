@@ -7177,8 +7177,6 @@ export interface components {
         CategoryResult6: {
             /** @example  */
             color: string;
-            /** @example 0 */
-            id: number;
             /** @example  */
             name: string;
         };
@@ -7199,21 +7197,21 @@ export interface components {
          * @description Категории
          */
         CategoryResult8: {
-            /** @example 0 */
-            id: number;
-            /** @example 0 */
-            name: string;
-        };
-        /**
-         * CategoryResult
-         * @description Категория новости
-         */
-        CategoryResult9: {
             /** @example  */
             color: string;
             /** @example 0 */
             id: number;
             /** @example  */
+            name: string;
+        };
+        /**
+         * CategoryResult
+         * @description Категории
+         */
+        CategoryResult9: {
+            /** @example 0 */
+            id: number;
+            /** @example 0 */
             name: string;
         };
         /**
@@ -7230,16 +7228,28 @@ export interface components {
         };
         /**
          * CategoryResult
-         * @description Категории
+         * @description Категория новости
          */
         CategoryResult11: {
+            /** @example  */
+            color: string;
+            /** @example 0 */
+            id: number;
+            /** @example  */
+            name: string;
+        };
+        /**
+         * CategoryResult
+         * @description Категории
+         */
+        CategoryResult12: {
             name: string;
         };
         /**
          * CategoryResult
          * @description Категория видео
          */
-        CategoryResult12: {
+        CategoryResult13: {
             /** @example  */
             color: string;
             /** @example 0 */
@@ -9720,7 +9730,7 @@ export interface components {
          */
         ElementResult9: {
             author: components["schemas"]["AuthorResult13"];
-            categoryResult: components["schemas"]["CategoryResult7"];
+            categoryResult: components["schemas"]["CategoryResult8"];
             /** @example  */
             created: string;
             /** @example  */
@@ -9826,7 +9836,7 @@ export interface components {
          */
         ElementResult14: {
             author: components["schemas"]["AuthorResult15"];
-            categories: components["schemas"]["CategoryResult9"][];
+            categories: components["schemas"]["CategoryResult10"][];
             /** @example  */
             created: string;
             /** @example  */
@@ -9987,7 +9997,7 @@ export interface components {
          */
         ElementResult22: {
             author: components["schemas"]["AuthorResult21"];
-            category: components["schemas"]["CategoryResult10"];
+            category: components["schemas"]["CategoryResult11"];
             /** @example  */
             created: string;
             /** @example  */
@@ -10311,7 +10321,7 @@ export interface components {
          */
         ElementResult34: {
             author: components["schemas"]["AuthorResult25"];
-            category: components["schemas"]["CategoryResult12"];
+            category: components["schemas"]["CategoryResult13"];
             /** @example  */
             created: string;
             /** @example  */
@@ -11805,16 +11815,22 @@ export interface components {
          */
         ListForMapResult2: {
             /** @default [] */
-            categories: Record<string, never>[];
+            categories: components["schemas"]["CategoryResult6"][];
             /** @example 0 */
             id: number;
-            image: components["schemas"]["ImageResultDto"];
-            /** @example 4.5 */
-            latitude: Record<string, never>;
-            /** @example 4.5 */
-            longitude: Record<string, never>;
+            image?: components["schemas"]["ImageResultDto"] | null;
+            /**
+             * Format: float
+             * @example 4.5
+             */
+            latitude: number;
+            /**
+             * Format: float
+             * @example 4.5
+             */
+            longitude: number;
             /** @example  */
-            name: string;
+            name?: string | null;
         };
         /**
          * ApplicationListResult
@@ -12221,7 +12237,7 @@ export interface components {
          * @description Список видео
          */
         ListResult19: {
-            category: components["schemas"]["CategoryResult6"];
+            category: components["schemas"]["CategoryResult7"];
             /** @example  */
             created: string;
             /** @example  */
@@ -12734,7 +12750,7 @@ export interface components {
          */
         ListResult45: {
             /** @default [] */
-            categories: components["schemas"]["CategoryResult11"][];
+            categories: components["schemas"]["CategoryResult12"][];
             /** @default 0 */
             countAcceptApplication: number;
             /** @default 0 */
@@ -12944,7 +12960,7 @@ export interface components {
              */
             applicationStatus: string;
             /** @default [] */
-            categories: components["schemas"]["CategoryResult8"][];
+            categories: components["schemas"]["CategoryResult9"][];
             /**
              * @description Id вакансии
              * @example 0
@@ -30526,6 +30542,8 @@ export interface operations {
                 fields?: "card";
                 /** @description Ids обедов */
                 "foodIds[]"?: number[];
+                /** @description Скрыть прошедшие: только вакансии, у которых есть период, ещё не закончившийся (periods.ending >= сегодня). Уже идущие не скрываются */
+                hidePassed?: boolean;
                 /** @description Ids жилья */
                 "houseIds[]"?: number[];
                 id?: number;
@@ -30856,6 +30874,8 @@ export interface operations {
                 endDate?: string;
                 /** @description Ids обедов */
                 "foodIds[]"?: number[];
+                /** @description Скрыть прошедшие: только вакансии, у которых есть период, ещё не закончившийся (periods.ending >= сегодня). Уже идущие не скрываются */
+                hidePassed?: boolean;
                 /** @description Ids жилья */
                 "houseIds[]"?: number[];
                 id?: number;
@@ -30886,7 +30906,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListForMapResult2"];
+                    "application/json": components["schemas"]["ListForMapResult2"][];
                 };
             };
         };
