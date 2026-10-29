@@ -57,6 +57,8 @@
 @media (max-width: 1200px) {
   .layout {
     flex-direction: column-reverse;
+    // между баннером и карточками — только отступ списка (2.5rem), без gap сверху
+    gap: 0;
   }
   .main {
     max-width: none;
