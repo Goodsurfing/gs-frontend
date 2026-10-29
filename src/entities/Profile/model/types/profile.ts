@@ -44,6 +44,8 @@ export interface Profile {
     isActive: boolean;
     isVerified: boolean;
     isMember?: boolean;
+    /** Согласие на рекламные и информационные письма (GS-203) */
+    marketingConsent?: boolean;
 }
 
 export type ProfileById = Omit<Profile, "volunteer" | "email" | "isVerified" | "favoriteCategories"> & {
@@ -62,7 +64,8 @@ export type ProfileById = Omit<Profile, "volunteer" | "email" | "isVerified" | "
 };
 
 export type UpdateProfile = Omit<Profile, "id" | "image" | "galleryImages" | "videoGallery"
-| "volunteer" | "hostId" | "favoriteCategories" | "email" | "isActive" | "isVerified"> & {
+| "volunteer" | "hostId" | "favoriteCategories" | "email" | "isActive" | "isVerified"
+| "marketingConsent"> & {
     imageId: string | null;
 };
 

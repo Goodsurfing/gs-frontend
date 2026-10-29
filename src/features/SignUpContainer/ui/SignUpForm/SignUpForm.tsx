@@ -8,6 +8,7 @@ import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import AuthInputField from "@/shared/ui/AuthInputField/AuthInputField";
+import Checkbox from "@/shared/ui/Checkbox/Checkbox";
 import LocaleLink from "@/shared/ui/LocaleLink/LocaleLink";
 
 import { useAppDispatch } from "@/shared/hooks/redux";
@@ -22,7 +23,16 @@ import { IAuthFormData, IRegisterFormData } from "@/types/api/auth/register.inte
 import styles from "./SignUpForm.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-const SignUpForm: FC = () => {
+interface SignUpFormProps {
+    /** Чекбокс «Хочу получать письма…» (GS-203) — общий с входом через VK */
+    marketingConsent?: boolean;
+    onMarketingConsentChange?: (value: boolean) => void;
+}
+
+const SignUpForm: FC<SignUpFormProps> = ({
+    marketingConsent = false,
+    onMarketingConsentChange,
+}) => {
     const [registerUser, { isError }] = authApi.useRegisterUserMutation();
 
     const { locale } = useLocale();
@@ -43,6 +53,7 @@ const SignUpForm: FC = () => {
             plainPassword: data.password,
             locale,
             isActive: true,
+            marketingConsent,
         };
         await registerUser(formData)
             .unwrap()
@@ -115,6 +126,12 @@ const SignUpForm: FC = () => {
                         error={fieldState.error?.message}
                     />
                 )}
+            />
+            <Checkbox
+                id="signup-marketing-consent"
+                isChecked={marketingConsent}
+                onChange={() => onMarketingConsentChange?.(!marketingConsent)}
+                text={t("login.Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга")}
             />
             <Button
                 type="submit"

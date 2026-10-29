@@ -53,7 +53,8 @@
         "Отправить ещё раз": "Reenviar",
         "Отправить ещё раз через {{seconds}}": "Reenviar en {{seconds}} segundos",
         "Подтвердить": "Confirmar",
-        "Пользователь был удален или не создавался": "El usuario fue eliminado o nunca fue creado"
+        "Пользователь был удален или не создавался": "El usuario fue eliminado o nunca fue creado",
+        "Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга": "Quiero recibir correos sobre nuevos proyectos, promociones y noticias de Goodsurfing"
     },
     "main": {
         "welcome": {
@@ -355,5 +356,13 @@
     "Правила": "Normas",
     "Политика конфиденциальности": "Política de privacidad",
     "Политика безопасности платежей": "Política de seguridad de pagos",
-    "Это неофициальный перевод для удобства Юридическую силу имеет только версия документа на русском языке": "Esta es una traducción no oficial ofrecida para su comodidad. Solo la versión en ruso de este documento tiene validez legal."
+    "Это неофициальный перевод для удобства Юридическую силу имеет только версия документа на русском языке": "Esta es una traducción no oficial ofrecida para su comodidad. Solo la versión en ruso de este documento tiene validez legal.",
+    "subscription": {
+        "title": "Boletín de Goodsurfing",
+        "confirmed": "¡Gracias! Te has suscrito a los correos sobre nuevos proyectos, promociones y noticias de Goodsurfing.",
+        "expired": "El enlace ha caducado o no es válido. Puedes suscribirte en tu perfil, en «Privacidad».",
+        "unsubscribeHint": "Puedes darte de baja en cualquier momento: con el enlace del correo o en tu perfil.",
+        "home": "Ir a la página principal",
+        "settings": "Abrir ajustes"
+    }
 }

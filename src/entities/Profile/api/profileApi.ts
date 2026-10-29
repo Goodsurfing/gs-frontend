@@ -153,6 +153,16 @@ export const profileApi = createApi({
             }),
             invalidatesTags: ["profile"],
         }),
+        // Согласие на рассылку (GS-203): переключатель в профиле и чекбокс при
+        // первом входе через VK (source: "registration")
+        updateMarketingConsent: build.mutation<void, { consent: boolean; source?: "profile" | "registration" }>({
+            query: (body) => ({
+                url: `${API_BASE_URL_ABSOLUTE}profile/marketing-consent`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["profile"],
+        }),
         deleteProfile: build.mutation<void, void>({
             query: () => ({
                 url: `${API_BASE_URL_ABSOLUTE}profile/delete`,
@@ -208,6 +218,7 @@ export const {
     useUpdateProfileCertificatesMutation,
     useUpdateVolunteerMutation,
     useDeleteProfileMutation,
+    useUpdateMarketingConsentMutation,
     useGetProfileOccupancyQuery,
     useGetProfilePasswordIsChangeQuery,
     useChangePasswordWithoutOldPasswordMutation,

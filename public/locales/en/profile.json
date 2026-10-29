@@ -104,7 +104,9 @@
         "Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить.": " Are you sure you want to delete your account? This action cannot be undone.",
         "Удалить": "Delete",
         "Отмена": "Cancel",
-        "Выберете настройки приватности": "Choose privacy settings"
+        "Выберете настройки приватности": "Choose privacy settings",
+        "Получать рассылку от Гудсёрфинга с новостями и обновлениями": "Receive the Goodsurfing newsletter with news and updates",
+        "Не удалось сохранить настройку рассылки": "Could not save the newsletter setting"
     },
     "personal": {
         "Произошла ошибка": "An error occurred",
