@@ -14,7 +14,7 @@ import { SocialRibbon } from "./SocialRibbon";
  * Каркас публичной страницы (как MainPageLayout старого фронта): лента
  * соцсетей, шапка, содержимое на всю оставшуюся высоту, подвал.
  */
-export async function PublicShell({ locale, headerVariant = "floating", topGap = false, children }: {
+export async function PublicShell({ locale, headerVariant = "floating", topGap = false, footer = true, children }: {
     locale: Locale;
     headerVariant?: HeaderVariant;
     /**
@@ -23,6 +23,8 @@ export async function PublicShell({ locale, headerVariant = "floating", topGap =
      * капсулы (92 px под лентой соцсетей). Уже 1280 px шапка в потоке.
      */
     topGap?: boolean;
+    /** Без подвала — страницы во весь экран (каталог вакансий с картой) */
+    footer?: boolean;
     children: ReactNode;
 }) {
     const [t, tProfile, banner] = await Promise.all([
@@ -37,7 +39,7 @@ export async function PublicShell({ locale, headerVariant = "floating", topGap =
                 <SocialRibbon t={t} />
                 <Header locale={locale} t={t} tProfile={tProfile} banner={banner} variant={headerVariant} />
                 <main className={`flex-1 ${topGap ? "pt-[92px] down-2xl:pt-0" : ""}`}>{children}</main>
-                <Footer locale={locale} t={t} />
+                {footer && <Footer locale={locale} t={t} />}
             </div>
         </SessionProvider>
     );

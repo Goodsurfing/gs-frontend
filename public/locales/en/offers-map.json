@@ -32,5 +32,9 @@
     "Попробовать снова": "Try again",
     "Загрузка": "Loading...",
     "Произошла ошибка": "An error occurred",
-    "Без названия": "Untitled"
+    "Без названия": "Untitled",
+    "durationRange": "from {{min}} to {{max}} days",
+    "days": "days",
+    "Дата начала": "Start date",
+    "Дата окончания": "End date"
 }
