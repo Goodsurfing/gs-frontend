@@ -29,7 +29,7 @@
 
 - Образ: `apps/web/Dockerfile` (контекст — корень репозитория), standalone-сервер Next на порту 3100, `/healthz` для проверок, ~40 МБ памяти в простое.
 - **Канарейка по cookie:** Traefik отправляет запрос в новый фронт только при cookie `gs_web=1` и только по уже перенесённым адресам (`/_next`, `/web/`, `/healthz` и страницы из списка в правиле `web-canary`, `gs-infra/envs/staging/cloud-init.yaml`). Без cookie — старое SPA. Так новый фронт проверяется на настоящем домене, пользователи его не видят.
-- **Перенесённые страницы:** `/payment-security-policy`, `/rules`, `/privacy-policy`, `/npo`, `/find-job`, `/our-team`, `/ambassadors`, `/about-project`, `/journals`, `/news`, `/blog`, `/offers-map`, `/` (главная), `/become-host`, `/offers/:id`, `/organizations/:id`, `/volunteers/:id` и их `/en/…`, `/es/…` (GS-219).
+- **Перенесённые страницы:** `/payment-security-policy`, `/rules`, `/privacy-policy`, `/npo`, `/find-job`, `/our-team`, `/ambassadors`, `/about-project`, `/journals`, `/news`, `/blog`, `/offers-map`, `/` (главная), `/become-host`, `/categories`, `/video`, `/offers/:id`, `/organizations/:id`, `/volunteers/:id` и их `/en/…`, `/es/…` (GS-219).
 
 ## Команды
 
