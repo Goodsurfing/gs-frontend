@@ -47,7 +47,7 @@ test.describe('Новый фронт: пожертвование', () => {
         const id = await activeFundraiseId(request);
         await page.goto(`/donation/pay/${id}`);
         await expect(page.getByRole('heading', { level: 1, name: 'Пожертвование' })).toBeVisible();
-        await expect(page.getByRole('button', { name: '1500 ₽' })).toHaveAttribute('aria-pressed', 'true');
+        await expect(page.getByRole('button', { name: '1500 ₽', exact: true })).toHaveAttribute('aria-pressed', 'true');
 
         await page.getByLabel('Другая сумма, ₽').fill('50');
         await page.getByRole('button', { name: /Поддержать — 50 ₽/ }).click();
