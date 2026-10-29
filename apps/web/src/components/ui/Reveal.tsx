@@ -7,10 +7,18 @@ const OFFSET = 120;
 
 /**
  * Появление при прокрутке (замена библиотеки AOS старого фронта: fade-up /
- * fade-down, 1 с, один раз). Без JS и при «уменьшении движения» — сразу видно.
+ * fade-down / zoom-in / zoom-out, 1 с, один раз). Без JS и при «уменьшении
+ * движения» — сразу видно.
  */
+const SHIFT = {
+    up: "translate-y-[100px]",
+    down: "-translate-y-[100px]",
+    "zoom-in": "scale-[0.6]",
+    "zoom-out": "scale-[1.2]",
+} as const;
+
 export function Reveal({ from, className = "", children }: {
-    from: "up" | "down";
+    from: keyof typeof SHIFT;
     className?: string;
     children: ReactNode;
 }) {
@@ -32,9 +40,8 @@ export function Reveal({ from, className = "", children }: {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
-    const shift = from === "up" ? "translate-y-[100px]" : "-translate-y-[100px]";
-    const motion = state === "hidden" ? `opacity-0 ${shift}` : "";
-    const transition = state === "idle" ? "" : "transition-[opacity,translate] duration-1000 ease-in-out";
+    const motion = state === "hidden" ? `opacity-0 ${SHIFT[from]}` : "";
+    const transition = state === "idle" ? "" : "transition-[opacity,translate,scale] duration-1000 ease-in-out";
 
     return <div ref={ref} className={`${className} ${motion} ${transition}`}>{children}</div>;
 }
