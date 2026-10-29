@@ -38,24 +38,31 @@
   gap: 32px;
 }
 
+// Не шире карточки (HostOffersPageCard, max-width 900px): иначе на широком
+// экране между вакансиями и баннером остаётся пустая полоса.
 .main {
   flex: 1;
   min-width: 0;
+  max-width: 900px;
 }
 
 .aside {
   position: sticky;
   top: calc(var(--header-offset, 80px) + 16px);
   flex-shrink: 0;
-  margin-top: 56px;
+  // = отступ списка (HostOffersList .wrapper) — верх баннера вровень с первой карточкой
+  margin-top: 2.5rem;
 }
 
 @media (max-width: 1200px) {
   .layout {
     flex-direction: column-reverse;
   }
+  .main {
+    max-width: none;
+  }
   .aside {
     position: static;
-    margin-top: 0;
+    margin-top: 1.5rem;
   }
 }
