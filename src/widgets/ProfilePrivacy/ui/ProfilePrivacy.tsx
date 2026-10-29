@@ -62,7 +62,10 @@ export const ProfilePrivacy: FC<ProfilePrivacyProps> = memo((props: ProfilePriva
         setToast(undefined);
         setMarketingConsent(checked);
         try {
-            await updateMarketingConsent({ consent: checked }).unwrap();
+            await updateMarketingConsent({
+                consent: checked,
+                wording: t("privacy.Получать рассылку от Гудсёрфинга с новостями и обновлениями"),
+            }).unwrap();
         } catch {
             setMarketingConsent(!checked);
             setTimeout(() => setToast({

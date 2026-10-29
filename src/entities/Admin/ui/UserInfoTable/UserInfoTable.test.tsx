@@ -56,3 +56,41 @@ describe("UserInfoTable — привилегированное членство"
         expect(regular.isPrivilegedMembership).toBe(false);
     });
 });
+
+/** GS-203: согласие на рассылку и его журнал в карточке пользователя. */
+describe("UserInfoTable — согласие на рассылку", () => {
+    it("без ответа — «Не давал», без истории", () => {
+        render(<UserInfoTable userId="u1" data={base as unknown as AdminUser} />);
+
+        expect(screen.getByText("Не давал")).toBeTruthy();
+    });
+
+    it("показывает текущее состояние и журнал с текстом галочки", () => {
+        render(
+            <UserInfoTable
+                userId="u1"
+                data={{
+                    ...base,
+                    marketingConsent: {
+                        consent: false,
+                        at: "2026-10-29T09:00:00+00:00",
+                        source: "profile",
+                        history: [
+                            {
+                                consent: false, source: "profile", at: "2026-10-29T09:00:00+00:00", ip: "10.0.0.1", wording: null,
+                            },
+                            {
+                                consent: true, source: "registration", at: "2026-10-28T09:00:00+00:00", ip: null, wording: "Хочу получать письма",
+                            },
+                        ],
+                    },
+                } as unknown as AdminUser}
+            />,
+        );
+
+        expect(screen.getByText("Отозвано — 29.10.2026, 12:00, профиль")).toBeTruthy();
+        expect(screen.getByText("Дал согласие")).toBeTruthy();
+        expect(screen.getByText("«Хочу получать письма»")).toBeTruthy();
+        expect(screen.getByText(/IP 10\.0\.0\.1/)).toBeTruthy();
+    });
+});

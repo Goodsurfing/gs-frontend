@@ -15,6 +15,7 @@ import { useUpdateMarketingConsentMutation } from "@/entities/Profile";
 import {
     hasMarketingConsentIntent,
     saveMarketingConsentIntent,
+    marketingConsentWording,
     takeMarketingConsentIntent,
 } from "../../lib/marketingConsentIntent";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -41,11 +42,15 @@ const SignUpContainer: FC = () => {
     const onSuccess = useCallback(async () => {
         setToast(undefined);
         if (takeMarketingConsentIntent()) {
-            await updateMarketingConsent({ consent: true, source: "registration" }).unwrap().catch(() => undefined);
+            await updateMarketingConsent({
+                consent: true,
+                source: "registration",
+                wording: marketingConsentWording(t),
+            }).unwrap().catch(() => undefined);
         }
         refetchProfile();
         navigate(getProfileInfoPageUrl(locale));
-    }, [locale, navigate, refetchProfile, updateMarketingConsent]);
+    }, [locale, navigate, refetchProfile, t, updateMarketingConsent]);
 
     const onError = useCallback((error: string) => {
         setToast({

@@ -54,7 +54,8 @@
         "Отправить ещё раз через {{seconds}}": "Reenviar en {{seconds}} segundos",
         "Подтвердить": "Confirmar",
         "Пользователь был удален или не создавался": "El usuario fue eliminado o nunca fue creado",
-        "Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга": "Quiero recibir correos sobre nuevos proyectos, promociones y noticias de Goodsurfing"
+        "Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга": "Quiero recibir correos sobre nuevos proyectos, promociones y noticias de Goodsurfing",
+        "marketingConsentHint": "Puedes darte de baja en cualquier momento desde tu perfil o con el enlace del correo."
     },
     "main": {
         "welcome": {

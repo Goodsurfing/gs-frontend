@@ -32,3 +32,14 @@ export const hasMarketingConsentIntent = (): boolean => {
         return false;
     }
 };
+
+type Translate = (key: string) => string;
+
+/**
+ * Текст галочки согласия ровно так, как его видит человек (на его языке), —
+ * уходит в журнал согласий как доказательство (38-ФЗ).
+ */
+export const marketingConsentWording = (t: Translate): string => [
+    t("login.Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга"),
+    t("login.marketingConsentHint"),
+].join(" ");
