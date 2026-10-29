@@ -12,6 +12,18 @@ export interface PopupOffer {
     category?: { name: string; color: string };
 }
 
+/**
+ * Категория — плашкой цвета категории с тёмным текстом: пастельные цвета
+ * категорий текстом на белом почти не читаются.
+ */
+function CategoryPill({ category }: { category: { name: string; color: string } }) {
+    return (
+        <span className="w-fit max-w-full truncate rounded-full px-2 py-0.5 text-[12px] font-semibold text-ink" style={{ backgroundColor: category.color || "#dfe6eb" }}>
+            {category.name}
+        </span>
+    );
+}
+
 export type MapPopupContent =
     | { kind: "offer"; offer: PopupOffer }
     | { kind: "cluster"; offers: PopupOffer[] };
@@ -107,9 +119,7 @@ export function MapPopup({ map, container, coords, content, labels, onClose }: {
                     </a>
                     <div className="flex flex-col gap-1 overflow-hidden px-3 pt-2.5 pb-3">
                         <div className="line-clamp-2 text-[14px] font-bold">{content.offer.name}</div>
-                        {content.offer.category && (
-                            <div className="text-[12px] font-bold" style={{ color: content.offer.category.color }}>{content.offer.category.name}</div>
-                        )}
+                        {content.offer.category && <CategoryPill category={content.offer.category} />}
                         <a href={content.offer.href} className="text-primary transition-all hover:underline">{labels.more}</a>
                     </div>
                 </div>
@@ -122,9 +132,9 @@ export function MapPopup({ map, container, coords, content, labels, onClose }: {
                                 <a href={offer.href} className="flex items-center gap-2.5 p-1.5 text-primary">
                                     {/* eslint-disable-next-line @next/next/no-img-element -- превью из хранилища */}
                                     <img src={offer.image ?? "/web/images/default-offer.png"} alt="" className="h-11 w-11 shrink-0 rounded-[8px] object-cover" />
-                                    <span className="flex min-w-0 flex-col gap-0.5">
+                                    <span className="flex min-w-0 flex-col items-start gap-1">
                                         <span className="line-clamp-2 text-[14px] font-semibold">{offer.name}</span>
-                                        {offer.category && <span className="text-[12px] font-bold" style={{ color: offer.category.color }}>{offer.category.name}</span>}
+                                        {offer.category && <CategoryPill category={offer.category} />}
                                     </span>
                                 </a>
                             </li>

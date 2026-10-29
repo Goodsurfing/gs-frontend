@@ -4,7 +4,7 @@ import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } fro
 
 import type { MapOffer } from "@/lib/mapOffers";
 
-import { GeolocationButton } from "./GeolocationButton";
+import { MapControls } from "./MapControls";
 import { MapPopup, type MapPopupContent, type PopupOffer } from "./MapPopup";
 import { loadYmaps } from "./yandexMaps";
 
@@ -28,20 +28,38 @@ const DECLUSTER_ATTEMPTS = 8;
 const DEFAULT_COLOR = "#3dabf7";
 
 /*
- * Отметка — кружок цвета категории с тёмной обводкой (на светлых пастельных
- * цветах иначе сливается с картой), кластер — синий кружок с числом. Цвет —
- * из properties: один шаблон на все отметки, а не класс на каждую. Шаблон
- * рисуется от точки привязки вправо-вниз — сдвиг на половину размера
- * центрирует кружок на точке (кликабельная область — круг вокруг неё же).
+ * Отметка — кружок цвета категории с белым кольцом и тенью (пастельные цвета
+ * категорий иначе теряются на светлой подложке), при наведении чуть
+ * увеличивается; выбранная вакансия — крупнее, с синим кольцом. Кластер —
+ * синий кружок с ореолом, размер растёт с числом вакансий. Цвет и признак
+ * выбора — из properties: один шаблон на все отметки. Шаблон рисуется от
+ * точки привязки вправо-вниз — отрицательные отступы центрируют его на точке.
  */
-const MARKER_TEMPLATE = '<div class="-mt-[15px] -ml-[15px] box-border h-[30px] w-[30px] rounded-full border-[3px] border-ink shadow-[0_4px_8px_rgba(0,0,0,0.2)]" style="background-color: {{ properties.color }}"></div>';
-const CLUSTER_TEMPLATE = '<div class="-mt-5 -ml-5 box-border flex h-10 w-10 items-center justify-center rounded-full border-4 border-white bg-primary text-[14px] font-bold text-white shadow-[0_4px_8px_rgba(0,0,0,0.2)]">{{ properties.geoObjects.length }}</div>';
+const MARKER_TEMPLATE = [
+    "{% if properties.selected %}",
+    '<div class="-mt-[18px] -ml-[18px] box-border h-9 w-9 rounded-full border-[3px] border-white shadow-[0_0_0_3px_#3dabf7,0_4px_12px_rgba(14,29,39,0.35)]" style="background-color: {{ properties.color }}"></div>',
+    "{% else %}",
+    '<div class="-mt-[13px] -ml-[13px] box-border h-[26px] w-[26px] cursor-pointer rounded-full border-[3px] border-white shadow-[0_0_0_1px_rgba(14,29,39,0.25),0_2px_6px_rgba(14,29,39,0.3)] transition-transform duration-150 hover:scale-125" style="background-color: {{ properties.color }}"></div>',
+    "{% endif %}",
+].join("");
+const CLUSTER_BASE = "box-border flex cursor-pointer items-center justify-center rounded-full border-[3px] border-white bg-primary font-bold text-white shadow-[0_0_0_6px_rgba(61,171,247,0.25),0_4px_10px_rgba(14,29,39,0.25)] transition-transform duration-150 hover:scale-110";
+const CLUSTER_TEMPLATE = [
+    "{% if properties.geoObjects.length > 99 %}",
+    `<div class="-mt-6 -ml-6 h-12 w-12 text-[15px] ${CLUSTER_BASE}">{{ properties.geoObjects.length }}</div>`,
+    "{% elseif properties.geoObjects.length > 9 %}",
+    `<div class="-mt-5 -ml-5 h-10 w-10 text-[14px] ${CLUSTER_BASE}">{{ properties.geoObjects.length }}</div>`,
+    "{% else %}",
+    `<div class="-mt-[17px] -ml-[17px] h-[34px] w-[34px] text-[13px] ${CLUSTER_BASE}">{{ properties.geoObjects.length }}</div>`,
+    "{% endif %}",
+].join("");
 
 export interface OffersMapLabels {
     more: string;
     clusterTitle: string;
     noTitle: string;
     close: string;
+    zoomIn: string;
+    zoomOut: string;
     locate: string;
     locateError: string;
     noLocation: string;
@@ -124,21 +142,20 @@ export function OffersMap({ locale, filtersQuery, selectedOfferId, offerHref, la
         loadYmaps(locale).then((ymaps) => {
             if (cancelled) return;
             const map = new ymaps.Map(node, MAP_STATE, MAP_OPTIONS);
-            map.controls.add("zoomControl", { position: { right: 10, top: 10 } });
 
             // Опции кластеров у ObjectManager задаются в конструкторе с префиксом cluster*
             const manager = new ymaps.ObjectManager({
                 clusterize: true,
                 gridSize: 64,
                 clusterIconLayout: ymaps.templateLayoutFactory.createClass(CLUSTER_TEMPLATE),
-                clusterIconShape: { type: "Circle", coordinates: [0, 0], radius: 20 },
+                clusterIconShape: { type: "Circle", coordinates: [0, 0], radius: 24 },
                 clusterOpenBalloonOnClick: false,
                 // Иначе клик по кластеру только приближает карту и до списка дело не доходит
                 clusterDisableClickZoom: true,
             });
             manager.objects.options.set({
                 iconLayout: ymaps.templateLayoutFactory.createClass(MARKER_TEMPLATE),
-                iconShape: { type: "Circle", coordinates: [0, 0], radius: 15 },
+                iconShape: { type: "Circle", coordinates: [0, 0], radius: 16 },
                 openBalloonOnClick: false,
             });
             manager.objects.events.add("click", (event: any) => onObjectClick(Number(event.get("objectId"))));
@@ -196,6 +213,15 @@ export function OffersMap({ locale, filtersQuery, selectedOfferId, offerHref, la
             })),
         });
     }, [api, offers, labels.noTitle]);
+
+    // Выделение выбранной вакансии — меняем свойство одной отметки, а не перестраиваем все
+    useEffect(() => {
+        if (!api || !offers || selectedOfferId === undefined || !api.manager.objects.getById(selectedOfferId)) return;
+        api.manager.objects.setObjectProperties(selectedOfferId, { selected: true });
+        return () => {
+            if (api.manager.objects.getById(selectedOfferId)) api.manager.objects.setObjectProperties(selectedOfferId, { selected: false });
+        };
+    }, [api, offers, selectedOfferId]);
 
     // Вакансия выбрана в списке: подлететь, раскрыть кластер, показать карточку
     const selected = selectedOfferId !== undefined ? byId.get(selectedOfferId) : undefined;
@@ -256,7 +282,7 @@ export function OffersMap({ locale, filtersQuery, selectedOfferId, offerHref, la
                 />
             )}
 
-            {api && <GeolocationButton map={api.map} label={labels.locate} errorLabel={labels.locateError} />}
+            {api && <MapControls map={api.map} maxZoom={MAP_OPTIONS.maxZoom} labels={{ zoomIn: labels.zoomIn, zoomOut: labels.zoomOut, locate: labels.locate, locateError: labels.locateError }} />}
 
             {(empty || noLocation) && (
                 <div role="status" className="absolute top-4 left-1/2 z-10 max-w-[calc(100%-32px)] -translate-x-1/2 rounded-[10px] bg-white px-4 py-2.5 text-center text-[14px] font-medium shadow-[0_5px_20px_0_#2121210d]">

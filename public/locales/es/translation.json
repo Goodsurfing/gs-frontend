@@ -381,5 +381,7 @@
         "prev": "Página anterior",
         "next": "Página siguiente",
         "label": "Páginas"
-    }
+    },
+    "Приблизить": "Acercar",
+    "Отдалить": "Alejar"
 }

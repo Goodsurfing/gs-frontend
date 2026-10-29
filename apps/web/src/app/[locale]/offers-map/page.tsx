@@ -31,6 +31,8 @@ export default async function OffersMapPage({ params, searchParams }: Props) {
                     clusterTitle: t("Список вакансий:"),
                     noTitle: t("Без названия"),
                     close: t("Закрыть"),
+                    zoomIn: t("Приблизить"),
+                    zoomOut: t("Отдалить"),
                     locate: t("Показать моё местоположение"),
                     locateError: t("Не удалось определить местоположение"),
                     noLocation: t("У этой вакансии не указано местоположение на карте"),

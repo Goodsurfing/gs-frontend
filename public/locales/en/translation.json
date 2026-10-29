@@ -380,5 +380,7 @@
         "prev": "Previous page",
         "next": "Next page",
         "label": "Pages"
-    }
+    },
+    "Приблизить": "Zoom in",
+    "Отдалить": "Zoom out"
 }
