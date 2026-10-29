@@ -228,7 +228,9 @@
         "Другие категории": "Other categories",
         "вакансий": "vacancies",
         "вакансия": "vacancy",
-        "вакансии": "vacancies"
+        "вакансии": "vacancies",
+        "vacancyCount_one": "vacancy",
+        "vacancyCount_other": "vacancies"
     },
     "notes": {
         "Мои заявки": "My applications",
@@ -267,6 +269,7 @@
         "freeAccountPublishedVacancyLimit": "Free account allows up to 1 published vacancy. Get a membership to publish without limits.",
         "onlyVerifiedVolunteersAllowed": "This vacancy only accepts applications from verified participants. Get a membership to apply.",
         "vacancyIncomplete": "Fill in the vacancy title, description and address before publishing.",
+        "vacancyNotActive": "This offer is closed — you can no longer apply.",
         "fundraiseRequiresMembership": "Creating fundraising campaigns requires an active membership."
     },
     "Не задано": "Not specified",
