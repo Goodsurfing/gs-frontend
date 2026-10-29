@@ -33,7 +33,8 @@ export function GalleryCarousel({ images, labels, className = "" }: {
                 <div ref={track} className="@container flex snap-x snap-mandatory items-center gap-2.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     {images.map((src, index) => (
                         <button
-                            key={src}
+                            // Фото в галерее бывают повторами (перенос со старого сайта) — ключ с позицией
+                            key={`${index}-${src}`}
                             type="button"
                             aria-label={`${labels.open} ${index + 1}`}
                             onClick={() => setOpen(index)}

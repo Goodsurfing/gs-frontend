@@ -54,7 +54,7 @@ export function GalleryLightbox({ images, index, onClose, labels }: {
                         <div className="relative mx-auto w-[80vw] max-w-[1600px] down-md:w-screen">
                             <div ref={track} className="flex snap-x snap-mandatory items-center overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                                 {images.map((src, i) => (
-                                    <div key={src} className="w-full shrink-0 snap-start">
+                                    <div key={`${i}-${src}`} className="w-full shrink-0 snap-start">
                                         {/* eslint-disable-next-line @next/next/no-img-element -- фото из хранилища */}
                                         <img src={src} alt={`${labels.photo} ${i + 1}`} className="mx-auto block max-h-[calc(80vh-100px)] w-full object-contain" />
                                     </div>

@@ -28,6 +28,9 @@ export const routes = {
     becomeHost: (l: Locale) => path(l, "/become-host"),
     paymentSecurityPolicy: (l: Locale) => path(l, "/payment-security-policy"),
     offer: (l: Locale, id: string | number) => path(l, `/offers/${id}`),
+    /** Мастер вакансии начинается с «Где» */
+    offerEdit: (l: Locale, id: string | number) => path(l, `/offers/where/${id}`),
+    organization: (l: Locale, id: string) => path(l, `/organizations/${id}`),
     journals: (l: Locale) => path(l, "/journals"),
     donationsMap: (l: Locale) => path(l, "/donation-map"),
     donationRating: (l: Locale) => path(l, "/donation-rating"),

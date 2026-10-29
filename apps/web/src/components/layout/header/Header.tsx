@@ -73,7 +73,8 @@ export function Header({ locale, t, tProfile, banner, variant = "floating" }: He
     return (
         <div className={layout.outer}>
             {variant === "floating" && <ScrollState />}
-            <div className={layout.inner}>
+            {/* data-site-header: по нижней границе прилипают меню разделов (вакансия и др.) */}
+            <div data-site-header className={layout.inner}>
                 {banner && (
                     <a
                         href={banner.url}
