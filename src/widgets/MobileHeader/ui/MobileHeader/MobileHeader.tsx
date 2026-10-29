@@ -5,6 +5,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
+import { NavMenuLink } from "@/shared/ui/NavMenuLink/NavMenuLink";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -135,91 +136,91 @@ const MobileHeader: FC = () => {
                             <div className={styles.title}>
                                 {t("main.welcome.header.offers.popular-places")}
                             </div>
-                            <Link
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.latin-america")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.europe")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.asia")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.africa")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.france")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.germany")}
-                            </Link>
+                            </NavMenuLink>
                         </div>
                         <div className={styles.acrossRussiaContainer}>
                             <div className={styles.title}>
                                 {t("main.welcome.header.offers.across-russia")}
                             </div>
-                            <Link
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.altai")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.kamchatka")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.crimea")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.caucasus")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.ural")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.baikal")}
-                            </Link>
+                            </NavMenuLink>
                         </div>
                     </div>
-                    <Link
+                    <NavMenuLink
                         className={styles.viewAll}
                         to={getOffersMapPageUrl(locale)}
                     >
                         {t("main.welcome.header.offers.view-all")}
-                    </Link>
+                    </NavMenuLink>
                 </MobileSelect> */}
                 <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
@@ -227,36 +228,36 @@ const MobileHeader: FC = () => {
                     title={t("main.welcome.header.community.title")}
                     onClick={() => handleOpenDropdown("COMMUNITY")}
                 >
-                    <Link
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getBlogPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.blog")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getVideoPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.video")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getAmbassadorsPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.ambassadors")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getAcademyMainPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.courses")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getJournalsPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.journal")}
-                    </Link>
+                    </NavMenuLink>
                 </MobileSelect>
                 <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
@@ -264,30 +265,30 @@ const MobileHeader: FC = () => {
                     title={t("main.welcome.header.donation.title")}
                     onClick={() => handleOpenDropdown("SUPPORT")}
                 >
-                    <Link
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getMembershipPageUrl(locale)}
                     >
                         {t("main.welcome.header.donation.support-goodsurfing")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getDonationsMapPageUrl(locale)}
                     >
                         {t("main.welcome.header.donation.support-other-projects")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getNPOPageUrl(locale)}
                     >
                         {t("main.welcome.header.donation.public-reports")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getDonationRating(locale)}
                     >
                         {t("main.welcome.header.donation.rating-donations")}
-                    </Link>
+                    </NavMenuLink>
                 </MobileSelect>
                 <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
@@ -295,44 +296,44 @@ const MobileHeader: FC = () => {
                     title={t("main.welcome.header.about-project.title")}
                     onClick={() => handleOpenDropdown("ABOUT")}
                 >
-                    <Link
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getNewsPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.news")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getAboutProjectPageUrl(locale)}
                     >
                         {t(
                             "main.welcome.header.about-project.about-goodsurfing",
                         )}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getNPOPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.about-npo")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getOurTeamPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.our-team")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getMembershipPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.how-it-works")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getFindJobPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.find-job")}
-                    </Link>
+                    </NavMenuLink>
                 </MobileSelect>
                 <Button
                     onClick={() => navigate(getBecomeHostPageUrl(locale))}

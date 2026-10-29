@@ -4,6 +4,7 @@ import { useEffect, useId, useState } from "react";
 
 import { activeMembership, useSession } from "@/components/session/SessionProvider";
 import { Arrow } from "@/components/ui/Arrow";
+import { NavAnchor } from "@/components/ui/NavAnchor";
 import type { Locale } from "@/i18n/config";
 import { formatDayMonthYear } from "@/lib/formatDate";
 
@@ -82,7 +83,7 @@ export function MobileHeader({ locale, homeHref, navigation, membership, signIn,
                 <a href={navigation.offers.href} className={itemClass}>{navigation.offers.label}</a>
                 {navigation.entries.map((entry) => {
                     if (entry.kind === "link") {
-                        return <a key={entry.label} href={entry.href} className={itemClass}>{entry.label}</a>;
+                        return <NavAnchor key={entry.label} href={entry.href} className={`${itemClass} aria-[current=page]:cursor-default aria-[current=page]:text-primary aria-[current=page]:hover:text-primary aria-[current=page]:focus:text-primary`}>{entry.label}</NavAnchor>;
                     }
                     const isOpen = expanded.has(entry.label);
                     const panelId = `${menuId}-${entry.label}`;
@@ -102,13 +103,13 @@ export function MobileHeader({ locale, homeHref, navigation, membership, signIn,
                             </button>
                             <div id={panelId} hidden={!isOpen} className="flex-col gap-y-2.5 bg-field p-5 [&:not([hidden])]:flex">
                                 {entry.items.map((item) => (
-                                    <a
+                                    <NavAnchor
                                         key={item.href + item.label}
                                         href={item.href}
-                                        className="text-[16px] font-medium text-ink-secondary no-underline hover:text-primary-hover"
+                                        className="text-[16px] font-medium text-ink-secondary no-underline hover:text-primary-hover aria-[current=page]:cursor-default aria-[current=page]:text-primary aria-[current=page]:hover:text-primary aria-[current=page]:focus:text-primary"
                                     >
                                         {item.label}
-                                    </a>
+                                    </NavAnchor>
                                 ))}
                             </div>
                         </div>
@@ -126,7 +127,7 @@ export function MobileHeader({ locale, homeHref, navigation, membership, signIn,
                 <div className="my-2 h-px w-full bg-accent-bg" />
                 {session.status === "user" ? (
                     <>
-                        {account.links.map((link) => <a key={link.href} href={link.href} className={itemClass}>{link.label}</a>)}
+                        {account.links.map((link) => <NavAnchor key={link.href} href={link.href} className={`${itemClass} aria-[current=page]:cursor-default aria-[current=page]:text-primary aria-[current=page]:hover:text-primary aria-[current=page]:focus:text-primary`}>{link.label}</NavAnchor>)}
                         <button
                             type="button"
                             className={itemClass}

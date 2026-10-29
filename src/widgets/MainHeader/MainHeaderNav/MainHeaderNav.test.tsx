@@ -41,4 +41,19 @@ describe("MainHeaderNav", () => {
         const link = screen.getByText("Международное волонтёрство").closest("a");
         expect(link).toHaveAttribute("href", "https://international.goodsurfing.org/");
     });
+
+    it("на своей странице пункт меню — отметка «вы здесь», а не ссылка на себя", () => {
+        renderWithProviders(
+            <MemoryRouter initialEntries={["/membership"]}>
+                <MainHeaderNav />
+            </MemoryRouter>,
+        );
+
+        const current = screen.getByText("main.welcome.header.donation.support-goodsurfing");
+        expect(current.closest("a")).toBeNull();
+        expect(current).toHaveAttribute("aria-current", "page");
+
+        const other = screen.getByText("main.welcome.header.donation.rating-donations");
+        expect(other.closest("a")).not.toBeNull();
+    });
 });
