@@ -67,7 +67,9 @@ jobs:
           script: |
             set -e
             cd /opt/gs
-            sudo docker compose pull web
+            # Две выкладки стейджа (SPA и новый фронт) идут на одну VM параллельно:
+            # docker image prune одной может сорвать pull другой («failed to lease content») — повторяем
+            for attempt in 1 2 3; do sudo docker compose pull web && break; [ "$attempt" = 3 ] && exit 1; sleep 15; done
             sudo docker compose up -d web
             # Старый образ после обновления остаётся «висящим» (1+ ГБ у бэкенда) — без
             # очистки диск стейджа 29.10 заполнился на 90% (142 таких образа)
