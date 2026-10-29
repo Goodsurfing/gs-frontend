@@ -42,4 +42,4 @@ type Translate = (key: string) => string;
 export const marketingConsentWording = (t: Translate): string => [
     t("login.Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга"),
     t("login.marketingConsentHint"),
-].join(" ");
+].join(". ");
