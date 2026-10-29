@@ -3,6 +3,7 @@ import { AboutProjectPage } from "@/pages/AboutProjectPage";
 import { CategoriesPage } from "@/pages/CategoriesPage";
 import { ConfirmEmailPage } from "@/pages/ConfirmEmailPage";
 import { ConfirmEmailSuccessPage } from "@/pages/ConfirmEmailSuccessPage";
+import { SubscriptionPage } from "@/pages/SubscriptionPage";
 import { FindJobPage } from "@/pages/FindJobPage";
 import { HostDashboardPage } from "@/pages/HostDashboardPage";
 import { HostGalleryPage } from "@/pages/HostGalleryPage";
@@ -71,6 +72,7 @@ import {
     getCategoriesPageUrl,
     getConfirmEmailPageUrl,
     getConfirmEmailSuccessPageUrl,
+    getSubscriptionPageUrl,
     getFavoriteOffersPageUrl,
     getFindJobPageUrl,
     getHostDashboardPageUrl,
@@ -388,6 +390,11 @@ const publicRoutes: RouteType[] = [
         label: "confirm-email",
         element: <ConfirmEmailPage />,
         path: (locale: string) => getConfirmEmailPageUrl(locale),
+    },
+    {
+        label: "subscription",
+        element: <SubscriptionPage />,
+        path: (locale: string) => getSubscriptionPageUrl(locale),
     },
     {
         label: "confirm-email-success",

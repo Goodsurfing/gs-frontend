@@ -16,6 +16,7 @@ export {
     useGetProfileSearchByEmailQuery,
     useLazyGetProfileSearchByEmailQuery,
     useToggleActiveProfileMutation,
+    useUpdateMarketingConsentMutation,
     useUpdateProfilePreferencesMutation,
     useUpdateProfileVideoGalleryMutation,
     useUpdateProfileImageGalleryMutation,

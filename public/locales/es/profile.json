@@ -104,7 +104,9 @@
         "Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить.": "¿Seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer.",
         "Удалить": "Borrar",
         "Отмена": "Cancelar",
-        "Выберете настройки приватности": "Elija la configuración de privacidad"
+        "Выберете настройки приватности": "Elija la configuración de privacidad",
+        "Получать рассылку от Гудсёрфинга с новостями и обновлениями": "Recibir el boletín de Goodsurfing con noticias y novedades",
+        "Не удалось сохранить настройку рассылки": "No se pudo guardar el ajuste del boletín"
     },
     "personal": {
         "Произошла ошибка": "Ocurrió un error",

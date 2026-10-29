@@ -15,6 +15,8 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.FAVORITE_OFFERS]: "/favorite-offers",
     [AppRoutes.CONFIRM_EMAIL]: "/confirm-email",
     [AppRoutes.CONFIRM_EMAIL_SUCCESS]: "/confirm-email-success",
+    // Подтверждение подписки по ссылке из письма-запроса (GS-203)
+    [AppRoutes.SUBSCRIPTION]: "/subscription",
     [AppRoutes.EMAIL_EXPIRED]: "/email-expired",
     [AppRoutes.VERIFY_EMAIL]: "/verify-email",
     [AppRoutes.VERIFY_EMAIL_HASH]: "/verify-email-hash",

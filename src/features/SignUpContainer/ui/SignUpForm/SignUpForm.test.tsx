@@ -1,6 +1,7 @@
 import {
     describe, it, expect, vi,
 } from "vitest";
+import { useState } from "react";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { rest } from "msw";
@@ -63,5 +64,44 @@ describe("SignUpForm", () => {
             expect(screen.getByText("login.Некорректно введены данные")).toBeInTheDocument();
         });
         expect(screen.queryByText("login.Возможно, вы уже регистрировались.")).not.toBeInTheDocument();
+    });
+
+    // GS-203: согласие на рассылку — отдельный чекбокс, по умолчанию снят
+    const WithConsent = () => {
+        const [consent, setConsent] = useState(false);
+        return (
+            <MemoryRouter>
+                <SignUpForm marketingConsent={consent} onMarketingConsentChange={setConsent} />
+            </MemoryRouter>
+        );
+    };
+
+    const captureRegistration = () => {
+        const bodies: Record<string, unknown>[] = [];
+        server.use(
+            rest.post("*/api/v1/users", async (req, res, ctx) => {
+                bodies.push(await req.json());
+                return res(ctx.status(201), ctx.json({ id: "u1", email: "new@test.com" }));
+            }),
+        );
+        return bodies;
+    };
+
+    it("без отметки согласие на рассылку не отправляется", async () => {
+        const bodies = captureRegistration();
+        renderWithProviders(<WithConsent />);
+        expect(screen.getByRole("checkbox", { name: /Хочу получать письма/ })).not.toBeChecked();
+        await fillAndSubmit();
+        await waitFor(() => expect(bodies).toHaveLength(1));
+        expect(bodies[0].marketingConsent).toBe(false);
+    });
+
+    it("с отметкой согласие уходит вместе с регистрацией", async () => {
+        const bodies = captureRegistration();
+        renderWithProviders(<WithConsent />);
+        await userEvent.click(screen.getByRole("checkbox", { name: /Хочу получать письма/ }));
+        await fillAndSubmit();
+        await waitFor(() => expect(bodies).toHaveLength(1));
+        expect(bodies[0].marketingConsent).toBe(true);
     });
 });

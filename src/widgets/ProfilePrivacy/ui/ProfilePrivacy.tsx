@@ -12,7 +12,11 @@ import {
     ProfileNewsletterSwitch,
 } from "@/features/ProfilePrivacy";
 
-import { useDeleteProfileMutation, useToggleActiveProfileMutation } from "@/entities/Profile";
+import {
+    useDeleteProfileMutation,
+    useToggleActiveProfileMutation,
+    useUpdateMarketingConsentMutation,
+} from "@/entities/Profile";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
@@ -42,6 +46,31 @@ export const ProfilePrivacy: FC<ProfilePrivacyProps> = memo((props: ProfilePriva
     const [isActiveProfile, setActiveProfile] = useState<boolean>(false);
     const [toast, setToast] = useState<ToastAlert>();
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    // Согласие на рассылку (GS-203): переключатель включён = письма приходят
+    const [
+        updateMarketingConsent,
+        { isLoading: isConsentSaving },
+    ] = useUpdateMarketingConsentMutation();
+    const [marketingConsent, setMarketingConsent] = useState(false);
+
+    useEffect(() => {
+        setMarketingConsent(Boolean(myProfile?.marketingConsent));
+    }, [myProfile?.marketingConsent]);
+
+    const handleMarketingConsent = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
+        const { checked } = event.target;
+        setToast(undefined);
+        setMarketingConsent(checked);
+        try {
+            await updateMarketingConsent({ consent: checked }).unwrap();
+        } catch {
+            setMarketingConsent(!checked);
+            setTimeout(() => setToast({
+                type: HintType.Error,
+                text: t("privacy.Не удалось сохранить настройку рассылки"),
+            }), 0);
+        }
+    }, [t, updateMarketingConsent]);
 
     const getErrorText = useCallback((errorCode: string): string => {
         switch (errorCode) {
@@ -144,7 +173,11 @@ export const ProfilePrivacy: FC<ProfilePrivacyProps> = memo((props: ProfilePriva
                 </p>
             </div>
             <div className={styles.container}>
-                <ProfileNewsletterSwitch />
+                <ProfileNewsletterSwitch
+                    checked={marketingConsent}
+                    disabled={isConsentSaving}
+                    onChange={handleMarketingConsent}
+                />
                 <p className={styles.description}>
                     {t("privacy.Отказавшись от рассылки вы можете пропустить важные новости проекта, а также уникальные возможности")}
                 </p>
