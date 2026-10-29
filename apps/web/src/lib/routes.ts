@@ -39,6 +39,7 @@ export const routes = {
     journals: (l: Locale) => path(l, "/journals"),
     donationsMap: (l: Locale) => path(l, "/donation-map"),
     donationRating: (l: Locale) => path(l, "/donation-rating"),
+    donationReports: (l: Locale) => path(l, "/donation-reports"),
     signIn: (l: Locale) => path(l, "/signin"),
     messenger: (l: Locale) => path(l, "/messenger"),
     profileInfo: (l: Locale) => path(l, "/profile/info"),
