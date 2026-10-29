@@ -78,6 +78,6 @@ describe("ReviewsContainer", () => {
         render(<ReviewsContainer />);
         fireEvent.click(screen.getByText("Отзыв с фото"));
 
-        expect(navigateMock).toHaveBeenCalledWith("/ru/offers/42");
+        expect(navigateMock).toHaveBeenCalledWith("/offers/42");
     });
 });

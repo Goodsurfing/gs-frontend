@@ -1,10 +1,11 @@
-import type { Locale } from "@/i18n/config";
+import { type Locale, localePrefix } from "@/i18n/config";
 
 /**
  * Адреса страниц — те же, что у старого фронта (src/shared/config/routes в
  * корне): ссылки, письма и закладки должны работать без изменений.
  */
-const path = (locale: Locale, rest = "") => `/${locale}${rest}`;
+// У русского префикса нет: главная — «/», у en/es — «/en», «/es»
+const path = (locale: Locale, rest = "") => `${localePrefix(locale)}${rest}` || "/";
 
 export const routes = {
     main: (l: Locale) => path(l),

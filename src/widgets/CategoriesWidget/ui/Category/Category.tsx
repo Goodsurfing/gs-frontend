@@ -8,6 +8,7 @@ import threeDots from "@/shared/assets/icons/three-dots.svg";
 import styles from "./Category.module.scss";
 import { getVacancyText } from "@/shared/data/categories";
 import { Locale } from "@/entities/Locale";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 interface CategoryProps {
     title: string;
@@ -26,7 +27,7 @@ export const Category: FC<CategoryProps> = memo((props: CategoryProps) => {
     const navigate = useNavigate();
 
     const navigateTo = () => {
-        navigate(`/${locale}${link}`);
+        navigate(`${localePrefix(locale)}${link}`);
     };
 
     const translateLib: Record<string, string> = {

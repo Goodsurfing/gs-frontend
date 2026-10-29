@@ -55,7 +55,7 @@ test.describe('Админка', () => {
 
     for (const path of SECTIONS) {
         test(path, async ({ page }) => {
-            await expectPageWorks(page, `/ru${path}`);
+            await expectPageWorks(page, `${path}`);
         });
     }
 
@@ -71,15 +71,15 @@ test.describe('Админка', () => {
         expect(userId, 'список пользователей пуст').toBeTruthy();
         expect(orgId, 'список организаций пуст').toBeTruthy();
 
-        await expectPageWorks(page, `/ru/admin/users/${userId}`);
-        await expectPageWorks(page, `/ru/admin/organizations/${orgId}`);
+        await expectPageWorks(page, `/admin/users/${userId}`);
+        await expectPageWorks(page, `/admin/organizations/${orgId}`);
     });
 
     test('обычного пользователя в админку не пускает', async ({ browser }) => {
         const ctx = await browser.newContext({ storageState: 'e2e/.auth/vol.json' });
         const page = await ctx.newPage();
-        await page.goto('/ru/admin/users');
-        await expect(page).not.toHaveURL(/\/ru\/admin\/users$/, { timeout: 15_000 });
+        await page.goto('/admin/users');
+        await expect(page).not.toHaveURL(/\/admin\/users$/, { timeout: 15_000 });
         await ctx.close();
     });
 });

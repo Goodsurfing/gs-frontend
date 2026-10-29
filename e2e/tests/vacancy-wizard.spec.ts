@@ -17,9 +17,9 @@ test.describe('Мастер вакансии — хост', () => {
         test.skip(testInfo.project.name !== 'host', 'один раз на прогон');
         test.setTimeout(120_000);
 
-        await page.goto('/ru/host/my-offers');
+        await page.goto('/host/my-offers');
         await page.getByRole('button', { name: 'Добавить вакансию' }).click();
-        await page.waitForURL(/\/ru\/offers\/welcome\/\d+/, { timeout: 20_000 });
+        await page.waitForURL(/\/offers\/welcome\/\d+/, { timeout: 20_000 });
         const id = page.url().match(/welcome\/(\d+)/)?.[1];
         expect(id).toBeTruthy();
 
@@ -27,7 +27,7 @@ test.describe('Мастер вакансии — хост', () => {
         const api = await request.newContext({ baseURL: API_URL, ignoreHTTPSErrors: true });
         try {
             for (const step of STEPS) {
-                await expectPageWorks(page, `/ru/offers/${step}/${id}`);
+                await expectPageWorks(page, `/offers/${step}/${id}`);
             }
         } finally {
             const removed = await api.delete(`/api/v1/vacancy/${id}`, { headers: { Authorization: `Bearer ${token}` } });

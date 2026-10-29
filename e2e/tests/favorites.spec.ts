@@ -20,7 +20,7 @@ test.describe('Избранное', () => {
             return (Array.isArray(body) ? body : body?.ids ?? body?.data ?? []) as number[];
         };
 
-        await page.goto('/ru/offers-map');
+        await page.goto('/offers-map');
         // exact: вся карточка — role="button", её имя включает подпись сердечка
         const add = page.getByRole('button', { name: 'Добавить в избранное', exact: true }).first();
         await add.click();
@@ -28,7 +28,7 @@ test.describe('Избранное', () => {
         await expect(page.getByRole('button', { name: 'Убрать из избранного', exact: true }).first())
             .toHaveAttribute('aria-pressed', 'true');
 
-        await page.goto('/ru/favorite-offers');
+        await page.goto('/favorite-offers');
         await expect(page.getByRole('button', { name: 'Убрать из избранного', exact: true })).toHaveCount(1, { timeout: 15_000 });
         await page.getByRole('button', { name: 'Убрать из избранного', exact: true }).click();
         await expect.poll(async () => (await favoriteIds()).length, { timeout: 15_000 }).toBe(0);

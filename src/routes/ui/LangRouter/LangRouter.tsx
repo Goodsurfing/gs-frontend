@@ -1,19 +1,23 @@
 import {
     Suspense, useState, useEffect, useRef,
 } from "react";
-import { Route, Routes } from "react-router-dom";
+import {
+    Navigate, Route, Routes, useLocation,
+} from "react-router-dom";
 
 import { RouteType } from "../../model/types/langRouter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 import { allRoutes } from "../../model/config/RoutesConfig";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { isLegacyRuPath, localePrefix, stripLocale } from "@/shared/config/routes/localePath";
 
 export const defaultLocale = "ru";
 export const availableLocales = ["ru", "en", "es"];
 
 export const LangRouter = () => {
     const { locale } = useLocale();
+    const { pathname, search, hash } = useLocation();
     const [isLoading, setIsLoading] = useState(true);
 
     const loaderTimerRef = useRef<any>();
@@ -48,6 +52,12 @@ export const LangRouter = () => {
         );
     });
 
+    // Старый адрес /ru/… (на стенде и в проде его перенаправляет nginx, здесь —
+    // запасной путь для локальной разработки и переходов внутри приложения)
+    if (isLegacyRuPath(pathname)) {
+        return <Navigate replace to={`${stripLocale(pathname)}${search}${hash}`} />;
+    }
+
     if (isLoading) {
         return <Preloader />;
     }
@@ -55,7 +65,8 @@ export const LangRouter = () => {
     return (
         <Suspense fallback={<Preloader />}>
             <Routes>
-                <Route path={`/${locale}`}>
+                {/* У русского префикса нет (/offers-map), у en/es — /en/…, /es/… */}
+                <Route path={localePrefix(locale) || "/"}>
                     {renderRouteWithChildren(allRoutes)}
                 </Route>
                 <Route path="*" element={<NotFoundPage />} />

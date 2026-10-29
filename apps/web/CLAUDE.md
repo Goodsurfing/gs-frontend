@@ -15,7 +15,7 @@
 - **Стили — Tailwind CSS 4 на токенах** из `src/app/globals.css` (`@theme`): значения сняты со старого фронта (`src/app/styles` в корне). В компонентах — только классы на токенах, без «магических» цветов и размеров. Новый токен — в `@theme`, с комментарием, откуда значение.
 - **Совпадение с версткой старого сайта:** точки перелома — `down-xl/lg/md/sm/xs` (max-width 1180/992/768/576/480, как `@media` старого фронта); межстрочные интервалы задавать в процентах, как в старом SCSS (Chrome округляет `%` и безразмерные значения по-разному); `antialiased` не включать.
 - **Доступные примитивы — Radix UI** (меню, модалки, выпадающие списки). У каждого поля есть `<label>`, у кнопок — понятное имя, модалки — `role="dialog"`. E2E ищут элементы по роли и подписи — без этого тесты не пройдут.
-- **i18n:** адреса `/{ru|en|es}/…`, словари общие со старым фронтом (`public/locales`, копируются при сборке скриптом `scripts/copy-locales.mjs`). Перевод на сервере: `getTranslator(locale, namespace)` из `src/i18n/dictionary.ts`, ключи те же, что в старом фронте.
+- **i18n:** у русского префикса в адресе нет (`/payment-security-policy`), у en/es есть (`/en/…`, `/es/…`) — решение владельца 29.10.2026; `/ru/…` отвечает 301 (`src/proxy.ts`), русские адреса внутри переписываются на маршрут `[locale]=ru`. Адреса строить только через `src/lib/routes.ts` и `withLocale` (`src/i18n/config.ts`); те же правила в старом SPA — `src/shared/config/routes/localePath.ts`. Словари словари общие со старым фронтом (`public/locales`, копируются при сборке скриптом `scripts/copy-locales.mjs`). Перевод на сервере: `getTranslator(locale, namespace)` из `src/i18n/dictionary.ts`, ключи те же, что в старом фронте.
 - **API:** только через `@goodsurfing/api` (`packages/api`): типы генерируются из OpenAPI бэкенда, клиент `createApiClient`. Ручных типов ответов API не писать. Даты бэкенд отдаёт строками `d.m.Y` — не оборачивать в `new Date()` без разбора.
 - **SEO:** у каждой публичной страницы `generateMetadata` (title, description, og, canonical, hreflang ru/en/es + x-default); sitemap отдаёт бэкенд (`/sitemap.xml`).
 - **Статика — только под `/web/`** (`public/web/{fonts,icons,images}`), в корне лишь `favicon.png` и `og-image.jpg` (те же файлы, что у старого SPA). Так маршрутизация по путям держится на двух префиксах: `/_next` и `/web/`.
@@ -28,7 +28,7 @@
 
 - Образ: `apps/web/Dockerfile` (контекст — корень репозитория), standalone-сервер Next на порту 3100, `/healthz` для проверок, ~40 МБ памяти в простое.
 - **Канарейка по cookie:** Traefik отправляет запрос в новый фронт только при cookie `gs_web=1` и только по уже перенесённым адресам (`/_next`, `/web/`, `/healthz` и страницы из списка в правиле `web-canary`, `gs-infra/envs/staging/cloud-init.yaml`). Без cookie — старое SPA. Так новый фронт проверяется на настоящем домене, пользователи его не видят.
-- **Перенесённые страницы:** `/{ru,en,es}/payment-security-policy` (GS-219).
+- **Перенесённые страницы:** `/payment-security-policy`, `/en/…`, `/es/…` (GS-219).
 
 ## Команды
 

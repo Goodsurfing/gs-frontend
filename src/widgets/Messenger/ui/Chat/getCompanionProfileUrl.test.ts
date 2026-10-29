@@ -22,17 +22,17 @@ const hostAndVolunteer = {
 
 describe("getCompanionProfileUrl", () => {
     it("собеседник только волонтёр — профиль волонтёра для любого зрителя", () => {
-        expect(getCompanionProfileUrl(volunteerOnly, "ru", false)).toBe("/ru/volunteers/u-1");
-        expect(getCompanionProfileUrl(volunteerOnly, "ru", true)).toBe("/ru/volunteers/u-1");
+        expect(getCompanionProfileUrl(volunteerOnly, "ru", false)).toBe("/volunteers/u-1");
+        expect(getCompanionProfileUrl(volunteerOnly, "ru", true)).toBe("/volunteers/u-1");
     });
 
     it("собеседник только организатор — организация для любого зрителя", () => {
-        expect(getCompanionProfileUrl(hostOnly, "ru", false)).toBe("/ru/organizations/org-1");
-        expect(getCompanionProfileUrl(hostOnly, "ru", true)).toBe("/ru/organizations/org-1");
+        expect(getCompanionProfileUrl(hostOnly, "ru", false)).toBe("/organizations/org-1");
+        expect(getCompanionProfileUrl(hostOnly, "ru", true)).toBe("/organizations/org-1");
     });
 
     it("собеседник с обоими профилями — волонтёру показываем организацию", () => {
-        expect(getCompanionProfileUrl(hostAndVolunteer, "ru", false)).toBe("/ru/organizations/org-2");
+        expect(getCompanionProfileUrl(hostAndVolunteer, "ru", false)).toBe("/organizations/org-2");
     });
 
     it("собеседник с обоими профилями — организатору показываем профиль волонтёра", () => {

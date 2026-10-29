@@ -23,7 +23,7 @@ test.describe('Оплата через интерфейс', () => {
         await useSessionInPage(page, session);
         const api = await request.newContext({ baseURL: API_URL, ignoreHTTPSErrors: true });
 
-        await page.goto('/ru/membership');
+        await page.goto('/membership');
         await page.getByRole('button', { name: 'Стать участником международного клуба' })
             .or(page.getByRole('link', { name: 'Стать участником международного клуба' })).first().click();
         const orderId = await payWithTestCard(page);
@@ -34,7 +34,7 @@ test.describe('Оплата через интерфейс', () => {
         expect(international?.status).toBe('ACTIVE');
 
         // GS-198: строка в профиле
-        await page.goto('/ru/profile/info');
+        await page.goto('/profile/info');
         // На странице две копии баннера (десктоп и телефон), видна одна
         await expect(page.getByText(/Международный клуб: активно до \d{2}\.\d{2}\.\d{4}/).locator('visible=true').first())
             .toBeVisible({ timeout: 15_000 });
@@ -60,7 +60,7 @@ test.describe('Оплата через интерфейс', () => {
         // Первый сбор, у которого есть кнопка «Поддержать» (закрытые её не показывают)
         let fundraiseId: string | undefined;
         for (const { id } of fundraises) {
-            await page.goto(`/ru/fundraise/${id}`);
+            await page.goto(`/fundraise/${id}`);
             const donate = page.getByRole('button', { name: 'Поддержать', exact: true }).first();
             const open = await donate.waitFor({ state: 'visible', timeout: 10_000 }).then(() => true, () => false);
             if (open) {
@@ -71,7 +71,7 @@ test.describe('Оплата через интерфейс', () => {
         }
         expect(fundraiseId, 'нет открытого сбора').toBeTruthy();
 
-        await page.waitForURL(/\/ru\/donation\/pay\//);
+        await page.waitForURL(/\/donation\/pay\//);
         const before = await e2eDonations(fundraiseId as string);
         await page.getByLabel('Другая сумма, ₽').fill('100');
         await page.getByRole('button', { name: /Поддержать — 100/ }).click();

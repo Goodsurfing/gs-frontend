@@ -9,7 +9,7 @@ test.describe('SEO — гость', () => {
         .locator(`head ${selector}`).first();
 
     test('карта вакансий: свой title, description и hreflang', async ({ page }) => {
-        await page.goto('/ru/offers-map');
+        await page.goto('/offers-map');
         await expect(page).toHaveTitle(/Карта волонтёрских вакансий/);
         await expect(head(page, 'meta[name="description"]')).toHaveAttribute('content', /.{40,}/);
         await expect(page.locator('head link[rel="alternate"][hreflang="en"]'))
@@ -37,6 +37,6 @@ test.describe('SEO — гость', () => {
 
         const vacancies = await api.get(`${BASE_URL}/sitemap-vacancies.xml`);
         expect(vacancies.ok()).toBeTruthy();
-        expect(await vacancies.text()).toMatch(new RegExp(`<loc>${BASE_URL}/ru/offers/\\d+</loc>`));
+        expect(await vacancies.text()).toMatch(new RegExp(`<loc>${BASE_URL}/offers/\\d+</loc>`));
     });
 });

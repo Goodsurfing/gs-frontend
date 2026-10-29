@@ -21,17 +21,17 @@ test.describe('Авторизация', () => {
         const email = `e2e-signup-${Date.now()}@test.local`;
         const password = 'E2eSignup2026';
 
-        await page.goto('/ru/signup');
+        await page.goto('/signup');
         await page.getByLabel('E-mail').fill(email);
         await page.getByLabel('Пароль', { exact: true }).first().fill(password);
         await page.locator('form button[type="submit"]').click();
-        await expect(page).toHaveURL(/\/ru\/confirm-email/);
+        await expect(page).toHaveURL(/\/confirm-email/);
 
         const { html } = await waitForEmail(email);
         await page.goto(linkByText(html, 'Подтвердить почту'));
         await expect(page).toHaveURL(/confirm-email-success|profile/, { timeout: 20_000 });
 
-        await page.goto('/ru/signin');
+        await page.goto('/signin');
         await page.getByLabel('E-mail').fill(email);
         await page.getByLabel('Пароль', { exact: true }).first().fill(password);
         await page.locator('form button[type="submit"]').click();
@@ -40,11 +40,11 @@ test.describe('Авторизация', () => {
     });
 
     test('вход с неверным паролем — ошибка, остаёмся на странице входа', async ({ page }) => {
-        await page.goto('/ru/signin');
+        await page.goto('/signin');
         await page.getByLabel('E-mail').fill('vol@test.com');
         await page.getByLabel('Пароль', { exact: true }).first().fill('wrong-password-1');
         await page.locator('form button[type="submit"]').click();
-        await expect(page).toHaveURL(/\/ru\/signin/);
+        await expect(page).toHaveURL(/\/signin/);
         await expect(page.locator('body')).toContainText(/неверн|Неверн|ошибк/);
     });
 
@@ -60,7 +60,7 @@ test.describe('Авторизация', () => {
         });
         expect(created.ok(), await created.text()).toBeTruthy();
 
-        await page.goto('/ru/reset-password');
+        await page.goto('/reset-password');
         await page.getByLabel('E-mail').fill(email);
         await page.getByRole('button', { name: 'Отправить' }).click();
 

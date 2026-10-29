@@ -22,7 +22,7 @@ test.describe('Карта вакансий — интерактивность', 
     // проверено вручную в обычном браузере — см. отчёт. Пока помечено fixme,
     // чтобы не блокировать проверку выкатки.
     test.fixme('карту можно подвинуть мышью (drag/pan)', async ({ page }) => {
-        await page.goto('/ru/offers-map');
+        await page.goto('/offers-map');
 
         // .ymaps-2-1-79-map matches both an outer wrapper and Yandex's inner
         // map element — .first() is the outer one, whose box we want anyway.
@@ -56,7 +56,7 @@ test.describe('Карта вакансий — интерактивность', 
     });
 
     test('в центре карты нет прозрачного слоя поверх неё', async ({ page }) => {
-        await page.goto('/ru/offers-map');
+        await page.goto('/offers-map');
 
         // .ymaps-2-1-79-map matches both an outer wrapper and Yandex's inner
         // map element — .first() is the outer one, whose box we want anyway.
@@ -74,7 +74,7 @@ test.describe('Карта вакансий — интерактивность', 
     });
 
     test('зум-контрол остаётся кликабельным', async ({ page }) => {
-        await page.goto('/ru/offers-map');
+        await page.goto('/offers-map');
 
         const zoomPlus = page.locator(ymaps('zoom__plus')).first();
         await expect(zoomPlus).toBeVisible({ timeout: MAP_TIMEOUT });
