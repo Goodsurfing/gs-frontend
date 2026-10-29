@@ -106,6 +106,34 @@ test.describe('Новый фронт: правила и политика кон�
     }
 });
 
+test.describe('Новый фронт: о некоммерческой организации', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test.beforeEach(async ({ context }, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'проверка без привязки к роли — один раз за прогон');
+        await enableNewFrontend(context);
+    });
+
+    test('/npo: отчёты-PDF, уставные документы открываются крупно', async ({ page }) => {
+        const response = await page.goto('/npo');
+        expect(response?.status()).toBe(200);
+        await expect(page.locator('script[src*="/_next/"]').first()).toBeAttached();
+        await expect(page.getByRole('heading', { level: 1, name: 'О некоммерческой организации' })).toBeVisible();
+
+        // 6 отчётов в Минюст (2018–2023) + 7 о деятельности (2019–2025)
+        const reports = page.locator('main a[href^="/assets/docs/npo/"]');
+        await expect(reports).toHaveCount(13);
+        const pdf = await page.request.get(await reports.first().getAttribute('href') as string);
+        expect(pdf.headers()['content-type']).toContain('pdf');
+
+        await page.getByRole('button', { name: 'Уставные документы 1' }).click();
+        const dialog = page.getByRole('dialog');
+        await expect(dialog).toBeVisible();
+        await page.keyboard.press('Escape');
+        await expect(dialog).toHaveCount(0);
+    });
+});
+
 test.describe('Новый фронт: шапка вошедшего пользователя', () => {
     test.use({ storageState: { cookies: [], origins: [] } });
 

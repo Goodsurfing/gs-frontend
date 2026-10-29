@@ -1,0 +1,18 @@
+/**
+ * Ссылка на документ (PDF отчёта) с иконкой — как shared/ui/ReportItem
+ * старого фронта: рамка, название слева, иконка «документ с лупой» справа.
+ * Открывается в новой вкладке.
+ */
+export function DocumentLink({ title, href }: { title: string; href: string }) {
+    return (
+        <a href={href} target="_blank" rel="noopener noreferrer" className="inline-block w-full">
+            <span className="flex min-h-[50px] w-full items-center justify-between gap-[30px] rounded-[10px] border border-accent-bg px-2.5 py-5">
+                <span className="text-[1.125rem] font-medium text-primary">{title}</span>
+                <svg aria-hidden width="30" height="30" viewBox="0 0 30 30" fill="none" className="block shrink-0">
+                    <path d="M23.75 2.5H6.25C5.91848 2.5 5.60054 2.6317 5.36612 2.86612C5.1317 3.10054 5 3.41848 5 3.75V26.25C5 26.5815 5.1317 26.8995 5.36612 27.1339C5.60054 27.3683 5.91848 27.5 6.25 27.5H23.75C24.0815 27.5 24.3995 27.3683 24.6339 27.1339C24.8683 26.8995 25 26.5815 25 26.25V3.75C25 3.41848 24.8683 3.10054 24.6339 2.86612C24.3995 2.6317 24.0815 2.5 23.75 2.5Z" stroke="currentColor" className="text-caption" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M18.75 14.3757L16.5844 12.21M16.5844 12.21C16.8806 11.9212 17.1165 11.5764 17.2784 11.1957C17.4403 10.815 17.525 10.4059 17.5276 9.99224C17.5302 9.57853 17.4506 9.16843 17.2935 8.78572C17.1364 8.40301 16.9048 8.05531 16.6122 7.76279C16.3197 7.47027 15.9719 7.23876 15.5892 7.08167C15.2065 6.92459 14.7964 6.84507 14.3827 6.84772C13.969 6.85037 13.5599 6.93514 13.1792 7.09712C12.7985 7.25909 12.4538 7.49504 12.165 7.79129C11.5833 8.3783 11.2578 9.17184 11.2597 9.99827C11.2616 10.8247 11.5908 11.6167 12.1753 12.201C12.7597 12.7853 13.5518 13.1143 14.3783 13.116C15.2047 13.1177 15.9975 12.7919 16.5844 12.21ZM10.625 18.7507H19.375M10.625 22.5007H15" stroke="currentColor" className="text-caption" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+            </span>
+        </a>
+    );
+}
