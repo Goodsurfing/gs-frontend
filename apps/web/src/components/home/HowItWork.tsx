@@ -14,10 +14,11 @@ const STEPS = [
 
 /**
  * «Как это работает»: пять шагов с картинками (у чётных картинка сверху),
- * уже 992 px — столбиком, картинка справа. Кнопка ведёт на страницу членства.
+ * уже 992 px — столбиком, картинка справа. Кнопка ведёт на страницу членства
+ * (в академии её нет).
  * Как HowItWorkContainer старого фронта (главная, /find-job).
  */
-export async function HowItWork({ locale, className = "" }: { locale: Locale; className?: string }) {
+export async function HowItWork({ locale, className = "", showButton = true }: { locale: Locale; className?: string; showButton?: boolean }) {
     const t = await getTranslator(locale, "main");
 
     return (
@@ -38,12 +39,14 @@ export async function HowItWork({ locale, className = "" }: { locale: Locale; cl
                     </Reveal>
                 ))}
             </div>
+            {showButton && (
             <a
                 href={routes.membership(locale)}
                 className="inline-block cursor-pointer rounded-[10px] bg-primary px-[50px] py-3.5 text-center text-[1rem] leading-[1.375rem] text-white no-underline transition-colors duration-300 hover:bg-primary-hover"
             >
                 {t("Как это работает")}
             </a>
+            )}
         </div>
     );
 }
