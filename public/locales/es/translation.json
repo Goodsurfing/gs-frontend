@@ -368,5 +368,9 @@
         "invalid": "Este enlace para darte de baja no es válido. Puedes hacerlo en tu perfil, en «Privacidad».",
         "hint": "Seguirás recibiendo correos sobre tus solicitudes, tu membresía y tu cuenta. Puedes volver a suscribirte en cualquier momento en la configuración.",
         "settings": "Abrir configuración"
+    },
+    "slider": {
+        "previous": "Anterior",
+        "next": "Siguiente"
     }
 }
