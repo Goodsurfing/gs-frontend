@@ -4,11 +4,11 @@
  * «Поделиться вакансией»: ВКонтакте (окно 600×400) и Telegram (ShareBlock
  * старого фронта).
  */
-export function OfferShare({ url, title, label }: { url: string; title: string; label: string }) {
+export function OfferShare({ url, title, label, className = "mt-[60px]" }: { url: string; title: string; label: string; className?: string }) {
     const vk = `https://vk.com/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`;
     const telegram = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
     return (
-        <div className="mt-[60px] flex w-full items-center justify-between rounded-[2px] bg-field px-5 py-4">
+        <div className={`flex w-full items-center justify-between rounded-[2px] bg-field px-5 py-4 ${className}`}>
             <span>{label}</span>
             <div className="flex gap-5">
                 <button type="button" aria-label="ВКонтакте" onClick={() => window.open(vk, "Поделиться ВКонтакте", "width=600,height=400")} className="flex cursor-pointer">
