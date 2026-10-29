@@ -48,3 +48,9 @@ export function pageMetadata({ locale, path, title, description, image, type = "
         twitter: { card: "summary_large_image", title, description, images: [ogImage] },
     };
 }
+
+/** Описание для мета-тегов из текста пользователя: без HTML, не длиннее 160 символов (getSeoDescription старого фронта) */
+export function seoDescription(value: string, limit = 160): string {
+    const text = value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+    return text.length <= limit ? text : `${text.slice(0, limit - 3)}...`;
+}

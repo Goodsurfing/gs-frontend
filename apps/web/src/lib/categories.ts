@@ -13,3 +13,8 @@ export function categoryName(name: string | undefined, t: Translate): string | u
     const trimmed = name.trim();
     return KNOWN.has(trimmed) ? t(`category-offer.${trimmed}`) : trimmed;
 }
+
+/** Подписи всех известных категорий — для карточек, которые догружает браузер */
+export function categoryLabels(t: Translate): Record<string, string> {
+    return Object.fromEntries([...KNOWN].map((name) => [name, t(`category-offer.${name}`)]));
+}

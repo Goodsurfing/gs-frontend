@@ -5,12 +5,17 @@ import { type ReactNode, useEffect, useState } from "react";
 const TOP_GAP = 300;
 
 /**
- * Меню разделов вакансии под карточкой (OfferSubmenu + Submenu + Anchor
- * старого фронта): прилипает под шапкой, подсвечивает раздел на экране,
- * кнопки появляются, когда карточка с кнопками уехала (прокрутка > 500 px).
- * До 992 px меню нет.
+ * Меню разделов под карточкой (Submenu + Anchor старого фронта: вакансия,
+ * организация, волонтёр): прилипает под шапкой, подсвечивает раздел на
+ * экране, кнопки появляются, когда карточка с кнопками уехала (прокрутка
+ * > 500 px). До 992 px меню нет.
  */
-export function OfferSubmenu({ items, children }: { items: { id: string; text: string }[]; children: ReactNode }) {
+export function SectionSubmenu({ items, children, className = "z-[4]" }: {
+    items: { id: string; text: string }[];
+    children: ReactNode;
+    /** Слой: у вакансии 4, у организации 8 — как в старом фронте */
+    className?: string;
+}) {
     const [active, setActive] = useState<Record<string, boolean>>({});
     const [showButtons, setShowButtons] = useState(false);
     // Прилипает на 12 px ниже шапки сайта (её высота зависит от баннера и ширины)
@@ -45,7 +50,7 @@ export function OfferSubmenu({ items, children }: { items: { id: string; text: s
     return (
         <nav
             style={top === null ? undefined : { top }}
-            className="sticky top-[calc(6.5rem+12px)] z-[4] flex w-full items-center justify-between border-b border-caption bg-white px-2 py-[15px] down-lg:hidden down-md:flex-col down-md:gap-[30px]"
+            className={`sticky top-[calc(6.5rem+12px)] flex w-full items-center justify-between border-b border-caption bg-white px-2 py-[15px] down-lg:hidden down-md:flex-col down-md:gap-[30px] ${className}`}
         >
             <ul className="flex flex-wrap items-center justify-start gap-10">
                 {items.map((item) => (

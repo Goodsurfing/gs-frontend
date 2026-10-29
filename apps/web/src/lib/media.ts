@@ -1,8 +1,7 @@
-import type { components } from "@goodsurfing/api";
-
 import { API_URL } from "./browserApi";
 
-type Image = components["schemas"]["ImageResultDto"];
+/** Картинка с API: и ImageResultDto, и MediaObject (у разных ресурсов разные схемы) */
+type Image = { contentUrl?: string | null; thumbnails?: unknown };
 
 const absolute = (url: string) => (/^https?:\/\//.test(url) ? url : `${API_URL}${url.startsWith("/") ? url : `/${url}`}`);
 

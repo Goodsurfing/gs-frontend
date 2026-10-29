@@ -31,6 +31,7 @@ export const routes = {
     /** Мастер вакансии начинается с «Где» */
     offerEdit: (l: Locale, id: string | number) => path(l, `/offers/where/${id}`),
     organization: (l: Locale, id: string) => path(l, `/organizations/${id}`),
+    hostInfo: (l: Locale) => path(l, "/host/info"),
     journals: (l: Locale) => path(l, "/journals"),
     donationsMap: (l: Locale) => path(l, "/donation-map"),
     donationRating: (l: Locale) => path(l, "/donation-rating"),
