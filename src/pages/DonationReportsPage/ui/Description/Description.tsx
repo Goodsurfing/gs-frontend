@@ -1,6 +1,9 @@
 import cn from "classnames";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { getNPOPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./Description.module.scss";
 
@@ -11,6 +14,7 @@ interface DescriptionProps {
 export const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
     const { className } = props;
     const { t } = useTranslation("donation");
+    const { locale } = useLocale();
     return (
         <section className={cn(className, styles.wrapper)}>
             <h2 className={styles.title}>
@@ -54,6 +58,15 @@ export const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
                 Банк получателя ТОЧКА ПАО БАНКА «ФК ОТКРЫТИЕ», г. Москва
                 <br />
                 БИК 044525999, Корр. Счёт 30101810845250000999
+            </p>
+            <br />
+            {/* Годовые отчёты лежат на /npo — гость искал их здесь (аудит 29.10) */}
+            <p className={styles.description}>
+                {t("Годовые отчёты о деятельности и отчётность в Минюст —")}
+                {" "}
+                <Link to={getNPOPageUrl(locale)} className={styles.link}>
+                    {t("на странице «О некоммерческой организации»")}
+                </Link>
             </p>
         </section>
     );
