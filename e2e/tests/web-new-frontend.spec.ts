@@ -65,6 +65,47 @@ test.describe('Новый фронт: политика безопасности 
     });
 });
 
+const LEGAL_PAGES = [
+    { path: '/rules', heading: 'Правила', title: 'Правила сервиса — GoodSurfing', section: '5. Контент и правила его использования' },
+    { path: '/privacy-policy', heading: 'Политика конфиденциальности', title: 'Политика конфиденциальности — GoodSurfing', section: '5. Порядок и условия обработки персональных данных' },
+];
+
+test.describe('Новый фронт: правила и политика конфиденциальности', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test.beforeEach(async ({ context }, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'проверка без привязки к роли — один раз за прогон');
+        await enableNewFrontend(context);
+    });
+
+    for (const doc of LEGAL_PAGES) {
+        test(`${doc.path}: новый фронт, оглавление ведёт к разделу`, async ({ page }) => {
+            await page.setViewportSize({ width: 1440, height: 900 });
+            const response = await page.goto(doc.path);
+            expect(response?.status()).toBe(200);
+            await expect(page.locator('script[src*="/_next/"]').first()).toBeAttached();
+            await expect(page.getByRole('heading', { level: 1, name: doc.heading })).toBeVisible();
+            await expect(page).toHaveTitle(doc.title);
+            await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', new RegExp(`^https?://[^/]+${doc.path}$`));
+
+            const toc = page.getByRole('navigation', { name: doc.heading });
+            await toc.getByRole('link', { name: doc.section }).click();
+            await expect(page).toHaveURL(new RegExp(`${doc.path}#5$`));
+            await expect(page.getByRole('heading', { level: 2, name: doc.section })).toBeInViewport();
+            await expect(toc.getByRole('link', { name: doc.section })).toHaveAttribute('aria-current', 'location');
+        });
+
+        test(`${doc.path}: en и es — плашка про неофициальный перевод`, async ({ page }) => {
+            for (const locale of ['en', 'es']) {
+                await page.goto(`/${locale}${doc.path}`);
+                await expect(page.locator('html')).toHaveAttribute('lang', locale);
+                await expect(page.getByRole('heading', { level: 1 })).not.toHaveText(doc.heading);
+                await expect(page.getByRole('note')).toBeVisible();
+            }
+        });
+    }
+});
+
 test.describe('Новый фронт: шапка вошедшего пользователя', () => {
     test.use({ storageState: { cookies: [], origins: [] } });
 
