@@ -68,7 +68,7 @@ describe("SignUpForm", () => {
 
     // GS-203: согласие на рассылку — отдельный чекбокс, по умолчанию снят
     const WithConsent = () => {
-        const [consent, setConsent] = useState(false);
+        const [consent, setConsent] = useState(true);
         return (
             <MemoryRouter>
                 <SignUpForm marketingConsent={consent} onMarketingConsentChange={setConsent} />
@@ -87,25 +87,25 @@ describe("SignUpForm", () => {
         return bodies;
     };
 
-    it("без отметки согласие на рассылку не отправляется", async () => {
+    it("по умолчанию отмечено — согласие уходит вместе с регистрацией", async () => {
         const bodies = captureRegistration();
         renderWithProviders(<WithConsent />);
-        expect(screen.getByRole("checkbox", { name: /Хочу получать письма/ })).not.toBeChecked();
-        await fillAndSubmit();
-        await waitFor(() => expect(bodies).toHaveLength(1));
-        expect(bodies[0].marketingConsent).toBe(false);
-        expect(bodies[0].marketingConsentWording).toBeUndefined();
-    });
-
-    it("с отметкой согласие уходит вместе с регистрацией", async () => {
-        const bodies = captureRegistration();
-        renderWithProviders(<WithConsent />);
-        await userEvent.click(screen.getByRole("checkbox", { name: /Хочу получать письма/ }));
+        expect(screen.getByRole("checkbox", { name: /Хочу получать письма/ })).toBeChecked();
         await fillAndSubmit();
         await waitFor(() => expect(bodies).toHaveLength(1));
         expect(bodies[0].marketingConsent).toBe(true);
         // В журнал согласий уходит текст галочки вместе с подсказкой об отписке
         expect(bodies[0].marketingConsentWording).toContain("Хочу получать письма");
         expect(bodies[0].marketingConsentWording).toContain("marketingConsentHint");
+    });
+
+    it("снятая отметка — согласия нет", async () => {
+        const bodies = captureRegistration();
+        renderWithProviders(<WithConsent />);
+        await userEvent.click(screen.getByRole("checkbox", { name: /Хочу получать письма/ }));
+        await fillAndSubmit();
+        await waitFor(() => expect(bodies).toHaveLength(1));
+        expect(bodies[0].marketingConsent).toBe(false);
+        expect(bodies[0].marketingConsentWording).toBeUndefined();
     });
 });

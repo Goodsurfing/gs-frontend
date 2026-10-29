@@ -15,16 +15,16 @@ test.describe('Согласие на рассылку', () => {
         test.skip(!hasE2eToken(), NO_TOKEN_REASON);
     });
 
-    test('регистрация с отметкой → согласие в профиле → выключение в «Приватности»', async ({ page }) => {
+    test('регистрация с отметкой по умолчанию → согласие в профиле → выключение в «Приватности»', async ({ page }) => {
         const email = `e2e-consent-${Date.now()}@test.local`;
         const password = 'E2eConsent2026x';
 
         await page.goto('/signup');
         const checkbox = page.getByRole('checkbox', { name: /Хочу получать письма/ });
-        await expect(checkbox).not.toBeChecked();
+        // По умолчанию отмечено (решение владельца 29.10.2026)
+        await expect(checkbox).toBeChecked();
         await page.getByLabel('E-mail').fill(email);
         await page.getByLabel('Пароль', { exact: true }).first().fill(password);
-        await checkbox.check();
         await page.locator('form button[type="submit"]').click();
         await expect(page).toHaveURL(/confirm-email/, { timeout: 20_000 });
 

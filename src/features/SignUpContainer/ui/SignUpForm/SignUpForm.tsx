@@ -31,7 +31,7 @@ interface SignUpFormProps {
 }
 
 const SignUpForm: FC<SignUpFormProps> = ({
-    marketingConsent = false,
+    marketingConsent = true,
     onMarketingConsentChange,
 }) => {
     const [registerUser, { isError }] = authApi.useRegisterUserMutation();

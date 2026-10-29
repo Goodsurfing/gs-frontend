@@ -29,8 +29,8 @@ const SignUpContainer: FC = () => {
     const navigate = useNavigate();
     const { refetchProfile, profileDataIsFethcing } = useAuth();
     const [toast, setToast] = useState<ToastAlert>();
-    // Чекбокс согласия на рассылку (GS-203): по умолчанию снят; для входа
-    // через VK отметка переживает уход на сайт VK (sessionStorage)
+    // Чекбокс согласия на рассылку (GS-203): по умолчанию отмечен (решение
+    // владельца 29.10.2026); для входа через VK выбор переживает уход на сайт VK
     const [marketingConsent, setMarketingConsent] = useState(hasMarketingConsentIntent);
     const [updateMarketingConsent] = useUpdateMarketingConsentMutation();
 
