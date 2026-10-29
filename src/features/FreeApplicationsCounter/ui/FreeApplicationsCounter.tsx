@@ -51,7 +51,7 @@ export const FreeApplicationsCounter: FC<FreeApplicationsCounterProps> = memo((
                 ? t("freeApplicationsCounter.Без ограничений")
                 : t("freeApplicationsCounter.Откликов осталось")}
             hint={(
-                <LocaleLink to={getMembershipPageUrl(locale)} className={styles.hint}>
+                <LocaleLink to={getMembershipPageUrl(locale)} className={cn(styles.hint, { [styles.hintBlock]: layout !== "row" })}>
                     {isMembership
                         ? t("freeApplicationsCounter.Не забудьте продлить членство, чтобы сохранить привилегии")
                         : t("freeApplicationsCounter.Нужно больше? Оформите членство!")}

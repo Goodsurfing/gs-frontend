@@ -56,7 +56,7 @@ export const PublishedVacanciesCounter: FC<PublishedVacanciesCounterProps> = mem
                 ? t("publishedVacanciesCounter.Без ограничений")
                 : t("publishedVacanciesCounter.Вакансий осталось")}
             hint={(
-                <LocaleLink to={getMembershipPageUrl(locale)} className={styles.hint}>
+                <LocaleLink to={getMembershipPageUrl(locale)} className={cn(styles.hint, { [styles.hintBlock]: layout !== "row" })}>
                     {isHostMember
                         ? t("publishedVacanciesCounter.Не забудьте продлить членство, чтобы сохранить привилегии")
                         : t("publishedVacanciesCounter.Нужно больше? Оформите членство!")}
