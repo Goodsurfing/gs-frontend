@@ -81,7 +81,7 @@ export function DonationPayForm({ fundraiseId, signInHref, offerHref, labels }: 
 
     return (
         <>
-            <form onSubmit={submit} className="rounded-[20px] border border-[#dbe6ef] bg-white p-6 shadow-[0_10px_30px_rgb(16_44_74/6%)] max-[600px]:rounded-2xl max-[600px]:p-4">
+            <form noValidate onSubmit={submit} className="rounded-[20px] border border-[#dbe6ef] bg-white p-6 shadow-[0_10px_30px_rgb(16_44_74/6%)] max-[600px]:rounded-2xl max-[600px]:p-4">
                 <div className="grid grid-cols-2 gap-6 max-[900px]:grid-cols-1 max-[900px]:gap-5">
                     <section>
                         <h3 className="mb-4 text-[24px] font-bold text-[#0c2238] max-[600px]:text-[22px]">{labels.amountTitle}</h3>
