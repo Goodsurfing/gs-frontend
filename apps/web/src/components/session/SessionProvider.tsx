@@ -17,6 +17,8 @@ export interface Session {
     profile: Profile | null;
     unreadMessages: number;
     memberships: Membership[];
+    /** Токен входа старого SPA (переходный период); при входе по cookie — undefined */
+    token?: string;
     logout: () => Promise<void>;
     saveLocale: (locale: Locale) => void;
 }
@@ -94,7 +96,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         void browserApi(token).PATCH("/api/v1/profile/locale", { body: { locale }, keepalive: true }).catch(() => undefined);
     }, [state.status, token]);
 
-    const value = useMemo(() => ({ ...state, logout, saveLocale }), [state, logout, saveLocale]);
+    const value = useMemo(() => ({ ...state, token, logout, saveLocale }), [state, token, logout, saveLocale]);
     return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 }
 
