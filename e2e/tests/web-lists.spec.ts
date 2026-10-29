@@ -28,4 +28,34 @@ test.describe('Новый фронт: списки', () => {
         await expect(pages.getByRole('link', { name: '2', exact: true })).toHaveAttribute('aria-current', 'page');
         expect(await page.locator('main a[href*="/journals/"]').count()).toBeGreaterThan(0);
     });
+
+    test('/news: поиск обновляет адрес, категория фильтрует и снимается повторным нажатием', async ({ page }) => {
+        const response = await page.goto('/news');
+        expect(response?.status()).toBe(200);
+        await expect(page.getByRole('heading', { level: 1, name: 'Новости' })).toBeVisible();
+        await expect(page.getByRole('link', { name: 'Получить членство' })).toHaveAttribute('href', '/membership');
+
+        await page.getByRole('searchbox', { name: 'Поиск' }).fill('несуществующая-строка-поиска');
+        await expect(page).toHaveURL(/\/news\?search=/);
+        await expect(page.getByText('Новости не найдены')).toBeVisible();
+
+        await page.goto('/news');
+        const chip = page.locator('main a[href*="category="]').first();
+        test.skip(await chip.count() === 0, 'нет категорий');
+        await chip.click();
+        await expect(page).toHaveURL(/category=\d+/);
+        const selected = page.locator('main a[aria-current="true"][href="/news"]');
+        await expect(selected).toHaveCount(1);
+        await selected.click();
+        await expect(page).toHaveURL(/\/news$/);
+    });
+
+    test('/blog: популярное, кнопка «Добавить статью»', async ({ page }) => {
+        const response = await page.goto('/blog?sort=popular');
+        expect(response?.status()).toBe(200);
+        await expect(page.getByRole('heading', { level: 1, name: 'Блог' })).toBeVisible();
+        await expect(page.getByRole('link', { name: 'Популярное' })).toHaveAttribute('aria-current', 'true');
+        await expect(page.getByRole('link', { name: 'Добавить статью' })).toHaveAttribute('href', '/volunteer/create-article');
+        expect(await page.locator('main a[href^="/blog/"]').count()).toBeGreaterThan(0);
+    });
 });
