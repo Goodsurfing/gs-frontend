@@ -5,6 +5,10 @@ import type { components } from "@goodsurfing/api";
 import type { Locale } from "@/i18n/config";
 
 import { OPTIONAL_BLOCK_TIMEOUT_MS, serverApi } from "./api";
+
+// Направления, вакансии и статьи — основное содержимое главной: ждём дольше необязательных блоков,
+// иначе на сборке (девять запросов разом) страница кэшировалась пустой
+const MAIN_BLOCK_TIMEOUT_MS = 5000;
 import { type OfferCardData, SLIDER_OFFERS_LIMIT } from "./offers";
 
 export interface HomeCategory { id: number; name: string; image?: string }
@@ -14,7 +18,7 @@ export async function getHomeCategories(locale: Locale): Promise<HomeCategory[]>
     try {
         const { data } = await serverApi(locale).GET("/api/v1/category", {
             params: { query: { lang: locale } },
-            signal: AbortSignal.timeout(OPTIONAL_BLOCK_TIMEOUT_MS),
+            signal: AbortSignal.timeout(MAIN_BLOCK_TIMEOUT_MS),
         });
         return (data ?? []).slice(0, 7).map((category) => ({
             id: category.id,
@@ -35,7 +39,7 @@ export async function getFeaturedOffers(locale: Locale): Promise<OfferCardData[]
     const load = async (query: { isFeatured?: boolean; sort?: "recommendation" }) => {
         const { data } = await serverApi(locale).GET("/api/v1/vacancy", {
             params: { query: { ...query, fields: "card", limit: SLIDER_OFFERS_LIMIT } },
-            signal: AbortSignal.timeout(OPTIONAL_BLOCK_TIMEOUT_MS),
+            signal: AbortSignal.timeout(MAIN_BLOCK_TIMEOUT_MS),
         });
         return (data?.data ?? []).slice(0, SLIDER_OFFERS_LIMIT);
     };
@@ -53,7 +57,7 @@ export type FeaturedReview = components["schemas"]["FeaturedResult"];
 export async function getFeaturedReviews(locale: Locale): Promise<FeaturedReview[]> {
     try {
         const { data } = await serverApi(locale).GET("/api/v1/review-vacancy/featured", {
-            signal: AbortSignal.timeout(OPTIONAL_BLOCK_TIMEOUT_MS),
+            signal: AbortSignal.timeout(MAIN_BLOCK_TIMEOUT_MS),
         });
         return (data ?? []).filter((review) => (review.images ?? []).length > 0);
     } catch {
@@ -66,7 +70,7 @@ export async function getLatestArticles(locale: Locale) {
     try {
         const { data } = await serverApi(locale).GET("/api/v1/blog", {
             params: { query: { page: 1, limit: 20, sort: "created:desc", lang: locale } },
-            signal: AbortSignal.timeout(OPTIONAL_BLOCK_TIMEOUT_MS),
+            signal: AbortSignal.timeout(MAIN_BLOCK_TIMEOUT_MS),
         });
         return data?.data ?? [];
     } catch {
