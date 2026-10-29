@@ -1,0 +1,46 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+
+    th,
+    td {
+        padding: 8px 10px;
+        text-align: left;
+        vertical-align: top;
+        border-bottom: 1px solid var(--accent-bg);
+    }
+
+    th {
+        color: var(--text-caption);
+        font-weight: 500;
+    }
+
+    a {
+        color: var(--accent-color);
+    }
+}
+
+.caption {
+    display: block;
+    color: var(--text-caption);
+    font-size: 12px;
+}
+
+.comment {
+    max-width: 320px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.empty {
+    padding: 20px 0;
+    color: var(--text-caption);
+}

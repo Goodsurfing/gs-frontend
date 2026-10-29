@@ -432,3 +432,5 @@ export const getAdminBannerMarketingPersonalPageUrl: RoutePathFunction = (locale
 export const getAdminFeedbackPageUrl: RoutePathFunction = (locale) => `${localePrefix(locale)}${RoutePath.admin_feedback}`;
 
 export const getAdminFeedbackPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `${localePrefix(locale)}${RoutePath.admin_feedback}/${id}`;
+
+export const getAdminMembershipLogPageUrl: RoutePathFunction = (locale) => `${localePrefix(locale)}${RoutePath.admin_membership_log}`;

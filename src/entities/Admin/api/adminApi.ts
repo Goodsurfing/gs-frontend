@@ -72,12 +72,16 @@ import {
 } from "@/shared/data/conditions";
 import { API_BASE_URL_ABSOLUTE } from "@/shared/constants/api";
 import { UpdateOfferImageGallery, UpdateOfferStatusRequest, UpdateOfferStatusResponse } from "@/entities/Offer";
+import {
+    AdminMembership, AdminTariff, AdminUserMembershipResponse, GetAdminMembershipLogResponse,
+    GrantAdminMembershipRequest, RevokeAdminMembershipRequest,
+} from "../model/types/adminMembershipSchema";
 
 export const adminApi = createApi({
     reducerPath: "adminApi",
     baseQuery: baseAdminQueryAcceptJson,
     tagTypes: ["skill", "user", "reviewVacancy", "reviewVolunteer", "category", "achievement", "transfer",
-        "house", "food", "organization", "offer", "ambassadors", "about",
+        "house", "food", "organization", "offer", "ambassadors", "about", "membership",
     ],
     endpoints: (build) => ({
         createSkill: build.mutation<void, CreateAdminSkillRequest>({
@@ -470,7 +474,45 @@ export const adminApi = createApi({
                 url: `user/activate-membership/${userId}`,
                 method: "POST",
             }),
-            invalidatesTags: ["user"],
+            invalidatesTags: ["user", "membership"],
+        }),
+        // Ручное членство: выдать/снять с записью в журнал (кто и когда)
+        getAdminMembershipTariffs: build.query<AdminTariff[], void>({
+            query: () => ({
+                url: "membership/tariffs",
+                method: "GET",
+            }),
+        }),
+        getAdminUserMembership: build.query<AdminUserMembershipResponse, string>({
+            query: (userId) => ({
+                url: `membership/user/${userId}`,
+                method: "GET",
+            }),
+            providesTags: ["membership"],
+        }),
+        grantAdminMembership: build.mutation<AdminMembership, GrantAdminMembershipRequest>({
+            query: ({ userId, ...body }) => ({
+                url: `membership/user/${userId}/grant`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["membership", "user"],
+        }),
+        revokeAdminMembership: build.mutation<void, RevokeAdminMembershipRequest>({
+            query: ({ userId, ...body }) => ({
+                url: `membership/user/${userId}/revoke`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["membership", "user"],
+        }),
+        getAdminMembershipLog: build.query<GetAdminMembershipLogResponse, PaginationParams>({
+            query: (params) => ({
+                url: "membership/log",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["membership"],
         }),
         deleteUser: build.mutation<void, string>({
             query: (userId) => ({
@@ -519,7 +561,7 @@ export const adminApi = createApi({
                 url: `organization/${organizationId}/activate-membership`,
                 method: "POST",
             }),
-            invalidatesTags: ["organization", "user"],
+            invalidatesTags: ["organization", "user", "membership"],
         }),
         deleteOrganization: build.mutation<void, string>({
             query: (organizationId) => ({
@@ -962,6 +1004,11 @@ export const {
     useLazyGetUsersQuery,
     useUpdateAdminUserMutation,
     useActivateUserMembershipMutation,
+    useGetAdminMembershipTariffsQuery,
+    useGetAdminUserMembershipQuery,
+    useGrantAdminMembershipMutation,
+    useRevokeAdminMembershipMutation,
+    useGetAdminMembershipLogQuery,
     useDeleteUserMutation,
     useToggleAdminUserActiveMutation,
     useGetUserByIdQuery,

@@ -132,4 +132,5 @@ export enum AppRoutes {
     ADMIN_SYSTEM_ADMIN = "admin_system_admin",
     ADMIN_BANNER_MARKETING = "admin_banner_marketing",
     ADMIN_FEEDBACK = "admin_feedback",
+    ADMIN_MEMBERSHIP_LOG = "admin_membership_log",
 }

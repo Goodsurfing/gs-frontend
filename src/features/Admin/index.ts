@@ -1,6 +1,7 @@
 export { AdminAuth } from "./ui/AdminAuth/AdminAuth";
 export { AdminUserInfo } from "./ui/AdminUserInfo/AdminUserInfo";
 export { AdminUserSettings } from "./ui/AdminUserSettings/AdminUserSettings";
+export { AdminUserMembership } from "./ui/AdminUserMembership/AdminUserMembership";
 export { AdminOrganizationSettings } from "./ui/AdminOrganizationSettings/AdminOrganizationSettings";
 export { AdminOrganizationInfo } from "./ui/AdminOrganizationInfo/AdminOrganizationInfo";
 export { AdminCategoryForm } from "./ui/AdminCategoryForm/AdminCategoryForm";
