@@ -357,5 +357,12 @@
     "Правила": "Normas",
     "Политика конфиденциальности": "Política de privacidad",
     "Политика безопасности платежей": "Política de seguridad de pagos",
-    "Это неофициальный перевод для удобства Юридическую силу имеет только версия документа на русском языке": "Esta es una traducción no oficial ofrecida para su comodidad. Solo la versión en ruso de este documento tiene validez legal."
+    "Это неофициальный перевод для удобства Юридическую силу имеет только версия документа на русском языке": "Esta es una traducción no oficial ofrecida para su comodidad. Solo la versión en ruso de este documento tiene validez legal.",
+    "unsubscribed": {
+        "title": "Boletín de GoodSurfing",
+        "done": "Te has dado de baja. Ya no recibirás correos sobre nuevos proyectos, promociones y noticias.",
+        "invalid": "Este enlace para darte de baja no es válido. Puedes hacerlo en tu perfil, en «Privacidad».",
+        "hint": "Seguirás recibiendo correos sobre tus solicitudes, tu membresía y tu cuenta. Puedes volver a suscribirte en cualquier momento en la configuración.",
+        "settings": "Abrir configuración"
+    }
 }
