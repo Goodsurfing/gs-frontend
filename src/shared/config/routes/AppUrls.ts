@@ -32,8 +32,6 @@ export const getFavoriteOffersPageUrl: RoutePathFunction = (locale) => (`${local
 
 export const getConfirmEmailPageUrl: RoutePathFunction = (locale) => `${localePrefix(locale)}${RoutePath.confirm_email}`;
 
-export const getSubscriptionPageUrl: RoutePathFunction = (locale) => `${localePrefix(locale)}${RoutePath.subscription}`;
-
 export const getConfirmEmailSuccessPageUrl: RoutePathFunction = (locale) => `${localePrefix(locale)}${RoutePath.confirm_email_success}`;
 
 export const getEmailExpiredPageUrl: RoutePathFunction = (locale) => `${localePrefix(locale)}${RoutePath.email_expired}`;

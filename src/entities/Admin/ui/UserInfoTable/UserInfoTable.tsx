@@ -14,6 +14,7 @@ const CONSENT_SOURCES: Record<MarketingConsentSource, string> = {
     email_request: "письмо-запрос",
     unisender: "отписка в рассылке",
     account_deleted: "удаление аккаунта",
+    existing_user: "действующий пользователь (решение 29.10.2026)",
 };
 
 const formatMoscow = (iso: string) => new Date(iso).toLocaleString("ru-RU", {
