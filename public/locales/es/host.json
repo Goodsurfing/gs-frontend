@@ -166,7 +166,8 @@
         "Не более 1000 знаков": "No más de 1000 caracteres",
         "Это поле является обязательным": "Este campo es obligatorio",
         "Сохранить": "Guardar",
-        "Произошла ошибка": "Se produjo un error"
+        "Произошла ошибка": "Se produjo un error",
+        "Укажите тип организации": "Indique el tipo de organización"
     },
     "hostReviews": {
         "Отзывы": "Reseñas",

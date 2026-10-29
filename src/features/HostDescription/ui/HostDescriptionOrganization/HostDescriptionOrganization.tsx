@@ -24,19 +24,12 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
     const { t } = useTranslation("host");
     const { hostTypes } = useGetTypeOrganization();
 
-    const { control, formState: { errors } } = useFormContext<HostDescriptionFormFields>();
+    const {
+        control, setValue, formState: { errors },
+    } = useFormContext<HostDescriptionFormFields>();
     const formWatch = useWatch<HostDescriptionFormFields>({ control });
 
     const isOtherType = formWatch.type?.organizationType === "Другое";
-
-    const otherInputDisabled = () => {
-        if (formWatch.type && formWatch.type.organizationType) {
-            if (formWatch.type.organizationType !== "Другое") {
-                return true;
-            }
-        }
-        return false;
-    };
 
     return (
         <div className={cn(styles.wrapper, className)}>
@@ -87,7 +80,14 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
                     render={({ field }) => (
                         <SelectComponent
                             className={styles.dropdown}
-                            onChange={field.onChange}
+                            onChange={(event) => {
+                                field.onChange(event);
+                                // Поле «Другое» нужно только для этого типа: при смене
+                                // типа старое значение не должно висеть в форме (аудит 29.10)
+                                if (event.target.value !== "Другое") {
+                                    setValue("type.otherOrganizationType", "", { shouldValidate: true });
+                                }
+                            }}
                             value={field.value}
                             label={t("hostDescription.Тип организации")}
                         >
@@ -97,20 +97,23 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
                         </SelectComponent>
                     )}
                 />
-                <InputControl
-                    label={t("hostDescription.Другое")}
-                    name="type.otherOrganizationType"
-                    control={control}
-                    maxLength={1000}
-                    disabled={otherInputDisabled()}
-                    isError={!!errors.type?.otherOrganizationType?.message}
-                    rules={{
-                        validate: (value) => !isOtherType
-                            || (typeof value === "string" && value.trim().length > 0)
-                            || t("hostDescription.Это поле является обязательным"),
-                    }}
-                />
-                {errors.type?.otherOrganizationType?.message && (
+                {isOtherType && (
+                    <InputControl
+                        label={`${t("hostDescription.Укажите тип организации")} *`}
+                        name="type.otherOrganizationType"
+                        control={control}
+                        maxLength={1000}
+                        isError={!!errors.type?.otherOrganizationType?.message}
+                        rules={{
+                            // Тип берём из значений формы, а не из замыкания: поле
+                            // скрывается, а правило остаётся зарегистрированным
+                            validate: (value, values) => values.type?.organizationType !== "Другое"
+                                || (typeof value === "string" && value.trim().length > 0)
+                                || t("hostDescription.Укажите тип организации"),
+                        }}
+                    />
+                )}
+                {isOtherType && errors.type?.otherOrganizationType?.message && (
                     <ErrorText
                         text={errors.type.otherOrganizationType.message}
                         className={styles.error}

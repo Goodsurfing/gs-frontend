@@ -90,12 +90,17 @@ export const VolunteerSkillsForm: FC<VolunteerSkillsFormProps> = memo(
 
         const onSubmit: SubmitHandler<VolunteerSkillsField> = async (data) => {
             setToast(undefined);
+            // Ничего не меняли — не отправляем и не пишем «успешно изменены» (аудит 29.10)
+            if (!isDirty) {
+                setToast({ text: t("volunteer-skills.Нет изменений для сохранения"), type: HintType.Error });
+                return;
+            }
             const formattedData = volunteerSkillsAdapter(data);
             await updateVolunteer(formattedData)
                 .unwrap()
                 .then(() => {
                     setToast({
-                        text: "Данные успешно изменены",
+                        text: t("volunteer-skills.Данные успешно изменены"),
                         type: HintType.Success,
                     });
                     sessionStorage.removeItem(VOLUNTEER_SKILLS_FORM);

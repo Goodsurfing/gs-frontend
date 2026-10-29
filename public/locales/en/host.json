@@ -143,7 +143,8 @@
         "Не более 200 знаков": "No more than 200 characters",
         "Не более 1000 знаков": "No more than 1000 characters",
         "Сохранить": "Save",
-        "Произошла ошибка": "An error occurred"
+        "Произошла ошибка": "An error occurred",
+        "Укажите тип организации": "Specify the organization type"
     },
     "hostGallery": {
         "Фотогалерея организации": "Organization photo gallery",
