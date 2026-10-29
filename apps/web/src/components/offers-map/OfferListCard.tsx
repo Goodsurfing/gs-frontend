@@ -15,15 +15,17 @@ export interface OfferListCardLabels {
 }
 
 /**
- * Карточка вакансии в списке каталога (entities/Offer OfferCard старого фронта):
- * клик по карточке выбирает вакансию на карте, «Подробнее» открывает её
- * страницу. Выбранная — с синей полосой слева, закрытая — бледнее.
+ * Карточка вакансии в списке (entities/Offer OfferCard старого фронта). В
+ * каталоге клик по карточке выбирает вакансию на карте, «Подробнее»
+ * открывает её страницу; без onSelect (списки на страницах организации и
+ * волонтёра) вся карточка ведёт на вакансию. Выбранная — с синей полосой
+ * слева, закрытая — бледнее.
  */
-export function OfferListCard({ offer, href, selected, onSelect, wide, labels }: {
+export function OfferListCard({ offer, href, selected = false, onSelect, wide, labels }: {
     offer: CatalogOffer;
     href: string;
-    selected: boolean;
-    onSelect: (id: number) => void;
+    selected?: boolean;
+    onSelect?: (id: number) => void;
     /** Карта свёрнута — карточки в две колонки */
     wide: boolean;
     labels: OfferListCardLabels;
@@ -38,19 +40,21 @@ export function OfferListCard({ offer, href, selected, onSelect, wide, labels }:
     }, []);
 
     return (
-        <div className={`relative border-b border-accent-bg ${offer.active ? "" : "opacity-45"} ${wide ? "w-1/2 border-l down-2xl:w-full" : "w-full min-w-[520px]"}`}>
+        <div className={`relative border-b border-accent-bg ${offer.active ? "" : "opacity-45"} ${wide ? "w-1/2 border-l down-2xl:w-full" : `w-full ${onSelect ? "min-w-[520px]" : ""}`}`}>
+            {/* В каталоге отступы 10 px (OffersList старого фронта), в остальных списках — базовые 14/20 */}
             <div
-                role="button"
+                role={onSelect ? "button" : "link"}
                 tabIndex={0}
-                aria-pressed={selected}
-                onClick={() => onSelect(offer.id)}
+                aria-pressed={onSelect ? selected : undefined}
+                onClick={() => (onSelect ? onSelect(offer.id) : window.location.assign(href))}
                 onKeyDown={(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
+                    if (event.key === "Enter" || (onSelect && event.key === " ")) {
                         event.preventDefault();
-                        onSelect(offer.id);
+                        if (onSelect) onSelect(offer.id);
+                        else window.location.assign(href);
                     }
                 }}
-                className={`flex h-full cursor-pointer items-start gap-3.5 border-l-[3px] p-2.5 shadow-[0_5px_20px_0_#2121210d] transition-colors duration-200 down-xs:flex-wrap down-xs:p-4 ${selected ? "border-l-primary bg-accent-bg" : "border-l-transparent bg-white"}`}
+                className={`flex h-full cursor-pointer items-start gap-3.5 border-l-[3px] ${onSelect ? "p-2.5" : "px-5 py-3.5"} shadow-[0_5px_20px_0_#2121210d] transition-colors duration-200 down-xs:flex-wrap down-xs:p-4 ${selected ? "border-l-primary bg-accent-bg" : "border-l-transparent bg-white"}`}
             >
                 <div className="relative h-[110px] w-40 shrink-0 bg-accent-bg down-xs:h-[180px] down-xs:w-full">
                     {offer.image && !imageFailed && (
@@ -86,7 +90,7 @@ export function OfferListCard({ offer, href, selected, onSelect, wide, labels }:
                         href={href}
                         onClick={(event) => {
                             event.stopPropagation();
-                            onSelect(offer.id);
+                            onSelect?.(offer.id);
                         }}
                         className="mt-1.5 inline-block text-[14px] leading-5 font-bold text-primary hover:underline"
                     >

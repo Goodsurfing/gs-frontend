@@ -14,11 +14,11 @@ import {
     OfferWhatToDo, OfferWhen, OfferWhoNeeds, type SvgMap,
 } from "@/components/offer/OfferSections";
 import { OfferShare } from "@/components/offer/OfferShare";
-import { OfferSubmenu } from "@/components/offer/OfferSubmenu";
 import { OfferViewerProvider } from "@/components/offer/OfferViewer";
 import { SectionTitle } from "@/components/offer/parts";
 import { GalleryCarousel } from "@/components/gallery/GalleryCarousel";
 import { HistoryBack } from "@/components/ui/HistoryBack";
+import { SectionSubmenu } from "@/components/ui/SectionSubmenu";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getTranslator, type Translate } from "@/i18n/dictionary";
 import { categoryName } from "@/lib/categories";
@@ -180,7 +180,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, t, tOff
                 actions={<OfferActions offerId={offer.id} status={offer.status} variant="hero" hrefs={hrefs} labels={labels} />}
                 labels={{ status: statusLabel, reviewsCount: tOffer("Кол-во отзывов:"), noReviews: tOffer("Пока нет отзывов") }}
             />
-            <OfferSubmenu
+            <SectionSubmenu
                 items={[
                     { id: "description", text: p("Описание") },
                     { id: "whatToDo", text: p("Что делать") },
@@ -192,7 +192,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, t, tOff
                 ]}
             >
                 <OfferActions offerId={offer.id} status={offer.status} variant="menu" hrefs={hrefs} labels={labels} />
-            </OfferSubmenu>
+            </SectionSubmenu>
 
             <div className="w-full max-w-[980px] pt-10">
                 {banner && (
