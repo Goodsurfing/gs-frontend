@@ -35,7 +35,16 @@ export const VolunteerFill = memo((props: VolunteerFillProps) => {
     const isBlog = profileOccupancy ? profileOccupancy.isBlogPost : false;
     const isMembership = profileOccupancy ? profileOccupancy.isMembership : false;
 
+    // Имя и рассказ о себе тоже часть профиля: без этого пункта заполненный
+    // профиль без фото и навыков показывал 0% (аудит 29.10)
+    const profile = myVolunteer?.profile;
+    const isAbout = Boolean(profile?.firstName?.trim() && profile?.aboutMe?.trim());
+
     const pointsData: StatsChartPoints[] = [
+        {
+            text: "О себе",
+            completed: isAbout,
+        },
         {
             text: "Навыки",
             completed: isSkills,
