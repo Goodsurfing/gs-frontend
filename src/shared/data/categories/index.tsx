@@ -138,9 +138,12 @@ export const useCategories = () => {
             Международные: t("category-offer.Международные"),
             Другое: t("category-offer.Другое"),
         };
-        if (category) {
-            return translations[category];
-        }
+        if (!category) return undefined;
+        // Название из API сравниваем без пробелов по краям («Оплачиваемая работа »
+        // на проде давало пустую плашку), а неизвестную категорию (заведена в
+        // админке позже) показываем как есть — не пустотой.
+        const name = category.trim();
+        return translations[name] ?? name;
     };
 
     const getColorByCategory = (category: CategoryType): string | undefined => {

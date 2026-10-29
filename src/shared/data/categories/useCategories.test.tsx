@@ -34,4 +34,12 @@ describe("useCategories", () => {
 
         expect(result.current.getColorByCategory("reserves_and_parks")).toBe("#C3A3E9");
     });
+
+    it("название с пробелом по краям и неизвестная категория — не пустая плашка", () => {
+        const { result } = renderHook(() => useCategories());
+
+        expect(result.current.getTranslation("Оплачиваемая работа ")).toBe("Оплачиваемая работа");
+        expect(result.current.getTranslation("Новая категория")).toBe("Новая категория");
+        expect(result.current.getTranslation(undefined)).toBeUndefined();
+    });
 });
