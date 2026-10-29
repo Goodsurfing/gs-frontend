@@ -45,6 +45,9 @@ export const routes = {
     /** Мастер сбора начинается с «Где» */
     fundraiseEdit: (l: Locale, id: string) => path(l, `/fundraise/where/${id}`),
     donationPay: (l: Locale, id: string) => path(l, `/donation/pay/${id}`),
+    /** Сюда возвращает ЮKassa (бэкенд: YookassaProvider, return_url) */
+    donationSuccess: (l: Locale, id: string) => path(l, `/donation/success/${id}`),
+    donationFail: (l: Locale, id: string) => path(l, `/donation/fail/${id}`),
     signIn: (l: Locale) => path(l, "/signin"),
     messenger: (l: Locale) => path(l, "/messenger"),
     profileInfo: (l: Locale) => path(l, "/profile/info"),
