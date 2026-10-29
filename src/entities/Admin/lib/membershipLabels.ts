@@ -33,12 +33,14 @@ export const MEMBERSHIP_ACTION_LABEL: Record<string, string> = {
 
 const MOSCOW = "Europe/Moscow";
 
-/** Дата из ISO-строки бэкенда (ATOM), по Москве */
-export const formatAdminDate = (value: string | null) => (
-    value
-        ? new Date(value).toLocaleDateString("ru-RU", { timeZone: MOSCOW })
-        : "—"
-);
+/**
+ * Дата из ISO-строки бэкенда (ATOM) — как её записал сервер, без перевода
+ * в пояс: «до 31.01» хранится как 31.01 23:59:59 UTC, по Москве это уже 01.02
+ */
+export const formatAdminDate = (value: string | null) => {
+    const match = value?.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    return match ? `${match[3]}.${match[2]}.${match[1]}` : "—";
+};
 
 export const formatAdminDateTime = (value: string | null) => (
     value
