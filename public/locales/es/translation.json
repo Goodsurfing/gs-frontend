@@ -376,5 +376,10 @@
     "gallery": {
         "open": "Abrir foto",
         "photo": "Foto"
+    },
+    "pagination": {
+        "prev": "Página anterior",
+        "next": "Página siguiente",
+        "label": "Páginas"
     }
 }
