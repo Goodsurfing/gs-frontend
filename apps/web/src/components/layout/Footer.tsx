@@ -5,10 +5,10 @@ import { EXPEDITIONS_URL, PUBLIC_OFFER_PDF, routes } from "@/lib/routes";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
 const FOOTER_SOCIALS = [
-    { name: "Telegram", href: "https://telegram.me/goodsurfing", icon: "/icons/footer/telegram.svg" },
-    { name: "VK", href: "https://vk.com/goodsurfing", icon: "/icons/footer/vk.svg" },
-    { name: "YouTube", href: "https://www.youtube.com/@goodsurfing", icon: "/icons/footer/youtube.svg" },
-    { name: "MAX", href: "https://max.ru/goodsurfing", icon: "/icons/footer/max.svg" },
+    { name: "Telegram", href: "https://telegram.me/goodsurfing", icon: "/web/icons/footer/telegram.svg" },
+    { name: "VK", href: "https://vk.com/goodsurfing", icon: "/web/icons/footer/vk.svg" },
+    { name: "YouTube", href: "https://www.youtube.com/@goodsurfing", icon: "/web/icons/footer/youtube.svg" },
+    { name: "MAX", href: "https://max.ru/goodsurfing", icon: "/web/icons/footer/max.svg" },
 ] as const;
 
 type FooterLink = { label: string; href: string; external?: boolean };
@@ -73,7 +73,7 @@ export function Footer({ locale, t }: { locale: Locale; t: Translate }) {
                     <div className="flex flex-1 flex-col down-md:mb-10 down-md:items-center">
                         <div className="flex items-center down-md:justify-center">
                             {/* eslint-disable-next-line @next/next/no-img-element -- svg-логотип */}
-                            <img src="/icons/footer/logo.svg" alt="GoodSurfing" className="mr-10 down-md:mr-0" />
+                            <img src="/web/icons/footer/logo.svg" alt="GoodSurfing" className="mr-10 down-md:mr-0" />
                             <div className="down-md:hidden">
                                 <LanguageSwitcher locale={locale} label={t("Язык")} />
                             </div>

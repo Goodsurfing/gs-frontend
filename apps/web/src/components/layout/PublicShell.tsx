@@ -4,6 +4,8 @@ import type { Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { getHeaderBanner } from "@/lib/marketingBanner";
 
+import { SessionProvider } from "@/components/session/SessionProvider";
+
 import { Footer } from "./Footer";
 import { Header, type HeaderVariant } from "./header/Header";
 import { SocialRibbon } from "./SocialRibbon";
@@ -24,11 +26,13 @@ export async function PublicShell({ locale, headerVariant = "floating", children
     ]);
 
     return (
-        <div className="flex min-h-screen flex-col">
-            <SocialRibbon t={t} />
-            <Header locale={locale} t={t} tProfile={tProfile} banner={banner} variant={headerVariant} />
-            <main className="flex-1">{children}</main>
-            <Footer locale={locale} t={t} />
-        </div>
+        <SessionProvider>
+            <div className="flex min-h-screen flex-col">
+                <SocialRibbon t={t} />
+                <Header locale={locale} t={t} tProfile={tProfile} banner={banner} variant={headerVariant} />
+                <main className="flex-1">{children}</main>
+                <Footer locale={locale} t={t} />
+            </div>
+        </SessionProvider>
     );
 }

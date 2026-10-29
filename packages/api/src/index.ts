@@ -11,14 +11,16 @@ export interface ApiClientOptions {
     token?: string;
     /** Язык для бэкенда (заголовок Accept-Language) */
     locale?: string;
+    /** В браузере — "include": запросы несут cookie входа (GS-218) */
+    credentials?: RequestCredentials;
 }
 
 /**
  * Типизированный клиент gs-backend: пути, параметры и ответы берутся из
  * OpenAPI. Изменение API без правки клиента ломает сборку, а не прод.
  */
-export const createApiClient = ({ baseUrl, token, locale }: ApiClientOptions) => {
-    const client = createClient<paths>({ baseUrl });
+export const createApiClient = ({ baseUrl, token, locale, credentials }: ApiClientOptions) => {
+    const client = createClient<paths>({ baseUrl, credentials });
     const headers: Middleware = {
         onRequest({ request }) {
             if (token) request.headers.set("Authorization", `Bearer ${token}`);

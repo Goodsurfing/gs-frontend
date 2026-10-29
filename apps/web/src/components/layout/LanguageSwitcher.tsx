@@ -4,13 +4,14 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
+import { useOptionalSession } from "@/components/session/SessionProvider";
 import { Arrow } from "@/components/ui/Arrow";
 import { LOCALES, type Locale, withLocale } from "@/i18n/config";
 
 const LANGUAGES: Record<Locale, { name: string; icon: string }> = {
-    ru: { name: "Русский", icon: "/icons/langs/ru.svg" },
-    en: { name: "English", icon: "/icons/langs/uk.svg" },
-    es: { name: "Español", icon: "/icons/langs/spain.svg" },
+    ru: { name: "Русский", icon: "/web/icons/langs/ru.svg" },
+    en: { name: "English", icon: "/web/icons/langs/uk.svg" },
+    es: { name: "Español", icon: "/web/icons/langs/spain.svg" },
 };
 
 /**
@@ -22,6 +23,7 @@ export function LanguageSwitcher({ locale, label, className = "" }: { locale: Lo
     const pathname = usePathname() ?? `/${locale}`;
     const [open, setOpen] = useState(false);
     const current = LANGUAGES[locale];
+    const session = useOptionalSession();
 
     // Обёртка — как в старом фронте: отступ 10% у кнопки считается от неё, а не
     // от строки шапки, иначе в мобильной шапке флаг съезжает влево
@@ -44,7 +46,8 @@ export function LanguageSwitcher({ locale, label, className = "" }: { locale: Lo
                         className="z-[1002] border border-accent-bg bg-white shadow-[0_2px_5px_rgb(0_0_0/5%)]"
                     >
                         {LOCALES.map((code) => (
-                            <DropdownMenu.Item key={code} asChild>
+                            // Вошедшему пользователю язык сохраняется в профиль — на нём приходят письма
+                            <DropdownMenu.Item key={code} asChild onSelect={() => session?.saveLocale(code)}>
                                 <a
                                     href={withLocale(pathname, code)}
                                     hrefLang={code}

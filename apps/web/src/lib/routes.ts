@@ -29,6 +29,12 @@ export const routes = {
     donationsMap: (l: Locale) => path(l, "/donation-map"),
     donationRating: (l: Locale) => path(l, "/donation-rating"),
     signIn: (l: Locale) => path(l, "/signin"),
+    messenger: (l: Locale) => path(l, "/messenger"),
+    profileInfo: (l: Locale) => path(l, "/profile/info"),
+    hostDashboard: (l: Locale) => path(l, "/host/host-dashboard"),
+    volunteerDashboard: (l: Locale) => path(l, "/volunteer/volunteer-dashboard"),
+    /** Публичная страница волонтёра; {id} подставляется в браузере */
+    volunteerPublicTemplate: (l: Locale) => path(l, "/volunteers/{id}"),
 } as const;
 
 export const EXPEDITIONS_URL = "https://expedition.goodsurfing.org/";
