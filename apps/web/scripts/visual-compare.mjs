@@ -48,7 +48,9 @@ for (const width of widths) {
         }
         const page = await context.newPage();
         await page.goto(url, { waitUntil: "networkidle" }).catch(() => undefined);
-        await page.evaluate(() => document.fonts.ready);
+        // Старый фронт после загрузки дописывает фильтры в адрес (replaceState/navigate) — дать ему закончить
+        await page.waitForLoadState("networkidle").catch(() => undefined);
+        await page.evaluate(() => document.fonts.ready).catch(() => page.waitForTimeout(1500));
         if (css) await page.addStyleTag({ content: css });
         if (!keepFixed) await page.evaluate(() => {
             for (const el of document.querySelectorAll("body *")) {
