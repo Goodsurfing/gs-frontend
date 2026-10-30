@@ -49,6 +49,8 @@ jobs:
             NEXT_PUBLIC_SENTRY_ENVIRONMENT=staging
             NEXT_PUBLIC_SENTRY_RELEASE=web-develop-${{ github.sha }}
             NEXT_PUBLIC_YANDEX_MAPS_KEY=${{ secrets.YANDEX_MAPS_API_KEY }}
+            # Приложение VK ID — то же, что у старого фронта (VITE_VKID_CLIENT_ID в deploy-staging.yml)
+            NEXT_PUBLIC_VKID_CLIENT_ID=54505769
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE }}:staging
             ${{ env.REGISTRY }}/${{ env.IMAGE }}:sha-${{ github.sha }}
