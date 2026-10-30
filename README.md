@@ -36,7 +36,7 @@ SPA GoodSurfing: React 18 + TypeScript + **Vite** (не Webpack — миграц
 Полный путь от чистого клона до работающего фронта на staging-данных:
 
 ```bash
-nvm install        # подберёт версию из .nvmrc (Node 20+)
+nvm install        # подберёт версию из .nvmrc (Node 22.12+)
 nvm use
 npm ci
 npm start          # http://localhost:3000
