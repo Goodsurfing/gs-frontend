@@ -5,12 +5,7 @@ import { getBecomeHostPageUrl, getOffersMapPageUrl, getSignInPageUrl } from "@/s
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { useGetAbouProjectPageInfoQuery } from "@/entities/Admin";
-
-const LOCALE_NUMBER_FORMAT: Record<string, string> = {
-    ru: "ru-RU",
-    en: "en-US",
-    es: "es-ES",
-};
+import { formatStatNumber, roundStat } from "@/shared/lib/formatStat";
 
 export const useTranslatedSliderData = () => {
     const { t } = useTranslation("main");
@@ -19,10 +14,7 @@ export const useTranslatedSliderData = () => {
     const link = isAuth ? getOffersMapPageUrl(locale) : getSignInPageUrl(locale);
     const { data: statsData } = useGetAbouProjectPageInfoQuery();
 
-    const formatCount = (n: number) => {
-        const rounded = Math.floor(n / 1000) * 1000;
-        return new Intl.NumberFormat(LOCALE_NUMBER_FORMAT[locale] ?? "ru-RU").format(rounded);
-    };
+    const formatCount = (n: number) => formatStatNumber(roundStat(n), locale);
 
     const volunteerDesc = statsData?.today.volunteerCount
         ? t("slider.volunteerCount", {

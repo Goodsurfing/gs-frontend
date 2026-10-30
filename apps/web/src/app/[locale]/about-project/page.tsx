@@ -8,6 +8,7 @@ import { getTranslator } from "@/i18n/dictionary";
 import { getAboutProject } from "@/lib/aboutProject";
 import { boldText } from "@/lib/boldText";
 import { mediaUrl } from "@/lib/media";
+import { formatStatNumber } from "@/lib/formatStat";
 import { routes } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
 
@@ -97,7 +98,7 @@ export default async function AboutProjectPage({ params }: Props) {
                         {stats.map(([value, label]) => (
                             <div key={label} className="flex max-w-[140px] flex-col gap-2.5">
                                 <div className="flex h-[140px] w-[140px] items-center justify-center rounded-full bg-field">
-                                    <span className="text-center text-[2.25rem] font-medium text-primary">{value}</span>
+                                    <span className="text-center text-[2.25rem] font-medium text-primary">{formatStatNumber(value ?? 0, locale)}</span>
                                 </div>
                                 <span className="text-center text-[1.125rem] font-medium">{label}</span>
                             </div>
