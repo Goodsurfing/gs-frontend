@@ -68,21 +68,5 @@ jobs:
             test-results/
           retention-days: 7
 
-  notify:
-    needs: e2e
-    if: failure()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Notify Telegram
-        continue-on-error: true
-        run: |
-          if [ -z "${{ secrets.TELEGRAM_BOT_TOKEN }}" ] || [ -z "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
-            echo "Telegram secrets not set, skipping notification"
-            exit 0
-          fi
-          TEXT="🔴 *E2E стейджа* не прошли — что-то сломалось для пользователя, в прод не выкатывать
-          ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            --data-urlencode chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            --data-urlencode parse_mode="Markdown" \
-            --data-urlencode text="$TEXT"
+  # О результате в Telegram пишет бот статуса (gs-status-bot) по GitHub Actions API:
+  # сам он держит в чате только последние события, а сообщения workflow копились без конца.
