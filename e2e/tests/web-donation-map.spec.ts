@@ -21,7 +21,8 @@ test.describe('Новый фронт: карта сборов', () => {
         const card = page.locator('a[href^="/fundraise/"]').first();
         await expect(card).toBeVisible();
 
-        await page.getByLabel('По срочности').selectOption('popular');
+        // Второй список — в мобильной раскладке, скрыт
+        await page.getByLabel('По срочности').locator('visible=true').selectOption('popular');
         await expect(page).toHaveURL(/sort=popular/);
 
         await page.getByRole('switch', { name: 'Показать завершенные проекты' }).click();
