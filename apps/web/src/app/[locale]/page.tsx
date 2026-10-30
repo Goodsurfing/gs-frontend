@@ -11,12 +11,13 @@ import { ReviewsShowcase } from "@/components/home/ReviewsShowcase";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { OfferCard } from "@/components/offers/OfferCard";
 import { Reveal } from "@/components/ui/Reveal";
-import { isLocale, type Locale } from "@/i18n/config";
+import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { getAboutProject } from "@/lib/aboutProject";
 import { categoryLabels, categoryName } from "@/lib/categories";
 import { getFeaturedOffers, getFeaturedReviews, getHomeCategories, getLatestArticles, getMainBanner } from "@/lib/home";
 import { mediaUrl } from "@/lib/media";
+import { formatStatNumber, roundStat } from "@/lib/formatStat";
 import { routes } from "@/lib/routes";
 import { pageMetadata, siteUrl } from "@/lib/seo";
 
@@ -37,7 +38,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
 }
 
-const NUMBER_LOCALE: Record<Locale, string> = { ru: "ru-RU", en: "en-US", es: "es-ES" };
 
 /** Заголовок секции главной (Section + SectionTitle старого фронта) */
 function Section({ title, children, className = "" }: { title?: string; children: ReactNode; className?: string }) {
@@ -67,8 +67,8 @@ export default async function HomePage({ params }: Props) {
     ]);
     const labels = categoryLabels(t);
     const today = (about as { today?: { volunteerCount?: number; vacancyCount?: number } } | null)?.today;
-    // «С нами уже более 23 000» — округление вниз до тысяч, как в старом фронте
-    const round = (value: number) => new Intl.NumberFormat(NUMBER_LOCALE[locale]).format(Math.floor(value / 1000) * 1000);
+    // «С нами уже более 23 000»: до тысяч от 10 000, до сотен ниже (1 706 → 1 700)
+    const round = (value: number) => formatStatNumber(roundStat(value), locale);
     const structuredData = [
         { "@context": "https://schema.org", "@type": "WebSite", name: "GoodSurfing", url: `${siteUrl()}/`, inLanguage: locale, description: tMain("seo.description") },
         { "@context": "https://schema.org", "@type": "Organization", name: "GoodSurfing", url: siteUrl(), description: tMain("seo.description") },
