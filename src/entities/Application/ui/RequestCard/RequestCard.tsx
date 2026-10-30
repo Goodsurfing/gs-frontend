@@ -91,6 +91,9 @@ export const RequestCard = memo((props: RequestCardProps) => {
                             {volunteer.isMember && (
                                 <MembershipBadge variant="volunteer" />
                             )}
+                            {volunteer.isInternationalMember && (
+                                <MembershipBadge variant="international" />
+                            )}
                         </span>
                         <span className={styles.location}>
                             {address}

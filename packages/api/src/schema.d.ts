@@ -937,6 +937,106 @@ export interface paths {
         patch: operations["patch_app_module_marketingbanner_admin_v1_marketingbanner_edit"];
         trace?: never;
     };
+    "/admin/v1/membership/log": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Журнал членства
+         * @description Журнал ручных действий с членством по всем пользователям, новые сверху
+         */
+        get: operations["get_app_admin_v1_membership_log"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/v1/membership/tariffs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Тарифы для ручной выдачи
+         * @description Тарифы, по которым можно выдать членство вручную
+         */
+        get: operations["get_app_admin_v1_membership_tariffs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/v1/membership/user/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Членство пользователя
+         * @description Все членства пользователя и журнал ручных действий с ними
+         */
+        get: operations["get_app_admin_v1_membership_user"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/v1/membership/user/{id}/grant": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Выдать членство
+         * @description Выдать членство вручную. Без endDate — бессрочно (бесплатное привилегированное), с endDate — до этого числа. Действующее членство той же категории заменяется.
+         */
+        post: operations["post_app_admin_v1_membership_grant"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/v1/membership/user/{id}/revoke": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Снять членство
+         * @description Снять действующее членство категории (обычное или международное)
+         */
+        post: operations["post_app_admin_v1_membership_revoke"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/v1/news": {
         parameters: {
             query?: never;
@@ -5987,6 +6087,82 @@ export interface components {
         AddRoleCommand: {
             id: string;
         };
+        /**
+         * AdminMembershipLogResult
+         * @description Запись журнала ручных действий с членством
+         */
+        AdminMembershipLogResult: {
+            /**
+             * @description GRANT — выдал, REVOKE — снял
+             * @enum {string}
+             */
+            action: "GRANT" | "REVOKE";
+            adminEmail: string;
+            /** @description Администратор: id (null, если аккаунт удалён) */
+            adminId?: string | null;
+            /** @description Администратор: имя на момент действия */
+            adminName: string;
+            /** @enum {string} */
+            category: "REGULAR" | "INTERNATIONAL";
+            comment?: string | null;
+            /**
+             * Format: date-time
+             * @description Когда
+             */
+            createdAt: string;
+            /**
+             * Format: date-time
+             * @description До какого числа; null — бессрочно
+             */
+            endDate?: string | null;
+            id: number;
+            tariffCode: string;
+            userEmail?: string | null;
+            /** @description Кому */
+            userId: string;
+            userName: string;
+        };
+        /**
+         * AdminMembershipResult
+         * @description Членство пользователя (админка)
+         */
+        AdminMembershipResult: {
+            /** @description Действует сейчас */
+            active: boolean;
+            /** @enum {string} */
+            category: "REGULAR" | "INTERNATIONAL";
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            endDate?: string | null;
+            id: string;
+            /** @description Бесплатное бессрочное */
+            privileged: boolean;
+            /** @description Откуда: PURCHASE — оплата, ADMIN — выдал администратор, LEGACY_IMPORT — перенос со старого сайта */
+            source: string;
+            /** Format: date-time */
+            startDate?: string | null;
+            /** @enum {string} */
+            status: "PENDING" | "ACTIVE" | "EXPIRED" | "CANCELLED" | "REFUNDED" | "RENEWED";
+            /** @description Код тарифа */
+            tariffCode: string;
+            /** @description Название тарифа */
+            tariffName: string;
+        };
+        /**
+         * AdminTariffResult
+         * @description Тариф для ручной выдачи членства
+         */
+        AdminTariffResult: {
+            /** @enum {string} */
+            category: "REGULAR" | "INTERNATIONAL";
+            code: string;
+            /** @description Длительность оплаченного периода, дней */
+            durationDays: number;
+            /** @enum {string} */
+            forRole: "VOLUNTEER" | "HOST" | "BOTH";
+            name: string;
+        };
         "Application-application-form.create": {
             /** Format: date-time */
             endDate: string;
@@ -9197,6 +9373,12 @@ export interface components {
              * @example false
              */
             isActive: boolean;
+            /**
+             * Значок «Международный клуб» — активное международное членство
+             * @default false
+             * @example false
+             */
+            isInternationalMember: boolean;
             /**
              * @default false
              * @example false
@@ -20054,6 +20236,12 @@ export interface components {
             id: string;
             image: components["schemas"]["ImageResultDto"];
             /**
+             * Значок «Международный клуб» у заявителей с международным членством
+             * @default false
+             * @example false
+             */
+            isInternationalMember: boolean;
+            /**
              * GS-28: значок "Член сообщества" у заявителей с активным членством.
              * @default false
              * @example false
@@ -22130,6 +22318,153 @@ export interface operations {
                 content: {
                     "application/json": Record<string, never>;
                 };
+            };
+        };
+    };
+    get_app_admin_v1_membership_log: {
+        parameters: {
+            query?: {
+                limit?: number;
+                page?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["AdminMembershipLogResult"][];
+                        pagination?: components["schemas"]["PaginationResult"];
+                    };
+                };
+            };
+        };
+    };
+    get_app_admin_v1_membership_tariffs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminTariffResult"][];
+                };
+            };
+        };
+    };
+    get_app_admin_v1_membership_user: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Uuid пользователя */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        history?: components["schemas"]["AdminMembershipLogResult"][];
+                        memberships?: components["schemas"]["AdminMembershipResult"][];
+                    };
+                };
+            };
+        };
+    };
+    post_app_admin_v1_membership_grant: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Uuid пользователя */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @example Победитель конкурса */
+                    comment?: string | null;
+                    /**
+                     * Format: date
+                     * @example 2027-10-29
+                     */
+                    endDate?: string | null;
+                    /** @example volunteer_990 */
+                    tariffCode: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminMembershipResult"];
+                };
+            };
+            /** @description Тариф не найден, дата в прошлом или неверная */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_admin_v1_membership_revoke: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Uuid пользователя */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    category: "REGULAR" | "INTERNATIONAL";
+                    comment?: string | null;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Нет действующего членства */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

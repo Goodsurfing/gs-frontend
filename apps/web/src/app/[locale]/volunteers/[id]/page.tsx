@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { GalleryCarousel } from "@/components/gallery/GalleryCarousel";
 import { PublicShell } from "@/components/layout/PublicShell";
-import { MembershipBadges } from "@/components/membership/MembershipBadges";
+import { InternationalBadge, MembershipBadges } from "@/components/membership/MembershipBadges";
 import { OfferOrganization } from "@/components/offer/OfferOrganization";
 import { IconGrid, IconText, MaskIcon, RemoteSvg, SectionTitle } from "@/components/offer/parts";
 import { Avatar } from "@/components/ui/Avatar";
@@ -136,6 +136,7 @@ export default async function VolunteerPage({ params }: Props) {
                                 {profile.isMember && (
                                     <MembershipBadges badge={t("membershipBadge.Член сообщества")} membershipHref={routes.membership(locale)} labels={{ verified: "", howTo: "" }} only="badge" />
                                 )}
+                                {profile.isInternationalMember && <InternationalBadge label={t("membershipBadge.Международный клуб")} />}
                             </h1>
                             <div className="flex flex-col gap-2 text-[14px] font-medium text-caption">
                                 <span>
