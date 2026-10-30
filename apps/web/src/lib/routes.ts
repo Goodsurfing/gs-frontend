@@ -56,6 +56,7 @@ export const routes = {
     confirmEmailSuccess: (l: Locale) => path(l, "/confirm-email-success"),
     confirmError: (l: Locale) => path(l, "/confirm-error"),
     emailAlreadyConfirmed: (l: Locale) => path(l, "/email-already-confirmed"),
+    emailExpired: (l: Locale) => path(l, "/email-expired"),
     resetPasswordVerify: (l: Locale) => path(l, "/reset-password-verify"),
     unsubscribed: (l: Locale) => path(l, "/unsubscribed"),
     verifyEmail: (l: Locale) => path(l, "/verify-email"),

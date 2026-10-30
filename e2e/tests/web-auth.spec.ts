@@ -63,6 +63,8 @@ test.describe('Новый фронт: вход и регистрация', () =>
         await expect(page.getByRole('link', { name: 'Попробуйте ещё раз.' })).toHaveAttribute('href', '/signin');
         await page.goto('/email-already-confirmed');
         await expect(page.getByRole('link', { name: 'Перейти ко входу' })).toBeVisible();
+        await page.goto('/email-expired');
+        await expect(page.getByRole('link', { name: 'войти снова' })).toHaveAttribute('href', '/signin');
         await page.goto('/unsubscribed?status=invalid');
         await expect(page.getByText('Ссылка для отписки неверна', { exact: false })).toBeVisible();
     });
