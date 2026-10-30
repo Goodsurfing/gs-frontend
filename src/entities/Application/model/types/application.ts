@@ -90,6 +90,8 @@ export interface Application {
         country: string | null;
         /** GS-28: значок "Член сообщества" у заявителей с активным членством. */
         isMember: boolean;
+        /** Участник Международного клуба — синий значок */
+        isInternationalMember?: boolean;
     }
     startDate: string;
     endDate: string;

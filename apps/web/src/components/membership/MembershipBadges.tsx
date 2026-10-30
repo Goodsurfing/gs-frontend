@@ -34,3 +34,8 @@ export function MembershipBadges({ badge, labels, membershipHref, only }: {
         </>
     );
 }
+
+/** Участник Международного клуба — синяя плашка рядом с «Член сообщества» (как в старом фронте) */
+export function InternationalBadge({ label }: { label: string }) {
+    return <span className="ml-2 inline-flex shrink-0 items-center rounded-[8px] bg-primary px-2 py-0.5 align-middle text-[11px] font-semibold whitespace-nowrap text-white">{label}</span>;
+}

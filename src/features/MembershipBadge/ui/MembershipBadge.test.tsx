@@ -18,4 +18,10 @@ describe("MembershipBadge", () => {
 
         expect(screen.getByText("membershipBadge.Партнёр Гудсёрфинга")).toBeInTheDocument();
     });
+
+    it("показывает «Международный клуб» для участника клуба", () => {
+        render(<MembershipBadge variant="international" />);
+
+        expect(screen.getByText("membershipBadge.Международный клуб")).toBeInTheDocument();
+    });
 });
