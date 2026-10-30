@@ -71,6 +71,8 @@ export const routes = {
     messenger: (l: Locale) => path(l, "/messenger"),
     profileInfo: (l: Locale) => path(l, "/profile/info"),
     profileRole: (l: Locale) => path(l, "/profile/role"),
+    profilePreferences: (l: Locale) => path(l, "/profile/preferences"),
+    profileResetPassword: (l: Locale) => path(l, "/profile/reset-password"),
     hostDashboard: (l: Locale) => path(l, "/host/host-dashboard"),
     volunteerDashboard: (l: Locale) => path(l, "/volunteer/volunteer-dashboard"),
     /** Публичная страница волонтёра; {id} подставляется в браузере */
