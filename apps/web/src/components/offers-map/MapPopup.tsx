@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 /* eslint-disable @typescript-eslint/no-explicit-any -- нетипизированное API Яндекс.Карт 2.1 */
 
 export interface PopupOffer {
-    id: number;
+    id: number | string;
     name: string;
     href: string;
     image?: string;
