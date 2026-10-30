@@ -13,7 +13,7 @@ const ok = () => ({ unwrap: () => Promise.resolve() });
 
 vi.mock("react-router-dom", () => ({ useNavigate: () => navigate }));
 vi.mock("@/app/providers/LocaleProvider", () => ({ useLocale: () => ({ locale: "ru" }) }));
-const mutation = (spy: ReturnType<typeof vi.fn>) => [
+const mutation = (spy: (...args: unknown[]) => unknown) => [
     (...args: unknown[]) => { spy(...args); return ok(); },
     { isLoading: false },
 ];

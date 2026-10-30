@@ -3,14 +3,14 @@
 #   docker build -f apps/web/Dockerfile .
 # нужны общие словари public/locales и packages/api.
 
-FROM node:20-alpine AS deps
+FROM node:22-alpine AS deps
 WORKDIR /repo
 COPY packages/api/package.json packages/api/package-lock.json packages/api/
 RUN cd packages/api && npm ci --no-audit --no-fund
 COPY apps/web/package.json apps/web/package-lock.json apps/web/
 RUN cd apps/web && npm ci --no-audit --no-fund
 
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 WORKDIR /repo
 ARG NEXT_PUBLIC_SITE_URL
 ARG NEXT_PUBLIC_API_URL
@@ -37,7 +37,7 @@ COPY apps/web apps/web
 COPY public/locales public/locales
 RUN cd apps/web && npm run build
 
-FROM node:20-alpine AS runtime
+FROM node:22-alpine AS runtime
 WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \

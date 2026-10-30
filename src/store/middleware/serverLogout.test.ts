@@ -7,7 +7,7 @@ import { userActions } from "@/entities/User/model/slice/userSlice";
 
 import { createServerLogoutMiddleware } from "./serverLogout";
 
-const makeStore = (authData: unknown, send: ReturnType<typeof vi.fn>) => {
+const makeStore = (authData: unknown, send: (url: string, init: RequestInit) => unknown) => {
     const user = createSlice({
         name: "userState",
         initialState: { authData },
