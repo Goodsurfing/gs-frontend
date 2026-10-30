@@ -50,6 +50,17 @@ export const routes = {
     donationFail: (l: Locale, id: string) => path(l, `/donation/fail/${id}`),
     signIn: (l: Locale) => path(l, "/signin"),
     signUp: (l: Locale) => path(l, "/signup"),
+    resetPassword: (l: Locale) => path(l, "/reset-password"),
+    confirmEmail: (l: Locale) => path(l, "/confirm-email"),
+    /** Сюда перенаправляет бэкенд из писем (VerifyEmailController, ResetPasswordRedirectController) */
+    confirmEmailSuccess: (l: Locale) => path(l, "/confirm-email-success"),
+    confirmError: (l: Locale) => path(l, "/confirm-error"),
+    emailAlreadyConfirmed: (l: Locale) => path(l, "/email-already-confirmed"),
+    resetPasswordVerify: (l: Locale) => path(l, "/reset-password-verify"),
+    unsubscribed: (l: Locale) => path(l, "/unsubscribed"),
+    verifyEmail: (l: Locale) => path(l, "/verify-email"),
+    verifyEmailHash: (l: Locale, hash: string) => path(l, `/verify-email-hash/${hash}`),
+    profilePrivacy: (l: Locale) => path(l, "/profile/privacy"),
     /** Оплата членства; тариф — в ?tariff= */
     payment: (l: Locale) => path(l, "/payment"),
     /** Сюда возвращает ЮKassa после оплаты членства (бэкенд: YookassaProvider, ?payment_id=) */
