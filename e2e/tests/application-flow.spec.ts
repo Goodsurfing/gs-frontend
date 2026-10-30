@@ -82,7 +82,8 @@ test.describe('Волонтёр и хост: заявки на вакансию'
     };
 
     const findVacancyByTitle = async (api: APIRequestContext, orgId: string, title: string) => {
-        const resp = await api.get(`/api/v1/vacancy/list/${orgId}`);
+        // Список постраничный (по умолчанию 10): брошенные черновики не должны вытеснять фикстуры
+        const resp = await api.get(`/api/v1/vacancy/list/${orgId}?limit=100`);
         expect(resp.ok(), await resp.text()).toBeTruthy();
         const list = await resp.json();
         const vacancies = Array.isArray(list) ? list : list.data ?? list['hydra:member'];
