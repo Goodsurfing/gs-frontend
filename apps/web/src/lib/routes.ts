@@ -36,6 +36,7 @@ export const routes = {
     offerEdit: (l: Locale, id: string | number) => path(l, `/offers/where/${id}`),
     organization: (l: Locale, id: string) => path(l, `/organizations/${id}`),
     hostInfo: (l: Locale) => path(l, "/host/info"),
+    hostRegister: (l: Locale) => path(l, "/host/register"),
     journals: (l: Locale) => path(l, "/journals"),
     donationsMap: (l: Locale) => path(l, "/donation-map"),
     donationRating: (l: Locale) => path(l, "/donation-rating"),
