@@ -90,11 +90,13 @@ const OUTLINE_BUTTON = "cursor-pointer rounded-[10px] border border-primary px-[
  *   (прозрачный фон, «двухпанельный» кластерный балун поверх тайлов) и
  *   держалась на CSS-заплатках к версии API.
  */
-export function OffersMap({ locale, filtersQuery, selectedOfferId, offerHref, labels, className = "" }: {
+export function OffersMap({ locale, filtersQuery, selectedOfferId, offerHref, labels, pointsUrl = "/web/api/map-offers", className = "" }: {
     locale: string;
+    /** Откуда брать точки (по умолчанию — вакансии; у карты сборов свой адрес) */
+    pointsUrl?: string;
     /** Фильтры каталога в формате адреса страницы (без page и offerId) */
     filtersQuery: string;
-    selectedOfferId?: number;
+    selectedOfferId?: number | string;
     /** Шаблон адреса вакансии: {id} заменяется на номер */
     offerHref: string;
     labels: OffersMapLabels;
@@ -113,7 +115,7 @@ export function OffersMap({ locale, filtersQuery, selectedOfferId, offerHref, la
     const dataStatus = offers === undefined ? "loading" : offers === null ? "error" : "ready";
     const byId = useMemo(() => new Map((offers ?? []).map((offer) => [offer.id, offer])), [offers]);
 
-    const hrefFor = useCallback((id: number) => offerHref.replace("{id}", String(id)), [offerHref]);
+    const hrefFor = useCallback((id: number | string) => offerHref.replace("{id}", String(id)), [offerHref]);
     const toPopupOffer = useCallback((offer: MapOffer, small = false): PopupOffer => ({
         id: offer.id,
         name: offer.name || labels.noTitle,
@@ -123,11 +125,11 @@ export function OffersMap({ locale, filtersQuery, selectedOfferId, offerHref, la
     }), [hrefFor, labels.noTitle]);
 
     // Обработчики кликов по карте видят актуальные данные без пересоздания карты
-    const onObjectClick = useEffectEvent((id: number) => {
+    const onObjectClick = useEffectEvent((id: number | string) => {
         const offer = byId.get(id);
         if (offer) setPopup({ coords: [offer.lat, offer.lng], content: { kind: "offer", offer: toPopupOffer(offer) } });
     });
-    const onClusterClick = useEffectEvent((ids: number[], coords: [number, number]) => {
+    const onClusterClick = useEffectEvent((ids: (number | string)[], coords: [number, number]) => {
         const items = ids.map((id) => byId.get(id)).filter((offer): offer is MapOffer => Boolean(offer));
         setPopup({ coords, content: { kind: "cluster", offers: items.map((offer) => toPopupOffer(offer, true)) } });
     });
@@ -158,12 +160,12 @@ export function OffersMap({ locale, filtersQuery, selectedOfferId, offerHref, la
                 iconShape: { type: "Circle", coordinates: [0, 0], radius: 16 },
                 openBalloonOnClick: false,
             });
-            manager.objects.events.add("click", (event: any) => onObjectClick(Number(event.get("objectId"))));
+            manager.objects.events.add("click", (event: any) => onObjectClick(event.get("objectId")));
             manager.clusters.events.add("click", (event: any) => {
                 const cluster = manager.clusters.getById(event.get("objectId"));
                 if (!cluster) return;
                 onClusterClick(
-                    (cluster.properties.geoObjects as { id: number }[]).map((geoObject) => Number(geoObject.id)),
+                    (cluster.properties.geoObjects as { id: number | string }[]).map((geoObject) => geoObject.id),
                     cluster.geometry.coordinates,
                 );
             });
@@ -201,14 +203,14 @@ export function OffersMap({ locale, filtersQuery, selectedOfferId, offerHref, la
         const abort = new AbortController();
         const query = new URLSearchParams(filtersQuery);
         query.set("locale", locale);
-        fetch(`/web/api/map-offers?${query}`, { signal: abort.signal })
+        fetch(`${pointsUrl}?${query}`, { signal: abort.signal })
             .then((response) => (response.ok ? response.json() as Promise<MapOffer[]> : Promise.reject(new Error(String(response.status)))))
             .then((data) => setLoaded({ key: dataKey, offers: data }))
             .catch(() => {
                 if (!abort.signal.aborted) setLoaded({ key: dataKey, offers: null });
             });
         return () => abort.abort();
-    }, [dataKey, filtersQuery, locale]);
+    }, [dataKey, filtersQuery, locale, pointsUrl]);
 
     // Отметки → ObjectManager
     useEffect(() => {

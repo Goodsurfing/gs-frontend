@@ -31,7 +31,7 @@ const MAX_CATEGORIES = 5;
 const PROVIDED: Provided[] = ["housing", "food", "paidTravel"];
 
 /** Кнопка-раскрывашка фильтра со стрелкой и синей точкой «фильтр задан». */
-function DropdownButton({ label, active, open, onClick, minWidth }: {
+export function DropdownButton({ label, active, open, onClick, minWidth }: {
     label: string;
     active: boolean;
     open: boolean;
@@ -54,7 +54,7 @@ function DropdownButton({ label, active, open, onClick, minWidth }: {
     );
 }
 
-function Chip({ selected, color, onClick, children }: { selected: boolean; color?: string; onClick: () => void; children: ReactNode }) {
+export function Chip({ selected, color, onClick, children }: { selected: boolean; color?: string; onClick: () => void; children: ReactNode }) {
     return (
         <button
             type="button"
