@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Header } from "@/components/layout/header/Header";
+import { SocialRibbon } from "@/components/layout/SocialRibbon";
 import { SessionProvider } from "@/components/session/SessionProvider";
 import type { Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
@@ -10,7 +11,7 @@ import { type CabinetMenuItem, CabinetFrame } from "./CabinetFrame";
 import { RequireUser } from "./RequireUser";
 
 /**
- * Каркас кабинета (PageLayout старого фронта): шапка в потоке, светлый фон,
+ * Каркас кабинета (PageLayout старого фронта): лента соцсетей, шапка в потоке, светлый фон,
  * меню раздела слева, без подвала. Гостя уводит на вход с возвратом сюда.
  */
 export async function CabinetShell({ locale, items, need, children }: {
@@ -25,6 +26,7 @@ export async function CabinetShell({ locale, items, need, children }: {
         <SessionProvider>
             <RequireUser locale={locale} need={need} />
             <div id="page-layout" className="min-h-screen bg-[#FBFDFE]">
+                <SocialRibbon t={t} />
                 <Header locale={locale} t={t} tProfile={tProfile} banner={banner} variant="static" />
                 <CabinetFrame items={items} labels={{ toggle: t("main.welcome.header.menu") }}>{children}</CabinetFrame>
             </div>

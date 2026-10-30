@@ -224,8 +224,8 @@ export function ProfileInfoForm({ volunteerHref, preferencesHref, verifyHref, as
                             <TextField label={labels.lastName} {...field("lastName")} />
                         </div>
                         <div className="flex flex-col gap-2">
-                            <span className="text-[14px] text-caption">{labels.birthDate}</span>
-                            <div className="grid w-1/2 grid-cols-[19%_48%_27%] items-baseline gap-3.5 down-lg:w-full">
+                            <span className="text-[14px] leading-none text-caption">{labels.birthDate}</span>
+                            <div className="grid w-1/2 grid-cols-[19%_48%_27%] items-baseline gap-3.5 pb-2 down-lg:w-full">
                                 <SelectField aria-label={labels.birthDate} error={errors.day} {...field("day")}>
                                     <option value="" />
                                     {Array.from({ length: 31 }, (_, index) => <option key={index} value={index + 1}>{index + 1}</option>)}
@@ -265,7 +265,7 @@ export function ProfileInfoForm({ volunteerHref, preferencesHref, verifyHref, as
                         </div>
                     </div>
                     <div><button type="submit" disabled={locked || busy} className={blueButton}>{labels.save}</button></div>
-                    <button type="button" onClick={() => setLocked(!locked)} className="absolute top-0 right-0 cursor-pointer border-0 bg-inherit text-[16px] leading-[120%] text-primary outline-none">
+                    <button type="button" onClick={() => setLocked(!locked)} className="absolute top-0 right-0 cursor-pointer border-0 bg-inherit px-1.5 py-px text-[16px] leading-[120%] text-primary outline-none">
                         {locked ? labels.edit : labels.cancel}
                     </button>
                     <div><a href={preferencesHref} className={`${blueButton} w-fit`}>{labels.next}</a></div>

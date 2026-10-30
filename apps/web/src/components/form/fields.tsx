@@ -47,7 +47,7 @@ export function TextAreaField({ label, description, error, className = "", ...re
         <div className={`flex w-full flex-col ${className}`}>
             {label && <label htmlFor={id} className="mb-2 text-[0.875rem] font-medium text-[#82949F]">{label}</label>}
             <textarea id={id} aria-invalid={!!error} className={`${control} h-[7.375rem] resize-none`} {...rest} />
-            {description && <p className="mt-2 text-[0.625rem] font-medium text-[#82949F]">{description}</p>}
+            {description && <p className="mt-[9px] text-[0.625rem] leading-[12px] font-medium text-[#82949F]">{description}</p>}
             {error && <p role="alert" className="mt-1 text-[0.75rem] text-error">{error}</p>}
         </div>
     );
