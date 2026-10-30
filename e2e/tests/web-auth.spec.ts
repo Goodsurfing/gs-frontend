@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { enableNewFrontend } from '../support/newFrontend';
 import { createSession } from '../support/session';
+import { hasE2eToken, NO_TOKEN_REASON } from '../support/testApi';
 
 /**
  * Новый фронт: вход и регистрация. Вход пишет сессию в формате старого SPA
@@ -12,6 +13,7 @@ test.describe('Новый фронт: вход и регистрация', () =>
 
     test.beforeEach(async ({ context }, testInfo) => {
         test.skip(testInfo.project.name !== 'vol', 'один раз за прогон');
+        test.skip(!hasE2eToken(), NO_TOKEN_REASON);
         await enableNewFrontend(context);
     });
 
@@ -36,7 +38,8 @@ test.describe('Новый фронт: вход и регистрация', () =>
         await page.getByLabel('E-mail').fill(session.email);
         await page.getByLabel('Пароль', { exact: true }).fill('wrong-password-1');
         await page.getByRole('button', { name: 'Войти', exact: true }).click();
-        await expect(page.getByRole('alert')).toBeVisible();
+        // Сообщение об ошибке (не путать с пустым объявлением маршрута Next)
+        await expect(page.getByRole('alert').filter({ hasText: /\S/ })).toBeVisible();
         await expect(page).toHaveURL(/\/signin/);
     });
 
@@ -47,7 +50,7 @@ test.describe('Новый фронт: вход и регистрация', () =>
         await page.getByLabel('E-mail').fill(`e2e-web-signup-${Date.now()}@test.local`);
         await page.getByLabel('Пароль', { exact: true }).fill('short');
         await page.getByRole('button', { name: 'Зарегистрироваться' }).click();
-        await expect(page.getByText('Пароль должен', { exact: false }).or(page.getByRole('alert'))).toBeVisible();
+        await expect(page.getByText('Пароль должен содержать минимум 6 символов', { exact: false })).toBeVisible();
         await expect(page).toHaveURL(/\/signup/);
 
         await page.goto('/signin');
