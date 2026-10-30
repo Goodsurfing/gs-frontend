@@ -25,6 +25,29 @@ test.describe('Новый фронт: кабинет — профиль', () => 
         await expect(page.getByLabel('Имя')).toBeDisabled();
     });
 
+    test('предпочтения, роль, пароль, приватность открываются и показывают свои разделы', async ({ page }) => {
+        await page.goto('/profile/preferences');
+        await expect(page.getByRole('heading', { name: 'Какой тип путешествий вы предпочитаете' })).toBeVisible();
+        await expect(page.locator('button[aria-pressed]').first()).toBeVisible();
+
+        await page.goto('/profile/role');
+        await expect(page.getByText('Гудсёрфер', { exact: true })).toBeVisible();
+        await expect(page.getByRole('link', { name: 'Вы уже стали гудсёрфером' })).toBeVisible();
+
+        await page.goto('/profile/reset-password');
+        await expect(page.getByRole('heading', { name: 'Изменение пароля' })).toBeVisible();
+        await page.getByRole('button', { name: 'Сохранить' }).click();
+        await expect(page.getByText('Новый пароль обязателен')).toBeVisible();
+
+        await page.goto('/profile/privacy');
+        await expect(page.getByRole('switch', { name: 'Деактивировать и скрыть мой аккаунт' })).toBeVisible();
+        // Удаление — только открыть и закрыть подтверждение, настоящий DELETE не отправляем
+        await page.getByRole('button', { name: 'Удалить аккаунт' }).click();
+        await expect(page.getByRole('dialog')).toBeVisible();
+        await page.getByRole('button', { name: 'Отмена' }).click();
+        await expect(page.getByRole('dialog')).toHaveCount(0);
+    });
+
     test.describe('гость', () => {
         test.use({ storageState: { cookies: [], origins: [] } });
 
