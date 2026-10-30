@@ -129,8 +129,8 @@ export function RoleCards({ hrefs, labels }: {
                 <span className="text-[26px] leading-[120%]">{text.title}</span>
                 <span className="text-center text-[18px] font-medium text-primary">{text.text}</span>
                 {has
-                    ? <a href={role === "volunteer" ? hrefs.volunteerDashboard : hrefs.hostDashboard} className="rounded-[10px] bg-primary px-[60px] py-2.5 text-[16px] text-white hover:bg-[#60bdff] down-lg:w-[90%] down-lg:px-10 down-lg:text-center">{text.already}</a>
-                    : <button type="button" onClick={() => setAsking(role)} className="cursor-pointer rounded-[10px] bg-primary px-[60px] py-2.5 text-[16px] text-white hover:bg-[#60bdff] down-lg:w-[90%] down-lg:px-10">{text.become}</button>}
+                    ? <a href={role === "volunteer" ? hrefs.volunteerDashboard : hrefs.hostDashboard} className="rounded-[10px] bg-primary px-[60px] py-2.5 text-center text-[16px] leading-[1.75] tracking-[0.02857em] text-white uppercase hover:bg-[#60bdff] down-lg:w-[90%] down-lg:px-10">{text.already}</a>
+                    : <button type="button" onClick={() => setAsking(role)} className="cursor-pointer rounded-[10px] bg-primary px-[60px] py-2.5 text-[16px] leading-[1.75] tracking-[0.02857em] text-white uppercase hover:bg-[#60bdff] down-lg:w-[90%] down-lg:px-10">{text.become}</button>}
             </div>
         );
     };
@@ -203,12 +203,16 @@ export function PasswordForm({ labels }: {
         setValues({ current: "", next: "", repeat: "" });
         setNeedCurrent(true);
     };
+    // Подписи у этой формы свои (ProfileResetPasswordForm): 14 px серым над полем, отступ 8 px
     const input = (name: keyof typeof values, label: string, autoComplete: string) => (
-        <TextField type="password" label={label} autoComplete={autoComplete} value={values[name]} error={errors[name]} onChange={(event) => setValues({ ...values, [name]: event.target.value })} />
+        <label className="flex flex-col gap-2 text-[14px] text-caption">
+            {label}
+            <TextField type="password" aria-label={label} autoComplete={autoComplete} value={values[name]} error={errors[name]} onChange={(event) => setValues({ ...values, [name]: event.target.value })} />
+        </label>
     );
 
     return (
-        <form onSubmit={submit} noValidate className="flex max-w-[400px] flex-col gap-[30px] down-lg:max-w-none">
+        <form onSubmit={submit} noValidate className="flex w-[440px] max-w-full flex-col gap-[30px] down-lg:w-full">
             <Toast text={message?.text ?? null} ok={message?.ok} onClose={() => setMessage(null)} />
             {needCurrent && input("current", labels.current, "current-password")}
             {input("next", labels.next, "new-password")}
@@ -285,7 +289,7 @@ export function PrivacySettings({ mainHref, labels }: {
 
     const block = "mt-[33px] font-medium text-caption";
     return (
-        <div className="mt-10">
+        <div className="mt-[33px]">
             <Toast text={message?.text ?? null} onClose={() => setMessage(null)} />
             <div className={block}>
                 <div className="flex items-center gap-1"><Switch checked={hidden} onChange={toggleHidden} labelledBy="privacy-hide" /><span id="privacy-hide" className="text-ink-secondary">{labels.hide}</span></div>
