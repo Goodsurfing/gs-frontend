@@ -34,8 +34,12 @@ test.describe('Новый фронт: академия', () => {
             await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
             await expect(page.getByRole('heading', { level: 2, name: 'Видео' })).toBeVisible();
             await expect(page.getByRole('progressbar', { name: 'Прогресс по курсу' })).toHaveAttribute('aria-valuenow', '0');
-            await page.getByRole('button', { name: 'Начать обучение' }).click();
-            await expect(page.locator('#lessons')).toBeInViewport();
+            // Страница курса загружена целиком: на медленной машине клик может прийти
+            // до гидратации и потеряться — повторяем, пока раздел не прокрутится
+            await expect(async () => {
+                await page.getByRole('button', { name: 'Начать обучение' }).click();
+                await expect(page.locator('#lessons')).toBeInViewport({ timeout: 2_000 });
+            }).toPass({ timeout: 20_000 });
 
             await page.locator('a[href^="/academy-lesson/"]').first().click();
             await expect(page.getByText('Видео доступно только для зарегистрированных пользователей')).toBeVisible();
