@@ -51,7 +51,9 @@ export function MembershipCheckout({ tariffCode, signInHref, membershipHref, lab
             .then(({ data, error: apiError, response }) => {
                 if (data?.paymentUrl) {
                     setPaymentUrl(data.paymentUrl);
-                    window.location.href = data.paymentUrl;
+                    // replace: иначе «Назад» с ЮKassa снова открывает эту страницу,
+                    // она создаёт новый платёж и уводит обратно на ЮKassa
+                    window.location.replace(data.paymentUrl);
                     return;
                 }
                 if (data) {

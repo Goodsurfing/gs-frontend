@@ -52,7 +52,10 @@ describe("PaymentPage — реальное поведение чекаута", (
         // @ts-expect-error — намеренно упрощённый мок под тест
         delete window.location;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (window as any).location = { href: "" };
+        (window as any).location = {
+            href: "",
+            replace(url: string) { this.href = url; this.replaced = url; },
+        };
     });
 
     afterEach(() => {
@@ -79,6 +82,10 @@ describe("PaymentPage — реальное поведение чекаута", (
         );
 
         await waitFor(() => expect(window.location.href).toBe("https://yookassa.ru/pay/p1"));
+        // replace, а не переход с записью в историю: иначе «Назад» с ЮKassa
+        // снова открывает /payment, создаёт новый платёж и уводит обратно
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        expect((window.location as any).replaced).toBe("https://yookassa.ru/pay/p1");
     });
 
     /**
