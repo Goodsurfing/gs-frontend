@@ -237,7 +237,11 @@
         "В нашем сообществе вы можете поговорить с волонтерами, которые уже сотрудничали с этим хостом, и получить прямые ответы на свои вопросы.": "In our community, you can talk to volunteers who have already worked with this host and get direct answers to your questions.",
         "Вы отправили заявку": "You have submitted an application",
         "Вы участвуете": "You are participating",
-        "Ваша заявка отклонена": "Your application has been rejected"
+        "Ваша заявка отклонена": "Your application has been rejected",
+        "Обычно отвечает в течение часа": "Usually replies within an hour",
+        "Обычно отвечает в течение дня": "Usually replies within a day",
+        "Обычно отвечает за N дней": "Usually replies within {{count}} days",
+        "Отвечает на N процентов заявок": "Replies to {{percent}}% of applications"
     },
     "У вас есть несохраненные изменения": "You have unsaved changes",
     "Данные успешно изменены": "Data has been successfully updated",
