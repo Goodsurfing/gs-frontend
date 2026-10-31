@@ -24,7 +24,7 @@ import { getTranslator, type Translate } from "@/i18n/dictionary";
 import { categoryName } from "@/lib/categories";
 import { mediaUrl } from "@/lib/media";
 import { getOffer, getOfferBanner, getOfferParticipants, getOfferReviews, inlineSvg, type OfferDetail } from "@/lib/offer";
-import { organizationType, PARTICIPATE_STATES } from "@/lib/offerText";
+import { organizationType, PARTICIPATE_STATES, responseStatsText } from "@/lib/offerText";
 import { routes } from "@/lib/routes";
 import { pageMetadata, siteUrl } from "@/lib/seo";
 
@@ -237,6 +237,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, t, tOff
                 <OfferOrganization
                     name={organization.name}
                     type={organizationType(organization.type, tHost)}
+                    response={responseStatsText(organization.responseStats, tOffer)}
                     image={mediaUrl(organization.image, "small")}
                     href={routes.organization(locale, organization.id)}
                     labels={{ title: p("Организация"), more: p("Подробнее") }}

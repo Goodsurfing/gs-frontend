@@ -1,9 +1,11 @@
 import { Avatar } from "@/components/ui/Avatar";
 
 /** «Организация»: аватар, название, тип и «Подробнее» (OfferOrganizationCard) */
-export function OfferOrganization({ name, type, image, href, labels }: {
+export function OfferOrganization({ name, type, response, image, href, labels }: {
     name: string;
     type: string;
+    /** «Обычно отвечает за …» — responseStatsText; null — не показываем */
+    response?: string | null;
     image?: string;
     href: string;
     labels: { title: string; more: string };
@@ -18,6 +20,7 @@ export function OfferOrganization({ name, type, image, href, labels }: {
                         <span className="text-[16px] text-primary">{name}</span>
                     </a>
                     <p>{type}</p>
+                    {response && <p className="text-[14px] text-caption">{response}</p>}
                 </div>
                 <a
                     href={href}

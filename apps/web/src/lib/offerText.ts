@@ -185,3 +185,33 @@ export function participateText(
 export function languageNames(languages: { language: string }[], t: Translate): string {
     return languages.map(({ language }) => (LANGUAGES[language] ? t(`whoNeeds.${LANGUAGES[language]}`) : language)).join(", ");
 }
+
+/** Как организация отвечает на заявки (organization.responseStats вакансии) */
+export interface ResponseStats {
+    sample: number;
+    answeredPercent: number;
+    medianReplyHours?: number | null;
+}
+
+/** Меньше 30 % ответов — строку не показываем (решение владельца 31.10) */
+export const MIN_ANSWERED_PERCENT = 30;
+
+/**
+ * «Обычно отвечает в течение дня · Отвечает на 80% заявок» — как
+ * responseStatsText старого фронта. Время ответа — только если организация
+ * отвечает хотя бы на половину заявок.
+ */
+export function responseStatsText(stats: ResponseStats | null | undefined, t: Translate): string | null {
+    if (!stats || stats.answeredPercent < MIN_ANSWERED_PERCENT) return null;
+
+    const parts: string[] = [];
+    const hours = stats.medianReplyHours ?? null;
+    if (hours !== null && stats.answeredPercent >= 50) {
+        if (hours <= 1) parts.push(t("personalOffer.Обычно отвечает в течение часа"));
+        else if (hours <= 24) parts.push(t("personalOffer.Обычно отвечает в течение дня"));
+        else parts.push(t("personalOffer.Обычно отвечает за N дней", { count: Math.ceil(hours / 24) }));
+    }
+    parts.push(t("personalOffer.Отвечает на N процентов заявок", { percent: stats.answeredPercent }));
+
+    return parts.join(" · ");
+}

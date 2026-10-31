@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
-    ageText, gendersText, languagesText, money, organizationType, participateText, receptionPlaceText, skillName,
+    ageText, gendersText, languagesText, money, organizationType, participateText, receptionPlaceText, responseStatsText, skillName,
 } from "../offerText";
 
 const t = (key: string, values?: Record<string, string | number>) => `[${key}${values ? JSON.stringify(values) : ""}]`;
@@ -39,5 +39,28 @@ describe("offerText", () => {
         expect(participateText({ closed: false, needVolunteerRole: true, textParticipate: null }, labels)).toBe("Станьте");
         expect(participateText({ closed: false, needVolunteerRole: false, textParticipate: "Вы участвуете" }, labels)).toBe("Участвуете");
         expect(participateText({ closed: false, needVolunteerRole: false, textParticipate: "Что-то новое" }, labels)).toBe("Участвовать");
+    });
+});
+
+describe("responseStatsText", () => {
+    const tr = (key: string, vars?: Record<string, string | number>) => `${key.replace("personalOffer.", "")}${vars ? ` ${Object.values(vars).join(",")}` : ""}`;
+
+    it("нет статистики или меньше 30 % ответов — строки нет", () => {
+        expect(responseStatsText(null, tr)).toBeNull();
+        expect(responseStatsText({ sample: 10, answeredPercent: 29, medianReplyHours: 2 }, tr)).toBeNull();
+    });
+
+    it("отвечает часто: время и доля", () => {
+        expect(responseStatsText({ sample: 10, answeredPercent: 80, medianReplyHours: 5 }, tr))
+            .toBe("Обычно отвечает в течение дня · Отвечает на N процентов заявок 80");
+        expect(responseStatsText({ sample: 10, answeredPercent: 60, medianReplyHours: 50 }, tr))
+            .toContain("Обычно отвечает за N дней 3");
+    });
+
+    it("отвечает не на все или без ответов в переписке — только доля", () => {
+        expect(responseStatsText({ sample: 10, answeredPercent: 40, medianReplyHours: 2 }, tr))
+            .toBe("Отвечает на N процентов заявок 40");
+        expect(responseStatsText({ sample: 10, answeredPercent: 90, medianReplyHours: null }, tr))
+            .toBe("Отвечает на N процентов заявок 90");
     });
 });

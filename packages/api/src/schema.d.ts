@@ -1,4 +1,4 @@
-// Сгенерировано из OpenAPI gs-backend (docs/openapi.json).
+// Сгенерировано из OpenAPI gs-backend (/api/doc.json).
 // Не править руками: npm run generate в packages/api.
 
 export interface paths {
@@ -14988,6 +14988,8 @@ export interface components {
             name: string;
             /** @example  */
             otherType: string;
+            /** @description Как организация отвечает на заявки; null — заявок меньше трёх */
+            responseStats?: components["schemas"]["ResponseStatsResult"] | null;
             /** @example  */
             reviewsCount: number;
             /** @example  */
@@ -15250,6 +15252,27 @@ export interface components {
         "ResetPasswordRequest.ResetPasswordRequestDto": {
             /** Format: email */
             email: string;
+        };
+        /**
+         * OrganizationResponseStats
+         * @description Как организация отвечает на заявки за последний год (заявки старше 7 дней). null — заявок меньше трёх
+         */
+        ResponseStatsResult: {
+            /**
+             * @description Доля заявок с ответом (сообщение хоста или смена статуса), %
+             * @example 75
+             */
+            answeredPercent: number;
+            /**
+             * @description Типичное (медианное) время первого ответа в переписке, часов; null — в переписке не отвечали
+             * @example 30
+             */
+            medianReplyHours?: number | null;
+            /**
+             * @description Сколько заявок учтено
+             * @example 12
+             */
+            sample: number;
         };
         ReviewJournal: {
             /**
