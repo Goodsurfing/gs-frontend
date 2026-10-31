@@ -15,6 +15,7 @@ import { getDonationPersonalPage, getSignInPageUrl } from "@/shared/config/route
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 import styles from "./DonationPayPage.module.scss";
+import { trackGoal } from "@/shared/lib/analytics";
 
 const PRESET_AMOUNTS = [300, 1500, 5000];
 
@@ -76,6 +77,7 @@ const DonationPayPage: React.FC = () => {
             }).unwrap();
 
             if (result.paymentUrl) {
+                trackGoal("donation_start", { amount });
                 window.location.href = result.paymentUrl;
             }
         } catch (err: any) {

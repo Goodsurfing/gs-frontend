@@ -24,6 +24,7 @@ import { getErrorText } from "@/shared/lib/getErrorText";
 import { useGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Chat";
 import styles from "./RequestsWidget.module.scss";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { trackGoal } from "@/shared/lib/analytics";
 
 interface RequestsWidgetProps {
     className?: string;
@@ -90,6 +91,8 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
         try {
             await updateApplicationStatus({ applicationId: applicationId.toString(), status })
                 .unwrap();
+            if (status === "accepted") trackGoal("application_accepted", { from: "requests" });
+            if (status === "canceled") trackGoal("application_rejected", { from: "requests" });
         } catch {
             setToastTop({
                 text: "Не удалось изменить статус заявки",

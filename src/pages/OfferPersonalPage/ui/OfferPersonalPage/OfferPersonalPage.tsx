@@ -20,6 +20,7 @@ import { OfferPageContent } from "../OfferPageContent/OfferPageContent";
 import { OfferPersonalCard } from "../OfferPersonalCard/OfferPersonalCard";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import styles from "./OfferPersonalPage.module.scss";
+import { trackGoal } from "@/shared/lib/analytics";
 
 export const OfferPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -39,6 +40,7 @@ export const OfferPersonalPage = () => {
                 const result = await getOfferData(id ?? "");
                 if (result.data) {
                     setOfferData(result.data);
+                    trackGoal("vacancy_view", { vacancyId: String(result.data.id) });
                 }
             } catch { /* empty */ }
         };
