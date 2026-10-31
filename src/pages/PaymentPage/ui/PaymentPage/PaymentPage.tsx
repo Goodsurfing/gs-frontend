@@ -61,7 +61,11 @@ const PaymentPage: React.FC = () => {
             .then((result) => {
                 if (result.paymentUrl) {
                     setPaymentUrl(result.paymentUrl);
-                    window.location.href = result.paymentUrl;
+                    // replace, а не href: страница сама создаёт платёж при открытии,
+                    // и «Назад» с ЮKassa возвращал сюда же — новый платёж и снова
+                    // ЮKassa. Уйти было нельзя, отменённых платежей копилось втрое
+                    // больше настоящих попыток. Так «Назад» ведёт на страницу до оплаты.
+                    window.location.replace(result.paymentUrl);
                 } else {
                     setErrorMessage(t("Не удалось получить ссылку на оплату"));
                 }
