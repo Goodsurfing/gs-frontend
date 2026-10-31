@@ -1,3 +1,5 @@
+// Первым: хранилище браузера может быть недоступно, а остальные модули читают его при импорте
+import "@/shared/lib/ensureWebStorage";
 import { StyledEngineProvider } from "@mui/material";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
