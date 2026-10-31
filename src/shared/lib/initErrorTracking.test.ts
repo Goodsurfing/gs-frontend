@@ -1,7 +1,7 @@
 import type { ErrorEvent } from "@sentry/react";
 import { describe, expect, it } from "vitest";
 
-import { isForeignTranslatorError } from "./initErrorTracking";
+import { IGNORED_ERRORS, isForeignTranslatorError } from "./initErrorTracking";
 
 const withFrames = (...filenames: string[]) => {
     const frames = filenames.map((filename) => ({ filename }));
@@ -28,5 +28,22 @@ describe("isForeignTranslatorError", () => {
 
     it("оставляет ошибку без стека", () => {
         expect(isForeignTranslatorError({} as ErrorEvent, true)).toBe(false);
+    });
+});
+
+describe("IGNORED_ERRORS", () => {
+    const ignored = (message: string) => IGNORED_ERRORS.some((rule) => (
+        typeof rule === "string" ? message.includes(rule) : rule.test(message)
+    ));
+
+    it("отсеивает недогрузившиеся файлы сайта и чужие скрипты", () => {
+        expect(ignored("Unable to preload CSS for /assets/OffersSlider-DnNMkooZ.css")).toBe(true);
+        expect(ignored("Importing a module script failed.")).toBe(true);
+        expect(ignored("undefined is not an object (evaluating 'r[\"@context\"].toLowerCase')")).toBe(true);
+    });
+
+    it("не прячет настоящие ошибки", () => {
+        expect(ignored("Cannot read properties of null (reading 'getItem')")).toBe(false);
+        expect(ignored("TypeError: Failed to fetch")).toBe(false);
     });
 });
