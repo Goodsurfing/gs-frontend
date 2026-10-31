@@ -21,7 +21,8 @@ describe("responseStatsText", () => {
 
     it("меньше 30 % ответов — строки нет", () => {
         const rare = { sample: 10, answeredPercent: 29, medianReplyHours: 2 };
-        expect(responseStatsText({ ...rare, answeredPercent: 0, medianReplyHours: null }, t)).toBeNull();
+        const silent = { ...rare, answeredPercent: 0, medianReplyHours: null };
+        expect(responseStatsText(silent, t)).toBeNull();
         expect(responseStatsText(rare, t)).toBeNull();
     });
 
