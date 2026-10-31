@@ -15,6 +15,7 @@ import { getErrorText } from "@/shared/lib/getErrorText";
 import { OFFER_FINISHING_TOUCHES_FORM } from "@/shared/constants/localstorage";
 import { getMyOffersPageUrl } from "@/shared/config/routes/AppUrls";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import { trackGoal } from "@/shared/lib/analytics";
 
 interface OfferFinishingTouchesProps {
     offerId: string;
@@ -66,6 +67,7 @@ export const OfferFinishingTouches: FC<OfferFinishingTouchesProps> = (props) => 
 
             if (status === "active") {
                 await updateOfferStatus({ id: offerId, status }).unwrap();
+                trackGoal("vacancy_published", { from: "wizard" });
             }
 
             setToast({ text: t("Данные успешно изменены"), type: HintType.Success });

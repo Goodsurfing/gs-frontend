@@ -16,6 +16,7 @@ import { getMembershipPageUrl, getSignInPageUrl } from "@/shared/config/routes/A
 import { TARIFF_CODE } from "@/shared/constants/membership";
 
 import styles from "./PaymentPage.module.scss";
+import { trackGoal } from "@/shared/lib/analytics";
 
 const isFetchError = (err: unknown): err is FetchBaseQueryError => (
     typeof err === "object" && err !== null && "status" in err
@@ -60,6 +61,7 @@ const PaymentPage: React.FC = () => {
         checkoutMembership({ tariffCode }).unwrap()
             .then((result) => {
                 if (result.paymentUrl) {
+                    trackGoal("checkout_start", { tariff: tariffCode });
                     setPaymentUrl(result.paymentUrl);
                     // replace, а не href: страница сама создаёт платёж при открытии,
                     // и «Назад» с ЮKassa возвращал сюда же — новый платёж и снова

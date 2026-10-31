@@ -51,6 +51,7 @@ import CustomLink from "@/shared/ui/Link/Link";
 import { useMessenger } from "@/app/providers/MessengerProvider";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import styles from "./Chat.module.scss";
+import { trackGoal } from "@/shared/lib/analytics";
 
 interface ChatProps {
     id?: string;
@@ -222,6 +223,8 @@ export const Chat: FC<ChatProps> = (props) => {
     ) => {
         if (applicationId) {
             await updateApplicationStatus({ status, applicationId });
+            if (status === "accepted") trackGoal("application_accepted", { from: "chat" });
+            if (status === "canceled") trackGoal("application_rejected", { from: "chat" });
         }
     }, [updateApplicationStatus]);
 
@@ -396,6 +399,7 @@ export const Chat: FC<ChatProps> = (props) => {
             await createApplicationForm(preparedData)
                 .unwrap()
                 .then((result) => {
+                    trackGoal("application_sent");
                     setToast({
                         text: t("Заявка успешно отправлена"),
                         type: HintType.Success,

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import SignLayout from "@/shared/ui/SignLayout/SignLayout";
@@ -9,11 +9,16 @@ import { getSignInPageUrl, getSignUpPageUrl } from "@/shared/config/routes/AppUr
 import styles from "./ConfirmEmailSuccessPage.module.scss";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { trackGoalOnce } from "@/shared/lib/analytics";
 
 const ConfirmEmailSuccessPage: FC = () => {
     const { locale } = useLocale();
     const { email } = useAppSelector((state) => state.register);
     const { t } = useTranslation();
+
+    useEffect(() => {
+        trackGoalOnce("email_confirmed", email || "anon");
+    }, [email]);
 
     return (
         <SignLayout cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>

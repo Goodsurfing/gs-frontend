@@ -23,6 +23,7 @@ import { MemberBanner } from "@/features/MemberBanner";
 import { HostUpsellBanner } from "@/features/HostUpsellBanner";
 import { isVacancyLimitExceededError } from "@/shared/lib/getErrorText";
 import styles from "./HostOffersPage.module.scss";
+import { trackGoal } from "@/shared/lib/analytics";
 
 type SeletecBtnType = "delete" | "every_open" | "close";
 
@@ -133,6 +134,7 @@ const HostOffersPage = () => {
                         status: "active",
                         id: selectedOffer.toString(),
                     }).unwrap();
+                    trackGoal("vacancy_published", { from: "list" });
                 }
             }
 

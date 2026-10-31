@@ -23,6 +23,7 @@ import { IAuthFormData, IRegisterFormData } from "@/types/api/auth/register.inte
 import { marketingConsentWording } from "../../lib/marketingConsentIntent";
 import styles from "./SignUpForm.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { trackGoal } from "@/shared/lib/analytics";
 
 interface SignUpFormProps {
     /** Чекбокс «Хочу получать письма…» (GS-203) — общий с входом через VK */
@@ -61,6 +62,7 @@ const SignUpForm: FC<SignUpFormProps> = ({
             .unwrap()
             .then((response) => {
                 dispatch(setRegisterUserData(response));
+                trackGoal("signup");
                 navigate(getConfirmEmailPageUrl(locale));
             })
             .catch((e: any) => {
