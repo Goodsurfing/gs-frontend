@@ -16,7 +16,8 @@ import {
 
 import { clearDraft, readDraft, writeDraft } from "./draft";
 import { FieldError, IconToggle, localIcon, MaskImage, OldInput, OldTextarea, PlusButton } from "./FinishParts";
-import { useVacancyElement, type VacancyElement } from "./useVacancyElement";
+import { LabeledSwitch } from "./LabeledSwitch";
+import { patchVacancy, useVacancyElement, type VacancyElement } from "./useVacancy";
 
 export interface FinishLabels {
     extraConditions: string;
@@ -56,23 +57,8 @@ const isForm = (value: unknown): value is Form => {
     return !!v && Array.isArray(v.additionalConditions) && Array.isArray(v.questions) && typeof v.helloText === "string" && typeof v.onlyVerified === "boolean";
 };
 
+// Тот же счётчик, что в components/analytics/YandexMetrika.tsx (общий файл каркаса, отсюда не экспортируется)
 const METRIKA_ID = Number(process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID) || 0;
-
-/** Переключатель с подписью обычного начертания (FormControlLabel + Typography body1 старой формы) */
-function VerifiedSwitch({ checked, onChange, label }: { checked: boolean; onChange: () => void; label: string }) {
-    return (
-        <label className="mr-4 -ml-[11px] inline-flex cursor-pointer items-center align-middle">
-            <span className="relative z-0 inline-flex h-[38px] w-[58px] shrink-0 overflow-hidden p-3 align-middle">
-                <span className={`absolute top-0 left-0 z-[1] inline-flex h-[38px] w-[38px] items-center justify-center rounded-full p-[9px] transition-transform duration-150 hover:bg-[rgba(0,0,0,0.04)] ${checked ? "translate-x-5" : ""}`}>
-                    <input type="checkbox" role="switch" checked={checked} onChange={onChange} className="absolute top-0 -left-full z-[1] m-0 h-full w-[300%] cursor-pointer p-0 opacity-0" />
-                    <span className="block h-5 w-5 rounded-full bg-white shadow-[0px_2px_1px_-1px_rgba(0,0,0,0.2),0px_1px_1px_0px_rgba(0,0,0,0.14),0px_1px_3px_0px_rgba(0,0,0,0.12)]" />
-                </span>
-                <span className={`block h-full w-full rounded-[7px] transition-[opacity,background-color] duration-150 ${checked ? "bg-primary" : "bg-black opacity-[0.38]"}`} />
-            </span>
-            <span className="font-[Roboto,Helvetica,Arial,sans-serif] text-[16px] leading-[1.5] tracking-[0.00938em] text-black">{label}</span>
-        </label>
-    );
-}
 
 /** Окно «Бесплатно можно опубликовать только 1 вакансию» (Modal + MemberBanner в HostOffersPage старого фронта) */
 function LimitDialog({ open, onClose, locale, labels }: { open: boolean; onClose: () => void; locale: Locale; labels: FinishLabels }) {
@@ -99,7 +85,7 @@ function LimitDialog({ open, onClose, locale, labels }: { open: boolean; onClose
  * Опубликованная — «Сохранить изменения». После сохранения — к списку вакансий.
  */
 export function FinishTouchesForm({ id, locale, myOffersHref, labels }: { id: string; locale: Locale; myOffersHref: string; labels: FinishLabels }) {
-    const { state } = useVacancyElement(id);
+    const state = useVacancyElement(id);
     if (state.status === "missing") return <p className="mt-10 text-[18px] text-ink-tertiary">{labels.missing}</p>;
     if (state.status === "loading") return <Loading label={labels.loading} className="min-h-[200px]" />;
     return <FinishEditor id={id} locale={locale} myOffersHref={myOffersHref} labels={labels} vacancy={state.vacancy} />;
@@ -135,13 +121,7 @@ function FinishEditor({ id, locale, myOffersHref, labels, vacancy }: { id: strin
         setBusy(true);
         setToast(null);
         const api = browserApi(session.token);
-        const saved = await api
-            .PATCH("/api/v1/vacancies/{id}", {
-                params: { path: { id } },
-                body: { finishingTouches: finishToApi(form) },
-                headers: { "Content-Type": "application/merge-patch+json", Accept: "application/json" },
-            })
-            .catch(() => null);
+        const saved = await patchVacancy(session.token, id, { finishingTouches: finishToApi(form) });
         if (!saved || saved.error || !saved.response.ok) {
             setBusy(false);
             setToast({ text: errorText(saved?.error), ok: false });
@@ -159,7 +139,16 @@ function FinishEditor({ id, locale, myOffersHref, labels, vacancy }: { id: strin
                 else setToast({ text: errorText(toggled?.error), ok: false });
                 return;
             }
-            if (METRIKA_ID) window.ym?.(METRIKA_ID, "reachGoal", "vacancy_published", { from: "wizard" });
+            if (METRIKA_ID && window.ym) {
+                // Уйти со страницы после отправки цели, иначе запрос Метрики может оборваться; не дольше секунды
+                const leave = () => window.location.assign(myOffersHref);
+                const timer = window.setTimeout(leave, 1000);
+                window.ym(METRIKA_ID, "reachGoal", "vacancy_published", { from: "wizard" }, () => {
+                    window.clearTimeout(timer);
+                    leave();
+                });
+                return;
+            }
         }
         window.location.assign(myOffersHref);
     };
@@ -192,7 +181,7 @@ function FinishEditor({ id, locale, myOffersHref, labels, vacancy }: { id: strin
                     </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                    <VerifiedSwitch checked={form.onlyVerified} onChange={() => update({ ...form, onlyVerified: !form.onlyVerified })} label={labels.onlyVerified} />
+                    <LabeledSwitch labelStyle="body" checked={form.onlyVerified} onChange={() => update({ ...form, onlyVerified: !form.onlyVerified })} label={labels.onlyVerified} />
                 </div>
                 <div className="flex flex-col gap-2">
                     <p className="text-[16px] text-caption">{labels.helloTitle}</p>

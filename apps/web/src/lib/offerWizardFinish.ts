@@ -59,7 +59,8 @@ export const whatToDoToApi = (form: WhatToDoForm): S["EditWhatToDoCommand"] => (
 
 /** Часы: целое от 0 до предела периода, иначе значение не меняется */
 export function setHours(form: WhatToDoForm, input: string): WhatToDoForm {
-    if (!/^\d+$/.test(input)) return input === "" ? { ...form, hours: 0 } : form;
+    // Пустое поле (стёрли, чтобы набрать заново, или браузер не разобрал ввод) — значение не меняется
+    if (!/^\d+$/.test(input)) return form;
     const hours = Number(input);
     return hours <= MAX_HOURS[form.timeType] ? { ...form, hours } : form;
 }
@@ -148,9 +149,8 @@ export function conditionsErrors(form: ConditionsForm): { housing: boolean; food
     };
 }
 
-/** Сумма: только цифры, не длиннее 15 знаков; пусто — 0; иначе null (значение не меняется) */
+/** Сумма: только цифры, не длиннее 15 знаков; иначе (в том числе пусто) null — значение не меняется */
 export function parseMoney(input: string): number | null {
-    if (input === "") return 0;
     return input.length <= 15 && /^\d+$/.test(input) ? Number(input) : null;
 }
 
@@ -215,12 +215,11 @@ const record = (value: unknown): Record<string, unknown> | null => (value && typ
 export function errorMessage(error: unknown): string | null {
     const data = record(error);
     if (!data) return null;
-    for (const key of ["detail", "title", "error", "message"]) {
-        const value = data[key];
-        if (typeof value === "string" && value) return value;
-    }
+    const text = (key: string) => (typeof data[key] === "string" && data[key] ? data[key] as string : null);
+    // Порядок как у getErrorText старого фронта: detail, title, список errors, error, message
+    if (text("detail") || text("title")) return text("detail") ?? text("title");
     if (Array.isArray(data.errors) && data.errors.length) return data.errors.join(". ");
-    return null;
+    return text("error") ?? text("message");
 }
 
 /** Публикация упёрлась в лимит бесплатных вакансий — показать окно с призывом оформить членство */

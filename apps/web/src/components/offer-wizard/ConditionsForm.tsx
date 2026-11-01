@@ -8,12 +8,15 @@ import { Toast } from "@/components/ui/Toast";
 import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
 import {
-    conditionsErrors, conditionsFromApi, type ConditionsForm as Form, conditionsToApi, CURRENCIES, errorMessage, parseMoney, toggleIn,
+    conditionsErrors, conditionsFromApi, type ConditionsForm as Form, conditionsToApi, CURRENCIES, parseMoney, toggleIn,
 } from "@/lib/offerWizardFinish";
 
 import { clearDraft, readDraft, writeDraft } from "./draft";
-import { Caption, ConditionTile, FieldError, localIcon, MaskImage, OldInput, OldSelect, OldTextarea } from "./FinishParts";
-import { type DictionaryItem, useDictionary, useVacancyElement, type VacancyElement } from "./useVacancyElement";
+import { Caption, ConditionTile, FieldError, localIcon, MaskImage, OldNumberInput, OldSelect, OldTextarea } from "./FinishParts";
+import { SwitchKnob } from "./LabeledSwitch";
+import { apiErrorText, type DictionaryItem, useDictionary, useVacancyElement, type VacancyElement } from "./useVacancy";
+
+type Section = "housing" | "food" | "travel";
 import { WizardActions } from "./WizardActions";
 
 export interface ConditionsLabels {
@@ -58,13 +61,7 @@ function YesNo({ checked, onChange, label, no, yes }: { checked: boolean; onChan
     return (
         <div className="flex items-center gap-3">
             <span aria-hidden className="text-[16px] text-ink-secondary">{no}</span>
-            <span className="relative inline-flex h-[38px] w-[58px] shrink-0 overflow-hidden p-3">
-                <span className={`absolute top-0 left-0 z-[1] inline-flex h-[38px] w-[38px] items-center justify-center rounded-full p-[9px] transition-transform duration-150 hover:bg-[rgba(0,0,0,0.04)] ${checked ? "translate-x-5" : ""}`}>
-                    <input type="checkbox" role="switch" aria-label={label} checked={checked} onChange={onChange} className="absolute top-0 -left-full z-[1] m-0 h-full w-[300%] cursor-pointer p-0 opacity-0" />
-                    <span className="block h-5 w-5 rounded-full bg-white shadow-[0px_2px_1px_-1px_rgba(0,0,0,0.2),0px_1px_1px_0px_rgba(0,0,0,0.14),0px_1px_3px_0px_rgba(0,0,0,0.12)]" />
-                </span>
-                <span className={`block h-full w-full rounded-[7px] transition-[opacity,background-color] duration-150 ${checked ? "bg-primary" : "bg-black opacity-[0.38]"}`} />
-            </span>
+            <SwitchKnob checked={checked} onChange={onChange} label={label} />
             <span aria-hidden className="text-[16px] text-ink-secondary">{yes}</span>
         </div>
     );
@@ -106,7 +103,7 @@ function SwitchSection({ title, on, onSwitch, items, selected, onToggle, error, 
  * «Сохранить» — PATCH /api/v1/vacancy/condition/{id}.
  */
 export function ConditionsForm({ id, locale, nextHref, labels }: { id: string; locale: Locale; nextHref: string; labels: ConditionsLabels }) {
-    const { state } = useVacancyElement(id);
+    const state = useVacancyElement(id);
     if (state.status === "missing") return <p className="mt-10 text-[18px] text-ink-tertiary">{labels.missing}</p>;
     if (state.status === "loading") return <Loading label={labels.loading} className="min-h-[200px]" />;
     return <ConditionsEditor id={id} locale={locale} nextHref={nextHref} labels={labels} vacancy={state.vacancy} />;
@@ -120,24 +117,25 @@ function ConditionsEditor({ id, locale, nextHref, labels, vacancy }: { id: strin
     const [initial] = useState(() => readDraft("conditions", id, isForm));
     const [form, setForm] = useState<Form>(() => initial ?? conditionsFromApi(vacancy.condition));
     const [unsaved, setUnsaved] = useState(!!initial);
-    const [touched, setTouched] = useState(false);
+    // Ошибка раздела — после правки этого раздела или попытки сохранить (как mode: "onChange" старой формы)
+    const [touched, setTouched] = useState<Set<Section>>(() => new Set());
     const [busy, setBusy] = useState(false);
     const [toast, setToast] = useState<{ text: string; ok: boolean } | null>(null);
 
-    const update = useCallback((next: Form) => {
+    const update = useCallback((next: Form, section?: Section) => {
+        if (section) setTouched((current) => new Set(current).add(section));
+        if (JSON.stringify(next) === JSON.stringify(form)) return;
         setForm(next);
         setUnsaved(true);
-        setTouched(true);
         writeDraft("conditions", id, next);
-    }, [id]);
+    }, [id, form]);
 
-    // Как mode: "onChange" старой формы: ошибки — после первой правки или попытки сохранить
     const errors = conditionsErrors(form);
-    const error = (on: boolean) => (touched && on ? labels.notSelected : null);
+    const error = (section: Section) => (touched.has(section) && errors[section] ? labels.notSelected : null);
 
     const submit = async (event: FormEvent) => {
         event.preventDefault();
-        setTouched(true);
+        setTouched(new Set<Section>(["housing", "food", "travel"]));
         if (errors.housing || errors.food || errors.travel) return;
         setBusy(true);
         setToast(null);
@@ -146,7 +144,7 @@ function ConditionsEditor({ id, locale, nextHref, labels, vacancy }: { id: strin
             .catch(() => null);
         setBusy(false);
         if (!result || result.error || !result.response.ok) {
-            setToast({ text: errorMessage(result?.error) ?? labels.error, ok: false });
+            setToast({ text: apiErrorText(result?.error, labels.error), ok: false });
             return;
         }
         clearDraft("conditions", id);
@@ -165,31 +163,31 @@ function ConditionsEditor({ id, locale, nextHref, labels, vacancy }: { id: strin
             <SwitchSection
                 title={labels.housing}
                 on={form.housing}
-                onSwitch={() => update({ ...form, housing: !form.housing, houseIds: form.housing ? [] : form.houseIds })}
+                onSwitch={() => update({ ...form, housing: !form.housing, houseIds: form.housing ? [] : form.houseIds }, "housing")}
                 items={houses}
                 selected={form.houseIds}
-                onToggle={(itemId) => form.housing && update({ ...form, houseIds: toggleIn(form.houseIds, itemId) })}
-                error={error(errors.housing)}
+                onToggle={(itemId) => form.housing && update({ ...form, houseIds: toggleIn(form.houseIds, itemId) }, "housing")}
+                error={error("housing")}
                 labels={labels}
             />
             <SwitchSection
                 title={labels.food}
                 on={form.food}
-                onSwitch={() => update({ ...form, food: !form.food, foodIds: form.food ? [] : form.foodIds })}
+                onSwitch={() => update({ ...form, food: !form.food, foodIds: form.food ? [] : form.foodIds }, "food")}
                 items={foods}
                 selected={form.foodIds}
-                onToggle={(itemId) => form.food && update({ ...form, foodIds: toggleIn(form.foodIds, itemId) })}
-                error={error(errors.food)}
+                onToggle={(itemId) => form.food && update({ ...form, foodIds: toggleIn(form.foodIds, itemId) }, "food")}
+                error={error("food")}
                 labels={labels}
             />
             <SwitchSection
                 title={labels.travel}
                 on={form.travel}
-                onSwitch={() => update({ ...form, travel: !form.travel, transferIds: form.travel ? [] : form.transferIds })}
+                onSwitch={() => update({ ...form, travel: !form.travel, transferIds: form.travel ? [] : form.transferIds }, "travel")}
                 items={transfers}
                 selected={form.transferIds}
-                onToggle={(itemId) => form.travel && update({ ...form, transferIds: toggleIn(form.transferIds, itemId) })}
-                error={error(errors.travel)}
+                onToggle={(itemId) => form.travel && update({ ...form, transferIds: toggleIn(form.transferIds, itemId) }, "travel")}
+                error={error("travel")}
                 labels={labels}
             />
             <div>
@@ -211,8 +209,8 @@ function ConditionsEditor({ id, locale, nextHref, labels, vacancy }: { id: strin
             <div className="flex flex-col gap-2">
                 <Caption>{labels.payment}</Caption>
                 <div className="flex gap-3.5">
-                    <OldInput type="number" min={0} labelHidden={labels.contribution} description={labels.contribution} value={String(form.contribution)} onChange={(event) => money("contribution", event.target.value)} className="min-w-0 basis-[227px]" />
-                    <OldInput type="number" min={0} labelHidden={labels.reward} description={labels.reward} value={String(form.reward)} onChange={(event) => money("reward", event.target.value)} className="min-w-0 basis-[227px]" />
+                    <OldNumberInput min={0} labelHidden={labels.contribution} description={labels.contribution} value={form.contribution} onText={(text) => money("contribution", text)} className="min-w-0 basis-[227px]" />
+                    <OldNumberInput min={0} labelHidden={labels.reward} description={labels.reward} value={form.reward} onText={(text) => money("reward", text)} className="min-w-0 basis-[227px]" />
                     <OldSelect aria-label={labels.currency} value={form.currency} onChange={(event) => update({ ...form, currency: event.target.value })} className="w-[85px] shrink-0 [&>select]:pl-7">
                         {CURRENCIES.map((currency) => <option key={currency.name} value={currency.name}>{currency.symbol}</option>)}
                     </OldSelect>

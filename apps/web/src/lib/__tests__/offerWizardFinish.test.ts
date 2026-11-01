@@ -27,7 +27,7 @@ describe("«Что делать»", () => {
         expect(setHours(form, "40").hours).toBe(40);
         expect(setHours(form, "169").hours).toBe(6);
         expect(setHours(form, "-1").hours).toBe(6);
-        expect(setHours(form, "").hours).toBe(0);
+        expect(setHours(form, "").hours).toBe(6);
         expect(setTimeType({ ...form, hours: 40 }, "day")).toMatchObject({ timeType: "day", hours: 24 });
     });
     it("свои навыки: без пустых, повторов, не больше 10", () => {
@@ -58,7 +58,7 @@ describe("«Условия»", () => {
     });
     it("суммы: только цифры, до 15 знаков, пусто — 0", () => {
         expect(parseMoney("120")).toBe(120);
-        expect(parseMoney("")).toBe(0);
+        expect(parseMoney("")).toBeNull();
         expect(parseMoney("1e3")).toBeNull();
         expect(parseMoney("1234567890123456")).toBeNull();
     });
@@ -92,6 +92,8 @@ describe("ошибки публикации", () => {
         expect(errorMessage({ errors: ["a", "b"] })).toBe("a. b");
         expect(errorMessage({ error: "E" })).toBe("E");
         expect(errorMessage("x")).toBeNull();
+        // Список ошибок проверки важнее общего message, как в getErrorText старого фронта
+        expect(errorMessage({ errors: ["Поле обязательно"], message: "Bad request" })).toBe("Поле обязательно");
         expect(errorKey("Fill in the vacancy title, description and address before publishing.")).toBe("errors.vacancyIncomplete");
         expect(errorKey("что-то")).toBeNull();
     });

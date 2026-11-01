@@ -1,6 +1,6 @@
 "use client";
 
-import { type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes, useId } from "react";
+import { type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes, useId, useState } from "react";
 
 /**
  * Элементы шагов «Что делать», «Условия», «Последние штрихи» — как shared/ui
@@ -51,6 +51,27 @@ export function OldInput({ label, labelHidden, description, className = "", inpu
             <input id={id} aria-label={labelHidden} className={`box-border h-11 w-full rounded-[10px] border border-[#82949F] bg-white p-3.5 text-[16px] leading-[normal] text-black outline-none placeholder:text-[#757575] ${inputClassName}`} {...rest} />
             {description && <p className="mt-2 text-[10px] leading-[12px] text-[#82949F]">{description}</p>}
         </div>
+    );
+}
+
+/**
+ * Числовое поле: пока его правят, показывается набранный текст (можно стереть и
+ * набрать заново); в форму уходит только то, что примет onText; после ухода из
+ * поля — снова значение формы.
+ */
+export function OldNumberInput({ value, onText, ...rest }: Omit<Parameters<typeof OldInput>[0], "value" | "onChange" | "onBlur" | "type"> & { value: number; onText: (text: string) => void }) {
+    const [text, setText] = useState<string | null>(null);
+    return (
+        <OldInput
+            {...rest}
+            type="number"
+            value={text ?? String(value)}
+            onChange={(event) => {
+                setText(event.target.value);
+                onText(event.target.value);
+            }}
+            onBlur={() => setText(null)}
+        />
     );
 }
 

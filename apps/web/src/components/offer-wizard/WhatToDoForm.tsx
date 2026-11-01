@@ -8,13 +8,13 @@ import { Toast } from "@/components/ui/Toast";
 import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
 import {
-    addExtraSkill, DAY_OFF_OPTIONS, errorMessage, MAX_HOURS, MAX_SKILLS, renameExtraSkill, setHours, setTimeType,
+    addExtraSkill, DAY_OFF_OPTIONS, MAX_HOURS, MAX_SKILLS, renameExtraSkill, setHours, setTimeType,
     TIME_TYPES, type TimeType, toggleIn, type WhatToDoForm as Form, whatToDoFromApi, whatToDoToApi,
 } from "@/lib/offerWizardFinish";
 
 import { clearDraft, readDraft, writeDraft } from "./draft";
-import { Caption, IconToggle, localIcon, MaskImage, OldInput, OldSelect, OldTextarea } from "./FinishParts";
-import { type DictionaryItem, useDictionary, useVacancyElement, type VacancyElement } from "./useVacancyElement";
+import { Caption, IconToggle, localIcon, MaskImage, OldNumberInput, OldSelect, OldTextarea } from "./FinishParts";
+import { apiErrorText, type DictionaryItem, useDictionary, useVacancyElement, type VacancyElement } from "./useVacancy";
 import { WizardActions } from "./WizardActions";
 
 export interface WhatToDoLabels {
@@ -43,7 +43,8 @@ const isForm = (value: unknown): value is Form => {
 
 /** Свой навык (EditableInputWithButton): синий кружок с галочкой, поле правки, удаление */
 function ExtraSkill({ value, onRename, onDelete, label }: { value: string; onRename: (text: string) => void; onDelete: () => void; label: string }) {
-    const [text, setText] = useState(value);
+    // null — поле не правится, показывается сохранённое значение
+    const [text, setText] = useState<string | null>(null);
     return (
         <div className="relative flex items-center gap-5">
             <span className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-full bg-primary text-white">
@@ -51,11 +52,11 @@ function ExtraSkill({ value, onRename, onDelete, label }: { value: string; onRen
             </span>
             <input
                 aria-label={value}
-                value={text}
+                value={text ?? value}
                 onChange={(event) => setText(event.target.value)}
                 onBlur={() => {
-                    onRename(text);
-                    setText(value);
+                    if (text !== null && text !== value) onRename(text);
+                    setText(null);
                 }}
                 onKeyDown={(event) => {
                     if (event.key === "Enter") {
@@ -132,7 +133,7 @@ function SkillsPicker({ skills, value, onChange }: { skills: DictionaryItem[]; v
  * информация. «Сохранить» — PATCH /api/v1/vacancy/what-to-do/{id}.
  */
 export function WhatToDoForm({ id, locale, nextHref, labels }: { id: string; locale: Locale; nextHref: string; labels: WhatToDoLabels }) {
-    const { state } = useVacancyElement(id);
+    const state = useVacancyElement(id);
     if (state.status === "missing") return <p className="mt-10 text-[18px] text-ink-tertiary">{labels.missing}</p>;
     if (state.status === "loading") return <Loading label={labels.loading} className="min-h-[200px]" />;
     return <WhatToDoEditor id={id} locale={locale} nextHref={nextHref} labels={labels} vacancy={state.vacancy} />;
@@ -147,11 +148,13 @@ function WhatToDoEditor({ id, locale, nextHref, labels, vacancy }: { id: string;
     const [busy, setBusy] = useState(false);
     const [toast, setToast] = useState<{ text: string; ok: boolean } | null>(null);
 
+    // Без изменений (отказ по лимиту, уход из поля без правки) — не «несохранённые изменения»
     const update = useCallback((next: Form) => {
+        if (JSON.stringify(next) === JSON.stringify(form)) return;
         setForm(next);
         setUnsaved(true);
         writeDraft("what-to-do", id, next);
-    }, [id]);
+    }, [id, form]);
 
     const submit = async (event: FormEvent) => {
         event.preventDefault();
@@ -162,7 +165,7 @@ function WhatToDoEditor({ id, locale, nextHref, labels, vacancy }: { id: string;
             .catch(() => null);
         setBusy(false);
         if (!result || result.error || !result.response.ok) {
-            setToast({ text: errorMessage(result?.error) ?? labels.error, ok: false });
+            setToast({ text: apiErrorText(result?.error, labels.error), ok: false });
             return;
         }
         clearDraft("what-to-do", id);
@@ -181,7 +184,8 @@ function WhatToDoEditor({ id, locale, nextHref, labels, vacancy }: { id: string;
                 <div className="grid grid-cols-[repeat(auto-fit,minmax(330px,1fr))] items-start gap-[30px]">
                     {form.additionalSkills.map((skill, index) => (
                         <ExtraSkill
-                            key={`${skill}-${index}`}
+                            // Ключ — позиция: переименование при уходе из поля не пересоздаёт строку под курсором
+                            key={index}
                             value={skill}
                             label={labels.deleteSkill}
                             onRename={(text) => update({ ...form, additionalSkills: renameExtraSkill(form.additionalSkills, index, text) })}
@@ -195,13 +199,12 @@ function WhatToDoEditor({ id, locale, nextHref, labels, vacancy }: { id: string;
                 <div className="flex flex-col gap-2">
                     <Caption>{labels.hours}</Caption>
                     <div className="flex max-w-[307px] items-end gap-3.5">
-                        <OldInput
-                            type="number"
+                        <OldNumberInput
                             min={0}
                             max={MAX_HOURS[form.timeType]}
                             labelHidden={labels.hours}
-                            value={String(form.hours)}
-                            onChange={(event) => update(setHours(form, event.target.value))}
+                            value={form.hours}
+                            onText={(text) => update(setHours(form, text))}
                             className="w-[83px] shrink-0"
                         />
                         <OldSelect aria-label={labels.hours} value={form.timeType} onChange={(event) => update(setTimeType(form, event.target.value as TimeType))} className="w-[210px]">
