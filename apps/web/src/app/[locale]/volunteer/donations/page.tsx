@@ -36,6 +36,8 @@ export default async function VolunteerDonationsPage({ params }: Props) {
                         collected: td("Собрано"),
                         projectCollected: td("Проект собрал"),
                         left: td("Осталось"),
+                        noTitle: t("Без заголовка"),
+                        noDescription: t("Без описания"),
                     }}
                 />
             </main>

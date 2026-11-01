@@ -1,7 +1,7 @@
 "use client";
 
 import type { components } from "@goodsurfing/api";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useSession } from "@/components/session/SessionProvider";
 import { Spinner } from "@/components/ui/Spinner";
@@ -21,12 +21,18 @@ export interface VolunteerDonationsLabels {
     collected: string;
     projectCollected: string;
     left: string;
+    noTitle: string;
+    noDescription: string;
 }
+
+const supportButton = "mt-5 mr-5 flex items-center justify-center rounded-[10px] border border-cta bg-cta px-[50px] py-2.5 text-center text-label text-white no-underline transition-all duration-300";
 
 /**
  * «Поддержать другие проекты» (DonationsRecomendationsWidget старого
  * фронта): сборы по сроку окончания, у каждого — карточка (ведёт на сбор)
- * и «Поддержать» (на оплату пожертвования).
+ * и «Поддержать» (на оплату пожертвования). Сбор, который пожертвования
+ * не принимает (isCanSupport: false), — с неактивной кнопкой, как на
+ * странице сбора (FundraiseActions).
  */
 export function VolunteerDonations({ hrefs, labels }: {
     hrefs: { fundraise: string; pay: string };
@@ -35,6 +41,7 @@ export function VolunteerDonations({ hrefs, labels }: {
     const session = useSession();
     const [items, setItems] = useState<Fundraise[] | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const closeError = useCallback(() => setError(null), []);
 
     useEffect(() => {
         if (session.status !== "user") return;
@@ -58,7 +65,7 @@ export function VolunteerDonations({ hrefs, labels }: {
 
     return (
         <div className="w-full max-w-[1400px]">
-            <Toast text={error} onClose={() => setError(null)} />
+            <Toast text={error} onClose={closeError} />
             <section className="w-full max-w-[1000px] bg-white shadow-[0_5px_20px_rgba(14,29,39,0.05)]">
                 <div className="flex justify-between border-b border-caption px-5 py-[13px] down-sm:flex-wrap down-sm:gap-y-2.5">
                     <h3 className="text-[1.17em] font-bold">{labels.title}</h3>
@@ -67,12 +74,13 @@ export function VolunteerDonations({ hrefs, labels }: {
                     {items === null ? <Spinner /> : items.length === 0 ? <span>{labels.empty}</span> : items.map((item) => (
                         <article key={item.id} className="flex w-full items-start gap-3.5 border border-accent-bg bg-white">
                             <DonationCard item={item} href={hrefs.fundraise.replace("{id}", item.id)} labels={labels} />
-                            <a
-                                href={hrefs.pay.replace("{id}", item.id)}
-                                className="mt-5 mr-5 flex items-center justify-center rounded-[10px] border border-cta bg-cta px-[50px] py-2.5 text-center text-label text-white no-underline transition-all duration-300 hover:bg-white hover:text-cta"
-                            >
-                                {labels.support}
-                            </a>
+                            {item.isCanSupport ? (
+                                <a href={hrefs.pay.replace("{id}", item.id)} className={`${supportButton} hover:bg-white hover:text-cta`}>
+                                    {labels.support}
+                                </a>
+                            ) : (
+                                <span aria-disabled className={`${supportButton} opacity-70`}>{labels.support}</span>
+                            )}
                         </article>
                     ))}
                 </div>
@@ -87,14 +95,14 @@ function DonationCard({ item, href, labels }: { item: Fundraise; href: string; l
     const percent = item.percentAmountCollect ?? 0;
     const icon = (name: string) => (
         // eslint-disable-next-line @next/next/no-img-element -- иконка
-        <img src={`/web/icons/donation/${name}.svg`} alt={name} />
+        <img src={`/web/icons/donation/${name}.svg`} alt="" />
     );
     return (
         <a href={href} className="flex w-full items-start gap-3.5 bg-white p-5 text-inherit no-underline down-xs:flex-wrap down-xs:p-4">
             <div className="relative h-[140px] w-[180px] shrink-0 down-xs:h-[180px] down-xs:w-full">
                 {image
                     // eslint-disable-next-line @next/next/no-img-element -- обложка из хранилища
-                    ? <img src={image} alt="donation-img" loading="lazy" className="h-full w-full object-cover" />
+                    ? <img src={image} alt="" loading="lazy" className="h-full w-full object-cover" />
                     : <div className="h-full w-full bg-accent-bg" />}
                 {item.isSuccess && <div className="absolute top-2.5 left-2.5 rounded-[40px] bg-cta px-1.5 py-1 text-[10px] leading-none text-white uppercase">{labels.successBadge}</div>}
             </div>
@@ -102,10 +110,10 @@ function DonationCard({ item, href, labels }: { item: Fundraise; href: string; l
                 <div className={`mb-2 h-[5px] overflow-hidden rounded-[2.5px] ${item.isSuccess ? "bg-[#21212126]" : "bg-[#3CABF740]"}`}>
                     <div className={`h-full rounded-[2.5px] ${item.isSuccess ? "bg-caption" : "bg-primary"}`} style={{ width: `${Math.min(100, percent)}%` }} />
                 </div>
-                <p className="text-[1.125rem] leading-[22px] font-medium text-ink-secondary">{textSlice(item.name, 50, "Без заголовка")}</p>
+                <p className="text-[1.125rem] leading-[22px] font-medium text-ink-secondary">{textSlice(item.name, 50, labels.noTitle)}</p>
                 <div className="mt-2 text-[14px] leading-5 font-medium text-caption down-xs:flex down-xs:flex-col">
                     <p>{textSlice(item.organization?.name, 25, "")}</p>
-                    <p className="mt-2 max-w-[300px] leading-[17px] text-ink-secondary opacity-50">{textSlice(item.shortDescription, 50, "Без описания")}</p>
+                    <p className="mt-2 max-w-[300px] leading-[17px] text-ink-secondary opacity-50">{textSlice(item.shortDescription, 50, labels.noDescription)}</p>
                 </div>
                 <div className="mt-3 flex flex-wrap gap-4 down-xs:gap-2">
                     {item.isSuccess ? (

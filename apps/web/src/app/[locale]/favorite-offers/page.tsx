@@ -45,8 +45,8 @@ export default async function FavoriteOffersPage({ params }: Props) {
                             notOnMap: t("нет на карте"),
                             reviews: t("Отзывов"),
                             went: t("Отправились"),
-                            noTitle: "Без заголовка",
-                            noDescription: "Без описания",
+                            noTitle: t("Без заголовка"),
+                            noDescription: t("Без описания"),
                         },
                     }}
                 />

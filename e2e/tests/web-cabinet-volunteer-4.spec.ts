@@ -35,8 +35,20 @@ test.describe('Новый фронт: подписки, поддержать, и
         expect(response?.status()).toBe(200);
         await expect(page.getByRole('heading', { name: 'Поддержать другие проекты' })).toBeVisible();
         await expect(page.getByRole('link', { name: /E2E: сбор/ })).toHaveAttribute('href', '/fundraise/e2e-fund');
-        await expect(page.getByRole('link', { name: 'Поддержать', exact: true }).last()).toHaveAttribute('href', '/donation/pay/e2e-fund');
+        const article = page.getByRole('article').filter({ hasText: 'E2E: сбор' });
+        await expect(article.getByRole('link', { name: 'Поддержать', exact: true })).toHaveAttribute('href', '/donation/pay/e2e-fund');
         await expect(page.getByText('Собрано 40 %')).toBeVisible();
+    });
+
+    test('поддержать: сбор без приёма пожертвований — кнопка неактивна', async ({ page }) => {
+        const closed = { ...FUNDRAISES.data[0], id: 'e2e-closed', name: 'E2E: закрытый сбор', isCanSupport: false };
+        await page.route(/\/api\/v1\/fundraise\?/, (route) => route.fulfill({ json: { ...FUNDRAISES, data: [closed] } }));
+        await page.goto('/volunteer/donations');
+        const article = page.getByRole('article').filter({ hasText: 'E2E: закрытый сбор' });
+        await expect(article.getByRole('link', { name: /E2E: закрытый сбор/ })).toHaveAttribute('href', '/fundraise/e2e-closed');
+        await expect(article.getByText('Поддержать', { exact: true })).toHaveAttribute('aria-disabled', 'true');
+        await expect(article.getByRole('link', { name: 'Поддержать', exact: true })).toHaveCount(0);
+        await expect(page.locator('a[href*="/donation/pay/"]')).toHaveCount(0);
     });
 
     test('поддержать: без сборов — «проектов нет»', async ({ page }) => {
@@ -67,7 +79,37 @@ test.describe('Новый фронт: подписки, поддержать, и
         expect(removed).toBe('DELETE /api/v1/favorites/vacancies/601');
     });
 
+    test('избранное: повторное нажатие во время запроса не шлёт второй, ошибка — откат', async ({ page }) => {
+        await page.route(/\/api\/v1\/favorites\/vacancies\/ids/, (route) => route.fulfill({ json: { ids: [601, 602] } }));
+        await page.route(/\/api\/v1\/favorites\/vacancies\?/, (route) => route.fulfill({ json: FAVORITES }));
+        const requests: string[] = [];
+        let release: () => void = () => undefined;
+        const answered = new Promise<void>((resolve) => { release = resolve; });
+        // Настоящее избранное не трогаем: запрос перехватывается и отвечает ошибкой с пустым телом
+        await page.route(/\/api\/v1\/favorites\/vacancies\/60\d$/, async (route) => {
+            requests.push(route.request().method());
+            await answered;
+            return route.fulfill({ status: 500, body: '' });
+        });
+        await page.goto('/favorite-offers');
+        const card = page.getByText('E2E: избранная 1');
+        await expect(card).toBeVisible();
+        const heart = page.getByRole('button', { name: /избранно/ }).first();
+        await heart.click();
+        await expect(heart).toHaveAttribute('aria-busy', 'true');
+        await expect(heart).toHaveAttribute('aria-pressed', 'false');
+        // aria-disabled Playwright считает неактивной кнопкой — нажимаем принудительно, как пользователь
+        await heart.click({ force: true });
+        await heart.click({ force: true });
+        release();
+        await expect(heart).not.toHaveAttribute('aria-busy');
+        await expect(heart).toHaveAttribute('aria-pressed', 'true');
+        await expect(card).toBeVisible();
+        expect(requests).toEqual(['DELETE']);
+    });
+
     test('избранное: пусто — приглашение на карту вакансий', async ({ page }) => {
+        await page.route(/\/api\/v1\/favorites\/vacancies\/ids/, (route) => route.fulfill({ json: { ids: [] } }));
         await page.route(/\/api\/v1\/favorites\/vacancies\?/, (route) => route.fulfill({ json: { data: [], pagination: { total: 0 } } }));
         await page.goto('/favorite-offers');
         await expect(page.getByText('Вы пока не добавили ни одну вакансию в избранное, давайте это исправим?')).toBeVisible();

@@ -177,7 +177,7 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
                                 href={hrefs.offer.replace("{id}", String(offer.id))}
                                 wide={false}
                                 labels={labels.card}
-                                favorite={favorites.enabled ? { active: favorites.isFavorite(offer.id), labels: labels.favorite, onToggle: () => void favorites.toggleFavorite(offer.id) } : undefined}
+                                favorite={favorites.enabled ? { active: favorites.isFavorite(offer.id), busy: favorites.isBusy(offer.id), labels: labels.favorite, onToggle: () => void favorites.toggleFavorite(offer.id) } : undefined}
                             />
                         ))}
                     </div>

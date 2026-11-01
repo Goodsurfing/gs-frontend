@@ -25,7 +25,8 @@ export function FavoriteOffers({ hrefs, categories, labels }: {
     labels: { empty: string; viewOffers: string; add: string; remove: string; card: OfferListCardLabels };
 }) {
     const session = useSession();
-    const favorites = useFavoriteOffers();
+    // Пока номера избранного не пришли, карточки списка считаются избранными
+    const favorites = useFavoriteOffers({ assumeFavorite: true });
     const [offers, setOffers] = useState<CatalogOffer[] | null>(null);
 
     useEffect(() => {
@@ -87,6 +88,7 @@ export function FavoriteOffers({ hrefs, categories, labels }: {
                     labels={labels.card}
                     favorite={favorites.enabled ? {
                         active: favorites.isFavorite(offer.id),
+                        busy: favorites.isBusy(offer.id),
                         labels: { add: labels.add, remove: labels.remove },
                         onToggle: () => {
                             const removing = favorites.isFavorite(offer.id);
