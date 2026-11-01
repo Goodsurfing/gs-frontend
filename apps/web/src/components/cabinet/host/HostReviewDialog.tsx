@@ -13,7 +13,20 @@ import { browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
 import { MAX_UPLOAD_SIZE, uploadMedia } from "@/lib/uploadMedia";
 
-type Waiting = components["schemas"]["ListVolunteerWithoutReviewResult"];
+type Image = components["schemas"]["ImageResultDto"];
+
+/** Кому пишется отзыв: волонтёр и вакансия, по которой он был принят */
+export interface ReviewTarget {
+    vacancyId: number;
+    volunteerId: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    image?: Image | null;
+    country?: string | null;
+    city?: string | null;
+    /** Статус заявки — бейдж на карточке */
+    status: string;
+}
 
 const MAX_PHOTOS = 10;
 
@@ -39,8 +52,12 @@ const STATUS_BG: Record<string, string> = { new: "bg-primary", accepted: "bg-hos
  * можно с оценкой и текстом; после отправки — «Ваш отзыв был отправлен».
  * В старом при ошибке форма стиралась — здесь введённое остаётся.
  */
-export function HostReviewDialog({ volunteer, volunteerHref, onClose, onSent, labels }: {
-    volunteer: Waiting | null;
+export function HostReviewDialog({ volunteer, volunteerHref, title, photos: withPhotos = true, onClose, onSent, labels }: {
+    volunteer: ReviewTarget | null;
+    /** Заголовок окна на виду (рабочий стол, заявки); без него — пустой, как на «Отзывах» */
+    title?: string;
+    /** Можно ли приложить фото (на «Отзывах» — да, в заявках — нет) */
+    photos?: boolean;
     volunteerHref: string;
     onClose: () => void;
     onSent: () => void;
@@ -89,7 +106,7 @@ export function HostReviewDialog({ volunteer, volunteerHref, onClose, onSent, la
         setBusy(true);
         setError(null);
         const { error: failed } = await browserApi(session.token).POST("/api/v1/review-volunteer", {
-            body: { vacancyId: volunteer.vacancyId, volunteerId: volunteer.id, description: text, rating: rating as never, imageIds: photos.map((photo) => photo.id) },
+            body: { vacancyId: volunteer.vacancyId, volunteerId: volunteer.volunteerId, description: text, rating: rating as never, imageIds: photos.map((photo) => photo.id) },
         }).catch(() => ({ error: true }));
         setBusy(false);
         if (failed) {
@@ -118,13 +135,15 @@ export function HostReviewDialog({ volunteer, volunteerHref, onClose, onSent, la
                             </div>
                         ) : (
                             <div className="flex max-w-[600px] flex-col gap-[15px] rounded-[20px] bg-white p-[25px]">
-                                <Dialog.Title className="sr-only">{labels.title}</Dialog.Title>
+                                {title
+                                    ? <Dialog.Title className="text-[1.5em] font-bold">{title}</Dialog.Title>
+                                    : <Dialog.Title className="sr-only">{labels.title}</Dialog.Title>}
                                 {volunteer && (
                                     // В старом над карточкой стоял пустой заголовок окна — 15 px сверху
-                                    <div className="mt-[15px] border border-accent-bg bg-white p-3.5 transition-all duration-300 hover:border-caption">
+                                    <div className={`${title ? "" : "mt-[15px]"} border border-accent-bg bg-white p-3.5 transition-all duration-300 hover:border-caption`}>
                                         <div className="relative flex">
-                                            {labels.statuses[volunteer.statusApplication] && (
-                                                <div className={`absolute top-0 right-0 px-1.5 py-0.5 text-[10px] text-white ${STATUS_BG[volunteer.statusApplication] ?? "bg-primary"}`}>{labels.statuses[volunteer.statusApplication]}</div>
+                                            {labels.statuses[volunteer.status] && (
+                                                <div className={`absolute top-0 right-0 px-1.5 py-0.5 text-[10px] text-white ${STATUS_BG[volunteer.status] ?? "bg-primary"}`}>{labels.statuses[volunteer.status]}</div>
                                             )}
                                             <a href={volunteerHref} aria-hidden tabIndex={-1}><Avatar src={mediaUrl(volunteer.image, "small")} name={person} size={56} /></a>
                                             <a href={volunteerHref} className="ml-2 flex flex-col text-inherit no-underline">
@@ -137,14 +156,16 @@ export function HostReviewDialog({ volunteer, volunteerHref, onClose, onSent, la
                                 {/* Rating MUI был на 5 px ниже строки — до поля 10 px, а не 15 */}
                                 <div className="-mb-[5px]"><StarRating value={rating} size={30} label={labels.rating} onChange={setRating} /></div>
                                 <NotesTextAreaField label={labels.write} maxLength={500} value={text} onChange={(event) => setText(event.target.value)} />
-                                <PhotoUploader
-                                    photos={photos.map((photo) => ({ key: photo.id, src: photo.src }))}
-                                    pending={pending}
-                                    onFiles={(files) => void addPhotos(files)}
-                                    onRemove={(key) => setPhotos((prev) => prev.filter((photo) => photo.id !== key))}
-                                    onCancel={(key) => setPending((prev) => prev.filter((item) => item.key !== key))}
-                                    labels={labels.photo}
-                                />
+                                {withPhotos && (
+                                    <PhotoUploader
+                                        photos={photos.map((photo) => ({ key: photo.id, src: photo.src }))}
+                                        pending={pending}
+                                        onFiles={(files) => void addPhotos(files)}
+                                        onRemove={(key) => setPhotos((prev) => prev.filter((photo) => photo.id !== key))}
+                                        onCancel={(key) => setPending((prev) => prev.filter((item) => item.key !== key))}
+                                        labels={labels.photo}
+                                    />
+                                )}
                                 {error && <p role="alert" className="my-[15px] text-[0.75rem] text-[#d32f2f]">{error}</p>}
                                 {rating === null && <p className="text-[14px] text-error">{labels.needRating}</p>}
                                 <div>

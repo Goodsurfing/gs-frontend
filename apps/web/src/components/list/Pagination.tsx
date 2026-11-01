@@ -1,19 +1,23 @@
 import { pageItems } from "@/lib/pagination";
 
-const ITEM = "mx-[3px] box-border inline-flex h-10 min-w-10 items-center justify-center rounded-[20px] px-2.5 font-[Roboto,Helvetica,Arial,sans-serif] text-[15px] leading-[1.43] tracking-[0.01071em] text-black/87";
+const ITEM_LARGE = "mx-[3px] box-border inline-flex h-10 min-w-10 items-center justify-center rounded-[20px] px-2.5 font-[Roboto,Helvetica,Arial,sans-serif] text-[15px] leading-[1.43] tracking-[0.01071em] text-black/87";
+/** MUI Pagination size="small" (колонки заявок организатора) */
+const ITEM_SMALL = "mx-px box-border inline-flex h-[26px] min-w-[26px] items-center justify-center rounded-[13px] px-1 font-[Roboto,Helvetica,Arial,sans-serif] text-[13px] leading-[1.43] tracking-[0.01071em] text-black/87";
 
 /**
  * Пагинация ссылками (?page=N): работает без JS, страницы индексируются.
  * В кабинете (данные в браузере) — кнопками: onPage вместо href.
  * Внешний вид — как MUI Pagination size="large" старого фронта.
  */
-export function Pagination({ page, count, href, onPage, labels }: {
+export function Pagination({ page, count, href, onPage, size, labels }: {
     page: number;
     count: number;
     href?: (page: number) => string;
     onPage?: (page: number) => void;
+    size?: "small";
     labels: { prev: string; next: string; page: string };
 }) {
+    const ITEM = size === "small" ? ITEM_SMALL : ITEM_LARGE;
     const Link = ({ target, className, children, ...rest }: { target: number; className: string; children: React.ReactNode; "aria-label"?: string; "aria-current"?: "page" }) => (onPage
         ? <button type="button" onClick={() => onPage(target)} className={`${className} cursor-pointer border-0 bg-transparent`} {...rest}>{children}</button>
         : <a href={href?.(target)} className={className} {...rest}>{children}</a>);

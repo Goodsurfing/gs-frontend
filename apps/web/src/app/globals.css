@@ -71,7 +71,7 @@
  * от широких к узким — иначе широкая точка перебьёт узкую там, где обе действуют.
  * Нестандартные — точки старого кабинета: вакансии, сборы и пожертвования
  * организатора (1200), ProfileInput и страницы организации (1000, 600), соцсети
- * в форме организации (800), фильтры пожертвований (460).
+ * в форме организации (800), колонки заявок (756, 442), фильтры пожертвований (460).
  */
 @custom-variant down-3xl (@media (max-width: 1366px));
 @custom-variant down-2xl (@media (max-width: 1280px)); /* шапка: десктопная капсула → мобильная */
@@ -81,10 +81,12 @@
 @custom-variant down-lg (@media (max-width: 992px));
 @custom-variant down-800 (@media (max-width: 800px));
 @custom-variant down-md (@media (max-width: 768px));
+@custom-variant down-756 (@media (max-width: 756px));
 @custom-variant down-600 (@media (max-width: 600px));
 @custom-variant down-sm (@media (max-width: 576px));
 @custom-variant down-xs (@media (max-width: 480px));
 @custom-variant down-460 (@media (max-width: 460px));
+@custom-variant down-442 (@media (max-width: 442px));
 
 html {
     font-size: 16px;
