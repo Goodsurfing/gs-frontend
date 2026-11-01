@@ -2,7 +2,7 @@
 
 import type { components } from "@goodsurfing/api";
 import * as Dialog from "@radix-ui/react-dialog";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { type PendingPhoto, PhotoUploader } from "@/components/cabinet/PhotoUploader";
 import { blueButton, NotesTextAreaField } from "@/components/form/fields";
@@ -54,6 +54,8 @@ export function HostReviewDialog({ volunteer, volunteerHref, onClose, onSent, la
     const [error, setError] = useState<string | null>(null);
     const [busy, setBusy] = useState(false);
     const [sent, setSent] = useState(false);
+    // Загрузки, отменённые «×», в отзыв не попадают
+    const cancelled = useRef(new Set<string>());
 
     const close = () => {
         setRating(null);
@@ -76,6 +78,7 @@ export function HostReviewDialog({ volunteer, volunteerHref, onClose, onSent, la
         await Promise.all(batch.filter(({ file }) => file.size <= MAX_UPLOAD_SIZE).map(async ({ file, key }) => {
             try {
                 const media = await uploadMedia(file, session.token);
+                if (cancelled.current.has(key)) return;
                 setPhotos((prev) => [...prev, { id: media.id, src: mediaUrl(media, "medium") ?? "" }]);
                 setPending((prev) => prev.filter((item) => item.key !== key));
             } catch {
@@ -142,7 +145,10 @@ export function HostReviewDialog({ volunteer, volunteerHref, onClose, onSent, la
                                     pending={pending}
                                     onFiles={(files) => void addPhotos(files)}
                                     onRemove={(key) => setPhotos((prev) => prev.filter((photo) => photo.id !== key))}
-                                    onCancel={(key) => setPending((prev) => prev.filter((item) => item.key !== key))}
+                                    onCancel={(key) => {
+                                            cancelled.current.add(key);
+                                            setPending((prev) => prev.filter((item) => item.key !== key));
+                                        }}
                                     labels={labels.photo}
                                 />
                                 {error && <p role="alert" className="my-[15px] text-[0.75rem] text-[#d32f2f]">{error}</p>}

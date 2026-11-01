@@ -41,9 +41,10 @@ export function HostVideo({ labels }: { labels: HostVideoLabels }) {
     if (!organization) return <Loading className="mt-10 min-h-[200px]" />;
     const videos = organization.videoGallery ?? [];
 
-    const write = async (next: string[]) => {
+    const write = async (next: (list: string[]) => string[]) => {
         setBusy(true);
-        const ok = await save({ videoGallery: next });
+        // Список берётся у последней версии организации, а не из отрисованного
+        const ok = await save((latest) => ({ videoGallery: next(latest.videoGallery ?? []) }));
         setBusy(false);
         setToast({ text: ok ? labels.saved : labels.error, ok });
     };
@@ -59,7 +60,7 @@ export function HostVideo({ labels }: { labels: HostVideoLabels }) {
         const link = url.trim();
         setUrl("");
         setChecked(false);
-        await write([...videos, link]);
+        await write((list) => [...list, link]);
     };
 
     return (
@@ -110,7 +111,7 @@ export function HostVideo({ labels }: { labels: HostVideoLabels }) {
                             type="button"
                             aria-label={labels.remove}
                             disabled={busy}
-                            onClick={() => void write(videos.filter((_, i) => i !== index))}
+                            onClick={() => void write((list) => list.filter((item, i) => !(i === index && item === video)))}
                             className="mb-auto flex cursor-pointer items-center justify-center p-[5px]"
                         >
                             ✖

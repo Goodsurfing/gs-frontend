@@ -62,7 +62,7 @@ export function HostReviews({ volunteerHref, offerHref, labels }: {
     labels: HostReviewsLabels;
 }) {
     const session = useSession();
-    const { organization } = useMyOrganization();
+    const { organization, failed } = useMyOrganization();
     const [waiting, setWaiting] = useState<Waiting[] | null>(null);
     const [mine, setMine] = useState<{ items: MyReview[]; total: number; page: number } | null>(null);
     const [offers, setOffers] = useState<{ items: OfferReview[]; total: number; page: number } | null>(null);
@@ -96,8 +96,9 @@ export function HostReviews({ volunteerHref, offerHref, labels }: {
         void Promise.all([loadWaiting(), loadMine(1), loadOffers(1)]);
     }, [session.status, loadWaiting, loadMine, loadOffers]);
 
-    if (!organization) return <Loading className="min-h-[300px]" />;
-    const rating = organization.averageRating;
+    // Организация нужна только для рейтинга: не загрузилась — списки всё равно показываются
+    if (!organization && !failed) return <Loading className="min-h-[300px]" />;
+    const rating = organization?.averageRating ?? 0;
     const more = async (load: (page: number) => Promise<void>, page: number) => {
         setBusy(true);
         await load(page + 1);
