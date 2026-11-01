@@ -21,7 +21,7 @@ export interface OfferListCardLabels {
  * волонтёра) вся карточка ведёт на вакансию. Выбранная — с синей полосой
  * слева, закрытая — бледнее.
  */
-export function OfferListCard({ offer, href, selected = false, onSelect, wide, labels }: {
+export function OfferListCard({ offer, href, selected = false, onSelect, wide, labels, favorite }: {
     offer: CatalogOffer;
     href: string;
     selected?: boolean;
@@ -29,6 +29,8 @@ export function OfferListCard({ offer, href, selected = false, onSelect, wide, l
     /** Карта свёрнута — карточки в две колонки */
     wide: boolean;
     labels: OfferListCardLabels;
+    /** Сердечко «в избранное» на картинке — только вошедшим (gs-backend #407) */
+    favorite?: { active: boolean; onToggle: () => void; labels: { add: string; remove: string } };
 }) {
     const [imageFailed, setImageFailed] = useState(false);
     const imageRef = useRef<HTMLImageElement>(null);
@@ -60,6 +62,24 @@ export function OfferListCard({ offer, href, selected = false, onSelect, wide, l
                     {offer.image && !imageFailed && (
                         // eslint-disable-next-line @next/next/no-img-element -- превью из хранилища
                         <img ref={imageRef} src={offer.image} alt="" loading="lazy" onError={() => setImageFailed(true)} className="block h-full w-full object-cover" />
+                    )}
+                    {favorite && (
+                        <button
+                            type="button"
+                            aria-label={favorite.active ? favorite.labels.remove : favorite.labels.add}
+                            aria-pressed={favorite.active}
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                favorite.onToggle();
+                            }}
+                            onKeyDown={(event) => event.stopPropagation()}
+                            className={`absolute top-2.5 left-2.5 cursor-pointer p-[5px] transition-transform duration-300 hover:scale-120 ${favorite.active ? "animate-heart-pulse" : ""}`}
+                        >
+                            {/* Белое, в избранном — розовое с «пульсом» (heart-icon старого фронта) */}
+                            <svg aria-hidden width="24" height="20" viewBox="0 0 24 20" className={`block transition-[fill] duration-300 ${favorite.active ? "fill-status-rejected" : "fill-white"}`}>
+                                <path fillRule="evenodd" clipRule="evenodd" d="M12.1459 20C10.7363 18.6083 -2.99853 11.4923 1.02846 3.44676C4.91013 -4.30845 12.1459 3.44676 12.1459 3.44676M12.1459 20C13.5555 18.6083 27.2903 11.4923 23.2633 3.44676C19.3817 -4.30845 12.1459 3.44676 12.1459 3.44676" />
+                            </svg>
+                        </button>
                     )}
                 </div>
                 <div className="min-w-0 flex-1">
