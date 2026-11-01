@@ -2,7 +2,11 @@ import * as Sentry from "@sentry/react";
 import { Component, ErrorInfo, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
-import { isChunkLoadError, reloadOnceForChunkError } from "@/shared/lib/handleChunkLoadError";
+import {
+    isChunkLoadError,
+    isReloadingForChunkError,
+    reloadOnceForChunkError,
+} from "@/shared/lib/handleChunkLoadError";
 
 import styles from "./AppErrorBoundary.module.scss";
 
@@ -43,6 +47,11 @@ export class AppErrorBoundary extends Component<AppErrorBoundaryProps, AppErrorB
     }
 
     componentDidCatch(error: Error, info: ErrorInfo) {
+        // Страница уже перезагружается за свежими файлами — ошибка lazy-импорта
+        // после этого ожидаема (см. isReloadingForChunkError)
+        if (isReloadingForChunkError()) {
+            return;
+        }
         if (isChunkLoadError(error) && reloadOnceForChunkError()) {
             return;
         }
@@ -54,6 +63,10 @@ export class AppErrorBoundary extends Component<AppErrorBoundaryProps, AppErrorB
     render() {
         const { hasError } = this.state;
         const { children } = this.props;
-        return hasError ? <ErrorFallback /> : children;
+        if (!hasError) {
+            return children;
+        }
+        // Во время перезагрузки не мигаем экраном «Что-то пошло не так»
+        return isReloadingForChunkError() ? null : <ErrorFallback />;
     }
 }
