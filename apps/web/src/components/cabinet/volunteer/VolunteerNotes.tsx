@@ -127,11 +127,12 @@ export function VolunteerNotes({ hrefs, categories, labels }: {
                 )}
                 onSend={async ({ rating, text }) => {
                     if (!selected) return labels.sendError;
-                    const { error } = await browserApi(session.token).POST("/api/v1/review-vacancy", {
+                    const { error, response } = await browserApi(session.token).POST("/api/v1/review-vacancy", {
                         body: { vacancyId: selected.vacancy.id, rating: rating as never, description: text, imageIds: [] },
-                    }).catch(() => ({ error: true }));
-                    // Текст ошибки бэкенда (getErrorText старого фронта), иначе общий
-                    if (error) {
+                    }).catch(() => ({ error: true, response: undefined }));
+                    // Текст ошибки бэкенда (getErrorText старого фронта), иначе общий. Ошибка
+                    // с пустым телом приходит без error — поэтому ещё и response.ok
+                    if (error || !response?.ok) {
                         const { detail, message } = (typeof error === "object" ? error : {}) as { detail?: unknown; message?: unknown };
                         return typeof detail === "string" ? detail : typeof message === "string" ? message : labels.sendError;
                     }

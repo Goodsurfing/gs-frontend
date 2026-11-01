@@ -18,7 +18,7 @@ export function Doughnut({ share, size = 110, children }: { share: number; size?
     };
     const ring = (fill: string) => (
         <>
-            <circle cx={r} cy={r} r={(r - 1 + inner) / 2} fill="none" stroke={fill} strokeWidth={r - 1 - inner} />
+            <circle cx={r} cy={r} r={(r - 1 + inner) / 2} fill="none" style={{ stroke: fill }} strokeWidth={r - 1 - inner} />
             <circle cx={r} cy={r} r={r - 1} fill="none" stroke="#fff" strokeWidth={2} />
             <circle cx={r} cy={r} r={inner} fill="none" stroke="#fff" strokeWidth={2} />
         </>
@@ -28,12 +28,12 @@ export function Doughnut({ share, size = 110, children }: { share: number; size?
     return (
         <div className="relative shrink-0" style={{ width: size, height: size }}>
             <svg aria-hidden width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="block">
-                {value <= 0 && ring("#DFE6EB")}
-                {value >= 1 && ring("#22E0A5")}
+                {value <= 0 && ring("var(--color-accent-bg)")}
+                {value >= 1 && ring("var(--color-host)")}
                 {value > 0 && value < 1 && (
                     <g stroke="#fff" strokeWidth={2} strokeLinejoin="round">
-                        <path d={arc(0, full)} fill="#22E0A5" />
-                        <path d={arc(full, 2 * Math.PI)} fill="#DFE6EB" />
+                        <path d={arc(0, full)} style={{ fill: "var(--color-host)" }} />
+                        <path d={arc(full, 2 * Math.PI)} style={{ fill: "var(--color-accent-bg)" }} />
                     </g>
                 )}
             </svg>

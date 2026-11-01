@@ -1,7 +1,7 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useRef, useState } from "react";
 
 import { TextAreaField } from "@/components/form/fields";
 
@@ -39,8 +39,12 @@ export function OfferReviewDialog({ open, offer, labels, onSend, onClose }: {
     const [busy, setBusy] = useState(false);
     const [sent, setSent] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    // Номер «сеанса» окна: ответ отправки, пришедший после закрытия, не должен попасть в следующее окно
+    const session = useRef(0);
 
     const close = () => {
+        session.current += 1;
+        setBusy(false);
         setRating(null);
         setText("");
         setSent(false);
@@ -52,7 +56,9 @@ export function OfferReviewDialog({ open, offer, labels, onSend, onClose }: {
         if (!rating || !text || busy) return;
         setBusy(true);
         setError(null);
+        const current = session.current;
         const failure = await onSend({ rating, text });
+        if (current !== session.current) return;
         setBusy(false);
         setRating(null);
         setText("");
