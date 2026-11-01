@@ -8,6 +8,7 @@ import { Ring } from "@/components/ui/Ring";
 import { Toast } from "@/components/ui/Toast";
 import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
+import { hasHostMembership } from "@/lib/occupancy";
 
 import { type Application, ApplicationCard, type ApplicationCardLabels } from "./ApplicationCard";
 import { HostReviewDialog, type HostReviewDialogLabels } from "./HostReviewDialog";
@@ -78,8 +79,7 @@ export function HostDashboard({ locale, routes, labels }: {
         void api.GET("/api/v1/review-vacancy", { params: { query: { limit: 1, page: 1 } } })
             .then(({ data }) => setHasReviews((data?.data?.length ?? 0) > 0)).catch(() => undefined);
         void api.GET("/api/v1/profile/occupancy").then(({ data }) => {
-            const value = data as { isHostMembership?: boolean | null; isMembership?: boolean | null; remainingFreeVacancies?: number | null } | undefined;
-            if (value) setOccupancy({ member: value.isHostMembership ?? value.isMembership ?? false, remaining: value.remainingFreeVacancies ?? 0 });
+            if (data) setOccupancy({ member: hasHostMembership(data), remaining: data.remainingFreeVacancies ?? 0 });
         }).catch(() => undefined);
     }, [session.status, session.token, loadApplications]);
 

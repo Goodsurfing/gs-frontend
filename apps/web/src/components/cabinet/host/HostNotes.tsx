@@ -1,6 +1,6 @@
 "use client";
 
-import { type DragEvent, useCallback, useEffect, useId, useState } from "react";
+import { type DragEvent, useCallback, useEffect, useId, useRef, useState } from "react";
 
 import { Pagination } from "@/components/list/Pagination";
 import { useSession } from "@/components/session/SessionProvider";
@@ -49,10 +49,22 @@ export function HostNotes({ routes, labels }: {
     const [dragOver, setDragOver] = useState<ApplicationStatus | null>(null);
     const selectId = useId();
 
+    // Номер последнего запроса колонки: поздний ответ для прежнего фильтра или страницы не затирает свежий
+    const requests = useRef<Partial<Record<ApplicationStatus, number>>>({});
     const loadColumn = useCallback(async (status: ApplicationStatus, page: number, vacancy: number | undefined) => {
-        const { data } = await browserApi(session.token).GET("/api/v1/application/list-of-organization", {
-            params: { query: { status, limit: String(PER_PAGE), page: String(page), ...(vacancy ? { vacancyId: vacancy } : {}) } },
-        }).catch(() => ({ data: undefined }));
+        const request = (requests.current[status] ?? 0) + 1;
+        requests.current[status] = request;
+        const fetchPage = async (target: number) => (await browserApi(session.token).GET("/api/v1/application/list-of-organization", {
+            params: { query: { status, limit: String(PER_PAGE), page: String(target), ...(vacancy ? { vacancyId: vacancy } : {}) } },
+        }).catch(() => ({ data: undefined }))).data;
+        let data = await fetchPage(page);
+        // Ушла последняя карточка последней страницы — на предыдущую (иначе колонка пустая и без навигации)
+        const pages = Math.max(1, Math.ceil((data?.pagination?.total ?? 0) / PER_PAGE));
+        if (page > pages) {
+            page = pages;
+            data = await fetchPage(page);
+        }
+        if (requests.current[status] !== request) return;
         setColumns((prev) => ({ ...prev, [status]: { items: data?.data ?? [], total: data?.pagination?.total ?? 0, page } }));
     }, [session.token]);
 
@@ -64,7 +76,6 @@ export function HostNotes({ routes, labels }: {
     useEffect(() => {
         if (session.status !== "user") return;
         // Колонки с первой страницы — при входе и при смене вакансии
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         for (const column of COLUMNS) void loadColumn(column, 1, vacancyId);
     }, [session.status, loadColumn, vacancyId]);
 
