@@ -64,9 +64,13 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
 
     useEffect(() => {
         if (session.status !== "user") return;
+        let cancelled = false;
         void browserApi(session.token).GET("/api/v1/profile/occupancy")
-            .then(({ data }) => data && setOccupancy(data))
+            .then(({ data }) => !cancelled && data && setOccupancy(data))
             .catch(() => undefined);
+        return () => {
+            cancelled = true;
+        };
     }, [session.status, session.token]);
 
     useEffect(() => {
@@ -179,7 +183,8 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
                     </div>
                 </section>
                 <div className="flex w-full max-w-[468px] flex-col down-lg:max-w-none">
-                    {occupancy && !occupancy.isMembership && (
+                    {/* Как в старом фронте: баннер и пока занятость не загружена (или не ответила) */}
+                    {!occupancy?.isMembership && (
                         <MemberBanner locale={locale} title={labels.banner} button={labels.bannerButton} className="down-lg:max-w-none" />
                     )}
                     <section className={`w-full max-w-[486px] ${card} down-lg:max-w-none`}>
@@ -217,7 +222,7 @@ function Quota({ occupancy, href, labels }: { occupancy: Occupancy; href: string
         <div className="flex max-w-[220px] shrink-0 flex-col items-center gap-3 text-center">
             <div className="relative shrink-0" style={{ width: size, height: size }}>
                 <svg aria-hidden width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="block">
-                    <circle cx={size / 2} cy={size / 2} r={radius} strokeWidth={stroke} fill="none" stroke="#DFE6EB" />
+                    <circle cx={size / 2} cy={size / 2} r={radius} strokeWidth={stroke} fill="none" style={{ stroke: "var(--color-accent-bg)" }} />
                     {share > 0 && (
                         <circle
                             cx={size / 2}
@@ -225,7 +230,7 @@ function Quota({ occupancy, href, labels }: { occupancy: Occupancy; href: string
                             r={radius}
                             strokeWidth={stroke}
                             fill="none"
-                            stroke="#22E0A5"
+                            style={{ stroke: "var(--color-host)" }}
                             strokeDasharray={`${length * share} ${length}`}
                             transform={`rotate(-90 ${size / 2} ${size / 2})`}
                         />
