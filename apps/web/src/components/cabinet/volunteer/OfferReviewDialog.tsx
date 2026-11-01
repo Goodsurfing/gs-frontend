@@ -3,11 +3,11 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { type ReactNode, useState } from "react";
 
+import { ImagesUploader, type ImagesUploaderLabels } from "@/components/cabinet/ImagesUploader";
 import { TextAreaField } from "@/components/form/fields";
+import type { UploadedMedia } from "@/lib/mediaUpload";
 
-// Звёзды MUI Rating старого фронта: выбранная — Star, пустая — контур StarBorder
-const STAR = "M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z";
-const STAR_BORDER = "m22 9.24-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28z";
+import { STAR, STAR_BORDER } from "./StarRating";
 
 export interface OfferReviewDialogLabels {
     title: string;
@@ -23,15 +23,18 @@ export interface OfferReviewDialogLabels {
  * Окно «Оставьте отзыв» о вакансии (VolunteerModalReview + ModalReview
  * старого фронта): карточка вакансии, оценка звёздами, текст до 500 знаков.
  * Отправить можно только с оценкой и текстом; после отправки в окне —
- * только сообщение об успехе.
+ * только сообщение об успехе. С photos — ещё фото к отзыву (до 10), как на
+ * странице «Отзывы».
  */
-export function OfferReviewDialog({ open, offer, labels, onSend, onClose }: {
+export function OfferReviewDialog({ open, offer, labels, photos, onSend, onClose }: {
     open: boolean;
     /** Карточка вакансии над оценкой */
     offer: ReactNode;
     labels: OfferReviewDialogLabels;
+    /** Фото к отзыву: токен для загрузки и подписи загрузчика */
+    photos?: { token: string | undefined; labels: ImagesUploaderLabels };
     /** Отправка; вернуть текст ошибки или null */
-    onSend: (review: { rating: number; text: string }) => Promise<string | null>;
+    onSend: (review: { rating: number; text: string; imageIds: string[] }) => Promise<string | null>;
     onClose: () => void;
 }) {
     const [rating, setRating] = useState<number | null>(null);
@@ -39,10 +42,12 @@ export function OfferReviewDialog({ open, offer, labels, onSend, onClose }: {
     const [busy, setBusy] = useState(false);
     const [sent, setSent] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [images, setImages] = useState<UploadedMedia[]>([]);
 
     const close = () => {
         setRating(null);
         setText("");
+        setImages([]);
         setSent(false);
         setError(null);
         onClose();
@@ -52,10 +57,11 @@ export function OfferReviewDialog({ open, offer, labels, onSend, onClose }: {
         if (!rating || !text || busy) return;
         setBusy(true);
         setError(null);
-        const failure = await onSend({ rating, text });
+        const failure = await onSend({ rating, text, imageIds: images.map((image) => image.id) });
         setBusy(false);
         setRating(null);
         setText("");
+        setImages([]);
         if (failure) setError(failure);
         else setSent(true);
     };
@@ -92,6 +98,16 @@ export function OfferReviewDialog({ open, offer, labels, onSend, onClose }: {
                                     </div>
                                     {/* Отступ 5 px снизу — как у строчной textarea с <br> в старом Textarea */}
                                     <TextAreaField className="pb-[5px]" label={labels.text} value={text} maxLength={500} onChange={(event) => setText(event.target.value)} />
+                                    {photos && (
+                                        <ImagesUploader
+                                            items={images}
+                                            token={photos.token}
+                                            labels={photos.labels}
+                                            onUpload={async (media) => setImages((prev) => [...prev, ...media])}
+                                            onDelete={(id) => setImages((prev) => prev.filter((image) => image.id !== id))}
+                                            onError={() => undefined}
+                                        />
+                                    )}
                                     {error && <p role="alert" className="text-[0.875rem] text-error">{error}</p>}
                                     {!rating && <p className="text-[14px] text-error">{labels.hint}</p>}
                                     <button

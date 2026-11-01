@@ -28,7 +28,8 @@ export function receptionPlaceText(place: string, t: Translate): string | null {
     return null;
 }
 
-const LANGUAGES: Record<string, string> = {
+/** Языки справочника (значения API) → ключи словаря whoNeeds.* */
+export const LANGUAGES: Record<string, string> = {
     not_matter: "Не важен",
     English: "Английский",
     Русский: "Русский",
@@ -47,7 +48,8 @@ const LANGUAGES: Record<string, string> = {
     עברית: "Иврит",
 };
 
-const LEVELS: Record<string, string> = {
+/** Уровни владения языком (значения API) → ключи словаря whoNeeds.* */
+export const LEVELS: Record<string, string> = {
     not_matter: "Не важен",
     beginner: "Начальный",
     elementary: "Элементарный",
