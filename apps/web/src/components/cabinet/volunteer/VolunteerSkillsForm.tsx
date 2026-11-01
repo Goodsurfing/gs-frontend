@@ -8,20 +8,18 @@ import { useSession } from "@/components/session/SessionProvider";
 import { Spinner } from "@/components/ui/Spinner";
 import { Toast } from "@/components/ui/Toast";
 import { browserApi } from "@/lib/browserApi";
+import { mediaUrl } from "@/lib/media";
+import { MAX_SKILL_ITEMS as MAX_ITEMS, normalizeOwnSkills, parseSkillsDraft, type SkillsDraft as Draft, skillsDraftKey, type SkillsLanguage as Language } from "@/lib/volunteerSkills";
 
 type Skill = components["schemas"]["ListResult17"];
-type Language = { language: string; languageLevel: string };
+type LanguageCommand = components["schemas"]["LanguageCommand"];
 
-interface Draft {
-    languages: Language[];
-    skills: number[];
-    additional: string[];
-    extraInfo: string;
-}
-
-/** Несохранённая форма живёт до закрытия вкладки (VOLUNTEER_SKILLS_FORM старого фронта, другой формат — свой ключ) */
-const DRAFT_KEY = "volunteerSkillsDraft";
-const MAX_ITEMS = 10;
+/**
+ * Языки для PATCH /volunteer. В схеме API id обязателен и числовой, но новый
+ * язык id ещё не имеет: как старый фронт, отправляем null (бэкенд принимает) —
+ * расхождение схемы с бэкендом описано в PR. Приведение — только у id.
+ */
+const languagesBody = (list: Language[]): LanguageCommand[] => list.map(({ id, language, languageLevel }) => ({ id: id as LanguageCommand["id"], language, languageLevel }));
 
 export interface VolunteerSkillsLabels {
     languages: string;
@@ -31,6 +29,7 @@ export interface VolunteerSkillsLabels {
     skills: string;
     addSkill: string;
     editSkill: string;
+    edit: string;
     removeSkill: string;
     extraInfo: string;
     extraInfoHint: string;
@@ -75,18 +74,22 @@ function RemoveButton({ label, onClick, className = "" }: { label: string; onCli
 }
 
 /** Свой навык: круг с галочкой и поле; двойной щелчок по полю или галочка — правка (EditableInputWithButton старого фронта) */
-function OwnSkill({ value, labels, onChange, onRemove }: { value: string; labels: VolunteerSkillsLabels; onChange: (value: string) => void; onRemove: () => void }) {
+function OwnSkill({ value, labels, onChange, onRemove }: { value: string; labels: VolunteerSkillsLabels; onChange: (value: string) => boolean; onRemove: () => void }) {
     const [editing, setEditing] = useState(false);
     const [text, setText] = useState(value);
     const submit = () => {
-        if (text && text !== value) onChange(text);
-        if (text) setEditing(false);
+        const trimmed = text.trim();
+        if (!trimmed) return;
+        // Повтор другого навыка не принимается — поле возвращается к прежнему значению
+        if (trimmed !== value && !onChange(trimmed)) setText(value);
+        else setText(trimmed);
+        setEditing(false);
     };
     return (
         <div className="relative flex gap-5">
             <button
                 type="button"
-                aria-label={labels.editSkill}
+                aria-label={`${labels.edit}: ${value}`}
                 aria-pressed={editing}
                 onClick={() => (editing ? submit() : setEditing(true))}
                 className={`flex h-[46px] w-[46px] shrink-0 cursor-pointer items-center justify-center rounded-full border ${editing ? "border-caption bg-caption" : "border-primary bg-primary"}`}
@@ -94,7 +97,7 @@ function OwnSkill({ value, labels, onChange, onRemove }: { value: string; labels
                 <svg aria-hidden viewBox="0 0 20 20" className="h-[18px] w-[18px] fill-white"><path fillRule="evenodd" clipRule="evenodd" d={CHECK} /></svg>
             </button>
             <input
-                aria-label={labels.editSkill}
+                aria-label={`${labels.editSkill}: ${value}`}
                 value={text}
                 readOnly={!editing}
                 onChange={(event) => setText(event.target.value)}
@@ -109,7 +112,7 @@ function OwnSkill({ value, labels, onChange, onRemove }: { value: string; labels
                 // В старом фронте стили поля InputWithIcon перекрывали «нередактируемый» вид — сохранённый навык выглядит как обычное поле
                 className={`${FIELD} text-ink-secondary ${editing ? "cursor-text" : "cursor-pointer"}`}
             />
-            <RemoveButton label={labels.removeSkill} onClick={onRemove} className="absolute top-[30%] -right-8" />
+            <RemoveButton label={`${labels.removeSkill}: ${value}`} onClick={onRemove} className="absolute top-[30%] -right-8" />
         </div>
     );
 }
@@ -135,6 +138,7 @@ export function VolunteerSkillsForm({ locale, languages, levels, labels }: {
     const [busy, setBusy] = useState(false);
     const [message, setMessage] = useState<{ text: string; ok: boolean } | null>(null);
     const volunteer = session.profile?.volunteer;
+    const profileId = session.profile?.id;
 
     useEffect(() => {
         if (session.status !== "user") return;
@@ -150,30 +154,28 @@ export function VolunteerSkillsForm({ locale, languages, levels, labels }: {
     useEffect(() => {
         if (!volunteer || saved) return;
         const initial: Draft = {
-            languages: (volunteer.languages ?? []).map(({ language, languageLevel }) => ({ language, languageLevel })),
+            languages: (volunteer.languages ?? []).map(({ id, language, languageLevel }) => ({ id: id ?? null, language: language ?? "", languageLevel: languageLevel ?? "" })),
             skills: (volunteer.skills ?? []).map((skill) => skill.id),
             additional: volunteer.additionalSkills ?? [],
             extraInfo: volunteer.externalInfo ?? "",
         };
         let draft: Draft | null = null;
         try {
-            const raw = window.sessionStorage.getItem(DRAFT_KEY);
-            const parsed: unknown = raw ? JSON.parse(raw) : null;
-            if (parsed && typeof parsed === "object" && Array.isArray((parsed as Draft).skills)) draft = parsed as Draft;
+            draft = profileId ? parseSkillsDraft(window.sessionStorage.getItem(skillsDraftKey(profileId))) : null;
         } catch {
             draft = null;
         }
         // eslint-disable-next-line react-hooks/set-state-in-effect -- профиль приходит из сессии в браузере
         setSaved(initial);
         setForm(draft ?? initial);
-    }, [volunteer, saved]);
+    }, [volunteer, saved, profileId]);
 
     const update = (patch: Partial<Draft>) => {
         if (!form) return;
         const next = { ...form, ...patch };
         setForm(next);
         try {
-            window.sessionStorage.setItem(DRAFT_KEY, JSON.stringify(next));
+            if (profileId) window.sessionStorage.setItem(skillsDraftKey(profileId), JSON.stringify(next));
         } catch {
             // хранилище недоступно — черновик не сохраняется
         }
@@ -192,7 +194,7 @@ export function VolunteerSkillsForm({ locale, languages, levels, labels }: {
         setBusy(true);
         const { error } = await browserApi(session.token).PATCH("/api/v1/volunteer", {
             body: {
-                languages: form.languages as components["schemas"]["LanguageCommand"][],
+                languages: languagesBody(form.languages),
                 skillIds: form.skills,
                 additionalSkills: form.additional,
                 externalInfo: form.extraInfo,
@@ -206,7 +208,7 @@ export function VolunteerSkillsForm({ locale, languages, levels, labels }: {
         }
         setSaved(form);
         try {
-            window.sessionStorage.removeItem(DRAFT_KEY);
+            if (profileId) window.sessionStorage.removeItem(skillsDraftKey(profileId));
         } catch {
             // хранилище недоступно
         }
@@ -220,24 +222,26 @@ export function VolunteerSkillsForm({ locale, languages, levels, labels }: {
                 aria-label={labels.languages}
                 options={languages}
                 value={value?.language ?? ""}
-                // Новый язык — с начальным уровнем (LanguageLevelComponent старого фронта)
-                onChange={(event) => onChange({ language: event.target.value, languageLevel: "beginner" })}
+                // Новый язык — с начальным уровнем и без id (LanguageLevelComponent старого фронта)
+                onChange={(event) => onChange({ id: null, language: event.target.value, languageLevel: "beginner" })}
             />
             <Select
                 label={titled ? labels.level : undefined}
                 aria-label={labels.level}
                 options={levels}
                 value={value?.languageLevel ?? ""}
-                onChange={(event) => onChange({ language: value?.language ?? "", languageLevel: event.target.value })}
+                onChange={(event) => onChange({ id: null, language: value?.language ?? "", languageLevel: event.target.value })}
             />
         </div>
     );
     const mainReady = !!main?.language && !!main.languageLevel;
     const addSkill = () => {
-        if (!newSkill || form.additional.length >= MAX_ITEMS) return;
-        if (!form.additional.includes(newSkill)) update({ additional: [...form.additional, newSkill] });
+        const text = newSkill.trim();
+        if (!text || form.additional.length >= MAX_ITEMS) return;
+        update({ additional: normalizeOwnSkills([...form.additional, text]) });
         setNewSkill("");
     };
+    const languagesFull = form.languages.length >= MAX_ITEMS;
 
     return (
         <form onSubmit={submit} className="flex w-full flex-col flex-wrap gap-[30px]">
@@ -257,9 +261,9 @@ export function VolunteerSkillsForm({ locale, languages, levels, labels }: {
                 </div>
                 <button
                     type="button"
-                    disabled={!mainReady}
+                    disabled={!mainReady || languagesFull}
                     onClick={() => {
-                        if (!main || form.languages.length > MAX_ITEMS) return;
+                        if (!main || languagesFull) return;
                         update({ languages: [...form.languages, main] });
                         setMain(null);
                     }}
@@ -281,13 +285,13 @@ export function VolunteerSkillsForm({ locale, languages, levels, labels }: {
                                 aria-pressed={checked}
                                 onClick={() => {
                                     if (checked) update({ skills: form.skills.filter((id) => id !== skill.id) });
-                                    else if (form.skills.length <= MAX_ITEMS) update({ skills: [...form.skills, skill.id] });
+                                    else if (form.skills.length < MAX_ITEMS) update({ skills: [...form.skills, skill.id] });
                                 }}
                                 className="group flex cursor-pointer items-center gap-5 text-left"
                             >
                                 <span className={`flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-full border transition-colors ${checked ? "border-primary bg-primary" : "border-accent-bg bg-accent-bg group-hover:border-caption"}`}>
                                     {/* eslint-disable-next-line @next/next/no-img-element -- иконка навыка из хранилища (серая; выбранная — белая) */}
-                                    <img src={skill.imagePath} alt="" className={`h-5 w-5 ${checked ? "brightness-0 invert" : ""}`} />
+                                    <img src={mediaUrl({ contentUrl: skill.imagePath })} alt="" className={`h-5 w-5 ${checked ? "brightness-0 invert" : ""}`} />
                                 </span>
                                 <span className="text-label text-ink-secondary">{skill.name}</span>
                             </button>
@@ -300,7 +304,11 @@ export function VolunteerSkillsForm({ locale, languages, levels, labels }: {
                             key={skill}
                             value={skill}
                             labels={labels}
-                            onChange={(text) => update({ additional: form.additional.map((item) => (item === skill ? text : item)) })}
+                            onChange={(text) => {
+                                if (form.additional.some((item) => item !== skill && item.toLocaleLowerCase() === text.toLocaleLowerCase())) return false;
+                                update({ additional: form.additional.map((item) => (item === skill ? text : item)) });
+                                return true;
+                            }}
                             onRemove={() => update({ additional: form.additional.filter((item) => item !== skill) })}
                         />
                     ))}
@@ -308,7 +316,7 @@ export function VolunteerSkillsForm({ locale, languages, levels, labels }: {
                         <button
                             type="button"
                             aria-label={labels.addSkill}
-                            disabled={!newSkill}
+                            disabled={!newSkill.trim() || form.additional.length >= MAX_ITEMS}
                             onClick={addSkill}
                             className="flex h-[46px] w-[46px] shrink-0 cursor-pointer items-center justify-center rounded-full border border-accent-bg bg-accent-bg hover:border-caption disabled:cursor-not-allowed"
                         >

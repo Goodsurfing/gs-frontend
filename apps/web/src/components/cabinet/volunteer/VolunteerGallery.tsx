@@ -1,6 +1,6 @@
 "use client";
 
-import { type FormEvent, useEffect, useId, useState } from "react";
+import { type FormEvent, useEffect, useId, useRef, useState } from "react";
 
 import { ImagesUploader, type ImagesUploaderLabels } from "@/components/cabinet/ImagesUploader";
 import { useSession } from "@/components/session/SessionProvider";
@@ -38,78 +38,99 @@ export interface VolunteerGalleryLabels {
     certificateUploader: ImagesUploaderLabels;
 }
 
+type Lists = { photos: UploadedMedia[]; videos: string[]; certificates: UploadedMedia[] };
+
 /**
  * «Фото и видео» волонтёра (VolunteerGalleryPage старого фронта): свои фото,
  * видео по ссылке и дипломы/сертификаты. Каждое изменение сразу сохраняется:
  * PATCH /profile/image-gallery, /profile/video-gallery, /volunteer/certificate.
+ * Сервер заменяет список целиком, поэтому сохранения идут по очереди и каждое
+ * берёт последний подтверждённый сервером список (две пачки загрузки или
+ * удаление во время загрузки не затирают друг друга); пока идёт сохранение,
+ * удалять нельзя.
  */
 export function VolunteerGallery({ labels }: { labels: VolunteerGalleryLabels }) {
     const session = useSession();
     const profile = session.profile;
     const inputId = useId();
-    const [photos, setPhotos] = useState<UploadedMedia[] | null>(null);
-    const [videos, setVideos] = useState<string[]>([]);
-    const [certificates, setCertificates] = useState<UploadedMedia[]>([]);
+    const [lists, setLists] = useState<Lists | null>(null);
     const [link, setLink] = useState("");
-    const [busy, setBusy] = useState(false);
+    const [saving, setSaving] = useState(0);
     const [message, setMessage] = useState<{ text: string; ok: boolean } | null>(null);
+    /** Последние подтверждённые сервером списки — от них считается следующее сохранение */
+    const confirmed = useRef<Lists | null>(null);
+    const queue = useRef<Promise<unknown>>(Promise.resolve());
 
     useEffect(() => {
-        if (!profile || photos) return;
-        // eslint-disable-next-line react-hooks/set-state-in-effect -- профиль приходит из сессии в браузере
-        setPhotos(profile.galleryImages ?? []);
-        setVideos(profile.videoGallery ?? []);
-        setCertificates(profile.volunteer?.certificates ?? []);
-    }, [profile, photos]);
+        if (!profile || confirmed.current) return;
+        const initial: Lists = {
+            photos: profile.galleryImages ?? [],
+            videos: profile.videoGallery ?? [],
+            certificates: profile.volunteer?.certificates ?? [],
+        };
+        confirmed.current = initial;
+        setLists(initial);
+    }, [profile]);
 
-    if (!photos) return <div className="max-w-[880px]"><Spinner /></div>;
+    if (!lists) return <div className="max-w-[880px]"><Spinner /></div>;
+    const { photos, videos, certificates } = lists;
 
     const api = () => browserApi(session.token);
     const say = (text: string, ok: boolean) => setMessage({ text, ok });
-
-    const savePhotos = async (next: UploadedMedia[]) => {
-        setMessage(null);
-        const { error } = await api().PATCH("/api/v1/profile/image-gallery", { body: { galleryImageIds: next.map((image) => image.id) } }).catch(() => ({ error: true }));
-        if (error) {
-            say(labels.galleryError, false);
-            return;
-        }
-        setPhotos(next);
-        say(labels.galleryUpdated, true);
+    const errorText = (error: unknown, fallback: string) => {
+        const { detail, message: text } = (typeof error === "object" && error ? error : {}) as { detail?: unknown; message?: unknown };
+        return typeof detail === "string" ? detail : typeof text === "string" ? text : fallback;
     };
 
-    const saveCertificates = async (next: UploadedMedia[], notify: boolean) => {
-        setMessage(null);
-        const { error } = await api().PATCH("/api/v1/volunteer/certificate", { body: { certificateIds: next.map((file) => file.id) } }).catch(() => ({ error: true }));
-        if (error) {
-            say(labels.error, false);
-            return;
-        }
-        setCertificates(next);
-        if (notify) say(labels.certificateAdded, true);
+    /**
+     * Сохранить список: change получает последний подтверждённый список и
+     * возвращает новый (или null — сохранять нечего). Сохранения — по очереди.
+     */
+    const save = <K extends keyof Lists>(key: K, change: (current: Lists[K]) => Lists[K] | null, request: (next: Lists[K]) => Promise<{ error?: unknown }>) => {
+        setSaving((value) => value + 1);
+        const run = queue.current.then(async () => {
+            const current = confirmed.current;
+            const next = current ? change(current[key]) : null;
+            if (!current || !next) return { ok: false, error: null };
+            setMessage(null);
+            const { error } = await request(next).catch(() => ({ error: true }));
+            if (error) return { ok: false, error };
+            confirmed.current = { ...confirmed.current ?? current, [key]: next };
+            setLists(confirmed.current);
+            return { ok: true, error: null };
+        }).finally(() => setSaving((value) => value - 1));
+        queue.current = run.catch(() => undefined);
+        return run;
     };
 
-    const saveVideos = async (next: string[]) => {
-        setMessage(null);
-        setBusy(true);
-        const { error } = await api().PATCH("/api/v1/profile/video-gallery", { body: { videoGallery: next } }).catch(() => ({ error: true }));
-        setBusy(false);
-        if (error) {
-            const { detail, message: text } = (typeof error === "object" ? error : {}) as { detail?: unknown; message?: unknown };
-            say(typeof detail === "string" ? detail : typeof text === "string" ? text : labels.error, false);
-            return false;
-        }
-        setVideos(next);
-        say(labels.saved, true);
-        return true;
+    const savePhotos = async (change: (current: UploadedMedia[]) => UploadedMedia[]) => {
+        const { ok, error } = await save("photos", change, (next) => api().PATCH("/api/v1/profile/image-gallery", { body: { galleryImageIds: next.map((image) => image.id) } }));
+        if (ok) say(labels.galleryUpdated, true);
+        else if (error) say(labels.galleryError, false);
     };
 
+    const saveCertificates = async (change: (current: UploadedMedia[]) => UploadedMedia[], notify: boolean) => {
+        const { ok, error } = await save("certificates", change, (next) => api().PATCH("/api/v1/volunteer/certificate", { body: { certificateIds: next.map((file) => file.id) } }));
+        if (ok && notify) say(labels.certificateAdded, true);
+        else if (error) say(labels.error, false);
+    };
+
+    const saveVideos = async (change: (current: string[]) => string[] | null) => {
+        const { ok, error } = await save("videos", change, (next) => api().PATCH("/api/v1/profile/video-gallery", { body: { videoGallery: next } }));
+        if (ok) say(labels.saved, true);
+        else if (error) say(errorText(error, labels.error), false);
+        return ok;
+    };
+
+    const busy = saving > 0;
     const invalid = !!link && !VIDEO_URL.test(link);
     const addVideo = async (event: FormEvent) => {
         event.preventDefault();
-        if (!link || invalid || videos.length >= MAX_VIDEOS) return;
-        if (await saveVideos([...videos, link])) setLink("");
+        if (!link || invalid || busy || videos.length >= MAX_VIDEOS) return;
+        const url = link;
+        if (await saveVideos((current) => (current.length >= MAX_VIDEOS ? null : [...current, url]))) setLink("");
     };
+    const removeVideo = (index: number, url: string) => void saveVideos((current) => (current[index] === url ? current.filter((_, i) => i !== index) : null));
 
     const title = (text: string, description: string, first = false) => (
         <div className={first ? "" : "mt-[30px]"}>
@@ -127,8 +148,9 @@ export function VolunteerGallery({ labels }: { labels: VolunteerGalleryLabels })
                     items={photos}
                     token={session.token}
                     labels={labels.uploader}
-                    onUpload={(media) => savePhotos([...photos, ...media])}
-                    onDelete={(id) => void savePhotos(photos.filter((image) => image.id !== id))}
+                    removeDisabled={busy}
+                    onUpload={(media) => savePhotos((current) => [...current, ...media])}
+                    onDelete={(id) => void savePhotos((current) => current.filter((image) => image.id !== id))}
                     onError={(text) => text && say(text, false)}
                 />
             </div>
@@ -165,7 +187,7 @@ export function VolunteerGallery({ labels }: { labels: VolunteerGalleryLabels })
                             <div className="w-[320px] max-w-full">
                                 <VideoEmbed url={url} height={180} title={labels.videoTitle} unsupported={labels.unsupported} />
                             </div>
-                            <button type="button" aria-label={labels.removeVideo} onClick={() => void saveVideos(videos.filter((_, i) => i !== index))} className="mb-auto flex cursor-pointer items-center justify-center p-[5px] font-[sans-serif]">✖</button>
+                            <button type="button" aria-label={labels.removeVideo} disabled={busy} onClick={() => removeVideo(index, url)} className="mb-auto flex cursor-pointer items-center justify-center p-[5px] font-[sans-serif] disabled:cursor-wait">✖</button>
                         </div>
                     )) : (
                         <div className="flex w-full items-center justify-center text-center">
@@ -181,8 +203,9 @@ export function VolunteerGallery({ labels }: { labels: VolunteerGalleryLabels })
                     token={session.token}
                     onlyImages={false}
                     labels={labels.certificateUploader}
-                    onUpload={(media) => saveCertificates([...certificates, ...media], true)}
-                    onDelete={(id) => void saveCertificates(certificates.filter((file) => file.id !== id), false)}
+                    removeDisabled={busy}
+                    onUpload={(media) => saveCertificates((current) => [...current, ...media], true)}
+                    onDelete={(id) => void saveCertificates((current) => current.filter((file) => file.id !== id), false)}
                     onError={(text) => say(text ?? labels.error, false)}
                 />
             </div>

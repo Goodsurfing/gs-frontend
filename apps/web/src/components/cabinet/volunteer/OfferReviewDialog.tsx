@@ -24,15 +24,16 @@ export interface OfferReviewDialogLabels {
  * старого фронта): карточка вакансии, оценка звёздами, текст до 500 знаков.
  * Отправить можно только с оценкой и текстом; после отправки в окне —
  * только сообщение об успехе. С photos — ещё фото к отзыву (до 10), как на
- * странице «Отзывы».
+ * странице «Отзывы»: пока фото загружаются, отправить нельзя; при закрытии окна
+ * загрузки отменяются и в следующее окно не попадают.
  */
 export function OfferReviewDialog({ open, offer, labels, photos, onSend, onClose }: {
     open: boolean;
     /** Карточка вакансии над оценкой */
     offer: ReactNode;
     labels: OfferReviewDialogLabels;
-    /** Фото к отзыву: токен для загрузки и подписи загрузчика */
-    photos?: { token: string | undefined; labels: ImagesUploaderLabels };
+    /** Фото к отзыву: токен для загрузки, подписи загрузчика и текст ошибки загрузки */
+    photos?: { token: string | undefined; labels: ImagesUploaderLabels; error: string };
     /** Отправка; вернуть текст ошибки или null */
     onSend: (review: { rating: number; text: string; imageIds: string[] }) => Promise<string | null>;
     onClose: () => void;
@@ -43,11 +44,16 @@ export function OfferReviewDialog({ open, offer, labels, photos, onSend, onClose
     const [sent, setSent] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [images, setImages] = useState<UploadedMedia[]>([]);
+    const [uploading, setUploading] = useState(false);
+    // Загрузчик пересоздаётся на каждое открытие: его загрузки отменяются вместе с окном
+    const [round, setRound] = useState(0);
     // Номер «сеанса» окна: ответ отправки, пришедший после закрытия, не должен попасть в следующее окно
     const session = useRef(0);
 
     const close = () => {
         session.current += 1;
+        setRound((value) => value + 1);
+        setUploading(false);
         setBusy(false);
         setRating(null);
         setText("");
@@ -58,7 +64,7 @@ export function OfferReviewDialog({ open, offer, labels, photos, onSend, onClose
     };
 
     const send = async () => {
-        if (!rating || !text || busy) return;
+        if (!rating || !text || busy || uploading) return;
         setBusy(true);
         setError(null);
         const current = session.current;
@@ -106,12 +112,14 @@ export function OfferReviewDialog({ open, offer, labels, photos, onSend, onClose
                                     <TextAreaField className="pb-[5px]" label={labels.text} value={text} maxLength={500} onChange={(event) => setText(event.target.value)} />
                                     {photos && (
                                         <ImagesUploader
+                                            key={round}
                                             items={images}
                                             token={photos.token}
                                             labels={photos.labels}
                                             onUpload={async (media) => setImages((prev) => [...prev, ...media])}
                                             onDelete={(id) => setImages((prev) => prev.filter((image) => image.id !== id))}
-                                            onError={() => undefined}
+                                            onBusyChange={setUploading}
+                                            onError={(message) => setError(message ?? photos.error)}
                                         />
                                     )}
                                     {error && <p role="alert" className="text-[0.875rem] text-error">{error}</p>}
@@ -119,7 +127,7 @@ export function OfferReviewDialog({ open, offer, labels, photos, onSend, onClose
                                     <button
                                         type="button"
                                         onClick={send}
-                                        disabled={!rating || !text || busy}
+                                        disabled={!rating || !text || busy || uploading}
                                         className="flex cursor-pointer items-center justify-center rounded-[10px] border border-primary bg-primary px-[100px] py-3 text-center text-label text-white transition-all duration-300 hover:bg-white hover:text-primary disabled:cursor-default disabled:opacity-70 disabled:hover:bg-primary disabled:hover:text-white down-lg:w-full down-lg:px-[15px]"
                                     >
                                         {labels.send}

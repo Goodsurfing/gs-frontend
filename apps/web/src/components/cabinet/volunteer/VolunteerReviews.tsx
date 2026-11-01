@@ -24,6 +24,7 @@ const PER_PAGE = 20;
 /** В вертикальном слайдере видно три карточки (VerticalSlider старого фронта) */
 const SLIDER_VISIBLE = 3;
 const SLIDER_GAP = 20;
+const SLIDER_MAX = 30;
 const BADGE: Record<string, string> = { new: "bg-primary", accepted: "bg-host", canceled: "bg-status-rejected" };
 
 export interface VolunteerReviewsLabels {
@@ -45,44 +46,65 @@ export interface VolunteerReviewsLabels {
     photos: ImagesUploaderLabels;
 }
 
-/** Постраничная лента с догрузкой при прокрутке панели на 70 % (InfiniteScroll старого фронта) */
+/**
+ * Постраничная лента с догрузкой при прокрутке панели на 70 % (InfiniteScroll
+ * старого фронта). Перезагрузка, запрошенная во время загрузки страницы, не
+ * теряется — выполняется следом; после ошибки лента не догружается на каждой
+ * прокрутке (до следующей перезагрузки).
+ */
 function usePaged<T>(load: (page: number) => Promise<T[] | null>, enabled: boolean) {
     const [items, setItems] = useState<T[] | null>(null);
     const next = useRef(1);
     const more = useRef(true);
-    const busy = useRef(false);
+    /** Поколение ленты, чья загрузка сейчас идёт (null — ничего не грузится) */
+    const busy = useRef<number | null>(null);
+    const resetQueued = useRef(false);
+    const generation = useRef(0);
 
     const fetchPage = useCallback(async (reset: boolean) => {
-        if (busy.current || (!reset && !more.current)) return;
-        busy.current = true;
-        if (reset) {
-            next.current = 1;
-            more.current = true;
-        }
-        const page = await load(next.current).catch(() => null);
-        busy.current = false;
-        if (!page) {
-            if (reset) setItems([]);
+        if (busy.current !== null) {
+            if (reset) resetQueued.current = true;
             return;
         }
-        if (page.length < PER_PAGE) more.current = false;
-        next.current += 1;
-        setItems((prev) => (reset ? page : [...(prev ?? []), ...page]));
+        if (!reset && !more.current) return;
+        const gen = generation.current;
+        busy.current = gen;
+        let fromStart = reset;
+        try {
+            for (;;) {
+                const number = fromStart ? 1 : next.current;
+                const page = await load(number).catch(() => null);
+                if (gen !== generation.current) return;
+                if (resetQueued.current) {
+                    resetQueued.current = false;
+                    fromStart = true;
+                    continue;
+                }
+                if (!page) {
+                    more.current = false;
+                    if (fromStart) setItems((prev) => prev ?? []);
+                    return;
+                }
+                next.current = number + 1;
+                more.current = page.length >= PER_PAGE;
+                setItems((prev) => (fromStart ? page : [...(prev ?? []), ...page]));
+                return;
+            }
+        } finally {
+            if (busy.current === gen) busy.current = null;
+        }
     }, [load]);
 
     useEffect(() => {
         if (!enabled) return;
-        let cancelled = false;
-        void load(1).catch(() => null).then((page) => {
-            if (cancelled) return;
-            next.current = 2;
-            more.current = (page?.length ?? 0) >= PER_PAGE;
-            setItems(page ?? []);
-        });
+        generation.current += 1;
+        busy.current = null;
+        resetQueued.current = false;
+        void fetchPage(true);
         return () => {
-            cancelled = true;
+            generation.current += 1;
         };
-    }, [enabled, load]);
+    }, [enabled, fetchPage]);
 
     const onScroll = (event: UIEvent<HTMLElement>) => {
         const node = event.currentTarget;
@@ -91,12 +113,12 @@ function usePaged<T>(load: (page: number) => Promise<T[] | null>, enabled: boole
     return { items, onScroll, reload: () => fetchPage(true) };
 }
 
-function Thumbs({ images, onOpen }: { images: Image[]; onOpen: (index: number) => void }) {
+function Thumbs({ images, label, onOpen }: { images: Image[]; label: string; onOpen: (index: number) => void }) {
     if (images.length === 0) return null;
     return (
         <div className="mt-1.5 flex flex-wrap gap-1.5">
             {images.slice(0, 4).map((image, index) => (
-                <button key={image.id} type="button" onClick={() => onOpen(index)} className="relative h-14 w-14 shrink-0 cursor-pointer overflow-hidden rounded-[6px]">
+                <button key={image.id} type="button" aria-label={`${label} ${index + 1}`} onClick={() => onOpen(index)} className="relative h-14 w-14 shrink-0 cursor-pointer overflow-hidden rounded-[6px]">
                     {/* eslint-disable-next-line @next/next/no-img-element -- превью из хранилища */}
                     <img src={mediaUrl(image, "small")} alt="" className="block h-full w-full object-cover" />
                     {index === 3 && images.length > 4 && (
@@ -177,7 +199,9 @@ export function VolunteerReviews({ hrefs, categories, labels }: {
     }
 
     const sliderSlideHeight = (435 - 90 - SLIDER_GAP * (SLIDER_VISIBLE - 1)) / SLIDER_VISIBLE;
-    const lastSlide = Math.max(0, pending.length - SLIDER_VISIBLE);
+    // В слайдере не больше 30 карточек (как в старом фронте) — последний слайд считается от показанных
+    const slides = pending.slice(0, SLIDER_MAX);
+    const lastSlide = Math.max(0, slides.length - SLIDER_VISIBLE);
     const arrow = (direction: "prev" | "next", active: boolean) => (
         <button
             type="button"
@@ -213,7 +237,7 @@ export function VolunteerReviews({ hrefs, categories, labels }: {
                         <div className="relative mt-5 box-border flex h-[435px] w-full justify-center overflow-hidden py-[45px]">
                             <div className="w-full overflow-hidden">
                                 <div className="flex flex-col transition-transform duration-300" style={{ gap: SLIDER_GAP, transform: `translateY(-${slide * (sliderSlideHeight + SLIDER_GAP)}px)` }}>
-                                    {pending.slice(0, 30).map((item) => (
+                                    {slides.map((item) => (
                                         <div key={item.id} className="flex shrink-0 items-center justify-center" style={{ height: sliderSlideHeight }}>{miniCard(item)}</div>
                                     ))}
                                 </div>
@@ -240,7 +264,7 @@ export function VolunteerReviews({ hrefs, categories, labels }: {
                                         <span className="text-[12px] text-caption">{textSlice(review.created, 30, "")}</span>
                                     </a>
                                     <p className="text-[14px] font-medium text-ink-secondary">{review.description}</p>
-                                    <Thumbs images={review.images ?? []} onOpen={(index) => openGallery(review.images ?? [], index)} />
+                                    <Thumbs images={review.images ?? []} label={labels.gallery.photo} onOpen={(index) => openGallery(review.images ?? [], index)} />
                                     <div className="flex flex-wrap items-center gap-2.5">
                                         <StarRating value={Number(review.rating) || 0} size={15} />
                                         <span className="ml-[3px] text-[14px] font-bold text-ink-secondary">{Number(review.rating) || 0}</span>
@@ -280,7 +304,7 @@ export function VolunteerReviews({ hrefs, categories, labels }: {
                                             </div>
                                         </div>
                                         <p className="mt-3">{review.description}</p>
-                                        <Thumbs images={review.images ?? []} onOpen={(index) => openGallery(review.images ?? [], index)} />
+                                        <Thumbs images={review.images ?? []} label={labels.gallery.photo} onOpen={(index) => openGallery(review.images ?? [], index)} />
                                     </article>
                                 );
                             })}
@@ -291,7 +315,7 @@ export function VolunteerReviews({ hrefs, categories, labels }: {
             <OfferReviewDialog
                 open={!!selected}
                 labels={labels.dialog}
-                photos={{ token: session.token, labels: labels.photos }}
+                photos={{ token: session.token, labels: labels.photos, error: labels.sendError }}
                 onClose={() => setSelected(null)}
                 offer={selected && (
                     <div className="flex min-h-[100px] w-full flex-col border border-accent-bg bg-white p-3.5 select-none">

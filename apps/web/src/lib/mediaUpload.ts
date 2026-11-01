@@ -8,9 +8,25 @@ export type UploadedMedia = components["schemas"]["ImageResultDto"];
 export const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
 
 /**
+ * Подходит ли файл под accept поля выбора файлов («image/*,application/pdf,.doc»):
+ * при перетаскивании браузер accept не проверяет, проверяем сами.
+ */
+export function matchesAccept(file: { name: string; type: string }, accept: string): boolean {
+    const type = file.type.toLowerCase();
+    const name = file.name.toLowerCase();
+    return accept.split(",").map((rule) => rule.trim().toLowerCase()).filter(Boolean).some((rule) => {
+        if (rule.startsWith(".")) return name.endsWith(rule);
+        if (rule.endsWith("/*")) return type.startsWith(rule.slice(0, -1));
+        return type === rule;
+    });
+}
+
+/**
  * Загрузка файла в хранилище (uploadFile старого фронта): POST
- * /api/v1/media_objects, multipart. Клиент openapi-fetch не умеет FormData с
- * прогрессом и отменой, поэтому — fetch; ответ — тот же MediaObject, что в API.
+ * /api/v1/media_objects, multipart. Обычный fetch, а не клиент openapi-fetch:
+ * тело — FormData с файлом, отмена — через signal. Прогресса у fetch нет —
+ * полоса загрузки условная. Ответ — MediaObject; из него нужны id, contentUrl
+ * и thumbnails — те же поля, что у ImageResultDto в профиле.
  */
 export async function uploadMedia(file: File, token: string | undefined, signal?: AbortSignal): Promise<UploadedMedia> {
     const body = new FormData();

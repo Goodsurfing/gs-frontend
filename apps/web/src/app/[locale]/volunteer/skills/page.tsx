@@ -43,6 +43,7 @@ export default async function VolunteerSkillsPage({ params }: Props) {
                         skills: s("Навыки которыми вы обладаете"),
                         addSkill: s("Добавить навык"),
                         editSkill: s("Навыки которыми вы обладаете"),
+                        edit: tv("volunteer-articles.Редактировать"),
                         removeSkill: t("Удалить"),
                         extraInfo: s("Дополнительная информация"),
                         extraInfoHint: s("Не более 1000 знаков"),
