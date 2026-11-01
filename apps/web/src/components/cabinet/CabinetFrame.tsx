@@ -46,7 +46,9 @@ export function CabinetFrame({ items, labels, fitContent = false, children }: {
     const [open, setOpen] = useState(true);
     const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
     const isItemActive = (item: CabinetMenuItem) => (item.group ? false : isActive(item.href)) || (item.children ?? []).some((child) => isActive(child.href));
-    const subItems = items.some(isItemActive)
+    // Второй ряд — только пока открыт подраздел группы (в старом так и было; на «Описании»
+    // ряд в старом пропадал — это исправлено: «Описание» тоже подраздел)
+    const subItems = items.some((item) => (item.children ?? []).some((child) => isActive(child.href)))
         ? items.flatMap((item) => (item.children ?? []).map((child) => ({ ...child, active: isActive(child.href) })))
         : [];
 
@@ -106,7 +108,7 @@ export function CabinetFrame({ items, labels, fitContent = false, children }: {
               * Уже 992 px — ряды плиток (MobileSidebar старого фронта, Swiper): в ряду
               * видно 4 плитки, уже 662 px — 2, уже 480 px — одна на всю ширину (Swiper
               * вычитает из ширины отступы 20 px слева и справа от ряда). Второй
-              * ряд — подразделы группы («Организация»), пока открыт какой-нибудь пункт.
+              * ряд — подразделы группы («Организация»), пока открыт один из них.
               * Точки — как breakpoints Swiper (min-width), поэтому max-[…] (строго меньше).
               */}
             <nav className="hidden flex-col gap-y-5 overflow-x-hidden down-lg:flex">
