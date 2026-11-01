@@ -1,6 +1,6 @@
 "use client";
 
-import { type FormEvent, useCallback, useState } from "react";
+import { type FormEvent, useCallback, useRef, useState } from "react";
 
 import { Loading } from "@/components/ui/Loading";
 import { Toast } from "@/components/ui/Toast";
@@ -75,8 +75,12 @@ function WhereEditor({ id, locale, nextHref, labels, vacancy, save }: {
         writeDraft("where", id, next);
     }, [id]);
 
+    // Щелчки по карте: адрес берётся у последнего, ответы геокодера на прежние отбрасываются
+    const clicks = useRef(0);
     const pickOnMap = useCallback(async (latitude: number, longitude: number) => {
+        const click = ++clicks.current;
         const [found] = await geocode(`${longitude.toFixed(6)}, ${latitude.toFixed(6)}`, locale);
+        if (click !== clicks.current) return;
         const place: GeoPlace = { name: found?.name ?? `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`, description: found?.description ?? "", latitude, longitude };
         change({ address: placeLabel(place), place });
     }, [change, locale]);
@@ -104,7 +108,11 @@ function WhereEditor({ id, locale, nextHref, labels, vacancy, save }: {
             <Toast text={toast?.text ?? null} ok={toast?.ok} onClose={() => setToast(null)} />
             <AddressField
                 value={current}
-                onChange={change}
+                onChange={(next) => {
+                    // Правка текста отменяет ещё не пришедший адрес прежнего щелчка по карте
+                    clicks.current += 1;
+                    change(next);
+                }}
                 locale={locale}
                 labels={{ label: labels.address, noOptions: labels.noOptions, clear: labels.clear, open: labels.open, close: labels.close }}
             />

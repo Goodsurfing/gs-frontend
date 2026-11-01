@@ -22,11 +22,13 @@ export function PickPlaceMap({ point, locale, onPick }: {
     const ymapsRef = useRef<Ymaps | null>(null);
     const mark = useRef<Ymaps | null>(null);
     const pick = useRef(onPick);
-    const initial = useRef(point);
+    // Последняя точка: карта может догрузиться после выбора адреса и должна встать на него
+    const latest = useRef(point);
 
     useEffect(() => {
         pick.current = onPick;
-    }, [onPick]);
+        latest.current = point;
+    }, [onPick, point]);
 
     useEffect(() => {
         let cancelled = false;
@@ -34,14 +36,14 @@ export function PickPlaceMap({ point, locale, onPick }: {
             .then((ymaps) => {
                 if (cancelled || !node.current) return;
                 ymapsRef.current = ymaps;
-                const instance = new ymaps.Map(node.current, { center: initial.current ?? DEFAULT_MAP_CENTER, zoom: 10, controls: [] }, { suppressMapOpenBlock: true });
+                const instance = new ymaps.Map(node.current, { center: latest.current ?? DEFAULT_MAP_CENTER, zoom: 10, controls: [] }, { suppressMapOpenBlock: true });
                 instance.events.add("click", (event: Ymaps) => {
                     const [latitude, longitude] = event.get("coords") as [number, number];
                     pick.current(latitude, longitude);
                 });
                 map.current = instance;
-                if (initial.current) {
-                    mark.current = new ymaps.Placemark(initial.current);
+                if (latest.current) {
+                    mark.current = new ymaps.Placemark(latest.current);
                     instance.geoObjects.add(mark.current);
                 }
             })

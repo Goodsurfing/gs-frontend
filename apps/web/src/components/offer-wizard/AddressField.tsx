@@ -40,7 +40,8 @@ export function AddressField({ value, onChange, locale, labels }: {
     const [open, setOpen] = useState(false);
     const [focused, setFocused] = useState(false);
     const [hover, setHover] = useState(false);
-    const [results, setResults] = useState<GeoPlace[]>([]);
+    // Подсказки помнят, к какому тексту они: устаревшие (текст уже другой) не показываются и не выбираются Enter
+    const [results, setResults] = useState<{ query: string; places: GeoPlace[] }>({ query: "", places: [] });
     const [active, setActive] = useState(-1);
     const root = useRef<HTMLDivElement>(null);
     const input = useRef<HTMLInputElement>(null);
@@ -51,7 +52,7 @@ export function AddressField({ value, onChange, locale, labels }: {
         let cancelled = false;
         const timer = setTimeout(() => {
             void geocode(query, locale).then((found) => {
-                if (!cancelled) setResults(found);
+                if (!cancelled) setResults({ query, places: found });
             });
         }, 300);
         return () => {
@@ -61,7 +62,7 @@ export function AddressField({ value, onChange, locale, labels }: {
     }, [query, locale, value.place]);
 
     // Выбранная точка в список не попадает (filterSelectedOptions у MUI)
-    const options = value.place || !query ? [] : results;
+    const options = value.place || !query || results.query !== query ? [] : results.places;
 
     useEffect(() => {
         if (!open) return;

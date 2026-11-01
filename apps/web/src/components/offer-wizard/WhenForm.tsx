@@ -66,7 +66,7 @@ function PeriodRow({ period, onChange, onRemove, removable, locale, labels, now 
             <DateField
                 shape="right"
                 value={period.end}
-                min={now}
+                min={period.start && period.start > now ? period.start : now}
                 onChange={(day) => onChange(setPeriodEnd(period, day, now))}
                 label={labels.periodEnd}
                 placeholder={labels.notSet}
@@ -162,8 +162,8 @@ function WhenEditor({ id, locale, nextHref, labels, vacancy, save }: {
         clearDraft("when", id);
         setUnsaved(false);
         setToast({ text: labels.saved, ok: true });
-        // Сохранённый незаконченный период становится обычным
-        setDraft({ form: { ...form, periods: whenFormToApi(form, temp).periods.map((period) => ({ start: period.start, end: period.ending })) }, temp: EMPTY });
+        // Заполненный период из строки добавления сохранён — он становится обычным (если ещё есть место)
+        if (temp.start && temp.end && form.periods.length < MAX_PERIODS) setDraft({ form: { ...form, periods: [...form.periods, temp] }, temp: EMPTY });
     };
 
     const addPeriod = () => {

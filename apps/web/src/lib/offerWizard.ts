@@ -1,3 +1,5 @@
+import type { paths } from "@goodsurfing/api";
+
 import type { CabinetMenuItem } from "@/components/cabinet/CabinetFrame";
 import type { Locale } from "@/i18n/config";
 import type { Translate } from "@/i18n/dictionary";
@@ -125,14 +127,9 @@ export const emptyWhenForm = (now: Day = today()): WhenForm => ({
     isWithoutApplicationDate: false,
 });
 
-interface WhenApi {
-    periods?: { start?: string | null; ending?: string | null; end?: string | null }[] | null;
-    durationMinDays?: number | null;
-    durationMaxDays?: number | null;
-    isFullYearAcceptable?: boolean | null;
-    isApplicableAtTheEnd?: boolean | null;
-    applicationEndDate?: string | null;
-}
+/** Вакансия из GET /api/v1/vacancies/{id} (тип из OpenAPI) */
+type VacancyRead = paths["/api/v1/vacancies/{id}"]["get"]["responses"][200]["content"]["application/json"];
+type WhenApi = NonNullable<VacancyRead["when"]>;
 
 /** Форма из сохранённой вакансии; нет блока «Когда» — значения по умолчанию */
 export function whenFormFromApi(when: WhenApi | null | undefined, now: Day = today()): WhenForm {
@@ -141,7 +138,7 @@ export function whenFormFromApi(when: WhenApi | null | undefined, now: Day = tod
     const min = when.durationMinDays ?? DEFAULT_DURATION[0];
     const max = when.durationMaxDays ?? DEFAULT_DURATION[1];
     return {
-        periods: (when.periods ?? []).map((period) => ({ start: dayFromApi(period.start) ?? now, end: dayFromApi(period.ending ?? period.end) ?? now })),
+        periods: (when.periods ?? []).map((period) => ({ start: dayFromApi(period.start) ?? now, end: dayFromApi(period.ending) ?? now })),
         duration: [min, max],
         isFullYearAcceptable: !!when.isFullYearAcceptable,
         isApplicableAtTheEnd: !!when.isApplicableAtTheEnd,
