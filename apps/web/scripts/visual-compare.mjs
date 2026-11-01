@@ -14,6 +14,11 @@
 //                     старый и новый фронт по одному адресу)
 //   --css "правила"   стили для обеих страниц: например, сплошной фон вместо
 //                     полупрозрачного, чтобы не мешала разная картинка под ним
+//   --login почта:пароль  кабинет: вход через API (по умолчанию api-staging, --api URL),
+//                     токен — в localStorage обеих страниц, как в e2e/global-setup.ts.
+//                     Браузер запускается без CORS: так новый фронт на localhost
+//                     читает личное со стейджа (иначе CORS стейджа не пускает)
+//   CHROMIUM_PATH=…   свой Chromium вместо браузера @playwright/test
 import { chromium } from "@playwright/test";
 import fs from "node:fs";
 import pixelmatch from "pixelmatch";
@@ -28,6 +33,8 @@ const widths = (get("widths")[0] ?? "390,768,1280").split(",").map(Number);
 const keepFixed = args.includes("--keep-fixed");
 const [css] = get("css");
 const [newCookie] = get("new-cookie");
+const [login] = get("login");
+const [apiUrl = "https://api-staging.goodsurfing.org"] = get("api");
 if (!oldUrl || !newUrl || !Object.keys(parts).length) {
     console.error("нужно: --old URL --new URL --part имя=селектор [--widths 390,768,1280]");
     process.exit(2);
@@ -35,7 +42,25 @@ if (!oldUrl || !newUrl || !Object.keys(parts).length) {
 
 const out = "/tmp/visual-compare";
 fs.mkdirSync(out, { recursive: true });
-const browser = await chromium.launch();
+let auth = null;
+if (login) {
+    const [email, password] = login.split(/:(.*)/s);
+    const response = await fetch(`${apiUrl}/api/v1/token`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+    });
+    if (!response.ok) {
+        console.error(`вход ${email}: ${response.status}`);
+        process.exit(2);
+    }
+    const { accessToken, mercureToken, roles } = await response.json();
+    auth = { email, token: accessToken, mercureToken, roles: roles ?? [] };
+}
+const browser = await chromium.launch({
+    executablePath: process.env.CHROMIUM_PATH || undefined,
+    args: login ? ["--disable-web-security"] : [],
+});
 let worst = 0;
 for (const width of widths) {
     const shots = {};
@@ -45,6 +70,15 @@ for (const width of widths) {
             const [name, value] = newCookie.split("=");
             // На корень сайта: иначе путь cookie берётся из адреса и статика уходит без неё
             await context.addCookies([{ name, value, domain: new URL(url).hostname, path: "/" }]);
+        }
+        if (auth) {
+            // Старое SPA пускает в кабинет, только если в localStorage все четыре ключа
+            await context.addInitScript((a) => {
+                localStorage.setItem("user", JSON.stringify({ username: a.email }));
+                localStorage.setItem("token", JSON.stringify(a.token));
+                localStorage.setItem("mercureToken", JSON.stringify(a.mercureToken));
+                localStorage.setItem("roles", JSON.stringify(a.roles));
+            }, auth);
         }
         const page = await context.newPage();
         await page.goto(url, { waitUntil: "networkidle" }).catch(() => undefined);
