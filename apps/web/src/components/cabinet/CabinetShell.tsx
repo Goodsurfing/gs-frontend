@@ -14,11 +14,13 @@ import { RequireUser } from "./RequireUser";
  * Каркас кабинета (PageLayout старого фронта): лента соцсетей, шапка в потоке, светлый фон,
  * меню раздела слева, без подвала. Гостя уводит на вход с возвратом сюда.
  */
-export async function CabinetShell({ locale, items, need, children }: {
+export async function CabinetShell({ locale, items, need, fitContent, children }: {
     locale: Locale;
     items: CabinetMenuItem[];
     /** Нужна роль: организатор или волонтёр */
     need?: "host" | "volunteer";
+    /** Колонка содержимого по высоте содержимого (кабинет организатора) */
+    fitContent?: boolean;
     children: ReactNode;
 }) {
     const [t, tProfile, banner] = await Promise.all([getTranslator(locale), getTranslator(locale, "profile"), getHeaderBanner(locale)]);
@@ -28,7 +30,7 @@ export async function CabinetShell({ locale, items, need, children }: {
             <div id="page-layout" className="min-h-screen bg-[#FBFDFE]">
                 <SocialRibbon t={t} />
                 <Header locale={locale} t={t} tProfile={tProfile} banner={banner} variant="static" />
-                <CabinetFrame items={items} labels={{ toggle: t("main.welcome.header.menu") }}>{children}</CabinetFrame>
+                <CabinetFrame items={items} labels={{ toggle: t("main.welcome.header.menu") }} fitContent={fitContent}>{children}</CabinetFrame>
             </div>
         </SessionProvider>
     );

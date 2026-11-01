@@ -14,6 +14,14 @@
 //                     старый и новый фронт по одному адресу)
 //   --css "правила"   стили для обеих страниц: например, сплошной фон вместо
 //                     полупрозрачного, чтобы не мешала разная картинка под ним
+//   --login почта:пароль  войти на обеих страницах (кабинет): токен с API кладётся
+//                     в localStorage так же, как его хранит старое SPA; новый
+//                     фронт берёт его оттуда (переходный период, GS-218)
+//   --api URL         API для --login (по умолчанию https://api-staging.goodsurfing.org)
+//   --no-cors         браузер без проверки CORS: новый фронт с localhost ходит в API
+//                     стейджа (иначе кабинет на localhost пустой). Только для сверки.
+//   --part имя=:viewport  снимок видимой части экрана целиком (900 px высотой)
+//   CHROMIUM_PATH     свой исполняемый файл Chromium (если версия Playwright не совпадает)
 import { chromium } from "@playwright/test";
 import fs from "node:fs";
 import pixelmatch from "pixelmatch";
@@ -28,6 +36,9 @@ const widths = (get("widths")[0] ?? "390,768,1280").split(",").map(Number);
 const keepFixed = args.includes("--keep-fixed");
 const [css] = get("css");
 const [newCookie] = get("new-cookie");
+const [login] = get("login");
+const [api = "https://api-staging.goodsurfing.org"] = get("api");
+const noCors = args.includes("--no-cors");
 if (!oldUrl || !newUrl || !Object.keys(parts).length) {
     console.error("нужно: --old URL --new URL --part имя=селектор [--widths 390,768,1280]");
     process.exit(2);
@@ -35,7 +46,24 @@ if (!oldUrl || !newUrl || !Object.keys(parts).length) {
 
 const out = "/tmp/visual-compare";
 fs.mkdirSync(out, { recursive: true });
-const browser = await chromium.launch();
+let token;
+if (login) {
+    const [email, password] = login.split(/:(.*)/s);
+    const response = await fetch(`${api}/api/v1/token`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+    });
+    if (!response.ok) {
+        console.error(`вход ${email} не удался: ${response.status}`);
+        process.exit(2);
+    }
+    token = (await response.json()).accessToken;
+}
+const browser = await chromium.launch({
+    executablePath: process.env.CHROMIUM_PATH || undefined,
+    args: noCors ? ["--disable-web-security"] : [],
+});
 let worst = 0;
 for (const width of widths) {
     const shots = {};
@@ -45,6 +73,15 @@ for (const width of widths) {
             const [name, value] = newCookie.split("=");
             // На корень сайта: иначе путь cookie берётся из адреса и статика уходит без неё
             await context.addCookies([{ name, value, domain: new URL(url).hostname, path: "/" }]);
+        }
+        if (token) {
+            // Ключи и формат — как у старого SPA (userSlice): все четыре, JSON-строками
+            await context.addInitScript((value) => {
+                localStorage.setItem("user", JSON.stringify({ username: "visual-compare" }));
+                localStorage.setItem("token", JSON.stringify(value));
+                localStorage.setItem("mercureToken", JSON.stringify(""));
+                localStorage.setItem("roles", JSON.stringify(["ROLE_USER"]));
+            }, token);
         }
         const page = await context.newPage();
         await page.goto(url, { waitUntil: "networkidle" }).catch(() => undefined);
@@ -59,7 +96,11 @@ for (const width of widths) {
             }
         });
         for (const [name, selector] of Object.entries(parts)) {
-            shots[`${tag}-${name}`] = PNG.sync.read(await page.locator(selector).first().screenshot({ animations: "disabled" }));
+            // :viewport — весь экран (у старого и нового фронта нет общих селекторов кабинета)
+            const shot = selector === ":viewport"
+                ? await page.screenshot({ animations: "disabled" })
+                : await page.locator(selector).first().screenshot({ animations: "disabled" });
+            shots[`${tag}-${name}`] = PNG.sync.read(shot);
         }
         await page.close();
     }

@@ -37,6 +37,15 @@ export const routes = {
     organization: (l: Locale, id: string) => path(l, `/organizations/${id}`),
     hostInfo: (l: Locale) => path(l, "/host/info"),
     hostRegister: (l: Locale) => path(l, "/host/register"),
+    hostGallery: (l: Locale) => path(l, "/host/gallery"),
+    hostVideo: (l: Locale) => path(l, "/host/video"),
+    hostTeam: (l: Locale) => path(l, "/host/team"),
+    hostReview: (l: Locale) => path(l, "/host/review"),
+    hostNotes: (l: Locale) => path(l, "/host/notes"),
+    /** Сборы организатора */
+    hostDonations: (l: Locale) => path(l, "/host/donations"),
+    /** Пожертвования, полученные организатором (не путать с публичным рейтингом /donation-rating) */
+    hostDonationRating: (l: Locale) => path(l, "/host/donation-rating"),
     journals: (l: Locale) => path(l, "/journals"),
     donationsMap: (l: Locale) => path(l, "/donation-map"),
     donationRating: (l: Locale) => path(l, "/donation-rating"),

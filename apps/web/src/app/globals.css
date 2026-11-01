@@ -37,6 +37,7 @@
     --color-cta-deep: #00b589;         /* наведение на зелёные кнопки шапки и баннер под ней */
     --color-host: #22e0a5;             /* --color-green: полоска «Организаторам» */
     --color-card: #f5f5f5;             /* фон карточек тарифов в окне «Членство» */
+    --color-muted: #82949f;            /* --color-gray: рамки и подписи полей кабинета */
 
     /* Типографика: size / line-height / weight как в старом фронте */
     --text-h1: 40px;  --text-h1--line-height: 1.2;  --text-h1--font-weight: 600;
@@ -72,6 +73,10 @@
 @custom-variant down-md (@media (max-width: 768px));
 @custom-variant down-sm (@media (max-width: 576px));
 @custom-variant down-xs (@media (max-width: 480px));
+/* Нестандартные точки старого кабинета: ProfileInput и страницы организации (1000), ProfileInput (600) */
+@custom-variant down-1000 (@media (max-width: 1000px));
+@custom-variant down-800 (@media (max-width: 800px)); /* соцсети в форме организации */
+@custom-variant down-600 (@media (max-width: 600px));
 
 html {
     font-size: 16px;
