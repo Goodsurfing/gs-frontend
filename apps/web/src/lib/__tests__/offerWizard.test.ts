@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
-    dayFromApi, dayLabel, durationLabel, emptyWhenForm, offerWizardMenu, parseGeocode, parseOfferId, placeLabel,
+    addLanguage, commitAgeMax, commitAgeMin, coverFileError, coverSizeError, dayFromApi, descriptionErrors, toggleCategory, dayLabel, durationLabel, emptyWhenForm, emptyWhoNeedsForm, languageChoices, setAgeMin, toggleNoAgeLimit, whoNeedsErrors, whoNeedsFromApi, whoNeedsToApi, offerWizardMenu, parseGeocode, parseOfferId, placeLabel,
     setDurationFrom, setDurationTo, setPeriodEnd, setPeriodStart, toggleLastMoment, toggleNoEndDate,
     whenFormFromApi, whenFormToApi,
 } from "../offerWizard";
@@ -138,5 +138,60 @@ describe("подпись срока", () => {
         expect(durationLabel(62, w)).toBe("2 месяца");
         expect(durationLabel(52, w)).toBe("1 месяц, 21 день");
         expect(durationLabel(186, w)).toBe("6 месяцев");
+    });
+});
+
+describe("форма «Кто нужен»", () => {
+    it("из API и обратно; пустой блок — значения старого фронта", () => {
+        const api = { gender: ["male" as const], ageMin: 18, ageMax: 30, requiredLanguages: [{ language: "English", languageLevel: "advanced" }], needAllLanguages: true, volunteerPlaceCount: 4, receptionPlace: "compatriot" as const, additionalInfo: "x" };
+        expect(whoNeedsToApi(whoNeedsFromApi(api))).toEqual({ ...api });
+        expect(whoNeedsFromApi(null)).toEqual({ gender: [], ageMin: 12, ageMax: 18, languages: [], needAllLanguages: false, volunteerPlaces: 0, receptionPlace: "any", additionalInfo: "" });
+    });
+    it("обязательны пол и число мест", () => {
+        expect(whoNeedsErrors(emptyWhoNeedsForm())).toEqual({ gender: true, volunteerPlaces: true });
+        expect(whoNeedsErrors({ ...emptyWhoNeedsForm(), gender: ["other"], volunteerPlaces: 1 })).toEqual({ gender: false, volunteerPlaces: false });
+    });
+    it("возраст: «от» тянет «до», границы 12 и 100, «без ограничения»", () => {
+        expect(setAgeMin({ ageMin: 12, ageMax: 18 }, 20)).toEqual({ ageMin: 20, ageMax: 20 });
+        expect(setAgeMin({ ageMin: 12, ageMax: 18 }, 15)).toEqual({ ageMin: 15, ageMax: 18 });
+        expect(commitAgeMin({ ageMin: 5, ageMax: 18 })).toEqual({ ageMin: 12, ageMax: 18 });
+        expect(commitAgeMin({ ageMin: 150, ageMax: 18 })).toEqual({ ageMin: 12, ageMax: 18 });
+        expect(commitAgeMax({ ageMin: 20, ageMax: 15 })).toEqual({ ageMin: 20, ageMax: 20 });
+        expect(commitAgeMax({ ageMin: 20, ageMax: 150 })).toEqual({ ageMin: 20, ageMax: 100 });
+        expect(toggleNoAgeLimit({ ageMin: 20, ageMax: 30 })).toEqual({ ageMin: 20, ageMax: 100 });
+        expect(toggleNoAgeLimit({ ageMin: 20, ageMax: 100 })).toEqual({ ageMin: 20, ageMax: 20 });
+    });
+    it("языки: без повторов, «Не важен» только в строке добавления, не больше десяти", () => {
+        const selected = [{ language: "English", languageLevel: "not_matter" as const }];
+        expect(languageChoices(selected, "not_matter", true)).not.toContain("English");
+        expect(languageChoices(selected, "not_matter", true)).toContain("not_matter");
+        expect(languageChoices(selected, "English", false)).toContain("English");
+        expect(languageChoices(selected, "English", false)).not.toContain("not_matter");
+        expect(addLanguage(selected, { language: "not_matter", languageLevel: "not_matter" })).toBeNull();
+        expect(addLanguage(selected, { language: "English", languageLevel: "advanced" })).toBeNull();
+        expect(addLanguage(selected, { language: "Deutsch", languageLevel: "beginner" })).toHaveLength(2);
+        const ten = Array.from({ length: 10 }, (_, i) => ({ language: `L${i}`, languageLevel: "not_matter" as const }));
+        expect(addLanguage(ten, { language: "Deutsch", languageLevel: "beginner" })).toBeNull();
+    });
+});
+
+describe("форма «Описание»", () => {
+    const full = { title: "Т", categoryIds: [1], shortDescription: "к", fullDescription: "п" };
+    it("всё обязательно, пробелы — не текст", () => {
+        expect(descriptionErrors(full, true)).toEqual({});
+        expect(descriptionErrors({ title: " ", categoryIds: [], shortDescription: "", fullDescription: "" }, false))
+            .toEqual({ title: true, categoryIds: true, shortDescription: true, fullDescription: true, cover: true });
+    });
+    it("категорий не больше пяти, повторный щелчок снимает", () => {
+        expect(toggleCategory([1, 2], 2)).toEqual([1]);
+        expect(toggleCategory([1, 2, 3, 4, 5], 6)).toEqual([1, 2, 3, 4, 5]);
+        expect(toggleCategory([1], 6)).toEqual([1, 6]);
+    });
+    it("обложка: формат, 5 МБ, не меньше 1280×720", () => {
+        expect(coverFileError("a.JPG", 1000)).toBeNull();
+        expect(coverFileError("a.gif", 1000)).toBe("description.Неверный формат файла");
+        expect(coverFileError("a.png", 6 * 1024 * 1024)).toBe("description.Размер файла превышает 5МБ");
+        expect(coverSizeError(1280, 720)).toBeNull();
+        expect(coverSizeError(1279, 900)).not.toBeNull();
     });
 });

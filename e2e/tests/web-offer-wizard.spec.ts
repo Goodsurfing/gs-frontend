@@ -3,7 +3,8 @@ import { API_URL } from '../config';
 import { enableNewFrontend } from '../support/newFrontend';
 
 /**
- * Новый фронт: мастер вакансии, шаги «Привет», «Где», «Когда». Черновик
+ * Новый фронт: мастер вакансии, шаги «Привет», «Где», «Когда», «Кто нужен»,
+ * «Описание». Черновик
  * создаётся через API у host@test.com и удаляется после теста (в afterEach:
  * при таймауте finally не доходит до конца — см. vacancy-publish.spec.ts).
  */
@@ -108,6 +109,73 @@ test.describe('Новый фронт: мастер вакансии — хост
             return when ? [when.periods?.length, when.durationMinDays, when.durationMaxDays, when.isApplicableAtTheEnd, when.applicationEndDate ?? null] : null;
         }, { timeout: 15_000 }).toEqual([1, 14, 60, true, null]);
         await expect(page.getByRole('link', { name: 'Дальше' })).toHaveAttribute('href', `/offers/who-needs/${id}`);
+    });
+
+    test('«Кто нужен»: пол и места обязательны, язык с уровнем сохраняется', async ({ page }) => {
+        await page.goto(`/offers/who-needs/${id}`);
+        await isNewFrontend(page);
+        await expect(page.getByRole('heading', { name: 'Кого бы вы хотели видеть у себя в волонтерах' })).toBeVisible();
+
+        await page.getByRole('button', { name: 'Сохранить' }).click();
+        await expect(page.getByText('Это поле является обязательным')).toHaveCount(2);
+
+        await page.getByRole('switch', { name: 'Женщина' }).check();
+        await page.getByRole('switch', { name: 'Мужчина' }).check();
+        await page.getByRole('combobox', { name: 'Знание языков' }).first().click();
+        await page.getByRole('option', { name: 'Английский' }).click();
+        await page.getByRole('combobox', { name: 'Уровень владения' }).first().click();
+        await page.getByRole('option', { name: 'Продвинутый' }).click();
+        await page.getByRole('button', { name: 'Добавить язык' }).click();
+        await page.getByLabel('Сколько волонтерских мест одновременно').fill('3');
+        await page.getByRole('switch', { name: 'Только иностранцев' }).check();
+        await page.getByRole('button', { name: 'Сохранить' }).click();
+        await expect(page.getByText('Данные успешно сохранены')).toBeVisible();
+        await expect.poll(async () => {
+            const h = (await vacancy())?.howNeeds;
+            return h ? [h.gender?.length, h.volunteerPlaceCount, h.receptionPlace, h.requiredLanguages?.[0]?.language, h.requiredLanguages?.[0]?.languageLevel] : null;
+        }, { timeout: 15_000 }).toEqual([2, 3, 'foreigners', 'English', 'advanced']);
+        await expect(page.getByRole('link', { name: 'Дальше' })).toHaveAttribute('href', `/offers/description/${id}`);
+    });
+
+    test('«Описание»: обязательные поля, категория, обложка и фото сохраняются', async ({ page }) => {
+        const title = `E2E описание ${Date.now()}`;
+        await page.goto(`/offers/description/${id}`);
+        await isNewFrontend(page);
+        await expect(page.getByRole('heading', { name: 'Описание вакансии' })).toBeVisible();
+
+        await page.getByRole('button', { name: 'Сохранить' }).click();
+        await expect(page.getByText('Название вакансии не может быть пустым')).toBeVisible();
+        await expect(page.getByText('Загрузите обложку')).toBeVisible();
+
+        await page.getByLabel('Название мероприятия').fill(title);
+        await page.getByRole('button', { name: 'Заповедники и нац. парки' }).click();
+        await expect(page.getByRole('button', { name: 'Заповедники и нац. парки' })).toHaveAttribute('aria-pressed', 'true');
+        await page.getByLabel('Краткое описание').fill('Короткое описание вакансии для проверки.');
+        await page.getByLabel('Полное описание').fill('Полное описание вакансии. Создано e2e-тестом и удаляется после проверки.');
+
+        // Обложка меньше 1280×720 не принимается; снимок окна 1280×720 — подходит
+        const small = await page.screenshot({ clip: { x: 0, y: 0, width: 300, height: 200 } });
+        await page.locator('input[type="file"]').first().setInputFiles({ name: 'small.png', mimeType: 'image/png', buffer: small });
+        await expect(page.getByText('Неверный размер изображения. Минимум 1280x720')).toBeVisible();
+        const cover = await page.screenshot();
+        const uploaded = page.waitForResponse((r) => r.url().includes('/media_objects') && r.request().method() === 'POST');
+        await page.locator('input[type="file"]').first().setInputFiles({ name: 'cover-e2e.png', mimeType: 'image/png', buffer: cover });
+        expect((await uploaded).status()).toBe(201);
+        await expect(page.getByText('Изменить')).toBeVisible();
+
+        // Фото вакансии сохраняются сразу
+        const gallery = page.waitForResponse((r) => r.url().includes('/image-gallery/'));
+        await page.locator('input[type="file"]').nth(1).setInputFiles({ name: 'photo-e2e.png', mimeType: 'image/png', buffer: small });
+        expect((await gallery).ok()).toBeTruthy();
+        await expect(page.getByText('Галерея успешно обновлена')).toBeVisible();
+
+        await page.getByRole('button', { name: 'Сохранить' }).click();
+        await expect(page.getByText('Данные успешно сохранены')).toBeVisible();
+        await expect.poll(async () => {
+            const v = await (await api!.get(`/api/v1/vacancy/${id}`, { headers })).json();
+            return [v?.description?.title, v?.description?.categories?.[0]?.name, !!v?.description?.image?.contentUrl, v?.galleryImages?.length];
+        }, { timeout: 15_000 }).toEqual([title, 'Заповедники и нац. парки', true, 1]);
+        await expect(page.getByRole('link', { name: 'Дальше' })).toHaveAttribute('href', `/offers/what-to-do/${id}`);
     });
 
     test('en: подписи переведены, адреса с префиксом', async ({ page }) => {

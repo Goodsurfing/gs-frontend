@@ -69,3 +69,33 @@ export function useVacancy(id: string) {
 
     return { state, save };
 }
+
+/** Вакансия в виде GET /api/v1/vacancy/{id}: только тут категории описания приходят целиком (в /vacancies/{id} — пустые) */
+export type VacancyElement = paths["/api/v1/vacancy/{id}"]["get"]["responses"][200]["content"]["application/json"];
+
+export type VacancyElementState =
+    | { status: "loading" }
+    | { status: "missing" }
+    | { status: "ready"; vacancy: VacancyElement };
+
+/** То же для шага «Описание»: GET /api/v1/vacancy/{id}, как OfferDescription старого фронта */
+export function useVacancyElement(id: string): VacancyElementState {
+    const session = useSession();
+    const [state, setState] = useState<VacancyElementState>({ status: "loading" });
+    useEffect(() => {
+        if (session.status !== "user") return;
+        let cancelled = false;
+        void browserApi(session.token)
+            .GET("/api/v1/vacancy/{id}", { params: { path: { id: Number(id) } } })
+            .then(({ data }) => {
+                if (!cancelled) setState(data ? { status: "ready", vacancy: data } : { status: "missing" });
+            })
+            .catch(() => {
+                if (!cancelled) setState({ status: "missing" });
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, [id, session.status, session.token]);
+    return state;
+}

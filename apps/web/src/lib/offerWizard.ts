@@ -249,3 +249,207 @@ export const DURATION_MARKS = [
     { value: 124, key: "when.4 месяца" },
     { value: 186, key: "when.6 месяцев" },
 ] as const;
+
+/* ── Шаг «Кто нужен» ───────────────────────────────────────────────────── */
+
+/** Языки (shared/data/languages старого фронта): значение уходит в API, подпись — ключ словаря offer */
+export const LANGUAGES = [
+    ["not_matter", "whoNeeds.Не важен"],
+    ["English", "whoNeeds.Английский"],
+    ["Русский", "whoNeeds.Русский"],
+    ["Español", "whoNeeds.Испанский"],
+    ["中文", "whoNeeds.Китайский"],
+    ["Deutsch", "whoNeeds.Немецкий"],
+    ["Italiano", "whoNeeds.Итальянский"],
+    ["Français", "whoNeeds.Французский"],
+    ["Português", "whoNeeds.Португальский"],
+    ["Türkçe", "whoNeeds.Турецкий"],
+    ["العربية", "whoNeeds.Арабский"],
+    ["Svenska", "whoNeeds.Шведский"],
+    ["Dansk", "whoNeeds.Датский"],
+    ["Norsk", "whoNeeds.Норвежский"],
+    ["Українська", "whoNeeds.Украинский"],
+    ["עברית", "whoNeeds.Иврит"],
+] as const;
+
+export const LANGUAGE_LEVELS = [
+    ["not_matter", "whoNeeds.Не важен"],
+    ["beginner", "whoNeeds.Начальный"],
+    ["elementary", "whoNeeds.Элементарный"],
+    ["lower_intermediate", "whoNeeds.Слабый средний уровень"],
+    ["upper_intermediate", "whoNeeds.Выше среднего"],
+    ["advanced", "whoNeeds.Продвинутый"],
+    ["proficiency", "whoNeeds.В совершенстве"],
+] as const;
+
+export type LanguageLevel = (typeof LANGUAGE_LEVELS)[number][0];
+export interface RequiredLanguage { language: string; languageLevel: LanguageLevel }
+export type Gender = "male" | "female" | "other";
+export type ReceptionPlace = "any" | "foreigners" | "compatriot";
+
+/** Возраст: от 12 (MINIMAL_AGE_FOR_VOLUNTEER), по умолчанию 12–18, 100 — «и старше» (NO_AGE_LIMIT) */
+export const AGE_MIN = 12;
+export const AGE_DEFAULT_MAX = 18;
+export const AGE_NO_LIMIT = 100;
+export const MAX_LANGUAGES = 10;
+export const MAX_VOLUNTEER_PLACES = 999;
+export const ADDITIONAL_INFO_MAX = 1000;
+
+export interface WhoNeedsForm {
+    gender: Gender[];
+    ageMin: number;
+    ageMax: number;
+    languages: RequiredLanguage[];
+    needAllLanguages: boolean;
+    volunteerPlaces: number;
+    receptionPlace: ReceptionPlace;
+    additionalInfo: string;
+}
+
+export const emptyWhoNeedsForm = (): WhoNeedsForm => ({
+    gender: [],
+    ageMin: AGE_MIN,
+    ageMax: AGE_DEFAULT_MAX,
+    languages: [],
+    needAllLanguages: false,
+    volunteerPlaces: 0,
+    receptionPlace: "any",
+    additionalInfo: "",
+});
+
+const LEVELS = new Set<string>(LANGUAGE_LEVELS.map(([value]) => value));
+const isLevel = (value: string): value is LanguageLevel => LEVELS.has(value);
+
+interface WhoNeedsApi {
+    gender?: Gender[] | null;
+    ageMin?: number | null;
+    ageMax?: number | null;
+    requiredLanguages?: { language: string; languageLevel: string }[] | null;
+    needAllLanguages?: boolean | null;
+    volunteerPlaceCount?: number | null;
+    receptionPlace?: ReceptionPlace | null;
+    additionalInfo?: string | null;
+}
+
+export function whoNeedsFromApi(value: WhoNeedsApi | null | undefined): WhoNeedsForm {
+    const empty = emptyWhoNeedsForm();
+    if (!value) return empty;
+    return {
+        gender: value.gender ?? [],
+        ageMin: value.ageMin ?? empty.ageMin,
+        ageMax: value.ageMax ?? empty.ageMax,
+        languages: (value.requiredLanguages ?? []).map((item) => ({ language: item.language, languageLevel: isLevel(item.languageLevel) ? item.languageLevel : "not_matter" })),
+        needAllLanguages: !!value.needAllLanguages,
+        volunteerPlaces: value.volunteerPlaceCount ?? 0,
+        receptionPlace: value.receptionPlace ?? "any",
+        additionalInfo: value.additionalInfo ?? "",
+    };
+}
+
+export function whoNeedsToApi(form: WhoNeedsForm) {
+    return {
+        gender: form.gender,
+        ageMin: form.ageMin,
+        ageMax: form.ageMax,
+        requiredLanguages: form.languages,
+        needAllLanguages: form.needAllLanguages,
+        volunteerPlaceCount: form.volunteerPlaces,
+        receptionPlace: form.receptionPlace,
+        additionalInfo: form.additionalInfo,
+    };
+}
+
+/** Обязательные поля (старый фронт): хотя бы один пол и не ноль волонтёрских мест */
+export function whoNeedsErrors(form: WhoNeedsForm): { gender: boolean; volunteerPlaces: boolean } {
+    return { gender: form.gender.length === 0, volunteerPlaces: form.volunteerPlaces <= 0 };
+}
+
+/** «Возраст от»: число не меньше «до» тянет «до» за собой (Age старого фронта) */
+export function setAgeMin(form: Pick<WhoNeedsForm, "ageMin" | "ageMax">, value: number) {
+    return value >= form.ageMax ? { ageMin: value, ageMax: value } : { ageMin: value, ageMax: form.ageMax };
+}
+
+/** Уход из поля «от»: меньше 12 или больше 100 — 12 (как в старом), «до» не меньше «от» */
+export function commitAgeMin(form: Pick<WhoNeedsForm, "ageMin" | "ageMax">) {
+    const ageMin = Number.isInteger(form.ageMin) && form.ageMin >= AGE_MIN && form.ageMin <= AGE_NO_LIMIT ? form.ageMin : AGE_MIN;
+    return { ageMin, ageMax: Math.max(ageMin, form.ageMax) };
+}
+
+/**
+ * Уход из поля «до»: меньше «от» — равно «от», больше 100 — 100 («и старше»).
+ * В старом фронте «до» меньше «от» сбрасывало «от» на 12 — получался бессмысленный возраст.
+ */
+export function commitAgeMax(form: Pick<WhoNeedsForm, "ageMin" | "ageMax">) {
+    const ageMax = !Number.isInteger(form.ageMax) || form.ageMax < form.ageMin ? form.ageMin : Math.min(form.ageMax, AGE_NO_LIMIT);
+    return { ageMin: form.ageMin, ageMax };
+}
+
+/** «Без ограничения по возрасту»: включили — «до» 100, выключили — «до» равно «от» */
+export const toggleNoAgeLimit = (form: Pick<WhoNeedsForm, "ageMin" | "ageMax">) => ({ ageMin: form.ageMin, ageMax: form.ageMax >= AGE_NO_LIMIT ? form.ageMin : AGE_NO_LIMIT });
+
+/** Языки, которые можно выбрать в строке: без уже выбранных в других строках; «Не важен» — только в строке добавления */
+export function languageChoices(selected: RequiredLanguage[], current: string, allowNotMatter: boolean): string[] {
+    const taken = new Set(selected.map((item) => item.language).filter((language) => language !== current));
+    return LANGUAGES.map(([value]) => value).filter((value) => !taken.has(value) && (allowNotMatter || value !== "not_matter"));
+}
+
+/** «Добавить язык»: нужен выбранный язык, не больше десяти */
+export function addLanguage(languages: RequiredLanguage[], draft: RequiredLanguage): RequiredLanguage[] | null {
+    if (draft.language === "not_matter" || languages.length >= MAX_LANGUAGES || languages.some((item) => item.language === draft.language)) return null;
+    return [...languages, draft];
+}
+
+/** Подписи языков и уровней из словаря offer по значению */
+export const languageLabels = (t: (key: string) => string) => ({
+    languages: Object.fromEntries(LANGUAGES.map(([code, key]) => [code, t(key)])),
+    levels: Object.fromEntries(LANGUAGE_LEVELS.map(([code, key]) => [code, t(key)])),
+});
+
+/* ── Шаг «Описание» ─────────────────────────────────────────────────────── */
+
+export const SHORT_DESCRIPTION_MAX = 250;
+export const FULL_DESCRIPTION_MAX = 3000;
+export const MAX_CATEGORIES = 5;
+export const MAX_GALLERY = 10;
+export const IMAGE_MAX_BYTES = 5 * 1024 * 1024;
+/** Обложка — не меньше 1280×720 (ImageInput старого фронта) */
+export const COVER_MIN_WIDTH = 1280;
+export const COVER_MIN_HEIGHT = 720;
+const IMAGE_EXTENSIONS = [".png", ".jpeg", ".jpg", ".webp"];
+
+export interface DescriptionForm {
+    title: string;
+    categoryIds: number[];
+    shortDescription: string;
+    fullDescription: string;
+}
+
+export type DescriptionErrors = Partial<Record<keyof DescriptionForm | "cover", true>>;
+
+/** Обязательно всё: название, хотя бы одна категория, оба описания и обложка */
+export function descriptionErrors(form: DescriptionForm, hasCover: boolean): DescriptionErrors {
+    const errors: DescriptionErrors = {};
+    if (!form.title.trim()) errors.title = true;
+    if (!form.categoryIds.length) errors.categoryIds = true;
+    if (!form.shortDescription.trim()) errors.shortDescription = true;
+    if (!form.fullDescription.trim()) errors.fullDescription = true;
+    if (!hasCover) errors.cover = true;
+    return errors;
+}
+
+/** Категория по щелчку: снять, если выбрана; добавить, если выбрано меньше пяти */
+export function toggleCategory(selected: number[], id: number): number[] {
+    if (selected.includes(id)) return selected.filter((item) => item !== id);
+    return selected.length >= MAX_CATEGORIES ? selected : [...selected, id];
+}
+
+/** Проверка файла обложки до загрузки: формат, размер; ключ ошибки словаря offer или null */
+export function coverFileError(name: string, size: number): string | null {
+    const extension = name.toLowerCase().slice(name.lastIndexOf("."));
+    if (!IMAGE_EXTENSIONS.includes(extension)) return "description.Неверный формат файла";
+    if (size > IMAGE_MAX_BYTES) return "description.Размер файла превышает 5МБ";
+    return null;
+}
+
+/** Размер картинки обложки: меньше 1280×720 — ключ ошибки */
+export const coverSizeError = (width: number, height: number): string | null => (width < COVER_MIN_WIDTH || height < COVER_MIN_HEIGHT ? "description.Неверный размер изображения. Минимум 1280x720" : null);

@@ -1,0 +1,203 @@
+"use client";
+
+import { type FormEvent, useCallback, useState } from "react";
+
+import { TextField } from "@/components/form/fields";
+import { useSession } from "@/components/session/SessionProvider";
+import { Loading } from "@/components/ui/Loading";
+import { Toast } from "@/components/ui/Toast";
+import { browserApi } from "@/lib/browserApi";
+import {
+    type DescriptionForm as Form, descriptionErrors, FULL_DESCRIPTION_MAX, SHORT_DESCRIPTION_MAX, toggleCategory,
+} from "@/lib/offerWizard";
+
+import { type CoverLabels, CoverUpload } from "./CoverUpload";
+import { clearDraft, readDraft, writeDraft } from "./draft";
+import { type GalleryLabels, GalleryUpload } from "./GalleryUpload";
+import { toUploadedImage, type UploadedImage } from "./media";
+import { apiErrorText, type VacancyElement, useVacancyElement } from "./useVacancy";
+import { WizardActions } from "./WizardActions";
+import { WizardTextarea } from "./WizardTextarea";
+
+export interface DescriptionLabels {
+    title: string;
+    categories: string;
+    short: string;
+    shortHint: string;
+    full: string;
+    fullHint: string;
+    titleRequired: string;
+    required: string;
+    coverRequired: string;
+    cover: CoverLabels;
+    gallery: GalleryLabels;
+    gallerySaved: string;
+    galleryError: string;
+    saved: string;
+    error: string;
+    save: string;
+    next: string;
+    unsaved: string;
+    loading: string;
+    missing: string;
+}
+
+export interface CategoryOption { id: number; name: string; color: string }
+
+interface Draft { form: Form; cover: UploadedImage | null }
+
+const isDraft = (value: unknown): value is Draft => {
+    const v = value as Draft | null;
+    return !!v && !!v.form && typeof v.form.title === "string" && Array.isArray(v.form.categoryIds);
+};
+
+const ErrorText = ({ text }: { text: string }) => <p role="alert" className="my-[15px] text-[0.75rem] text-[#d32f2f]">{text}</p>;
+
+/** Описание из вакансии: у новой вакансии блока нет */
+const fromVacancy = (vacancy: VacancyElement): Draft => {
+    const description = vacancy.description as VacancyElement["description"] | null;
+    return {
+        form: {
+            title: description?.title ?? "",
+            categoryIds: (description?.categories ?? []).map((category) => category.id).filter((id) => Number.isInteger(id)),
+            shortDescription: description?.shortDescription ?? "",
+            fullDescription: description?.description ?? "",
+        },
+        cover: toUploadedImage(description?.image),
+    };
+};
+
+/**
+ * Шаг «Описание» (OfferDescription старого фронта): название, категории (до
+ * пяти), краткое и полное описание, обложка — всё обязательно; фото вакансии
+ * сохраняются сразу при загрузке и удалении. «Сохранить» — PATCH
+ * /api/v1/vacancy/description/{id}, как в старом фронте.
+ */
+export function DescriptionForm({ id, nextHref, categories, labels }: { id: string; nextHref: string; categories: CategoryOption[]; labels: DescriptionLabels }) {
+    const state = useVacancyElement(id);
+    if (state.status === "missing") return <p className="mt-10 text-[18px] text-ink-tertiary">{labels.missing}</p>;
+    if (state.status === "loading") return <Loading label={labels.loading} className="min-h-[200px]" />;
+    return <DescriptionEditor id={id} nextHref={nextHref} categories={categories} labels={labels} vacancy={state.vacancy} />;
+}
+
+function DescriptionEditor({ id, nextHref, categories, labels, vacancy }: {
+    id: string;
+    nextHref: string;
+    categories: CategoryOption[];
+    labels: DescriptionLabels;
+    vacancy: VacancyElement;
+}) {
+    const session = useSession();
+    const [initial] = useState(() => readDraft("description", id, isDraft));
+    const [draft, setDraft] = useState<Draft>(() => initial ?? fromVacancy(vacancy));
+    const [gallery, setGallery] = useState<UploadedImage[]>(() => (vacancy.galleryImages ?? []).map(toUploadedImage).filter((image): image is UploadedImage => image !== null));
+    const [unsaved, setUnsaved] = useState(!!initial);
+    const [submitted, setSubmitted] = useState(false);
+    const [busy, setBusy] = useState(false);
+    const [toast, setToast] = useState<{ text: string; ok: boolean } | null>(null);
+
+    const update = useCallback((next: Draft) => {
+        setDraft(next);
+        setUnsaved(true);
+        writeDraft("description", id, next);
+    }, [id]);
+
+    const { form, cover } = draft;
+    const set = (patch: Partial<Form>) => update({ form: { ...form, ...patch }, cover });
+    const errors = descriptionErrors(form, !!cover);
+    const show = (field: keyof typeof errors) => submitted && errors[field];
+
+    const saveGallery = async (images: UploadedImage[]) => {
+        setToast(null);
+        const { error } = await browserApi(session.token)
+            .PATCH("/api/v1/vacancy/image-gallery/{id}", { params: { path: { id: Number(id) } }, body: { galleryImageIds: images.map((image) => image.id) } })
+            .catch(() => ({ error: true }));
+        if (error) {
+            setToast({ text: labels.galleryError, ok: false });
+            return;
+        }
+        setGallery(images);
+        setToast({ text: labels.gallerySaved, ok: true });
+    };
+
+    const submit = async (event: FormEvent) => {
+        event.preventDefault();
+        setSubmitted(true);
+        if (Object.keys(errors).length || !cover) return;
+        setBusy(true);
+        setToast(null);
+        const result = await browserApi(session.token)
+            .PATCH("/api/v1/vacancy/description/{id}", {
+                params: { path: { id: Number(id) } },
+                body: { title: form.title, description: form.fullDescription, shortDescription: form.shortDescription, categoryIds: form.categoryIds, imageId: cover.id },
+            })
+            .catch(() => null);
+        setBusy(false);
+        // В OpenAPI у этой операции описан только ответ 200 — ошибку берём из ответа как есть
+        const failure: unknown = result ? (result as { error?: unknown }).error : true;
+        if (failure) {
+            setToast({ text: apiErrorText(failure, labels.error), ok: false });
+            return;
+        }
+        clearDraft("description", id);
+        setUnsaved(false);
+        setToast({ text: labels.saved, ok: true });
+    };
+
+    return (
+        <form onSubmit={submit} noValidate>
+            <Toast text={toast?.text ?? null} ok={toast?.ok} onClose={() => setToast(null)} />
+            <div className="flex flex-col gap-[30px]">
+                <div>
+                    <TextField label={labels.title} value={form.title} aria-invalid={!!show("title")} onChange={(event) => set({ title: event.target.value })} />
+                    {show("title") && <ErrorText text={labels.titleRequired} />}
+                </div>
+                <div className="flex flex-col gap-2">
+                    <p className="font-[Lato] text-[0.875rem] text-caption">{labels.categories}</p>
+                    <div className="flex max-w-[39.25rem]">
+                        <div role="group" aria-label={labels.categories} className="flex max-w-[624px] flex-wrap gap-2.5 rounded-[4px]">
+                            {categories.map((category) => {
+                                const pressed = form.categoryIds.includes(category.id);
+                                return (
+                                    <button
+                                        key={category.id}
+                                        type="button"
+                                        aria-pressed={pressed}
+                                        onClick={() => set({ categoryIds: toggleCategory(form.categoryIds, category.id) })}
+                                        style={{ borderColor: category.color, backgroundColor: pressed ? category.color : undefined }}
+                                        className={`box-content flex max-h-[35px] cursor-pointer items-center justify-center rounded-[26px] border-2 border-solid px-2.5 py-[5px] font-[Lato] text-[14px] leading-[1.75] font-medium tracking-[0.02857em] text-ink-secondary [&:not(:first-child)]:-ml-px ${pressed ? "" : "bg-transparent hover:bg-[rgba(0,0,0,0.04)]"}`}
+                                    >
+                                        {category.name}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+                    {show("categoryIds") && <ErrorText text={labels.required} />}
+                </div>
+                <div>
+                    <WizardTextarea label={labels.short} hint={labels.shortHint} maxLength={SHORT_DESCRIPTION_MAX} invalid={!!show("shortDescription")} value={form.shortDescription} onChange={(event) => set({ shortDescription: event.target.value })} />
+                    {show("shortDescription") && <ErrorText text={labels.required} />}
+                </div>
+                <div>
+                    <WizardTextarea label={labels.full} hint={labels.fullHint} maxLength={FULL_DESCRIPTION_MAX} invalid={!!show("fullDescription")} textareaClass="h-[11.375rem]" value={form.fullDescription} onChange={(event) => set({ fullDescription: event.target.value })} />
+                    {show("fullDescription") && <ErrorText text={labels.required} />}
+                </div>
+                <div>
+                    <CoverUpload value={cover} token={session.token} labels={labels.cover} onChange={(next) => update({ form, cover: next })} />
+                    {show("cover") && <ErrorText text={labels.coverRequired} />}
+                </div>
+                <GalleryUpload
+                    images={gallery}
+                    token={session.token}
+                    labels={labels.gallery}
+                    onChange={saveGallery}
+                    onError={(text) => {
+                        if (text) setToast({ text, ok: false });
+                    }}
+                />
+            </div>
+            <WizardActions unsaved={unsaved} busy={busy} nextHref={nextHref} labels={labels} className="pt-[60px]" />
+        </form>
+    );
+}
