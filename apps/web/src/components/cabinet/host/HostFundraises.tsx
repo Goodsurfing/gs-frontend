@@ -7,9 +7,11 @@ import { MemberBanner } from "@/components/content/MemberBanner";
 import { useSession } from "@/components/session/SessionProvider";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { Loading } from "@/components/ui/Loading";
+import { Toast } from "@/components/ui/Toast";
 import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
+import { hasHostMembership } from "@/lib/occupancy";
 
 type Fundraise = components["schemas"]["ListResult8"];
 
@@ -28,6 +30,7 @@ export interface HostFundraisesLabels {
     confirm: string;
     ok: string;
     cancel: string;
+    error: string;
 }
 
 /**
@@ -48,6 +51,9 @@ export function HostFundraises({ locale, routes, labels }: {
     const [member, setMember] = useState<boolean | null>(null);
     const [confirm, setConfirm] = useState<{ id: string; action: "close" | "delete" } | null>(null);
     const [creating, setCreating] = useState(false);
+    const [busy, setBusy] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const closeError = useCallback(() => setError(null), []);
 
     const load = useCallback(async () => {
         const api = browserApi(session.token);
@@ -63,22 +69,23 @@ export function HostFundraises({ locale, routes, labels }: {
         // Списки и членство — после того, как сессия узнала вошедшего
         // eslint-disable-next-line react-hooks/set-state-in-effect
         void load();
-        void browserApi(session.token).GET("/api/v1/profile/occupancy").then(({ data }) => {
-            const occupancy = data as { isHostMembership?: boolean | null; isMembership?: boolean | null } | undefined;
-            setMember(occupancy?.isHostMembership ?? occupancy?.isMembership ?? false);
-        }).catch(() => setMember(false));
+        void browserApi(session.token).GET("/api/v1/profile/occupancy")
+            .then(({ data }) => setMember(data ? hasHostMembership(data) : false))
+            .catch(() => setMember(false));
     }, [session.status, session.token, load]);
 
     if (!active || !drafts) return <Loading className="min-h-[300px] w-full max-w-[1200px]" />;
 
     const act = async () => {
-        if (!confirm) return;
+        if (!confirm || busy) return;
         const api = browserApi(session.token);
-        if (confirm.action === "close") {
-            await api.PATCH("/api/v1/fundraise/{id}/toggle-status", { params: { path: { id: confirm.id } }, body: { status: "close" } as never }).catch(() => undefined);
-        } else {
-            await api.DELETE("/api/v1/fundraise/{id}", { params: { path: { id: confirm.id } } }).catch(() => undefined);
-        }
+        setBusy(true);
+        const { error: failed } = confirm.action === "close"
+            ? await api.PATCH("/api/v1/fundraise/{id}/toggle-status", { params: { path: { id: confirm.id } }, body: { status: "close" } as never }).catch(() => ({ error: true }))
+            : await api.DELETE("/api/v1/fundraise/{id}", { params: { path: { id: confirm.id } } }).catch(() => ({ error: true }));
+        // В старом ошибка закрытия и удаления проходила молча
+        if (failed) setError(labels.error);
+        setBusy(false);
         setConfirm(null);
         await load();
     };
@@ -86,8 +93,12 @@ export function HostFundraises({ locale, routes, labels }: {
     const create = async () => {
         setCreating(true);
         const { data } = await browserApi(session.token).POST("/api/v1/fundraise").catch(() => ({ data: undefined }));
-        if (data?.id) window.location.assign(routes.welcome.replace("{id}", data.id));
-        else setCreating(false);
+        if (data?.id) {
+            window.location.assign(routes.welcome.replace("{id}", data.id));
+        } else {
+            setCreating(false);
+            setError(labels.error);
+        }
     };
 
     const cards = (items: Fundraise[]) => items.map((item) => (
@@ -104,6 +115,7 @@ export function HostFundraises({ locale, routes, labels }: {
 
     return (
         <div className="flex w-full max-w-[1200px] flex-col gap-5">
+            <Toast text={error} onClose={closeError} />
             <h2 className="text-[1.5em] font-bold">{labels.title}</h2>
             <div className="flex flex-col gap-4">
                 {active.length ? cards(active) : <span className="text-[0.875rem] text-caption">{labels.empty}</span>}
@@ -132,6 +144,7 @@ export function HostFundraises({ locale, routes, labels }: {
                 text={labels.confirm}
                 confirm={labels.ok}
                 cancel={labels.cancel}
+                busy={busy}
                 onConfirm={() => void act()}
                 onClose={() => setConfirm(null)}
             />

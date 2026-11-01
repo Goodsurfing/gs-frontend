@@ -103,7 +103,7 @@ export function HostOffers({ locale, routes, aside, labels }: {
 
     const status = (offer: Offer) => String(offer.status) as Status;
     const act = async () => {
-        if (!confirm) return;
+        if (!confirm || busy) return;
         const { offer, action } = confirm;
         const api = browserApi(session.token);
         setBusy(true);

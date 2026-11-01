@@ -14,9 +14,10 @@ export function Pagination({ page, count, href, onPage, labels }: {
     onPage?: (page: number) => void;
     labels: { prev: string; next: string; page: string };
 }) {
-    const Link = ({ target, className, children, ...rest }: { target: number; className: string; children: React.ReactNode; "aria-label"?: string; "aria-current"?: "page" }) => (onPage
-        ? <button type="button" onClick={() => onPage(target)} className={`${className} cursor-pointer border-0 bg-transparent`} {...rest}>{children}</button>
-        : <a href={href?.(target)} className={className} {...rest}>{children}</a>);
+    // Функция, а не компонент: компонент, объявленный в рендере, пересоздавал бы кнопки и терял фокус
+    const link = (target: number, className: string, children: React.ReactNode, extra: { "aria-label"?: string; "aria-current"?: "page" } = {}) => (onPage
+        ? <button type="button" onClick={() => onPage(target)} className={`${className} cursor-pointer border-0 bg-transparent`} {...extra}>{children}</button>
+        : <a href={href?.(target)} className={className} {...extra}>{children}</a>);
     const arrow = (target: number, disabled: boolean, label: string, path: string) => (disabled
         ? (
             <span aria-hidden className={`${ITEM} opacity-38`}>
@@ -24,9 +25,7 @@ export function Pagination({ page, count, href, onPage, labels }: {
             </span>
         )
         : (
-            <Link target={target} aria-label={label} className={`${ITEM} transition-colors hover:bg-black/4`}>
-                <svg aria-hidden viewBox="0 0 24 24" className="-mx-2 h-[22px] w-[22px] fill-current"><path d={path} /></svg>
-            </Link>
+            link(target, `${ITEM} transition-colors hover:bg-black/4`, <svg aria-hidden viewBox="0 0 24 24" className="-mx-2 h-[22px] w-[22px] fill-current"><path d={path} /></svg>, { "aria-label": label })
         ));
 
     return (
@@ -37,13 +36,7 @@ export function Pagination({ page, count, href, onPage, labels }: {
                     <li key={item}>
                         {typeof item === "number"
                             ? (
-                                <Link
-                                    target={item}
-                                    aria-current={item === page ? "page" : undefined}
-                                    className={`${ITEM} transition-colors hover:bg-black/4 aria-[current=page]:bg-black/8`}
-                                >
-                                    {item}
-                                </Link>
+                                link(item, `${ITEM} transition-colors hover:bg-black/4 aria-[current=page]:bg-black/8`, item, { "aria-current": item === page ? "page" : undefined })
                             )
                             : <span className={`${ITEM} h-auto`}>…</span>}
                     </li>
