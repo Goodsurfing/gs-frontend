@@ -40,7 +40,8 @@ if (!oldUrl || !newUrl || !Object.keys(parts).length) {
     process.exit(2);
 }
 
-const out = "/tmp/visual-compare";
+// Папка для картинок: VISUAL_COMPARE_OUT, если сверок идёт несколько одновременно
+const out = process.env.VISUAL_COMPARE_OUT || "/tmp/visual-compare";
 fs.mkdirSync(out, { recursive: true });
 let auth = null;
 if (login) {
