@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { ReactNode, memo } from "react";
 import cn from "classnames";
 import { useTranslation } from "react-i18next";
 
@@ -14,10 +14,12 @@ import { useGetOfferReviewsQuery } from "@/entities/Review";
 
 interface HostFillProps {
     className?: string;
+    /** GS-188: виджет рядом с диаграммой заполненности (счётчик лимита). */
+    extra?: ReactNode;
 }
 
 export const HostFill = memo((props: HostFillProps) => {
-    const { className } = props;
+    const { className, extra } = props;
     const { t } = useTranslation("host");
     const { data: getHost } = useGetMyHostQuery();
     const { myProfile, profileIsLoading, profileIsError } = useAuth();
@@ -93,6 +95,7 @@ export const HostFill = memo((props: HostFillProps) => {
                         isLoading={profileIsLoading}
                         pointsData={pointsData}
                     />
+                    {extra}
                 </div>
             </div>
         </div>

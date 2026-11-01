@@ -9,6 +9,8 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { OffersSlider } from "@/widgets/OffersSlider";
 import { HowItWorkContainer } from "@/pages/MainPage";
 import styles from "./FindJobPage.module.scss";
+import { getFindJobPageUrl } from "@/shared/config/routes/AppUrls";
+import { PageSeo } from "@/shared/ui/SeoHelmet";
 
 // Категория "Оплачиваемая работа" — тот же id, что уже используется для
 // её карточки на главной (src/shared/data/categories, path "?category=13").
@@ -21,6 +23,7 @@ const FindJobPage = () => {
 
     return (
         <MainPageLayout>
+            <PageSeo section="findJob" path={getFindJobPageUrl(locale)} />
             <div className={styles.wrapper}>
                 <Header />
                 <div className={styles.content}>

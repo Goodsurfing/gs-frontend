@@ -27,6 +27,17 @@ function flatten(tree: LocaleTree, prefix = ""): Record<string, string> {
     }, {});
 }
 
+const PLURAL_SUFFIX = /_(zero|one|two|few|many|other)$/;
+
+/** Форма склонения нужна языку, только если она есть в его правилах
+ * (en: one/other, ru: one/few/many/other) */
+function isPluralFormUsed(key: string, locale: string): boolean {
+    const match = key.match(PLURAL_SUFFIX);
+    if (!match) return true;
+    const categories = new Intl.PluralRules(locale).resolvedOptions().pluralCategories as string[];
+    return categories.includes(match[1]);
+}
+
 const sourceNamespaces = fs.readdirSync(path.join(LOCALES_DIR, SOURCE_LOCALE))
     .filter((f) => f.endsWith(".json"));
 
@@ -44,7 +55,7 @@ describe("i18n locales completeness (ru → en/es)", () => {
                 const targetFlat = flatten(JSON.parse(fs.readFileSync(targetPath, "utf-8")));
 
                 const missing = Object.keys(sourceFlat).filter(
-                    (key) => !(key in targetFlat) || targetFlat[key] === "",
+                    (key) => isPluralFormUsed(key, locale) && (!(key in targetFlat) || targetFlat[key] === ""),
                 );
 
                 expect(missing, `пропущенные или пустые ключи в ${locale}/${namespace}`).toEqual([]);

@@ -12,8 +12,7 @@ import { Submenu } from "@/widgets/Submenu";
 import { useGetProfileInfoByIdQuery } from "@/entities/Profile";
 
 import {
-    getMessengerPageIdUrl,
-    getVolunteerDashboardPageUrl,
+    getMessengerPageIdUrl, getVolunteerDashboardPageUrl, getVolunteerPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
 import Preloader from "@/shared/ui/Preloader/Preloader";
@@ -25,6 +24,7 @@ import { VolunteerPageContent } from "../VolunteerPageContent/VolunteerPageConte
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { useLazyGetMyChatsListQuery } from "@/entities/Chat";
 import styles from "./VolunteerPersonalPage.module.scss";
+import { PageSeo } from "@/shared/ui/SeoHelmet";
 
 export const VolunteerPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -155,6 +155,13 @@ export const VolunteerPersonalPage = () => {
 
     return (
         <div className={styles.wrapper}>
+            {/* Профиль человека: не индексируем и имя в заголовок не выносим */}
+            <PageSeo
+                section="volunteer"
+                path={getVolunteerPersonalPageUrl(locale, id)}
+                noindex
+                ogType="profile"
+            />
             <MainHeader variant="static" />
             <div className={styles.content}>
                 <VolunteerHeaderCard

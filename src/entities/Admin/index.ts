@@ -99,6 +99,7 @@ export {
     useUpdateAdminOrganizationMutation,
     useToggleAdminOrganizationActiveMutation,
     useDeleteOrganizationMutation,
+    useActivateOrganizationMembershipMutation,
     useLazyGetOrganizationsQuery,
     useGetOrganizationByIdQuery,
     useGetPublicAchievementsQuery, useGetPublicCategoriesVacancyQuery,
@@ -140,7 +141,16 @@ export {
     useGetAbouProjectPageInfoQuery,
     useGetAdminAbouProjectPageInfoQuery,
     useUpdateAdminAbouProjectPageInfoMutation,
+    useGetAdminMembershipTariffsQuery,
+    useGetAdminUserMembershipQuery,
+    useGrantAdminMembershipMutation,
+    useRevokeAdminMembershipMutation,
+    useGetAdminMembershipLogQuery,
 } from "./api/adminApi";
+
+export type {
+    AdminMembership, AdminMembershipCategory, AdminMembershipLog, AdminTariff,
+} from "./model/types/adminMembershipSchema";
 
 export {
     adminCourseApi,
@@ -370,3 +380,9 @@ export type {
 } from "./model/types/adminFeedbackSchema";
 
 export { FeedbackStatus } from "./model/types/adminFeedbackSchema";
+
+export {
+    formatAdminDate, formatAdminDateTime, formatLogEndDate, MEMBERSHIP_ACTION_LABEL,
+    MEMBERSHIP_CATEGORY_LABEL, MEMBERSHIP_ROLE_LABEL, MEMBERSHIP_SOURCE_LABEL,
+    MEMBERSHIP_STATUS_LABEL,
+} from "./lib/membershipLabels";

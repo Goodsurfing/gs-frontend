@@ -7,8 +7,9 @@ import HostDashboardPage from "./HostDashboardPage";
 
 const useGetProfileOccupancyQueryMock = vi.fn();
 
-vi.mock("@/entities/Profile", () => ({
+vi.mock("@/entities/Profile", async () => ({
     useGetProfileOccupancyQuery: () => useGetProfileOccupancyQueryMock(),
+    hasHostMembership: (await import("@/entities/Profile/api/profileApi")).hasHostMembership,
 }));
 
 vi.mock("@/features/HostFill", () => ({ HostFill: () => null }));

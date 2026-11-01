@@ -45,6 +45,7 @@ import { ProfileRolePage } from "@/pages/ProfileRolePage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { RulesPage } from "@/pages/RulesPage";
+import { UnsubscribedPage } from "@/pages/UnsubscribedPage";
 import { SignInPage } from "@/pages/SignInPage";
 import { SignUpPage } from "@/pages/SignUpPage";
 import { VideoPage } from "@/pages/VideoPage";
@@ -70,6 +71,7 @@ import {
     getBlogPersonalPageUrl,
     getCategoriesPageUrl,
     getConfirmEmailPageUrl,
+    getUnsubscribedPageUrl,
     getConfirmEmailSuccessPageUrl,
     getFavoriteOffersPageUrl,
     getFindJobPageUrl,
@@ -233,6 +235,7 @@ import {
     getAdminBannerMarketingPersonalPageUrl,
     getAdminFeedbackPageUrl,
     getAdminFeedbackPersonalPageUrl,
+    getAdminMembershipLogPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -335,6 +338,8 @@ import { AdminBannerMarketingCreatePage } from "@/pages/AdminBannerMarketingCrea
 import { AdminBannerMarketingPersonalPage } from "@/pages/AdminBannerMarketingPersonalPage";
 import { AdminFeedbackPage } from "@/pages/AdminFeedbackPage";
 import { AdminFeedbackPersonalPage } from "@/pages/AdminFeedbackPersonalPage";
+import { AdminMembershipLogPage } from "@/pages/AdminMembershipLogPage";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 const publicRoutes: RouteType[] = [
     {
@@ -387,6 +392,11 @@ const publicRoutes: RouteType[] = [
         label: "confirm-email",
         element: <ConfirmEmailPage />,
         path: (locale: string) => getConfirmEmailPageUrl(locale),
+    },
+    {
+        label: "unsubscribed",
+        element: <UnsubscribedPage />,
+        path: (locale: string) => getUnsubscribedPageUrl(locale),
     },
     {
         label: "confirm-email-success",
@@ -490,7 +500,7 @@ const publicRoutes: RouteType[] = [
     {
         label: "host-personal-legacy-redirect",
         element: <LegacyIdRedirect to={getHostPersonalPageUrl} />,
-        path: (locale: string) => `/${locale}/host-personal/:id`,
+        path: (locale: string) => `${localePrefix(locale)}/host-personal/:id`,
     },
     {
         label: "fundraise-layout",
@@ -564,7 +574,7 @@ const publicRoutes: RouteType[] = [
     {
         label: "offer-personal-legacy-redirect",
         element: <LegacyIdRedirect to={getOfferPersonalPageUrl} />,
-        path: (locale: string) => `/${locale}/offer-personal/:id`,
+        path: (locale: string) => `${localePrefix(locale)}/offer-personal/:id`,
     },
     {
         label: "volunteer-personal",
@@ -574,7 +584,7 @@ const publicRoutes: RouteType[] = [
     {
         label: "volunteer-personal-legacy-redirect",
         element: <LegacyIdRedirect to={getVolunteerPersonalPageUrl} />,
-        path: (locale: string) => `/${locale}/volunteer-personal/:id`,
+        path: (locale: string) => `${localePrefix(locale)}/volunteer-personal/:id`,
     },
     {
         label: "volunteer-layout",
@@ -818,7 +828,7 @@ const publicRoutes: RouteType[] = [
     {
         label: "donation-personal-legacy-redirect",
         element: <LegacyIdRedirect to={getDonationPersonalPage} />,
-        path: (locale: string) => `/${locale}/donation-personal/:id`,
+        path: (locale: string) => `${localePrefix(locale)}/donation-personal/:id`,
     },
     {
         label: "donation-reports",
@@ -1185,6 +1195,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-feedback-personal",
                 element: <AdminFeedbackPersonalPage />,
                 path: (locale: string) => getAdminFeedbackPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-membership-log",
+                element: <AdminMembershipLogPage />,
+                path: (locale: string) => getAdminMembershipLogPageUrl(locale),
             },
         ],
     },

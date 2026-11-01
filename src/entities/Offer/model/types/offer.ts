@@ -83,6 +83,14 @@ export interface OfferApi {
     updated: string;
 }
 
+/** Как организация отвечает на заявки за последний год; null — заявок меньше трёх */
+export interface OfferOrganizationResponseStats {
+    sample: number;
+    answeredPercent: number;
+    /** Медиана первого ответа в переписке, часов; null — в переписке не отвечали */
+    medianReplyHours: number | null;
+}
+
 export interface OfferOrganization {
     id: string;
     name: string;
@@ -90,6 +98,7 @@ export interface OfferOrganization {
     otherType: string;
     shortDescription: string,
     image: Image | null;
+    responseStats?: OfferOrganizationResponseStats | null;
 }
 export interface AddressAutoComplete {
     list: string[];

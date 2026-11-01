@@ -138,9 +138,12 @@ export const useCategories = () => {
             Международные: t("category-offer.Международные"),
             Другое: t("category-offer.Другое"),
         };
-        if (category) {
-            return translations[category];
-        }
+        if (!category) return undefined;
+        // Название из API сравниваем без пробелов по краям («Оплачиваемая работа »
+        // на проде давало пустую плашку), а неизвестную категорию (заведена в
+        // админке позже) показываем как есть — не пустотой.
+        const name = category.trim();
+        return translations[name] ?? name;
     };
 
     const getColorByCategory = (category: CategoryType): string | undefined => {
@@ -150,17 +153,3 @@ export const useCategories = () => {
 
     return { tags, getTranslation, getColorByCategory };
 };
-
-export function getVacancyText(num: number): string {
-    let text = "вакансий";
-    const lastDigit = num % 10;
-    const lastTwoDigits = num % 100;
-
-    if (lastDigit === 1 && lastTwoDigits !== 11) {
-        text = "вакансия";
-    } else if (lastDigit >= 2 && lastDigit <= 4 && (lastTwoDigits < 10 || lastTwoDigits >= 20)) {
-        text = "вакансии";
-    }
-
-    return `${text}`;
-}

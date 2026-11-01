@@ -11,6 +11,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./PaymentFailPage.module.scss";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 const PaymentFailPage: React.FC = () => {
     const { t } = useTranslation("donation");
@@ -23,7 +24,7 @@ const PaymentFailPage: React.FC = () => {
 
     useEffect(() => {
         if (!isAuth) {
-            navigate(`/${locale}/signin`);
+            navigate(`${localePrefix(locale)}/signin`);
         }
     }, [isAuth, navigate, locale]);
 

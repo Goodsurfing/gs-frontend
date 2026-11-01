@@ -60,6 +60,12 @@
         background-color: rgba(236, 241, 244, 0.7);
         color: var(--hover-blue);
     }
+
+    &[aria-current="page"],
+    &[aria-current="page"]:hover {
+        background-color: rgba(236, 241, 244, 0.7);
+        color: var(--accent-color);
+    }
 }
 
 .popup {
@@ -116,6 +122,11 @@
 
     &:hover {
         color: var(--hover-blue);
+    }
+
+    &[aria-current="page"],
+    &[aria-current="page"]:hover {
+        color: var(--accent-color);
     }
 }
 

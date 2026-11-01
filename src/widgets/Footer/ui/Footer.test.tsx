@@ -42,8 +42,8 @@ describe("Footer", () => {
         );
         expect(externalCommunityLinks).toHaveLength(0);
 
-        expect(allLinks).toContain("/ru/blog");
-        expect(allLinks).toContain("/ru/video");
+        expect(allLinks).toContain("/blog");
+        expect(allLinks).toContain("/video");
     });
 
     /**
@@ -59,7 +59,7 @@ describe("Footer", () => {
         );
 
         const allLinks = screen.getAllByRole("link").map((el) => el.getAttribute("href"));
-        expect(allLinks).toContain("/ru/feedback");
+        expect(allLinks).toContain("/feedback");
     });
 
     /**

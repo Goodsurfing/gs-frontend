@@ -53,7 +53,9 @@
         "Отправить ещё раз": "Reenviar",
         "Отправить ещё раз через {{seconds}}": "Reenviar en {{seconds}} segundos",
         "Подтвердить": "Confirmar",
-        "Пользователь был удален или не создавался": "El usuario fue eliminado o nunca fue creado"
+        "Пользователь был удален или не создавался": "El usuario fue eliminado o nunca fue creado",
+        "Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга": "Quiero recibir correos sobre nuevos proyectos, promociones y noticias de Goodsurfing",
+        "marketingConsentHint": "Puedes darte de baja en cualquier momento desde tu perfil o con el enlace del correo."
     },
     "main": {
         "welcome": {
@@ -126,7 +128,11 @@
                 "membership": "Membresía",
                 "expeditions": "Expediciones",
                 "international-volunteering": "Voluntariado Internacional",
-                "messages": "Mensajes"
+                "messages": "Mensajes",
+                "socials-cta": "Síguenos en las redes sociales",
+                "menu": "Menú",
+                "membership-active": "Activa hasta {{date}}",
+                "membership-from": "desde {{price}} ₽/año"
             },
             "title": "Encontrar el viaje soñado",
             "offers-btn": "Todas las ofertas",
@@ -158,7 +164,7 @@
             "Отзывы": "Reseñas",
             "Обо мне": "Acerca de mí",
             "Предпочтения": "Preferencias",
-            "Роль": "Role",
+            "Роль": "Rol",
             "Пароль": "Contraseña",
             "Приватность": "Privacidad",
             "Панель управления": "Panel",
@@ -222,7 +228,10 @@
         "Другое": "Otros",
         "вакансий": "vacantes",
         "вакансия": "vacante",
-        "вакансии": "vacantes"
+        "вакансии": "vacantes",
+        "vacancyCount_one": "vacante",
+        "vacancyCount_many": "vacantes",
+        "vacancyCount_other": "vacantes"
     },
     "notes": {
         "Мои заявки": "Mis solicitudes",
@@ -240,23 +249,29 @@
     },
     "membershipBadge": {
         "Член сообщества": "Miembro de la comunidad",
-        "Партнёр Гудсёрфинга": "Socio de Goodsurfing"
+        "Партнёр Гудсёрфинга": "Socio de Goodsurfing",
+        "Международный клуб": "Club internacional"
     },
     "freeApplicationsCounter": {
         "Можно бесплатно откликнуться на:": "Solicitudes gratuitas restantes:",
-        "Нужно больше? Оформите членство!": "¿Necesitas más? ¡Hazte miembro!",
-        "Не забудьте продлить членство, чтобы сохранить привилегии": "No olvides renovar tu membresía para conservar tus privilegios"
+        "Нужно больше? Оформите членство!": "¿Necesitas más?\n¡Hazte miembro!",
+        "Не забудьте продлить членство, чтобы сохранить привилегии": "No olvides renovar tu membresía para conservar tus privilegios",
+        "Откликов осталось": "Solicitudes restantes",
+        "Без ограничений": "Solicitudes ilimitadas"
     },
     "publishedVacanciesCounter": {
         "Можно бесплатно опубликовать вакансий:": "Vacantes gratuitas restantes:",
-        "Нужно больше? Оформите членство!": "¿Necesitas más? ¡Hazte miembro!",
-        "Не забудьте продлить членство, чтобы сохранить привилегии": "No olvides renovar tu membresía para conservar tus privilegios"
+        "Нужно больше? Оформите членство!": "¿Necesitas más?\n¡Hazte miembro!",
+        "Не забудьте продлить членство, чтобы сохранить привилегии": "No olvides renovar tu membresía para conservar tus privilegios",
+        "Вакансий осталось": "Vacantes restantes",
+        "Без ограничений": "Vacantes ilimitadas"
     },
     "errors": {
         "freeAccountApplicationsLimit": "La cuenta gratuita permite enviar hasta 3 solicitudes. Obtén una membresía para postularte sin límites.",
         "freeAccountPublishedVacancyLimit": "La cuenta gratuita permite publicar hasta 1 vacante. Obtén una membresía para publicar sin límites.",
         "onlyVerifiedVolunteersAllowed": "Esta vacante solo acepta solicitudes de participantes verificados. Obtén una membresía para postularte.",
         "vacancyIncomplete": "Completa el título, la descripción y la dirección de la vacante antes de publicarla.",
+        "vacancyNotActive": "Esta oferta está cerrada: ya no es posible postularse.",
         "fundraiseRequiresMembership": "Crear recaudaciones de fondos requiere una membresía activa."
     },
     "Не задано": "No especificado",
@@ -313,6 +328,10 @@
     "Проверьте соединение и попробуйте ещё раз": "Compruebe su conexión e inténtelo de nuevo",
     "Попробовать снова": "Intentar de nuevo",
     "Не удалось загрузить карту": "No se pudo cargar el mapa",
+    "Что-то пошло не так": "Algo salió mal. Intenta actualizar la página.",
+    "Добавить в избранное": "Añadir a favoritos",
+    "Убрать из избранного": "Quitar de favoritos",
+    "Язык": "Idioma",
     "Обновить страницу": "Actualizar la página",
     "Календарь": "Calendario",
     "Удалить отзыв": "Eliminar reseña",
@@ -343,5 +362,28 @@
     "Правила": "Normas",
     "Политика конфиденциальности": "Política de privacidad",
     "Политика безопасности платежей": "Política de seguridad de pagos",
-    "Это неофициальный перевод для удобства Юридическую силу имеет только версия документа на русском языке": "Esta es una traducción no oficial ofrecida para su comodidad. Solo la versión en ruso de este documento tiene validez legal."
+    "Это неофициальный перевод для удобства Юридическую силу имеет только версия документа на русском языке": "Esta es una traducción no oficial ofrecida para su comodidad. Solo la versión en ruso de este documento tiene validez legal.",
+    "unsubscribed": {
+        "title": "Boletín de GoodSurfing",
+        "done": "Te has dado de baja. Ya no recibirás correos sobre nuevos proyectos, promociones y noticias.",
+        "invalid": "Este enlace para darte de baja no es válido. Puedes hacerlo en tu perfil, en «Privacidad».",
+        "hint": "Seguirás recibiendo correos sobre tus solicitudes, tu membresía y tu cuenta. Puedes volver a suscribirte en cualquier momento en la configuración.",
+        "settings": "Abrir configuración"
+    },
+    "slider": {
+        "previous": "Anterior",
+        "next": "Siguiente"
+    },
+    "gallery": {
+        "open": "Abrir foto",
+        "photo": "Foto"
+    },
+    "pagination": {
+        "prev": "Página anterior",
+        "next": "Página siguiente",
+        "label": "Páginas"
+    },
+    "Приблизить": "Acercar",
+    "Отдалить": "Alejar",
+    "Свернуть карту": "Ocultar mapa"
 }

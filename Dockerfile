@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.4
 
 # 1. Install dependencies
-FROM node:20-alpine AS development
+FROM node:22-alpine AS development
 
 WORKDIR /app
 

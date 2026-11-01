@@ -1,0 +1,61 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.column {
+    flex-direction: column;
+    max-width: 220px;
+    text-align: center;
+}
+
+.row {
+    flex-direction: row;
+    max-width: 340px;
+    text-align: left;
+}
+
+.chart {
+    position: relative;
+    flex-shrink: 0;
+}
+
+// Цвета — как у диаграммы заполненности профиля (StatsChart).
+.track {
+    stroke: #DFE6EB;
+}
+
+.fill {
+    stroke: #22E0A5;
+    stroke-linecap: butt;
+    transition: stroke-dasharray 0.4s ease;
+}
+
+.value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-secondary-2);
+    white-space: nowrap;
+}
+
+.infinity {
+    font-size: 26px;
+    font-weight: 500;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary-2);
+}

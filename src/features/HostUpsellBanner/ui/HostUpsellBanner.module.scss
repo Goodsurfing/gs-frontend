@@ -14,3 +14,13 @@
     color: var(--color-blue);
     text-decoration: underline;
 }
+
+.vertical {
+    max-width: 240px;
+}
+
+@media (max-width: 992px) {
+    .vertical {
+        max-width: 100%;
+    }
+}

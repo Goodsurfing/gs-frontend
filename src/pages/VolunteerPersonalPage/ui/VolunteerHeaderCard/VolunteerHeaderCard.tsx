@@ -56,7 +56,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
 
         const {
             image, firstName, lastName, birthDate, country, city, volunteer, hostId,
-            vk, telegram, facebook, instagram,
+            vk, telegram, facebook, instagram, isInternationalMember,
         } = profileData;
         const languages = useLanguagesWithComma(volunteer?.languages ?? []);
         const renderName = getFullName(firstName, lastName);
@@ -190,6 +190,9 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                                 {renderName}
                                 {isMember && (
                                     <MembershipBadge variant="volunteer" />
+                                )}
+                                {isInternationalMember && (
+                                    <MembershipBadge variant="international" />
                                 )}
                             </h3>
                             <div className={styles.info}>

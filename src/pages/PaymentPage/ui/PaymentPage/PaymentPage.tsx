@@ -8,12 +8,15 @@ import Button from "@/shared/ui/Button/Button";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { getUserAuthData, getUserInited } from "@/entities/User";
+import { useAppSelector } from "@/shared/hooks/redux";
 import { useCheckoutMembershipMutation } from "@/store/api/membershipApi";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getMembershipPageUrl, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
 import { TARIFF_CODE } from "@/shared/constants/membership";
 
 import styles from "./PaymentPage.module.scss";
+import { trackGoal } from "@/shared/lib/analytics";
 
 const isFetchError = (err: unknown): err is FetchBaseQueryError => (
     typeof err === "object" && err !== null && "status" in err
@@ -24,7 +27,13 @@ const PaymentPage: React.FC = () => {
     const { locale } = useLocale();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const { isAuth, myProfile } = useAuth();
+    // Сессия — из стора, синхронно. isAuth из useAuth выставляется эффектом
+    // уже после первого рендера, а профиль догружается позже: на них страница
+    // при прямом заходе (ссылка из письма, быстрый клик на /membership)
+    // отправляла вошедшего пользователя на форму входа.
+    const hasSession = Boolean(useAppSelector(getUserAuthData));
+    const sessionInited = useAppSelector(getUserInited);
+    const { myProfile } = useAuth();
 
     const [checkoutMembership, { isLoading }] = useCheckoutMembershipMutation();
     const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
@@ -34,7 +43,8 @@ const PaymentPage: React.FC = () => {
     const tariffCode = searchParams.get("tariff") || TARIFF_CODE.VOLUNTEER;
 
     useEffect(() => {
-        if (!isAuth || !myProfile) {
+        if (!sessionInited) return;
+        if (!hasSession) {
             // Прокидываем next/nextId, чтобы после логина AuthByEmail
             // вернул пользователя сюда же с тем же tariffCode, а не на
             // дефолтную страницу профиля (row: "просит войти — перебрасывает
@@ -42,14 +52,22 @@ const PaymentPage: React.FC = () => {
             navigate(`${getSignInPageUrl(locale)}?next=payment&nextId=${tariffCode}`);
             return;
         }
+        // Профиль ещё грузится — ждём (если сессия протухла, withReauthOn401
+        // сделает logout, и сработает ветка выше)
+        if (!myProfile) return;
         if (startedRef.current) return;
         startedRef.current = true;
 
         checkoutMembership({ tariffCode }).unwrap()
             .then((result) => {
                 if (result.paymentUrl) {
+                    trackGoal("checkout_start", { tariff: tariffCode });
                     setPaymentUrl(result.paymentUrl);
-                    window.location.href = result.paymentUrl;
+                    // replace, а не href: страница сама создаёт платёж при открытии,
+                    // и «Назад» с ЮKassa возвращал сюда же — новый платёж и снова
+                    // ЮKassa. Уйти было нельзя, отменённых платежей копилось втрое
+                    // больше настоящих попыток. Так «Назад» ведёт на страницу до оплаты.
+                    window.location.replace(result.paymentUrl);
                 } else {
                     setErrorMessage(t("Не удалось получить ссылку на оплату"));
                 }
@@ -80,7 +98,7 @@ const PaymentPage: React.FC = () => {
 
                 setErrorMessage(data?.detail || data?.title || fallback);
             });
-    }, [isAuth, myProfile, checkoutMembership, navigate, locale, tariffCode, t]);
+    }, [sessionInited, hasSession, myProfile, checkoutMembership, navigate, locale, tariffCode, t]);
 
     const handlePayClick = () => {
         if (paymentUrl) {
@@ -90,7 +108,7 @@ const PaymentPage: React.FC = () => {
         }
     };
 
-    if (!isAuth || !myProfile) {
+    if (!hasSession || !myProfile) {
         return <Preloader />;
     }
 

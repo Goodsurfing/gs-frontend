@@ -39,5 +39,17 @@ export default defineConfig({
             },
             dependencies: ['setup'],
         },
+        // Визуальные эталоны публичных страниц (GS-214): только по явному
+        // E2E_VISUAL=1, в обычный прогон после деплоя не входят. Снимки —
+        // в e2e/visual/__snapshots__ (не в git), порядок — e2e/README.md.
+        ...(process.env.E2E_VISUAL === '1' ? [{
+            name: 'visual',
+            testDir: './e2e/visual',
+            snapshotPathTemplate: 'e2e/visual/__snapshots__/{arg}{ext}',
+            use: {
+                ...devices['Desktop Chrome'],
+                storageState: { cookies: [], origins: [] },
+            },
+        }] : []),
     ],
 });

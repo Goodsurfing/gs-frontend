@@ -53,7 +53,9 @@
         "Отправить ещё раз": "Resend",
         "Отправить ещё раз через {{seconds}}": "Resend in {{seconds}} seconds",
         "Подтвердить": "Confirm",
-        "Пользователь был удален или не создавался": "The user was deleted or was never created"
+        "Пользователь был удален или не создавался": "The user was deleted or was never created",
+        "Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга": "I want to receive emails about new projects, offers and Goodsurfing news",
+        "marketingConsentHint": "You can unsubscribe at any time in your profile or via the link in any email."
     },
     "main": {
         "welcome": {
@@ -126,7 +128,11 @@
                 "exit": "Exit",
                 "membership": "Membership",
                 "expeditions": "Expeditions",
-                "international-volunteering": "International Volunteering"
+                "international-volunteering": "International Volunteering",
+                "socials-cta": "Follow us on social media",
+                "menu": "Menu",
+                "membership-active": "Active until {{date}}",
+                "membership-from": "from {{price}} ₽/year"
             },
             "title": "Find the dream journey",
             "offers-btn": "Over the past 11 years, our Goodsurfers have completed over 25,000 meaningful journeys, participating in projects across a wide range of fields. Choose the direction that resonates with you.",
@@ -222,7 +228,9 @@
         "Другие категории": "Other categories",
         "вакансий": "vacancies",
         "вакансия": "vacancy",
-        "вакансии": "vacancies"
+        "вакансии": "vacancies",
+        "vacancyCount_one": "vacancy",
+        "vacancyCount_other": "vacancies"
     },
     "notes": {
         "Мои заявки": "My applications",
@@ -240,23 +248,29 @@
     },
     "membershipBadge": {
         "Член сообщества": "Community member",
-        "Партнёр Гудсёрфинга": "Goodsurfing partner"
+        "Партнёр Гудсёрфинга": "Goodsurfing partner",
+        "Международный клуб": "International club"
     },
     "freeApplicationsCounter": {
         "Можно бесплатно откликнуться на:": "Free applications left:",
-        "Нужно больше? Оформите членство!": "Need more? Get a membership!",
-        "Не забудьте продлить членство, чтобы сохранить привилегии": "Don't forget to renew your membership to keep your privileges"
+        "Нужно больше? Оформите членство!": "Need more?\nGet a membership!",
+        "Не забудьте продлить членство, чтобы сохранить привилегии": "Don't forget to renew your membership to keep your privileges",
+        "Откликов осталось": "Applications left",
+        "Без ограничений": "Unlimited applications"
     },
     "publishedVacanciesCounter": {
         "Можно бесплатно опубликовать вакансий:": "Free published vacancies left:",
-        "Нужно больше? Оформите членство!": "Need more? Get a membership!",
-        "Не забудьте продлить членство, чтобы сохранить привилегии": "Don't forget to renew your membership to keep your privileges"
+        "Нужно больше? Оформите членство!": "Need more?\nGet a membership!",
+        "Не забудьте продлить членство, чтобы сохранить привилегии": "Don't forget to renew your membership to keep your privileges",
+        "Вакансий осталось": "Vacancies left",
+        "Без ограничений": "Unlimited vacancies"
     },
     "errors": {
         "freeAccountApplicationsLimit": "Free account allows up to 3 applications. Get a membership to apply without limits.",
         "freeAccountPublishedVacancyLimit": "Free account allows up to 1 published vacancy. Get a membership to publish without limits.",
         "onlyVerifiedVolunteersAllowed": "This vacancy only accepts applications from verified participants. Get a membership to apply.",
         "vacancyIncomplete": "Fill in the vacancy title, description and address before publishing.",
+        "vacancyNotActive": "This offer is closed — you can no longer apply.",
         "fundraiseRequiresMembership": "Creating fundraising campaigns requires an active membership."
     },
     "Не задано": "Not specified",
@@ -313,6 +327,10 @@
     "Проверьте соединение и попробуйте ещё раз": "Check your connection and try again",
     "Попробовать снова": "Try again",
     "Не удалось загрузить карту": "Failed to load the map",
+    "Что-то пошло не так": "Something went wrong. Please refresh the page.",
+    "Добавить в избранное": "Add to favorites",
+    "Убрать из избранного": "Remove from favorites",
+    "Язык": "Language",
     "Обновить страницу": "Refresh the page",
     "Календарь": "Calendar",
     "Удалить отзыв": "Delete review",
@@ -343,5 +361,28 @@
     "Правила": "Rules",
     "Политика конфиденциальности": "Privacy Policy",
     "Политика безопасности платежей": "Payment Security Policy",
-    "Это неофициальный перевод для удобства Юридическую силу имеет только версия документа на русском языке": "This is an unofficial translation provided for convenience. Only the Russian version of this document is legally binding."
+    "Это неофициальный перевод для удобства Юридическую силу имеет только версия документа на русском языке": "This is an unofficial translation provided for convenience. Only the Russian version of this document is legally binding.",
+    "unsubscribed": {
+        "title": "GoodSurfing newsletter",
+        "done": "You’ve unsubscribed. You won’t receive emails about new projects, offers and news anymore.",
+        "invalid": "This unsubscribe link is invalid. You can unsubscribe in your profile under “Privacy”.",
+        "hint": "You’ll still receive emails about your applications, membership and account. You can subscribe again at any time in your settings.",
+        "settings": "Open settings"
+    },
+    "slider": {
+        "previous": "Previous",
+        "next": "Next"
+    },
+    "gallery": {
+        "open": "Open photo",
+        "photo": "Photo"
+    },
+    "pagination": {
+        "prev": "Previous page",
+        "next": "Next page",
+        "label": "Pages"
+    },
+    "Приблизить": "Zoom in",
+    "Отдалить": "Zoom out",
+    "Свернуть карту": "Hide map"
 }

@@ -18,14 +18,14 @@ export const HeaderList: FC<HeaderListProps> = (props) => {
     const { isShowMap, onChangeShowMap, donationsLength } = props;
     const { control } = useFormContext<DonationFilterFields>();
     const { width } = useWindowDimensions();
-    const { t } = useTranslation("offers-map");
+    const { t } = useTranslation("donation");
 
     return (
         <div className={styles.wrapper}>
             <span className={styles.offerCount}>
                 {donationsLength}
                 {" "}
-                {t("вариантов")}
+                {t("variants", { count: donationsLength ?? 0 })}
             </span>
             <Controller
                 name="sort"

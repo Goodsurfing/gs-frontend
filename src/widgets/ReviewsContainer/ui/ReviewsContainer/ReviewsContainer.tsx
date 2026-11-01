@@ -29,7 +29,7 @@ const ReviewsContainer: FC = () => {
 
     return (
         <div className={styles.wrapper}>
-            <div className={styles.slider}>
+            <div className={styles.slider} data-testid="reviews-slider">
                 <div className={styles.arrows}>
                     <img
                         ref={(node) => setPrevEl(node)}

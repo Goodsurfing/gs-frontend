@@ -9,6 +9,7 @@ export enum AppRoutes {
     RESET_PASSWORD = "reset_password",
     RESET_PASSWORD_VERIFY = "reset_password_verify",
     CONFIRM_EMAIL = "confirm_email",
+    UNSUBSCRIBED = "unsubscribed",
     CONFIRM_EMAIL_SUCCESS = "confirm_email_success",
     EMAIL_EXPIRED = "email_expired",
     EMAIL_ALREADY_CONFIRMED = "email_already_confirmed",
@@ -131,4 +132,5 @@ export enum AppRoutes {
     ADMIN_SYSTEM_ADMIN = "admin_system_admin",
     ADMIN_BANNER_MARKETING = "admin_banner_marketing",
     ADMIN_FEEDBACK = "admin_feedback",
+    ADMIN_MEMBERSHIP_LOG = "admin_membership_log",
 }

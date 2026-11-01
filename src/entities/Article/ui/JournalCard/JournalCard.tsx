@@ -8,6 +8,7 @@ import comment from "@/shared/assets/icons/comment.svg";
 import like from "@/shared/assets/icons/thumbsUp.svg";
 
 import styles from "./JournalCard.module.scss";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 export interface JournalCardType {
     id: string;
@@ -35,7 +36,7 @@ export const JournalCard: FC<JournalCardProps> = (props) => {
     const { locale } = useLocale();
     return (
         <div className={cn(className, styles.wrapper)}>
-            <Link to={`/${locale}/journals/${slug}`}>
+            <Link to={`${localePrefix(locale)}/journals/${slug}`}>
                 <img className={styles.image} src={image} alt={title} />
                 <span className={styles.title}>{title}</span>
                 <div className={styles.container}>

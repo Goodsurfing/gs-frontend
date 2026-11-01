@@ -26,7 +26,7 @@ export const HeaderList: FC<HeaderListProps> = (props) => {
             <span className={styles.offerCount}>
                 {offersLength}
                 {" "}
-                {t("вариантов")}
+                {t("variants", { count: offersLength ?? 0 })}
             </span>
             <Controller
                 name="offersSort.showClosedOffers"

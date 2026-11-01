@@ -1,0 +1,52 @@
+# apps/web — новый веб-фронт Goodsurfing
+
+Эпик GS-212: веб-фронт переезжает сюда по разделам (публичная часть → кабинет → админка). Старое SPA — корень репозитория; каждый раздел удаляется из него сразу после переключения.
+
+## Главное правило: внешний вид как у старого сайта, внутри — заново
+
+- Пользователь не должен заметить смену движка: цвета, шрифты, отступы, расположение, адаптив, тексты и адреса — как сейчас.
+- Код, вёрстка, SCSS и MUI старого фронта **не переносятся**. Старый код — справочник по поведению, не источник для копирования.
+- Внешний вид проверяется машинно: визуальные эталоны `e2e/visual` (см. `e2e/README.md`). Осознанные изменения внешнего вида — только с согласия владельца, со скриншотами «до/после» в PR.
+- Кривое поведение старого сайта исправляем; заметное пользователю — описывать в PR.
+
+## Стек и решения
+
+- **Next.js 16, App Router, React 19, TypeScript strict** (`noUncheckedIndexedAccess`). По умолчанию серверные компоненты; `"use client"` — только там, где нужна интерактивность.
+- **Стили — Tailwind CSS 4 на токенах** из `src/app/globals.css` (`@theme`): значения сняты со старого фронта (`src/app/styles` в корне). В компонентах — только классы на токенах, без «магических» цветов и размеров. Новый токен — в `@theme`, с комментарием, откуда значение.
+- **Совпадение с версткой старого сайта:** точки перелома — `down-xl/lg/md/sm/xs` (max-width 1180/992/768/576/480, как `@media` старого фронта); межстрочные интервалы задавать в процентах, как в старом SCSS (Chrome округляет `%` и безразмерные значения по-разному); `antialiased` не включать.
+- **Доступные примитивы — Radix UI** (меню, модалки, выпадающие списки). У каждого поля есть `<label>`, у кнопок — понятное имя, модалки — `role="dialog"`. E2E ищут элементы по роли и подписи — без этого тесты не пройдут.
+- **i18n:** у русского префикса в адресе нет (`/payment-security-policy`), у en/es есть (`/en/…`, `/es/…`) — решение владельца 29.10.2026; `/ru/…` отвечает 301 (`src/proxy.ts`), русские адреса внутри переписываются на маршрут `[locale]=ru`. Адреса строить только через `src/lib/routes.ts` и `withLocale` (`src/i18n/config.ts`); те же правила в старом SPA — `src/shared/config/routes/localePath.ts`. Словари словари общие со старым фронтом (`public/locales`, копируются при сборке скриптом `scripts/copy-locales.mjs`). Перевод на сервере: `getTranslator(locale, namespace)` из `src/i18n/dictionary.ts`, ключи те же, что в старом фронте.
+- **API:** только через `@goodsurfing/api` (`packages/api`): типы генерируются из OpenAPI бэкенда, клиент `createApiClient`. Ручных типов ответов API не писать. Даты бэкенд отдаёт строками `d.m.Y` — не оборачивать в `new Date()` без разбора.
+- **SEO:** у каждой публичной страницы `generateMetadata` (title, description, og, canonical, hreflang ru/en/es + x-default); sitemap отдаёт бэкенд (`/sitemap.xml`).
+- **Статика — только под `/web/`** (`public/web/{fonts,icons,images}`), в корне лишь `favicon.png` и `og-image.jpg` (те же файлы, что у старого SPA). Так маршрутизация по путям держится на двух префиксах: `/_next` и `/web/`.
+- **Кто вошёл — в браузере** (`components/session/SessionProvider.tsx`): публичные страницы статические (ISR) и одинаковые для всех, блок пользователя в шапке дорисовывается после запроса профиля с cookie входа (GS-218). Пока разделы в двух фронтах, если cookie нет, берётся токен старого SPA из localStorage; выход очищает оба. Язык вошедшего сохраняется через `PATCH /api/v1/profile/locale` (не `PATCH /profile` — тот перезаписывает профиль и удаляет аватар). Кабинет (будущие страницы) читает cookie на сервере.
+- **404:** неизвестные адреса — `app/global-not-found.tsx` (язык из заголовка `x-gs-locale`, его ставит `src/proxy.ts`). `[locale]/not-found.tsx` не заводить: Next вкладывает его в данные каждой страницы и рисует 404 от `notFound()` только в браузере. Страница с данными, которых нет (вакансия не найдена), рисует сообщение старого фронта внутри каркаса и `noindex` в метаданных (решено при переносе `/offers/:id`).
+- **Персональное на общих страницах:** страница кэшируется одинаковой для всех (данные с сервера — анонимно); то, что зависит от вошедшего (откликнуться, редактировать, оставить отзыв), браузер дозапрашивает с токеном из `useSession()` (пример — `components/offer/OfferViewer.tsx`).
+- **Ошибки:** недоступный API → оболочка страницы, не 500. Ошибки сервера и браузера — в Bugsink через `@sentry/nextjs` (`src/instrumentation*.ts`, общие настройки `src/lib/errorTracking.ts`: без ПДн, без трассировки, тег `app=web`, релиз `web-…`). DSN — переменная репозитория `SENTRY_DSN` при сборке; без неё сбор выключен.
+- **Метрика:** `components/analytics/YandexMetrika.tsx`, счётчик старого фронта, только при `NEXT_PUBLIC_YANDEX_METRIKA_ID` (задавать для прода; на стенде не задан, чтобы не портить статистику). Переходы внутри приложения засчитываются через `ym(..., 'hit')`.
+
+## Как это работает на стенде
+
+- Образ: `apps/web/Dockerfile` (контекст — корень репозитория), standalone-сервер Next на порту 3100, `/healthz` для проверок, ~40 МБ памяти в простое.
+- **Канарейка по cookie:** Traefik отправляет запрос в новый фронт только при cookie `gs_web=1` и только по уже перенесённым адресам (`/_next`, `/web/`, `/healthz` и страницы из списка в правиле `web-canary`, `gs-infra/envs/staging/cloud-init.yaml`). Без cookie — старое SPA. Так новый фронт проверяется на настоящем домене, пользователи его не видят.
+- **Перенесённые страницы:** `/payment-security-policy`, `/rules`, `/privacy-policy`, `/npo`, `/find-job`, `/our-team`, `/ambassadors`, `/about-project`, `/journals`, `/news`, `/blog`, `/offers-map`, `/` (главная), `/become-host`, `/categories`, `/video`, `/news/:slug`, `/blog/:slug`, `/journals/:slug`, `/video/:id`, `/feedback`, `/offers/:id`, `/organizations/:id`, `/volunteers/:id`, `/academy-main`, `/academy-course/:id`, `/academy-lesson/:id`, `/donation-reports`, `/donation-rating`, `/fundraise/:id`, `/donation/pay/:id`, `/donation/success/:id`, `/donation/fail/:id`, `/membership`, `/payment`, `/payment/success`, `/payment/fail`, `/signin`, `/signup`, `/reset-password`, `/reset-password-verify`, `/confirm-email`, `/confirm-email-success`, `/confirm-error`, `/email-already-confirmed`, `/email-expired`, `/verify-email`, `/verify-email-hash/:hash`, `/unsubscribed`, `/donation-map` и их `/en/…`, `/es/…` (GS-219).
+- **Кабинет** (`components/cabinet`): каркас `CabinetShell` — лента соцсетей, шапка, меню раздела (`lib/cabinetMenus.ts`), гость → вход, `need="host"|"volunteer"` → выбор роли. Данные кабинета — в браузере с токеном из `useSession()` (cookie входа на проде выключена). Поля форм — `components/form/fields.tsx`, сообщения и переключатель — `ui/Toast.tsx`, подтверждение — `ui/ConfirmDialog.tsx`. Перенесено: `/profile/info`, `/profile/preferences`, `/profile/role`, `/profile/reset-password`, `/profile/privacy`. С localhost личное не проверить (CORS стейджа) — сверка и e2e на стейдже.
+
+## Команды
+
+```bash
+cd packages/api && npm ci && npm run generate   # типы API со стейджа (или OPENAPI_SOURCE=путь/к/openapi.json)
+cd apps/web && npm ci
+npm run dev        # http://localhost:3100/ru
+npm run lint && npm run typecheck && npm test && npm run build
+```
+
+## Порядок переноса раздела
+
+1. Страница собирается из компонентов дизайн-системы, данные — на сервере через `@goodsurfing/api`, `generateMetadata`.
+2. Тексты сверены со старым сайтом: `node scripts/text-compare.mjs --old https://staging.goodsurfing.org/ru/… --new http://localhost:3100/ru/…` (на ru/en/es) — неверный ключ словаря даёт доли процента пиксельной разницы и иначе незаметен.
+3. Внешний вид сверен со старым сайтом на 390/768/1280: `node scripts/visual-compare.mjs --old https://staging.goodsurfing.org/ru/… --new http://localhost:3100/ru/… --part имя=селектор`. Остаток в доли процента при совпадающих координатах элементов — сглаживание из‑за дробного начала элемента на странице, это норма; разница в размерах или координатах — нет.
+4. E2E раздела (`e2e/tests`) зелёные против нового фронта (cookie `gs_web=1`), визуальное сравнение с эталоном старого — в пределах допуска.
+5. Путь добавляется в маршрутизацию Traefik (сначала за cookie, после проверки — для всех).
+6. Страница и её мёртвый код удаляются из старого SPA.
+7. Для оплаты — живой тестовый платёж на стейдже.

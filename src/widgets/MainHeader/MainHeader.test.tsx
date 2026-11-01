@@ -70,10 +70,12 @@ describe("MainHeader --header-offset", () => {
         bannerDataMock = undefined;
         resizeObserverObserve = vi.fn();
         resizeObserverDisconnect = vi.fn();
-        global.ResizeObserver = vi.fn().mockImplementation(() => ({
-            observe: resizeObserverObserve,
-            disconnect: resizeObserverDisconnect,
-        }));
+        // Вызывается через new — в vitest 4+ мок-конструктор задаётся классом
+        global.ResizeObserver = vi.fn(class {
+            observe = resizeObserverObserve;
+
+            disconnect = resizeObserverDisconnect;
+        }) as unknown as typeof ResizeObserver;
         document.documentElement.style.removeProperty("--header-offset");
     });
 

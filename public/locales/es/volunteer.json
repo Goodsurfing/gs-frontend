@@ -26,7 +26,9 @@
         "Добавить навык": "Agregar Habilidad",
         "Дополнительная информация": "Información Adicional",
         "Не более 1000 знаков": "No más de 1000 caracteres",
-        "Сохранить": "Guardar"
+        "Сохранить": "Guardar",
+        "Нет изменений для сохранения": "No hay cambios para guardar",
+        "Данные успешно изменены": "Cambios guardados"
     },
     "volunteer-review": {
         "Отзывы": "Reseñas",

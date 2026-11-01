@@ -5,11 +5,11 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
+import { NavMenuLink } from "@/shared/ui/NavMenuLink/NavMenuLink";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
-import { ProfileMembershipBanner } from "@/features/ProfileMembershipBanner";
 
 import { getUserAuthData, userActions } from "@/entities/User";
 
@@ -38,6 +38,9 @@ import {
     getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
+import { useGetCurrentAllMembershipsQuery } from "@/store/api/membershipApi";
+import { TARIFF_CODE, TARIFF_FALLBACK_PRICE_RUB } from "@/shared/constants/membership";
+import { formatDate } from "@/shared/lib/formatDate";
 
 import { MobileSelect } from "../MobileSelect/MobileSelect";
 import styles from "./MobileHeader.module.scss";
@@ -54,6 +57,9 @@ const MobileHeader: FC = () => {
     const appDispatch = useAppDispatch();
 
     const authData = useAppSelector(getUserAuthData);
+    // GS-198: срок показываем по обычному членству, не по Международному клубу.
+    const { data: memberships } = useGetCurrentAllMembershipsQuery(undefined, { skip: !authData });
+    const membership = memberships?.find((item) => item.isActive && item.tariff?.category === "REGULAR");
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
     const [dropdownOpened, dispatch] = useReducer(
         toggleDropdownReducer,
@@ -90,16 +96,19 @@ const MobileHeader: FC = () => {
                 <ChangeLanguage
                     className={cn({ [styles.changeLanguageOpen]: menuIsOpen })}
                 />
-                <div
+                <button
+                    type="button"
                     className={cn(styles.burger, {
                         [styles.open]: menuIsOpen,
                     })}
                     onClick={handleOpenMenu}
+                    aria-label={t("main.welcome.header.menu")}
+                    aria-expanded={menuIsOpen}
                 >
                     <span />
                     <span />
                     <span />
-                </div>
+                </button>
             </header>
 
             <div
@@ -127,91 +136,91 @@ const MobileHeader: FC = () => {
                             <div className={styles.title}>
                                 {t("main.welcome.header.offers.popular-places")}
                             </div>
-                            <Link
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.latin-america")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.europe")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.asia")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.africa")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.france")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.germany")}
-                            </Link>
+                            </NavMenuLink>
                         </div>
                         <div className={styles.acrossRussiaContainer}>
                             <div className={styles.title}>
                                 {t("main.welcome.header.offers.across-russia")}
                             </div>
-                            <Link
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.altai")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.kamchatka")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.crimea")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.caucasus")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.ural")}
-                            </Link>
-                            <Link
+                            </NavMenuLink>
+                            <NavMenuLink
                                 className={styles.dropdownLink}
                                 to={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.offers.baikal")}
-                            </Link>
+                            </NavMenuLink>
                         </div>
                     </div>
-                    <Link
+                    <NavMenuLink
                         className={styles.viewAll}
                         to={getOffersMapPageUrl(locale)}
                     >
                         {t("main.welcome.header.offers.view-all")}
-                    </Link>
+                    </NavMenuLink>
                 </MobileSelect> */}
                 <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
@@ -219,36 +228,36 @@ const MobileHeader: FC = () => {
                     title={t("main.welcome.header.community.title")}
                     onClick={() => handleOpenDropdown("COMMUNITY")}
                 >
-                    <Link
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getBlogPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.blog")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getVideoPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.video")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getAmbassadorsPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.ambassadors")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getAcademyMainPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.courses")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getJournalsPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.journal")}
-                    </Link>
+                    </NavMenuLink>
                 </MobileSelect>
                 <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
@@ -256,30 +265,30 @@ const MobileHeader: FC = () => {
                     title={t("main.welcome.header.donation.title")}
                     onClick={() => handleOpenDropdown("SUPPORT")}
                 >
-                    <Link
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getMembershipPageUrl(locale)}
                     >
                         {t("main.welcome.header.donation.support-goodsurfing")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getDonationsMapPageUrl(locale)}
                     >
                         {t("main.welcome.header.donation.support-other-projects")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getNPOPageUrl(locale)}
                     >
                         {t("main.welcome.header.donation.public-reports")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getDonationRating(locale)}
                     >
                         {t("main.welcome.header.donation.rating-donations")}
-                    </Link>
+                    </NavMenuLink>
                 </MobileSelect>
                 <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
@@ -287,44 +296,44 @@ const MobileHeader: FC = () => {
                     title={t("main.welcome.header.about-project.title")}
                     onClick={() => handleOpenDropdown("ABOUT")}
                 >
-                    <Link
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getNewsPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.news")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getAboutProjectPageUrl(locale)}
                     >
                         {t(
                             "main.welcome.header.about-project.about-goodsurfing",
                         )}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getNPOPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.about-npo")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getOurTeamPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.our-team")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getMembershipPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.how-it-works")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.dropdownLink}
                         to={getFindJobPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.find-job")}
-                    </Link>
+                    </NavMenuLink>
                 </MobileSelect>
                 <Button
                     onClick={() => navigate(getBecomeHostPageUrl(locale))}
@@ -333,14 +342,37 @@ const MobileHeader: FC = () => {
                     {t("main.welcome.header.for-organizers.become-a-host")}
                 </Button>
                 <Button
+                    href="https://expedition.goodsurfing.org/"
+                    className={styles.button}
+                >
+                    {t("main.welcome.header.expeditions", "Экспедиции")}
+                </Button>
+                <Button
+                    href="https://international.goodsurfing.org/"
+                    className={styles.button}
+                >
+                    {t("main.welcome.header.international-volunteering", "Международное волонтёрство")}
+                </Button>
+                {/* Вместо двух карточек тарифов (GS-149) — одна строка под
+                    кнопкой: подробности на странице членства. */}
+                <Button
                     onClick={() => navigate(getMembershipPageUrl(locale))}
                     className={styles.buttonMembership}
                 >
-                    {t("main.welcome.header.membership", "Членство")}
+                    <span className={styles.membershipTitle}>
+                        {t("main.welcome.header.membership", "Членство")}
+                    </span>
+                    <span className={styles.membershipHint}>
+                        {membership?.isActive
+                            ? t("main.welcome.header.membership-active", {
+                                date: formatDate(locale, membership.endDate),
+                            })
+                            : t("main.welcome.header.membership-from", {
+                                price: TARIFF_FALLBACK_PRICE_RUB[TARIFF_CODE.VOLUNTEER],
+                            })}
+                    </span>
                 </Button>
-                {/* GS-149: hover недоступен на мобильных — вместо попапа
-                    тот же баннер встроен прямо в пункт меню. */}
-                <ProfileMembershipBanner className={styles.membershipBanner} />
+                <div className={styles.divider} />
                 {authData ? (
                     <>
                         <Button

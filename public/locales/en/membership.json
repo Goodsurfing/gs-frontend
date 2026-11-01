@@ -77,7 +77,9 @@
         "paid-feature-4": "Media support for volunteers",
         "paid-feature-5": "Increased trust from hosts (special badge on your profile)",
         "paid-feature-6": "Ability to publish in the Community",
-        "price-unit": "RUB/year"
+        "price-unit": "RUB/year",
+        "host-note": "This membership gives volunteer features. To publish more than one vacancy and create fundraisers, you need a",
+        "host-note-link": "membership for organizers"
     },
     "for-host": {
         "Для организатора": "For Host",

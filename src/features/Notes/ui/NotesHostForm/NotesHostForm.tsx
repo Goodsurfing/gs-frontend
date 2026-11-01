@@ -29,6 +29,7 @@ import { useGetMyHostQuery } from "@/entities/Host";
 import { useLazyGetHostAllOffersByIdQuery } from "@/entities/Offer";
 import styles from "./NotesHostForm.module.scss";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { trackGoal } from "@/shared/lib/analytics";
 
 const APPLICATIONS_PER_PAGE = 10;
 
@@ -165,6 +166,8 @@ export const NotesHostForm = () => {
         try {
             await updateApplicationStatus({ applicationId: applicationId.toString(), status })
                 .unwrap();
+            if (status === "accepted") trackGoal("application_accepted", { from: "requests" });
+            if (status === "canceled") trackGoal("application_rejected", { from: "requests" });
         } catch {
             setToastTop({
                 text: "Не удалось изменить статус заявки",

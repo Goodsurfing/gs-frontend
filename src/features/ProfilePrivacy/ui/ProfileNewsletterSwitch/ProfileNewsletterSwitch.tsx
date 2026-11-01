@@ -9,11 +9,12 @@ import styles from "./ProfileNewsletterSwitch.module.scss";
 
 interface ProfileNewsletterSwitchProps {
     checked?: boolean;
+    disabled?: boolean;
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const ProfileNewsletterSwitch: FC<ProfileNewsletterSwitchProps> = memo(
-    ({ checked, onChange }: ProfileNewsletterSwitchProps) => {
+    ({ checked, disabled, onChange }: ProfileNewsletterSwitchProps) => {
         const handleOnChange = useCallback(
             (event: ChangeEvent<HTMLInputElement>) => onChange?.(event),
             [onChange],
@@ -22,9 +23,14 @@ export const ProfileNewsletterSwitch: FC<ProfileNewsletterSwitchProps> = memo(
 
         return (
             <div className={styles.wrapper}>
-                <SwitchComponent checked={checked} onChange={handleOnChange} />
-                <span className={styles.title}>
-                    {t("privacy.Не присылать мне рассылку от Гусдёрфинга с новостями и обновлениями")}
+                <SwitchComponent
+                    checked={checked}
+                    disabled={disabled}
+                    onChange={handleOnChange}
+                    inputProps={{ "aria-labelledby": "newsletter-switch-title" }}
+                />
+                <span id="newsletter-switch-title" className={styles.title}>
+                    {t("privacy.Получать рассылку от Гудсёрфинга с новостями и обновлениями")}
                 </span>
             </div>
         );

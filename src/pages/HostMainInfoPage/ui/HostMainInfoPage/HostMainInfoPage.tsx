@@ -28,7 +28,6 @@ const HostMainInfoPage: FC = () => {
     return (
         <div className={styles.wrapper}>
             <h2 className={styles.title}>{t("hostDescription.Основная информация")}</h2>
-            <HostUpsellBanner kind="consultation" />
             <HostDescriptionForm
                 className={styles.className}
                 host={myProfile?.hostId}
@@ -36,6 +35,7 @@ const HostMainInfoPage: FC = () => {
                 isLoading={isLoading}
                 isError={isError}
                 profileRefetch={profileRefetch}
+                aside={<HostUpsellBanner kind="consultation" vertical />}
             />
         </div>
     );

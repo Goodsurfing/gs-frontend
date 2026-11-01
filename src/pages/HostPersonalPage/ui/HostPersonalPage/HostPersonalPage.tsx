@@ -10,7 +10,9 @@ import { Submenu } from "@/widgets/Submenu";
 
 import { useGetHostByIdQuery } from "@/entities/Host";
 
-import { getHostInfoUrl, getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
+import { getHostInfoUrl, getHostPersonalPageUrl, getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { PageSeo } from "@/shared/ui/SeoHelmet";
 import Button from "@/shared/ui/Button/Button";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { Text } from "@/shared/ui/Text/Text";
@@ -114,6 +116,13 @@ export const HostPersonalPage = () => {
 
     return (
         <div className={styles.wrapper}>
+            <PageSeo
+                section="host"
+                path={getHostPersonalPageUrl(locale, id)}
+                title={hostData.name}
+                description={hostData.shortDescription || hostData.description}
+                image={getMediaContent(hostData.avatar)}
+            />
             <MainHeader variant="static" />
             <div className={styles.content}>
                 <HostlHeaderCard

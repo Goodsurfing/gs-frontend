@@ -27,6 +27,13 @@
     gap: 20px;
 }
 
+.side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
 @media (max-width: 992px) {
     .formWrapper {
         flex-wrap: wrap;

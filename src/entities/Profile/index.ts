@@ -16,6 +16,7 @@ export {
     useGetProfileSearchByEmailQuery,
     useLazyGetProfileSearchByEmailQuery,
     useToggleActiveProfileMutation,
+    useUpdateMarketingConsentMutation,
     useUpdateProfilePreferencesMutation,
     useUpdateProfileVideoGalleryMutation,
     useUpdateProfileImageGalleryMutation,
@@ -26,6 +27,7 @@ export {
     useGetProfilePasswordIsChangeQuery,
     useChangePasswordWithoutOldPasswordMutation,
     useChangePasswordMutation,
+    hasHostMembership,
 } from "./api/profileApi";
 
 export type {

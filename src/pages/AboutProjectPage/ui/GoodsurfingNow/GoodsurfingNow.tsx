@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
+import { formatStatNumber } from "@/shared/lib/formatStat";
 import Button from "@/shared/ui/Button/Button";
 
 import { GoodsurfingNowItem } from "../GoodsurfingNowItem/GoodsurfingNowItem";
@@ -36,19 +37,19 @@ export const GoodsurfingNow: FC<GoodsurfingNowProps> = (props) => {
             <h2 className={styles.title}>{t("ГудСёрфинг сегодня")}</h2>
             <div className={styles.content}>
                 <GoodsurfingNowItem
-                    title={today.volunteerCount.toString() ?? "0"}
+                    title={formatStatNumber(today.volunteerCount ?? 0, locale)}
                     description={t("гудсёрферов")}
                 />
                 <GoodsurfingNowItem
-                    title={today.vacancyCountryCount.toString() ?? "0"}
+                    title={formatStatNumber(today.vacancyCountryCount ?? 0, locale)}
                     description={t("стран")}
                 />
                 <GoodsurfingNowItem
-                    title={today.vacancyCount.toString() ?? "0"}
+                    title={formatStatNumber(today.vacancyCount ?? 0, locale)}
                     description={t("вакансий")}
                 />
                 <GoodsurfingNowItem
-                    title={today.reviewCount.toString() ?? "0"}
+                    title={formatStatNumber(today.reviewCount ?? 0, locale)}
                     description={t("отзывов")}
                 />
             </div>

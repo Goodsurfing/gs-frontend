@@ -96,7 +96,15 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
         }
     }, [canEdit, locale, navigate, offerId]);
 
+    // GS-230: на закрытую (или черновую) вакансию откликнуться нельзя — ни гостю, ни
+    // вошедшему; бэкенд такую заявку тоже отклонит (vacancy_not_active)
+    const isClosed = status !== "active";
+
     const getButtonText = (): string => {
+        if (isClosed) {
+            return t("personalOffer.vacancyClosed");
+        }
+
         if (isNeedToBecomeVolunteer) {
             return t("personalOffer.Чтобы участвовать, станьте гудсёрфером");
         }
@@ -115,7 +123,7 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
         color: "BLUE" as ButtonColor,
         onClick: handleParticipateClick,
         // disabled: isNeedToBecomeVolunteer ? false : !canParticipate,
-        disabled: isAuth && !isNeedToBecomeVolunteer && !canParticipate,
+        disabled: isClosed || (isAuth && !isNeedToBecomeVolunteer && !canParticipate),
     };
 
     const buttonText = getButtonText();

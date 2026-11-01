@@ -28,13 +28,13 @@ describe("MemberBanner", () => {
     it("без anchor навигирует на голый /{locale}/membership", () => {
         render(<MemberBanner />);
         fireEvent.click(screen.getByRole("button"));
-        expect(navigateMock).toHaveBeenCalledWith("/ru/membership");
+        expect(navigateMock).toHaveBeenCalledWith("/membership");
     });
 
     it("с anchor=\"host\" навигирует на /{locale}/membership#host", () => {
         render(<MemberBanner anchor="host" />);
         fireEvent.click(screen.getByRole("button"));
-        expect(navigateMock).toHaveBeenCalledWith("/ru/membership#host");
+        expect(navigateMock).toHaveBeenCalledWith("/membership#host");
     });
 
     it("использует переданные title/buttonText вместо дефолтных волонтёрских", () => {

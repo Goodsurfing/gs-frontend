@@ -23,6 +23,7 @@ import { MemberBanner } from "@/features/MemberBanner";
 import { HostUpsellBanner } from "@/features/HostUpsellBanner";
 import { isVacancyLimitExceededError } from "@/shared/lib/getErrorText";
 import styles from "./HostOffersPage.module.scss";
+import { trackGoal } from "@/shared/lib/analytics";
 
 type SeletecBtnType = "delete" | "every_open" | "close";
 
@@ -133,6 +134,7 @@ const HostOffersPage = () => {
                         status: "active",
                         id: selectedOffer.toString(),
                     }).unwrap();
+                    trackGoal("vacancy_published", { from: "list" });
                 }
             }
 
@@ -165,41 +167,47 @@ const HostOffersPage = () => {
                 />
             )}
             <h2 className={styles.abilities}>{t("hostOffers.Мои вакансии")}</h2>
-            <HostUpsellBanner kind="mediaSupport" />
-            <HostOffersList
-                offers={activeDisabledHostOffersData?.data ?? []}
-                onCloseClick={(offerId) => handleCloseClick(offerId)}
-                onDeleteClick={(offerId) => handleDeleteClick(offerId)}
-            />
-            {totalOpenPages > 1 && (
-                <OfferPagination
-                    currentPage={currentOpenPage}
-                    onPageChange={setCurrentOpenPage}
-                    totalPages={totalOpenPages}
-                    className={styles.pagination}
-                />
-            )}
-            {draftHostOffersData?.pagination.total !== 0 && (
-                <div className={styles.drafts}>
-                    <h2 className={styles.draftsTitle}>{t("hostOffers.Черновики")}</h2>
-                    <div className={styles.cards}>
-                        <HostOffersList
-                            offers={draftHostOffersData?.data ?? []}
-                            onCloseClick={handleCloseClick}
-                            onDeleteClick={handleDeleteClick}
-                        />
-                    </div>
-
-                    {totalDraftPages > 1 && (
+            {/* GS-188/GS-202: баннер медиаподдержки — справа вплотную к карточкам,
+                верх вровень с первой вакансией. */}
+            <div className={styles.layout}>
+                <div className={styles.main}>
+                    <HostOffersList
+                        offers={activeDisabledHostOffersData?.data ?? []}
+                        onCloseClick={(offerId) => handleCloseClick(offerId)}
+                        onDeleteClick={(offerId) => handleDeleteClick(offerId)}
+                    />
+                    {totalOpenPages > 1 && (
                         <OfferPagination
-                            currentPage={currentDraftPage}
-                            onPageChange={setCurrentDraftPage}
-                            totalPages={totalDraftPages}
+                            currentPage={currentOpenPage}
+                            onPageChange={setCurrentOpenPage}
+                            totalPages={totalOpenPages}
                             className={styles.pagination}
                         />
                     )}
+                    {draftHostOffersData?.pagination.total !== 0 && (
+                        <div className={styles.drafts}>
+                            <h2 className={styles.draftsTitle}>{t("hostOffers.Черновики")}</h2>
+                            <div className={styles.cards}>
+                                <HostOffersList
+                                    offers={draftHostOffersData?.data ?? []}
+                                    onCloseClick={handleCloseClick}
+                                    onDeleteClick={handleDeleteClick}
+                                />
+                            </div>
+
+                            {totalDraftPages > 1 && (
+                                <OfferPagination
+                                    currentPage={currentDraftPage}
+                                    onPageChange={setCurrentDraftPage}
+                                    totalPages={totalDraftPages}
+                                    className={styles.pagination}
+                                />
+                            )}
+                        </div>
+                    )}
                 </div>
-            )}
+                <HostUpsellBanner kind="mediaSupport" vertical className={styles.aside} />
+            </div>
             <AddOffer />
             {isVacancyLimitModalOpen && (
                 <Modal onClose={() => setIsVacancyLimitModalOpen(false)}>
@@ -211,7 +219,9 @@ const HostOffersPage = () => {
             )}
             <ConfirmActionModal
                 isModalOpen={isModalOpen}
-                description={t("hostOffers.Вы уверены что хотите изменить вакансию?")}
+                description={selectedBtnOffer === "delete"
+                    ? t("hostOffers.confirmDelete")
+                    : t("hostOffers.Вы уверены что хотите изменить вакансию?")}
                 onConfirm={() => handleConfirmClick()}
                 onClose={() => handleModalClose()}
                 isLoading={isOfferLoading}

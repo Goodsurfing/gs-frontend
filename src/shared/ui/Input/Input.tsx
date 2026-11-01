@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React from "react";
+import React, { useId } from "react";
 
 import styles from "./Input.module.scss";
 
@@ -32,39 +32,45 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         children,
         isError = false,
         ...restInputProps
-    }, inputRef) => (
-        <div className={cn(styles.wrapper, className)}>
-            {(label || img) && (
-                <div className={styles.labelWrapper}>
-                    {img && (
-                        <img
-                            className={styles.image}
-                            src={img}
-                            alt={img}
-                        />
-                    )}
-                    <label htmlFor={id} className={styles.label}>
-                        {label}
-                    </label>
-                </div>
-            )}
-            <input
-                ref={inputRef}
-                id={id}
-                required={required}
-                value={value || ""}
-                onChange={onChange}
-                className={cn(styles.input, inputClassName, { [styles.error]: isError })}
-                type={type}
-                placeholder={placeholder}
-                {...restInputProps}
-            />
-            {description && (
-                <label htmlFor={id} className={styles.description}>{description}</label>
-            )}
-            {children}
-        </div>
-    ),
+    }, inputRef) => {
+        // Без id метка не связана с полем — для экранных читалок и тестов поле безымянное
+        const generatedId = useId();
+        const fieldId = id ?? generatedId;
+
+        return (
+            <div className={cn(styles.wrapper, className)}>
+                {(label || img) && (
+                    <div className={styles.labelWrapper}>
+                        {img && (
+                            <img
+                                className={styles.image}
+                                src={img}
+                                alt={img}
+                            />
+                        )}
+                        <label htmlFor={fieldId} className={styles.label}>
+                            {label}
+                        </label>
+                    </div>
+                )}
+                <input
+                    ref={inputRef}
+                    id={fieldId}
+                    required={required}
+                    value={value || ""}
+                    onChange={onChange}
+                    className={cn(styles.input, inputClassName, { [styles.error]: isError })}
+                    type={type}
+                    placeholder={placeholder}
+                    {...restInputProps}
+                />
+                {description && (
+                    <label htmlFor={fieldId} className={styles.description}>{description}</label>
+                )}
+                {children}
+            </div>
+        );
+    },
 );
 
 export default Input;

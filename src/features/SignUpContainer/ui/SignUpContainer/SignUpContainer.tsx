@@ -11,6 +11,13 @@ import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import { AuthByVk } from "@/features/AuthByVk";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { useUpdateMarketingConsentMutation } from "@/entities/Profile";
+import {
+    hasMarketingConsentIntent,
+    saveMarketingConsentIntent,
+    marketingConsentWording,
+    takeMarketingConsentIntent,
+} from "../../lib/marketingConsentIntent";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./SignUpContainer.module.scss";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -22,12 +29,28 @@ const SignUpContainer: FC = () => {
     const navigate = useNavigate();
     const { refetchProfile, profileDataIsFethcing } = useAuth();
     const [toast, setToast] = useState<ToastAlert>();
+    // Чекбокс согласия на рассылку (GS-203): по умолчанию отмечен (решение
+    // владельца 29.10.2026); для входа через VK выбор переживает уход на сайт VK
+    const [marketingConsent, setMarketingConsent] = useState(hasMarketingConsentIntent);
+    const [updateMarketingConsent] = useUpdateMarketingConsentMutation();
 
-    const onSuccess = useCallback(() => {
+    const changeMarketingConsent = useCallback((value: boolean) => {
+        setMarketingConsent(value);
+        saveMarketingConsentIntent(value);
+    }, []);
+
+    const onSuccess = useCallback(async () => {
         setToast(undefined);
+        if (takeMarketingConsentIntent()) {
+            await updateMarketingConsent({
+                consent: true,
+                source: "registration",
+                wording: marketingConsentWording(t),
+            }).unwrap().catch(() => undefined);
+        }
         refetchProfile();
         navigate(getProfileInfoPageUrl(locale));
-    }, [locale, navigate, refetchProfile]);
+    }, [locale, navigate, refetchProfile, t, updateMarketingConsent]);
 
     const onError = useCallback((error: string) => {
         setToast({
@@ -46,7 +69,10 @@ const SignUpContainer: FC = () => {
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <SignTitle>{t("login.Регистрация пользователя")}</SignTitle>
-            <SignUpForm />
+            <SignUpForm
+                marketingConsent={marketingConsent}
+                onMarketingConsentChange={changeMarketingConsent}
+            />
             <div className={styles.confirm}>
                 {t("login.Нажимая кнопку «Зарегистрироваться», я принимаю")}
                 {" "}

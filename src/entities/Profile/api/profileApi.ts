@@ -40,9 +40,22 @@ interface ProfileOccupancyResponse {
     isMembership: boolean,
     /** null — активное членство, лимита нет (GS-169, GS-171) */
     remainingFreeApplications: number | null,
-    /** null — активное членство или пользователь не хост (GS-172) */
+    /** null — хостовое членство или пользователь не хост (GS-172) */
     remainingFreeVacancies: number | null,
+    /**
+     * Хостовые права: хостовый тариф или привилегированное членство
+     * (gs-backend #421). Волонтёрский тариф их не даёт, хотя isMembership: true.
+     */
+    isHostMembership?: boolean,
 }
+
+/**
+ * Есть ли у хоста хостовое членство (больше одной вакансии, сборы, значок
+ * «Партнёр»). Пока бэкенд не отдаёт isHostMembership — как раньше, по isMembership.
+ */
+export const hasHostMembership = (
+    occupancy?: Pick<ProfileOccupancyResponse, "isMembership" | "isHostMembership">,
+): boolean => occupancy?.isHostMembership ?? occupancy?.isMembership ?? false;
 
 interface ProfilePasswordIsChangeResponse {
     isChangePassword: boolean;
@@ -140,6 +153,21 @@ export const profileApi = createApi({
             }),
             invalidatesTags: ["profile"],
         }),
+        // Согласие на рассылку (GS-203): переключатель в профиле и чекбокс при
+        // первом входе через VK (source: "registration")
+        updateMarketingConsent: build.mutation<void, {
+            consent: boolean;
+            source?: "profile" | "registration";
+            /** Текст галочки/переключателя, как его видел человек, — в журнал согласий */
+            wording?: string;
+        }>({
+            query: (body) => ({
+                url: `${API_BASE_URL_ABSOLUTE}profile/marketing-consent`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["profile"],
+        }),
         deleteProfile: build.mutation<void, void>({
             query: () => ({
                 url: `${API_BASE_URL_ABSOLUTE}profile/delete`,
@@ -195,6 +223,7 @@ export const {
     useUpdateProfileCertificatesMutation,
     useUpdateVolunteerMutation,
     useDeleteProfileMutation,
+    useUpdateMarketingConsentMutation,
     useGetProfileOccupancyQuery,
     useGetProfilePasswordIsChangeQuery,
     useChangePasswordWithoutOldPasswordMutation,

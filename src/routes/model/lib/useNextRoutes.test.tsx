@@ -19,7 +19,7 @@ describe("useNextRoutes", () => {
         const { result } = renderHook(() => useNextRoutes());
 
         expect(result.current.getNextRoute("payment", "host_4990")).toBe(
-            "/ru/payment?tariff=host_4990",
+            "/payment?tariff=host_4990",
         );
     });
 });

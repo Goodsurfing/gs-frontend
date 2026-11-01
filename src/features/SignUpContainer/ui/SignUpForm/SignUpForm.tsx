@@ -8,6 +8,7 @@ import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import AuthInputField from "@/shared/ui/AuthInputField/AuthInputField";
+import Checkbox from "@/shared/ui/Checkbox/Checkbox";
 import LocaleLink from "@/shared/ui/LocaleLink/LocaleLink";
 
 import { useAppDispatch } from "@/shared/hooks/redux";
@@ -19,10 +20,21 @@ import { setRegisterUserData } from "@/store/reducers/registerSlice";
 
 import { IAuthFormData, IRegisterFormData } from "@/types/api/auth/register.interface";
 
+import { marketingConsentWording } from "../../lib/marketingConsentIntent";
 import styles from "./SignUpForm.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { trackGoal } from "@/shared/lib/analytics";
 
-const SignUpForm: FC = () => {
+interface SignUpFormProps {
+    /** Чекбокс «Хочу получать письма…» (GS-203) — общий с входом через VK */
+    marketingConsent?: boolean;
+    onMarketingConsentChange?: (value: boolean) => void;
+}
+
+const SignUpForm: FC<SignUpFormProps> = ({
+    marketingConsent = true,
+    onMarketingConsentChange,
+}) => {
     const [registerUser, { isError }] = authApi.useRegisterUserMutation();
 
     const { locale } = useLocale();
@@ -43,11 +55,14 @@ const SignUpForm: FC = () => {
             plainPassword: data.password,
             locale,
             isActive: true,
+            marketingConsent,
+            ...(marketingConsent ? { marketingConsentWording: marketingConsentWording(t) } : {}),
         };
         await registerUser(formData)
             .unwrap()
             .then((response) => {
                 dispatch(setRegisterUserData(response));
+                trackGoal("signup");
                 navigate(getConfirmEmailPageUrl(locale));
             })
             .catch((e: any) => {
@@ -116,6 +131,13 @@ const SignUpForm: FC = () => {
                     />
                 )}
             />
+            <Checkbox
+                id="signup-marketing-consent"
+                isChecked={marketingConsent}
+                onChange={() => onMarketingConsentChange?.(!marketingConsent)}
+                text={t("login.Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга")}
+            />
+            <p className={styles.consentHint}>{t("login.marketingConsentHint")}</p>
             <Button
                 type="submit"
                 variant="FILL"

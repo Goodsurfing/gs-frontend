@@ -35,6 +35,9 @@ export interface AdminUsersFields {
     isActive: boolean;
     isMembership: boolean;
     dataEndMembership: string;
+    isPrivilegedMembership: boolean;
+    /** GS-198: до какого числа действует членство в Международном клубе. */
+    internationalEndMembership: string | null;
 }
 
 export interface AdminUserFields {
@@ -65,6 +68,10 @@ export interface AdminUsers {
     isActive: boolean; // is block
     isPayment: boolean;
     endPayment: string;
+    /** Бесплатное бессрочное членство по решению владельца (gs-backend #420). */
+    isPrivilegedMembership?: boolean;
+    /** GS-198: членство в Международном клубе (d.m.Y) или null. */
+    internationalEndPayment?: string | null;
 }
 
 export interface AdminUser {
@@ -95,11 +102,34 @@ export interface AdminUser {
     isPayment: boolean;
     isDelete: boolean;
     endPayment: string;
+    isPrivilegedMembership?: boolean;
+    /** GS-198: членство в Международном клубе (d.m.Y) или null. */
+    internationalEndPayment?: string | null;
+    /** GS-203: согласие на рассылку и журнал изменений (новые сверху) */
+    marketingConsent?: AdminMarketingConsent;
+}
+
+export type MarketingConsentSource =
+    | "registration" | "profile" | "email_request" | "unisender" | "account_deleted" | "existing_user" | "unsubscribe_link";
+
+export interface AdminMarketingConsent {
+    consent: boolean;
+    /** ISO 8601; null — человек ни разу не отвечал */
+    at: string | null;
+    source: MarketingConsentSource | null;
+    history: {
+        consent: boolean;
+        source: MarketingConsentSource;
+        at: string;
+        ip: string | null;
+        /** Текст галочки, который видел человек */
+        wording: string | null;
+    }[];
 }
 
 export type UpdateAdminUser = Omit<AdminUser, "created" | "lastVisit" | "isVerified"
-| "isVolunteer" | "isOrganization" | "isActive" | "isDelete" | "isPayment" | "endPayment" | "imagePath" | "thumbnails"
-| "email" | "skills" | "image" | "achievements"> & {
+| "isVolunteer" | "isOrganization" | "isActive" | "isDelete" | "isPayment" | "endPayment" | "internationalEndPayment" | "imagePath" | "thumbnails"
+| "email" | "skills" | "image" | "achievements" | "marketingConsent"> & {
     imageId: string | null;
     skillIds: number[];
     achievementIds: number[];
@@ -232,6 +262,10 @@ export interface AdminOrganization {
     telegram: string;
     countVacancies: number;
     countApplications: number;
+    /** GS-199: членство владельца организации. */
+    isHostMembership?: boolean;
+    membershipEndDate?: string | null;
+    isPrivilegedMembership?: boolean;
 }
 
 export interface AdminOrganizations {

@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { NavMenuLink } from "@/shared/ui/NavMenuLink/NavMenuLink";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -91,56 +91,56 @@ export const Footer = memo(() => {
                                 {t("main.welcome.header.community.title")}
                             </h4>
                             <div className={styles.menu__content}>
-                                <Link
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getBlogPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.community.blog")}
-                                </Link>
-                                <Link
+                                </NavMenuLink>
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getVideoPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.community.video")}
-                                </Link>
-                                {/* <Link
+                                </NavMenuLink>
+                                {/* <NavMenuLink
                                     className={styles.link}
                                     to={getMainPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.community.experts")}
-                                </Link> */}
-                                <Link
+                                </NavMenuLink> */}
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getAmbassadorsPageUrl(locale)}
                                 >
                                     {t(
                                         "main.welcome.header.community.ambassadors",
                                     )}
-                                </Link>
-                                <Link
+                                </NavMenuLink>
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getAcademyMainPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.community.courses")}
-                                </Link>
-                                <Link
+                                </NavMenuLink>
+                                <NavMenuLink
                                     className={styles.link}
                                     to="https://expedition.goodsurfing.org/"
                                 >
                                     {t("main.welcome.header.expeditions", "Экспедиции")}
-                                </Link>
-                                {/* <Link
+                                </NavMenuLink>
+                                {/* <NavMenuLink
                                     className={styles.link}
                                     to={getMainPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.community.clubs")}
-                                </Link> */}
-                                {/* <Link
+                                </NavMenuLink> */}
+                                {/* <NavMenuLink
                                     className={styles.link}
                                     to={getJournalsPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.community.journal")}
-                                </Link> */}
+                                </NavMenuLink> */}
                             </div>
                         </div>
                         <div className={styles.menu__item}>
@@ -148,78 +148,78 @@ export const Footer = memo(() => {
                                 {t("main.welcome.header.about-project.title")}
                             </h4>
                             <div className={styles.menu__content}>
-                                <Link
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getNPOPageUrl(locale)}
                                 >
                                     {t(
                                         "main.welcome.header.about-project.about-npo",
                                     )}
-                                </Link>
-                                <Link
+                                </NavMenuLink>
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getOurTeamPageUrl(locale)}
                                 >
                                     {t(
                                         "main.welcome.header.about-project.our-team",
                                     )}
-                                </Link>
-                                <Link
+                                </NavMenuLink>
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getMembershipPageUrl(locale)}
                                 >
                                     {t(
                                         "main.welcome.header.about-project.how-it-works",
                                     )}
-                                </Link>
-                                <Link
+                                </NavMenuLink>
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getRulesPageUrl(locale)}
                                 >
                                     {t(
                                         "main.welcome.header.about-project.rules",
                                     )}
-                                </Link>
-                                <Link
+                                </NavMenuLink>
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getPrivacyPolicyPageUrl(locale)}
                                 >
                                     {t(
                                         "main.welcome.header.about-project.privacy-policy",
                                     )}
-                                </Link>
-                                <Link
+                                </NavMenuLink>
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getNewsPageUrl(locale)}
                                 >
                                     {t(
                                         "main.welcome.header.about-project.news",
                                     )}
-                                </Link>
-                                <Link
+                                </NavMenuLink>
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getAboutProjectPageUrl(locale)}
                                 >
                                     {t(
                                         "main.welcome.header.about-project.about-goodsurfing",
                                     )}
-                                </Link>
-                                <Link
+                                </NavMenuLink>
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getFindJobPageUrl(locale)}
                                 >
                                     {t(
                                         "main.welcome.header.about-project.find-job",
                                     )}
-                                </Link>
-                                <Link
+                                </NavMenuLink>
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getFeedbackPageUrl(locale)}
                                 >
                                     {t(
                                         "main.welcome.header.about-project.feedback",
                                     )}
-                                </Link>
+                                </NavMenuLink>
                             </div>
                         </div>
                         <div className={styles.menu__item}>
@@ -227,18 +227,18 @@ export const Footer = memo(() => {
                                 {t("main.welcome.header.for-organizers.title")}
                             </h4>
                             <div className={styles.menu__content}>
-                                <Link
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getBecomeHostPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.for-organizers.become-a-host")}
-                                </Link>
-                                {/* <Link
+                                </NavMenuLink>
+                                {/* <NavMenuLink
                                     className={styles.link}
                                     to={getMainPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.for-organizers.courses-for-organizers")}
-                                </Link> */}
+                                </NavMenuLink> */}
                             </div>
                         </div>
                         <div className={styles.menu__item}>
@@ -246,18 +246,18 @@ export const Footer = memo(() => {
                                 {t("main.welcome.header.donation.title")}
                             </h4>
                             <div className={styles.menu__content}>
-                                <Link
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getMembershipPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.donation.support-goodsurfing")}
-                                </Link>
-                                <Link
+                                </NavMenuLink>
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getNPOPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.donation.public-reports")}
-                                </Link>
+                                </NavMenuLink>
                                 <a
                                     className={styles.link}
                                     href="/assets/docs/npo/Публичная_оферта.pdf"
@@ -266,12 +266,12 @@ export const Footer = memo(() => {
                                 >
                                     {t("main.welcome.header.donation.public-offer")}
                                 </a>
-                                <Link
+                                <NavMenuLink
                                     className={styles.link}
                                     to={getPaymentSecurityPolicyPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.donation.payment-security-policy")}
-                                </Link>
+                                </NavMenuLink>
                             </div>
                         </div>
                     </nav>
@@ -283,18 +283,18 @@ export const Footer = memo(() => {
                     {new Date().getFullYear()}
                 </p>
                 <div className={styles.copyright__links}>
-                    <Link
+                    <NavMenuLink
                         className={styles.copyright__link}
                         to={getRulesPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.rules")}
-                    </Link>
-                    <Link
+                    </NavMenuLink>
+                    <NavMenuLink
                         className={styles.copyright__link}
                         to={getPrivacyPolicyPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.privacy-policy")}
-                    </Link>
+                    </NavMenuLink>
                 </div>
             </div>
         </>

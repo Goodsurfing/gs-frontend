@@ -90,4 +90,31 @@ describe("PublishedVacanciesCounter", () => {
             name: "publishedVacanciesCounter.Не забудьте продлить членство, чтобы сохранить привилегии",
         })).toBeInTheDocument();
     });
+
+    /**
+     * gs-backend #421: хост с волонтёрским тарифом — isMembership: true, но
+     * хостовых прав нет. Счётчик не должен обещать безлимит.
+     */
+    it("хосту с волонтёрским тарифом показывает лимит, а не безлимит", () => {
+        mockUseAppSelector.mockReturnValue({ username: "host@test.local" });
+        mockUseGetProfileOccupancyQuery.mockReturnValue({
+            data: { isMembership: true, isHostMembership: false, remainingFreeVacancies: 0 },
+        });
+
+        renderCounter();
+
+        expect(screen.queryByText("∞")).toBeNull();
+        expect(screen.getByText(/0\s*\/\s*1/)).toBeTruthy();
+    });
+
+    it("хостовое членство — безлимит", () => {
+        mockUseAppSelector.mockReturnValue({ username: "host@test.local" });
+        mockUseGetProfileOccupancyQuery.mockReturnValue({
+            data: { isMembership: true, isHostMembership: true, remainingFreeVacancies: null },
+        });
+
+        renderCounter();
+
+        expect(screen.getByText("∞")).toBeTruthy();
+    });
 });

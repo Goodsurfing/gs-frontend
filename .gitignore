@@ -14,7 +14,13 @@ localhost+1.pem
 .tsbuildinfo
 Agents.md
 .claude/
-scripts/
+/scripts/
 playwright-report/
 test-results/
 e2e/.auth/
+
+# Визуальные эталоны снимаются перед каждым сравнением (GS-214)
+e2e/visual/__snapshots__/
+
+# Временные скрипты отладки e2e
+*.tmp.mjs

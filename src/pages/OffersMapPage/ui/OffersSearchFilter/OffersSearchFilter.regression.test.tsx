@@ -11,6 +11,11 @@ import { renderWithProviders } from "@/test-utils";
 import { server } from "@/mocks/server";
 import { OffersSearchFilter } from "./OffersSearchFilter";
 
+// GS-188: счётчик откликов читает Redux — в этих тестах он не нужен.
+vi.mock("@/features/FreeApplicationsCounter", () => ({
+    FreeApplicationsCounter: () => null,
+}));
+
 vi.mock("@/widgets/OffersMap", () => ({
     OffersList: () => <div />,
     OffersMap: () => <div />,

@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC } from "react";
+import React, { FC, useId } from "react";
 
 import styles from "./Textarea.module.scss";
 
@@ -27,34 +27,40 @@ const Textarea: FC<IText> = ({
     name,
     isError = false,
     ...restTextAreaProps
-}) => (
-    <div className={cn(styles.texarea, className)}>
-        <div className={styles.labelWrapper}>
-            {img && (
-                <img className={styles.image} src={img} alt={img} />
+}) => {
+    // Без id метка не связана с полем — для экранных читалок и тестов поле безымянное
+    const generatedId = useId();
+    const fieldId = id ?? generatedId;
+
+    return (
+        <div className={cn(styles.texarea, className)}>
+            <div className={styles.labelWrapper}>
+                {img && (
+                    <img className={styles.image} src={img} alt={img} />
+                )}
+                <label className={styles.label} htmlFor={fieldId}>
+                    {label}
+                </label>
+            </div>
+            <textarea
+                className={cn(styles.textarea, classNameTextarea, { [styles.error]: isError })}
+                required={required}
+                placeholder={placeholder}
+                name={name}
+                id={fieldId}
+                maxLength={maxLength}
+                {...restTextAreaProps}
+            />
+            {description && (
+                <label htmlFor={fieldId} className={styles.description}>{description}</label>
             )}
-            <label className={styles.label} htmlFor={id}>
-                {label}
-            </label>
+            <br />
+            {extraDescription && (
+                <label htmlFor={fieldId} className={styles.description}>{extraDescription}</label>
+            )}
+            {children}
         </div>
-        <textarea
-            className={cn(styles.textarea, classNameTextarea, { [styles.error]: isError })}
-            required={required}
-            placeholder={placeholder}
-            name={name}
-            id={id}
-            maxLength={maxLength}
-            {...restTextAreaProps}
-        />
-        {description && (
-            <label htmlFor={id} className={styles.description}>{description}</label>
-        )}
-        <br />
-        {extraDescription && (
-            <label htmlFor={id} className={styles.description}>{extraDescription}</label>
-        )}
-        {children}
-    </div>
-);
+    );
+};
 
 export default React.memo(Textarea);

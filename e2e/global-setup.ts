@@ -2,6 +2,7 @@ import { chromium, request } from '@playwright/test';
 import path from 'path';
 import fs from 'fs';
 import { BASE_URL, API_URL } from './config';
+import { e2eHeaders } from './support/testApi';
 
 const AUTH_DIR = path.join(__dirname, '.auth');
 
@@ -24,7 +25,7 @@ async function setup(): Promise<void> {
             ignoreHTTPSErrors: true,
         });
 
-        const resetResp = await api.post('/api/test/reset');
+        const resetResp = await api.post('/api/test/reset', { headers: e2eHeaders() });
         if (!resetResp.ok()) {
             throw new Error(`/api/test/reset вернул ${resetResp.status()}: ${await resetResp.text()}`);
         }

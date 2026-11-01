@@ -7,6 +7,7 @@ import compareRoutes from "@/shared/utils/routes/compareRoutes";
 
 import styles from "./SidebarDropdown.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 interface SidebarDropdownProps {
     route: string;
@@ -49,7 +50,7 @@ export const SidebarDropdown = memo(({
                         {dropdownItems.map((item) => (
                             <NavLink
                                 key={item.text}
-                                to={`/${locale}${route}${item.route}`}
+                                to={`${localePrefix(locale)}${route}${item.route}`}
                                 replace
                                 className={({ isActive }) => cn(styles.dropdownItem, {
                                     [styles.activeDropdownItem]: isActive,

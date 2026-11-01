@@ -24,7 +24,8 @@ export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
         const {
             id, email, firstName, lastName, created,
             lastVisit, endPayment, isActive, isPayment,
-            isVolunteer, isOrganization, isDelete,
+            isVolunteer, isOrganization, isDelete, isPrivilegedMembership,
+            internationalEndPayment,
         } = user;
         return {
             id,
@@ -39,6 +40,8 @@ export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
             dateLogin: lastVisit,
             dateRegistration: created,
             dataEndMembership: endPayment,
+            isPrivilegedMembership: isPrivilegedMembership ?? false,
+            internationalEndMembership: internationalEndPayment ?? null,
         };
     });
 

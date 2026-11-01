@@ -30,7 +30,7 @@ describe("FindJobPage Header", () => {
         );
 
         const link = screen.getByText("Найти работу").closest("a");
-        expect(link).toHaveAttribute("href", "/ru/offers-map?category=13");
+        expect(link).toHaveAttribute("href", "/offers-map?category=13");
         expect(link?.getAttribute("href")).not.toContain("paid_work");
     });
 });

@@ -34,6 +34,7 @@
         "Закрыть": "Close",
         "Открыть": "Open",
         "Вы уверены что хотите изменить вакансию?": "Are you sure you want to edit the offer posting?",
+        "confirmDelete": "Are you sure you want to delete this offer?",
         "Ок": "Ok",
         "Отмена": "Cancel",
         "Удалить": "Delete",
@@ -142,7 +143,8 @@
         "Не более 200 знаков": "No more than 200 characters",
         "Не более 1000 знаков": "No more than 1000 characters",
         "Сохранить": "Save",
-        "Произошла ошибка": "An error occurred"
+        "Произошла ошибка": "An error occurred",
+        "Укажите тип организации": "Specify the organization type"
     },
     "hostGallery": {
         "Фотогалерея организации": "Organization photo gallery",

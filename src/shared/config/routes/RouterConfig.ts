@@ -14,7 +14,9 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.CATEGORIES]: "/categories",
     [AppRoutes.FAVORITE_OFFERS]: "/favorite-offers",
     [AppRoutes.CONFIRM_EMAIL]: "/confirm-email",
+    [AppRoutes.UNSUBSCRIBED]: "/unsubscribed",
     [AppRoutes.CONFIRM_EMAIL_SUCCESS]: "/confirm-email-success",
+    // Подтверждение подписки по ссылке из письма-запроса (GS-203)
     [AppRoutes.EMAIL_EXPIRED]: "/email-expired",
     [AppRoutes.VERIFY_EMAIL]: "/verify-email",
     [AppRoutes.VERIFY_EMAIL_HASH]: "/verify-email-hash",
@@ -140,4 +142,5 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.ADMIN_SYSTEM_ADMIN]: "/admin/system-admin",
     [AppRoutes.ADMIN_BANNER_MARKETING]: "/admin/banner-marketing",
     [AppRoutes.ADMIN_FEEDBACK]: "/admin/feedback",
+    [AppRoutes.ADMIN_MEMBERSHIP_LOG]: "/admin/membership-log",
 };

@@ -1,6 +1,7 @@
 .wrapper {
     position: fixed;
-    top: 16px;
+    // Под плашкой соцсетей, пока она видна (--ribbon-bottom ставит MainHeader).
+    top: max(16px, calc(var(--ribbon-bottom, 0px) + 8px));
     left: 50%;
     transform: translateX(-50%);
     width: calc(100% - 32px);

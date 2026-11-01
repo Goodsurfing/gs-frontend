@@ -13,6 +13,7 @@ import CustomLink from "@/shared/ui/Link/Link";
 import styles from "./OfferOrganizationCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { useGetTypeOrganization } from "@/shared/hooks/useGetTypeOrganization";
+import { responseStatsText } from "../../lib/responseStatsText";
 
 interface OfferOrganizationCardProps {
     organization: OfferOrganization;
@@ -25,6 +26,7 @@ export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
         const { locale } = useLocale();
         const { t } = useTranslation("offer");
         const { getTranslate } = useGetTypeOrganization();
+        const responseText = responseStatsText(organization.responseStats, t);
 
         return (
             <div className={cn(className, styles.wrapper)} id="organization">
@@ -50,6 +52,9 @@ export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
                         <p className={styles.description}>
                             {getTranslate(organization.type)}
                         </p>
+                        {responseText && (
+                            <p className={styles.response}>{responseText}</p>
+                        )}
                     </div>
                     <ButtonLink
                         className={styles.button}

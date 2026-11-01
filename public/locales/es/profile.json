@@ -8,12 +8,12 @@
         "Мужчина": "Hombre",
         "Женщина": "Mujer",
         "Другой": "Otro",
-        "Страна": "Un país",
+        "Страна": "País",
         "Город": "Ciudad",
-        "Язык интерфейса": "Lenguaje de interfaz",
+        "Язык интерфейса": "Idioma de la interfaz",
         "Телефон": "Teléfono",
         "День рождения": "Cumpleaños",
-        "Расскажите о себе": "Cuéntanos acerca de tí",
+        "Расскажите о себе": "Cuéntanos sobre ti",
         "Сохранить": "Ahorrar",
         "Произошла ошибка": "Se ha producido un error",
         "Отмена": "Cancelar",
@@ -50,13 +50,16 @@
         "Организаторам": "Para organizadores",
         "Получи возможность оставлять неограниченное количество откликов и путешествовать без лимитов — {{price}} руб/год": "Obtén solicitudes ilimitadas y viaja sin límites — {{price}} rub/año",
         "Создавай неограниченное количество вакансий и получи больше возможностей для своего проекта — {{price}} руб/год": "Crea vacantes ilimitadas y obtén más oportunidades para tu proyecto — {{price}} rub/año",
-        "Оформить членство": "Hazte miembro"
+        "Оформить членство": "Hazte miembro",
+        "Международный клуб — активно до {{date}}": "Club Internacional: activo hasta {{date}}",
+        "Продлить участие": "Renovar"
     },
     "preferences": {
         "Куда бы вы хотели поехать": "¿A dónde le gustaría ir?",
         "Какой тип путешествий вы предпочитаете": "¿Qué tipo de viaje prefiere?",
         "Сохранить": "Guardar",
-        "Данные успешно изменены": "Datos actualizados con éxito"
+        "Данные успешно изменены": "Datos actualizados con éxito",
+        "Удалить {{tag}}": "Eliminar {{tag}}"
     },
     "role": {
         "Заполните аккаунт гудсёрфера или организатора": "Completa tu cuenta de buen surfer o organizador",
@@ -101,7 +104,9 @@
         "Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить.": "¿Seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer.",
         "Удалить": "Borrar",
         "Отмена": "Cancelar",
-        "Выберете настройки приватности": "Elija la configuración de privacidad"
+        "Выберете настройки приватности": "Elija la configuración de privacidad",
+        "Получать рассылку от Гудсёрфинга с новостями и обновлениями": "Recibir el boletín de Goodsurfing con noticias y novedades",
+        "Не удалось сохранить настройку рассылки": "No se pudo guardar el ajuste del boletín"
     },
     "personal": {
         "Произошла ошибка": "Ocurrió un error",

@@ -8,6 +8,8 @@ const errorTranslationKeys: Record<string, string> = {
     "This vacancy only accepts applications from verified participants. Get a membership to apply.": "errors.onlyVerifiedVolunteersAllowed",
     "Creating fundraising campaigns requires an active membership.": "errors.fundraiseRequiresMembership",
     "Fill in the vacancy title, description and address before publishing.": "errors.vacancyIncomplete",
+    // GS-230: заявка на закрытую вакансию (бэкенд, vacancy_not_active)
+    "Вакансия закрыта — откликнуться на неё нельзя": "errors.vacancyNotActive",
 };
 
 /** GS-172: отличить именно превышение лимита бесплатных вакансий от прочих

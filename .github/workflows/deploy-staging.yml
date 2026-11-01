@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: docker/setup-buildx-action@v3
 
@@ -32,7 +32,7 @@ jobs:
           yc-sa-json-credentials: ${{ secrets.YC_SA_KEY_JSON }}
 
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: .
           platforms: linux/amd64
@@ -60,7 +60,7 @@ jobs:
           cache-to: type=gha,mode=max,scope=gs-frontend
 
       - name: Deploy to VM
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.STAGING_HOST }}
           username: ubuntu
@@ -68,8 +68,13 @@ jobs:
           script: |
             set -e
             cd /opt/gs
-            sudo docker compose pull frontend
+            # Две выкладки стейджа (SPA и новый фронт) идут на одну VM параллельно:
+            # docker image prune одной может сорвать pull другой («failed to lease content») — повторяем
+            for attempt in 1 2 3; do sudo docker compose pull frontend && break; [ "$attempt" = 3 ] && exit 1; sleep 15; done
             sudo docker compose up -d frontend
+            # Старый образ после обновления остаётся «висящим» (1+ ГБ у бэкенда) — без
+            # очистки диск стейджа 29.10 заполнился на 90% (142 таких образа)
+            sudo docker image prune -f || true
             sleep 3
             sudo docker compose ps frontend
 
@@ -85,26 +90,5 @@ jobs:
           echo "Frontend smoke test failed"
           exit 1
 
-  notify:
-    needs: build-and-deploy
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Notify Telegram
-        continue-on-error: true
-        run: |
-          if [ -z "${{ secrets.TELEGRAM_BOT_TOKEN }}" ] || [ -z "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
-            echo "Telegram secrets not set, skipping notification"
-            exit 0
-          fi
-          if [ "${{ needs['build-and-deploy'].result }}" = "success" ]; then
-            STATUS="✅ успешно"
-          else
-            STATUS="🔴 ошибка (${{ needs['build-and-deploy'].result }})"
-          fi
-          TEXT="*gs-frontend* деплой в *staging* — ${STATUS}
-          ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            --data-urlencode chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            --data-urlencode parse_mode="Markdown" \
-            --data-urlencode text="$TEXT"
+  # О результате в Telegram пишет бот статуса (gs-status-bot) по GitHub Actions API:
+  # сам он держит в чате только последние события, а сообщения workflow копились без конца.

@@ -1,67 +1,42 @@
 import { useContext, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
-import {
-    LocaleContext, availableLocales, defaultLocale, Locale,
-} from "./LocaleProvider";
 
+import { localeFromPath, withLocalePath } from "@/shared/config/routes/localePath";
+
+import { LocaleContext, Locale } from "./LocaleProvider";
+
+/**
+ * Язык берётся из адреса: /en/… и /es/… — английский и испанский, всё
+ * остальное — русский (у него префикса нет, см. shared/config/routes/localePath).
+ */
 export const useLocale = () => {
     const { locale, setLocale } = useContext(LocaleContext);
 
     const navigate = useNavigate();
     const { i18n } = useTranslation();
     const { pathname, search, hash } = useLocation();
-    const pathnameLocale: Locale | string = pathname.substring(1, 3).toLowerCase();
+    const pathnameLocale = localeFromPath(pathname);
 
+    /** Переключение языка: та же страница на другом языке. */
     const handleLocaleUpdate = useCallback((newLocale: Locale | string) => {
-        const newPath = `/${newLocale}${pathname.substring(3)}`;
-
-        if (newPath === `/${newLocale}/` || newPath === `/${newLocale}` || pathname === "/") {
-            navigate(getMainPageUrl(newLocale));
-        }
-
-        if (locale !== newLocale) {
-            if (newPath === `/${newLocale}/` || newPath === `/${newLocale}` || pathname === "/") {
-                navigate(getMainPageUrl(newLocale));
-            } else {
-                navigate(`${newPath}${hash}${search}`);
-            }
-            setLocale(newLocale as Locale);
-        }
+        if (newLocale === locale) return;
+        navigate(`${withLocalePath(pathname, newLocale)}${search}${hash}`);
+        setLocale(newLocale as Locale);
     }, [hash, locale, navigate, pathname, search, setLocale]);
 
-    const setLanguageHandler = useCallback((lang: string) => {
-        document.documentElement.setAttribute("lang", lang);
-
-        if (lang === "ru") {
-            i18n.changeLanguage("ru");
+    useEffect(() => {
+        if (pathnameLocale !== locale) {
+            setLocale(pathnameLocale);
         }
-        if (lang === "en") {
-            i18n.changeLanguage("en");
-        }
-        if (lang === "es") {
-            i18n.changeLanguage("es");
-        }
-    }, [i18n]);
+    }, [locale, pathnameLocale, setLocale]);
 
     useEffect(() => {
-        if (availableLocales.includes(pathnameLocale as Locale)) {
-            handleLocaleUpdate(pathnameLocale);
-        } else if (pathname === "/") {
-            handleLocaleUpdate(defaultLocale);
+        document.documentElement.setAttribute("lang", pathnameLocale);
+        if (i18n.language !== pathnameLocale) {
+            i18n.changeLanguage(pathnameLocale);
         }
-    }, [handleLocaleUpdate, pathname, pathnameLocale]);
-
-    useEffect(() => {
-        let lang = defaultLocale;
-        if (availableLocales.includes(pathnameLocale as Locale)) {
-            lang = pathnameLocale;
-            setLanguageHandler(lang);
-        } else if (pathname === "/") {
-            setLanguageHandler(lang);
-        }
-    }, [locale, pathname, pathnameLocale, setLanguageHandler]);
+    }, [i18n, pathnameLocale]);
 
     return { locale, updateLocale: handleLocaleUpdate };
 };

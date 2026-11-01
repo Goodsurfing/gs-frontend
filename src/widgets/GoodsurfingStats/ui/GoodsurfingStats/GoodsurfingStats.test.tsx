@@ -8,6 +8,10 @@ vi.mock("react-i18next", () => ({
     useTranslation: () => ({ t: (key: string) => key }),
 }));
 
+vi.mock("@/app/providers/LocaleProvider", () => ({
+    useLocale: () => ({ locale: "ru" }),
+}));
+
 const mockUseGetAbouProjectPageInfoQuery = vi.fn();
 vi.mock("@/entities/Admin", () => ({
     useGetAbouProjectPageInfoQuery: () => mockUseGetAbouProjectPageInfoQuery(),
@@ -35,7 +39,8 @@ describe("GoodsurfingStats", () => {
 
         render(<GoodsurfingStats />);
 
-        expect(screen.getByText("1234")).toBeInTheDocument();
+        // с разделителем разрядов (неразрывный пробел)
+        expect(screen.getByText(/^1\s234$/)).toBeInTheDocument();
         expect(screen.getByText("42")).toBeInTheDocument();
         expect(screen.getByText("567")).toBeInTheDocument();
         expect(screen.getByText("89")).toBeInTheDocument();

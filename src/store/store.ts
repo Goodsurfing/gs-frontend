@@ -38,6 +38,7 @@ import { donationApi } from "@/entities/Donation";
 import { membershipApi } from "./api/membershipApi";
 import { donationPaymentApi } from "./api/donationPaymentApi";
 import { feedbackApi } from "@/entities/Feedback";
+import { createServerLogoutMiddleware } from "./middleware/serverLogout";
 
 const combinedReducer = combineReducers({
     register: registerReducer,
@@ -107,6 +108,7 @@ const rootReducer: typeof combinedReducer = (state, action) => {
 export const setupStore = () => configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([
+        createServerLogoutMiddleware(),
         authApi.middleware,
         organizationApi.middleware,
         userOrganizationInfoApi.middleware,

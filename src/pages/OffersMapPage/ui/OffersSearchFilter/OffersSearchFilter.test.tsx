@@ -15,6 +15,11 @@ import { OffersSearchFilter } from "./OffersSearchFilter";
 const latestOffersMapProps: { current: Record<string, unknown> } = { current: {} };
 const latestOffersListProps: { current: Record<string, unknown> } = { current: {} };
 
+// GS-188: счётчик откликов читает Redux — в этих тестах он не нужен.
+vi.mock("@/features/FreeApplicationsCounter", () => ({
+    FreeApplicationsCounter: () => null,
+}));
+
 vi.mock("@/widgets/OffersMap", () => ({
     OffersList: (props: Record<string, unknown>) => {
         latestOffersListProps.current = props;

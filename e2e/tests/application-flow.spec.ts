@@ -1,5 +1,6 @@
 import { test, expect, request, APIRequestContext } from '@playwright/test';
 import { API_URL } from '../config';
+import { e2eHeaders, hasE2eToken, NO_TOKEN_REASON } from '../support/testApi';
 
 /**
  * Пакет e2e-сценариев взаимодействия волонтёра и хоста вокруг заявок на
@@ -38,6 +39,9 @@ import { API_URL } from '../config';
  */
 test.describe('Волонтёр и хост: заявки на вакансию', () => {
     test.describe.configure({ retries: 0 });
+    test.beforeEach(() => {
+        test.skip(!hasE2eToken(), NO_TOKEN_REASON);
+    });
 
     const login = async (api: APIRequestContext, email: string, password: string) => {
         const resp = await api.post('/api/v1/token', { data: { email, password } });
@@ -57,7 +61,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
 
         // Служебный эндпоинт стейджа: сразу подтверждённый пользователь, без
         // лимита регистраций (10/час с IP) — иначе повторный прогон за час падал на 429.
-        const createResp = await api.post('/api/test/create-user', { data: { email, password } });
+        const createResp = await api.post('/api/test/create-user', { data: { email, password }, headers: e2eHeaders() });
         expect(createResp.ok(), await createResp.text()).toBeTruthy();
 
         const auth = await login(api, email, password);
@@ -78,7 +82,8 @@ test.describe('Волонтёр и хост: заявки на вакансию'
     };
 
     const findVacancyByTitle = async (api: APIRequestContext, orgId: string, title: string) => {
-        const resp = await api.get(`/api/v1/vacancy/list/${orgId}`);
+        // Список постраничный (по умолчанию 10): брошенные черновики не должны вытеснять фикстуры
+        const resp = await api.get(`/api/v1/vacancy/list/${orgId}?limit=100`);
         expect(resp.ok(), await resp.text()).toBeTruthy();
         const list = await resp.json();
         const vacancies = Array.isArray(list) ? list : list.data ?? list['hydra:member'];

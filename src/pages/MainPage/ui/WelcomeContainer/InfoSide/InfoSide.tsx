@@ -11,6 +11,7 @@ import { InfoSearchOffers } from "./InfoSearchOffers/InfoSearchOffers";
 import { SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 import ActivityContainer from "./ActivityContainer/ActivityContainer";
 import styles from "./InfoSide.module.scss";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 const InfoSide: FC = memo(() => {
     const { t } = useTranslation();
@@ -20,7 +21,7 @@ const InfoSide: FC = memo(() => {
 
     const onApplySearch = useCallback(async (search: string) => {
         const query = search ? `?search=${encodeURIComponent(search)}` : "";
-        navigate(`/${locale}/offers-map${query}`);
+        navigate(`${localePrefix(locale)}/offers-map${query}`);
     }, [navigate, locale]);
 
     const onResetFilters = useCallback(async () => {

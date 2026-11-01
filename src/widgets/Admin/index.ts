@@ -72,3 +72,4 @@ export { AdminSystemAdminTable } from "./ui/AdminSystemAdminTable/AdminSystemAdm
 export { AdminBannerMarketingTable } from "./ui/AdminBannerMarketingTable/AdminBannerMarketingTable";
 export { AdminFeedbackTable } from "./ui/AdminFeedbackTable/AdminFeedbackTable";
 export { AdminFeedbackInfo } from "./ui/AdminFeedbackInfo/AdminFeedbackInfo";
+export { AdminMembershipLogTable } from "./ui/AdminMembershipLogTable/AdminMembershipLogTable";

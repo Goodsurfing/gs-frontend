@@ -13,6 +13,7 @@ import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import styles from "./MessengerPage.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { localePrefix } from "@/shared/config/routes/localePath";
 
 const MessengerPage = () => {
     const { id: selectedChat, offerId } = useParams();
@@ -30,7 +31,7 @@ const MessengerPage = () => {
         (value?: string) => {
             if (selectedChat !== value) {
                 if (value) {
-                    navigate(`/${locale}/messenger/${value}`);
+                    navigate(`${localePrefix(locale)}/messenger/${value}`);
                 } else {
                     navigate(getMessengerPageUrl(locale));
                 }

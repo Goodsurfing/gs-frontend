@@ -51,6 +51,14 @@
     left: 10px;
     cursor: pointer;
     padding: 5px;
+    // Сброс стилей <button>: выглядит как прежний div
+    margin: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+    appearance: none;
     transition: transform 0.3s ease, fill 0.3s ease;
 
     svg {

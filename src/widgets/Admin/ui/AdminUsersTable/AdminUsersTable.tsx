@@ -407,6 +407,23 @@ export const AdminUsersTable = () => {
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
+            // Привилегированные — бесплатные бессрочные по решению владельца:
+            // вместо «2126 год» пишем, что это такое.
+            renderCell: (params) => (params.row.isPrivilegedMembership
+                ? "Привилегированное, бессрочно"
+                : params.row.dataEndMembership),
+        },
+        {
+            // GS-198: Международный клуб — отдельное членство, раньше его не было видно.
+            field: "internationalEndMembership",
+            headerName: "Международный клуб",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            renderCell: (params) => (params.row.internationalEndMembership
+                ? `до ${params.row.internationalEndMembership}`
+                : "—"),
         },
         {
             field: "actions",

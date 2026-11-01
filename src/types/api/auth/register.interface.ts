@@ -9,6 +9,10 @@ export interface IRegisterFormData {
     plainPassword: string;
     locale: string;
     isActive: boolean;
+    /** Чекбокс «Хочу получать письма…» — по умолчанию отмечен (GS-203, решение 29.10.2026) */
+    marketingConsent?: boolean;
+    /** Текст галочки, как его видел человек, — в журнал согласий */
+    marketingConsentWording?: string;
 }
 
 export interface IRegisterResponse {

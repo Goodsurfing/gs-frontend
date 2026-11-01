@@ -116,6 +116,10 @@
 	font-weight: 500;
 	line-height: 167%;
 	text-decoration-line: underline;
+
+	&[aria-current="page"] {
+		text-decoration-line: none;
+	}
 }
 
 @media screen and (max-width: 1180px) {

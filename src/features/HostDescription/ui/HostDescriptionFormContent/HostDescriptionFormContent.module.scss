@@ -1,7 +1,7 @@
 .mainSection {
     display: flex;
 	flex-direction: column;
-	width: calc(100% - 235px);
+	width: calc(100% - 264px);
 }
 
 .avatarSection {
@@ -12,8 +12,20 @@
 	border-radius: 50%;
 }
 
+.side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 240px;
+    flex-shrink: 0;
+}
+
 @media (max-width: 992px) {
 	.mainSection {
+		width: 100%;
+	}
+	.side {
 		width: 100%;
 	}
 }

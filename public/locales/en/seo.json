@@ -1,0 +1,46 @@
+{
+    "offersMap": {
+        "title": "Volunteer opportunities map — GoodSurfing",
+        "description": "Volunteer projects in Russia and worldwide on a map: ecology, nature reserves, farms, archaeology, social projects. Choose a destination, dates and conditions."
+    },
+    "categories": {
+        "title": "Volunteer project categories — GoodSurfing",
+        "description": "Ecology and nature reserves, farms, archaeological expeditions, work with children and animals — find a volunteer project you care about."
+    },
+    "findJob": {
+        "title": "Seasonal jobs while travelling — GoodSurfing",
+        "description": "Combine work and travel: seasonal jobs by the sea, in the mountains and in nature with accommodation and meals."
+    },
+    "becomeHost": {
+        "title": "Become a host and welcome volunteers — GoodSurfing",
+        "description": "Nature reserves, NGOs, farms, guest houses and expeditions find volunteers on GoodSurfing. Post your project and get help."
+    },
+    "rules": {
+        "title": "Terms of service — GoodSurfing",
+        "description": "GoodSurfing terms of use for volunteers and hosts."
+    },
+    "privacyPolicy": {
+        "title": "Privacy policy — GoodSurfing",
+        "description": "How GoodSurfing processes and protects users' personal data."
+    },
+    "paymentSecurityPolicy": {
+        "title": "Payment security — GoodSurfing",
+        "description": "How payments on GoodSurfing are protected: membership and donations."
+    },
+    "donationsMap": {
+        "title": "Fundraisers for good causes — GoodSurfing",
+        "description": "Support GoodSurfing hosts' projects: fundraisers on the map, goals and reports."
+    },
+    "donationReports": {
+        "title": "Fundraiser reports — GoodSurfing",
+        "description": "Hosts' reports on how donations raised through GoodSurfing were spent."
+    },
+    "host": {
+        "title": "Organization — GoodSurfing",
+        "description": "Organization profile on GoodSurfing: volunteer projects, conditions and reviews."
+    },
+    "volunteer": {
+        "title": "Volunteer profile — GoodSurfing",
+        "description": "Volunteer profile on GoodSurfing."
+    }
+}

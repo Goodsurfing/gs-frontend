@@ -9,20 +9,28 @@ import { ProjectBetter } from "../ProjectBetter/ProjectBetter";
 import { WhoIsGoodsurfers } from "../WhoIsGoodsurfers/WhoIsGoodsurfers";
 import { WhyUseIt } from "../WhyUseIt/WhyUseIt";
 import { ReviewAboutHost } from "../ReviewAboutHost/ReviewAboutHost";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { getBecomeHostPageUrl } from "@/shared/config/routes/AppUrls";
+import { PageSeo } from "@/shared/ui/SeoHelmet";
 
-const BecomeHostPage = () => (
-    <MainPageLayout>
-        <div className={styles.wrapper}>
-            <Header />
-            <WhoCanInvite />
-            <HowCanHelp />
-            <WhatReturn />
-            <ProjectBetter />
-            <WhoIsGoodsurfers />
-            <WhyUseIt />
-            <ReviewAboutHost />
-        </div>
-    </MainPageLayout>
-);
+const BecomeHostPage = () => {
+    const { locale } = useLocale();
+
+    return (
+        <MainPageLayout>
+            <PageSeo section="becomeHost" path={getBecomeHostPageUrl(locale)} />
+            <div className={styles.wrapper}>
+                <Header />
+                <WhoCanInvite />
+                <HowCanHelp />
+                <WhatReturn />
+                <ProjectBetter />
+                <WhoIsGoodsurfers />
+                <WhyUseIt />
+                <ReviewAboutHost />
+            </div>
+        </MainPageLayout>
+    );
+};
 
 export default BecomeHostPage;

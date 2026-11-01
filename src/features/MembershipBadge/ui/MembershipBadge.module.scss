@@ -11,3 +11,8 @@
     white-space: nowrap;
     vertical-align: middle;
 }
+
+// Участник Международного клуба — синий, чтобы не путать с членством на платформе
+.international {
+    background: var(--color-blue);
+}

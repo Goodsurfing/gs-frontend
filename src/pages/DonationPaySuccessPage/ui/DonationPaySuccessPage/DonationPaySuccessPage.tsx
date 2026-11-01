@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -9,12 +9,18 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { getDonationPersonalPage } from "@/shared/config/routes/AppUrls";
 
 import styles from "./DonationPaySuccessPage.module.scss";
+import { trackGoalOnce } from "@/shared/lib/analytics";
 
 const DonationPaySuccessPage: React.FC = () => {
     const { t } = useTranslation("donation");
     const { locale } = useLocale();
     const navigate = useNavigate();
     const { id: fundraiseId } = useParams<{ id: string }>();
+
+    // Сюда возвращает ЮKassa после оплаты; повторное открытие в той же сессии не считаем
+    useEffect(() => {
+        trackGoalOnce("donation_paid", fundraiseId ?? "unknown");
+    }, [fundraiseId]);
 
     return (
         <MainPageLayout>

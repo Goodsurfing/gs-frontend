@@ -13,7 +13,7 @@ import {
     useLazyGetDonationsQuery,
     useUpdateDonationStatusMutation,
 } from "@/entities/Donation";
-import { useGetProfileOccupancyQuery } from "@/entities/Profile";
+import { hasHostMembership, useGetProfileOccupancyQuery } from "@/entities/Profile";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {
     getDonationPersonalPage,
@@ -142,7 +142,7 @@ const HostFundraisePage: FC = () => {
                     </div>
                 </div>
             )}
-            {profileOccupancy?.isMembership ? (
+            {hasHostMembership(profileOccupancy) ? (
                 <Button
                     variant="FILL"
                     color="BLUE"
