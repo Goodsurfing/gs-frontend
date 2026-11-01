@@ -38,13 +38,14 @@ export default async function VolunteerArticlesPage({ params }: Props) {
                         publish: a("Опубликовать"),
                         remove: a("Удалить"),
                         // В старом фронте у кнопки «⋯» подписи не было
-                        actions: a("Редактировать"),
+                        actions: a("Действия со статьёй"),
                         deleted: a("Статья удалена"),
                         deleteError: a("Ошибка удаления статьи"),
                         published: a("Статья опубликована"),
                         publishError: a("Ошибка публикации статьи"),
                         empty: a("На данный момент у вас нет добавленных статей. Создайте свою первую статью"),
                         create: a("Создать статью"),
+                        loadError: a("Не удалось загрузить статьи. Попробуйте обновить страницу"),
                         pagination: { prev: t("pagination.prev"), next: t("pagination.next"), page: t("pagination.label") },
                     }}
                 />

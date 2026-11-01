@@ -13,6 +13,10 @@ const article = (id: number, name: string, isActive: boolean) => ({
     description: '', image: IMAGE, blogCategories: [{ id: 18, name: 'Волонтёрство', color: '' }],
 });
 
+/** Категории блога — свои, чтобы не зависеть от справочника стейджа */
+const CATEGORIES = [{ id: 18, name: 'Волонтёрство', color: '' }, { id: 19, name: 'E2E: путешествия', color: '#79c8ff' }];
+const mockCategories = (page: Page) => page.route(/\/api\/v1\/blog-category(\?|$)/, (route) => route.fulfill({ json: CATEGORIES }));
+
 /** Опубликованные и черновики — по признаку isActive в запросе */
 const mockLists = async (page: Page, published: unknown[], drafts: unknown[]) => {
     await page.route(/\/api\/v1\/blog\?/, (route) => {
@@ -45,7 +49,7 @@ test.describe('Новый фронт: кабинет волонтёра — ст
         await expect(page.getByRole('link', { name: /E2E: черновик/ })).toBeVisible();
 
         // У опубликованной нет «Опубликовать», у черновика — есть
-        const menus = page.getByRole('button', { name: 'Редактировать' });
+        const menus = page.getByRole('button', { name: 'Действия со статьёй' });
         await menus.first().click();
         await expect(page.getByRole('menuitem', { name: 'Редактировать' })).toHaveAttribute('href', '/volunteer/articles/901');
         await expect(page.getByRole('menuitem', { name: 'Опубликовать' })).toHaveCount(0);
@@ -72,6 +76,7 @@ test.describe('Новый фронт: кабинет волонтёра — ст
 
     test('написать в блог: проверки формы и сохранение в черновики', async ({ page }) => {
         await mockLists(page, [], []);
+        await mockCategories(page);
         await page.route('**/api/v1/media_objects', (route) => route.fulfill({ json: IMAGE }));
         let created: unknown = null;
         await page.route('**/api/v1/blog', (route) => {
@@ -93,17 +98,18 @@ test.describe('Новый фронт: кабинет волонтёра — ст
         await page.getByLabel('Название статьи').fill('Абв');
         await expect(page.getByText('Заголовок слишком короткий')).toBeVisible();
         await page.getByLabel('Название статьи').fill('E2E: статья из теста');
-        await page.getByRole('group', { name: 'Категория статьи' }).getByRole('button').first().click();
+        await page.getByRole('group', { name: 'Категория статьи' }).getByRole('button', { name: 'E2E: путешествия' }).click();
         await page.getByRole('textbox', { name: 'text' }).fill('Текст статьи из теста');
         await page.getByRole('button', { name: 'bold' }).click();
 
         await page.getByRole('button', { name: 'Сохранить в черновики' }).click();
         await expect(page).toHaveURL(/\/volunteer\/articles$/);
         expect(created).toMatchObject({ name: 'E2E: статья из теста', imageId: 'e2e-cover', isActive: false, description: expect.stringContaining('Текст статьи из теста') });
-        expect((created as { categoryIds: number[] }).categoryIds).toHaveLength(1);
+        expect((created as { categoryIds: number[] }).categoryIds).toEqual([19]);
     });
 
     test('правка статьи: данные подставлены, публикация', async ({ page }) => {
+        await mockCategories(page);
         await page.route(/\/api\/v1\/blog\/903\?/, (route) => route.fulfill({
             json: {
                 id: 903, slug: 'e2e-903', name: 'E2E: правка', description: '<p>Старый текст</p>', isActive: false, created: '1 ноября 2026',
@@ -125,6 +131,29 @@ test.describe('Новый фронт: кабинет волонтёра — ст
         await page.getByRole('button', { name: 'Опубликовать' }).click();
         await expect(page.getByText('Статья успешно обновлена и опубликована')).toBeVisible();
         expect(edited).toMatchObject({ name: 'E2E: правка', isActive: true, categoryIds: [18], imageId: 'e2e-cover' });
+    });
+
+    test('мои статьи: ошибка API — сообщение, а не приглашение создать первую', async ({ page }) => {
+        await page.route(/\/api\/v1\/blog\?/, (route) => route.fulfill({ status: 500, body: '' }));
+        await page.goto('/volunteer/articles');
+        await expect(page.getByText('Не удалось загрузить статьи. Попробуйте обновить страницу')).toBeVisible();
+        await expect(page.getByText('На данный момент у вас нет добавленных статей. Создайте свою первую статью')).toHaveCount(0);
+    });
+
+    test('правка статьи: не загрузилась — сообщение без формы', async ({ page }) => {
+        await mockCategories(page);
+        await page.route(/\/api\/v1\/blog\/904\?/, (route) => route.fulfill({ status: 500, body: '' }));
+        let saved = false;
+        await page.route('**/api/v1/blog/904', (route) => {
+            saved = true;
+            return route.fulfill({ json: {} });
+        });
+
+        await page.goto('/volunteer/articles/904');
+        await expect(page.getByText('Не удалось загрузить статью. Попробуйте обновить страницу')).toBeVisible();
+        await expect(page.getByLabel('Название статьи')).toHaveCount(0);
+        await expect(page.getByRole('button', { name: 'Опубликовать' })).toHaveCount(0);
+        expect(saved).toBe(false);
     });
 
     test.describe('гость', () => {

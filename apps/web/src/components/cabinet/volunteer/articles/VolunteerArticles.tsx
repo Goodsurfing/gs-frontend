@@ -13,9 +13,12 @@ import { browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
 
 type Article = components["schemas"]["ListResult2"];
-type List = { items: Article[]; total: number };
+/** false — список не загрузился */
+type List = { items: Article[]; total: number } | false;
+type Loaded = Exclude<List, false>;
 
 const PER_PAGE = 10;
+const pages = (list: Loaded) => Math.max(1, Math.ceil(list.total / PER_PAGE));
 
 export interface VolunteerArticlesLabels {
     drafts: string;
@@ -29,6 +32,7 @@ export interface VolunteerArticlesLabels {
     publishError: string;
     empty: string;
     create: string;
+    loadError: string;
     pagination: { prev: string; next: string; page: string };
 }
 
@@ -55,26 +59,32 @@ export function VolunteerArticles({ hrefs, labels }: {
     useEffect(() => {
         if (session.status !== "user") return;
         let cancelled = false;
-        const load = (isActive: boolean, target: number, setList: (list: List) => void) => browserApi(session.token)
+        const load = (isActive: boolean, target: number, setList: (list: List) => void, setTarget: (page: number) => void) => browserApi(session.token)
             .GET("/api/v1/blog", { params: { query: { page: target, limit: PER_PAGE, isAuth: true, isActive } } })
-            .catch(() => ({ data: undefined }))
-            .then(({ data }) => !cancelled && setList({ items: data?.data ?? [], total: data?.pagination?.total ?? 0 }));
-        void load(true, page, setPublished);
-        void load(false, draftPage, setDrafts);
+            .then(({ data, response }) => (response.ok && data ? { items: data.data ?? [], total: data.pagination?.total ?? 0 } : false), () => false as const)
+            .then((list) => {
+                if (cancelled) return;
+                setList(list);
+                // Удалили последнюю статью на последней странице — перейти на последнюю оставшуюся
+                if (list && target > pages(list)) setTarget(pages(list));
+            });
+        void load(true, page, setPublished, setPage);
+        void load(false, draftPage, setDrafts, setDraftPage);
         return () => {
             cancelled = true;
         };
     }, [session.status, session.token, page, draftPage, version]);
 
+    // Успех — по статусу ответа: у не-2xx с пустым телом openapi-fetch даёт error undefined
     const remove = async (id: number) => {
-        const { error } = await browserApi(session.token).DELETE("/api/v1/blog/{id}", { params: { path: { id } } }).catch(() => ({ error: true }));
-        setToast(error ? { text: labels.deleteError, ok: false } : { text: labels.deleted, ok: true });
-        if (!error) setVersion((value) => value + 1);
+        const ok = await browserApi(session.token).DELETE("/api/v1/blog/{id}", { params: { path: { id } } }).then(({ response }) => response.ok, () => false);
+        setToast(ok ? { text: labels.deleted, ok: true } : { text: labels.deleteError, ok: false });
+        if (ok) setVersion((value) => value + 1);
     };
     const publish = async (id: number) => {
-        const { error } = await browserApi(session.token).PATCH("/api/v1/blog/{id}/toggle-active", { params: { path: { id } }, body: { isActive: true } }).catch(() => ({ error: true }));
-        setToast(error ? { text: labels.publishError, ok: false } : { text: labels.published, ok: true });
-        if (!error) setVersion((value) => value + 1);
+        const ok = await browserApi(session.token).PATCH("/api/v1/blog/{id}/toggle-active", { params: { path: { id } }, body: { isActive: true } }).then(({ response }) => response.ok, () => false);
+        setToast(ok ? { text: labels.published, ok: true } : { text: labels.publishError, ok: false });
+        if (ok) setVersion((value) => value + 1);
     };
 
     const grid = (items: Article[]) => (
@@ -94,7 +104,7 @@ export function VolunteerArticles({ hrefs, labels }: {
                         />
                         <DropdownMenu.Root modal={false}>
                             <DropdownMenu.Trigger aria-label={labels.actions} className="absolute top-2.5 right-[15px] flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full bg-white shadow-[6px_8px_16px_0_rgba(34,60,80,0.2)]">
-                                <svg aria-hidden width="19" height="4" viewBox="0 0 20 4" fill="#8494A1" className="block overflow-visible">
+                                <svg aria-hidden width="19" height="4" viewBox="0 0 20 4" className="block overflow-visible fill-caption">
                                     <path d="M15.625 2a1.875 1.875 0 1 1 3.75 0 1.875 1.875 0 0 1-3.75 0Zm-7.5 0a1.875 1.875 0 1 1 3.75 0 1.875 1.875 0 0 1-3.75 0Zm-7.5 0a1.875 1.875 0 1 1 3.75 0 1.875 1.875 0 0 1-3.75 0Z" />
                                 </svg>
                             </DropdownMenu.Trigger>
@@ -122,12 +132,12 @@ export function VolunteerArticles({ hrefs, labels }: {
             })}
         </div>
     );
-    const pages = (list: List) => Math.max(1, Math.ceil(list.total / PER_PAGE));
-
     return (
         <div>
             <Toast text={toast?.text ?? null} ok={toast?.ok} onClose={closeToast} />
-            {published?.total === 0 && drafts?.total === 0 && (
+            {(published === false || drafts === false) && <p role="alert" className="mt-5 text-error-field">{labels.loadError}</p>}
+            {/* Приглашение — только когда оба списка пришли и пусты */}
+            {published && drafts && published.total === 0 && drafts.total === 0 && (
                 <div className="mt-5 flex w-fit flex-col gap-[15px]">
                     <p>{labels.empty}</p>
                     <a href={hrefs.create} className="inline-block rounded-[10px] bg-primary px-[50px] py-3.5 text-center text-[1rem] leading-[1.375rem] text-white no-underline transition-all hover:bg-primary-hover">
@@ -135,7 +145,7 @@ export function VolunteerArticles({ hrefs, labels }: {
                     </a>
                 </div>
             )}
-            {published === null ? <Spinner /> : (
+            {published === null ? <Spinner /> : published && (
                 <div className="flex flex-col gap-5">
                     {grid(published.items)}
                     {published.total !== 0 && (
@@ -143,7 +153,7 @@ export function VolunteerArticles({ hrefs, labels }: {
                     )}
                 </div>
             )}
-            {drafts === null ? <Spinner /> : drafts.total !== 0 && (
+            {drafts === null ? <Spinner /> : drafts && drafts.total !== 0 && (
                 <section className="mt-[60px]">
                     <h2 className="text-[1.5em] font-bold">{labels.drafts}</h2>
                     <div className="flex flex-col gap-5">

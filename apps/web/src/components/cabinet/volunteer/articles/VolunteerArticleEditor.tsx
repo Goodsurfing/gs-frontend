@@ -17,6 +17,8 @@ export interface VolunteerArticleEditorLabels {
     published: string;
     drafted: string;
     uploadError: string;
+    /** Статья для правки не загрузилась */
+    loadError: string;
 }
 
 /**
@@ -32,7 +34,8 @@ export function VolunteerArticleEditor({ locale, articleId, listHref, labels }: 
     labels: VolunteerArticleEditorLabels;
 }) {
     const session = useSession();
-    const [initial, setInitial] = useState<ArticleFields | null>(articleId ? null : EMPTY_ARTICLE);
+    // false — статья не загрузилась: форму не показываем, иначе сохранение затрёт статью пустой
+    const [initial, setInitial] = useState<ArticleFields | false | null>(articleId ? null : EMPTY_ARTICLE);
     const [busy, setBusy] = useState(false);
     const [toast, setToast] = useState<{ text: string; ok: boolean } | null>(null);
     const closeToast = useCallback(() => setToast(null), []);
@@ -41,16 +44,16 @@ export function VolunteerArticleEditor({ locale, articleId, listHref, labels }: 
         if (!articleId || session.status !== "user") return;
         let cancelled = false;
         void browserApi(session.token).GET("/api/v1/blog/{id}", { params: { path: { id: articleId }, query: { lang: locale } } })
-            .then(({ data }) => {
+            .then(({ data, response }) => {
                 if (cancelled) return;
-                setInitial(data ? {
-                    image: data.image ? { ...data.image, id: data.image.id } : null,
+                setInitial(response.ok && data ? {
+                    image: data.image ?? null,
                     name: data.name,
                     categoryIds: data.blogCategoryResults.map((category) => category.id),
                     description: data.description,
-                } : EMPTY_ARTICLE);
+                } : false);
             })
-            .catch(() => !cancelled && setInitial(EMPTY_ARTICLE));
+            .catch(() => !cancelled && setInitial(false));
         return () => {
             cancelled = true;
         };
@@ -61,23 +64,31 @@ export function VolunteerArticleEditor({ locale, articleId, listHref, labels }: 
         setBusy(true);
         const body = { name: fields.name, description: fields.description, imageId: fields.image?.id ?? "", isActive, categoryIds: fields.categoryIds };
         const api = browserApi(session.token);
-        const { error } = await (articleId
+        // Успех — по статусу ответа: у не-2xx с пустым телом openapi-fetch даёт error undefined
+        const ok = await (articleId
             ? api.PATCH("/api/v1/blog/{id}", { params: { path: { id: articleId } }, body })
             : api.POST("/api/v1/blog", { body })
-        ).catch(() => ({ error: true }));
-        setBusy(false);
-        if (error) {
+        ).then(({ response }) => response.ok, () => false);
+        if (!ok) {
+            setBusy(false);
             setToast({ text: articleId ? labels.updateError : labels.createError, ok: false });
             return;
         }
-        if (articleId) setToast({ text: isActive ? labels.published : labels.drafted, ok: true });
-        else window.location.assign(listHref);
+        if (articleId) {
+            setBusy(false);
+            setToast({ text: isActive ? labels.published : labels.drafted, ok: true });
+        } else {
+            // Кнопки остаются выключенными до ухода со страницы — повторное нажатие не создаст вторую статью
+            window.location.assign(listHref);
+        }
     };
 
     return (
         <>
             <Toast text={toast?.text ?? null} ok={toast?.ok} onClose={closeToast} />
-            {initial === null ? <Spinner className="mt-10" /> : (
+            {initial === null ? <Spinner className="mt-10" /> : initial === false ? (
+                <p role="alert" className="mt-10 text-[16px] text-error-field">{labels.loadError}</p>
+            ) : (
                 <ArticleForm
                     key={articleId ?? "new"}
                     locale={locale}
@@ -86,6 +97,7 @@ export function VolunteerArticleEditor({ locale, articleId, listHref, labels }: 
                     labels={labels.form}
                     onSubmit={(fields, isActive) => void save(fields, isActive)}
                     onUploadError={() => setToast({ text: labels.uploadError, ok: false })}
+                    onMessage={(text) => setToast({ text, ok: false })}
                 />
             )}
         </>

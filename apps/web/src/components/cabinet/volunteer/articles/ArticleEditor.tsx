@@ -35,15 +35,33 @@ export interface ArticleEditorLabels {
 const icon = (name: string) => `/web/icons/editor/${name}.svg`;
 
 /**
+ * Картинка с изменением размера за углы. Встроенный resize tiptap 3 пишет и
+ * ширину, и высоту, а ResizableImageExtension старого фронта — только ширину:
+ * на /blog/:slug высота из атрибута уходит в style и растягивает картинку на
+ * узком экране. Высота живёт только в редакторе (пропорции при перетаскивании),
+ * в HTML статьи не попадает и из него не читается.
+ */
+const ArticleImage = Image.extend({
+    addAttributes() {
+        return {
+            ...this.parent?.(),
+            height: { default: null, parseHTML: () => null, renderHTML: () => ({}) },
+        };
+    },
+});
+
+/**
  * Редактор текста статьи (TextEditor + ToolBar старого фронта, tiptap 3):
  * жирный, курсив, подчёркивание, выравнивание, списки, ссылка, картинка,
  * смайлы, отмена и повтор; справа — крестик «очистить». HTML на выходе — как у
  * старого редактора (без выравнивания по умолчанию и пустого абзаца в конце).
  */
-export function ArticleEditor({ value, onChange, onUploadError, token, labels }: {
+export function ArticleEditor({ value, onChange, onUploadError, onBadLink, token, labels }: {
     value: string;
     onChange: (html: string) => void;
     onUploadError: () => void;
+    /** Ссылка с запрещённой схемой (javascript: и т. п.) — tiptap её молча не ставит */
+    onBadLink: () => void;
     token?: string;
     labels: ArticleEditorLabels;
 }) {
@@ -55,7 +73,7 @@ export function ArticleEditor({ value, onChange, onUploadError, token, labels }:
             StarterKit.configure({ trailingNode: false }),
             TextAlign.configure({ types: ["heading", "paragraph"], alignments: ["left", "center", "justify"] }),
             // Картинку тянут за углы (ResizableImageExtension старого фронта, не уже 60 px)
-            Image.configure({ inline: true, resize: { enabled: true, directions: ["top-left", "top-right", "bottom-left", "bottom-right"], minWidth: 60, alwaysPreserveAspectRatio: true } }),
+            ArticleImage.configure({ inline: true, resize: { enabled: true, directions: ["top-left", "top-right", "bottom-left", "bottom-right"], minWidth: 60, alwaysPreserveAspectRatio: true } }),
         ],
         content: value,
         editorProps: {
@@ -79,7 +97,7 @@ export function ArticleEditor({ value, onChange, onUploadError, token, labels }:
     return (
         <div className="flex w-full gap-2.5">
             <div className="w-[90%]">
-                {editor && <ToolBar editor={editor} token={token} onUploadError={onUploadError} labels={labels} />}
+                {editor && <ToolBar editor={editor} token={token} onUploadError={onUploadError} onBadLink={onBadLink} labels={labels} />}
                 <EditorContent editor={editor} />
             </div>
             <button type="button" aria-label={labels.clear} onClick={() => editor?.commands.setContent("")} className="h-6 w-6 shrink-0 cursor-pointer">
@@ -117,7 +135,13 @@ function Tool({ label, src, active = false, disabled = false, flip = false, onCl
     );
 }
 
-function ToolBar({ editor, token, onUploadError, labels }: { editor: Editor; token?: string; onUploadError: () => void; labels: ArticleEditorLabels }) {
+function ToolBar({ editor, token, onUploadError, onBadLink, labels }: {
+    editor: Editor;
+    token?: string;
+    onUploadError: () => void;
+    onBadLink: () => void;
+    labels: ArticleEditorLabels;
+}) {
     const [uploading, setUploading] = useState(false);
     const [emoji, setEmoji] = useState(false);
     const emojiRef = useRef<HTMLDivElement>(null);
@@ -145,7 +169,7 @@ function ToolBar({ editor, token, onUploadError, labels }: { editor: Editor; tok
         const url = window.prompt("URL", editor.getAttributes("link").href as string | undefined);
         if (url === null) return;
         if (url === "") editor.chain().focus().extendMarkRange("link").unsetLink().run();
-        else editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+        else if (!editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run()) onBadLink();
     };
     const image = async (file: File | undefined) => {
         if (!file) return;
@@ -165,7 +189,7 @@ function ToolBar({ editor, token, onUploadError, labels }: { editor: Editor; tok
 
     // Первые три группы — ToggleButtonGroup MUI: соседние кнопки сдвинуты на −1 px
     return (
-        <div role="toolbar" className="flex flex-wrap gap-6 border border-caption border-b-[#8494a187] p-2">
+        <div role="toolbar" className="flex flex-wrap gap-6 border border-caption border-b-caption/53 p-2">
             <div className="flex gap-3.5 [&>*:not(:first-child)]:-ml-px">
                 <Tool label={labels.bold} src={icon("bold")} active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()} />
                 <Tool label={labels.italic} src={icon("italic")} active={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()} />
@@ -183,10 +207,11 @@ function ToolBar({ editor, token, onUploadError, labels }: { editor: Editor; tok
             <div className="flex gap-3.5">
                 <Tool label={labels.link} src={icon("link")} active={editor.isActive("link")} onClick={link} />
                 {uploading ? <Spinner className="h-6 !w-6 [&_svg]:h-6 [&_svg]:w-6" /> : (
-                    <label aria-label={labels.image} className="flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-[4px] transition-colors hover:bg-black/4">
+                    <label className="relative flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-[4px] transition-colors hover:bg-black/4 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primary">
                         {/* eslint-disable-next-line @next/next/no-img-element -- иконка */}
                         <img src={icon("image")} alt="" className="h-6 w-6 -translate-y-1" />
-                        <input type="file" accept="image/*" className="hidden" onChange={(event) => { void image(event.target.files?.[0]); event.target.value = ""; }} />
+                        {/* sr-only, а не hidden: поле доступно с клавиатуры (Tab, Enter/пробел) */}
+                        <input type="file" accept="image/*" aria-label={labels.image} className="sr-only" onChange={(event) => { void image(event.target.files?.[0]); event.target.value = ""; }} />
                     </label>
                 )}
                 <div ref={emojiRef} className="relative">

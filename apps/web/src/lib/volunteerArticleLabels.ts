@@ -26,6 +26,8 @@ export function volunteerArticleLabels(tv: Translate): VolunteerArticleEditorLab
                 long: c("Заголовок слишком большой"),
                 categories: "Выберите хотя бы одну категорию",
             },
+            categoriesError: c("Не удалось загрузить категории. Попробуйте обновить страницу"),
+            badLink: c("Недопустимая ссылка: разрешены http, https, mailto и подобные"),
             editor: {
                 bold: "bold",
                 italic: "italic",
@@ -49,5 +51,6 @@ export function volunteerArticleLabels(tv: Translate): VolunteerArticleEditorLab
         published: "Статья успешно обновлена и опубликована",
         drafted: "Статья успешно сохранена в черновиках",
         uploadError: "Произошла ошибка при загрузке изображения",
+        loadError: c("Не удалось загрузить статью. Попробуйте обновить страницу"),
     };
 }
