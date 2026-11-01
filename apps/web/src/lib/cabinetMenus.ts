@@ -1,6 +1,7 @@
 import type { CabinetMenuItem } from "@/components/cabinet/CabinetFrame";
 import { type Locale, localePrefix } from "@/i18n/config";
 import type { Translate } from "@/i18n/dictionary";
+import { routes } from "@/lib/routes";
 
 /** Меню раздела «Профиль» (shared/data/sidebar/profile-pages старого фронта) */
 export function profileMenu(locale: Locale, t: Translate): CabinetMenuItem[] {
@@ -36,5 +37,21 @@ export function hostMenu(locale: Locale, t: Translate): CabinetMenuItem[] {
                 { text: t("main.sidebar.Отзывы"), href: `${p}/host/review` },
             ],
         },
+    ];
+}
+
+/**
+ * Меню мастера сбора (shared/data/sidebar/fundraise-pages старого фронта):
+ * «К сборам» и шаги мастера своего сбора.
+ */
+export function fundraiseMenu(locale: Locale, t: Translate, id: string): CabinetMenuItem[] {
+    const step = (name: Parameters<typeof routes.fundraiseStep>[1]) => routes.fundraiseStep(locale, name, id);
+    return [
+        { text: t("main.sidebar.К сборам"), href: routes.hostDonations(locale), icon: "offers/back" },
+        { text: t("main.sidebar.Где"), href: step("where"), icon: "offers/pin" },
+        { text: t("main.sidebar.Когда"), href: step("when"), icon: "offers/calendar" },
+        { text: t("main.sidebar.Сколько"), href: step("amount"), icon: "offers/view-list" },
+        { text: t("main.sidebar.Описание"), href: step("description"), icon: "offers/checklist" },
+        { text: t("main.sidebar.Настройка автоматических сообщений"), href: step("auto-messages"), icon: "offers/writing-fluently" },
     ];
 }
