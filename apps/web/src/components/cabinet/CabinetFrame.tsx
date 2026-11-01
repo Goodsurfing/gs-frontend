@@ -66,7 +66,8 @@ export function CabinetFrame({ items, labels, fitContent = false, children }: {
                                     </div>
                                 ) : (
                                 <a href={item.href} className={`group flex min-h-[3.75rem] cursor-pointer items-center font-bold no-underline transition-all duration-300 ${active ? "text-ink-tertiary" : "text-caption hover:text-ink-tertiary"}`}>
-                                    <span aria-hidden className={`block h-10 min-w-10 bg-current ${open ? "mx-3.5" : ""}`} style={mask(item.icon)} />
+                                    {/* Как ReactSVG в SidebarLink старого фронта: без боковых отступов, под иконкой — 6 px строки обёртки */}
+                                    <span aria-hidden className="mb-1.5 block h-10 min-w-10 bg-current" style={mask(item.icon)} />
                                     {open && (
                                         <span className={`relative mr-auto ml-6 min-w-0 text-left [overflow-wrap:anywhere] whitespace-normal after:absolute after:top-full after:left-0 after:h-0.5 after:w-full after:bg-ink-tertiary after:transition-opacity after:duration-300 ${active ? "after:opacity-100" : "after:opacity-0 group-hover:after:opacity-100"}`}>
                                             {item.text}
