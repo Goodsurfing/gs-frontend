@@ -142,10 +142,14 @@ export function HostDescriptionForm({ organizationHref, infoHref, aside, onCreat
             if (error) throw new Error("save");
             writeDraft(null);
             setToast({ text: organizationId ? labels.saved : labels.created, ok: true });
-            if (!organizationId) onCreated?.();
+            if (organizationId) {
+                setBusy(false);
+            } else {
+                // Организация создана: до перехода на её описание повторное «Сохранить» не должно создать вторую
+                onCreated?.();
+            }
         } catch {
             setToast({ text: labels.error, ok: false });
-        } finally {
             setBusy(false);
         }
     };
