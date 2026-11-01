@@ -177,13 +177,20 @@ function WhoNeedsEditor({ id, nextHref, labels, vacancy, save }: {
         event.preventDefault();
         setSubmitted(true);
         if (errors.gender || errors.volunteerPlaces) return;
+        // Язык, выбранный в строке добавления, но не добавленный кнопкой, тоже сохраняется (как период на шаге «Когда»)
+        const languages = addLanguage(form.languages, draftLanguage);
+        const toSave = languages ? { ...form, languages } : form;
         setBusy(true);
         setToast(null);
-        const error = await save({ howNeeds: whoNeedsToApi(form) }, labels.error);
+        const error = await save({ howNeeds: whoNeedsToApi(toSave) }, labels.error);
         setBusy(false);
         if (error) {
             setToast({ text: error, ok: false });
             return;
+        }
+        if (languages) {
+            setForm(toSave);
+            setDraftLanguage(EMPTY_LANGUAGE);
         }
         clearDraft("who-needs", id);
         setUnsaved(false);
@@ -226,7 +233,7 @@ function WhoNeedsEditor({ id, nextHref, labels, vacancy, save }: {
                             label={`${labels.age}: ${labels.to}`}
                             placeholder={labels.to}
                             value={form.ageMax}
-                            onChange={(value) => set({ ageMax: value })}
+                            onChange={(value) => set({ ageMax: Math.min(value, AGE_NO_LIMIT) })}
                             onCommit={() => set(commitAgeMax(form))}
                         />
                     )}

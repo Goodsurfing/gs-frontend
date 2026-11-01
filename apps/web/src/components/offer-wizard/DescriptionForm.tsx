@@ -1,6 +1,6 @@
 "use client";
 
-import { type FormEvent, useCallback, useState } from "react";
+import { type FormEvent, useCallback, useRef, useState } from "react";
 
 import { TextField } from "@/components/form/fields";
 import { useSession } from "@/components/session/SessionProvider";
@@ -107,17 +107,27 @@ function DescriptionEditor({ id, nextHref, categories, labels, vacancy }: {
     const errors = descriptionErrors(form, !!cover);
     const show = (field: keyof typeof errors) => submitted && errors[field];
 
-    const saveGallery = async (images: UploadedImage[]) => {
-        setToast(null);
-        const { error } = await browserApi(session.token)
-            .PATCH("/api/v1/vacancy/image-gallery/{id}", { params: { path: { id: Number(id) } }, body: { galleryImageIds: images.map((image) => image.id) } })
-            .catch(() => ({ error: true }));
-        if (error) {
-            setToast({ text: labels.galleryError, ok: false });
-            return;
-        }
-        setGallery(images);
-        setToast({ text: labels.gallerySaved, ok: true });
+    // Галерея меняется из нескольких мест сразу (загрузки, удаление): изменения применяются к последнему
+    // сохранённому списку по очереди, иначе параллельные PATCH затирали бы друг друга
+    const galleryRef = useRef(gallery);
+    const queue = useRef<Promise<void>>(Promise.resolve());
+    const saveGallery = (change: (current: UploadedImage[]) => UploadedImage[]) => {
+        const run = queue.current.then(async () => {
+            const images = change(galleryRef.current);
+            setToast(null);
+            const result = await browserApi(session.token)
+                .PATCH("/api/v1/vacancy/image-gallery/{id}", { params: { path: { id: Number(id) } }, body: { galleryImageIds: images.map((image) => image.id) } })
+                .catch(() => null);
+            if (!result?.response.ok) {
+                setToast({ text: labels.galleryError, ok: false });
+                return;
+            }
+            galleryRef.current = images;
+            setGallery(images);
+            setToast({ text: labels.gallerySaved, ok: true });
+        });
+        queue.current = run;
+        return run;
     };
 
     const submit = async (event: FormEvent) => {
@@ -133,10 +143,10 @@ function DescriptionEditor({ id, nextHref, categories, labels, vacancy }: {
             })
             .catch(() => null);
         setBusy(false);
-        // В OpenAPI у этой операции описан только ответ 200 — ошибку берём из ответа как есть
-        const failure: unknown = result ? (result as { error?: unknown }).error : true;
-        if (failure) {
-            setToast({ text: apiErrorText(failure, labels.error), ok: false });
+        // В OpenAPI у этой операции описан только ответ 200 — ошибку берём из ответа как есть; пустой ответ с ошибкой
+        // openapi-fetch отдаёт как { error: undefined }, поэтому смотрим на статус
+        if (!result?.response.ok) {
+            setToast({ text: apiErrorText(result ? (result as { error?: unknown }).error : null, labels.error), ok: false });
             return;
         }
         clearDraft("description", id);

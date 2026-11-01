@@ -320,16 +320,7 @@ export const emptyWhoNeedsForm = (): WhoNeedsForm => ({
 const LEVELS = new Set<string>(LANGUAGE_LEVELS.map(([value]) => value));
 const isLevel = (value: string): value is LanguageLevel => LEVELS.has(value);
 
-interface WhoNeedsApi {
-    gender?: Gender[] | null;
-    ageMin?: number | null;
-    ageMax?: number | null;
-    requiredLanguages?: { language: string; languageLevel: string }[] | null;
-    needAllLanguages?: boolean | null;
-    volunteerPlaceCount?: number | null;
-    receptionPlace?: ReceptionPlace | null;
-    additionalInfo?: string | null;
-}
+type WhoNeedsApi = NonNullable<VacancyRead["howNeeds"]>;
 
 export function whoNeedsFromApi(value: WhoNeedsApi | null | undefined): WhoNeedsForm {
     const empty = emptyWhoNeedsForm();
@@ -364,15 +355,15 @@ export function whoNeedsErrors(form: WhoNeedsForm): { gender: boolean; volunteer
     return { gender: form.gender.length === 0, volunteerPlaces: form.volunteerPlaces <= 0 };
 }
 
-/** «Возраст от»: число не меньше «до» тянет «до» за собой (Age старого фронта) */
+/** «Возраст от»: число не меньше «до» тянет «до» за собой (Age старого фронта), но не выше 100 */
 export function setAgeMin(form: Pick<WhoNeedsForm, "ageMin" | "ageMax">, value: number) {
-    return value >= form.ageMax ? { ageMin: value, ageMax: value } : { ageMin: value, ageMax: form.ageMax };
+    return value >= form.ageMax ? { ageMin: value, ageMax: Math.min(value, AGE_NO_LIMIT) } : { ageMin: value, ageMax: form.ageMax };
 }
 
-/** Уход из поля «от»: меньше 12 или больше 100 — 12 (как в старом), «до» не меньше «от» */
+/** Уход из поля «от»: меньше 12 или больше 100 — 12 (как в старом), «до» не меньше «от» и не больше 100 */
 export function commitAgeMin(form: Pick<WhoNeedsForm, "ageMin" | "ageMax">) {
     const ageMin = Number.isInteger(form.ageMin) && form.ageMin >= AGE_MIN && form.ageMin <= AGE_NO_LIMIT ? form.ageMin : AGE_MIN;
-    return { ageMin, ageMax: Math.max(ageMin, form.ageMax) };
+    return { ageMin, ageMax: Math.min(Math.max(ageMin, form.ageMax), AGE_NO_LIMIT) };
 }
 
 /**

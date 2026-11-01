@@ -143,7 +143,7 @@ describe("подпись срока", () => {
 
 describe("форма «Кто нужен»", () => {
     it("из API и обратно; пустой блок — значения старого фронта", () => {
-        const api = { gender: ["male" as const], ageMin: 18, ageMax: 30, requiredLanguages: [{ language: "English", languageLevel: "advanced" }], needAllLanguages: true, volunteerPlaceCount: 4, receptionPlace: "compatriot" as const, additionalInfo: "x" };
+        const api = { gender: ["male" as const], ageMin: 18, ageMax: 30, requiredLanguages: [{ language: "English", languageLevel: "advanced" as const }], needAllLanguages: true, volunteerPlaceCount: 4, receptionPlace: "compatriot" as const, additionalInfo: "x" };
         expect(whoNeedsToApi(whoNeedsFromApi(api))).toEqual({ ...api });
         expect(whoNeedsFromApi(null)).toEqual({ gender: [], ageMin: 12, ageMax: 18, languages: [], needAllLanguages: false, volunteerPlaces: 0, receptionPlace: "any", additionalInfo: "" });
     });
@@ -156,6 +156,9 @@ describe("форма «Кто нужен»", () => {
         expect(setAgeMin({ ageMin: 12, ageMax: 18 }, 15)).toEqual({ ageMin: 15, ageMax: 18 });
         expect(commitAgeMin({ ageMin: 5, ageMax: 18 })).toEqual({ ageMin: 12, ageMax: 18 });
         expect(commitAgeMin({ ageMin: 150, ageMax: 18 })).toEqual({ ageMin: 12, ageMax: 18 });
+        // «от» 200 подтянуло «до» — после ухода из поля «до» не выше 100
+        expect(setAgeMin({ ageMin: 12, ageMax: 18 }, 200)).toEqual({ ageMin: 200, ageMax: 100 });
+        expect(commitAgeMin({ ageMin: 200, ageMax: 200 })).toEqual({ ageMin: 12, ageMax: 100 });
         expect(commitAgeMax({ ageMin: 20, ageMax: 15 })).toEqual({ ageMin: 20, ageMax: 20 });
         expect(commitAgeMax({ ageMin: 20, ageMax: 150 })).toEqual({ ageMin: 20, ageMax: 100 });
         expect(toggleNoAgeLimit({ ageMin: 20, ageMax: 30 })).toEqual({ ageMin: 20, ageMax: 100 });

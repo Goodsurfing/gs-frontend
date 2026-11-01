@@ -26,7 +26,8 @@ interface Pending { key: string; preview: string; failed: boolean }
  */
 export function GalleryUpload({ images, onChange, onError, token, labels }: {
     images: UploadedImage[];
-    onChange: (images: UploadedImage[]) => Promise<void>;
+    /** Изменение списка относительно последнего сохранённого (загрузки и удаление идут параллельно) */
+    onChange: (change: (current: UploadedImage[]) => UploadedImage[]) => Promise<void>;
     onError: (text?: string) => void;
     token?: string;
     labels: GalleryLabels;
@@ -38,7 +39,8 @@ export function GalleryUpload({ images, onChange, onError, token, labels }: {
     const take = async (list: FileList | null) => {
         const files = Array.from(list ?? []);
         if (!files.length) return;
-        const free = MAX_GALLERY - images.length;
+        // Место считается с учётом ещё не догрузившихся файлов
+        const free = MAX_GALLERY - images.length - pending.filter((item) => !item.failed).length;
         if (free <= 0) {
             onError(labels.tooMany);
             return;
@@ -58,7 +60,7 @@ export function GalleryUpload({ images, onChange, onError, token, labels }: {
             }
         }));
         const uploaded = results.filter((item): item is UploadedImage => item !== null);
-        if (uploaded.length) await onChange([...images, ...uploaded]);
+        if (uploaded.length) await onChange((current) => [...current, ...uploaded].slice(0, MAX_GALLERY));
         if (uploaded.length < batch.length) onError();
     };
 
@@ -98,7 +100,7 @@ export function GalleryUpload({ images, onChange, onError, token, labels }: {
                         <button
                             type="button"
                             aria-label={labels.remove}
-                            onClick={() => void onChange(images.filter((item) => item.id !== image.id))}
+                            onClick={() => void onChange((current) => current.filter((item) => item.id !== image.id))}
                             className="absolute top-2.5 right-[5px] h-5 w-5 cursor-pointer rounded-full border-0 bg-primary text-white"
                         >
                             ×
