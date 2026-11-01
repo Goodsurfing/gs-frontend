@@ -6,6 +6,7 @@ import { MemberBanner } from "@/components/content/MemberBanner";
 import { useSession } from "@/components/session/SessionProvider";
 import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
+import { hasHostMembership } from "@/lib/occupancy";
 
 const SUPPORT_EMAIL = "support@goodsurfing.org";
 
@@ -40,8 +41,7 @@ export function HostUpsellBanner({ locale, vertical = false, labels }: {
             api.GET("/api/v1/personal/organization").catch(() => null),
         ]).then(([occupancy, organization]) => {
             if (cancelled || !occupancy?.data) return;
-            const data = occupancy.data as { isHostMembership?: boolean | null; isMembership?: boolean | null };
-            setState({ member: data.isHostMembership ?? data.isMembership ?? false, name: organization?.data?.name ?? "" });
+            setState({ member: hasHostMembership(occupancy.data), name: organization?.data?.name ?? "" });
         });
         return () => {
             cancelled = true;
