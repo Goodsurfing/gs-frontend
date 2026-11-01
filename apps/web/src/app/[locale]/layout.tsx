@@ -20,6 +20,13 @@ export function generateStaticParams() {
     return LOCALES.map((locale) => ({ locale }));
 }
 
+/**
+ * Битая картинка → заглушка «Изображение недоступно», как глобальный обработчик
+ * старого SPA (src/index.tsx: файлы, потерянные при переезде в S3). Встроенный
+ * скрипт первым в body — ловит ошибки и тех картинок, что грузятся до гидратации.
+ */
+const BROKEN_IMAGE_FALLBACK = `document.addEventListener("error",function(e){var t=e.target;if(t&&t.tagName==="IMG"&&!t.dataset.fallback){t.dataset.fallback="true";t.src="/web/images/placeholder-missing.svg";}},true);`;
+
 export default async function LocaleLayout({
     children,
     params,
@@ -33,6 +40,7 @@ export default async function LocaleLayout({
     return (
         <html lang={locale}>
             <body>
+                <script dangerouslySetInnerHTML={{ __html: BROKEN_IMAGE_FALLBACK }} />
                 {children}
                 <YandexMetrika />
             </body>

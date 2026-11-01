@@ -4,14 +4,19 @@ const ITEM = "mx-[3px] box-border inline-flex h-10 min-w-10 items-center justify
 
 /**
  * Пагинация ссылками (?page=N): работает без JS, страницы индексируются.
+ * В кабинете (данные в браузере) — кнопками: onPage вместо href.
  * Внешний вид — как MUI Pagination size="large" старого фронта.
  */
-export function Pagination({ page, count, href, labels }: {
+export function Pagination({ page, count, href, onPage, labels }: {
     page: number;
     count: number;
-    href: (page: number) => string;
+    href?: (page: number) => string;
+    onPage?: (page: number) => void;
     labels: { prev: string; next: string; page: string };
 }) {
+    const Link = ({ target, className, children, ...rest }: { target: number; className: string; children: React.ReactNode; "aria-label"?: string; "aria-current"?: "page" }) => (onPage
+        ? <button type="button" onClick={() => onPage(target)} className={`${className} cursor-pointer border-0 bg-transparent`} {...rest}>{children}</button>
+        : <a href={href?.(target)} className={className} {...rest}>{children}</a>);
     const arrow = (target: number, disabled: boolean, label: string, path: string) => (disabled
         ? (
             <span aria-hidden className={`${ITEM} opacity-38`}>
@@ -19,9 +24,9 @@ export function Pagination({ page, count, href, labels }: {
             </span>
         )
         : (
-            <a href={href(target)} aria-label={label} className={`${ITEM} transition-colors hover:bg-black/4`}>
+            <Link target={target} aria-label={label} className={`${ITEM} transition-colors hover:bg-black/4`}>
                 <svg aria-hidden viewBox="0 0 24 24" className="-mx-2 h-[22px] w-[22px] fill-current"><path d={path} /></svg>
-            </a>
+            </Link>
         ));
 
     return (
@@ -32,13 +37,13 @@ export function Pagination({ page, count, href, labels }: {
                     <li key={item}>
                         {typeof item === "number"
                             ? (
-                                <a
-                                    href={href(item)}
+                                <Link
+                                    target={item}
                                     aria-current={item === page ? "page" : undefined}
                                     className={`${ITEM} transition-colors hover:bg-black/4 aria-[current=page]:bg-black/8`}
                                 >
                                     {item}
-                                </a>
+                                </Link>
                             )
                             : <span className={`${ITEM} h-auto`}>…</span>}
                     </li>
