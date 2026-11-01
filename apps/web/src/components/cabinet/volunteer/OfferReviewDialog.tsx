@@ -1,7 +1,7 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useRef, useState } from "react";
 
 import { ImagesUploader, type ImagesUploaderLabels } from "@/components/cabinet/ImagesUploader";
 import { TextAreaField } from "@/components/form/fields";
@@ -43,8 +43,12 @@ export function OfferReviewDialog({ open, offer, labels, photos, onSend, onClose
     const [sent, setSent] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [images, setImages] = useState<UploadedMedia[]>([]);
+    // Номер «сеанса» окна: ответ отправки, пришедший после закрытия, не должен попасть в следующее окно
+    const session = useRef(0);
 
     const close = () => {
+        session.current += 1;
+        setBusy(false);
         setRating(null);
         setText("");
         setImages([]);
@@ -57,7 +61,9 @@ export function OfferReviewDialog({ open, offer, labels, photos, onSend, onClose
         if (!rating || !text || busy) return;
         setBusy(true);
         setError(null);
+        const current = session.current;
         const failure = await onSend({ rating, text, imageIds: images.map((image) => image.id) });
+        if (current !== session.current) return;
         setBusy(false);
         setRating(null);
         setText("");
