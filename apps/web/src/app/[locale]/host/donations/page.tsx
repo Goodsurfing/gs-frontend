@@ -43,6 +43,7 @@ export default async function HostDonationsPage({ params }: Props) {
                         confirm: f("Вы уверены что хотите изменить сбор?"),
                         ok: f("Ок"),
                         cancel: f("Отмена"),
+                        error: th("hostDescription.Произошла ошибка"),
                     }}
                 />
             </main>
