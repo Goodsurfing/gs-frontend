@@ -15,7 +15,7 @@ export function CategoryChips({ title, categories, value, href }: {
 
     return (
         <div>
-            <span className="text-caption">{title}</span>
+            <span className="mb-2.5 block text-caption">{title}</span>
             <div className="flex max-w-[39.25rem]">
                 <div className="flex max-w-[624px] flex-wrap gap-2.5 rounded-[4px]">
                     {categories.map((category, index) => {
