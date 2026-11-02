@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { reachGoalOnce } from "@/components/analytics/YandexMetrika";
 import { useSession } from "@/components/session/SessionProvider";
 import { Loading } from "@/components/ui/Loading";
 import { browserApi } from "@/lib/browserApi";
@@ -77,6 +78,7 @@ export function PaymentSuccessView({ paymentId, signInHref, failHref, membership
                 window.location.replace(failHref);
                 return;
             }
+            if (paymentId && paid?.status === "SUCCESS") reachGoalOnce("membership_paid", paymentId);
             if (!paymentId || paid?.status === "SUCCESS") return;
             if (Date.now() - started >= POLL_TIMEOUT_MS) {
                 setTimedOut(true);

@@ -2,12 +2,21 @@
 
 import { useEffect, useState } from "react";
 
+import { reachGoalOnce } from "@/components/analytics/YandexMetrika";
 import { API_URL } from "@/lib/browserApi";
 
 import { AuthToast } from "./AuthToast";
 import { REGISTER_EMAIL_KEY } from "./SignUpForm";
 
 /** Почта, на которую ушло письмо после регистрации (в старом фронте — redux register) */
+/** Цель «почта подтверждена» — один раз на адрес за сессию (ConfirmEmailSuccessPage старого фронта) */
+export function EmailConfirmedGoal() {
+    useEffect(() => {
+        reachGoalOnce("email_confirmed", window.sessionStorage.getItem(REGISTER_EMAIL_KEY) || "anon");
+    }, []);
+    return null;
+}
+
 export function RegisteredEmail() {
     const [email, setEmail] = useState("");
     useEffect(() => {

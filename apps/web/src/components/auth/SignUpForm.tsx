@@ -3,6 +3,7 @@
 import { type FormEvent, useCallback, useState } from "react";
 
 import type { Locale } from "@/i18n/config";
+import { reachGoalThen } from "@/components/analytics/YandexMetrika";
 import { API_URL } from "@/lib/browserApi";
 
 import { AuthInput } from "./AuthInput";
@@ -119,7 +120,9 @@ export function SignUpForm({ locale, signInHref, resetHref, privacyHref, confirm
             });
             if (response.ok) {
                 window.sessionStorage.setItem(REGISTER_EMAIL_KEY, email);
-                window.location.href = confirmHref;
+                reachGoalThen("signup", undefined, () => {
+                    window.location.href = confirmHref;
+                });
                 return;
             }
             const isDuplicate = response.status === 422;
