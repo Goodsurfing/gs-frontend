@@ -255,6 +255,12 @@ export const MainHeaderNav = () => {
                     >
                         {t("main.welcome.header.community.journal")}
                     </NavMenuLink>
+                    <NavMenuLink
+                        className={styles.dropdownLink}
+                        to="https://expedition.goodsurfing.org/"
+                    >
+                        {t("main.welcome.header.expeditions", "Экспедиции")}
+                    </NavMenuLink>
                 </Popup>
             </div>
             <div className={styles.btnDonation}>
@@ -355,13 +361,8 @@ export const MainHeaderNav = () => {
                 </NavMenuLink>
             </div>
             <div>
-                <NavMenuLink className={styles.btnNav} to="https://expedition.goodsurfing.org/">
-                    {t("main.welcome.header.expeditions", "Экспедиции")}
-                </NavMenuLink>
-            </div>
-            <div>
                 <NavMenuLink className={styles.btnNav} to="https://international.goodsurfing.org/">
-                    {t("main.welcome.header.international-volunteering", "Международное волонтёрство")}
+                    {t("main.welcome.header.international-volunteering", "Международное")}
                 </NavMenuLink>
             </div>
         </div>
