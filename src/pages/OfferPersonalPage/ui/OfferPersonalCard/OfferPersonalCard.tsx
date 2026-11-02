@@ -1,5 +1,6 @@
 import { memo, useCallback, useState } from "react";
 
+import { MembershipUpsell } from "@/features/MembershipUpsell";
 import { Offer } from "@/entities/Offer";
 import { PersonalCard } from "@/entities/PersonalCard";
 import { ModalGallery } from "@/shared/ui/ModalGallery/ModalGallery";
@@ -61,6 +62,7 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
                 isVolunteer={isVolunteer}
                 textParticipate={offerData.textParticipate}
                 requiresMembershipToParticipate={offerData.requiresMembershipToParticipate}
+                membershipUpsell={<MembershipUpsell variant="light" />}
             />
             {(offerData.galleryImages.length > 0) && (
                 <ModalGallery

@@ -6,13 +6,13 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { Submenu } from "@/widgets/Submenu";
 
+import { MembershipUpsell } from "@/features/MembershipUpsell";
+
 import { Offer } from "@/entities/Offer";
 
 import {
-    getMembershipPageUrl,
     getMessengerPageCreateUrl, getOffersWherePageUrl, getProfileRolePageUrl, getSignInPageUrl,
 } from "@/shared/config/routes/AppUrls";
-import LocaleLink from "@/shared/ui/LocaleLink/LocaleLink";
 import { useTranslateSubmenu } from "@/shared/hooks/useTranslateSubmenu";
 import Button, { ButtonColor, ButtonSize, ButtonVariant } from "@/shared/ui/Button/Button";
 
@@ -94,15 +94,7 @@ export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
                     <Button {...buttonProps}>
                         {buttonText}
                     </Button>
-                    {requiresMembershipToParticipate && (
-                        <p className={styles.membershipRequiredHint}>
-                            {t("personalOffer.У вас закончились бесплатные отклики.")}
-                            {" "}
-                            <LocaleLink to={getMembershipPageUrl(locale)}>
-                                {t("personalOffer.Оформите членство, чтобы отправить заявку")}
-                            </LocaleLink>
-                        </p>
-                    )}
+                    {requiresMembershipToParticipate && <MembershipUpsell variant="dark" />}
                     {canEdit && (
                         <Button
                             disabled={!canEdit}
