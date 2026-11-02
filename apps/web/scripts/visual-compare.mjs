@@ -4,7 +4,8 @@
 //     --new http://localhost:3100/ru --part ribbon='aside[aria-label]' --part footer=footer
 //
 // Для каждой ширины (390/768/1280) снимает элементы на обеих страницах и
-// печатает долю отличающихся пикселей; картинки различий — в /tmp/visual-compare.
+// печатает долю отличающихся пикселей; картинки различий — в /tmp/visual-compare
+// (или VISUAL_OUT).
 // Фиксированные элементы (шапка) перед снимком скрываются. Размеры элементов
 // на РАЗНЫХ страницах могут отличаться на 1 px из-за дробной координаты начала —
 // в этом случае сравнивать getBoundingClientRect, итоговая проверка — e2e/visual.
@@ -40,7 +41,8 @@ if (!oldUrl || !newUrl || !Object.keys(parts).length) {
     process.exit(2);
 }
 
-const out = "/tmp/visual-compare";
+// Свой каталог — чтобы параллельные сверки не перетирали картинки друг друга
+const out = process.env.VISUAL_OUT || "/tmp/visual-compare";
 fs.mkdirSync(out, { recursive: true });
 let auth = null;
 if (login) {
