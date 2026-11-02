@@ -77,6 +77,8 @@ test.describe('Новый фронт: кабинет волонтёра', () => 
         await expect(send).toBeDisabled();
         await expect(dialog.getByText('Поставьте оценку, чтобы оставить отзыв')).toBeVisible();
         await dialog.getByRole('radio', { name: '4' }).click();
+        // Текст необязателен: одной оценки достаточно
+        await expect(send).toBeEnabled();
         await dialog.getByLabel('Напишите ваш отзыв').fill('Отличная поездка');
         await send.click();
         await expect(dialog.getByText('Ваш отзыв был отправлен')).toBeVisible();

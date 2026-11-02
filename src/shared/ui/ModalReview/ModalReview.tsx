@@ -76,7 +76,8 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
     }
 
     const handleSendReview = () => {
-        if (!stars || !text) return;
+        // Текст необязателен: достаточно оценки (короткий отзыв)
+        if (!stars) return;
         sendReview();
     };
 
@@ -139,7 +140,7 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
                     variant="FILL"
                     size="MEDIUM"
                     color="BLUE"
-                    disabled={!stars || !text}
+                    disabled={!stars}
                 >
                     {t("host-dashboard.Оставить отзыв")}
                 </Button>
