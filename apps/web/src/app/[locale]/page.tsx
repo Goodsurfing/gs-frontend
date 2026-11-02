@@ -66,7 +66,7 @@ export default async function HomePage({ params }: Props) {
         getAboutProject(locale),
     ]);
     const labels = categoryLabels(t);
-    const today = (about as { today?: { volunteerCount?: number; vacancyCount?: number } } | null)?.today;
+    const today = (about as { today?: { volunteerCount?: number; vacancyCount?: number; tripCount?: number } } | null)?.today;
     // «С нами уже более 23 000»: до тысяч от 10 000, до сотен ниже (1 706 → 1 700)
     const round = (value: number) => formatStatNumber(roundStat(value), locale);
     const structuredData = [
@@ -131,7 +131,8 @@ export default async function HomePage({ params }: Props) {
                             </div>
                             <div className="mt-auto max-[1000px]:flex max-[1000px]:flex-col max-[1000px]:items-center">
                                 <h3 className="mb-5 max-w-[580px] text-[22px] leading-[150%] font-normal text-ink [@media(max-height:1000px)]:text-[18px] max-[1000px]:text-center">
-                                    {t("main.welcome.activity-title")}
+                                    {/* «Больше N путешествий» — принятые заявки из базы (GS-234) */}
+                                    {t("main.welcome.activity-title", { trips: round(today?.tripCount ?? 25000) })}
                                 </h3>
                             </div>
                         </div>
