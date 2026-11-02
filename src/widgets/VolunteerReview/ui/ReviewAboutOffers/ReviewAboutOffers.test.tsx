@@ -50,6 +50,8 @@ describe("ReviewAboutOffers", () => {
 
         const stars = screen.getAllByRole("radio");
         fireEvent.click(stars[4]);
+        // Текст необязателен: одной оценки достаточно
+        expect(screen.getByRole("button", { name: "host-dashboard.Оставить отзыв" })).not.toBeDisabled();
 
         const textarea = screen.getByRole("textbox");
         fireEvent.change(textarea, { target: { value: "Отличная вакансия!" } });
