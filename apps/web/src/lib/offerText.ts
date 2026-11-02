@@ -105,6 +105,9 @@ const SKILLS: Record<string, string> = {
 };
 
 /** Навык из справочника API; t — общий словарь. Неизвестный — пусто, как в старом фронте. */
+/** Названия умений на языке страницы — для клиентских компонентов, у которых нет переводчика */
+export const skillNames = (t: Translate): Record<string, string> => Object.fromEntries(Object.entries(SKILLS).map(([name, key]) => [name, t(`skills.${key}`)]));
+
 export function skillName(name: string, t: Translate): string {
     const key = SKILLS[name];
     return key ? t(`skills.${key}`) : "";

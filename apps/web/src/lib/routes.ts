@@ -111,6 +111,8 @@ export const routes = {
     /** Публичная страница волонтёра; {id} подставляется в браузере */
     volunteerPublic: (l: Locale, id: string) => path(l, `/volunteers/${id}`),
     volunteerPublicTemplate: (l: Locale) => path(l, "/volunteers/{id}"),
+    /** Страница организации; {id} подставляется в браузере */
+    organizationTemplate: (l: Locale) => path(l, "/organizations/{id}"),
 } as const;
 
 export const EXPEDITIONS_URL = "https://expedition.goodsurfing.org/";

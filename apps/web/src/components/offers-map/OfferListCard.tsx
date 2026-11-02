@@ -22,7 +22,7 @@ export interface OfferListCardLabels {
  * слева, закрытая — бледнее. Сердечко — не внутри карточки-ссылки (кнопка
  * в ссылке недоступна читалкам), а поверх неё, в углу картинки.
  */
-export function OfferListCard({ offer, href, selected = false, onSelect, wide, labels, favorite }: {
+export function OfferListCard({ offer, href, selected = false, onSelect, wide, labels, favorite, showImage = true }: {
     offer: CatalogOffer;
     href: string;
     selected?: boolean;
@@ -32,6 +32,8 @@ export function OfferListCard({ offer, href, selected = false, onSelect, wide, l
     labels: OfferListCardLabels;
     /** Сердечко «в избранное» на картинке — только вошедшим (gs-backend #407) */
     favorite?: { active: boolean; busy?: boolean; onToggle: () => void; labels: { add: string; remove: string } };
+    /** Без картинки (isImageShow={false} старого фронта — карточка заявки в сообщениях) */
+    showImage?: boolean;
 }) {
     const [imageFailed, setImageFailed] = useState(false);
     const imageRef = useRef<HTMLImageElement>(null);
@@ -59,12 +61,14 @@ export function OfferListCard({ offer, href, selected = false, onSelect, wide, l
                 }}
                 className={`flex h-full cursor-pointer items-start gap-3.5 border-l-[3px] ${onSelect ? "p-2.5" : "px-5 py-3.5"} shadow-[0_5px_20px_0_#2121210d] transition-colors duration-200 down-xs:flex-wrap down-xs:p-4 ${selected ? "border-l-primary bg-accent-bg" : "border-l-transparent bg-white"}`}
             >
-                <div className="relative h-[110px] w-40 shrink-0 bg-accent-bg down-xs:h-[180px] down-xs:w-full">
-                    {offer.image && !imageFailed && (
-                        // eslint-disable-next-line @next/next/no-img-element -- превью из хранилища
-                        <img ref={imageRef} src={offer.image} alt="" loading="lazy" onError={() => setImageFailed(true)} className="block h-full w-full object-cover" />
-                    )}
-                </div>
+                {showImage && (
+                    <div className="relative h-[110px] w-40 shrink-0 bg-accent-bg down-xs:h-[180px] down-xs:w-full">
+                        {offer.image && !imageFailed && (
+                            // eslint-disable-next-line @next/next/no-img-element -- превью из хранилища
+                            <img ref={imageRef} src={offer.image} alt="" loading="lazy" onError={() => setImageFailed(true)} className="block h-full w-full object-cover" />
+                        )}
+                    </div>
+                )}
                 <div className="min-w-0 flex-1">
                     <p className="line-clamp-2 text-[1rem] leading-5 font-medium text-ink-secondary">{textSlice(offer.title, 50, labels.noTitle)}</p>
                     <div className="mt-1.5 text-[14px] leading-[18px] font-medium text-caption down-xs:flex down-xs:flex-col">
