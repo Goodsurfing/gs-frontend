@@ -42,7 +42,7 @@ if (!oldUrl || !newUrl || !Object.keys(parts).length) {
 }
 
 // Свой каталог — чтобы параллельные сверки не перетирали картинки друг друга
-const out = process.env.VISUAL_OUT || "/tmp/visual-compare";
+const out = process.env.VISUAL_OUT || process.env.VISUAL_COMPARE_OUT || "/tmp/visual-compare";
 fs.mkdirSync(out, { recursive: true });
 let auth = null;
 if (login) {

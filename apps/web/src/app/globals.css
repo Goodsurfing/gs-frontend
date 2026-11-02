@@ -32,6 +32,7 @@
     --color-status-confirmed: #5eecd2;
     --color-status-rejected: #fcc3c3;
     --color-error: #eb5757;
+    --color-error-field: #d32f2f;      /* palette.error.main MUI: подписи и рамки ошибок полей форм */
     --color-disabled: #ebebe4;
     --color-arrow: #007bff;            /* shared/ui/Arrow: треугольник у выпадающих списков */
     --color-cta-deep: #00b589;         /* наведение на зелёные кнопки шапки и баннер под ней */

@@ -84,7 +84,10 @@
         "Изменить": "Change",
         "Удалить": "Delete",
         "Статья удалена": "Article deleted",
-        "Ошибка удаления статьи": "Error deleting article"
+        "Ошибка удаления статьи": "Error deleting article",
+        "Не удалось загрузить статью. Попробуйте обновить страницу": "Failed to load the article. Try reloading the page",
+        "Не удалось загрузить категории. Попробуйте обновить страницу": "Failed to load categories. Try reloading the page",
+        "Недопустимая ссылка: разрешены http, https, mailto и подобные": "Invalid link: http, https, mailto and similar are allowed"
     },
     "volunteer-articles": {
         "Мои статьи": "My articles",
@@ -97,7 +100,9 @@
         "Статья опубликована": "Article Published",
         "Ошибка публикации статьи": "Article Publish Error",
         "На данный момент у вас нет добавленных статей. Создайте свою первую статью": "You currently have no articles added. Create your first article.",
-        "Создать статью": "Create an article"
+        "Создать статью": "Create an article",
+        "Действия со статьёй": "Article actions",
+        "Не удалось загрузить статьи. Попробуйте обновить страницу": "Failed to load articles. Try reloading the page"
     },
     "Добро пожаловать!": "Welcome!",
     "Рады приветствовать вас на нашем сайте Для вашего удобства предлагаем максимально подробно заполнить свой профиль": "Welcome to our site. For your convenience, we recommend filling in your profile in as much detail as possible."
