@@ -54,14 +54,17 @@ test.describe('Новый фронт: кабинет волонтёра — ст
         await expect(page.getByRole('menuitem', { name: 'Редактировать' })).toHaveAttribute('href', '/volunteer/articles/901');
         await expect(page.getByRole('menuitem', { name: 'Опубликовать' })).toHaveCount(0);
         await page.keyboard.press('Escape');
+        // Следующее меню — только после того, как закрылось прежнее: иначе в DOM два меню сразу
+        await expect(page.getByRole('menu')).toHaveCount(0);
 
         await menus.nth(1).click();
-        await page.getByRole('menuitem', { name: 'Опубликовать' }).click();
+        await page.getByRole('menu').getByRole('menuitem', { name: 'Опубликовать' }).click();
         await expect(page.getByText('Статья опубликована')).toBeVisible();
         expect(requests).toContainEqual(expect.objectContaining({ method: 'PATCH', url: expect.stringContaining('/blog/902/toggle-active'), body: { isActive: true } }));
 
+        await expect(page.getByRole('menu')).toHaveCount(0);
         await menus.nth(1).click();
-        await page.getByRole('menuitem', { name: 'Удалить' }).click();
+        await page.getByRole('menu').getByRole('menuitem', { name: 'Удалить' }).click();
         await expect(page.getByText('Статья удалена')).toBeVisible();
         expect(requests).toContainEqual(expect.objectContaining({ method: 'DELETE', url: expect.stringMatching(/\/blog\/902$/) }));
     });
