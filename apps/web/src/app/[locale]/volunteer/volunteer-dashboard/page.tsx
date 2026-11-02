@@ -61,6 +61,7 @@ export default async function VolunteerDashboardPage({ params }: Props) {
                         notifications: d("Уведомления"),
                         welcome: tv("Добро пожаловать!"),
                         welcomeText: tv("Рады приветствовать вас на нашем сайте Для вашего удобства предлагаем максимально подробно заполнить свой профиль"),
+                        favorite: { add: t("Добавить в избранное"), remove: t("Убрать из избранного") },
                         card: {
                             more: t("Подробнее"),
                             notOnMap: t("нет на карте"),

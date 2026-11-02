@@ -84,6 +84,8 @@ export const routes = {
     volunteerArticles: (l: Locale) => path(l, "/volunteer/articles"),
     /** Правка своей статьи блога */
     volunteerArticleEdit: (l: Locale, id: string | number) => path(l, `/volunteer/articles/${id}`),
+    volunteerSubscribers: (l: Locale) => path(l, "/volunteer/subscribers"),
+    favoriteOffers: (l: Locale) => path(l, "/favorite-offers"),
     /** Переписка; {id} — номер чата, подставляется в браузере */
     messengerChatTemplate: (l: Locale) => path(l, "/messenger/{id}"),
     offerTemplate: (l: Locale) => path(l, "/offers/{id}"),
