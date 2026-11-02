@@ -28,7 +28,7 @@ test.describe('Новый фронт: сообщения', () => {
 
         await chats.first().click();
         await expect(page).toHaveURL(/\/messenger\/\d+$/);
-        const input = page.getByLabel('Написать сообщение');
+        const input = page.getByRole('textbox', { name: 'Написать сообщение' });
         await expect(input).toBeVisible();
 
         // Отправка — без записи на стейдже: ответ подменяется
@@ -46,6 +46,8 @@ test.describe('Новый фронт: сообщения', () => {
         await page.route('**/api/v1/personal/chats**', (route) => route.continue());
         await expect(page.getByRole('button', { name: 'Отправить' })).toBeDisabled();
         await input.fill('Проверка отправки');
+        // Кнопка оживает после перерисовки с текстом — тогда Enter отправит
+        await expect(page.getByRole('button', { name: 'Отправить' })).toBeEnabled();
         await input.press('Enter');
         await expect.poll(() => sent).toMatchObject({ chat: `/api/v1/chats/${chatId}`, text: 'Проверка отправки' });
         await expect(page.getByText('Проверка отправки')).toBeVisible();
@@ -60,7 +62,7 @@ test.describe('Новый фронт: сообщения', () => {
         const chats = page.locator('a[href^="/messenger/"]');
         await expect(chats.first()).toBeVisible({ timeout: 15_000 });
         await chats.first().click();
-        await expect(page.getByLabel('Написать сообщение')).toBeVisible();
+        await expect(page.getByRole('textbox', { name: 'Написать сообщение' })).toBeVisible();
         await expect(chats.first()).toBeHidden();
         await page.getByRole('button', { name: 'Назад' }).click();
         await expect(page).toHaveURL(/\/messenger$/);
@@ -87,7 +89,7 @@ test.describe('Новый фронт: сообщения', () => {
             await expect(page.getByText('Прибытие')).toBeVisible({ timeout: 15_000 });
             await expect(page.getByText('Отъезд')).toBeVisible();
             // Поле сообщения на отклике закрыто — сначала заявка
-            await expect(page.getByLabel('Написать сообщение')).toBeVisible();
+            await expect(page.getByRole('textbox', { name: 'Написать сообщение' })).toBeVisible();
             await expect(page.getByRole('button', { name: 'Отправить' })).toBeDisabled();
 
             const submit = page.getByRole('button', { name: 'Заявка' });
