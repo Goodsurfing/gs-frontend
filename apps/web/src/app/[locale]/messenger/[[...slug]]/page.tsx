@@ -79,7 +79,7 @@ export default async function MessengerPage({ params }: Props) {
                             placeholder: m("Написать сообщение"),
                             attach: m("Прикрепленный файл"),
                             emoji: m("Смайлы"),
-                            send: m("Написать сообщение"),
+                            send: t("Отправить"),
                             removeAttachment: t("Удалить"),
                             tooLarge: m("Файл слишком большой. Максимальный размер: 5MB"),
                             uploadError: m("Произошла ошибка"),
