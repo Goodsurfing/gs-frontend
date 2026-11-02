@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { GoalOnce } from "@/components/analytics/YandexMetrika";
 import { PaymentResult, resultButton } from "@/components/donation/PaymentResult";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { isLocale } from "@/i18n/config";
@@ -27,6 +28,8 @@ export default async function DonationSuccessPage({ params }: Props) {
             <PaymentResult success title={t("Спасибо за пожертвование!")} text={t("Ваш платёж успешно обработан Благодарим вас за поддержку проекта")}>
                 <a href={routes.fundraise(locale, id)} className={resultButton}>{t("Вернуться к сбору")}</a>
             </PaymentResult>
+            {/* Сюда возвращает ЮKassa после оплаты; повторное открытие в той же сессии не считаем */}
+            <GoalOnce goal="donation_paid" goalKey={id} />
         </PublicShell>
     );
 }

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { AuthMessage, outlinedLink } from "@/components/auth/AuthMessage";
 import { AuthShell } from "@/components/auth/AuthShell";
-import { RegisteredEmail } from "@/components/auth/ConfirmEmailResend";
+import { EmailConfirmedGoal, RegisteredEmail } from "@/components/auth/ConfirmEmailResend";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { authMetadata } from "@/lib/authPages";
@@ -26,6 +26,7 @@ export default async function ConfirmEmailSuccessPage({ params }: Props) {
             <AuthMessage title={t("login.Регистрация пользователя")} action={<a href={routes.signIn(locale)} className={outlinedLink}>{t("login.Войти в свой аккаунт")}</a>}>
                 {t("login.Спасибо! Ваш адрес электронной почты")}<RegisteredEmail /> {t("login.был подтверждён.")}
             </AuthMessage>
+            <EmailConfirmedGoal />
         </AuthShell>
     );
 }

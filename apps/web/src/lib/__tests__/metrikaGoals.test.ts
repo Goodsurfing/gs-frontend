@@ -1,0 +1,60 @@
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+type Ym = (id: number, method: string, goal: string, params?: unknown, callback?: () => void) => void;
+
+const load = async (counter: string, ym?: Ym) => {
+    vi.resetModules();
+    vi.stubEnv("NEXT_PUBLIC_YANDEX_METRIKA_ID", counter);
+    const store = new Map<string, string>();
+    vi.stubGlobal("window", {
+        ym,
+        setTimeout: (fn: () => void, ms: number) => setTimeout(fn, ms),
+        sessionStorage: { getItem: (k: string) => store.get(k) ?? null, setItem: (k: string, v: string) => store.set(k, v) },
+    });
+    return import("@/components/analytics/YandexMetrika");
+};
+
+afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
+    vi.useRealTimers();
+});
+
+describe("цели Метрики", () => {
+    it("без счётчика переход сразу, Метрика не вызывается", async () => {
+        const ym = vi.fn();
+        const { reachGoalThen } = await load("", ym);
+        const next = vi.fn();
+        reachGoalThen("checkout_start", { tariff: "x" }, next);
+        expect(next).toHaveBeenCalledTimes(1);
+        expect(ym).not.toHaveBeenCalled();
+    });
+
+    it("переход после ответа счётчика — один раз", async () => {
+        const ym = vi.fn<Ym>((_id, _m, _g, _p, callback) => callback?.());
+        const { reachGoalThen } = await load("47422282", ym);
+        const next = vi.fn();
+        reachGoalThen("signup", undefined, next);
+        expect(ym).toHaveBeenCalledWith(47422282, "reachGoal", "signup", undefined, expect.any(Function));
+        expect(next).toHaveBeenCalledTimes(1);
+    });
+
+    it("счётчик молчит — переход через секунду", async () => {
+        vi.useFakeTimers();
+        const { reachGoalThen } = await load("47422282", vi.fn());
+        const next = vi.fn();
+        reachGoalThen("donation_start", { amount: 500 }, next);
+        expect(next).not.toHaveBeenCalled();
+        vi.advanceTimersByTime(1000);
+        expect(next).toHaveBeenCalledTimes(1);
+    });
+
+    it("reachGoalOnce — один раз на ключ", async () => {
+        const ym = vi.fn();
+        const { reachGoalOnce } = await load("47422282", ym);
+        reachGoalOnce("membership_paid", "p1");
+        reachGoalOnce("membership_paid", "p1");
+        reachGoalOnce("membership_paid", "p2");
+        expect(ym).toHaveBeenCalledTimes(2);
+    });
+});

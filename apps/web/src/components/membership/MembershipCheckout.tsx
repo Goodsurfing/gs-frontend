@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { reachGoalThen } from "@/components/analytics/YandexMetrika";
 import { useSession } from "@/components/session/SessionProvider";
 import { Loading } from "@/components/ui/Loading";
 import { browserApi } from "@/lib/browserApi";
@@ -53,7 +54,8 @@ export function MembershipCheckout({ tariffCode, signInHref, membershipHref, lab
                     setPaymentUrl(data.paymentUrl);
                     // replace: иначе «Назад» с ЮKassa снова открывает эту страницу,
                     // она создаёт новый платёж и уводит обратно на ЮKassa
-                    window.location.replace(data.paymentUrl);
+                    const url = data.paymentUrl;
+                    reachGoalThen("checkout_start", { tariff: tariffCode }, () => window.location.replace(url));
                     return;
                 }
                 if (data) {
