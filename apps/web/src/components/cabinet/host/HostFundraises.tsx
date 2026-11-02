@@ -37,7 +37,7 @@ export interface HostFundraisesLabels {
  * «Мои сборы» (HostFundraisePage старого фронта): активные и черновики.
  * «Добавить сбор» — только с членством, иначе баннер «Оформи членство».
  * Карточка ведёт на публичную страницу сбора, «Редактировать» — на
- * приветствие мастера (мастер в старом SPA).
+ * приветствие мастера.
  */
 export function HostFundraises({ locale, routes, labels }: {
     locale: Locale;

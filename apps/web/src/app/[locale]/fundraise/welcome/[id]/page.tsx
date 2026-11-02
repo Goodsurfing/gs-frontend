@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /**
  * Приветствие перед мастером сбора (FundraiseWelcomePage старого фронта):
  * сюда ведут «Добавить сбор» и «Редактировать» в списке сборов. Запросов нет —
- * «Начать» открывает первый шаг мастера (он пока в старом SPA).
+ * «Начать» открывает первый шаг мастера.
  */
 export default async function FundraiseWelcomePage({ params }: Props) {
     const { locale, id } = await params;

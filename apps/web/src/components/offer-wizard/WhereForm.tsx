@@ -35,11 +35,12 @@ const isAddress = (value: unknown): value is AddressValue => {
 };
 
 /** Сохранённый адрес: подпись — как сохранили, без повторного геокодирования */
-const fromVacancy = (vacancy: Vacancy): AddressValue => {
-    const where = vacancy.where;
-    if (!where?.address) return { address: "", place: null };
+export const savedAddress = (where: { address?: string | null; latitude?: unknown; longitude?: unknown } | null | undefined): AddressValue => {
+    if (!where?.address || typeof where.latitude !== "number" || typeof where.longitude !== "number") return { address: "", place: null };
     return { address: where.address, place: { name: where.address, description: "", latitude: where.latitude, longitude: where.longitude } };
 };
+
+const fromVacancy = (vacancy: Vacancy): AddressValue => savedAddress(vacancy.where);
 
 /**
  * Шаг «Где» (OfferWhere старого фронта): адрес из подсказок геокодера или
@@ -49,20 +50,38 @@ export function WhereForm({ id, locale, nextHref, labels }: { id: string; locale
     const { state, save } = useVacancy(id);
     if (state.status === "missing") return <p className="mt-10 text-[18px] text-ink-tertiary">{labels.missing}</p>;
     if (state.status === "loading") return <Loading label={labels.loading} className="min-h-[200px]" />;
-    return <WhereEditor id={id} locale={locale} nextHref={nextHref} labels={labels} vacancy={state.vacancy} save={save} />;
+    return (
+        <WhereEditor
+            id={id}
+            locale={locale}
+            nextHref={nextHref}
+            labels={labels}
+            saved={fromVacancy(state.vacancy)}
+            onSave={(where) => save({ where }, labels.error)}
+        />
+    );
 }
 
-/** Форма монтируется, когда вакансия уже загружена: начальное значение — несохранённые правки или адрес вакансии */
-function WhereEditor({ id, locale, nextHref, labels, vacancy, save }: {
+export interface SavedPlace { address: string; latitude: number; longitude: number }
+
+/**
+ * Адрес с подсказками геокодера и картой. Монтируется, когда данные уже
+ * загружены: начальное значение — несохранённые правки или сохранённый адрес.
+ * Общая для мастера вакансии и мастера сбора (OfferWhereForm старого фронта
+ * использовался в обоих); onSave вернёт текст ошибки или null.
+ */
+export function WhereEditor({ id, locale, nextHref, labels, saved, onSave, draftStep = "where" }: {
     id: string;
     locale: Locale;
     nextHref: string;
     labels: WhereLabels;
-    vacancy: Vacancy;
-    save: ReturnType<typeof useVacancy>["save"];
+    saved: AddressValue;
+    onSave: (where: SavedPlace) => Promise<string | null>;
+    /** Ключ несохранённых правок: у вакансии и сбора свои */
+    draftStep?: string;
 }) {
-    const [initial] = useState(() => readDraft("where", id, isAddress));
-    const [current, setCurrent] = useState<AddressValue>(() => initial ?? fromVacancy(vacancy));
+    const [initial] = useState(() => readDraft(draftStep, id, isAddress));
+    const [current, setCurrent] = useState<AddressValue>(() => initial ?? saved);
     const [unsaved, setUnsaved] = useState(!!initial);
     const [touched, setTouched] = useState(false);
     const [busy, setBusy] = useState(false);
@@ -72,8 +91,8 @@ function WhereEditor({ id, locale, nextHref, labels, vacancy, save }: {
         setCurrent(next);
         setTouched(true);
         setUnsaved(true);
-        writeDraft("where", id, next);
-    }, [id]);
+        writeDraft(draftStep, id, next);
+    }, [draftStep, id]);
 
     // Щелчки по карте: адрес берётся у последнего, ответы геокодера на прежние отбрасываются
     const clicks = useRef(0);
@@ -92,13 +111,13 @@ function WhereEditor({ id, locale, nextHref, labels, vacancy, save }: {
         if (!place) return;
         setBusy(true);
         setToast(null);
-        const error = await save({ where: { address: current.address, latitude: place.latitude, longitude: place.longitude } }, labels.error);
+        const error = await onSave({ address: current.address, latitude: place.latitude, longitude: place.longitude });
         setBusy(false);
         if (error) {
             setToast({ text: error, ok: false });
             return;
         }
-        clearDraft("where", id);
+        clearDraft(draftStep, id);
         setUnsaved(false);
         setToast({ text: labels.saved, ok: true });
     };

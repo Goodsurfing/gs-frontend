@@ -44,7 +44,8 @@ export interface DescriptionLabels {
 
 export interface CategoryOption { id: number; name: string; color: string }
 
-interface Draft { form: Form; cover: UploadedImage | null }
+export interface DescriptionDraft { form: Form; cover: UploadedImage | null }
+type Draft = DescriptionDraft;
 
 const isDraft = (value: unknown): value is Draft => {
     const v = value as Draft | null;
@@ -77,10 +78,10 @@ export function DescriptionForm({ id, nextHref, categories, labels }: { id: stri
     const state = useVacancyElement(id);
     if (state.status === "missing") return <p className="mt-10 text-[18px] text-ink-tertiary">{labels.missing}</p>;
     if (state.status === "loading") return <Loading label={labels.loading} className="min-h-[200px]" />;
-    return <DescriptionEditor id={id} nextHref={nextHref} categories={categories} labels={labels} vacancy={state.vacancy} />;
+    return <VacancyDescription id={id} nextHref={nextHref} categories={categories} labels={labels} vacancy={state.vacancy} />;
 }
 
-function DescriptionEditor({ id, nextHref, categories, labels, vacancy }: {
+function VacancyDescription({ id, nextHref, categories, labels, vacancy }: {
     id: string;
     nextHref: string;
     categories: CategoryOption[];
@@ -88,9 +89,59 @@ function DescriptionEditor({ id, nextHref, categories, labels, vacancy }: {
     vacancy: VacancyElement;
 }) {
     const session = useSession();
-    const [initial] = useState(() => readDraft("description", id, isDraft));
-    const [draft, setDraft] = useState<Draft>(() => initial ?? fromVacancy(vacancy));
-    const [gallery, setGallery] = useState<UploadedImage[]>(() => (vacancy.galleryImages ?? []).map(toUploadedImage).filter((image): image is UploadedImage => image !== null));
+    return (
+        <DescriptionEditor
+            id={id}
+            nextHref={nextHref}
+            categories={categories}
+            labels={labels}
+            saved={fromVacancy(vacancy)}
+            savedGallery={vacancy.galleryImages ?? []}
+            // Фото вакансии сохраняются сразу при загрузке и удалении, как в старом фронте
+            saveGallery={async (images) => {
+                const result = await browserApi(session.token)
+                    .PATCH("/api/v1/vacancy/image-gallery/{id}", { params: { path: { id: Number(id) } }, body: { galleryImageIds: images.map((image) => image.id) } })
+                    .catch(() => null);
+                return !!result?.response.ok;
+            }}
+            onSave={async ({ form, cover }) => {
+                const result = await browserApi(session.token)
+                    .PATCH("/api/v1/vacancy/description/{id}", {
+                        params: { path: { id: Number(id) } },
+                        body: { title: form.title, description: form.fullDescription, shortDescription: form.shortDescription, categoryIds: form.categoryIds, imageId: cover.id },
+                    })
+                    .catch(() => null);
+                // В OpenAPI у этой операции описан только ответ 200 — ошибку берём из ответа как есть; пустой ответ с ошибкой
+                // openapi-fetch отдаёт как { error: undefined }, поэтому смотрим на статус
+                if (!result?.response.ok) return apiErrorText(result ? (result as { error?: unknown }).error : null, labels.error);
+                return null;
+            }}
+        />
+    );
+}
+
+/**
+ * Форма описания: название, категории (до пяти), краткое и полное описание,
+ * обложка, фото. Общая для вакансии и сбора (OfferDescriptionForm и
+ * InviteDescriptionForm старого фронта). saveGallery задан — фото сохраняются
+ * сразу; не задан — уходят в onSave вместе с описанием. onSave вернёт текст
+ * ошибки или null.
+ */
+export function DescriptionEditor({ id, nextHref, categories, labels, saved, savedGallery, saveGallery: persistGallery, onSave, draftStep = "description" }: {
+    id: string;
+    nextHref: string;
+    categories: CategoryOption[];
+    labels: DescriptionLabels;
+    saved: Draft;
+    savedGallery: Parameters<typeof toUploadedImage>[0][];
+    saveGallery?: (images: UploadedImage[]) => Promise<boolean>;
+    onSave: (value: { form: Form; cover: UploadedImage; gallery: UploadedImage[] }) => Promise<string | null>;
+    draftStep?: string;
+}) {
+    const session = useSession();
+    const [initial] = useState(() => readDraft(draftStep, id, isDraft));
+    const [draft, setDraft] = useState<Draft>(() => initial ?? saved);
+    const [gallery, setGallery] = useState<UploadedImage[]>(() => savedGallery.map(toUploadedImage).filter((image): image is UploadedImage => image !== null));
     const [unsaved, setUnsaved] = useState(!!initial);
     const [submitted, setSubmitted] = useState(false);
     const [busy, setBusy] = useState(false);
@@ -99,8 +150,8 @@ function DescriptionEditor({ id, nextHref, categories, labels, vacancy }: {
     const update = useCallback((next: Draft) => {
         setDraft(next);
         setUnsaved(true);
-        writeDraft("description", id, next);
-    }, [id]);
+        writeDraft(draftStep, id, next);
+    }, [draftStep, id]);
 
     const { form, cover } = draft;
     const set = (patch: Partial<Form>) => update({ form: { ...form, ...patch }, cover });
@@ -114,11 +165,15 @@ function DescriptionEditor({ id, nextHref, categories, labels, vacancy }: {
     const saveGallery = (change: (current: UploadedImage[]) => UploadedImage[]) => {
         const run = queue.current.then(async () => {
             const images = change(galleryRef.current);
+            if (!persistGallery) {
+                // Сохранится вместе с описанием
+                galleryRef.current = images;
+                setGallery(images);
+                setUnsaved(true);
+                return;
+            }
             setToast(null);
-            const result = await browserApi(session.token)
-                .PATCH("/api/v1/vacancy/image-gallery/{id}", { params: { path: { id: Number(id) } }, body: { galleryImageIds: images.map((image) => image.id) } })
-                .catch(() => null);
-            if (!result?.response.ok) {
+            if (!await persistGallery(images)) {
                 setToast({ text: labels.galleryError, ok: false });
                 return;
             }
@@ -136,20 +191,13 @@ function DescriptionEditor({ id, nextHref, categories, labels, vacancy }: {
         if (Object.keys(errors).length || !cover) return;
         setBusy(true);
         setToast(null);
-        const result = await browserApi(session.token)
-            .PATCH("/api/v1/vacancy/description/{id}", {
-                params: { path: { id: Number(id) } },
-                body: { title: form.title, description: form.fullDescription, shortDescription: form.shortDescription, categoryIds: form.categoryIds, imageId: cover.id },
-            })
-            .catch(() => null);
+        const error = await onSave({ form, cover, gallery: galleryRef.current });
         setBusy(false);
-        // В OpenAPI у этой операции описан только ответ 200 — ошибку берём из ответа как есть; пустой ответ с ошибкой
-        // openapi-fetch отдаёт как { error: undefined }, поэтому смотрим на статус
-        if (!result?.response.ok) {
-            setToast({ text: apiErrorText(result ? (result as { error?: unknown }).error : null, labels.error), ok: false });
+        if (error) {
+            setToast({ text: error, ok: false });
             return;
         }
-        clearDraft("description", id);
+        clearDraft(draftStep, id);
         setUnsaved(false);
         setToast({ text: labels.saved, ok: true });
     };
