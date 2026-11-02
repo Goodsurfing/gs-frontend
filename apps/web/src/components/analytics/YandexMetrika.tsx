@@ -13,6 +13,11 @@ declare global {
 /** Счётчик старого фронта (index.html в корне); задаётся только для прода. */
 const COUNTER_ID = Number(process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID) || 0;
 
+/** Цель Метрики (reachGoal старого фронта); без счётчика — ничего */
+export function reachGoal(goal: string, params?: Record<string, unknown>) {
+    if (COUNTER_ID) window.ym?.(COUNTER_ID, "reachGoal", goal, params);
+}
+
 /** Просмотр при переходах внутри приложения (первый засчитывает init). */
 function PageHits() {
     const pathname = usePathname();

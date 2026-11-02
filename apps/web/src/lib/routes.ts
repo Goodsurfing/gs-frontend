@@ -34,6 +34,8 @@ export const routes = {
     offer: (l: Locale, id: string | number) => path(l, `/offers/${id}`),
     /** Мастер вакансии начинается с «Где» */
     offerEdit: (l: Locale, id: string | number) => path(l, `/offers/where/${id}`),
+    /** Приветствие мастера вакансии: с него начинается черновик */
+    offerWelcome: (l: Locale, id: string | number) => path(l, `/offers/welcome/${id}`),
     organization: (l: Locale, id: string) => path(l, `/organizations/${id}`),
     hostInfo: (l: Locale) => path(l, "/host/info"),
     hostRegister: (l: Locale) => path(l, "/host/register"),
@@ -54,6 +56,10 @@ export const routes = {
     fundraise: (l: Locale, id: string) => path(l, `/fundraise/${id}`),
     /** Мастер сбора начинается с «Где» */
     fundraiseEdit: (l: Locale, id: string) => path(l, `/fundraise/where/${id}`),
+    /** Шаг мастера сбора (мастер — в старом SPA) */
+    fundraiseStep: (l: Locale, step: "where" | "when" | "amount" | "description" | "auto-messages", id: string) => path(l, `/fundraise/${step}/${id}`),
+    /** Приветствие перед мастером: сюда ведут «Добавить сбор» и «Редактировать» в списке сборов */
+    fundraiseWelcome: (l: Locale, id: string) => path(l, `/fundraise/welcome/${id}`),
     donationPay: (l: Locale, id: string) => path(l, `/donation/pay/${id}`),
     /** Сюда возвращает ЮKassa (бэкенд: YookassaProvider, return_url) */
     donationSuccess: (l: Locale, id: string) => path(l, `/donation/success/${id}`),

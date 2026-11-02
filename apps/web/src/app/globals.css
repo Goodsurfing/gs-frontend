@@ -70,11 +70,13 @@
 /*
  * Порядок важен: правила вариантов идут в CSS в порядке объявления, поэтому
  * от широких к узким — иначе широкая точка перебьёт узкую там, где обе действуют.
- * Нестандартные (1000, 800, 600) — точки старого кабинета: ProfileInput и
- * страницы организации (1000, 600), соцсети в форме организации (800).
+ * Нестандартные — точки старого кабинета: вакансии, сборы и пожертвования
+ * организатора (1200), ProfileInput и страницы организации (1000, 600), соцсети
+ * в форме организации (800), фильтры пожертвований (460).
  */
 @custom-variant down-3xl (@media (max-width: 1366px));
 @custom-variant down-2xl (@media (max-width: 1280px)); /* шапка: десктопная капсула → мобильная */
+@custom-variant down-1200 (@media (max-width: 1200px));
 @custom-variant down-xl (@media (max-width: 1180px));
 @custom-variant down-1000 (@media (max-width: 1000px));
 @custom-variant down-lg (@media (max-width: 992px));
@@ -83,6 +85,7 @@
 @custom-variant down-600 (@media (max-width: 600px));
 @custom-variant down-sm (@media (max-width: 576px));
 @custom-variant down-xs (@media (max-width: 480px));
+@custom-variant down-460 (@media (max-width: 460px));
 
 html {
     font-size: 16px;

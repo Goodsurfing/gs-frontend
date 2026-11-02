@@ -38,3 +38,19 @@ export function hostMenu(locale: Locale, t: Translate): CabinetMenuItem[] {
         },
     ];
 }
+
+/**
+ * Меню мастера сбора (shared/data/sidebar/fundraise-pages старого фронта):
+ * «К сборам» и шаги мастера своего сбора.
+ */
+export function fundraiseMenu(locale: Locale, t: Translate, id: string): CabinetMenuItem[] {
+    const step = (name: Parameters<typeof routes.fundraiseStep>[1]) => routes.fundraiseStep(locale, name, id);
+    return [
+        { text: t("main.sidebar.К сборам"), href: routes.hostDonations(locale), icon: "offers/back" },
+        { text: t("main.sidebar.Где"), href: step("where"), icon: "offers/pin" },
+        { text: t("main.sidebar.Когда"), href: step("when"), icon: "offers/calendar" },
+        { text: t("main.sidebar.Сколько"), href: step("amount"), icon: "offers/view-list" },
+        { text: t("main.sidebar.Описание"), href: step("description"), icon: "offers/checklist" },
+        { text: t("main.sidebar.Настройка автоматических сообщений"), href: step("auto-messages"), icon: "offers/writing-fluently" },
+    ];
+}

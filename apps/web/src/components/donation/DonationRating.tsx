@@ -49,18 +49,6 @@ export function DonationRating({ rows, volunteerHref, labels }: {
         return list.sort((a, b) => (order === "asc" ? a[field] - b[field] : b[field] - a[field]));
     }, [rows, field, order, search]);
 
-    const sortButton = (value: "asc" | "desc", label: string, path: string) => (
-        <button
-            type="button"
-            aria-label={label}
-            aria-pressed={order === value}
-            onClick={() => setOrder(value)}
-            className={`group flex h-[33px] cursor-pointer items-start max-[460px]:w-full ${order === value ? "text-primary" : "text-caption"}`}
-        >
-            <svg aria-hidden width="30" height="30" viewBox="0 0 30 30" className="fill-current transition-all duration-300 group-hover:text-primary"><path d={path} /></svg>
-        </button>
-    );
-
     return (
         <div className="flex flex-col gap-5">
             <div className="flex w-full items-center justify-between gap-[15px] max-[1200px]:flex-col max-[1200px]:items-start">
@@ -75,25 +63,10 @@ export function DonationRating({ rows, volunteerHref, labels }: {
                         <option value="total">{labels.byTotal}</option>
                     </select>
                     <div className="flex items-center gap-2">
-                        {sortButton("desc", labels.desc, SORT_DOWN)}
-                        {sortButton("asc", labels.asc, SORT_UP)}
+                        <SortButtons order={order} onChange={setOrder} labels={labels} />
                     </div>
                 </div>
-                <div role="search" className="box-border flex w-full max-w-[370px] items-center rounded-[10px] border border-caption bg-white px-1.5 py-1">
-                    <input
-                        type="search"
-                        aria-label={labels.search}
-                        placeholder={labels.search}
-                        value={search}
-                        onChange={(event) => setSearch(event.target.value)}
-                        className="ml-2 box-content h-[23px] min-w-0 flex-1 bg-transparent pt-1 pb-[5px] font-[Roboto,Helvetica,Arial,sans-serif] text-[16px] leading-[23px] text-black/87 outline-none placeholder:text-black/42 [&::-webkit-search-cancel-button]:hidden"
-                    />
-                    <span className="mr-2 flex h-5 w-5 items-center justify-center">
-                        <svg aria-hidden width="18" height="18" viewBox="0 0 18 18" fill="transparent" className="block stroke-caption">
-                            <path d="M11.2188 11.2192L16.9996 17.0001M7.1315 13.263C10.5178 13.263 13.263 10.5178 13.263 7.1315C13.263 3.74517 10.5178 1 7.1315 1C3.74517 1 1 3.74517 1 7.1315C1 10.5178 3.74517 13.263 7.1315 13.263Z" strokeWidth="2" />
-                        </svg>
-                    </span>
-                </div>
+                <RatingSearch label={labels.search} value={search} onChange={setSearch} />
             </div>
             <div className="h-[65vh] w-full overflow-auto">
                 <table className="w-full border-collapse">
@@ -126,6 +99,48 @@ export function DonationRating({ rows, volunteerHref, labels }: {
                     </tbody>
                 </table>
             </div>
+        </div>
+    );
+}
+
+/** Кнопки «по убыванию / по возрастанию» (SelectRatingSort старого фронта) */
+export function SortButtons({ order, onChange, labels }: { order: "asc" | "desc"; onChange: (order: "asc" | "desc") => void; labels: { desc: string; asc: string } }) {
+    const button = (value: "asc" | "desc", label: string, path: string) => (
+        <button
+            type="button"
+            aria-label={label}
+            aria-pressed={order === value}
+            onClick={() => onChange(value)}
+            className={`group flex h-[33px] cursor-pointer items-start max-[460px]:w-full ${order === value ? "text-primary" : "text-caption"}`}
+        >
+            <svg aria-hidden width="30" height="30" viewBox="0 0 30 30" className="fill-current transition-all duration-300 group-hover:text-primary"><path d={path} /></svg>
+        </button>
+    );
+    return (
+        <>
+            {button("desc", labels.desc, SORT_DOWN)}
+            {button("asc", labels.asc, SORT_UP)}
+        </>
+    );
+}
+
+/** Поле поиска с лупой (SearchInput старого фронта: MUI Paper + InputBase) */
+export function RatingSearch({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {
+    return (
+        <div role="search" className="box-border flex w-full max-w-[370px] items-center rounded-[10px] border border-caption bg-white px-1.5 py-1">
+            <input
+                type="search"
+                aria-label={label}
+                placeholder={label}
+                value={value}
+                onChange={(event) => onChange(event.target.value)}
+                className="ml-2 box-content h-[23px] min-w-0 flex-1 bg-transparent pt-1 pb-[5px] font-[Roboto,Helvetica,Arial,sans-serif] text-[16px] leading-[23px] text-black/87 outline-none placeholder:text-black/42 [&::-webkit-search-cancel-button]:hidden"
+            />
+            <span className="mr-2 flex h-5 w-5 items-center justify-center">
+                <svg aria-hidden width="18" height="18" viewBox="0 0 18 18" fill="transparent" className="block stroke-caption">
+                    <path d="M11.2188 11.2192L16.9996 17.0001M7.1315 13.263C10.5178 13.263 13.263 10.5178 13.263 7.1315C13.263 3.74517 10.5178 1 7.1315 1C3.74517 1 1 3.74517 1 7.1315C1 10.5178 3.74517 13.263 7.1315 13.263Z" strokeWidth="2" />
+                </svg>
+            </span>
         </div>
     );
 }
