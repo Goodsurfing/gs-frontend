@@ -2,6 +2,7 @@
 
 import { type FormEvent, useEffect, useState } from "react";
 
+import { reachGoalThen } from "@/components/analytics/YandexMetrika";
 import { useSession } from "@/components/session/SessionProvider";
 import { browserApi } from "@/lib/browserApi";
 
@@ -64,7 +65,9 @@ export function DonationPayForm({ fundraiseId, signInHref, offerHref, labels }: 
             });
             const paymentUrl = (data as { paymentUrl?: string } | undefined)?.paymentUrl;
             if (paymentUrl) {
-                window.location.href = paymentUrl;
+                reachGoalThen("donation_start", { amount }, () => {
+                    window.location.href = paymentUrl;
+                });
                 return;
             }
             // 502/503/504 — недоступна ЮKassa: говорим об этом прямо, а не «ошибка»

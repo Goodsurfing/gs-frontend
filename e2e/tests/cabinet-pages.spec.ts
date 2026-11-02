@@ -40,7 +40,9 @@ const HOST = [
     '/host/donations',
     '/host/donation-rating',
     '/offers/welcome',
-    '/fundraise/welcome',
+    // Приветствие сбора — только с id (без него адрес попадает в публичную /fundraise/:id
+    // и показывает «Произошла ошибка»). Страница ничего не запрашивает: годится любой id
+    '/fundraise/welcome/00000000-0000-0000-0000-000000000000',
 ];
 
 test.describe('Кабинет — волонтёр', () => {

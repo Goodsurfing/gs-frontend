@@ -13,6 +13,80 @@ declare global {
 /** Счётчик старого фронта (index.html в корне); задаётся только для прода. */
 const COUNTER_ID = Number(process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID) || 0;
 
+/**
+ * Цели воронки — те же идентификаторы, что у старого фронта
+ * (src/shared/lib/analytics/trackGoal.ts) и в кабинете Метрики.
+ */
+export type MetrikaGoal =
+    | "signup"
+    | "email_confirmed"
+    | "vacancy_view"
+    | "application_sent"
+    | "application_accepted"
+    | "application_rejected"
+    | "checkout_start"
+    | "membership_paid"
+    | "donation_start"
+    | "donation_paid"
+    | "vacancy_published";
+
+/** Цель Метрики (reachGoal старого фронта); без счётчика — ничего, ошибки аналитики не ломают страницу */
+export function reachGoal(goal: MetrikaGoal, params?: Record<string, unknown>) {
+    if (!COUNTER_ID) return;
+    try {
+        window.ym?.(COUNTER_ID, "reachGoal", goal, params);
+    } catch {
+        // Аналитика не должна ломать интерфейс
+    }
+}
+
+/**
+ * Цель, затем переход со страницы: без ожидания запрос Метрики обрывается
+ * при уходе. Ждём ответа счётчика, но не дольше секунды; без счётчика —
+ * сразу дальше.
+ */
+export function reachGoalThen(goal: MetrikaGoal, params: Record<string, unknown> | undefined, next: () => void) {
+    if (!COUNTER_ID || !window.ym) {
+        next();
+        return;
+    }
+    let done = false;
+    const leave = () => {
+        if (done) return;
+        done = true;
+        next();
+    };
+    window.setTimeout(leave, 1000);
+    try {
+        window.ym(COUNTER_ID, "reachGoal", goal, params, leave);
+    } catch {
+        leave();
+    }
+}
+
+/**
+ * Цель один раз на ключ за сессию браузера (trackGoalOnce старого фронта) —
+ * для страниц успеха, которые можно обновить или открыть по ссылке ещё раз.
+ */
+export function reachGoalOnce(goal: MetrikaGoal, key: string, params?: Record<string, unknown>) {
+    const storageKey = `gs_goal_${goal}_${key}`;
+    try {
+        if (window.sessionStorage.getItem(storageKey)) return;
+        window.sessionStorage.setItem(storageKey, "1");
+    } catch {
+        // Без sessionStorage — просто отправляем
+    }
+    reachGoal(goal, params);
+}
+
+/** Цель при открытии страницы — для серверных страниц успеха */
+export function GoalOnce({ goal, goalKey }: { goal: MetrikaGoal; goalKey: string }) {
+    useEffect(() => {
+        reachGoalOnce(goal, goalKey);
+    }, [goal, goalKey]);
+    return null;
+}
+
 /** Просмотр при переходах внутри приложения (первый засчитывает init). */
 function PageHits() {
     const pathname = usePathname();

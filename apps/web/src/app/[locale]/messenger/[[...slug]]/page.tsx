@@ -1,0 +1,128 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+
+import { RequireUser } from "@/components/cabinet/RequireUser";
+import { PublicShell } from "@/components/layout/PublicShell";
+import { Messenger } from "@/components/messenger/Messenger";
+import { isLocale } from "@/i18n/config";
+import { getTranslator } from "@/i18n/dictionary";
+import { categoryLabels } from "@/lib/categories";
+import { LANGUAGES, LEVELS, skillNames } from "@/lib/offerText";
+import { routes } from "@/lib/routes";
+import { pageMetadata } from "@/lib/seo";
+
+type Props = { params: Promise<{ locale: string; slug?: string[] }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { locale } = await params;
+    if (!isLocale(locale)) return {};
+    const [tm, tMain] = await Promise.all([getTranslator(locale, "messenger"), getTranslator(locale, "main")]);
+    return pageMetadata({ locale, path: routes.messenger(locale), title: `${tm("Сообщения")} — GoodSurfing`, description: tMain("seo.description"), noindex: true });
+}
+
+/**
+ * Сообщения (MessengerPage старого фронта): /messenger — список, /messenger/:id —
+ * переписка, /messenger/create/:offerId — отклик на вакансию,
+ * /messenger/create?recipientVolunteer=… — первое сообщение. Только для вошедших.
+ */
+export default async function MessengerPage({ params }: Props) {
+    const { locale, slug = [] } = await params;
+    if (!isLocale(locale) || slug.length > 2) notFound();
+    const [chatId, offerId] = slug;
+    const [t, tm, tOffer] = await Promise.all([getTranslator(locale), getTranslator(locale, "messenger"), getTranslator(locale, "offer")]);
+    const m = (key: string) => tm(key);
+    const dict = {
+        skills: skillNames(t),
+        languages: Object.fromEntries(Object.entries(LANGUAGES).map(([code, key]) => [code, tOffer(`whoNeeds.${key}`)])),
+        levels: Object.fromEntries(Object.entries(LEVELS).map(([code, key]) => [code, tOffer(`whoNeeds.${key}`)])),
+        categories: categoryLabels(t),
+    };
+    return (
+        <PublicShell locale={locale} headerVariant="static" footer={false}>
+            <RequireUser locale={locale} />
+            {/* useSearchParams — получатель первого сообщения в адресе */}
+            <Suspense fallback={null}>
+                <Messenger
+                    locale={locale}
+                    chatId={chatId}
+                    offerId={offerId}
+                    dict={dict}
+                    hrefs={{
+                        messenger: routes.messenger(locale),
+                        chat: routes.messengerChatTemplate(locale),
+                        offer: routes.offerTemplate(locale),
+                        volunteer: routes.volunteerPublicTemplate(locale),
+                        organization: routes.organizationTemplate(locale),
+                    }}
+                    labels={{
+                        title: m("Сообщения"),
+                        choose: m("Выберите, кому хотели бы написать"),
+                        back: t("Назад"),
+                        info: m("Информация"),
+                        offerNotFound: m("Вакансия не была найдена"),
+                        applicationSent: m("Заявка успешно отправлена"),
+                        sendError: m("Произошла ошибка при отправке сообщения"),
+                        error: m("Произошла ошибка"),
+                        close: t("Закрыть"),
+                        list: {
+                            search: t("Поиск"),
+                            filter: m("Сообщения"),
+                            // В старом фронте подписи фильтра не переводились
+                            statuses: { new: "Новые", accepted: "Принятые", canceled: "Отклоненные" },
+                            attachment: m("Прикрепленный файл"),
+                            application: m("Заявка"),
+                            noDate: "Без даты",
+                            noName: "",
+                        },
+                        input: {
+                            placeholder: m("Написать сообщение"),
+                            attach: m("Прикрепленный файл"),
+                            emoji: m("Смайлы"),
+                            send: t("Отправить"),
+                            removeAttachment: t("Удалить"),
+                            tooLarge: m("Файл слишком большой. Максимальный размер: 5MB"),
+                            uploadError: m("Произошла ошибка"),
+                            emojiSmileys: m("Смайлы"),
+                            emojiAnimals: m("Животные"),
+                            emojiFood: m("Еда"),
+                        },
+                        application: {
+                            applied: m("подал заявку на вакансию"),
+                            chooseDates: m("Укажите даты, чтобы отправить заявку"),
+                            chooseDatesLine: m("Укажите в какие даты вы хотите участвовать"),
+                            arrival: m("Прибытие"),
+                            departure: m("Отъезд"),
+                            notSet: t("Не задано"),
+                            submit: m("Заявка"),
+                            accept: m("Принять"),
+                            decline: m("Отклонить"),
+                            card: {
+                                more: t("Подробнее"),
+                                notOnMap: t("нет на карте"),
+                                reviews: t("Отзывов"),
+                                went: t("Отправились"),
+                                noTitle: t("Без заголовка"),
+                                noDescription: t("Без описания"),
+                            },
+                        },
+                        companion: {
+                            title: m("Информация"),
+                            close: t("Закрыть"),
+                            volunteer: m("Волонтёр"),
+                            host: m("Организатор"),
+                            viewOrganization: m("Посмотреть организацию"),
+                            skills: m("Умения"),
+                            noSkills: m("Волонтёр не указал умения"),
+                            languages: m("Владение языками"),
+                            noLanguages: m("Языки не были указаны"),
+                            projects: m("Участвовал в проектах:"),
+                            noProjects: m("Волонтёр не участвовал в проектах"),
+                            loading: m("Загрузка..."),
+                        },
+                    }}
+                />
+            </Suspense>
+        </PublicShell>
+    );
+}

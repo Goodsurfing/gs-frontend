@@ -1,17 +1,27 @@
 import { pageItems } from "@/lib/pagination";
 
-const ITEM = "mx-[3px] box-border inline-flex h-10 min-w-10 items-center justify-center rounded-[20px] px-2.5 font-[Roboto,Helvetica,Arial,sans-serif] text-[15px] leading-[1.43] tracking-[0.01071em] text-black/87";
+export const PAGE_ITEM = "mx-[3px] box-border inline-flex h-10 min-w-10 items-center justify-center rounded-[20px] px-2.5 font-[Roboto,Helvetica,Arial,sans-serif] text-[15px] leading-[1.43] tracking-[0.01071em] text-black/87";
+/** MUI Pagination size="small" (колонки заявок организатора) */
+const ITEM_SMALL = "mx-px box-border inline-flex h-[26px] min-w-[26px] items-center justify-center rounded-[13px] px-1 font-[Roboto,Helvetica,Arial,sans-serif] text-[13px] leading-[1.43] tracking-[0.01071em] text-black/87";
 
 /**
  * Пагинация ссылками (?page=N): работает без JS, страницы индексируются.
+ * В кабинете (данные в браузере) — кнопками: onPage вместо href.
  * Внешний вид — как MUI Pagination size="large" старого фронта.
  */
-export function Pagination({ page, count, href, labels }: {
+export function Pagination({ page, count, href, onPage, size, labels }: {
     page: number;
     count: number;
-    href: (page: number) => string;
+    href?: (page: number) => string;
+    onPage?: (page: number) => void;
+    size?: "small";
     labels: { prev: string; next: string; page: string };
 }) {
+    const ITEM = size === "small" ? ITEM_SMALL : PAGE_ITEM;
+    // Функция, а не компонент: компонент, объявленный в рендере, пересоздавал бы кнопки и терял фокус
+    const link = (target: number, className: string, children: React.ReactNode, extra: { "aria-label"?: string; "aria-current"?: "page" } = {}) => (onPage
+        ? <button type="button" onClick={() => onPage(target)} className={`${className} cursor-pointer border-0 bg-transparent`} {...extra}>{children}</button>
+        : <a href={href?.(target)} className={className} {...extra}>{children}</a>);
     const arrow = (target: number, disabled: boolean, label: string, path: string) => (disabled
         ? (
             <span aria-hidden className={`${ITEM} opacity-38`}>
@@ -19,9 +29,7 @@ export function Pagination({ page, count, href, labels }: {
             </span>
         )
         : (
-            <a href={href(target)} aria-label={label} className={`${ITEM} transition-colors hover:bg-black/4`}>
-                <svg aria-hidden viewBox="0 0 24 24" className="-mx-2 h-[22px] w-[22px] fill-current"><path d={path} /></svg>
-            </a>
+            link(target, `${ITEM} transition-colors hover:bg-black/4`, <svg aria-hidden viewBox="0 0 24 24" className="-mx-2 h-[22px] w-[22px] fill-current"><path d={path} /></svg>, { "aria-label": label })
         ));
 
     return (
@@ -32,13 +40,7 @@ export function Pagination({ page, count, href, labels }: {
                     <li key={item}>
                         {typeof item === "number"
                             ? (
-                                <a
-                                    href={href(item)}
-                                    aria-current={item === page ? "page" : undefined}
-                                    className={`${ITEM} transition-colors hover:bg-black/4 aria-[current=page]:bg-black/8`}
-                                >
-                                    {item}
-                                </a>
+                                link(item, `${ITEM} transition-colors hover:bg-black/4 aria-[current=page]:bg-black/8`, item, { "aria-current": item === page ? "page" : undefined })
                             )
                             : <span className={`${ITEM} h-auto`}>…</span>}
                     </li>

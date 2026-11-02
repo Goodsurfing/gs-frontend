@@ -28,7 +28,8 @@ export function receptionPlaceText(place: string, t: Translate): string | null {
     return null;
 }
 
-const LANGUAGES: Record<string, string> = {
+/** Языки справочника (значения API) → ключи словаря whoNeeds.* */
+export const LANGUAGES: Record<string, string> = {
     not_matter: "Не важен",
     English: "Английский",
     Русский: "Русский",
@@ -47,7 +48,8 @@ const LANGUAGES: Record<string, string> = {
     עברית: "Иврит",
 };
 
-const LEVELS: Record<string, string> = {
+/** Уровни владения языком (значения API) → ключи словаря whoNeeds.* */
+export const LEVELS: Record<string, string> = {
     not_matter: "Не важен",
     beginner: "Начальный",
     elementary: "Элементарный",
@@ -103,6 +105,9 @@ const SKILLS: Record<string, string> = {
 };
 
 /** Навык из справочника API; t — общий словарь. Неизвестный — пусто, как в старом фронте. */
+/** Названия умений на языке страницы — для клиентских компонентов, у которых нет переводчика */
+export const skillNames = (t: Translate): Record<string, string> => Object.fromEntries(Object.entries(SKILLS).map(([name, key]) => [name, t(`skills.${key}`)]));
+
 export function skillName(name: string, t: Translate): string {
     const key = SKILLS[name];
     return key ? t(`skills.${key}`) : "";

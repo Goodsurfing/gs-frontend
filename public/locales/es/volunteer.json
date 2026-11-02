@@ -84,7 +84,10 @@
         "Изменить": "Cambiar",
         "Удалить": "Eliminar",
         "Статья удалена": "Artículo eliminado",
-        "Ошибка удаления статьи": "Error al eliminar el artículo"
+        "Ошибка удаления статьи": "Error al eliminar el artículo",
+        "Не удалось загрузить статью. Попробуйте обновить страницу": "No se pudo cargar el artículo. Intenta recargar la página",
+        "Не удалось загрузить категории. Попробуйте обновить страницу": "No se pudieron cargar las categorías. Intenta recargar la página",
+        "Недопустимая ссылка: разрешены http, https, mailto и подобные": "Enlace no válido: se permiten http, https, mailto y similares"
     },
     "volunteer-articles": {
         "Мои статьи": "Mis artículos",
@@ -97,7 +100,9 @@
         "Статья опубликована": "Artículo publicado",
         "Ошибка публикации статьи": "Error al publicar artículo",
         "На данный момент у вас нет добавленных статей. Создайте свою первую статью": "Actualmente no tienes ningún artículo publicado. Crea tu primer artículo.",
-        "Создать статью": "Crear un artículo"
+        "Создать статью": "Crear un artículo",
+        "Действия со статьёй": "Acciones del artículo",
+        "Не удалось загрузить статьи. Попробуйте обновить страницу": "No se pudieron cargar los artículos. Intenta recargar la página"
     },
     "Добро пожаловать!": "¡Bienvenido!",
     "Рады приветствовать вас на нашем сайте Для вашего удобства предлагаем максимально подробно заполнить свой профиль": "Le damos la bienvenida a nuestro sitio. Para su comodidad, le recomendamos completar su perfil con el mayor detalle posible."

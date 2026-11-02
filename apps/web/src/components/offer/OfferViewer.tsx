@@ -2,6 +2,7 @@
 
 import { createContext, type ReactNode, useContext, useEffect, useState } from "react";
 
+import { reachGoal } from "@/components/analytics/YandexMetrika";
 import { useSession } from "@/components/session/SessionProvider";
 import { browserApi } from "@/lib/browserApi";
 
@@ -40,6 +41,11 @@ const OfferViewerContext = createContext<OfferViewerState>(GUEST);
 export function OfferViewerProvider({ offerId, children }: { offerId: number; children: ReactNode }) {
     const session = useSession();
     const [state, setState] = useState<OfferViewerState>(GUEST);
+
+    // Просмотр вакансии — для всех, включая гостей (OfferPersonalPage старого фронта)
+    useEffect(() => {
+        reachGoal("vacancy_view", { vacancyId: String(offerId) });
+    }, [offerId]);
 
     useEffect(() => {
         if (session.status !== "user") return;

@@ -34,9 +34,22 @@ export const routes = {
     offer: (l: Locale, id: string | number) => path(l, `/offers/${id}`),
     /** Мастер вакансии начинается с «Где» */
     offerEdit: (l: Locale, id: string | number) => path(l, `/offers/where/${id}`),
+    /** Приветствие мастера вакансии: с него начинается черновик */
+    offerWelcome: (l: Locale, id: string | number) => path(l, `/offers/welcome/${id}`),
+    /** Шаг мастера вакансии: welcome, where, when, who-needs, description, what-to-do, conditions, finishing-touches */
+    offerStep: (l: Locale, step: string, id: string | number) => path(l, `/offers/${step}/${id}`),
     organization: (l: Locale, id: string) => path(l, `/organizations/${id}`),
     hostInfo: (l: Locale) => path(l, "/host/info"),
     hostRegister: (l: Locale) => path(l, "/host/register"),
+    hostGallery: (l: Locale) => path(l, "/host/gallery"),
+    hostVideo: (l: Locale) => path(l, "/host/video"),
+    hostTeam: (l: Locale) => path(l, "/host/team"),
+    hostReview: (l: Locale) => path(l, "/host/review"),
+    hostNotes: (l: Locale) => path(l, "/host/notes"),
+    /** Сборы организатора */
+    hostDonations: (l: Locale) => path(l, "/host/donations"),
+    /** Пожертвования, полученные организатором (не путать с публичным рейтингом /donation-rating) */
+    hostDonationRating: (l: Locale) => path(l, "/host/donation-rating"),
     journals: (l: Locale) => path(l, "/journals"),
     donationsMap: (l: Locale) => path(l, "/donation-map"),
     donationRating: (l: Locale) => path(l, "/donation-rating"),
@@ -45,6 +58,10 @@ export const routes = {
     fundraise: (l: Locale, id: string) => path(l, `/fundraise/${id}`),
     /** Мастер сбора начинается с «Где» */
     fundraiseEdit: (l: Locale, id: string) => path(l, `/fundraise/where/${id}`),
+    /** Шаг мастера сбора (мастер — в старом SPA) */
+    fundraiseStep: (l: Locale, step: "where" | "when" | "amount" | "description" | "auto-messages", id: string) => path(l, `/fundraise/${step}/${id}`),
+    /** Приветствие перед мастером: сюда ведут «Добавить сбор» и «Редактировать» в списке сборов */
+    fundraiseWelcome: (l: Locale, id: string) => path(l, `/fundraise/welcome/${id}`),
     donationPay: (l: Locale, id: string) => path(l, `/donation/pay/${id}`),
     /** Сюда возвращает ЮKassa (бэкенд: YookassaProvider, return_url) */
     donationSuccess: (l: Locale, id: string) => path(l, `/donation/success/${id}`),
@@ -70,15 +87,32 @@ export const routes = {
     paymentFail: (l: Locale) => path(l, "/payment/fail"),
     myOffers: (l: Locale) => path(l, "/host/my-offers"),
     messenger: (l: Locale) => path(l, "/messenger"),
+    /** Чат по заявке (мессенджер — в старом SPA) */
+    messengerChat: (l: Locale, id: string | number) => path(l, `/messenger/${id}`),
     profileInfo: (l: Locale) => path(l, "/profile/info"),
     profileRole: (l: Locale) => path(l, "/profile/role"),
     profilePreferences: (l: Locale) => path(l, "/profile/preferences"),
     profileResetPassword: (l: Locale) => path(l, "/profile/reset-password"),
     hostDashboard: (l: Locale) => path(l, "/host/host-dashboard"),
     volunteerDashboard: (l: Locale) => path(l, "/volunteer/volunteer-dashboard"),
+    volunteerSkills: (l: Locale) => path(l, "/volunteer/skills"),
+    volunteerReview: (l: Locale) => path(l, "/volunteer/review"),
+    volunteerNotes: (l: Locale) => path(l, "/volunteer/notes"),
+    volunteerDonations: (l: Locale) => path(l, "/volunteer/donations"),
+    volunteerGallery: (l: Locale) => path(l, "/volunteer/gallery"),
+    volunteerArticles: (l: Locale) => path(l, "/volunteer/articles"),
+    /** Правка своей статьи блога */
+    volunteerArticleEdit: (l: Locale, id: string | number) => path(l, `/volunteer/articles/${id}`),
+    volunteerSubscribers: (l: Locale) => path(l, "/volunteer/subscribers"),
+    favoriteOffers: (l: Locale) => path(l, "/favorite-offers"),
+    /** Переписка; {id} — номер чата, подставляется в браузере */
+    messengerChatTemplate: (l: Locale) => path(l, "/messenger/{id}"),
+    offerTemplate: (l: Locale) => path(l, "/offers/{id}"),
     /** Публичная страница волонтёра; {id} подставляется в браузере */
     volunteerPublic: (l: Locale, id: string) => path(l, `/volunteers/${id}`),
     volunteerPublicTemplate: (l: Locale) => path(l, "/volunteers/{id}"),
+    /** Страница организации; {id} подставляется в браузере */
+    organizationTemplate: (l: Locale) => path(l, "/organizations/{id}"),
 } as const;
 
 export const EXPEDITIONS_URL = "https://expedition.goodsurfing.org/";
