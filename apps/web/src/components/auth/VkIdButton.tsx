@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import type { Locale } from "@/i18n/config";
 import { API_URL } from "@/lib/browserApi";
 import { saveSession, type TokenResponse } from "@/lib/authSession";
+import { muteVkStatsErrors } from "@/lib/vkStatsGuard";
 
 const CLIENT_ID = Number(process.env.NEXT_PUBLIC_VKID_CLIENT_ID || "54505769");
 
@@ -36,6 +37,7 @@ export function VkIdButton({ locale, page, onSuccess, onError, deletedText }: {
         const redirectUrl = `${window.location.origin}/${locale}/${page}`;
         // Ошибки SDK и сети VK (блокировщики, нет связи) не должны ломать страницу — кнопки VK просто не будет
         void (async () => {
+            muteVkStatsErrors();
             const VKID = await import("@vkid/sdk");
             let verifier = window.localStorage.getItem("vk_code_verifier");
             if (!verifier) {
