@@ -4731,6 +4731,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/review-reminder": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Кого оценить
+         * @description Завершённые за 90 дней участия без отзыва вошедшего (до трёх на сторону) — для плашки «Оцените» в кабинете
+         */
+        get: operations["get_app_api_v1_reviewreminder_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/review-vacancy": {
         parameters: {
             query?: never;
@@ -15407,6 +15427,32 @@ export interface components {
             isActive: boolean;
             news?: components["schemas"]["News.multipart"];
         };
+        /**
+         * ReviewReminderResult
+         * @description Завершённое участие без отзыва вошедшего — строка плашки «Оцените» в кабинете
+         */
+        ReviewReminderResult: {
+            /** @example 1 */
+            applicationId: number;
+            /**
+             * @description Дата отъезда, d.m.Y
+             * @example 25.10.2026
+             */
+            endDate: string;
+            /**
+             * @description volunteer — оценить проект, host — оценить волонтёра
+             * @enum {string}
+             */
+            side: "volunteer" | "host";
+            /** @example 1 */
+            vacancyId: number;
+            /** @example Эко-ферма в Карелии */
+            vacancyTitle?: string | null;
+            /** @example 0190a1b2-... */
+            volunteerId: string;
+            /** @example Анна Петрова */
+            volunteerName: string;
+        };
         ReviewVacancy: {
             /**
              * Format: iri-reference
@@ -15990,7 +16036,7 @@ export interface components {
         };
         /**
          * TodayResult
-         * @description Количество гудсерферов, стран, вакансий, отзывов
+         * @description Количество гудсерферов, стран, вакансий, отзывов, путешествий
          */
         TodayResult: {
             /**
@@ -15998,6 +16044,12 @@ export interface components {
              * @example 0
              */
             reviewCount: number;
+            /**
+             * @description Путешествий гудсёрферов — принятых заявок за всё время
+             * @default 0
+             * @example 0
+             */
+            tripCount: number;
             /**
              * @default 0
              * @example 0
@@ -29380,6 +29432,25 @@ export interface operations {
                         data?: components["schemas"]["ListResult14"][];
                         pagination?: components["schemas"]["PaginationResult"];
                     };
+                };
+            };
+        };
+    };
+    get_app_api_v1_reviewreminder_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewReminderResult"][];
                 };
             };
         };

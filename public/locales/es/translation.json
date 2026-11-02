@@ -385,5 +385,16 @@
     },
     "Приблизить": "Acercar",
     "Отдалить": "Alejar",
-    "Свернуть карту": "Ocultar mapa"
+    "Свернуть карту": "Ocultar mapa",
+    "reviewReminder": {
+        "Оцените ваши проекты": "Valora tus proyectos",
+        "Как прошли ваши проекты? Ваша оценка поможет следующим волонтёрам": "¿Qué tal fueron tus proyectos? Tu valoración ayudará a los próximos voluntarios",
+        "Оцените волонтёров": "Valora a los voluntarios",
+        "Оцените волонтёров, которые у вас побывали": "Valora a los voluntarios que estuvieron contigo",
+        "Оценить": "Valorar",
+        "Скрыть": "Ocultar",
+        "Без названия": "Sin título",
+        "Волонтёр": "Voluntario",
+        "Отъезд": "Salida"
+    }
 }
