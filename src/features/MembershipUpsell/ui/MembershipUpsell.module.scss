@@ -1,0 +1,45 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 260px;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 130%;
+}
+
+.light {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+.dark {
+    background: var(--accent-elements);
+    color: var(--text-primary-2);
+}
+
+.title {
+    font-weight: 600;
+}
+
+/* Зелёная кнопка-призыв — accent-host #02CC9B */
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border: 1px solid var(--button-1);
+    border-radius: 10px;
+    background: var(--button-1);
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s;
+
+    &:hover {
+        background: white;
+        color: var(--button-1);
+    }
+}

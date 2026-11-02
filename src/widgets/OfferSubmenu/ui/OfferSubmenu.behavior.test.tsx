@@ -2,7 +2,7 @@ import React from "react";
 import {
     describe, it, expect, vi,
 } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { renderWithProviders } from "@/test-utils";
 import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
@@ -31,20 +31,22 @@ const renderSubmenu = (requiresMembershipToParticipate: boolean) => renderWithPr
  * GS-169: кнопка «Участвовать» раньше не давала понять, что заявку всё равно
  * отклонят из-за исчерпанного бесплатного лимита, — отправлять приходилось
  * вслепую. Теперь при requiresMembershipToParticipate=true должна появляться
- * подсказка со ссылкой на /membership.
+ * предложение членства с ценой и кнопкой на /membership.
  */
 describe("OfferSubmenu — подсказка про исчерпанный лимит заявок", () => {
     it("показывает текст и ссылку на /membership, когда лимит исчерпан", () => {
         renderSubmenu(true);
 
-        expect(screen.getByText("personalOffer.У вас закончились бесплатные отклики.")).toBeInTheDocument();
-        const link = screen.getByRole("link", { name: "personalOffer.Оформите членство, чтобы отправить заявку" });
+        const upsell = screen.getByRole("note", { name: "personalOffer.Бесплатные отклики на этот год закончились" });
+        // Цена — из тарифов, пока они не загрузились — 990 ₽
+        expect(upsell).toHaveTextContent("personalOffer.Членство — {{price}} ₽ на год: отклики без ограничений");
+        const link = within(upsell).getByRole("link", { name: "personalOffer.Оформить членство" });
         expect(link).toHaveAttribute("href", expect.stringContaining("/membership"));
     });
 
     it("не показывает подсказку, когда участие доступно", () => {
         renderSubmenu(false);
 
-        expect(screen.queryByText("personalOffer.У вас закончились бесплатные отклики.")).not.toBeInTheDocument();
+        expect(screen.queryByRole("note", { name: "personalOffer.Бесплатные отклики на этот год закончились" })).not.toBeInTheDocument();
     });
 });

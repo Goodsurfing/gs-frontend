@@ -67,4 +67,22 @@ test.describe('Новый фронт: страница вакансии', () => 
         await expect.poll(async () => (await participate(page).getAttribute('href')) ?? '', { timeout: 15_000 })
             .toBe(`/messenger/create/${id}`);
     });
+
+    test('волонтёр: кончились бесплатные отклики — предложение членства с ценой', async ({ page }, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'только волонтёр');
+        const id = await findOffer();
+        test.skip(!id, 'нет вакансии с отзывами');
+        // Ответ вакансии от имени волонтёра подменяется: лимит исчерпан
+        await page.route(`**/api/v1/vacancy/${id}`, async (route) => {
+            if (route.request().method() !== 'GET') return route.fallback();
+            const response = await route.fetch();
+            const json = await response.json();
+            return route.fulfill({ response, json: { ...json, canParticipate: false, requiresMembershipToParticipate: true } });
+        });
+        await page.goto(`/offers/${id}`);
+        const upsell = page.getByRole('note', { name: 'Бесплатные отклики на этот год закончились' }).first();
+        await expect(upsell).toBeVisible({ timeout: 15_000 });
+        await expect(upsell).toContainText(/Членство — \d[\d\s]* ₽ на год: отклики без ограничений/);
+        await expect(upsell.getByRole('link', { name: 'Оформить членство' })).toHaveAttribute('href', '/membership');
+    });
 });
