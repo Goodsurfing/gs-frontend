@@ -4,7 +4,9 @@ import type { components, paths } from "@goodsurfing/api";
 import { useCallback, useEffect, useState } from "react";
 
 import { useSession } from "@/components/session/SessionProvider";
+import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
+import { errorMessage } from "@/lib/offerWizardFinish";
 
 /** Вакансия, как её отдаёт GET /api/v1/vacancies/{id} */
 export type Vacancy = paths["/api/v1/vacancies/{id}"]["get"]["responses"][200]["content"]["application/json"];
@@ -15,17 +17,17 @@ export type VacancyState =
     | { status: "missing" }
     | { status: "ready"; vacancy: Vacancy };
 
-/** Текст ошибки API (getErrorText старого фронта): detail, title, список errors, message */
-export function apiErrorText(error: unknown, fallback: string): string {
-    if (!error || typeof error !== "object") return fallback;
-    const data = error as Record<string, unknown>;
-    if (typeof data.detail === "string" && data.detail) return data.detail;
-    if (typeof data.title === "string" && data.title) return data.title;
-    if (Array.isArray(data.errors) && data.errors.length) return data.errors.join(". ");
-    if (typeof data.error === "string" && data.error) return data.error;
-    if (typeof data.message === "string" && data.message) return data.message;
-    return fallback;
-}
+/** Текст ошибки API (getErrorText старого фронта) или запасной */
+export const apiErrorText = (error: unknown, fallback: string): string => errorMessage(error) ?? fallback;
+
+/** PATCH /api/v1/vacancies/{id} в формате merge-patch (как updateOffer старого фронта); сеть недоступна — null */
+export const patchVacancy = (token: string | undefined, id: string, patch: VacancyPatch) => browserApi(token)
+    .PATCH("/api/v1/vacancies/{id}", {
+        params: { path: { id } },
+        body: patch,
+        headers: { "Content-Type": "application/merge-patch+json", Accept: "application/json" },
+    })
+    .catch(() => null);
 
 /**
  * Вакансия для шага мастера: читается и сохраняется в браузере с токеном
@@ -54,16 +56,10 @@ export function useVacancy(id: string) {
     }, [id, session.status, session.token]);
 
     const save = useCallback(async (patch: VacancyPatch, fallbackError: string): Promise<string | null> => {
-        const result = await browserApi(session.token)
-            .PATCH("/api/v1/vacancies/{id}", {
-                params: { path: { id } },
-                body: patch,
-                headers: { "Content-Type": "application/merge-patch+json", Accept: "application/json" },
-            })
-            .catch(() => null);
+        const result = await patchVacancy(session.token, id, patch);
         if (!result) return fallbackError;
         // Формы держат своё состояние — после сохранения вакансию не перечитываем
-        if (result.error || !result.data) return apiErrorText(result.error, fallbackError);
+        if (result.error || !result.response.ok) return apiErrorText(result.error, fallbackError);
         return null;
     }, [id, session.token]);
 
@@ -98,4 +94,33 @@ export function useVacancyElement(id: string): VacancyElementState {
         };
     }, [id, session.status, session.token]);
     return state;
+}
+
+/** Пункт справочника: навык, жильё, питание, проезд */
+export type DictionaryItem = components["schemas"]["ListResult17"];
+
+type DictionaryPath = "/api/v1/skill" | "/api/v1/house" | "/api/v1/food" | "/api/v1/transfer";
+
+/** Справочник на языке страницы (useGetPublicSkillsQuery и др. старого фронта); без входа API его не отдаёт */
+export function useDictionary(path: DictionaryPath, locale: Locale): DictionaryItem[] | null {
+    const session = useSession();
+    const [items, setItems] = useState<DictionaryItem[] | null>(null);
+
+    useEffect(() => {
+        if (session.status !== "user") return;
+        let cancelled = false;
+        void browserApi(session.token)
+            .GET(path, { params: { query: { lang: locale } } })
+            .then(({ data }) => {
+                if (!cancelled) setItems(Array.isArray(data) ? data : []);
+            })
+            .catch(() => {
+                if (!cancelled) setItems([]);
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, [path, locale, session.status, session.token]);
+
+    return items;
 }
