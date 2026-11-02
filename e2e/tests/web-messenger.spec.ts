@@ -44,7 +44,7 @@ test.describe('Новый фронт: сообщения', () => {
             });
         });
         await page.route('**/api/v1/personal/chats**', (route) => route.continue());
-        await expect(page.getByRole('button', { name: 'Написать сообщение' })).toBeDisabled();
+        await expect(page.getByRole('button', { name: 'Отправить' })).toBeDisabled();
         await input.fill('Проверка отправки');
         await input.press('Enter');
         await expect.poll(() => sent).toMatchObject({ chat: `/api/v1/chats/${chatId}`, text: 'Проверка отправки' });
@@ -88,7 +88,7 @@ test.describe('Новый фронт: сообщения', () => {
             await expect(page.getByText('Отъезд')).toBeVisible();
             // Поле сообщения на отклике закрыто — сначала заявка
             await expect(page.getByLabel('Написать сообщение')).toBeVisible();
-            await expect(page.getByRole('button', { name: 'Написать сообщение' })).toBeDisabled();
+            await expect(page.getByRole('button', { name: 'Отправить' })).toBeDisabled();
 
             const submit = page.getByRole('button', { name: 'Заявка' });
             if (await submit.isDisabled()) {
