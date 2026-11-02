@@ -1,12 +1,12 @@
+import { vkVideoIds } from "@/lib/videoLinks";
+
 /**
  * Встроенное видео по ссылке (VideoPlayer старого фронта): ВКонтакте, Rutube,
  * YouTube, Vimeo и прямые файлы. Неизвестная ссылка — подпись об ошибке.
  */
 export function embedUrl(url: string): { kind: "iframe" | "file"; src: string } | null {
-    const vk = url.match(/video(-?\d+)_(\d+)/);
-    if ((url.includes("vk.com") || url.includes("vkvideo.ru")) && vk) {
-        return { kind: "iframe", src: `https://vk.com/video_ext.php?oid=${vk[1]}&id=${vk[2]}&hd=2&autoplay=0` };
-    }
+    const vk = vkVideoIds(url);
+    if (vk) return { kind: "iframe", src: `https://vk.com/video_ext.php?oid=${vk.oid}&id=${vk.id}&hd=2&autoplay=0` };
     const rutube = url.match(/rutube\.ru\/video\/([a-f0-9-]+)/i);
     if (rutube) return { kind: "iframe", src: `https://rutube.ru/play/embed/${rutube[1]}` };
     const youtube = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/);

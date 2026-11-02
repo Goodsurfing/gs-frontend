@@ -70,3 +70,25 @@ export function SelectField({ label, error, children, className = "", ...rest }:
 
 /** Синяя кнопка формы (Button BLUE FILL MEDIUM) */
 export const blueButton = "flex cursor-pointer items-center justify-center rounded-[10px] border border-primary bg-primary px-[100px] py-3 text-center text-[16px] leading-[120%] text-white transition-all duration-300 hover:bg-white hover:text-primary disabled:cursor-default disabled:opacity-70 disabled:hover:bg-primary disabled:hover:text-white down-lg:w-full down-lg:px-[15px]";
+
+/**
+ * Многострочное поле с подсказками (shared/ui/Textarea старого фронта, им
+ * сделаны формы организации и вакансии): подпись обычным начертанием,
+ * подсказки — строчные подписи 10 px, вторая — с новой строки.
+ */
+export function NotesTextAreaField({ label, description, extraDescription, className = "", ...rest }: TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    label: string;
+    description?: string;
+    extraDescription?: string;
+}) {
+    const id = useId();
+    return (
+        <div className={className}>
+            <div className="flex items-center"><label htmlFor={id} className="text-[0.875rem] font-normal text-muted">{label}</label></div>
+            <textarea id={id} className={`${control} mt-2 h-[7.375rem] resize-none`} {...rest} />
+            {description && <label htmlFor={id} className="mt-2 text-[0.625rem] text-muted">{description}</label>}
+            <br />
+            {extraDescription && <label htmlFor={id} className="mt-2 text-[0.625rem] text-muted">{extraDescription}</label>}
+        </div>
+    );
+}

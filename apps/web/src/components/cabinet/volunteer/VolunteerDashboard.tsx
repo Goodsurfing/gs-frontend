@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { MemberBanner } from "@/components/content/MemberBanner";
 import { OfferListCard, type OfferListCardLabels } from "@/components/offers-map/OfferListCard";
+import { useFavoriteOffers } from "@/components/offers/useFavoriteOffers";
 import { useSession } from "@/components/session/SessionProvider";
 import { Spinner } from "@/components/ui/Spinner";
 import type { Locale } from "@/i18n/config";
@@ -35,6 +36,7 @@ export interface VolunteerDashboardLabels {
     welcome: string;
     welcomeText: string;
     card: OfferListCardLabels;
+    favorite: { add: string; remove: string };
 }
 
 const card = "bg-white shadow-[0_5px_20px_rgba(14,29,39,0.05)]";
@@ -53,6 +55,7 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
     labels: VolunteerDashboardLabels;
 }) {
     const session = useSession();
+    const favorites = useFavoriteOffers();
     const profile = session.status === "user" ? session.profile : null;
     const [occupancy, setOccupancy] = useState<Occupancy | null>(null);
     const [offers, setOffers] = useState<CatalogOffer[] | null>(null);
@@ -168,7 +171,14 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
                     </div>
                     <div>
                         {shownOffers === null ? <Spinner /> : shownOffers.map((offer) => (
-                            <OfferListCard key={offer.id} offer={offer} href={hrefs.offer.replace("{id}", String(offer.id))} wide={false} labels={labels.card} />
+                            <OfferListCard
+                                key={offer.id}
+                                offer={offer}
+                                href={hrefs.offer.replace("{id}", String(offer.id))}
+                                wide={false}
+                                labels={labels.card}
+                                favorite={favorites.enabled ? { active: favorites.isFavorite(offer.id), busy: favorites.isBusy(offer.id), labels: labels.favorite, onToggle: () => void favorites.toggleFavorite(offer.id) } : undefined}
+                            />
                         ))}
                     </div>
                 </section>
