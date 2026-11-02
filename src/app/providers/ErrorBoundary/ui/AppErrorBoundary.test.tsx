@@ -3,6 +3,8 @@ import {
     afterEach, beforeEach, describe, expect, it, vi,
 } from "vitest";
 
+import { handleChunkLoadError, resetChunkReloadState } from "@/shared/lib/handleChunkLoadError";
+
 import { AppErrorBoundary } from "./AppErrorBoundary";
 
 const captureException = vi.fn();
@@ -17,6 +19,7 @@ describe("AppErrorBoundary", () => {
     beforeEach(() => {
         vi.spyOn(console, "error").mockImplementation(() => {});
         sessionStorage.clear();
+        resetChunkReloadState();
         captureException.mockClear();
     });
 
@@ -49,5 +52,22 @@ describe("AppErrorBoundary", () => {
         expect(reload).toHaveBeenCalledTimes(1);
         expect(captureException).not.toHaveBeenCalled();
         vi.unstubAllGlobals();
+    });
+
+    it("после vite:preloadError страница уже перезагружается — падение lazy не показываем и не отправляем", () => {
+        const reload = vi.fn();
+        handleChunkLoadError(new Event("vite:preloadError", { cancelable: true }), sessionStorage, reload);
+        expect(reload).toHaveBeenCalledTimes(1);
+
+        // Так падает React.lazy, когда импорт после preventDefault вернул undefined
+        const { container } = render(
+            <AppErrorBoundary>
+                <Broken error={new TypeError("undefined is not an object (evaluating 'e._result.default')")} />
+            </AppErrorBoundary>,
+        );
+
+        expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+        expect(container).toBeEmptyDOMElement();
+        expect(captureException).not.toHaveBeenCalled();
     });
 });

@@ -5,6 +5,21 @@ const RELOAD_COOLDOWN_MS = 60_000;
 
 type ReloadStorage = Pick<Storage, "getItem" | "setItem">;
 
+let reloadInProgress = false;
+
+/**
+ * Страница уже перезагружается из-за незагрузившегося чанка. После
+ * `preventDefault` на `vite:preloadError` импорт страницы отдаёт undefined,
+ * и React.lazy падает («e._result.default») ещё до того, как браузер ушёл
+ * на перезагрузку. Эту ошибку не показываем и не отправляем в Bugsink.
+ */
+export const isReloadingForChunkError = (): boolean => reloadInProgress;
+
+/** Только для тестов: состояние модуля живёт между тестами одного файла */
+export const resetChunkReloadState = () => {
+    reloadInProgress = false;
+};
+
 /**
  * Перезагружает страницу, если за последнюю минуту этого ещё не делали.
  * Возвращает true, если перезагрузка запущена.
@@ -19,6 +34,7 @@ export const reloadOnceForChunkError = (
         return false;
     }
     storage.setItem(RELOAD_KEY, String(now));
+    reloadInProgress = true;
     reload();
     return true;
 };

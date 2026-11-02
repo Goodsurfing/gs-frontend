@@ -78,6 +78,15 @@ export const routes = {
     profileResetPassword: (l: Locale) => path(l, "/profile/reset-password"),
     hostDashboard: (l: Locale) => path(l, "/host/host-dashboard"),
     volunteerDashboard: (l: Locale) => path(l, "/volunteer/volunteer-dashboard"),
+    volunteerSkills: (l: Locale) => path(l, "/volunteer/skills"),
+    volunteerReview: (l: Locale) => path(l, "/volunteer/review"),
+    volunteerNotes: (l: Locale) => path(l, "/volunteer/notes"),
+    volunteerDonations: (l: Locale) => path(l, "/volunteer/donations"),
+    volunteerGallery: (l: Locale) => path(l, "/volunteer/gallery"),
+    volunteerArticles: (l: Locale) => path(l, "/volunteer/articles"),
+    /** Переписка; {id} — номер чата, подставляется в браузере */
+    messengerChatTemplate: (l: Locale) => path(l, "/messenger/{id}"),
+    offerTemplate: (l: Locale) => path(l, "/offers/{id}"),
     /** Публичная страница волонтёра; {id} подставляется в браузере */
     volunteerPublic: (l: Locale, id: string) => path(l, `/volunteers/${id}`),
     volunteerPublicTemplate: (l: Locale) => path(l, "/volunteers/{id}"),

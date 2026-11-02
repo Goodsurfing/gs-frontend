@@ -1,6 +1,6 @@
 import { pageItems } from "@/lib/pagination";
 
-const ITEM = "mx-[3px] box-border inline-flex h-10 min-w-10 items-center justify-center rounded-[20px] px-2.5 font-[Roboto,Helvetica,Arial,sans-serif] text-[15px] leading-[1.43] tracking-[0.01071em] text-black/87";
+export const PAGE_ITEM = "mx-[3px] box-border inline-flex h-10 min-w-10 items-center justify-center rounded-[20px] px-2.5 font-[Roboto,Helvetica,Arial,sans-serif] text-[15px] leading-[1.43] tracking-[0.01071em] text-black/87";
 
 /**
  * Пагинация ссылками (?page=N): работает без JS, страницы индексируются.
@@ -14,12 +14,12 @@ export function Pagination({ page, count, href, labels }: {
 }) {
     const arrow = (target: number, disabled: boolean, label: string, path: string) => (disabled
         ? (
-            <span aria-hidden className={`${ITEM} opacity-38`}>
+            <span aria-hidden className={`${PAGE_ITEM} opacity-38`}>
                 <svg viewBox="0 0 24 24" className="-mx-2 h-[22px] w-[22px] fill-current"><path d={path} /></svg>
             </span>
         )
         : (
-            <a href={href(target)} aria-label={label} className={`${ITEM} transition-colors hover:bg-black/4`}>
+            <a href={href(target)} aria-label={label} className={`${PAGE_ITEM} transition-colors hover:bg-black/4`}>
                 <svg aria-hidden viewBox="0 0 24 24" className="-mx-2 h-[22px] w-[22px] fill-current"><path d={path} /></svg>
             </a>
         ));
@@ -35,12 +35,12 @@ export function Pagination({ page, count, href, labels }: {
                                 <a
                                     href={href(item)}
                                     aria-current={item === page ? "page" : undefined}
-                                    className={`${ITEM} transition-colors hover:bg-black/4 aria-[current=page]:bg-black/8`}
+                                    className={`${PAGE_ITEM} transition-colors hover:bg-black/4 aria-[current=page]:bg-black/8`}
                                 >
                                     {item}
                                 </a>
                             )
-                            : <span className={`${ITEM} h-auto`}>…</span>}
+                            : <span className={`${PAGE_ITEM} h-auto`}>…</span>}
                     </li>
                 ))}
                 <li>{arrow(page + 1, page >= count, labels.next, "M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z")}</li>
