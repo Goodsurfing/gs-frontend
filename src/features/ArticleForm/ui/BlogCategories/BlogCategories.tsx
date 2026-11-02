@@ -4,6 +4,7 @@ import React, { FC, MouseEvent } from "react";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { useGetBlogCategoriesQuery } from "@/entities/Blog";
+import { useGetNewsCategoriesQuery } from "@/entities/News";
 import styles from "./BlogCategories.module.scss";
 
 interface BlogCategoriesProps {
@@ -12,6 +13,10 @@ interface BlogCategoriesProps {
     maxLength?: number;
     locale: Locale;
     exclusive?: boolean;
+    /** Справочник: категории блога (по умолчанию) или новостей */
+    source?: "blog" | "news";
+    /** Фильтр списка: число материалов у категории, пустые — бледные и не нажимаются */
+    showCounts?: boolean;
 }
 
 export const BlogCategories: FC<BlogCategoriesProps> = (props) => {
@@ -21,12 +26,13 @@ export const BlogCategories: FC<BlogCategoriesProps> = (props) => {
         maxLength = 5,
         locale,
         exclusive = false,
+        source = "blog",
+        showCounts = false,
     } = props;
 
-    const {
-        data: categoriesData,
-        isLoading,
-    } = useGetBlogCategoriesQuery({ lang: locale });
+    const blog = useGetBlogCategoriesQuery({ lang: locale }, { skip: source !== "blog" });
+    const news = useGetNewsCategoriesQuery({ lang: locale }, { skip: source !== "news" });
+    const { data: categoriesData, isLoading } = source === "news" ? news : blog;
 
     const handleChange = (
         event: MouseEvent<HTMLElement>,
@@ -72,6 +78,7 @@ export const BlogCategories: FC<BlogCategoriesProps> = (props) => {
             >
                 {categoriesData.map((item, index) => {
                     const color = item.color === "" ? "#3DABF7" : item.color;
+                    const empty = showCounts && item.count === 0 && item.id !== groupValue;
 
                     return (
                         <ToggleButton
@@ -102,8 +109,13 @@ export const BlogCategories: FC<BlogCategoriesProps> = (props) => {
                             }}
                             key={index}
                             value={item.id}
+                            disabled={empty}
+                            style={empty ? { opacity: 0.45 } : undefined}
                         >
                             {item.name}
+                            {showCounts && item.count !== undefined && (
+                                <span style={{ marginLeft: 6, color: "#8494a1" }}>{item.count}</span>
+                            )}
                         </ToggleButton>
                     );
                 })}

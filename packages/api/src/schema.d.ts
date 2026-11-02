@@ -1,4 +1,4 @@
-// Сгенерировано из OpenAPI gs-backend (/api/doc.json).
+// Сгенерировано из OpenAPI gs-backend (docs/openapi.json).
 // Не править руками: npm run generate в packages/api.
 
 export interface paths {
@@ -3728,6 +3728,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/news-category": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Категории новостей
+         * @description Категории новостей с числом новостей в каждой (для фильтра на странице новостей)
+         */
+        get: operations["get_app_api_v1_newscategory_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/news/{id}": {
         parameters: {
             query?: never;
@@ -7215,6 +7235,23 @@ export interface components {
             readonly trace?: unknown[];
             readonly traceAsString?: string;
             readonly type?: string;
+        };
+        /**
+         * NewsCategoriesResult
+         * @description Категория новостей с числом новостей
+         */
+        CategoriesResult: {
+            /** @example #c0daeb */
+            color: string;
+            /**
+             * @description Новостей в категории
+             * @example 1
+             */
+            count: number;
+            /** @example 12 */
+            id: number;
+            /** @example Онлайн */
+            name: string;
         };
         Category: {
             color?: string;
@@ -11730,6 +11767,12 @@ export interface components {
         ListAllResult: {
             /** @example fff */
             color: string;
+            /**
+             * @description Опубликованных статей блога в категории
+             * @default 0
+             * @example 3
+             */
+            count: number;
             /** @example 1 */
             id: number;
             /** @example Категория */
@@ -27531,6 +27574,28 @@ export interface operations {
                         data?: components["schemas"]["ListResult11"][];
                         pagination?: components["schemas"]["PaginationResult"];
                     };
+                };
+            };
+        };
+    };
+    get_app_api_v1_newscategory_list: {
+        parameters: {
+            query?: {
+                /** @description Код языка */
+                lang?: "ru" | "en" | "es";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CategoriesResult"][];
                 };
             };
         };
