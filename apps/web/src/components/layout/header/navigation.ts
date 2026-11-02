@@ -37,6 +37,8 @@ export function buildNavigation(locale: Locale, t: Translate): Navigation {
                     link(h("community.ambassadors"), routes.ambassadors(locale)),
                     link(h("community.courses"), routes.academy(locale)),
                     link(h("community.journal"), routes.journals(locale)),
+                    // GS-243: экспедиции — внутри «Сообщества», а не отдельным пунктом
+                    link(h("expeditions"), EXPEDITIONS_URL),
                 ],
             },
             {
@@ -62,7 +64,6 @@ export function buildNavigation(locale: Locale, t: Translate): Navigation {
                 ],
             },
             { kind: "link", ...link(h("for-organizers.become-a-host"), routes.becomeHost(locale)) },
-            { kind: "link", ...link(h("expeditions"), EXPEDITIONS_URL) },
             { kind: "link", ...link(h("international-volunteering"), INTERNATIONAL_URL) },
         ],
     };

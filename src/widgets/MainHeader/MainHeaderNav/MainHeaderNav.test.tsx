@@ -16,8 +16,10 @@ vi.mock("@/app/providers/LocaleProvider", () => ({
 
 /**
  * Регресс-тест для rows 79/80 (навигация): пункты меню «Экспедиции» и
- * «Международное волонтёрство» ведут на отдельные поддомены проекта
- * (expedition.goodsurfing.org, international.goodsurfing.org).
+ * «Международное» ведут на отдельные поддомены проекта
+ * (expedition.goodsurfing.org, international.goodsurfing.org). С GS-243
+ * «Экспедиции» — внутри «Сообщества», «Международное волонтёрство»
+ * сокращено до «Международное».
  */
 describe("MainHeaderNav", () => {
     it("пункт меню \"Экспедиции\" ведёт на expedition.goodsurfing.org", () => {
@@ -31,14 +33,14 @@ describe("MainHeaderNav", () => {
         expect(link).toHaveAttribute("href", "https://expedition.goodsurfing.org/");
     });
 
-    it("пункт меню \"Международное волонтёрство\" ведёт на international.goodsurfing.org", () => {
+    it("пункт меню \"Международное\" ведёт на international.goodsurfing.org", () => {
         renderWithProviders(
             <MemoryRouter>
                 <MainHeaderNav />
             </MemoryRouter>,
         );
 
-        const link = screen.getByText("Международное волонтёрство").closest("a");
+        const link = screen.getByText("Международное").closest("a");
         expect(link).toHaveAttribute("href", "https://international.goodsurfing.org/");
     });
 
