@@ -36,6 +36,8 @@ export const routes = {
     offerEdit: (l: Locale, id: string | number) => path(l, `/offers/where/${id}`),
     /** Приветствие мастера вакансии: с него начинается черновик */
     offerWelcome: (l: Locale, id: string | number) => path(l, `/offers/welcome/${id}`),
+    /** Шаг мастера вакансии: welcome, where, when, who-needs, description, what-to-do, conditions, finishing-touches */
+    offerStep: (l: Locale, step: string, id: string | number) => path(l, `/offers/${step}/${id}`),
     organization: (l: Locale, id: string) => path(l, `/organizations/${id}`),
     hostInfo: (l: Locale) => path(l, "/host/info"),
     hostRegister: (l: Locale) => path(l, "/host/register"),
