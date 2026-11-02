@@ -8,6 +8,7 @@ import { getTranslator } from "@/i18n/dictionary";
 import { authMetadata } from "@/lib/authPages";
 import { hostMenu } from "@/lib/cabinetMenus";
 import { applicationLabels } from "@/lib/hostApplications";
+import { reviewReminderLabels } from "@/lib/reviewReminderLabels";
 import { routes } from "@/lib/routes";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -36,8 +37,10 @@ export default async function HostDashboardPage({ params }: Props) {
                         volunteer: routes.volunteerPublicTemplate(locale),
                         offer: routes.offer(locale, "{id}"),
                         chat: routes.messengerChat(locale, "{id}"),
+                        review: routes.hostReview(locale),
                     }}
                     labels={{
+                        reviewReminders: reviewReminderLabels(t, "host"),
                         fillTitle: d("Заполненность профиля"),
                         // В старом в en/es подписи были пустыми (перевод искался по русской строке) — берём ключи напрямую
                         points: {

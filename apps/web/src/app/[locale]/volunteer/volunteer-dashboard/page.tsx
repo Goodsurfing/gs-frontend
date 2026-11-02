@@ -7,6 +7,7 @@ import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { authMetadata } from "@/lib/authPages";
 import { categoryLabels } from "@/lib/categories";
+import { reviewReminderLabels } from "@/lib/reviewReminderLabels";
 import { routes } from "@/lib/routes";
 import { volunteerMenu } from "@/lib/volunteerMenu";
 
@@ -34,9 +35,11 @@ export default async function VolunteerDashboardPage({ params }: Props) {
                         preferences: routes.profilePreferences(locale),
                         membership: routes.membership(locale),
                         offer: routes.offerTemplate(locale),
+                        review: routes.volunteerReview(locale),
                     }}
                     categories={categoryLabels(t)}
                     labels={{
+                        reviewReminders: reviewReminderLabels(t, "volunteer"),
                         fill: d("Заполненность профиля"),
                         viewProfile: d("Посмотреть свой профиль"),
                         edit: d("Редактировать профиль"),

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { MemberBanner } from "@/components/content/MemberBanner";
 import { OfferListCard, type OfferListCardLabels } from "@/components/offers-map/OfferListCard";
+import { ReviewReminders, type ReviewRemindersLabels } from "@/components/cabinet/ReviewReminders";
 import { useFavoriteOffers } from "@/components/offers/useFavoriteOffers";
 import { useSession } from "@/components/session/SessionProvider";
 import { Spinner } from "@/components/ui/Spinner";
@@ -23,6 +24,7 @@ const FREE_APPLICATIONS_LIMIT = 3;
 const NOTIFICATION_DATE_KEY = "firstNotificationDate";
 
 export interface VolunteerDashboardLabels {
+    reviewReminders: ReviewRemindersLabels;
     fill: string;
     viewProfile: string;
     edit: string;
@@ -50,7 +52,7 @@ const h3 = "text-[1.17em] font-bold";
  */
 export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
     locale: Locale;
-    hrefs: { volunteer: string; skills: string; preferences: string; membership: string; offer: string };
+    hrefs: { volunteer: string; skills: string; preferences: string; membership: string; offer: string; review: string };
     categories: Record<string, string>;
     labels: VolunteerDashboardLabels;
 }) {
@@ -163,6 +165,7 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
                     </div>
                 </section>
             )}
+            <ReviewReminders side="volunteer" reviewHref={hrefs.review} labels={labels.reviewReminders} className="mt-[1.875rem]" />
             <div className="grid grid-cols-[2fr_1fr] gap-[1.875rem] pt-[1.875rem] pb-14 down-lg:grid-cols-1">
                 <section className={`w-full max-w-[1000px] ${card}`}>
                     <div className={`${cardTop} down-sm:flex-wrap down-sm:gap-y-2.5`}>

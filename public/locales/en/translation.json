@@ -384,5 +384,16 @@
     },
     "Приблизить": "Zoom in",
     "Отдалить": "Zoom out",
-    "Свернуть карту": "Hide map"
+    "Свернуть карту": "Hide map",
+    "reviewReminder": {
+        "Оцените ваши проекты": "Rate your projects",
+        "Как прошли ваши проекты? Ваша оценка поможет следующим волонтёрам": "How did your projects go? Your rating will help future volunteers",
+        "Оцените волонтёров": "Rate volunteers",
+        "Оцените волонтёров, которые у вас побывали": "Rate the volunteers who stayed with you",
+        "Оценить": "Rate",
+        "Скрыть": "Hide",
+        "Без названия": "Untitled",
+        "Волонтёр": "Volunteer",
+        "Отъезд": "Departure"
+    }
 }
