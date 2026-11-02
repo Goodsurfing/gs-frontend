@@ -193,7 +193,7 @@ export function HostReviews({ volunteerHref, offerHref, labels }: {
                 </section>
             </div>
             <HostReviewDialog
-                volunteer={selected}
+                volunteer={selected && { vacancyId: selected.vacancyId, volunteerId: selected.id, firstName: selected.firstName, lastName: selected.lastName, image: selected.image, country: selected.country, city: selected.city, status: selected.statusApplication }}
                 volunteerHref={selected ? href(volunteerHref, selected.id) : ""}
                 onClose={() => setSelected(null)}
                 onSent={() => void Promise.all([loadWaiting(), loadMine(1)])}

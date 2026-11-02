@@ -85,6 +85,8 @@ export const routes = {
     paymentFail: (l: Locale) => path(l, "/payment/fail"),
     myOffers: (l: Locale) => path(l, "/host/my-offers"),
     messenger: (l: Locale) => path(l, "/messenger"),
+    /** Чат по заявке (мессенджер — в старом SPA) */
+    messengerChat: (l: Locale, id: string | number) => path(l, `/messenger/${id}`),
     profileInfo: (l: Locale) => path(l, "/profile/info"),
     profileRole: (l: Locale) => path(l, "/profile/role"),
     profilePreferences: (l: Locale) => path(l, "/profile/preferences"),
