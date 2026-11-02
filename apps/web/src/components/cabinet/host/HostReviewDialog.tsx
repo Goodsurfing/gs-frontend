@@ -52,8 +52,10 @@ const STATUS_BG: Record<string, string> = { new: "bg-primary", accepted: "bg-hos
  * можно одной оценкой — текст необязателен (короткий отзыв); после отправки — «Ваш отзыв был отправлен».
  * В старом при ошибке форма стиралась — здесь введённое остаётся.
  */
-export function HostReviewDialog({ volunteer, volunteerHref, title, photos: withPhotos = true, onClose, onSent, labels }: {
+export function HostReviewDialog({ volunteer, volunteerHref, title, photos: withPhotos = true, initialRating = null, onClose, onSent, labels }: {
     volunteer: ReviewTarget | null;
+    /** Оценка, уже выбранная в письме «Как всё прошло?» */
+    initialRating?: number | null;
     /** Заголовок окна на виду (рабочий стол, заявки); без него — пустой, как на «Отзывах» */
     title?: string;
     /** Можно ли приложить фото (на «Отзывах» — да, в заявках — нет) */
@@ -64,8 +66,14 @@ export function HostReviewDialog({ volunteer, volunteerHref, title, photos: with
     labels: HostReviewDialogLabels;
 }) {
     const session = useSession();
-    const [rating, setRating] = useState<number | null>(null);
+    const [rating, setRating] = useState<number | null>(volunteer ? initialRating : null);
     const [text, setText] = useState("");
+    // При открытии окна — оценка из письма (если пришли по ссылке)
+    const [wasOpen, setWasOpen] = useState(!!volunteer);
+    if (!!volunteer !== wasOpen) {
+        setWasOpen(!!volunteer);
+        if (volunteer) setRating(initialRating);
+    }
     const [photos, setPhotos] = useState<{ id: string; src: string }[]>([]);
     const [pending, setPending] = useState<PendingPhoto[]>([]);
     const [error, setError] = useState<string | null>(null);

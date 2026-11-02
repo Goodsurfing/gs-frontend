@@ -27,8 +27,10 @@ export interface OfferReviewDialogLabels {
  * странице «Отзывы»: пока фото загружаются, отправить нельзя; при закрытии окна
  * загрузки отменяются и в следующее окно не попадают.
  */
-export function OfferReviewDialog({ open, offer, labels, photos, onSend, onClose }: {
+export function OfferReviewDialog({ open, offer, initialRating = null, labels, photos, onSend, onClose }: {
     open: boolean;
+    /** Оценка, уже выбранная в письме «Как всё прошло?» */
+    initialRating?: number | null;
     /** Карточка вакансии над оценкой */
     offer: ReactNode;
     labels: OfferReviewDialogLabels;
@@ -38,8 +40,14 @@ export function OfferReviewDialog({ open, offer, labels, photos, onSend, onClose
     onSend: (review: { rating: number; text: string; imageIds: string[] }) => Promise<string | null>;
     onClose: () => void;
 }) {
-    const [rating, setRating] = useState<number | null>(null);
+    const [rating, setRating] = useState<number | null>(open ? initialRating : null);
     const [text, setText] = useState("");
+    // При открытии окна — оценка из письма (если пришли по ссылке)
+    const [wasOpen, setWasOpen] = useState(open);
+    if (open !== wasOpen) {
+        setWasOpen(open);
+        if (open) setRating(initialRating);
+    }
     const [busy, setBusy] = useState(false);
     const [sent, setSent] = useState(false);
     const [error, setError] = useState<string | null>(null);

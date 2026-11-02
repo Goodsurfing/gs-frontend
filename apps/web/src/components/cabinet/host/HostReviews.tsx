@@ -11,6 +11,7 @@ import { Loading } from "@/components/ui/Loading";
 import { StarRating } from "@/components/ui/StarRating";
 import { browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
+import { clearReviewLink, parseReviewLink } from "@/lib/reviewLink";
 import { textSlice } from "@/lib/textSlice";
 
 import { HostReviewDialog, type HostReviewDialogLabels } from "./HostReviewDialog";
@@ -68,11 +69,22 @@ export function HostReviews({ volunteerHref, offerHref, labels }: {
     const [offers, setOffers] = useState<{ items: OfferReview[]; total: number; page: number } | null>(null);
     const [busy, setBusy] = useState(false);
     const [selected, setSelected] = useState<Waiting | null>(null);
+    const [linkRating, setLinkRating] = useState<number | null>(null);
     const [gallery, setGallery] = useState<{ images: string[]; index: number } | null>(null);
 
     const loadWaiting = useCallback(async () => {
         const { data } = await browserApi(session.token).GET("/api/v1/organization/volunteer/without-review/list").catch(() => ({ data: undefined }));
-        setWaiting(Array.isArray(data) ? data : []);
+        const list = Array.isArray(data) ? data : [];
+        setWaiting(list);
+        // Пришли по звезде из письма — сразу окно отзыва на этого волонтёра
+        const link = parseReviewLink(window.location.search);
+        if (!link?.volunteerId) return;
+        clearReviewLink();
+        const target = list.find((item) => item.id === link.volunteerId && item.vacancyId === link.vacancyId);
+        if (target) {
+            setLinkRating(link.rating);
+            setSelected(target);
+        }
     }, [session.token]);
 
     const loadMine = useCallback(async (page: number) => {
@@ -195,7 +207,11 @@ export function HostReviews({ volunteerHref, offerHref, labels }: {
             <HostReviewDialog
                 volunteer={selected && { vacancyId: selected.vacancyId, volunteerId: selected.id, firstName: selected.firstName, lastName: selected.lastName, image: selected.image, country: selected.country, city: selected.city, status: selected.statusApplication }}
                 volunteerHref={selected ? href(volunteerHref, selected.id) : ""}
-                onClose={() => setSelected(null)}
+                initialRating={linkRating}
+                onClose={() => {
+                    setSelected(null);
+                    setLinkRating(null);
+                }}
                 onSent={() => void Promise.all([loadWaiting(), loadMine(1)])}
                 labels={labels.dialog}
             />
