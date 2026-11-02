@@ -38,6 +38,7 @@
     --color-cta-deep: #00b589;         /* наведение на зелёные кнопки шапки и баннер под ней */
     --color-host: #22e0a5;             /* --color-green: полоска «Организаторам» */
     --color-card: #f5f5f5;             /* фон карточек тарифов в окне «Членство» */
+    --color-muted: #82949f;            /* --color-gray: рамки и подписи полей кабинета */
 
     /* Типографика: size / line-height / weight как в старом фронте */
     --text-h1: 40px;  --text-h1--line-height: 1.2;  --text-h1--font-weight: 600;
@@ -66,11 +67,20 @@
  * Стандартные max-* в Tailwind 4 — это width < N, и ровно на 768/992 px вёрстка
  * разошлась бы со старой. Поэтому в компонентах — только down-*.
  */
+/*
+ * Порядок важен: правила вариантов идут в CSS в порядке объявления, поэтому
+ * от широких к узким — иначе широкая точка перебьёт узкую там, где обе действуют.
+ * Нестандартные (1000, 800, 600) — точки старого кабинета: ProfileInput и
+ * страницы организации (1000, 600), соцсети в форме организации (800).
+ */
 @custom-variant down-3xl (@media (max-width: 1366px));
 @custom-variant down-2xl (@media (max-width: 1280px)); /* шапка: десктопная капсула → мобильная */
 @custom-variant down-xl (@media (max-width: 1180px));
+@custom-variant down-1000 (@media (max-width: 1000px));
 @custom-variant down-lg (@media (max-width: 992px));
+@custom-variant down-800 (@media (max-width: 800px));
 @custom-variant down-md (@media (max-width: 768px));
+@custom-variant down-600 (@media (max-width: 600px));
 @custom-variant down-sm (@media (max-width: 576px));
 @custom-variant down-xs (@media (max-width: 480px));
 
