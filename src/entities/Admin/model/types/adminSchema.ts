@@ -821,6 +821,8 @@ export interface GetAboutProjectInfo {
         vacancyCountryCount: number;
         vacancyCount: number;
         reviewCount: number;
+        /** Принятые заявки за всё время — «больше N путешествий» на главной */
+        tripCount?: number;
     };
     principles: AboutProjectPrinciples[];
     galleryImages: Image[];

@@ -135,8 +135,8 @@
                 "membership-from": "from {{price}} ₽/year"
             },
             "title": "Find the dream journey",
-            "offers-btn": "Over the past 11 years, our Goodsurfers have completed over 25,000 meaningful journeys, participating in projects across a wide range of fields. Choose the direction that resonates with you.",
-            "activity-title": "Or choose a type of activity"
+            "offers-btn": "All offers",
+            "activity-title": "Over the past 11 years, our Goodsurfers have completed over {{trips}} meaningful journeys, participating in projects across a wide range of fields. Choose the direction that resonates with you."
         },
         "sidebar": {
             "К предложениям": "To offers",
