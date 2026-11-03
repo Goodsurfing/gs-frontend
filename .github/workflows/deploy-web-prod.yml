@@ -2,7 +2,7 @@ name: Deploy web (новый фронт) to prod
 
 # Новый фронт (эпик GS-212) на проде за канарейкой: Traefik отправляет в
 # него запрос только с cookie gs_web=1 (gs-infra envs/prod/cloud-init.yaml,
-# сервис web). Пользователи без cookie видят старое SPA. Выкатывается тем
+# сервис web). С 03.11.2026 новый фронт видят все, старое SPA — только админка. Выкатывается тем
 # же тегом релиза, что и старое SPA (deploy-prod.yml).
 
 on:
@@ -95,8 +95,11 @@ jobs:
           echo "Новый фронт не ответил через канарейку"
           exit 1
 
-      - name: Без cookie — по-прежнему старое SPA
+      - name: Без cookie — новый фронт, админка — старое SPA
         run: |
+          # С 03.11.2026 новый фронт открыт всем (роутер web-all в Traefik); в старом SPA осталась только админка
           body=$(curl -s -m 10 ${{ env.SITE_URL }}/healthz)
-          if echo "$body" | grep -q '"service":"web"'; then echo "Канарейка пропускает запросы без cookie!"; exit 1; fi
-          echo "старое SPA OK"
+          if ! echo "$body" | grep -q '"service":"web"'; then echo "Без cookie /healthz отвечает не новый фронт: $body"; exit 1; fi
+          admin=$(curl -s -m 10 ${{ env.SITE_URL }}/admin)
+          if echo "$admin" | grep -q '/_next/'; then echo "/admin отдаёт новый фронт — админка должна остаться в старом SPA"; exit 1; fi
+          echo "новый фронт для всех, админка — старое SPA: OK"

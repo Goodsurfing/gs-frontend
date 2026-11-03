@@ -1,8 +1,7 @@
 name: Deploy web (новый фронт) to staging
 
-# Новый фронт (эпик GS-212) на стейдже за канарейкой: Traefik отправляет в
-# него запрос только с cookie gs_web=1 и только по уже перенесённым адресам.
-# Пользователи без cookie видят старое SPA.
+# Новый фронт (эпик GS-212) на стейдже. С 03.11.2026 Traefik отправляет в
+# него все перенесённые адреса (роутер web-all); старое SPA — только админка.
 
 on:
   push:
@@ -90,8 +89,11 @@ jobs:
           done
           echo "Новый фронт не ответил через канарейку"
           exit 1
-      - name: Без cookie — по-прежнему старое SPA
+      - name: Без cookie — новый фронт, админка — старое SPA
         run: |
+          # С 03.11.2026 новый фронт открыт всем (роутер web-all в Traefik); в старом SPA осталась только админка
           body=$(curl -s -m 10 https://staging.goodsurfing.org/healthz)
-          if echo "$body" | grep -q '"service":"web"'; then echo "Канарейка пропускает запросы без cookie!"; exit 1; fi
-          echo "старое SPA OK"
+          if ! echo "$body" | grep -q '"service":"web"'; then echo "Без cookie /healthz отвечает не новый фронт: $body"; exit 1; fi
+          admin=$(curl -s -m 10 https://staging.goodsurfing.org/admin)
+          if echo "$admin" | grep -q '/_next/'; then echo "/admin отдаёт новый фронт — админка должна остаться в старом SPA"; exit 1; fi
+          echo "новый фронт для всех, админка — старое SPA: OK"
