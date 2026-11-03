@@ -6,7 +6,7 @@ export function Avatar({ src, name, size = 30, className = "" }: { src?: string;
     const box = { width: size, height: size };
     if (src) {
         // eslint-disable-next-line @next/next/no-img-element -- аватар с API, размер мал
-        return <img src={src} alt="" style={box} className={`shrink-0 rounded-full object-cover ${className}`} />;
+        return <img loading="eager" src={src} alt="" style={box} className={`shrink-0 rounded-full object-cover ${className}`} />;
     }
     const letter = name?.trim().charAt(0).toUpperCase();
     return (

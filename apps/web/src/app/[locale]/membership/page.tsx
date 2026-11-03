@@ -180,7 +180,7 @@ export default async function MembershipPage({ params }: Props) {
                             </div>
                             <div className="min-h-[360px] overflow-hidden rounded-lg bg-[#dfe7eb] down-md:min-h-[280px] down-xs:min-h-[220px]">
                                 {/* eslint-disable-next-line @next/next/no-img-element -- иллюстрация */}
-                                <img src="/web/images/membership/international-club.png" alt={t("international-club.image-alt")} loading="lazy" className="block h-full w-full object-cover outline-1 -outline-offset-1 outline-black/6" />
+                                <img src="/web/images/membership/international-club.webp" alt={t("international-club.image-alt")} loading="lazy" className="block h-full w-full object-cover outline-1 -outline-offset-1 outline-black/6" />
                             </div>
                         </div>
                         <div className="mx-auto mt-7 max-w-[720px] text-center">

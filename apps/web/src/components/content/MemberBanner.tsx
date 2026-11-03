@@ -19,7 +19,7 @@ export function MemberBanner({ locale, title, button, anchor, vertical = false, 
         ? "min-h-[280px] max-w-[240px] bg-center px-[18px] py-6 down-lg:min-h-[174px] down-lg:max-w-full"
         : "min-h-[174px] max-w-[468px] px-[30px]";
     return (
-        <div className={`box-border flex w-full flex-col items-center justify-center gap-5 bg-[url(/web/images/member-banner.png)] bg-cover bg-no-repeat ${shape} ${className}`}>
+        <div className={`box-border flex w-full flex-col items-center justify-center gap-5 bg-[url(/web/images/member-banner.webp)] bg-cover bg-no-repeat ${shape} ${className}`}>
             <h3 className={`text-center leading-[130%] font-medium text-white down-sm:text-[16px] ${vertical ? "text-[16px]" : "text-[18px]"}`}>{title}</h3>
             <a
                 href={`${routes.membership(locale)}${anchor ? `#${anchor}` : ""}`}

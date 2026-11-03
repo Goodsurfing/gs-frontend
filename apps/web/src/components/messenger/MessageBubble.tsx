@@ -60,7 +60,7 @@ export const MessageBubble = memo(function MessageBubble({ own, name, avatar, pr
                 {image && (
                     <button type="button" onClick={() => onImage(mediaUrl(image) ?? "")} className="cursor-pointer border-0 bg-transparent p-0">
                         {/* eslint-disable-next-line @next/next/no-img-element -- вложение с API, размер неизвестен */}
-                        <img src={mediaUrl(image, "medium")} alt="" className="w-full rounded-[10px] object-contain" />
+                        <img loading="eager" src={mediaUrl(image, "medium")} alt="" className="w-full rounded-[10px] object-contain" />
                     </button>
                 )}
                 {file && (

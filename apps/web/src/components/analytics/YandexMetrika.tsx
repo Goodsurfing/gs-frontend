@@ -162,7 +162,7 @@ ym(${COUNTER_ID},'init',{webvisor:true,clickmap:true,ecommerce:"dataLayer",refer
             <noscript>
                 <div>
                     {/* eslint-disable-next-line @next/next/no-img-element -- пиксель Метрики без JS */}
-                    <img src={`https://mc.yandex.ru/watch/${COUNTER_ID}`} style={{ position: "absolute", left: "-9999px" }} alt="" />
+                    <img loading="eager" src={`https://mc.yandex.ru/watch/${COUNTER_ID}`} style={{ position: "absolute", left: "-9999px" }} alt="" />
                 </div>
             </noscript>
             <FlushPendingGoals />

@@ -35,7 +35,7 @@ export async function HowItWork({ locale, className = "", showButton = true }: {
                             <p className="mt-1.5 text-[0.875rem] leading-[157%] text-ink-secondary opacity-50">{t(step.text)}</p>
                         </div>
                         {/* eslint-disable-next-line @next/next/no-img-element -- иконки 100×100 из старого фронта */}
-                        <img src={`/web/images/how-it-work/img${index + 1}.png`} alt={t(step.title)} loading="lazy" className="my-2.5" />
+                        <img src={`/web/images/how-it-work/img${index + 1}.png`} alt={t(step.title)} loading="lazy" width={100} height={100} className="my-2.5" />
                     </Reveal>
                 ))}
             </div>
