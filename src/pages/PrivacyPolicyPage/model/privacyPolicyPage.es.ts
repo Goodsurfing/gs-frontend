@@ -35,4 +35,8 @@ export const privacyPolicyDataEs = [
         id: "9",
         title: "9. Responsabilidad por la organización del tratamiento de datos personales",
     },
+    {
+        id: "10",
+        title: "10. Estadísticas de uso anónimas",
+    },
 ];

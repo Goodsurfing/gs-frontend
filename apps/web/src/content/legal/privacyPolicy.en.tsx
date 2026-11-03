@@ -17,6 +17,7 @@ export const PRIVACY_POLICY_EN: LegalDocument = {
         { id: "7", title: "7. Rights of Personal Data Subjects" },
         { id: "8", title: "8. Measures Taken by the Organization to Ensure Compliance with the Operator’s Obligations When Processing Personal Data" },
         { id: "9", title: "9. Responsibility for Organizing the Processing of Personal Data" },
+        { id: "10", title: "10. Anonymous Usage Statistics" },
     ],
     body: (
         <>
@@ -658,6 +659,10 @@ export const PRIVACY_POLICY_EN: LegalDocument = {
                         </li>
                     </ol>
                 </div>
+            </div>
+            <div className={SECTION} id="10">
+                <h2 className={TITLE}>10. Anonymous Usage Statistics</h2>
+                <div>To improve the website and the app, we collect anonymous usage statistics: which pages and screens are opened, which actions are taken (for example, viewing an opportunity or sending an application), the device type and the app version. This data does not include your name, email address, phone number or messages. The website uses Yandex.Metrica. In the app, you can turn off statistics collection in the settings.</div>
             </div>
     
         </>

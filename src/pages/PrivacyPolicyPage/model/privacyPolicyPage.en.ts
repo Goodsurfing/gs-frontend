@@ -35,4 +35,8 @@ export const privacyPolicyDataEn = [
         id: "9",
         title: "9. Responsibility for Organizing the Processing of Personal Data",
     },
+    {
+        id: "10",
+        title: "10. Anonymous Usage Statistics",
+    },
 ];
