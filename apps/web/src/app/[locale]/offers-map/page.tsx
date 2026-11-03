@@ -70,6 +70,7 @@ export default async function OffersMapPage({ params, searchParams }: Props) {
                         noTitle: t("Без заголовка"),
                         noDescription: t("Без описания"),
                     },
+                    favorite: { add: t("Добавить в избранное"), remove: t("Убрать из избранного") },
                     tabs: { list: tMap("Список вакансий"), map: tMap("Карта"), filter: tMap("Фильтр") },
                     filters: {                        from: tMap("Дата начала"),
                         to: tMap("Дата окончания"),

@@ -29,7 +29,8 @@ export const expectPageWorks = async (page: Page, url: string, { allowSignin = f
         if (!allowSignin) {
             expect(page.url(), `${url}: выкинуло на страницу входа`).not.toMatch(/\/signin/);
         }
-        expect((await page.locator('main, #root').first().innerText()).trim().length, url).toBeGreaterThan(50);
+        // Пустые состояния кабинета (нет подписчиков, нет сообщений) короткие — проверяем, что основной блок не пустой
+        expect((await page.locator('main, #root').first().innerText()).trim().length, url).toBeGreaterThan(0);
         expect(errors, `JS-ошибки на ${url}`).toEqual([]);
     } finally {
         page.off('pageerror', onError);

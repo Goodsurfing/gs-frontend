@@ -1,6 +1,7 @@
 import { stripLocale } from "@/i18n/config";
 
-const normalize = (path: string) => stripLocale(path.split(/[?#]/)[0] ?? "").replace(/\/+$/, "") || "/";
+/** Адрес без языка, query, якоря и хвостового «/» — для сравнения страниц */
+export const normalizePath = (path: string) => stripLocale(path.split(/[?#]/)[0] ?? "").replace(/\/+$/, "") || "/";
 
 /**
  * Ведёт ли внутренняя ссылка `href` на открытую страницу. Язык не учитывается:
@@ -9,5 +10,5 @@ const normalize = (path: string) => stripLocale(path.split(/[?#]/)[0] ?? "").rep
  */
 export const isSamePage = (pathname: string, href: string): boolean => {
     if (!href.startsWith("/") || href.startsWith("//")) return false;
-    return normalize(pathname) === normalize(href);
+    return normalizePath(pathname) === normalizePath(href);
 };

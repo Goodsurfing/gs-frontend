@@ -3,6 +3,8 @@
 import { usePathname } from "next/navigation";
 import { type ReactNode, useState } from "react";
 
+import { normalizePath } from "@/lib/currentPage";
+
 export interface CabinetMenuItem {
     text: string;
     /** Адрес раздела (с языковым префиксом) */
@@ -44,7 +46,13 @@ export function CabinetFrame({ items, labels, fitContent = false, children }: {
 }) {
     const pathname = usePathname() ?? "";
     const [open, setOpen] = useState(true);
-    const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+    // На сервере русский адрес приходит с внутренним /ru (rewrite в proxy.ts), в браузере — без него:
+    // без нормализации сервер и браузер расходятся в активном пункте и подменю (React #418)
+    const current = normalizePath(pathname);
+    const isActive = (href: string) => {
+        const target = normalizePath(href);
+        return current === target || current.startsWith(`${target}/`);
+    };
     const isItemActive = (item: CabinetMenuItem) => (item.group ? false : isActive(item.href)) || (item.children ?? []).some((child) => isActive(child.href));
     // Второй ряд — только пока открыт подраздел группы (в старом так и было; на «Описании»
     // ряд в старом пропадал — это исправлено: «Описание» тоже подраздел)

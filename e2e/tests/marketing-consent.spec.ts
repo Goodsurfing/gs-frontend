@@ -42,7 +42,8 @@ test.describe('Согласие на рассылку', () => {
         await expect(page).not.toHaveURL(/\/signin/, { timeout: 20_000 });
 
         await page.goto('/profile/privacy');
-        const toggle = page.getByRole('checkbox', { name: /Получать рассылку/ });
+        // Переключатель — role="switch" (новый фронт), в старом SPA был checkbox
+        const toggle = page.getByRole('switch', { name: /Получать рассылку/ }).or(page.getByRole('checkbox', { name: /Получать рассылку/ }));
         await expect(toggle).toBeChecked({ timeout: 15_000 });
         await toggle.click();
         await expect(toggle).not.toBeChecked();

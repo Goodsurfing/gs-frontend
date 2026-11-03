@@ -25,6 +25,8 @@ export default async function ProfileInfoPage({ params }: Props) {
     if (!isLocale(locale)) notFound();
     const [t, tp] = await Promise.all([getTranslator(locale), getTranslator(locale, "profile")]);
     const i = (key: string) => tp(`info.${key}`);
+    // {{date}} подставляет баннер в браузере: серверный t() без значения стёр бы его
+    const keepDate = { date: "{{date}}" };
     return (
         <CabinetShell locale={locale} items={profileMenu(locale, t)}>
             <main className="w-full">
@@ -38,9 +40,9 @@ export default async function ProfileInfoPage({ params }: Props) {
                             locale={locale}
                             membershipHref={routes.membership(locale)}
                             labels={{
-                                activeUntil: i("Членство активно до {{date}}"),
+                                activeUntil: tp("info.Членство активно до {{date}}", keepDate),
                                 renew: i("Продлить членство"),
-                                clubUntil: i("Международный клуб — активно до {{date}}"),
+                                clubUntil: tp("info.Международный клуб — активно до {{date}}", keepDate),
                                 renewClub: i("Продлить участие"),
                                 volunteers: i("Волонтёрам"),
                                 volunteersText: tp("info.Получи возможность оставлять неограниченное количество откликов и путешествовать без лимитов — {{price}} руб/год", { price: 990 }),
