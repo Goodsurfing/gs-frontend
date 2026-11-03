@@ -50,12 +50,12 @@ npm start          # http://localhost:3000
 
 VK-auth flow локально не работает (callback зарегистрирован на staging/prod-домены). Для входа используй тестовые аккаунты через `POST /api/v2/token`:
 
-| email | password | роль |
-|---|---|---|
-| `vol@test.com` | `Test1234!` | волонтёр |
-| `host@test.com` | `Test1234!` | хост |
+| email | роль |
+|---|---|
+| `vol@test.com` | волонтёр |
+| `host@test.com` | хост |
 
-(тот же набор использует `e2e/global-setup.ts`).
+Пароль в репозитории не хранится (он публичный): спросите у владельца. Для e2e — переменная `E2E_USERS_PASSWORD` (в CI — секрет репозитория), её читает `e2e/config.ts`.
 
 ## Кастомизация
 
