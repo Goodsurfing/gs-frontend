@@ -7,8 +7,8 @@ import {
 
 import { RouteType } from "../../model/types/langRouter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
-import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 import { allRoutes } from "../../model/config/RoutesConfig";
+import { LeaveSpa } from "../LeaveSpa/LeaveSpa";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { isLegacyRuPath, localePrefix, stripLocale } from "@/shared/config/routes/localePath";
 
@@ -69,7 +69,8 @@ export const LangRouter = () => {
                 <Route path={localePrefix(locale) || "/"}>
                     {renderRouteWithChildren(allRoutes)}
                 </Route>
-                <Route path="*" element={<NotFoundPage />} />
+                {/* Остальной сайт — новый фронт: ссылки туда из админки перезагружают страницу */}
+                <Route path="*" element={<LeaveSpa />} />
             </Routes>
         </Suspense>
     );
