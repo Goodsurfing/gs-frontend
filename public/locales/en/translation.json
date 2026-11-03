@@ -54,7 +54,7 @@
         "Отправить ещё раз через {{seconds}}": "Resend in {{seconds}} seconds",
         "Подтвердить": "Confirm",
         "Пользователь был удален или не создавался": "The user was deleted or was never created",
-        "Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга": "I want to receive emails about new projects, offers and Goodsurfing news",
+        "Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга": "Send me picks of new projects and Goodsurfing news",
         "marketingConsentHint": "You can unsubscribe at any time in your profile or via the link in any email."
     },
     "main": {
@@ -364,7 +364,7 @@
     "Это неофициальный перевод для удобства Юридическую силу имеет только версия документа на русском языке": "This is an unofficial translation provided for convenience. Only the Russian version of this document is legally binding.",
     "unsubscribed": {
         "title": "GoodSurfing newsletter",
-        "done": "You’ve unsubscribed. You won’t receive emails about new projects, offers and news anymore.",
+        "done": "You’ve unsubscribed. You won’t receive project picks and news anymore.",
         "invalid": "This unsubscribe link is invalid. You can unsubscribe in your profile under “Privacy”.",
         "hint": "You’ll still receive emails about your applications, membership and account. You can subscribe again at any time in your settings.",
         "settings": "Open settings"
