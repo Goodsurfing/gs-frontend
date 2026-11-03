@@ -20,7 +20,7 @@ test.describe('Согласие на рассылку', () => {
         const password = 'E2eConsent2026x';
 
         await page.goto('/signup');
-        const checkbox = page.getByRole('checkbox', { name: /Хочу получать письма/ });
+        const checkbox = page.getByRole('checkbox', { name: /Присылать подборки новых проектов/ });
         // По умолчанию отмечено (решение владельца 29.10.2026)
         await expect(checkbox).toBeChecked();
         await page.getByLabel('E-mail').fill(email);
