@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { SessionProvider } from "@/components/session/SessionProvider";
-import type { Locale } from "@/i18n/config";
+import { type Locale, localePrefix } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { routes } from "@/lib/routes";
 
@@ -23,7 +23,7 @@ export async function AuthShell({ locale, cancelHref, stayIfSignedIn = false, ch
     const t = await getTranslator(locale);
     return (
         <SessionProvider>
-            {!stayIfSignedIn && <RedirectIfSignedIn href={routes.main(locale)} />}
+            {!stayIfSignedIn && <RedirectIfSignedIn href={routes.main(locale)} prefix={localePrefix(locale)} />}
             <header className="box-border flex w-full items-center border-b border-accent-bg bg-white px-[50px] py-5 down-xs:hidden">
                 <a href={routes.main(locale)} className="mr-[25px]">
                     {/* eslint-disable-next-line @next/next/no-img-element -- логотип */}
