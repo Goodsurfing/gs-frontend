@@ -664,7 +664,15 @@ export const TextContentEs: FC<TextContentProps> = (props: TextContentProps) => 
             </div>
             <div className={styles.content} id="10">
                 <h2 className={styles.title}>10. Estadísticas de uso anónimas</h2>
-                <p className={styles.description}>Para mejorar el sitio web y la aplicación, recopilamos estadísticas de uso anónimas: qué páginas y pantallas se abren, qué acciones se realizan (por ejemplo, ver una oportunidad o enviar una solicitud), el tipo de dispositivo y la versión de la aplicación. Estos datos no incluyen tu nombre, correo electrónico, teléfono ni mensajes. El sitio web utiliza Yandex.Metrica. En la aplicación, puedes desactivar la recopilación de estadísticas en los ajustes.</p>
+                <p className={styles.description}>
+                    Para mejorar el sitio web y la aplicación, recopilamos estadísticas de
+                    uso anónimas: qué páginas y pantallas se abren, qué acciones se realizan
+                    (por ejemplo, ver una oportunidad o enviar una solicitud), el tipo de
+                    dispositivo y la versión de la aplicación. Estos datos no incluyen tu
+                    nombre, correo electrónico, teléfono ni mensajes. El sitio web utiliza
+                    Yandex.Metrica. En la aplicación, puedes desactivar la recopilación de
+                    estadísticas en los ajustes.
+                </p>
             </div>
         </section>
     );

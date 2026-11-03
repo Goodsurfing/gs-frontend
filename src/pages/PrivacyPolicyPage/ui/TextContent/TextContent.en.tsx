@@ -652,7 +652,15 @@ export const TextContentEn: FC<TextContentProps> = (props: TextContentProps) => 
             </div>
             <div className={styles.content} id="10">
                 <h2 className={styles.title}>10. Anonymous Usage Statistics</h2>
-                <p className={styles.description}>To improve the website and the app, we collect anonymous usage statistics: which pages and screens are opened, which actions are taken (for example, viewing an opportunity or sending an application), the device type and the app version. This data does not include your name, email address, phone number or messages. The website uses Yandex.Metrica. In the app, you can turn off statistics collection in the settings.</p>
+                <p className={styles.description}>
+                    To improve the website and the app, we collect anonymous usage
+                    statistics: which pages and screens are opened, which actions are taken
+                    (for example, viewing an opportunity or sending an application), the
+                    device type and the app version. This data does not include your name,
+                    email address, phone number or messages. The website uses
+                    Yandex.Metrica. In the app, you can turn off statistics collection in
+                    the settings.
+                </p>
             </div>
         </section>
     );
