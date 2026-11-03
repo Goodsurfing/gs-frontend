@@ -1,5 +1,5 @@
 import { test, expect, request, APIRequestContext } from '@playwright/test';
-import { API_URL } from '../config';
+import { API_URL, TEST_USERS_PASSWORD } from '../config';
 import { e2eHeaders, hasE2eToken, NO_TOKEN_REASON } from '../support/testApi';
 
 /**
@@ -131,7 +131,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
         // Одноразовый волонтёр: заявка уникальна по паре (волонтёр, вакансия),
         // с общим vol@test.com повторный прогон за день падал бы.
         const volAuth = await registerFreshVolunteer(api, 'accept');
-        const hostAuth = await login(api, 'host@test.com', 'Test1234!');
+        const hostAuth = await login(api, 'host@test.com', TEST_USERS_PASSWORD);
         const orgId = await getHostOrgId(api, hostAuth);
         const vacancyId = await findVacancyByTitle(api, orgId, 'E2E Тестовая вакансия 1 — не удалять');
 
@@ -173,7 +173,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
             baseURL: API_URL, ignoreHTTPSErrors: true,
         });
 
-        const hostAuth = await login(api, 'host@test.com', 'Test1234!');
+        const hostAuth = await login(api, 'host@test.com', TEST_USERS_PASSWORD);
         const orgId = await getHostOrgId(api, hostAuth);
         const vacancyId = await findVacancyByTitle(api, orgId, 'E2E Тестовая вакансия 2 — не удалять');
 
@@ -205,7 +205,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
             baseURL: API_URL, ignoreHTTPSErrors: true,
         });
 
-        const hostAuth = await login(api, 'host@test.com', 'Test1234!');
+        const hostAuth = await login(api, 'host@test.com', TEST_USERS_PASSWORD);
         const orgId = await getHostOrgId(api, hostAuth);
         const vacancyId = await findVacancyByTitle(api, orgId, 'E2E Тестовая вакансия 3 — не удалять');
         const volAuth = await registerFreshVolunteer(api, 'dup');
@@ -228,7 +228,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
             baseURL: API_URL, ignoreHTTPSErrors: true,
         });
 
-        const hostAuth = await login(api, 'host@test.com', 'Test1234!');
+        const hostAuth = await login(api, 'host@test.com', TEST_USERS_PASSWORD);
         const orgId = await getHostOrgId(api, hostAuth);
         const vacancyIds = await Promise.all([1, 2, 3, 4].map(
             (n) => findVacancyByTitle(api, orgId, `E2E Тестовая вакансия ${n} — не удалять`),
@@ -260,7 +260,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
 
         // host@test.com в фикстуре одновременно и хост, и волонтёр —
         // реалистичный кейс, встречается на проде.
-        const hostAuth = await login(api, 'host@test.com', 'Test1234!');
+        const hostAuth = await login(api, 'host@test.com', TEST_USERS_PASSWORD);
         const orgId = await getHostOrgId(api, hostAuth);
         const vacancyId = await findVacancyByTitle(api, orgId, 'E2E Тестовая вакансия 4 — не удалять');
 
@@ -279,7 +279,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
             baseURL: API_URL, ignoreHTTPSErrors: true,
         });
 
-        const hostAuth = await login(api, 'host@test.com', 'Test1234!');
+        const hostAuth = await login(api, 'host@test.com', TEST_USERS_PASSWORD);
         const orgId = await getHostOrgId(api, hostAuth);
         // 5-я фикстурная вакансия — applicationEndDate в прошлом.
         const vacancyId = await findVacancyByTitle(api, orgId, 'E2E Тестовая вакансия 5 — не удалять');
@@ -300,7 +300,7 @@ test.describe('Волонтёр и хост: заявки на вакансию'
             baseURL: API_URL, ignoreHTTPSErrors: true,
         });
 
-        const hostAuth = await login(api, 'host@test.com', 'Test1234!');
+        const hostAuth = await login(api, 'host@test.com', TEST_USERS_PASSWORD);
         const orgId = await getHostOrgId(api, hostAuth);
         const vacancyId = await findVacancyByTitle(api, orgId, 'E2E Тестовая вакансия 4 — не удалять');
         const volAuth = await registerFreshVolunteer(api, 'chat');

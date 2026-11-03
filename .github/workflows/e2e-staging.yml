@@ -57,6 +57,7 @@ jobs:
           MAILPIT_PASSWORD: ${{ secrets.MAILPIT_PASSWORD }}
           # /api/test/* стейджа закрыты токеном (gs-backend #439)
           E2E_TOKEN: ${{ secrets.E2E_TOKEN }}
+          E2E_USERS_PASSWORD: ${{ secrets.E2E_USERS_PASSWORD }}
 
       - name: Upload report
         if: failure()
