@@ -56,7 +56,7 @@ export function GalleryLightbox({ images, index, onClose, labels }: {
                                 {images.map((src, i) => (
                                     <div key={`${i}-${src}`} className="w-full shrink-0 snap-start">
                                         {/* eslint-disable-next-line @next/next/no-img-element -- фото из хранилища */}
-                                        <img src={src} alt={`${labels.photo} ${i + 1}`} className="mx-auto block max-h-[calc(80vh-100px)] w-full object-contain" />
+                                        <img loading="eager" src={src} alt={`${labels.photo} ${i + 1}`} className="mx-auto block max-h-[calc(80vh-100px)] w-full object-contain" />
                                     </div>
                                 ))}
                             </div>

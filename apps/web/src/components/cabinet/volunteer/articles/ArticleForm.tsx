@@ -123,7 +123,7 @@ export function ArticleForm({ locale, initial, busy, labels, onSubmit, onUploadE
                     {fields.image ? (
                         <div className="relative max-w-full">
                             {/* eslint-disable-next-line @next/next/no-img-element -- обложка из хранилища */}
-                            <img src={mediaUrl(fields.image, "large")} alt="" className="max-h-[270px] w-full overflow-hidden object-cover" />
+                            <img loading="eager" src={mediaUrl(fields.image, "large")} alt="" className="max-h-[270px] w-full overflow-hidden object-cover" />
                             {uploading ? <Spinner className="absolute top-1/2 left-1/2 !w-auto -translate-x-1/2 -translate-y-1/2" /> : (
                                 <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-2.5">
                                     <label className={`${coverButton} ${focusRing}`}>

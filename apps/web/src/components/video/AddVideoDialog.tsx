@@ -118,7 +118,7 @@ export function AddVideoDialog({ categories, labels }: { categories: { id: numbe
                                 <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-[10px] border border-dashed border-caption bg-field p-5 text-center text-[14px] text-caption">
                                     {cover
                                         // eslint-disable-next-line @next/next/no-img-element -- загруженная обложка
-                                        ? <img src={cover.url} alt="" className="max-h-[200px] object-cover" />
+                                        ? <img loading="eager" src={cover.url} alt="" className="max-h-[200px] object-cover" />
                                         : labels.cover}
                                     <input type="file" accept="image/*" hidden onChange={(event) => void upload(event.target.files?.[0])} />
                                     {errors.cover && <span className="text-[12px] text-error">{errors.cover}</span>}

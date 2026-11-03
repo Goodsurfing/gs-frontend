@@ -9,7 +9,7 @@ function Medal({ achievement }: { achievement: Achievement }) {
     return (
         <div className="flex w-full max-w-[70px] flex-col items-center text-center text-[10px] text-caption">
             {/* eslint-disable-next-line @next/next/no-img-element -- значок из справочника */}
-            <img src={achievement.image} alt={achievement.name} className="w-8" />
+            <img loading="eager" src={achievement.image} alt={achievement.name} className="w-8" />
             <span className="mt-[5px]">{achievement.name}</span>
         </div>
     );

@@ -18,7 +18,7 @@ export function ImageLightbox({ src, alt, closeLabel, className = "" }: {
             <Dialog.Trigger asChild>
                 <button type="button" className={`block cursor-pointer ${className}`} aria-label={alt}>
                     {/* eslint-disable-next-line @next/next/no-img-element -- статичные сканы документов, размеры как в старом фронте */}
-                    <img src={src} alt={alt} className="block w-full object-cover" />
+                    <img loading="eager" src={src} alt={alt} className="block w-full object-cover" />
                 </button>
             </Dialog.Trigger>
             <Dialog.Portal>
@@ -34,7 +34,7 @@ export function ImageLightbox({ src, alt, closeLabel, className = "" }: {
                             </svg>
                         </Dialog.Close>
                         {/* eslint-disable-next-line @next/next/no-img-element -- см. выше */}
-                        <img src={src} alt="" className="block max-h-[80dvh] w-full object-cover" />
+                        <img loading="eager" src={src} alt="" className="block max-h-[80dvh] w-full object-cover" />
                     </Dialog.Content>
                 </Dialog.Overlay>
             </Dialog.Portal>

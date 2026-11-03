@@ -52,6 +52,9 @@ function Section({ title, children, className = "" }: { title?: string; children
 }
 
 /** Главная (MainPage старого фронта, GS-219) */
+/** Ширина картинок «преимуществ» (высота у всех 230) — место резервируется до загрузки */
+const BENEFIT_WIDTHS = [197, 208, 197];
+
 export default async function HomePage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
@@ -200,7 +203,7 @@ export default async function HomePage({ params }: Props) {
                     ].map(([title = "", text = ""], index) => (
                         <Reveal key={title} from={index % 2 === 0 ? "zoom-in" : "zoom-out"} className="flex w-[32%] flex-col items-center text-center text-ink-secondary down-md:mb-10 down-md:w-full">
                             {/* eslint-disable-next-line @next/next/no-img-element -- иллюстрация */}
-                            <img src={`/web/images/home/benefit${index + 1}.png`} alt={tMain(title)} loading="lazy" />
+                            <img src={`/web/images/home/benefit${index + 1}.png`} alt={tMain(title)} loading="lazy" width={BENEFIT_WIDTHS[index]} height={230} />
                             <h3 className="mt-10 mb-5 text-[1.125rem] leading-[122%] font-medium">{tMain(title)}</h3>
                             <p className="text-[0.875rem] leading-[157%]">{tMain(text)}</p>
                         </Reveal>

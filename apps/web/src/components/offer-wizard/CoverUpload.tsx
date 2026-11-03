@@ -89,7 +89,7 @@ export function CoverUpload({ value, onChange, token, labels }: {
                 <div className="relative max-w-full">
                     <div className={busy ? "opacity-50" : ""}>
                         {/* eslint-disable-next-line @next/next/no-img-element -- обложка из хранилища, размеры как в старом фронте */}
-                        <img src={src} alt="" className="relative max-h-[270px] w-full overflow-hidden object-cover" />
+                        <img loading="eager" src={src} alt="" className="relative max-h-[270px] w-full overflow-hidden object-cover" />
                     </div>
                     {!busy && (
                         <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-2.5">
