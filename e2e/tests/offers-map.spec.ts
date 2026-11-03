@@ -76,7 +76,8 @@ test.describe('Карта вакансий — интерактивность', 
     test('зум-контрол остаётся кликабельным', async ({ page }) => {
         await page.goto('/offers-map');
 
-        const zoomPlus = page.locator(ymaps('zoom__plus')).first();
+        // Новый фронт рисует свои кнопки зума (стандартные контролы Яндекса выключены)
+        const zoomPlus = page.getByRole('button', { name: 'Приблизить', exact: true }).first();
         await expect(zoomPlus).toBeVisible({ timeout: MAP_TIMEOUT });
         // .click() сам провалится, если кнопку перекрывает другой элемент
         await zoomPlus.click();
