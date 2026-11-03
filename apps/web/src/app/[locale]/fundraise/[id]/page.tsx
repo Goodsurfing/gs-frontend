@@ -97,6 +97,7 @@ export default async function FundraisePage({ params }: Props) {
     const donors = await getDonors(locale, id);
 
     const gallery = fundraise.galleryImages.map((image) => mediaUrl(image, "large")).filter((url): url is string => !!url);
+    const galleryThumbs = fundraise.galleryImages.map((image) => mediaUrl(image, "medium")).filter((url): url is string => !!url);
     const galleryLabels = { close: t("Закрыть"), prev: t("slider.previous"), next: t("slider.next"), photo: t("gallery.photo") };
     const hrefs = {
         signIn: routes.signIn(locale),
@@ -129,7 +130,7 @@ export default async function FundraisePage({ params }: Props) {
                             )}
                         </>
                     )}
-                    gallery={<OfferPhotoStack images={gallery} labels={{ photos: tOffer("personalOffer.Фотографии"), ...galleryLabels }} />}
+                    gallery={<OfferPhotoStack images={gallery} thumbs={galleryThumbs} labels={{ photos: tOffer("personalOffer.Фотографии"), ...galleryLabels }} />}
                     actions={<FundraiseActions fundraiseId={id} variant="hero" hrefs={hrefs} labels={actionLabels} />}
                     labels={{ status: ["active", "close", "draft"].includes(fundraise.status) ? d(fundraise.status) : "", reviewsCount: "", noReviews: "" }}
                 />

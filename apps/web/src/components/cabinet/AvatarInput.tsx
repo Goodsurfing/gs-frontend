@@ -33,7 +33,7 @@ export function AvatarInput({ src, href, labels, onFile }: {
                     className={`relative flex h-[172px] w-[172px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary transition-opacity duration-150 hover:opacity-80 hover:duration-0 down-1000:h-[150px] down-1000:w-[150px] down-600:h-[100px] down-600:w-[100px] ${src ? "before:absolute before:top-[70%] before:z-[2] before:h-[53px] before:w-48 before:bg-black before:opacity-50 after:absolute after:top-3/4 after:z-[3] after:h-[26px] after:w-[32.5px] after:bg-[url(/web/images/image-subicon.png)] after:bg-no-repeat" : ""}`}
                 >
                     {/* eslint-disable-next-line @next/next/no-img-element -- картинка с API или значок фотоаппарата */}
-                    <img src={src || "/web/images/default-image-file.png"} alt="profile-pic" className={src ? "absolute h-full w-full rounded-[inherit] object-cover" : ""} />
+                    <img loading="lazy" decoding="async" src={src || "/web/images/default-image-file.png"} alt="profile-pic" className={src ? "absolute h-full w-full rounded-[inherit] object-cover" : ""} />
                     <input
                         type="file"
                         accept="image/*"

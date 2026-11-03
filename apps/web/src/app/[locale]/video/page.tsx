@@ -109,7 +109,7 @@ export default async function VideoPage({ params, searchParams }: Props) {
                                             <div className="flex flex-col">
                                                 {image
                                                     // eslint-disable-next-line @next/next/no-img-element -- обложка из хранилища
-                                                    ? <img src={image} alt="preview" className="h-[190px] w-[337px] object-cover down-sm:w-full" />
+                                                    ? <img loading="lazy" decoding="async" src={image} alt="preview" className="h-[190px] w-[337px] object-cover down-sm:w-full" />
                                                     : <div className="h-[190px] w-[337px] bg-accent-bg down-sm:w-full" />}
                                                 <span className="mt-5 text-[18px] font-medium">{video.name}</span>
                                                 <div className="mt-2 flex items-center gap-5">

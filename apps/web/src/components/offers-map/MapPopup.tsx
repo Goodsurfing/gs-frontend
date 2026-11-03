@@ -115,7 +115,7 @@ export function MapPopup({ map, container, coords, content, labels, onClose }: {
                 <div className="flex flex-col overflow-hidden rounded-[12px]">
                     <a href={content.offer.href} className="block leading-none" tabIndex={-1}>
                         {/* eslint-disable-next-line @next/next/no-img-element -- превью из хранилища */}
-                        <img src={content.offer.image ?? "/web/images/default-offer.png"} alt="" className="block h-[120px] w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={content.offer.image ?? "/web/images/default-offer.png"} alt="" className="block h-[120px] w-full object-cover" />
                     </a>
                     <div className="flex flex-col gap-1 overflow-hidden px-3 pt-2.5 pb-3">
                         <div className="line-clamp-2 text-[14px] font-bold">{content.offer.name}</div>
@@ -131,7 +131,7 @@ export function MapPopup({ map, container, coords, content, labels, onClose }: {
                             <li key={offer.id} className="rounded-[8px] transition-colors hover:bg-black/4">
                                 <a href={offer.href} className="flex items-center gap-2.5 p-1.5 text-primary">
                                     {/* eslint-disable-next-line @next/next/no-img-element -- превью из хранилища */}
-                                    <img src={offer.image ?? "/web/images/default-offer.png"} alt="" className="h-11 w-11 shrink-0 rounded-[8px] object-cover" />
+                                    <img loading="lazy" decoding="async" src={offer.image ?? "/web/images/default-offer.png"} alt="" className="h-11 w-11 shrink-0 rounded-[8px] object-cover" />
                                     <span className="flex min-w-0 flex-col items-start gap-1">
                                         <span className="line-clamp-2 text-[14px] font-semibold">{offer.name}</span>
                                         {offer.category && <CategoryPill category={offer.category} />}

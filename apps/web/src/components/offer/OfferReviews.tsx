@@ -190,7 +190,7 @@ export function OfferReviews({ offerId, initial, volunteerHref, labels }: {
                             {photos.map((photo) => (
                                 <div key={photo.id} className="relative h-[130px] w-[130px]">
                                     {/* eslint-disable-next-line @next/next/no-img-element -- загруженное фото */}
-                                    <img src={photo.url} alt="" className="h-full w-full object-cover" />
+                                    <img loading="lazy" decoding="async" src={photo.url} alt="" className="h-full w-full object-cover" />
                                     <button
                                         type="button"
                                         aria-label={labels.removePhoto}
@@ -256,7 +256,7 @@ export function OfferReviews({ offerId, initial, volunteerHref, labels }: {
                                             className="relative h-14 w-14 shrink-0 cursor-pointer overflow-hidden rounded-[6px]"
                                         >
                                             {/* eslint-disable-next-line @next/next/no-img-element -- превью из хранилища */}
-                                            <img src={mediaUrl(image, "small")} alt="" className="block h-full w-full object-cover" />
+                                            <img loading="lazy" decoding="async" src={mediaUrl(image, "small")} alt="" className="block h-full w-full object-cover" />
                                             {index === 3 && review.images.length > 4 && (
                                                 <span className="absolute inset-0 flex items-center justify-center bg-black/50 text-[14px] font-semibold text-white">
                                                     {`+${review.images.length - 4}`}
