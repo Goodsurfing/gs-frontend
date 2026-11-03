@@ -30,11 +30,39 @@ export type MetrikaGoal =
     | "donation_paid"
     | "vacancy_published";
 
+/**
+ * Вызовы до того, как выполнился скрипт счётчика. Он подключается после
+ * гидратации (afterInteractive), а цели «при открытии страницы»
+ * (vacancy_view, donation_paid, email_confirmed) отправляются из useEffect
+ * раньше — без очереди при прямом заходе они терялись. Скрипт сам создаёт
+ * очередь window.ym сразу после init, туда их и переносим (flushPendingGoals).
+ */
+const pending: unknown[][] = [];
+
+function send(...args: unknown[]) {
+    if (window.ym) window.ym(COUNTER_ID, ...(args as [string, ...unknown[]]));
+    else pending.push(args);
+}
+
+/** Отправить накопленные цели, когда счётчик появился (порядок: init, затем цели) */
+export function flushPendingGoals() {
+    if (!window.ym) return false;
+    while (pending.length) {
+        const args = pending.shift() as [string, ...unknown[]];
+        try {
+            window.ym(COUNTER_ID, ...args);
+        } catch {
+            // Аналитика не должна ломать интерфейс
+        }
+    }
+    return true;
+}
+
 /** Цель Метрики (reachGoal старого фронта); без счётчика — ничего, ошибки аналитики не ломают страницу */
 export function reachGoal(goal: MetrikaGoal, params?: Record<string, unknown>) {
     if (!COUNTER_ID) return;
     try {
-        window.ym?.(COUNTER_ID, "reachGoal", goal, params);
+        send("reachGoal", goal, params);
     } catch {
         // Аналитика не должна ломать интерфейс
     }
@@ -87,6 +115,19 @@ export function GoalOnce({ goal, goalKey }: { goal: MetrikaGoal; goalKey: string
     return null;
 }
 
+/** Ждёт скрипт счётчика (до 15 с) и отправляет цели, накопленные до него */
+function FlushPendingGoals() {
+    useEffect(() => {
+        if (flushPendingGoals()) return;
+        const started = Date.now();
+        const timer = window.setInterval(() => {
+            if (flushPendingGoals() || Date.now() - started > 15_000) window.clearInterval(timer);
+        }, 100);
+        return () => window.clearInterval(timer);
+    }, []);
+    return null;
+}
+
 /** Просмотр при переходах внутри приложения (первый засчитывает init). */
 function PageHits() {
     const pathname = usePathname();
@@ -124,6 +165,7 @@ ym(${COUNTER_ID},'init',{webvisor:true,clickmap:true,ecommerce:"dataLayer",refer
                     <img src={`https://mc.yandex.ru/watch/${COUNTER_ID}`} style={{ position: "absolute", left: "-9999px" }} alt="" />
                 </div>
             </noscript>
+            <FlushPendingGoals />
             <Suspense fallback={null}>
                 <PageHits />
             </Suspense>
