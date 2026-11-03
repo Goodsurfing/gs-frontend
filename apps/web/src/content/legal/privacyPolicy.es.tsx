@@ -17,6 +17,7 @@ export const PRIVACY_POLICY_ES: LegalDocument = {
         { id: "7", title: "7. Derechos de los interesados" },
         { id: "8", title: "8. Medidas adoptadas por la Organización para garantizar el cumplimiento de las obligaciones del responsable del tratamiento de datos personales" },
         { id: "9", title: "9. Responsabilidad por la organización del tratamiento de datos personales" },
+        { id: "10", title: "10. Estadísticas de uso anónimas" },
     ],
     body: (
         <>
@@ -670,6 +671,10 @@ export const PRIVACY_POLICY_ES: LegalDocument = {
                         </li>
                     </ol>
                 </div>
+            </div>
+            <div className={SECTION} id="10">
+                <h2 className={TITLE}>10. Estadísticas de uso anónimas</h2>
+                <div>Para mejorar el sitio web y la aplicación, recopilamos estadísticas de uso anónimas: qué páginas y pantallas se abren, qué acciones se realizan (por ejemplo, ver una oportunidad o enviar una solicitud), el tipo de dispositivo y la versión de la aplicación. Estos datos no incluyen tu nombre, correo electrónico, teléfono ni mensajes. El sitio web utiliza Yandex.Metrica. En la aplicación, puedes desactivar la recopilación de estadísticas en los ajustes.</div>
             </div>
     
         </>
