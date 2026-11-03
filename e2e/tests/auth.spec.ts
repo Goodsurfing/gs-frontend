@@ -43,7 +43,7 @@ test.describe('Авторизация', () => {
         await page.goto('/signin');
         await page.getByLabel('E-mail').fill('vol@test.com');
         await page.getByLabel('Пароль', { exact: true }).first().fill('wrong-password-1');
-        await page.locator('form button[type="submit"]').click();
+        await page.getByRole('button', { name: 'Войти', exact: true }).click();
         await expect(page).toHaveURL(/\/signin/);
         await expect(page.locator('body')).toContainText(/неверн|Неверн|ошибк/);
     });
