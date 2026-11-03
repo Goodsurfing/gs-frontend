@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
 import { Pagination } from "@/components/list/Pagination";
+import { useFavoriteOffers } from "@/components/offers/useFavoriteOffers";
 import type { CatalogPage } from "@/lib/offersCatalog";
 import { type OffersFilters, offersFiltersQuery, OFFERS_PER_PAGE } from "@/lib/offersFilters";
 
@@ -27,6 +28,8 @@ export interface CatalogLabels {
     retry: string;
     pagination: { prev: string; next: string; page: string };
     card: OfferListCardLabels;
+    /** Сердечко на картинке карточки — только вошедшим */
+    favorite: { add: string; remove: string };
     map: OffersMapLabels;
     filters: FilterBarLabels;
     tabs: { list: string; map: string; filter: string };
@@ -53,6 +56,7 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, cate
     labels: CatalogLabels;
 }) {
     const router = useRouter();
+    const favorites = useFavoriteOffers();
     const [selected, setSelected] = useState<number | undefined>(filters.offerId);
     const [mapOpen, setMapOpen] = useState(true);
     const [search, setSearch] = useState(filters.search);
@@ -220,6 +224,12 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, cate
                             onSelect={select}
                             wide={!mapOpen}
                             labels={labels.card}
+                            favorite={favorites.enabled ? {
+                                active: favorites.isFavorite(offer.id),
+                                busy: favorites.isBusy(offer.id),
+                                labels: labels.favorite,
+                                onToggle: () => void favorites.toggleFavorite(offer.id),
+                            } : undefined}
                         />
                     ))}
                 </div>
