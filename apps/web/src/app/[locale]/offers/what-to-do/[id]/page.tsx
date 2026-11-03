@@ -8,6 +8,7 @@ import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { parseOfferId } from "@/lib/offerWizard";
 import { routes } from "@/lib/routes";
+import { firstChar } from "@/lib/textSlice";
 
 type Props = { params: Promise<{ locale: string; id: string }> };
 
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 /** С заглавной: «в неделю» словаря → «В неделю», как в старом списке */
-const capital = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+const capital = (text: string) => { const first = firstChar(text); return first.toUpperCase() + text.slice(first.length); };
 
 /** Мастер вакансии, шаг «Что делать» (OfferWhatToDoPage старого фронта) */
 export default async function OfferWhatToDoPage({ params }: Props) {

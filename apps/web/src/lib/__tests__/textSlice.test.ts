@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { categoryName } from "../categories";
-import { textSlice } from "../textSlice";
+import { firstChar, takeChars, textSlice } from "../textSlice";
 
 describe("textSlice", () => {
     it("обрезает как старый фронт: length−1 символов и «..»", () => {
@@ -25,5 +25,27 @@ describe("categoryName", () => {
     it("неизвестная — как есть, пустая — undefined", () => {
         expect(categoryName("Новая категория", t)).toBe("Новая категория");
         expect(categoryName(undefined, t)).toBeUndefined();
+    });
+});
+
+describe("textSlice и эмодзи", () => {
+    it("не режет эмодзи пополам (иначе ошибка гидратации React #418)", () => {
+        const text = "Волонтёрство у моря 🌊🌊 и ещё текст";
+        for (let length = 3; length < text.length; length++) {
+            const cut = textSlice(text, length, "");
+            expect(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/.test(cut), `length ${length}: ${cut}`).toBe(false);
+        }
+    });
+
+    it("takeChars — тоже по символам", () => {
+        expect(takeChars("Ан🫶на Петрова", 3)).toBe("Ан🫶");
+    });
+});
+
+describe("firstChar", () => {
+    it("эмодзи в начале имени — целиком (инициал в аватаре)", () => {
+        expect(firstChar("🌿Мария")).toBe("🌿");
+        expect(firstChar("Мария")).toBe("М");
+        expect(firstChar("")).toBe("");
     });
 });
