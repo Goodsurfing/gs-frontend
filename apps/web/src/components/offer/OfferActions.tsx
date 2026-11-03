@@ -6,8 +6,8 @@ import { useOfferViewer } from "./OfferViewer";
 
 export interface OfferActionsLabels extends ParticipateLabels {
     edit: string;
-    noFreeApplications: string;
-    getMembership: string;
+    /** Бесплатные отклики кончились: заголовок, цена членства, кнопка */
+    upsell: { title: string; text: string; button: string };
 }
 
 export interface OfferActionsHrefs {
@@ -50,10 +50,12 @@ export function OfferActions({ offerId, status, variant, hrefs, labels }: {
                 <a href={href} className={`${button} bg-primary text-white hover:bg-white hover:text-primary`}>{text}</a>
             )}
             {viewer.requiresMembership && (
-                <p className={`max-w-[220px] text-[13px] leading-[1.3] ${variant === "hero" ? "text-white" : ""}`}>
-                    {labels.noFreeApplications}{" "}
-                    <a href={hrefs.membership} className={variant === "hero" ? "text-white underline" : "text-primary"}>{labels.getMembership}</a>
-                </p>
+                // Бесплатные отклики на год кончились — сразу предложение членства с ценой
+                <div role="note" aria-label={labels.upsell.title} className={`flex max-w-[260px] flex-col gap-2 rounded-[10px] p-3.5 text-[13px] leading-[1.3] ${variant === "hero" ? "bg-white/15 text-white" : "bg-accent-bg text-ink"}`}>
+                    <p className="font-semibold">{labels.upsell.title}</p>
+                    <p>{labels.upsell.text}</p>
+                    <a href={hrefs.membership} className="flex items-center justify-center rounded-[10px] border border-cta bg-cta px-4 py-2 text-center text-[14px] text-white no-underline transition-all duration-300 hover:bg-white hover:text-cta">{labels.upsell.button}</a>
+                </div>
             )}
             {viewer.canEdit && (
                 <a

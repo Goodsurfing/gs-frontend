@@ -5,10 +5,10 @@ import { PublicShell } from "@/components/layout/PublicShell";
 import { FaqAccordion } from "@/components/membership/FaqAccordion";
 import { MembershipReviews } from "@/components/membership/MembershipReviews";
 import { TariffCards } from "@/components/membership/TariffCards";
-import { isLocale, type Locale } from "@/i18n/config";
+import { isLocale } from "@/i18n/config";
 import { getTranslator, type Translate } from "@/i18n/dictionary";
-import { serverApi } from "@/lib/api";
 import { getFeaturedReviews } from "@/lib/home";
+import { getPrices, TARIFF } from "@/lib/membershipPrices";
 import { mediaUrl } from "@/lib/media";
 import { INTERNATIONAL_URL, routes } from "@/lib/routes";
 import { pageMetadata, siteUrl } from "@/lib/seo";
@@ -17,9 +17,6 @@ export const revalidate = 300;
 
 type Props = { params: Promise<{ locale: string }> };
 
-// Коды тарифов и цены на случай, если API недоступен — как shared/constants/membership старого фронта
-const TARIFF = { volunteer: "volunteer_990", host: "host_4990", international: "international_5000" } as const;
-const FALLBACK_PRICE: Record<string, number> = { volunteer_990: 990, host_4990: 4990, international_5000: 5000 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale } = await params;
@@ -31,18 +28,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
 }
 
-async function getPrices(locale: Locale): Promise<Record<string, number>> {
-    try {
-        const { data } = await serverApi(locale).GET("/api/v1/membership/tariffs", {
-            params: { query: { forRole: "BOTH" } },
-            signal: AbortSignal.timeout(5000),
-        });
-        const prices = Object.fromEntries((data ?? []).map((tariff) => [tariff.code, (tariff as { priceRub?: number }).priceRub]));
-        return Object.fromEntries(Object.entries(FALLBACK_PRICE).map(([code, price]) => [code, prices[code] ?? price]));
-    } catch {
-        return FALLBACK_PRICE;
-    }
-}
 
 const faq = (t: Translate) => ["why-pay", "not-renew", "money"].map((key) => ({
     title: t(`questions.faq.${key}.question`),

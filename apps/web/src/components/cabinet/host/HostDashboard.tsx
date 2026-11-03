@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { ReviewReminders, type ReviewRemindersLabels } from "@/components/cabinet/ReviewReminders";
 import { MemberBanner } from "@/components/content/MemberBanner";
 import { useSession } from "@/components/session/SessionProvider";
 import { Ring } from "@/components/ui/Ring";
@@ -20,6 +21,7 @@ const FREE_VACANCIES_LIMIT = 1;
 const NOTIFICATION_DATE_KEY = "firstNotificationDate";
 
 export interface HostDashboardLabels {
+    reviewReminders: ReviewRemindersLabels;
     fillTitle: string;
     points: { description: string; vacancies: string; photo: string; video: string; reviews: string };
     editProfile: string;
@@ -47,7 +49,7 @@ export interface HostDashboardLabels {
  */
 export function HostDashboard({ locale, routes, labels }: {
     locale: Locale;
-    routes: { info: string; notes: string; membership: string; volunteer: string; offer: string; chat: string };
+    routes: { info: string; notes: string; membership: string; volunteer: string; offer: string; chat: string; review: string };
     labels: HostDashboardLabels;
 }) {
     const session = useSession();
@@ -155,6 +157,7 @@ export function HostDashboard({ locale, routes, labels }: {
                     </div>
                 </div>
             </div>
+            <ReviewReminders side="host" reviewHref={routes.review} labels={labels.reviewReminders} className="mt-[1.875rem]" />
             <div className="grid grid-cols-[2fr_1fr] items-start gap-[1.875rem] pt-[1.875rem] pb-14 down-lg:grid-cols-1">
                 <div className={panel}>
                     <div className={panelTitle}>

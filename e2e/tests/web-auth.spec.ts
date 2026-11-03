@@ -46,7 +46,7 @@ test.describe('Новый фронт: вход и регистрация', () =>
     test('регистрация проверяет пароль; ссылки на восстановление и вход', async ({ page }) => {
         await page.goto('/signup');
         await expect(page.getByRole('heading', { name: 'Регистрация пользователя' })).toBeVisible();
-        await expect(page.getByLabel('Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга')).toBeChecked();
+        await expect(page.getByLabel('Присылать подборки новых проектов и новости Гудсёрфинга')).toBeChecked();
         await page.getByLabel('E-mail').fill(`e2e-web-signup-${Date.now()}@test.local`);
         await page.getByLabel('Пароль', { exact: true }).fill('short');
         await page.getByRole('button', { name: 'Зарегистрироваться' }).click();

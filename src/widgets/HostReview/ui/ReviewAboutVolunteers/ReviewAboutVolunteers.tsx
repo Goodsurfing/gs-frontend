@@ -23,6 +23,7 @@ import {
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { openReviewFromLink } from "@/shared/lib/reviewLink";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { MediaObjectType } from "@/types/media";
 import styles from "./ReviewAboutVolunteers.module.scss";
@@ -100,6 +101,21 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
             />
         ),
     );
+
+    // Пришли по звезде из письма «Как всё прошло?» — сразу окно отзыва с оценкой
+    useEffect(() => {
+        if (isNotDoneReviewsLoading) return;
+        openReviewFromLink(
+            notDoneReviewsData,
+            (volunteer, link) => volunteer.id === link.volunteerId
+                && volunteer.vacancyId === link.vacancyId,
+            (volunteer, rating) => {
+                setSelectedVolunteer(volunteer);
+                if (rating) form.setValue("review", { stars: rating, text: "" });
+            },
+        );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isNotDoneReviewsLoading]);
 
     const onReviewClick = (volunteer: NotDoneReviewHost) => {
         setSelectedVolunteer(volunteer);

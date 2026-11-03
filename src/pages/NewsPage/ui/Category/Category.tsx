@@ -17,7 +17,7 @@ export const Category: FC<CategoryProps> = (props) => {
 
     return (
         <div className={cn(className)}>
-            <CategoriesFilter value={value} onChange={onChange} locale={locale} />
+            <CategoriesFilter value={value} onChange={onChange} locale={locale} source="news" />
         </div>
     );
 };

@@ -40,6 +40,26 @@ test.describe('Новый фронт: кабинет волонтёра', () => 
         await expect(page.getByText('Добро пожаловать!')).toBeVisible();
     });
 
+    test('панель управления: плашка «Оцените ваши проекты» ведёт к отзыву, «Скрыть» убирает', async ({ page }) => {
+        await page.route('**/api/v1/review-reminder', (route) => route.fulfill({ json: [
+            { side: 'volunteer', applicationId: 1, vacancyId: 101, vacancyTitle: 'E2E: эко-ферма', volunteerId: 'v1', volunteerName: 'Тест', endDate: '25.10.2026' },
+            { side: 'host', applicationId: 2, vacancyId: 102, vacancyTitle: 'E2E: чужая сторона', volunteerId: 'v2', volunteerName: 'Анна', endDate: '20.10.2026' },
+        ] }));
+        await page.goto('/volunteer/volunteer-dashboard');
+        const reminder = page.getByRole('region', { name: 'Оцените ваши проекты' });
+        await expect(reminder.getByText('E2E: эко-ферма')).toBeVisible();
+        await expect(reminder.getByText('Отъезд: 25.10.2026')).toBeVisible();
+        await expect(reminder.getByText('E2E: чужая сторона')).toHaveCount(0);
+        await expect(reminder.getByRole('link', { name: 'Оценить' })).toHaveAttribute('href', '/volunteer/review?vacancy=101');
+
+        await reminder.getByRole('button', { name: 'Скрыть' }).click();
+        await expect(reminder).toHaveCount(0);
+        await page.reload();
+        await expect(page.getByRole('heading', { name: 'Заполненность профиля' })).toBeVisible();
+        await expect(page.getByRole('region', { name: 'Оцените ваши проекты' })).toHaveCount(0);
+        await page.evaluate(() => localStorage.removeItem('gs_review_reminder_hidden_volunteer'));
+    });
+
     test('мои заявки: три колонки и пагинация', async ({ page }) => {
         const response = await page.goto('/volunteer/notes');
         expect(response?.status()).toBe(200);
@@ -77,6 +97,8 @@ test.describe('Новый фронт: кабинет волонтёра', () => 
         await expect(send).toBeDisabled();
         await expect(dialog.getByText('Поставьте оценку, чтобы оставить отзыв')).toBeVisible();
         await dialog.getByRole('radio', { name: '4' }).click();
+        // Текст необязателен: одной оценки достаточно
+        await expect(send).toBeEnabled();
         await dialog.getByLabel('Напишите ваш отзыв').fill('Отличная поездка');
         await send.click();
         await expect(dialog.getByText('Ваш отзыв был отправлен')).toBeVisible();

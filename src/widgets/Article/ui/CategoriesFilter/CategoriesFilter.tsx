@@ -10,12 +10,14 @@ interface CategoriesFilterProps {
     locale: Locale;
     value?: number;
     onChange: (value?: number) => void;
+    /** Справочник категорий: блог (по умолчанию) или новости */
+    source?: "blog" | "news";
 }
 
 export const CategoriesFilter: FC<CategoriesFilterProps> = (props) => {
     const { t } = useTranslation("blog");
     const {
-        className, value, onChange, locale,
+        className, value, onChange, locale, source = "blog",
     } = props;
 
     return (
@@ -24,6 +26,8 @@ export const CategoriesFilter: FC<CategoriesFilterProps> = (props) => {
             <BlogCategories
                 locale={locale}
                 exclusive
+                source={source}
+                showCounts
                 value={value ? Number(value) : undefined}
                 onChange={(newValue) => onChange(
                     newValue ? Number(newValue) : undefined,

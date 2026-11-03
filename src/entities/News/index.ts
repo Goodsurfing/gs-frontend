@@ -2,6 +2,7 @@ export {
     newsApi,
     useLazyGetNewsListQuery,
     useGetNewsByIdQuery,
+    useGetNewsCategoriesQuery,
     usePutLikeNewsMutation,
     useLazyGetReviewsNewsQuery,
     useCreateReviewNewsMutation,

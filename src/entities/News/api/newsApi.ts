@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryV3 } from "@/shared/api/baseQuery/baseQuery";
+import type { BlogCategory } from "@/entities/Blog/model/types/blogSchema";
 import {
     CreateReviewNewsRequest,
     GetNewsList, GetNewsListParams, GetNewsListResponse, GetNewsParams,
@@ -19,6 +20,14 @@ export const newsApi = createApi({
                 params,
             }),
             providesTags: ["news"],
+        }),
+        // Категории новостей — справочник Category (как у вакансий) с числом новостей
+        getNewsCategories: build.query<BlogCategory[], { lang?: string }>({
+            query: (params) => ({
+                url: "news-category",
+                method: "GET",
+                params,
+            }),
         }),
         getNewsById: build.query<GetNewsList, GetNewsParams>({
             query: ({ id, lang }) => ({
@@ -58,6 +67,7 @@ export const newsApi = createApi({
 export const {
     useLazyGetNewsListQuery,
     useGetNewsByIdQuery,
+    useGetNewsCategoriesQuery,
     usePutLikeNewsMutation,
     useLazyGetReviewsNewsQuery,
     useCreateReviewNewsMutation,

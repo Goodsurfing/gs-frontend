@@ -241,7 +241,10 @@
         "Обычно отвечает в течение часа": "Usually replies within an hour",
         "Обычно отвечает в течение дня": "Usually replies within a day",
         "Обычно отвечает за N дней": "Usually replies within {{count}} days",
-        "Отвечает на N процентов заявок": "Replies to {{percent}}% of applications"
+        "Отвечает на N процентов заявок": "Replies to {{percent}}% of applications",
+        "Бесплатные отклики на этот год закончились": "Your free applications for this year are used up",
+        "Членство — {{price}} ₽ на год: отклики без ограничений": "Membership is {{price}} ₽ a year: unlimited applications",
+        "Оформить членство": "Get membership"
     },
     "У вас есть несохраненные изменения": "You have unsaved changes",
     "Данные успешно изменены": "Data has been successfully updated",

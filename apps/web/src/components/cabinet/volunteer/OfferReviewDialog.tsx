@@ -22,13 +22,15 @@ export interface OfferReviewDialogLabels {
 /**
  * Окно «Оставьте отзыв» о вакансии (VolunteerModalReview + ModalReview
  * старого фронта): карточка вакансии, оценка звёздами, текст до 500 знаков.
- * Отправить можно только с оценкой и текстом; после отправки в окне —
+ * Отправить можно одной оценкой — текст необязателен; после отправки в окне —
  * только сообщение об успехе. С photos — ещё фото к отзыву (до 10), как на
  * странице «Отзывы»: пока фото загружаются, отправить нельзя; при закрытии окна
  * загрузки отменяются и в следующее окно не попадают.
  */
-export function OfferReviewDialog({ open, offer, labels, photos, onSend, onClose }: {
+export function OfferReviewDialog({ open, offer, initialRating = null, labels, photos, onSend, onClose }: {
     open: boolean;
+    /** Оценка, уже выбранная в письме «Как всё прошло?» */
+    initialRating?: number | null;
     /** Карточка вакансии над оценкой */
     offer: ReactNode;
     labels: OfferReviewDialogLabels;
@@ -38,8 +40,14 @@ export function OfferReviewDialog({ open, offer, labels, photos, onSend, onClose
     onSend: (review: { rating: number; text: string; imageIds: string[] }) => Promise<string | null>;
     onClose: () => void;
 }) {
-    const [rating, setRating] = useState<number | null>(null);
+    const [rating, setRating] = useState<number | null>(open ? initialRating : null);
     const [text, setText] = useState("");
+    // При открытии окна — оценка из письма (если пришли по ссылке)
+    const [wasOpen, setWasOpen] = useState(open);
+    if (open !== wasOpen) {
+        setWasOpen(open);
+        if (open) setRating(initialRating);
+    }
     const [busy, setBusy] = useState(false);
     const [sent, setSent] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -64,7 +72,7 @@ export function OfferReviewDialog({ open, offer, labels, photos, onSend, onClose
     };
 
     const send = async () => {
-        if (!rating || !text || busy || uploading) return;
+        if (!rating || busy || uploading) return;
         setBusy(true);
         setError(null);
         const current = session.current;
@@ -127,7 +135,7 @@ export function OfferReviewDialog({ open, offer, labels, photos, onSend, onClose
                                     <button
                                         type="button"
                                         onClick={send}
-                                        disabled={!rating || !text || busy || uploading}
+                                        disabled={!rating || busy || uploading}
                                         className="flex cursor-pointer items-center justify-center rounded-[10px] border border-primary bg-primary px-[100px] py-3 text-center text-label text-white transition-all duration-300 hover:bg-white hover:text-primary disabled:cursor-default disabled:opacity-70 disabled:hover:bg-primary disabled:hover:text-white down-lg:w-full down-lg:px-[15px]"
                                     >
                                         {labels.send}

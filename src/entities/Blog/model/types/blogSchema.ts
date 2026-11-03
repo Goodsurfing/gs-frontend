@@ -9,6 +9,8 @@ export interface BlogCategory {
     id: number;
     name: string;
     color: string;
+    /** Сколько материалов в категории (у списков для фильтров /blog и /news) */
+    count?: number;
 }
 
 export interface GetBlogCategoriesParams {

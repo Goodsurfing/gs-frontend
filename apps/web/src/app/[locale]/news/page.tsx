@@ -11,7 +11,7 @@ import { SortToggle } from "@/components/list/SortToggle";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { serverApi } from "@/lib/api";
-import { ARTICLE_SORT, getBlogCategories } from "@/lib/articles";
+import { ARTICLE_SORT, getNewsCategories } from "@/lib/articles";
 import { listHref, listParams, type ListParams } from "@/lib/listParams";
 import { mediaUrl } from "@/lib/media";
 import { routes } from "@/lib/routes";
@@ -54,7 +54,7 @@ export default async function NewsPage({ params, searchParams }: Props) {
         getTranslator(locale, "blog"),
         getTranslator(locale, "volunteer"),
         getNews(locale, filters),
-        getBlogCategories(locale),
+        getNewsCategories(locale),
     ]);
     const news = data?.data ?? [];
     const pages = data?.pagination ? Math.ceil(data.pagination.total / data.pagination.limit) : 1;

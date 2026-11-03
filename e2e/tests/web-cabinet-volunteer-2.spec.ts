@@ -78,6 +78,19 @@ test.describe('Новый фронт: кабинет волонтёра (отз�
         expect(reviews[0]).toMatchObject({ vacancyId: 101, rating: 5, description: 'Отличный проект', imageIds: [] });
     });
 
+    test('отзывы: звезда из письма «Как всё прошло?» открывает окно с оценкой', async ({ page }) => {
+        await page.route('**/api/v1/volunteer/vacancy/without-review/list**', (route) => route.fulfill({ json: PENDING }));
+        await page.route('**/api/v1/volunteer/vacancy/review/list**', (route) => route.fulfill({ json: MINE }));
+        await page.route(/\/api\/v1\/review-volunteer(\?.*)?$/, (route) => route.fulfill({ json: ABOUT_ME }));
+
+        await page.goto('/volunteer/review?vacancy=101&rating=4');
+        const dialog = page.getByRole('dialog');
+        await expect(dialog.getByText('E2E: проект без отзыва')).toBeVisible();
+        await expect(dialog.getByRole('radio', { name: '4' })).toBeChecked();
+        // Параметры убраны: после обновления окно снова не откроется
+        await expect(page).toHaveURL(/\/volunteer\/review$/);
+    });
+
     test('отзывы: пока фото загружается, отзыв не отправить; крестик отменяет загрузку', async ({ page }) => {
         await page.route('**/api/v1/volunteer/vacancy/without-review/list**', (route) => route.fulfill({ json: PENDING }));
         await page.route('**/api/v1/volunteer/vacancy/review/list**', (route) => route.fulfill({ json: MINE }));

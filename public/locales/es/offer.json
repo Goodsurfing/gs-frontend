@@ -241,7 +241,10 @@
         "Обычно отвечает в течение часа": "Suele responder en una hora",
         "Обычно отвечает в течение дня": "Suele responder en un día",
         "Обычно отвечает за N дней": "Suele responder en {{count}} días",
-        "Отвечает на N процентов заявок": "Responde al {{percent}} % de las solicitudes"
+        "Отвечает на N процентов заявок": "Responde al {{percent}} % de las solicitudes",
+        "Бесплатные отклики на этот год закончились": "Has agotado tus solicitudes gratuitas de este año",
+        "Членство — {{price}} ₽ на год: отклики без ограничений": "La membresía cuesta {{price}} ₽ al año: solicitudes ilimitadas",
+        "Оформить членство": "Hazte miembro"
     },
     "У вас есть несохраненные изменения": "Tienes cambios no guardados",
     "Данные успешно изменены": "Datos cambiados exitosamente",

@@ -54,7 +54,7 @@
         "Отправить ещё раз через {{seconds}}": "Reenviar en {{seconds}} segundos",
         "Подтвердить": "Confirmar",
         "Пользователь был удален или не создавался": "El usuario fue eliminado o nunca fue creado",
-        "Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга": "Quiero recibir correos sobre nuevos proyectos, promociones y noticias de Goodsurfing",
+        "Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга": "Enviarme selecciones de nuevos proyectos y noticias de Goodsurfing",
         "marketingConsentHint": "Puedes darte de baja en cualquier momento desde tu perfil o con el enlace del correo."
     },
     "main": {
@@ -127,7 +127,7 @@
                 "exit": "Salida",
                 "membership": "Membresía",
                 "expeditions": "Expediciones",
-                "international-volunteering": "Voluntariado Internacional",
+                "international-volunteering": "Internacional",
                 "messages": "Mensajes",
                 "socials-cta": "Síguenos en las redes sociales",
                 "menu": "Menú",
@@ -136,7 +136,7 @@
             },
             "title": "Encontrar el viaje soñado",
             "offers-btn": "Todas las ofertas",
-            "activity-title": "En los últimos 11 años, nuestros Goodsurfers han completado más de 25.000 viajes significativos, participando en proyectos de diversos ámbitos. Elige la dirección que te identifique."
+            "activity-title": "En los últimos 11 años, nuestros Goodsurfers han completado más de {{trips}} viajes significativos, participando en proyectos de diversos ámbitos. Elige la dirección que te identifique."
         },
         "sidebar": {
             "К предложениям": "A las vacantes",
@@ -365,7 +365,7 @@
     "Это неофициальный перевод для удобства Юридическую силу имеет только версия документа на русском языке": "Esta es una traducción no oficial ofrecida para su comodidad. Solo la versión en ruso de este documento tiene validez legal.",
     "unsubscribed": {
         "title": "Boletín de GoodSurfing",
-        "done": "Te has dado de baja. Ya no recibirás correos sobre nuevos proyectos, promociones y noticias.",
+        "done": "Te has dado de baja. Ya no recibirás selecciones de proyectos ni noticias.",
         "invalid": "Este enlace para darte de baja no es válido. Puedes hacerlo en tu perfil, en «Privacidad».",
         "hint": "Seguirás recibiendo correos sobre tus solicitudes, tu membresía y tu cuenta. Puedes volver a suscribirte en cualquier momento en la configuración.",
         "settings": "Abrir configuración"
@@ -385,5 +385,16 @@
     },
     "Приблизить": "Acercar",
     "Отдалить": "Alejar",
-    "Свернуть карту": "Ocultar mapa"
+    "Свернуть карту": "Ocultar mapa",
+    "reviewReminder": {
+        "Оцените ваши проекты": "Valora tus proyectos",
+        "Как прошли ваши проекты? Ваша оценка поможет следующим волонтёрам": "¿Qué tal fueron tus proyectos? Tu valoración ayudará a los próximos voluntarios",
+        "Оцените волонтёров": "Valora a los voluntarios",
+        "Оцените волонтёров, которые у вас побывали": "Valora a los voluntarios que estuvieron contigo",
+        "Оценить": "Valorar",
+        "Скрыть": "Ocultar",
+        "Без названия": "Sin título",
+        "Волонтёр": "Voluntario",
+        "Отъезд": "Salida"
+    }
 }

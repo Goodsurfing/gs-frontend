@@ -1,17 +1,20 @@
 import { chromium, request } from '@playwright/test';
 import path from 'path';
 import fs from 'fs';
-import { BASE_URL, API_URL } from './config';
+import { BASE_URL, API_URL, TEST_USERS_PASSWORD } from './config';
 import { e2eHeaders } from './support/testApi';
 
 const AUTH_DIR = path.join(__dirname, '.auth');
 
 const ACCOUNTS = [
-    { name: 'vol',  email: 'vol@test.com',  password: 'Test1234!' },
-    { name: 'host', email: 'host@test.com', password: 'Test1234!' },
+    { name: 'vol',  email: 'vol@test.com',  password: TEST_USERS_PASSWORD },
+    { name: 'host', email: 'host@test.com', password: TEST_USERS_PASSWORD },
 ] as const;
 
 async function setup(): Promise<void> {
+    if (!TEST_USERS_PASSWORD) {
+        throw new Error('Не задан E2E_USERS_PASSWORD — пароль тестовых аккаунтов стейджа');
+    }
     fs.mkdirSync(AUTH_DIR, { recursive: true });
 
     // /api/test/reset ОЧИЩАЕТ пользовательские таблицы (TRUNCATE ... CASCADE) и

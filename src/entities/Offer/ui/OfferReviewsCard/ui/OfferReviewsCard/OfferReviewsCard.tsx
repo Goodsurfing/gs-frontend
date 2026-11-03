@@ -83,7 +83,8 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         }, [reviewsData]);
 
         const handleSendReview = useCallback(async () => {
-            if (!canReview || !commentInput.trim() || rating === null) return;
+            // Текст необязателен: достаточно оценки (короткий отзыв)
+            if (!canReview || rating === null) return;
 
             try {
                 await createOfferReview({
@@ -179,7 +180,7 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
                             onSend={handleSendReview}
                             btnText={t("personalOffer.Написать отзыв")}
                             disabled={isSendReview}
-                            disabledBtn={!commentInput.trim() || rating === null}
+                            disabledBtn={rating === null}
                             placeholder={t("personalOffer.Ваш отзыв")}
                             className={styles.commentInput}
                             value={commentInput}

@@ -54,7 +54,7 @@
         "Отправить ещё раз через {{seconds}}": "Resend in {{seconds}} seconds",
         "Подтвердить": "Confirm",
         "Пользователь был удален или не создавался": "The user was deleted or was never created",
-        "Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга": "I want to receive emails about new projects, offers and Goodsurfing news",
+        "Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга": "Send me picks of new projects and Goodsurfing news",
         "marketingConsentHint": "You can unsubscribe at any time in your profile or via the link in any email."
     },
     "main": {
@@ -128,15 +128,15 @@
                 "exit": "Exit",
                 "membership": "Membership",
                 "expeditions": "Expeditions",
-                "international-volunteering": "International Volunteering",
+                "international-volunteering": "International",
                 "socials-cta": "Follow us on social media",
                 "menu": "Menu",
                 "membership-active": "Active until {{date}}",
                 "membership-from": "from {{price}} ₽/year"
             },
             "title": "Find the dream journey",
-            "offers-btn": "Over the past 11 years, our Goodsurfers have completed over 25,000 meaningful journeys, participating in projects across a wide range of fields. Choose the direction that resonates with you.",
-            "activity-title": "Or choose a type of activity"
+            "offers-btn": "All offers",
+            "activity-title": "Over the past 11 years, our Goodsurfers have completed over {{trips}} meaningful journeys, participating in projects across a wide range of fields. Choose the direction that resonates with you."
         },
         "sidebar": {
             "К предложениям": "To offers",
@@ -364,7 +364,7 @@
     "Это неофициальный перевод для удобства Юридическую силу имеет только версия документа на русском языке": "This is an unofficial translation provided for convenience. Only the Russian version of this document is legally binding.",
     "unsubscribed": {
         "title": "GoodSurfing newsletter",
-        "done": "You’ve unsubscribed. You won’t receive emails about new projects, offers and news anymore.",
+        "done": "You’ve unsubscribed. You won’t receive project picks and news anymore.",
         "invalid": "This unsubscribe link is invalid. You can unsubscribe in your profile under “Privacy”.",
         "hint": "You’ll still receive emails about your applications, membership and account. You can subscribe again at any time in your settings.",
         "settings": "Open settings"
@@ -384,5 +384,16 @@
     },
     "Приблизить": "Zoom in",
     "Отдалить": "Zoom out",
-    "Свернуть карту": "Hide map"
+    "Свернуть карту": "Hide map",
+    "reviewReminder": {
+        "Оцените ваши проекты": "Rate your projects",
+        "Как прошли ваши проекты? Ваша оценка поможет следующим волонтёрам": "How did your projects go? Your rating will help future volunteers",
+        "Оцените волонтёров": "Rate volunteers",
+        "Оцените волонтёров, которые у вас побывали": "Rate the volunteers who stayed with you",
+        "Оценить": "Rate",
+        "Скрыть": "Hide",
+        "Без названия": "Untitled",
+        "Волонтёр": "Volunteer",
+        "Отъезд": "Departure"
+    }
 }

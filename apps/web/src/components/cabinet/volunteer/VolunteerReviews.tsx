@@ -10,6 +10,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Spinner } from "@/components/ui/Spinner";
 import { browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
+import { clearReviewLink, parseReviewLink } from "@/lib/reviewLink";
 import { textSlice } from "@/lib/textSlice";
 
 import { OfferReviewDialog, type OfferReviewDialogLabels } from "./OfferReviewDialog";
@@ -148,6 +149,7 @@ export function VolunteerReviews({ hrefs, categories, labels }: {
     const [pending, setPending] = useState<Pending[] | null>(null);
     const [pendingVersion, setPendingVersion] = useState(0);
     const [selected, setSelected] = useState<Pending | null>(null);
+    const [linkRating, setLinkRating] = useState<number | null>(null);
     const [slide, setSlide] = useState(0);
     const [gallery, setGallery] = useState<{ images: string[]; index: number } | null>(null);
 
@@ -166,7 +168,20 @@ export function VolunteerReviews({ hrefs, categories, labels }: {
         if (!enabled) return;
         let cancelled = false;
         void api().GET("/api/v1/volunteer/vacancy/without-review/list")
-            .then(({ data }) => !cancelled && setPending(Array.isArray(data) ? data : []))
+            .then(({ data }) => {
+                if (cancelled) return;
+                const list = Array.isArray(data) ? data : [];
+                setPending(list);
+                // Пришли по звезде из письма — сразу окно отзыва на этот проект
+                const link = parseReviewLink(window.location.search);
+                if (!link) return;
+                clearReviewLink();
+                const target = list.find((item) => item.id === link.vacancyId);
+                if (target) {
+                    setLinkRating(link.rating);
+                    setSelected(target);
+                }
+            })
             .catch(() => !cancelled && setPending([]));
         return () => {
             cancelled = true;
@@ -316,7 +331,11 @@ export function VolunteerReviews({ hrefs, categories, labels }: {
                 open={!!selected}
                 labels={labels.dialog}
                 photos={{ token: session.token, labels: labels.photos, error: labels.sendError }}
-                onClose={() => setSelected(null)}
+                initialRating={linkRating}
+                onClose={() => {
+                    setSelected(null);
+                    setLinkRating(null);
+                }}
                 offer={selected && (
                     <div className="flex min-h-[100px] w-full flex-col border border-accent-bg bg-white p-3.5 select-none">
                         {labels.statuses[selected.applicationStatus] && (

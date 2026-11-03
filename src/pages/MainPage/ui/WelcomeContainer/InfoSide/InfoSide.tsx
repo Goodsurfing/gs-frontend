@@ -12,12 +12,17 @@ import { SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffer
 import ActivityContainer from "./ActivityContainer/ActivityContainer";
 import styles from "./InfoSide.module.scss";
 import { localePrefix } from "@/shared/config/routes/localePath";
+import { useGetAbouProjectPageInfoQuery } from "@/entities/Admin";
+import { formatStatNumber, roundStat } from "@/shared/lib/formatStat";
 
 const InfoSide: FC = memo(() => {
     const { t } = useTranslation();
     const { locale } = useLocale();
     const navigate = useNavigate();
     const searchRef = useRef<SearchOffersRef>(null);
+    // «Больше N путешествий» — принятые заявки из базы (GS-234); пока не загрузилось — 25 000
+    const { data: statsData } = useGetAbouProjectPageInfoQuery();
+    const tripCount = formatStatNumber(roundStat(statsData?.today.tripCount ?? 25000), locale);
 
     const onApplySearch = useCallback(async (search: string) => {
         const query = search ? `?search=${encodeURIComponent(search)}` : "";
@@ -48,7 +53,7 @@ const InfoSide: FC = memo(() => {
                 <ActivityContainer locale={locale} className={styles.categories} />
                 <div className={styles.activity}>
                     <h3 className={styles.activityTitle}>
-                        {t("main.welcome.activity-title")}
+                        {t("main.welcome.activity-title", { trips: tripCount })}
                     </h3>
                 </div>
             </div>

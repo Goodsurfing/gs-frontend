@@ -23,6 +23,7 @@ import { isLocale, type Locale } from "@/i18n/config";
 import { getTranslator, type Translate } from "@/i18n/dictionary";
 import { categoryName } from "@/lib/categories";
 import { mediaUrl } from "@/lib/media";
+import { getPrices, TARIFF } from "@/lib/membershipPrices";
 import { getOffer, getOfferBanner, getOfferParticipants, getOfferReviews, inlineSvg, type OfferDetail } from "@/lib/offer";
 import { organizationType, PARTICIPATE_STATES, responseStatsText } from "@/lib/offerText";
 import { routes } from "@/lib/routes";
@@ -75,15 +76,18 @@ async function referenceIcons(offer: OfferDetail): Promise<SvgMap> {
     return Object.fromEntries(unique.map((url, index) => [url, svgs[index] ?? null]));
 }
 
-function actionsLabels(t: Translate): OfferActionsLabels {
+function actionsLabels(t: Translate, price: number): OfferActionsLabels {
     return {
         participate: t("personalOffer.Участвовать"),
         closed: t("personalOffer.vacancyClosed"),
         becomeVolunteer: t("personalOffer.Чтобы участвовать, станьте гудсёрфером"),
         states: Object.fromEntries(PARTICIPATE_STATES.map((state) => [state, t(`personalOffer.${state}`)])),
         edit: t("personalOffer.Редактировать"),
-        noFreeApplications: t("personalOffer.У вас закончились бесплатные отклики."),
-        getMembership: t("personalOffer.Оформите членство, чтобы отправить заявку"),
+        upsell: {
+            title: t("personalOffer.Бесплатные отклики на этот год закончились"),
+            text: t("personalOffer.Членство — {{price}} ₽ на год: отклики без ограничений", { price }),
+            button: t("personalOffer.Оформить членство"),
+        },
     };
 }
 
@@ -115,30 +119,34 @@ export default async function OfferPage({ params }: Props) {
         );
     }
 
-    const [participants, reviews, banner, svgs] = await Promise.all([
+    const [participants, reviews, banner, svgs, prices] = await Promise.all([
         getOfferParticipants(locale, id),
         getOfferReviews(locale, id),
         getOfferBanner(locale),
         referenceIcons(offer),
+        // Цена членства — в предложении, когда кончились бесплатные отклики
+        getPrices(locale),
     ]);
     return (
         <PublicShell locale={locale}>
             <OfferViewerProvider offerId={offer.id}>
                 <div className="mx-auto flex min-h-[500px] w-full max-w-[1920px] flex-col items-center justify-center px-[50px] pt-[100px] pb-[50px] down-lg:p-5">
-                    <OfferBody locale={locale} offer={offer} participants={participants} reviews={reviews} banner={banner} svgs={svgs} t={t} tOffer={tOffer} tHost={tHost} />
+                    <OfferBody locale={locale} offer={offer} participants={participants} reviews={reviews} banner={banner} svgs={svgs} volunteerPrice={prices[TARIFF.volunteer] ?? 990} t={t} tOffer={tOffer} tHost={tHost} />
                 </div>
             </OfferViewerProvider>
         </PublicShell>
     );
 }
 
-function OfferBody({ locale, offer, participants, reviews, banner, svgs, t, tOffer, tHost }: {
+function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunteerPrice, t, tOffer, tHost }: {
     locale: Locale;
     offer: OfferDetail;
     participants: Awaited<ReturnType<typeof getOfferParticipants>>;
     reviews: Awaited<ReturnType<typeof getOfferReviews>>;
     banner: Awaited<ReturnType<typeof getOfferBanner>>;
     svgs: SvgMap;
+    /** Цена годового членства волонтёра — для предложения, когда кончились бесплатные отклики */
+    volunteerPrice: number;
     t: Translate;
     tOffer: Translate;
     tHost: Translate;
@@ -157,7 +165,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, t, tOff
         edit: routes.offerEdit(locale, offer.id),
         membership: routes.membership(locale),
     };
-    const labels = actionsLabels(tOffer);
+    const labels = actionsLabels(tOffer, volunteerPrice);
     const volunteerHref = routes.volunteerPublicTemplate(locale);
     const categories = (description?.categories ?? []).map((category) => ({
         id: category.id,

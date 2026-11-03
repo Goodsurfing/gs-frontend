@@ -50,6 +50,8 @@ describe("ReviewAboutOffers", () => {
 
         const stars = screen.getAllByRole("radio");
         fireEvent.click(stars[4]);
+        // Текст необязателен: одной оценки достаточно
+        expect(screen.getByRole("button", { name: "host-dashboard.Оставить отзыв" })).not.toBeDisabled();
 
         const textarea = screen.getByRole("textbox");
         fireEvent.change(textarea, { target: { value: "Отличная вакансия!" } });
@@ -78,5 +80,25 @@ describe("ReviewAboutOffers", () => {
 
         await waitFor(() => expect(screen.getByText("Оставьте отзыв")).toBeInTheDocument());
         expect(screen.getByRole("button", { name: "host-dashboard.Оставить отзыв" })).toBeDisabled();
+    });
+
+    it("звезда из письма «Как всё прошло?» открывает окно с оценкой", async () => {
+        createOfferReview.mockClear();
+        window.history.pushState({}, "", "/volunteer/review?vacancy=6293&rating=4");
+        renderWithProviders(
+            <MemoryRouter><ReviewAboutOffers locale="ru" /></MemoryRouter>,
+        );
+
+        await waitFor(() => expect(screen.getByText("Оставьте отзыв")).toBeInTheDocument());
+        expect(window.location.search).toBe("");
+        // Оценка уже стоит: достаточно написать текст и отправить
+        fireEvent.change(screen.getByRole("textbox"), { target: { value: "Спасибо!" } });
+        fireEvent.click(screen.getByRole("button", { name: "host-dashboard.Оставить отзыв" }));
+        await waitFor(() => expect(createOfferReview).toHaveBeenCalledWith({
+            vacancyId: notDoneReview.id,
+            description: "Спасибо!",
+            rating: 4,
+            imageIds: [],
+        }));
     });
 });

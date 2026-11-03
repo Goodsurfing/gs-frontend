@@ -83,7 +83,7 @@ test.describe('Новый фронт: фото, видео и отзывы ор�
             await expect(dialog.getByText('Поставьте оценку, чтобы оставить отзыв')).toBeVisible();
             await expect(dialog.getByRole('button', { name: 'Оставить отзыв' })).toBeDisabled();
             await dialog.getByRole('radio', { name: '5' }).click();
-            await dialog.getByLabel('Напишите ваш отзыв').fill('Проверка');
+            // Текст необязателен: одной оценки достаточно
             await expect(dialog.getByRole('button', { name: 'Оставить отзыв' })).toBeEnabled();
             await page.keyboard.press('Escape');
             await expect(dialog).toHaveCount(0);

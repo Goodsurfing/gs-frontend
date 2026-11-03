@@ -22,8 +22,14 @@ describe("buildNavigation", () => {
             "main.welcome.header.donation.title",
             "main.welcome.header.about-project.title",
             "main.welcome.header.for-organizers.become-a-host",
-            "main.welcome.header.expeditions",
             "main.welcome.header.international-volunteering",
         ]);
+    });
+
+    it("GS-243: «Экспедиции» — последний пункт «Сообщества»", () => {
+        const community = buildNavigation("ru", t).entries[0];
+        expect(community?.kind).toBe("group");
+        const items = community?.kind === "group" ? community.items : [];
+        expect(items.at(-1)).toEqual({ label: "main.welcome.header.expeditions", href: "https://expedition.goodsurfing.org/" });
     });
 });

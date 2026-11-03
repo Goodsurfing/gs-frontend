@@ -26,6 +26,7 @@ import { NotDoneReviewVolunteer } from "@/entities/Review/model/types/review";
 import { MediaObjectType } from "@/types/media";
 import styles from "./ReviewAboutOffers.module.scss";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { openReviewFromLink } from "@/shared/lib/reviewLink";
 
 interface ReviewAboutOffersProps {
     locale: Locale;
@@ -101,6 +102,20 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
             />
         ),
     );
+
+    // Пришли по звезде из письма «Как всё прошло?» — сразу окно отзыва с оценкой
+    useEffect(() => {
+        if (isNotDoneReviewsLoading) return;
+        openReviewFromLink(
+            notDoneReviewsData,
+            (offer, link) => offer.id === link.vacancyId,
+            (offer, rating) => {
+                setSelectedOffer(offer);
+                if (rating) form.setValue("review", { stars: rating, text: "" });
+            },
+        );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isNotDoneReviewsLoading]);
 
     const onReviewClick = (offer: NotDoneReviewVolunteer) => {
         setSelectedOffer(offer);
