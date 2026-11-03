@@ -48,7 +48,7 @@ export function ArticleDetail({ kind, id, breadcrumbs, title, author, date, tags
                         {author && (
                             <a href={author.href} className="flex items-center gap-2">
                                 {/* eslint-disable-next-line @next/next/no-img-element -- аватар */}
-                                <img src={author.avatar} alt="auhtor avatar" className="h-[22px] w-[22px] rounded-full object-cover" />
+                                <img loading="lazy" decoding="async" src={author.avatar} alt="auhtor avatar" className="h-[22px] w-[22px] rounded-full object-cover" />
                                 <span className="text-[0.875rem] text-primary">{author.name}</span>
                             </a>
                         )}

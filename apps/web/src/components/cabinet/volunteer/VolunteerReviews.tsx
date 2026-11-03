@@ -121,7 +121,7 @@ function Thumbs({ images, label, onOpen }: { images: Image[]; label: string; onO
             {images.slice(0, 4).map((image, index) => (
                 <button key={image.id} type="button" aria-label={`${label} ${index + 1}`} onClick={() => onOpen(index)} className="relative h-14 w-14 shrink-0 cursor-pointer overflow-hidden rounded-[6px]">
                     {/* eslint-disable-next-line @next/next/no-img-element -- превью из хранилища */}
-                    <img src={mediaUrl(image, "small")} alt="" className="block h-full w-full object-cover" />
+                    <img loading="lazy" decoding="async" src={mediaUrl(image, "small")} alt="" className="block h-full w-full object-cover" />
                     {index === 3 && images.length > 4 && (
                         <span className="absolute inset-0 flex items-center justify-center bg-black/50 text-[14px] font-semibold text-white">{`+${images.length - 4}`}</span>
                     )}
@@ -273,7 +273,7 @@ export function VolunteerReviews({ hrefs, categories, labels }: {
                                             <span className="text-[18px] font-medium text-ink-secondary">{textSlice(review.vacancy.name, 34, labels.noTitle)}</span>
                                             {review.vacancy.image?.thumbnails
                                                 // eslint-disable-next-line @next/next/no-img-element -- превью вакансии
-                                                ? <img src={mediaUrl(review.vacancy.image, "small")} alt="" className="h-10 w-10 rounded-[3px] object-cover" />
+                                                ? <img loading="lazy" decoding="async" src={mediaUrl(review.vacancy.image, "small")} alt="" className="h-10 w-10 rounded-[3px] object-cover" />
                                                 : <span className="h-10 w-10 rounded-[3px] bg-accent-bg" />}
                                         </span>
                                         <span className="text-[12px] text-caption">{textSlice(review.created, 30, "")}</span>

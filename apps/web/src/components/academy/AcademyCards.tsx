@@ -32,7 +32,7 @@ export function CourseCard({ href, title, cover, videos, duration, rating, autho
     return (
         <a href={href} className="group flex w-full gap-[30px] text-inherit no-underline down-lg:max-w-[575px] down-lg:flex-col">
             {/* eslint-disable-next-line @next/next/no-img-element -- обложка из хранилища, пропорция превью 307×222 */}
-            <img src={cover || "/web/images/default-offer.png"} alt={title} className="block aspect-[307/222] h-auto w-[320px] shrink-0 grow-0 basis-[320px] object-cover down-lg:w-full down-lg:basis-auto" />
+            <img loading="lazy" decoding="async" src={cover || "/web/images/default-offer.png"} alt={title} className="block aspect-[307/222] h-auto w-[320px] shrink-0 grow-0 basis-[320px] object-cover down-lg:w-full down-lg:basis-auto" />
             <div className="flex min-w-0 flex-1 flex-col gap-[30px]">
                 <div className="flex flex-col gap-2">
                     <h3 className="text-[18px] leading-[130%] font-medium">{title}</h3>
@@ -69,7 +69,7 @@ export function LessonCard({ href, title, cover, duration, rating, description, 
         <a href={href} className="group flex w-full gap-[30px] text-inherit no-underline down-lg:max-w-[575px] down-lg:flex-col">
             {cover
                 // eslint-disable-next-line @next/next/no-img-element -- обложка из хранилища
-                ? <img src={cover} alt={title} className="h-full max-h-[300px] w-full max-w-[575px] object-cover" />
+                ? <img loading="lazy" decoding="async" src={cover} alt={title} className="h-full max-h-[300px] w-full max-w-[575px] object-cover" />
                 : <div className="h-full max-h-[300px] w-full max-w-[575px] bg-field" />}
             <div className="flex flex-col gap-[30px]">
                 <div className="flex flex-col gap-2">

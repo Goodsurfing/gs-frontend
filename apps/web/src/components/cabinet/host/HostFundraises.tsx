@@ -170,7 +170,7 @@ function FundraiseCard({ item, href, onEdit, onClose, onDelete, labels }: {
                 <div className="h-[140px] w-[180px] shrink-0 down-sm:h-[180px] down-sm:w-full">
                     {image
                         // eslint-disable-next-line @next/next/no-img-element -- обложка сбора
-                        ? <img src={image} alt={item.name} className="h-full w-full object-cover" />
+                        ? <img loading="lazy" decoding="async" src={image} alt={item.name} className="h-full w-full object-cover" />
                         : <div className="h-full w-full bg-[#e0e0e0]" />}
                 </div>
                 <div className="flex min-w-0 flex-1 flex-col gap-1.5">

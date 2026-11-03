@@ -9,8 +9,11 @@ import { GalleryLightbox } from "@/components/gallery/GalleryLightbox";
  * (OfferPersonalCardImageBlock): при наведении фото раздвигаются, по клику —
  * просмотр во весь экран.
  */
-export function OfferPhotoStack({ images, labels }: {
+export function OfferPhotoStack({ images, thumbs, labels }: {
+    /** Фото для просмотрщика (large) */
     images: string[];
+    /** Превью 130×130 в стопке — меньший размер, чтобы на медленном интернете не тянуть large; без них — images */
+    thumbs?: string[];
     labels: { photos: string; close: string; prev: string; next: string; photo: string };
 }) {
     const [open, setOpen] = useState<number | null>(null);
@@ -25,9 +28,9 @@ export function OfferPhotoStack({ images, labels }: {
                     <img src="/web/icons/offer/dots.svg" alt="" className="mx-auto h-1.5 w-[34px]" />
                     <span className="mx-auto text-[14px] leading-[120%] font-medium whitespace-nowrap">{labels.photos}</span>
                 </span>
-                {images.slice(0, 4).map((src, index) => (
+                {(thumbs ?? images).slice(0, 4).map((src, index) => (
                     // eslint-disable-next-line @next/next/no-img-element -- превью из хранилища
-                    <img
+                    <img loading="lazy" decoding="async"
                         key={`${index}-${src}`}
                         src={src}
                         alt=""

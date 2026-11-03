@@ -56,7 +56,7 @@ export function PhotoUploader({ photos, pending, onFiles, onRemove, onCancel, on
                     {pending.map((item) => (
                         <div key={item.key} className="relative flex h-[130px] w-[130px] flex-col gap-1">
                             {/* eslint-disable-next-line @next/next/no-img-element -- превью выбранного файла */}
-                            <img src={item.preview} alt="" className="h-full w-full object-cover" />
+                            <img loading="lazy" decoding="async" src={item.preview} alt="" className="h-full w-full object-cover" />
                             <button type="button" aria-label={labels.remove} onClick={() => onCancel(item.key)} className={remove}>×</button>
                             {item.error && <div className="mt-1 text-[12px] text-[red]">{item.error}</div>}
                             <div className="mt-[5px] h-1.5 overflow-hidden rounded-[4px] bg-[#ddd]">

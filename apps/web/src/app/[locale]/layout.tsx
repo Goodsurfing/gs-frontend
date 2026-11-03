@@ -24,8 +24,12 @@ export function generateStaticParams() {
  * Битая картинка → заглушка «Изображение недоступно», как глобальный обработчик
  * старого SPA (src/index.tsx: файлы, потерянные при переезде в S3). Встроенный
  * скрипт первым в body — ловит ошибки и тех картинок, что грузятся до гидратации.
+ * Он же отмечает загруженные картинки (data-loaded): пока метки нет, на месте
+ * картинки из хранилища — мерцающая заглушка, потом картинка плавно
+ * проявляется (globals.css, «Загрузка картинок»). На медленном интернете вместо
+ * пустых дыр видно, что здесь будет фото.
  */
-const BROKEN_IMAGE_FALLBACK = `document.addEventListener("error",function(e){var t=e.target;if(t&&t.tagName==="IMG"&&!t.dataset.fallback){t.dataset.fallback="true";t.src="/web/images/placeholder-missing.svg";}},true);`;
+const BROKEN_IMAGE_FALLBACK = `document.addEventListener("error",function(e){var t=e.target;if(t&&t.tagName==="IMG"&&!t.dataset.fallback){t.dataset.fallback="true";t.src="/web/images/placeholder-missing.svg";}},true);document.addEventListener("load",function(e){var t=e.target;if(t&&t.tagName==="IMG")t.setAttribute("data-loaded","");},true);`;
 
 export default async function LocaleLayout({
     children,

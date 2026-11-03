@@ -130,7 +130,7 @@ function Tool({ label, src, active = false, disabled = false, flip = false, onCl
         >
             {/* Иконка на 4 px выше центра кнопки — как svg из ReactSVG в старом ToolBar */}
             {/* eslint-disable-next-line @next/next/no-img-element -- иконка */}
-            <img src={src} alt="" className={`h-6 w-6 -translate-y-1 ${flip ? "-scale-x-100" : ""}`} />
+            <img loading="lazy" decoding="async" src={src} alt="" className={`h-6 w-6 -translate-y-1 ${flip ? "-scale-x-100" : ""}`} />
         </button>
     );
 }

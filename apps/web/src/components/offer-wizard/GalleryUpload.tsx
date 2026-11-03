@@ -110,7 +110,7 @@ export function GalleryUpload({ images, onChange, onError, token, labels }: {
                 {pending.map((item) => (
                     <div key={item.key} className="relative flex h-[130px] w-[130px] flex-col gap-1">
                         {/* eslint-disable-next-line @next/next/no-img-element -- превью загружаемого файла */}
-                        <img src={item.preview} alt="" className="block h-full w-full object-cover opacity-50" />
+                        <img loading="lazy" decoding="async" src={item.preview} alt="" className="block h-full w-full object-cover opacity-50" />
                         <div className="mt-[5px] h-1.5 overflow-hidden rounded-[4px] bg-[#ddd]">
                             <div className={`h-full ${item.failed ? "w-full bg-[red]" : "w-1/2 bg-primary"}`} />
                         </div>

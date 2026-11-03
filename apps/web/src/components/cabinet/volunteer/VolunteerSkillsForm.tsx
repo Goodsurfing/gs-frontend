@@ -291,7 +291,7 @@ export function VolunteerSkillsForm({ locale, languages, levels, labels }: {
                             >
                                 <span className={`flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-full border transition-colors ${checked ? "border-primary bg-primary" : "border-accent-bg bg-accent-bg group-hover:border-caption"}`}>
                                     {/* eslint-disable-next-line @next/next/no-img-element -- иконка навыка из хранилища (серая; выбранная — белая) */}
-                                    <img src={mediaUrl({ contentUrl: skill.imagePath })} alt="" className={`h-5 w-5 ${checked ? "brightness-0 invert" : ""}`} />
+                                    <img loading="lazy" decoding="async" src={mediaUrl({ contentUrl: skill.imagePath })} alt="" className={`h-5 w-5 ${checked ? "brightness-0 invert" : ""}`} />
                                 </span>
                                 <span className="text-label text-ink-secondary">{skill.name}</span>
                             </button>

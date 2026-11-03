@@ -157,6 +157,8 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
     const gallery = (offer.galleryImages ?? [])
         .map((image) => mediaUrl(image, "large") === mediaUrl(image) ? mediaUrl(image, "medium") : mediaUrl(image, "large"))
         .filter((url): url is string => !!url);
+    // Превью в стопке 130×130 — medium вместо large (на медленном интернете в разы меньше)
+    const galleryThumbs = (offer.galleryImages ?? []).map((image) => mediaUrl(image, "medium")).filter((url): url is string => !!url);
     const galleryLabels = { close: t("Закрыть"), prev: t("slider.previous"), next: t("slider.next"), photo: t("gallery.photo") };
     const hrefs: OfferActionsHrefs = {
         signIn: routes.signIn(locale),
@@ -184,7 +186,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
                 address={offer.where?.address}
                 reviews={offer.reviewsCount}
                 rating={Number(offer.averageRating) || 0}
-                gallery={<OfferPhotoStack images={gallery} labels={{ photos: p("Фотографии"), ...galleryLabels }} />}
+                gallery={<OfferPhotoStack images={gallery} thumbs={galleryThumbs} labels={{ photos: p("Фотографии"), ...galleryLabels }} />}
                 actions={<OfferActions offerId={offer.id} status={offer.status} variant="hero" hrefs={hrefs} labels={labels} />}
                 labels={{ status: statusLabel, reviewsCount: tOffer("Кол-во отзывов:"), noReviews: tOffer("Пока нет отзывов") }}
             />

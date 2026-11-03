@@ -83,7 +83,7 @@ export default async function AboutProjectPage({ params }: Props) {
                             {data.principles.map((item) => (
                                 <div key={item.name} className="flex max-w-[180px] flex-col items-center justify-center gap-4">
                                     {/* eslint-disable-next-line @next/next/no-img-element -- картинка из админки */}
-                                    <img src={mediaUrl(item.image, "medium") ?? ""} alt={item.name} className="h-[180px] w-[180px] rounded-full bg-accent-bg object-cover" />
+                                    <img loading="lazy" decoding="async" src={mediaUrl(item.image, "medium") ?? ""} alt={item.name} className="h-[180px] w-[180px] rounded-full bg-accent-bg object-cover" />
                                     <span className="text-center text-[1.125rem] font-medium">{item.name}</span>
                                     <span className="text-center text-[0.875rem] font-medium">{item.description}</span>
                                 </div>

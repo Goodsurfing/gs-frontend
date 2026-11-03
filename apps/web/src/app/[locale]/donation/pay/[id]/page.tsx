@@ -40,7 +40,7 @@ export default async function DonationPayPage({ params }: Props) {
                 {fundraise && (
                     <div className="mt-[18px] mb-5 grid grid-cols-[220px_1fr] gap-3.5 rounded-[18px] border border-[#dbe6ef] bg-white p-3.5 shadow-[0_8px_24px_rgb(16_44_74/6%)] max-[900px]:grid-cols-1 max-[600px]:rounded-[14px] max-[600px]:p-3">
                         {/* eslint-disable-next-line @next/next/no-img-element -- обложка из хранилища */}
-                        {image && <img src={image} alt={fundraise.name} className="h-[148px] w-full rounded-[14px] object-cover max-[900px]:h-[180px] max-[600px]:h-40 max-[600px]:rounded-[10px]" />}
+                        {image && <img loading="lazy" decoding="async" src={image} alt={fundraise.name} className="h-[148px] w-full rounded-[14px] object-cover max-[900px]:h-[180px] max-[600px]:h-40 max-[600px]:rounded-[10px]" />}
                         <div className="flex flex-col gap-1">
                             <span className="inline-flex self-start rounded-full bg-[rgb(10_102_194/10%)] px-2.5 py-[5px] text-[12px] font-bold text-[#0a66c2] uppercase">{t("Сбор пожертвований")}</span>
                             <h2 className="mt-0.5 text-[22px] leading-[1.25] font-bold text-[#0c2238] max-[600px]:text-[19px]">{fundraise.name}</h2>

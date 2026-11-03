@@ -183,7 +183,7 @@ export function HostReviews({ volunteerHref, offerHref, labels }: {
                                         <span className="text-[18px] font-medium text-ink-secondary">{textSlice(review.vacancy.name, 34, labels.noTitle)}</span>
                                         {review.vacancy.image?.thumbnails?.small
                                             // eslint-disable-next-line @next/next/no-img-element -- обложка вакансии
-                                            ? <img src={mediaUrl(review.vacancy.image, "small")} alt="" className="h-10 w-10 rounded-[3px] object-cover" />
+                                            ? <img loading="lazy" decoding="async" src={mediaUrl(review.vacancy.image, "small")} alt="" className="h-10 w-10 rounded-[3px] object-cover" />
                                             : <div className="h-10 w-10 rounded-[3px] bg-accent-bg" />}
                                     </div>
                                     <span className="text-[12px] text-caption">{textSlice(review.created, 30, "")}</span>
@@ -250,7 +250,7 @@ function Thumbs({ images, onOpen }: { images: Image[]; onOpen: (index: number) =
             {images.slice(0, 4).map((image, index) => (
                 <button key={image.id} type="button" onClick={() => onOpen(index)} className="relative h-14 w-14 shrink-0 cursor-pointer overflow-hidden rounded-[6px] border-0 p-0">
                     {/* eslint-disable-next-line @next/next/no-img-element -- превью из хранилища */}
-                    <img src={mediaUrl(image, "small")} alt="" className="block h-full w-full object-cover" />
+                    <img loading="lazy" decoding="async" src={mediaUrl(image, "small")} alt="" className="block h-full w-full object-cover" />
                     {index === 3 && images.length > 4 && (
                         <span className="absolute inset-0 flex items-center justify-center bg-black/50 text-[14px] font-semibold text-white">{`+${images.length - 4}`}</span>
                     )}
