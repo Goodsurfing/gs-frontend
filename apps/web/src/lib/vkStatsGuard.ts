@@ -5,7 +5,8 @@ const VK_STATS = /^https:\/\/id\.vk\.(ru|com)\/stat_events/;
  * обрабатывает сбой запроса: блокировщик рекламы или CORS (стейдж не в
  * списке адресов приложения VK) дают необработанный «Failed to fetch» —
  * шум в Bugsink, на вход не влияет. Неудачный запрос статистики отвечаем
- * пустым ответом; остальные запросы не трогаем.
+ * пустым JSON (SDK разбирает ответ через .json(), пустое тело даёт
+ * «Unexpected end of input»); остальные запросы не трогаем.
  */
 export function muteVkStatsErrors(target: { fetch: typeof fetch } = window): void {
     const original = target.fetch;
@@ -13,7 +14,7 @@ export function muteVkStatsErrors(target: { fetch: typeof fetch } = window): voi
     const guarded = ((input: RequestInfo | URL, init?: RequestInit) => {
         const request = original.call(target, input, init);
         const url = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
-        return VK_STATS.test(url) ? request.catch(() => new Response(null, { status: 204 })) : request;
+        return VK_STATS.test(url) ? request.catch(() => new Response("{}", { status: 200, headers: { "Content-Type": "application/json" } })) : request;
     }) as typeof fetch & { vkStatsGuard?: true };
     guarded.vkStatsGuard = true;
     target.fetch = guarded;
