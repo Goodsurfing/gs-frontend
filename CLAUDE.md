@@ -1,7 +1,7 @@
 # gs-frontend — веб-фронт Goodsurfing
 
 В репозитории два фронта:
-- **корень** — старое SPA: React 18 + TypeScript + Vite, Redux Toolkit, Feature-Sliced Design (`src/`). Подробности — `README.md`.
+- **корень** — старое SPA: React 18 + TypeScript + Vite, Redux Toolkit, Feature-Sliced Design (`src/`). С 03.11.2026 в нём осталась только **админка** (`/admin…`) и редиректы старых адресов; остальной сайт — новый фронт. Переход из админки на адрес нового фронта перезагружает страницу (`src/routes/ui/LeaveSpa`). Подробности — `README.md`.
 - **`apps/web`** — новый фронт (Next.js 16, App Router, Tailwind 4, Radix), куда старое SPA переезжает по разделам (эпик GS-212). Его правила — `apps/web/CLAUDE.md`, читать перед любой работой там. `packages/api` — типизированный клиент API, типы генерируются из OpenAPI бэкенда.
 
 Ветки: PR → `develop` (деплой на стейдж) → релизный PR `develop` → `master` → тег `v*.*.*` → прод. При релизе вместе с бэкендом фронт выкатывается раньше бэкенда, если в PR не сказано иначе.
