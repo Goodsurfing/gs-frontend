@@ -65,7 +65,8 @@ test.describe('Оплата через интерфейс', () => {
         let fundraiseId: string | undefined;
         for (const { id } of fundraises) {
             await page.goto(`/fundraise/${id}`);
-            const donate = page.getByRole('button', { name: 'Поддержать', exact: true }).first();
+            // В новом фронте «Поддержать» — ссылка на страницу оплаты (в старом SPA была кнопка)
+            const donate = page.getByRole('link', { name: 'Поддержать', exact: true }).or(page.getByRole('button', { name: 'Поддержать', exact: true })).first();
             const open = await donate.waitFor({ state: 'visible', timeout: 10_000 }).then(() => true, () => false);
             if (open) {
                 await donate.click();
