@@ -58,3 +58,28 @@ describe("цели Метрики", () => {
         expect(ym).toHaveBeenCalledTimes(2);
     });
 });
+
+describe("цели до загрузки счётчика", () => {
+    it("цель при открытии страницы не теряется: ждёт скрипт и уходит после init", async () => {
+        const mod = await load("47422282", undefined);
+        mod.reachGoal("vacancy_view", { vacancyId: "1" });
+        expect(mod.flushPendingGoals()).toBe(false);
+
+        // скрипт счётчика выполнился: window.ym появился, init уже в его очереди
+        const ym = vi.fn();
+        (window as unknown as { ym: Ym }).ym = ym;
+        expect(mod.flushPendingGoals()).toBe(true);
+        expect(ym).toHaveBeenCalledWith(47422282, "reachGoal", "vacancy_view", { vacancyId: "1" });
+
+        // повторно не отправляется
+        mod.flushPendingGoals();
+        expect(ym).toHaveBeenCalledTimes(1);
+    });
+
+    it("когда счётчик уже есть — сразу, без очереди", async () => {
+        const ym = vi.fn();
+        const { reachGoal } = await load("47422282", ym);
+        reachGoal("donation_paid");
+        expect(ym).toHaveBeenCalledWith(47422282, "reachGoal", "donation_paid", undefined);
+    });
+});
