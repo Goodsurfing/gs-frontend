@@ -6,6 +6,7 @@ import { useSession } from "@/components/session/SessionProvider";
 import { Arrow } from "@/components/ui/Arrow";
 import { Avatar } from "@/components/ui/Avatar";
 import { mediaUrl } from "@/lib/media";
+import { takeChars } from "@/lib/textSlice";
 
 import type { NavLink } from "./navigation";
 
@@ -35,7 +36,7 @@ export function MessagesIcon({ count }: { count: number }) {
 }
 
 /** Сокращение имени как в старой шапке: до 13 символов. */
-const short = (value: string) => (value.length > 13 ? value.slice(0, 13) : value);
+const short = (value: string) => takeChars(value, 13);
 
 /**
  * Правая часть десктопной шапки: «Вход» для гостя, для вошедшего —

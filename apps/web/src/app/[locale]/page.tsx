@@ -20,6 +20,7 @@ import { mediaUrl } from "@/lib/media";
 import { formatStatNumber, roundStat } from "@/lib/formatStat";
 import { routes } from "@/lib/routes";
 import { pageMetadata, siteUrl } from "@/lib/seo";
+import { jsonLdGraph } from "@/lib/structuredData";
 
 // Подборки и баннер меняются в админке — страница пересобирается раз в 5 минут
 export const revalidate = 300;
@@ -89,7 +90,7 @@ export default async function HomePage({ params }: Props) {
 
     return (
         <PublicShell locale={locale}>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph(structuredData)) }} />
             {/* Первый экран: поиск и направления слева, слайдер справа; уже 1000 px — слайдер сверху */}
             <div className="flex min-h-screen border-b border-accent-bg max-[1000px]:flex-col-reverse">
                 <div className="w-1/2 bg-white max-[1000px]:w-full">
