@@ -10,9 +10,16 @@ export function isClientError(status: number): boolean {
  * ещё нет — экран ошибки раздела ([locale]/error.tsx) с шапкой и подвалом.
  */
 export class ApiUnavailableError extends Error {
+    /** Что не загрузилось (вакансия 4257, blog slug…) — для логов; в тексте ошибки его нет */
+    readonly what: string;
+
     constructor(what: string) {
-        super(`API недоступен: ${what}`);
+        // Текст одинаковый для всех страниц: Bugsink группирует события по тексту, и с id
+        // в тексте минутный перезапуск бэкенда давал десятки отдельных карточек (04.11: 95
+        // событий на проде). Какая страница — видно по адресу запроса в событии.
+        super("API недоступен — страница отдана из кэша или показан экран ошибки");
         this.name = "ApiUnavailableError";
+        this.what = what;
     }
 }
 
