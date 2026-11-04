@@ -12,12 +12,13 @@ const ERRORS = [
 ];
 
 /** Вход в админку (AdminSignInPage старого фронта): обычный вход, после него — в админку */
-export default async function AdminSignInPage() {
-    const t = await getTranslator("ru");
+export default async function AdminSignInPage({ searchParams }: { searchParams: Promise<{ denied?: string }> }) {
+    const [{ denied }, t] = await Promise.all([searchParams, getTranslator("ru")]);
     return (
         <AuthShell locale="ru" cancelHref="/">
             <div className="flex w-full flex-col items-center">
-                <h2 className="mb-[55px] text-[1.5em] font-bold">Войти в панель администратора</h2>
+                <h2 className={`${denied ? "mb-4" : "mb-[55px]"} text-[1.5em] font-bold`}>Войти в панель администратора</h2>
+                {denied && <p role="alert" className="mb-8 text-center text-error">У этой учётной записи нет прав администратора. Войдите под администратором.</p>}
                 <SignInForm
                     locale="ru"
                     resetHref="/reset-password"

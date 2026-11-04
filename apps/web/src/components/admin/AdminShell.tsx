@@ -9,7 +9,7 @@ import { Spinner } from "@/components/ui/Spinner";
 import { AdminApiError, useAdminApi } from "@/lib/admin/api";
 import { ADMIN_MENU, isMenuItemActive } from "@/lib/admin/menu";
 
-type Access = "checking" | "allowed" | "denied" | "error";
+type Access = "checking" | "allowed" | "error";
 
 /**
  * Каркас админки: шапка, меню разделов, содержимое. Гость — на /admin/sign-in
@@ -35,7 +35,12 @@ export function AdminShell({ children }: { children: ReactNode }) {
         let cancelled = false;
         api.get("user", { page: 1, limit: 1 })
             .then(() => !cancelled && setAccess("allowed"))
-            .catch((e: unknown) => !cancelled && setAccess(e instanceof AdminApiError && (e.status === 403 || e.status === 401) ? "denied" : "error"));
+            .catch((e: unknown) => {
+                if (cancelled) return;
+                // Не администратор — на вход в админку с пояснением (так же уводила старая админка)
+                if (e instanceof AdminApiError && (e.status === 403 || e.status === 401)) window.location.replace("/admin/sign-in?denied=1");
+                else setAccess("error");
+            });
         return () => {
             cancelled = true;
         };
@@ -45,13 +50,6 @@ export function AdminShell({ children }: { children: ReactNode }) {
         return (
             <div className="flex min-h-screen items-center justify-center p-6 text-center">
                 {access === "checking" && <Spinner />}
-                {access === "denied" && (
-                    <div>
-                        <p className="mb-4 text-[18px] font-semibold">Нет доступа к админке</p>
-                        <p className="mb-6 text-muted">Войдите под учётной записью администратора.</p>
-                        <button type="button" className="cursor-pointer rounded-[8px] bg-primary px-5 py-2.5 text-white" onClick={() => void session.logout().then(() => window.location.replace("/admin/sign-in"))}>Войти другим пользователем</button>
-                    </div>
-                )}
                 {access === "error" && (
                     <div>
                         <p className="mb-4 text-[18px] font-semibold">Не удалось связаться с сервером</p>
