@@ -52,7 +52,7 @@ const listConfig = (d: Dictionary): AdminListConfig<DictionaryRow> => ({
         { label: "Español", cell: (r) => r.nameEs || "—" },
         ...(d.color ? [{ label: "Цвет", cell: (r: DictionaryRow) => r.color ? <span className="inline-flex items-center gap-2"><span className="size-4 rounded-full border border-accent-bg" style={{ background: r.color }} />{r.color}</span> : "—" }] : []),
         // eslint-disable-next-line @next/next/no-img-element -- иконка справочника, размер мал
-        ...(d.image ? [{ label: "Картинка", cell: (r: DictionaryRow) => r.imagePath ? <img src={r.imagePath} alt="" className="size-8 object-contain" /> : "—" }] : []),
+        ...(d.image ? [{ label: "Картинка", cell: (r: DictionaryRow) => r.imagePath ? <img src={r.imagePath} alt="" loading="lazy" width={32} height={32} className="size-8 object-contain" /> : "—" }] : []),
     ],
     remove: { path: (r) => `${d.api}/${r.id}`, confirm: (r) => `Удалить «${r.name}»? Если он используется в вакансиях или профилях, API может отказать.` },
 });

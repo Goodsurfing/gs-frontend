@@ -156,7 +156,7 @@ export function AdminForm({ config, id }: { config: AdminFormConfig; id: string 
                                     {(() => {
                                         const src = value instanceof File ? URL.createObjectURL(value) : record ? field.preview?.(record) : null;
                                         // eslint-disable-next-line @next/next/no-img-element -- превью загружаемой картинки, размер мал
-                                        return src ? <img src={src} alt="" className="size-[72px] rounded-[6px] bg-field object-contain" /> : <span className="flex size-[72px] items-center justify-center rounded-[6px] bg-field text-[11px]">нет</span>;
+                                        return src ? <img src={src} alt="" loading="eager" width={72} height={72} className="size-[72px] rounded-[6px] bg-field object-contain" /> : <span className="flex size-[72px] items-center justify-center rounded-[6px] bg-field text-[11px]">нет</span>;
                                     })()}
                                     <input type="file" accept="image/*" required={field.required && isNew} onChange={(e) => set(field.key, e.target.files?.[0] ?? null)} />
                                 </span>
