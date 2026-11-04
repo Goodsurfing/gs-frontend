@@ -98,7 +98,9 @@ export function AdminForm({ config, id }: { config: AdminFormConfig; id: string 
     const submit = async () => {
         setBusy(true);
         try {
-            const prepared = config.toBody ? config.toBody(values, record) : values;
+            // Пустое поле, которое в записи было null и осталось пустым, уходит null, а не "" — не меняем данные без правки
+            const normalized = Object.fromEntries(Object.entries(values).map(([key, value]) => [key, value === "" && record && record[key] === null ? null : value]));
+            const prepared = config.toBody ? config.toBody(normalized, record) : normalized;
             const target = isNew ? config.create : config.update(id);
             let body: unknown = prepared;
             if (config.format === "form") {
