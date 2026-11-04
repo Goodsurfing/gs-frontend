@@ -79,7 +79,7 @@ jobs:
         run: |
           set -e
           for i in 1 2 3 4 5; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" -m 10 ${{ env.VITE_MAIN_URL }}/)
+            code=$(curl -s -o /dev/null -w "%{http_code}" -m 10 ${{ env.VITE_MAIN_URL }}/) || code=000  # таймаут curl при set -e не должен обрывать повторы
             if [ "$code" = "200" ]; then echo "frontend OK"; exit 0; fi
             echo "attempt $i -> $code"
             sleep 15
