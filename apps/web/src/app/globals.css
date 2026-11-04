@@ -174,13 +174,13 @@ body {
  * проявляется. Иконки и логотип не трогаем. Битая картинка (data-fallback)
  * — без заглушки.
  */
-:is(img[src*="storage.yandexcloud.net"], img[src*="/web/images/"]):not([data-loaded], [data-fallback]) {
+:is(img[src*="storage.yandexcloud.net"], img[src*="/web/images/"]):not([data-loaded], [data-fallback], [data-hero]) {
     background: linear-gradient(90deg, #eef2f6 25%, #f7f9fb 37%, #eef2f6 63%);
     background-size: 400% 100%;
     animation: gs-shimmer 1.4s ease infinite;
 }
 
-:is(img[src*="storage.yandexcloud.net"], img[src*="/web/images/"])[data-loaded] {
+:is(img[src*="storage.yandexcloud.net"], img[src*="/web/images/"])[data-loaded]:not([data-hero]) {
     animation: gs-image-in 0.35s ease-out;
 }
 
