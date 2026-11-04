@@ -32,6 +32,7 @@ export function nextRoute(prefix: string, next: string | null, nextId: string | 
         case "volunteer": return `${prefix}/volunteers/${id}`;
         case "payment": return `${prefix}/payment?tariff=${id}`;
         case "donation": return `${prefix}/fundraise/${id}`;
+        case "duo": return `${prefix}/membership/duo/${id}`;
         default: return null;
     }
 }
