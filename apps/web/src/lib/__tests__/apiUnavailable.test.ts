@@ -17,4 +17,11 @@ describe("кэш страниц и сбои API", () => {
         expect(() => failOnApiError({ kind: "notFound" }, "вакансия 1")).not.toThrow();
         expect(() => failOnApiError({ kind: "ok" }, "вакансия 1")).not.toThrow();
     });
+
+    it("текст одинаковый для всех страниц — одна карточка в Bugsink", () => {
+        const a = new ApiUnavailableError("вакансия 1");
+        const b = new ApiUnavailableError("организация 2");
+        expect(a.message).toBe(b.message);
+        expect(a.what).toBe("вакансия 1");
+    });
 });
