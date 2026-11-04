@@ -14,8 +14,9 @@ export const metadata: Metadata = {
 };
 
 // Другие первые сегменты — не язык: такие адреса уходят в app/global-not-found.tsx
-export const dynamicParams = false;
-
+// Неизвестный язык отсекает isLocale → notFound() ниже. dynamicParams = false здесь
+// не ставим: он распространяется на все страницы и превращал в 404 вакансии и
+// статьи, когда у них появился кэш (generateStaticParams).
 export function generateStaticParams() {
     return LOCALES.map((locale) => ({ locale }));
 }

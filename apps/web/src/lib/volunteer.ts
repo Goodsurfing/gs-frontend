@@ -9,6 +9,7 @@ import { serverApi } from "./api";
 import { categoryName } from "./categories";
 import type { CatalogOffer } from "./offersCatalog";
 import { toParticipatedOffer } from "./volunteerLists";
+import { isClientError } from "@/lib/apiUnavailable";
 
 export type VolunteerProfile = components["schemas"]["ElementByIdResult"];
 
@@ -24,7 +25,7 @@ export async function getVolunteer(locale: Locale, id: string): Promise<Voluntee
             params: { path: { id } },
             signal: AbortSignal.timeout(8000),
         });
-        if (response.status === 404) return { kind: "notFound" };
+        if (isClientError(response.status)) return { kind: "notFound" };
         return data ? { kind: "ok", profile: data } : { kind: "error" };
     } catch {
         return { kind: "error" };
