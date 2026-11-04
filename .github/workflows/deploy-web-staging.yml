@@ -91,11 +91,12 @@ jobs:
           done
           echo "Новый фронт не ответил через канарейку"
           exit 1
-      - name: Без cookie — новый фронт, админка — старое SPA
+      - name: Без cookie — новый фронт, админка отвечает
         run: |
-          # С 03.11.2026 новый фронт открыт всем (роутер web-all в Traefik); в старом SPA осталась только админка
+          # С 03.11.2026 новый фронт открыт всем (роутер web-all в Traefik); с 04.11 и админка — в новом фронте (GS-221),
+          # на проде переключается Traefik после выкатки — поэтому проверяем только, что /admin отвечает
           body=$(curl -s -m 10 https://staging.goodsurfing.org/healthz)
           if ! echo "$body" | grep -q '"service":"web"'; then echo "Без cookie /healthz отвечает не новый фронт: $body"; exit 1; fi
-          admin=$(curl -s -m 10 https://staging.goodsurfing.org/admin)
-          if echo "$admin" | grep -q '/_next/'; then echo "/admin отдаёт новый фронт — админка должна остаться в старом SPA"; exit 1; fi
-          echo "новый фронт для всех, админка — старое SPA: OK"
+          code=$(curl -s -o /dev/null -w '%{http_code}' -m 10 https://staging.goodsurfing.org/admin)
+          if [ "$code" != "200" ]; then echo "/admin отвечает $code"; exit 1; fi
+          echo "новый фронт для всех, /admin отвечает: OK"
