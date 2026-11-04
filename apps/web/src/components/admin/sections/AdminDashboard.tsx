@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { DashboardStats } from "@/components/admin/sections/DashboardStats";
 import { Spinner } from "@/components/ui/Spinner";
 import { type AdminPage, type AdminQuery, useAdminApi } from "@/lib/admin/api";
 
@@ -13,15 +14,12 @@ interface Tile {
     href: string;
 }
 
-// Итоги — из счётчиков списков API админки (limit=1 → pagination.total)
+// Итоги разделов — из счётчиков списков API админки (limit=1 → pagination.total); остальное — в DashboardStats
 const TILES: Tile[] = [
-    { label: "Пользователи", path: "user", href: "/admin/users" },
-    { label: "С активным членством", path: "user", query: { membershipStatus: "active" }, href: "/admin/users?membershipStatus=active" },
     { label: "Организации", path: "organization", href: "/admin/organizations" },
     { label: "Организации с членством", path: "organization", query: { membershipStatus: "active" }, href: "/admin/organizations?membershipStatus=active" },
     { label: "Вакансии", path: "vacancy", href: "/admin/vacancies" },
     { label: "Сборы", path: "fundraise/", href: "/admin/donations" },
-    { label: "Новые обращения", path: "feedback/", query: { status: "NEW" }, href: "/admin/feedback?status=NEW" },
 ];
 
 interface MembershipLogEntry {
@@ -61,6 +59,8 @@ export function AdminDashboard() {
     return (
         <section>
             <h1 className="mb-4 text-[22px] font-bold">Сводка</h1>
+            <DashboardStats />
+            <h2 className="mb-3 text-[18px] font-bold">Разделы</h2>
             <div className="mb-8 grid grid-cols-4 gap-3 down-lg:grid-cols-2">
                 {TILES.map((tile) => {
                     const value = totals[tile.label];
