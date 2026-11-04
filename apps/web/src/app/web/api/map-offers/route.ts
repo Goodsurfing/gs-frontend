@@ -4,6 +4,7 @@ import { DEFAULT_LOCALE, isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { serverApi } from "@/lib/api";
 import { categoryName } from "@/lib/categories";
+import { compressedJson } from "@/lib/compressedJson";
 import type { MapOffer } from "@/lib/mapOffers";
 import { mediaUrl } from "@/lib/media";
 import { offersApiQuery, parseOffersFilters } from "@/lib/offersFilters";
@@ -47,7 +48,7 @@ export async function GET(request: NextRequest) {
                     category: category ? { name: categoryName(category.name, t) ?? category.name, color: category.color } : undefined,
                 };
             });
-        return NextResponse.json(offers, { headers: { "Cache-Control": "private, max-age=60" } });
+        return compressedJson(request.headers.get("accept-encoding"), offers, { "Cache-Control": "private, max-age=60" });
     } catch {
         return NextResponse.json({ error: "upstream" }, { status: 502 });
     }
