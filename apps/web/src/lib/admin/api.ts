@@ -30,12 +30,15 @@ const queryString = (query?: AdminQuery) => {
 };
 
 /** Текст ошибки API админки: title / detail / message — что вернул бэкенд */
-const errorText = (body: unknown, status: number): string => {
+export const errorText = (body: unknown, status: number): string => {
     if (body && typeof body === "object") {
         const b = body as Record<string, unknown>;
         for (const key of ["detail", "title", "message", "error"]) {
             if (typeof b[key] === "string" && b[key]) return b[key];
         }
+        // Ошибки проверки полей: {"color": "This value should not be blank."}
+        const fields = Object.entries(b).filter(([, v]) => typeof v === "string").map(([k, v]) => `${k}: ${String(v)}`);
+        if (fields.length) return fields.join("; ");
     }
     return status === 403 ? "Нет доступа" : `Ошибка ${status}`;
 };
@@ -50,12 +53,13 @@ export function useAdminApi() {
     const request = useCallback(async <T,>(method: string, path: string, options: { query?: AdminQuery; body?: unknown } = {}): Promise<T> => {
         const headers: Record<string, string> = { Accept: "application/json" };
         if (token) headers.Authorization = `Bearer ${token}`;
-        if (options.body !== undefined) headers["Content-Type"] = "application/json";
+        const form = options.body instanceof FormData;
+        if (options.body !== undefined && !form) headers["Content-Type"] = "application/json";
         const response = await fetch(`${API_URL}/admin/v1/${path.replace(/^\//, "")}${queryString(options.query)}`, {
             method,
             headers,
             credentials: "include",
-            body: options.body === undefined ? undefined : JSON.stringify(options.body),
+            body: options.body === undefined ? undefined : form ? (options.body as FormData) : JSON.stringify(options.body),
             signal: AbortSignal.timeout(20_000),
         });
         const text = await response.text();
@@ -72,6 +76,8 @@ export function useAdminApi() {
         get: <T,>(path: string, query?: AdminQuery) => request<T>("GET", path, { query }),
         post: <T,>(path: string, body?: unknown) => request<T>("POST", path, { body: body ?? {} }),
         patch: <T,>(path: string, body: unknown) => request<T>("PATCH", path, { body }),
+        /** multipart: справочники с картинкой (навыки, категории, условия) */
+        postForm: <T,>(path: string, body: FormData) => request<T>("POST", path, { body }),
         del: (path: string) => request<unknown>("DELETE", path),
     }), [request]);
 }
