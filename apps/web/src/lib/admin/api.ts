@@ -36,8 +36,9 @@ export const errorText = (body: unknown, status: number): string => {
         for (const key of ["detail", "title", "message", "error"]) {
             if (typeof b[key] === "string" && b[key]) return b[key];
         }
-        // Ошибки проверки полей: {"color": "This value should not be blank."}
-        const fields = Object.entries(b).filter(([, v]) => typeof v === "string").map(([k, v]) => `${k}: ${String(v)}`);
+        // Ошибки проверки полей: {"color": "…"} или {"errors": {"color": "…"}}
+        const source = b.errors && typeof b.errors === "object" && !Array.isArray(b.errors) ? (b.errors as Record<string, unknown>) : b;
+        const fields = Object.entries(source).filter(([, v]) => typeof v === "string").map(([k, v]) => `${k}: ${String(v)}`);
         if (fields.length) return fields.join("; ");
     }
     return status === 403 ? "Нет доступа" : `Ошибка ${status}`;

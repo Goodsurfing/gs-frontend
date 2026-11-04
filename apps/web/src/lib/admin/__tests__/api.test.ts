@@ -9,6 +9,7 @@ describe("текст ошибки API админки", () => {
 
     it("собирает ошибки проверки полей", () => {
         expect(errorText({ color: "This value should not be blank." }, 400)).toBe("color: This value should not be blank.");
+        expect(errorText({ errors: { address: "This value should not be blank." } }, 400)).toBe("address: This value should not be blank.");
     });
 
     it("без тела — код ответа", () => {
