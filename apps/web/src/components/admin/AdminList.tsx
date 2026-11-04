@@ -155,7 +155,7 @@ export function AdminList<T>({ config }: { config: AdminListConfig<T> }) {
                     }}
                 >
                     {config.filters?.map((f) => (
-                        <label key={f.key} className="flex min-w-[160px] flex-col gap-1 text-[12px] text-muted">
+                        <label key={f.key} className="flex min-w-[160px] flex-col gap-1 text-[12px] text-muted down-sm:basis-full">
                             {f.label}
                             {f.options ? (
                                 <select className={adminInput} value={draft[f.key] ?? ""} onChange={(e) => setDraft((d) => ({ ...d, [f.key]: e.target.value }))}>
@@ -168,7 +168,7 @@ export function AdminList<T>({ config }: { config: AdminListConfig<T> }) {
                         </label>
                     ))}
                     {config.sorts?.length ? (
-                        <label className="flex min-w-[180px] flex-col gap-1 text-[12px] text-muted">
+                        <label className="flex min-w-[180px] flex-col gap-1 text-[12px] text-muted down-sm:basis-full">
                             Сортировка
                             <select className={adminInput} value={sort ?? ""} onChange={(e) => setParams({ sort: e.target.value, page: undefined })}>
                                 {config.sorts.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
@@ -184,25 +184,26 @@ export function AdminList<T>({ config }: { config: AdminListConfig<T> }) {
                 </form>
             ) : null}
 
+            {/* На телефоне строка — карточка: подпись столбца над значением, без прокрутки вбок (04.11) */}
             <div className="overflow-x-auto rounded-[8px] bg-surface">
-                <table className="w-full border-collapse text-left">
-                    <thead>
+                <table className="w-full border-collapse text-left down-md:block">
+                    <thead className="down-md:hidden">
                         <tr className="border-b border-accent-bg text-[12px] text-muted">
                             {config.columns.map((c) => <th key={c.label} scope="col" className={`px-3 py-2 font-semibold ${c.className ?? ""}`}>{c.label}</th>)}
                             {(config.actions || config.remove) && <th scope="col" className="px-3 py-2"><span className="sr-only">Действия</span></th>}
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="down-md:block">
                         {state.status === "ok" && state.rows.map((row) => (
-                            <tr key={config.rowKey(row)} className="border-b border-accent-bg/60 hover:bg-field/50">
+                            <tr key={config.rowKey(row)} className="border-b border-accent-bg/60 hover:bg-field/50 down-md:block down-md:py-2">
                                 {config.columns.map((c, i) => (
-                                    <td key={c.label} className={`px-3 py-2 align-top ${c.className ?? ""}`}>
+                                    <td key={c.label} data-label={i === 0 ? undefined : c.label} className={`px-3 py-2 align-top down-md:block down-md:py-1 down-md:data-[label]:before:block down-md:data-[label]:before:text-[12px] down-md:data-[label]:before:text-muted down-md:data-[label]:before:content-[attr(data-label)] ${c.className ?? ""}`}>
                                         {i === 0 && config.rowHref ? <Link href={config.rowHref(row)} className="text-primary hover:underline">{c.cell(row)}</Link> : c.cell(row)}
                                     </td>
                                 ))}
                                 {(config.actions || config.remove) && (
-                                    <td className="px-3 py-2 text-right whitespace-nowrap">
-                                        <span className="inline-flex gap-2">
+                                    <td className="px-3 py-2 text-right whitespace-nowrap down-md:block down-md:text-left down-md:whitespace-normal">
+                                        <span className="inline-flex flex-wrap gap-2">
                                             {config.actions?.(row, { reload, notify, api })}
                                             {config.remove && <button type="button" className={adminButtonDanger} onClick={() => setToRemove(row)}>Удалить</button>}
                                         </span>
