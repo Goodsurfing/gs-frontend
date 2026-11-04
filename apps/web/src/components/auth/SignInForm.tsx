@@ -40,12 +40,14 @@ export const apiErrorText = (body: unknown): string => {
  * После входа — туда, откуда пришли (?next=&nextId=), иначе в профиль.
  * Почта не подтверждена — письмо с подтверждением уходит ещё раз.
  */
-export function SignInForm({ locale, resetHref, signUpHref, profileHref, labels }: {
+export function SignInForm({ locale, resetHref, signUpHref, profileHref, labels, admin = false }: {
     locale: Locale;
     resetHref: string;
     signUpHref: string;
     profileHref: string;
     labels: SignInLabels;
+    /** Вход в админку: без VK ID и регистрации — администраторы входят по почте и паролю */
+    admin?: boolean;
 }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -117,11 +119,15 @@ export function SignInForm({ locale, resetHref, signUpHref, profileHref, labels 
                     <a href={resetHref} className="leading-[138%] text-[#0e1d27] opacity-50">{labels.forgot}</a>
                 </div>
             </form>
-            <VkIdButton locale={locale} page="signin" onSuccess={done} onError={showError} deletedText={labels.deleted} />
-            <div className="text-center leading-[138%] text-ink-secondary">
-                {labels.notRegistered}{" "}
-                <a href={signUpHref} className="font-semibold text-primary">{labels.signUp}</a>
-            </div>
+            {!admin && (
+                <>
+                    <VkIdButton locale={locale} page="signin" onSuccess={done} onError={showError} deletedText={labels.deleted} />
+                    <div className="text-center leading-[138%] text-ink-secondary">
+                        {labels.notRegistered}{" "}
+                        <a href={signUpHref} className="font-semibold text-primary">{labels.signUp}</a>
+                    </div>
+                </>
+            )}
         </div>
     );
 }

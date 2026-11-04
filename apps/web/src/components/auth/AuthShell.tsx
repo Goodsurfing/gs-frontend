@@ -40,7 +40,8 @@ export async function AuthShell({ locale, cancelHref, stayIfSignedIn = false, ch
                     <img src="/web/icons/auth/mobile-cancel.svg" alt={t("login.Отменить")} />
                 </a>
             </div>
-            <main className="flex w-full justify-center">{children}</main>
+            {/* На телефоне поля и кнопки не прижимаются к краям экрана (04.11) */}
+            <main className="box-border flex w-full justify-center down-sm:px-5">{children}</main>
         </SessionProvider>
     );
 }

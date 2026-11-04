@@ -65,12 +65,12 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
     return (
         <div className="flex min-h-screen flex-col bg-page text-[14px]">
-            <header className="sticky top-0 z-30 flex h-[56px] items-center gap-4 bg-primary px-5 text-white">
+            <header className="sticky top-0 z-30 flex h-[56px] items-center gap-4 bg-primary px-5 text-white down-sm:gap-2 down-sm:px-3">
                 <button type="button" className="hidden cursor-pointer text-[22px] down-lg:block" aria-label="Меню разделов" aria-expanded={menuOpen} onClick={() => setMenuOpenAt(menuOpen ? null : pathname)}>☰</button>
-                <Link href="/admin" className="text-[16px] font-bold">Гудсёрфинг · Админка</Link>
+                <Link href="/admin" className="text-[16px] font-bold whitespace-nowrap"><span className="down-sm:hidden">Гудсёрфинг · </span>Админка</Link>
                 <span className="ml-auto truncate opacity-90 down-sm:hidden">{name}</span>
-                <Link href="/" className="rounded-[6px] border border-white/60 px-3 py-1 hover:bg-white/10">На сайт</Link>
-                <button type="button" className="cursor-pointer rounded-[6px] border border-white/60 px-3 py-1 hover:bg-white/10" onClick={() => void session.logout().then(() => window.location.replace("/admin/sign-in"))}>Выйти</button>
+                <Link href="/" className="whitespace-nowrap rounded-[6px] border down-sm:ml-auto border-white/60 px-3 py-1 hover:bg-white/10">На сайт</Link>
+                <button type="button" className="cursor-pointer whitespace-nowrap rounded-[6px] border border-white/60 px-3 py-1 hover:bg-white/10" onClick={() => void session.logout().then(() => window.location.replace("/admin/sign-in"))}>Выйти</button>
             </header>
             <div className="flex flex-1">
                 <nav aria-label="Разделы админки" className={`w-[250px] shrink-0 overflow-y-auto border-r border-accent-bg bg-white p-3 down-lg:fixed down-lg:inset-y-[56px] down-lg:left-0 down-lg:z-20 down-lg:shadow-lg ${menuOpen ? "" : "down-lg:hidden"}`}>
