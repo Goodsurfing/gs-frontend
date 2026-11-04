@@ -9,6 +9,7 @@ import { useSession } from "@/components/session/SessionProvider";
 import { Spinner } from "@/components/ui/Spinner";
 import { Toast } from "@/components/ui/Toast";
 import { useAdminApi } from "@/lib/admin/api";
+import { safeHref } from "@/lib/safeHref";
 import { uploadMedia } from "@/lib/uploadMedia";
 
 /** Разделы о сайте: амбассадоры, команда, реклама, отчётность, «О проекте» */
@@ -111,7 +112,7 @@ export const bannersList: AdminListConfig<BannerRow> = {
     columns: [
         { label: "Название", cell: (r) => r.name },
         { label: "Где", cell: (r) => BANNER_TYPES.find((t) => t.value === r.type)?.label ?? r.type ?? "—" },
-        { label: "Ссылка", cell: (r) => <a href={r.url} target="_blank" rel="noreferrer" className="text-primary hover:underline">{r.url}</a> },
+        { label: "Ссылка", cell: (r) => <a href={safeHref(r.url)} target="_blank" rel="noreferrer" className="text-primary hover:underline">{r.url}</a> },
         { label: "Показывается", cell: (r) => <YesNo value={r.isActive} /> },
     ],
     remove: { path: (r) => `marketing-banner/${r.id}`, confirm: (r) => `Удалить баннер «${r.name}»?` },
@@ -161,7 +162,7 @@ function ReportFiles({ value, onChange }: { value: unknown; onChange: (v: Report
             {files.map((f, i) => (
                 <div key={f.fileId} className="flex flex-wrap items-center gap-2">
                     <input aria-label={`Название файла ${i + 1}`} className={`${adminInput} max-w-[360px]`} value={f.name} onChange={(e) => onChange(files.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} />
-                    {f.url && <a href={f.url} target="_blank" rel="noreferrer" className="text-primary hover:underline">файл</a>}
+                    {safeHref(f.url) && <a href={safeHref(f.url)} target="_blank" rel="noreferrer" className="text-primary hover:underline">файл</a>}
                     <button type="button" className={adminButton} onClick={() => onChange(files.filter((_, j) => j !== i))}>Убрать</button>
                 </div>
             ))}
