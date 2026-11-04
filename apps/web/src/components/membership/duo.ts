@@ -31,6 +31,12 @@ export const DUO_KEYS = [
 ] as const;
 export type DuoLabels = Record<(typeof DUO_KEYS)[number], string>;
 
-/** Все тексты «на двоих» для клиентских компонентов */
-export const duoLabels = (t: (key: string) => string): DuoLabels =>
-    Object.fromEntries(DUO_KEYS.map((key) => [key, t(`duo.${key}`)])) as DuoLabels;
+/** Подстановки оставляем как есть — их заполняет fill() уже со значениями */
+const KEEP_PLACEHOLDERS = Object.fromEntries(["price", "name", "date", "email", "count"].map((name) => [name, `{{${name}}}`]));
+
+/**
+ * Все тексты «на двоих» для клиентских компонентов. Серверный переводчик
+ * заменяет незаданные {{…}} пустой строкой — передаём их самих себе.
+ */
+export const duoLabels = (t: (key: string, values?: Record<string, string | number>) => string): DuoLabels =>
+    Object.fromEntries(DUO_KEYS.map((key) => [key, t(`duo.${key}`, KEEP_PLACEHOLDERS)])) as DuoLabels;

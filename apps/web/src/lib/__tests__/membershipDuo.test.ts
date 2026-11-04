@@ -32,4 +32,14 @@ describe("членство «на двоих»", () => {
         const labels = duoLabels((key) => key);
         expect(labels["offer-button"]).toBe("duo.offer-button");
     });
+
+    it("подстановки переживают серверный переводчик", () => {
+        // Как getTranslator: незаданная подстановка становится пустой строкой
+        const duo = (ru as { duo: Record<string, string> }).duo;
+        const t = (key: string, values?: Record<string, string | number>) =>
+            (duo[key.replace(/^duo\./, "")] ?? key).replace(/\{\{\s*(\w+)\s*\}\}/g, (_, name: string) => String(values?.[name] ?? ""));
+        const labels = duoLabels(t);
+        expect(fill(labels["offer-price"], { price: "1 490" })).toBe("1 490 ₽ за двоих");
+        expect(fill(labels["panel-joined"], { name: "Иван", date: "04.11.2027" })).toContain("Иван с вами");
+    });
 });
