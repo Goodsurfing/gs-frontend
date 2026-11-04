@@ -7,6 +7,7 @@ import type { Locale } from "@/i18n/config";
 import { OPTIONAL_BLOCK_TIMEOUT_MS, serverApi } from "./api";
 import { type OfferPerson, type OfferReview, type Page, toReviewClient as toReview } from "./offerReview";
 import { isClientError } from "@/lib/apiUnavailable";
+import { safeHref } from "@/lib/safeHref";
 
 export type { OfferPerson, OfferReview, Page };
 
@@ -75,9 +76,11 @@ export async function getOfferBanner(locale: Locale): Promise<{ url: string; des
             params: { path: { type: "VACANCY_PAGE" } },
             signal: AbortSignal.timeout(OPTIONAL_BLOCK_TIMEOUT_MS),
         });
-        if (!data?.url || !data.description) return null;
+        // Ссылка не http(s) (javascript: и т. п.) — баннер не показываем
+        const url = safeHref(data?.url);
+        if (!url || !data?.description) return null;
         const image = (data as { image?: { contentUrl?: string } | null }).image?.contentUrl;
-        return { url: data.url, description: data.description, image };
+        return { url, description: data.description, image };
     } catch {
         return null;
     }
