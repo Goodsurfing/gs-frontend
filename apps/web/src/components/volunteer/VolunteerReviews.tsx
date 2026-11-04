@@ -64,7 +64,7 @@ export function VolunteerReviews({ volunteerId, labels }: {
                                     {(review.images ?? []).slice(0, 4).map((image, index) => (
                                         <button key={image.id} type="button" onClick={() => setGallery({ images, index })} className="relative h-14 w-14 shrink-0 cursor-pointer overflow-hidden rounded-[6px]">
                                             {/* eslint-disable-next-line @next/next/no-img-element -- превью из хранилища */}
-                                            <img src={mediaUrl(image, "small")} alt="" className="block h-full w-full object-cover" />
+                                            <img loading="lazy" decoding="async" src={mediaUrl(image, "small")} alt="" className="block h-full w-full object-cover" />
                                             {index === 3 && images.length > 4 && (
                                                 <span className="absolute inset-0 flex items-center justify-center bg-black/50 text-[14px] font-semibold text-white">{`+${images.length - 4}`}</span>
                                             )}

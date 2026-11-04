@@ -24,7 +24,7 @@ function Slide({ review, labels }: { review: MembershipReview; labels: { prev: s
     return (
         <div className="mx-auto flex h-[400px] w-full max-w-[980px] gap-10 bg-white down-lg:h-auto max-[756px]:flex-col max-[756px]:gap-0">
             {/* eslint-disable-next-line @next/next/no-img-element -- фото из отзыва */}
-            <img src={review.image} alt="review" className="w-full max-w-[480px] object-cover down-lg:max-w-[350px] max-[756px]:max-h-[250px] max-[756px]:!max-w-none" />
+            <img loading="eager" src={review.image} alt="review" className="w-full max-w-[480px] object-cover down-lg:max-w-[350px] max-[756px]:max-h-[250px] max-[756px]:!max-w-none" />
             <div className="flex h-full flex-col gap-2.5 pt-10 pb-5">
                 <div className="flex items-center justify-between">
                     <h3 className="max-w-[350px] text-[1.125rem] font-medium">{review.title}</h3>

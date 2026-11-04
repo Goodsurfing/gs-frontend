@@ -53,15 +53,20 @@ test.describe('Оплата через интерфейс', () => {
             return rows.filter((r) => r.fullName === 'E2E Тест' && r.amount === 100).length;
         };
 
-        const list = await (await api.get('/api/v1/fundraise?page=1&limit=20')).json();
-        const fundraises: { id: string }[] = Array.isArray(list) ? list : list?.data ?? [];
-        expect(fundraises.length, 'нет сборов на стенде').toBeGreaterThan(0);
+        const list = await (await api.get('/api/v1/fundraise?page=1&limit=100')).json();
+        const all: { id: string; name?: string | null }[] = Array.isArray(list) ? list : list?.data ?? [];
+        expect(all.length, 'нет сборов на стенде').toBeGreaterThan(0);
+        // Открытый сбор тестовой организации создают e2e-фикстуры бэкенда (E2ETestFixtures::FUNDRAISE_NAME) —
+        // в копии прода открытых сборов может не быть; он проверяется первым
+        const own = all.filter((f) => f.name === 'E2E Тестовый сбор — не удалять');
+        const fundraises = [...own, ...all.filter((f) => !own.includes(f))];
 
         // Первый сбор, у которого есть кнопка «Поддержать» (закрытые её не показывают)
         let fundraiseId: string | undefined;
         for (const { id } of fundraises) {
             await page.goto(`/fundraise/${id}`);
-            const donate = page.getByRole('button', { name: 'Поддержать', exact: true }).first();
+            // В новом фронте «Поддержать» — ссылка на страницу оплаты (в старом SPA была кнопка)
+            const donate = page.getByRole('link', { name: 'Поддержать', exact: true }).or(page.getByRole('button', { name: 'Поддержать', exact: true })).first();
             const open = await donate.waitFor({ state: 'visible', timeout: 10_000 }).then(() => true, () => false);
             if (open) {
                 await donate.click();

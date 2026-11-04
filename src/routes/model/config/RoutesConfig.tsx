@@ -1,154 +1,15 @@
-import { LegacyIdRedirect } from "@/shared/ui/LegacyIdRedirect/LegacyIdRedirect";
-import { AboutProjectPage } from "@/pages/AboutProjectPage";
-import { CategoriesPage } from "@/pages/CategoriesPage";
-import { ConfirmEmailPage } from "@/pages/ConfirmEmailPage";
-import { ConfirmEmailSuccessPage } from "@/pages/ConfirmEmailSuccessPage";
-import { FindJobPage } from "@/pages/FindJobPage";
-import { HostDashboardPage } from "@/pages/HostDashboardPage";
-import { HostGalleryPage } from "@/pages/HostGalleryPage";
-import { HostMainInfoPage } from "@/pages/HostMainInfoPage";
-import { HostNotesPage } from "@/pages/HostNotesPage";
-import { HostOffersPage } from "@/pages/HostOffersPage";
-import { HostPersonalPage } from "@/pages/HostPersonalPage";
-import { HostReviewPage } from "@/pages/HostReviewPage";
-import { HostTeamPage } from "@/pages/HostTeamPage";
-import { HostVideoPage } from "@/pages/HostVideoPage";
-import { JournalPersonalPage } from "@/pages/JournalPersonalPage";
-import { JournalsPage } from "@/pages/JournalsPage";
-import { MainPage } from "@/pages/MainPage";
-import { MembershipPage } from "@/pages/MembershipPage";
-import { PaymentPage } from "@/pages/PaymentPage";
-import { PaymentSuccessPage } from "@/pages/PaymentSuccessPage";
-import { PaymentFailPage } from "@/pages/PaymentFailPage";
-import { NPOPage } from "@/pages/NPOPage";
-import { NewsPage } from "@/pages/NewsPage";
-import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
-import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
-import { FundraiseStepPage } from "@/pages/FundraiseStepPage";
-import { FundraiseWelcomePage } from "@/pages/FundraiseWelcomePage";
-import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
-import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
-import { OfferWelcomePage } from "@/pages/OfferWelcomePage";
-import { OfferWhatToDoPage } from "@/pages/OfferWhatToDoPage";
-import { OfferWhenPage } from "@/pages/OfferWhenPage";
-import { OfferWherePage } from "@/pages/OfferWherePage";
-import { OfferWhoNeedsPage } from "@/pages/OfferWhoNeeds";
-import { OffersMapPage } from "@/pages/OffersMapPage";
-import { OurTeamPage } from "@/pages/OurTeamPage";
-import { FeedbackPage } from "@/pages/FeedbackPage";
-import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
-import { PaymentSecurityPolicyPage } from "@/pages/PaymentSecurityPolicyPage";
-import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
-import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
-import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
-import { ProfileRolePage } from "@/pages/ProfileRolePage";
-import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
-import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
-import { RulesPage } from "@/pages/RulesPage";
-import { UnsubscribedPage } from "@/pages/UnsubscribedPage";
-import { SignInPage } from "@/pages/SignInPage";
-import { SignUpPage } from "@/pages/SignUpPage";
-import { VideoPage } from "@/pages/VideoPage";
-import { VideoPersonalPage } from "@/pages/VideoPersonalPage";
-import { VolunteerArticlesPage } from "@/pages/VolunteerArticlesPage";
-import { VolunteerCreateArticlePage } from "@/pages/VolunteerCreateArticlePage/";
-import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
-import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
-import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
-import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
-import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
-import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
-import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
-import { AcademyMainPage } from "@/pages/AcademyMainPage";
-import { AcademyCoursePage } from "@/pages/AcademyCoursePage";
-import { AdminSignInPage } from "@/pages/AdminSignInPage";
+import {
+    LegacyIdRedirect,
+} from "@/shared/ui/LegacyIdRedirect/LegacyIdRedirect";
 
 import {
-    getAboutProjectPageUrl,
-    getAmbassadorsPageUrl,
-    getBecomeHostPageUrl,
-    getBlogPageUrl,
-    getBlogPersonalPageUrl,
-    getCategoriesPageUrl,
-    getConfirmEmailPageUrl,
-    getUnsubscribedPageUrl,
-    getConfirmEmailSuccessPageUrl,
-    getFavoriteOffersPageUrl,
-    getFindJobPageUrl,
-    getHostDashboardPageUrl,
-    getHostGalleryPageUrl,
-    getHostNotesPageUrl,
-    getHostDonationRatingPageUrl,
-    getFundraisePageUrl,
-    getFundraiseStepPageUrl,
-    getFundraiseWelcomePageUrl,
-    getHostPageUrl,
+    AdminSignInPage,
+} from "@/pages/AdminSignInPage";
+
+import {
     getHostPersonalPageUrl,
-    getHostRegisterPageUrl,
-    getHostInfoUrl,
-    getHostReviewPageUrl,
-    getHostTeamPageUrl,
-    getHostVideoPageUrl,
-    getJournalPersonalPageUrl,
-    getJournalsPageUrl,
-    getMainPageUrl,
-    getMembershipPageUrl,
-    getPaymentPageUrl,
-    getPaymentSuccessPageUrl,
-    getPaymentFailPageUrl,
-    getMessengerPageCreateUrl,
-    getMessengerPageIdUrl,
-    getMessengerPageUrl,
-    getMyOffersPageUrl,
-    getNPOPageUrl,
-    getNewsPageUrl,
-    getNewsPersonalPageUrl,
     getOfferPersonalPageUrl,
-    getOffersConditionsPageUrl,
-    getOffersDescriptionPageUrl,
-    getOffersFinishingTouchesPageUrl,
-    getOffersMapPageUrl,
-    getOffersPageUrl,
-    getOffersWelcomePageUrl,
-    getOffersWhatToDoPageUrl,
-    getOffersWhenPageUrl,
-    getOffersWherePageUrl,
-    getOffersWhoNeedsPageUrl,
-    getOurTeamPageUrl,
-    getFeedbackPageUrl,
-    getPrivacyPolicyPageUrl,
-    getPaymentSecurityPolicyPageUrl,
-    getProfileInfoPageUrl,
-    getProfilePageUrl,
-    getProfilePreferencesPageUrl,
-    getProfilePrivacyPageUrl,
-    getProfileResetPasswordPageUrl,
-    getProfileRolePageUrl,
-    getResetPasswordPageUrl,
-    getResetPasswordVerifyPageUrl,
-    getRulesPageUrl,
-    getSignInPageUrl,
-    getSignUpPageUrl,
-    getVideoPageUrl,
-    getVideoPersonalPageUrl,
-    getVolunteerArticlesPageUrl,
-    getVolunteerCreateArticlePageUrl,
-    getVolunteerDashboardPageUrl,
-    getVolunteerGalleryPageUrl,
-    getVolunteerNotesPageUrl,
-    getVolunteerPageUrl,
     getVolunteerPersonalPageUrl,
-    getVolunteerReviewPageUrl,
-    getVolunteerSkillsPageUrl,
-    getVolunteerSubscribersPageUrl,
-    getAcademyMainPageUrl,
-    getAcademyCoursePageUrl,
-    getAcademyLessonPageUrl,
-    getEmailExpiredPageUrl,
-    getConfirmErrorPageUrl,
-    getEmailAlreadyConfirmedPageUrl,
-    getVerifyEmailPageUrl,
-    getVerifyEmailHashPageUrl,
     getAdminSignInPageUrl,
     getAdminUsersPageUrl,
     getAdminPageUrl,
@@ -195,7 +56,6 @@ import {
     getAdminCategoriesBlogPageUrl,
     getAdminCategoriesBlogCreatePageUrl,
     getAdminCategoriesBlogPersonalPageUrl,
-    getVolunteerArticlesPersonalPageUrl,
     getAdminBlogPageUrl,
     getAdminBlogPersonalPageUrl,
     getAdminJournalsPageUrl,
@@ -205,15 +65,10 @@ import {
     getAdminVideoPageUrl,
     getAdminVideoPersonalPageUrl,
     getAdminReviewVideoPersonalPageUrl,
-    getDonationsMapPageUrl,
     getDonationPersonalPage,
     getAdminDonationReportsPageUrl,
     getAdminDonationReportCreatePageUrl,
     getAdminDonationReportPersonalPageUrl,
-    getDonationReports,
-    getDonationRating,
-    getHostDonationsPageUrl,
-    getVolunteerDonationsPageUrl,
     getAdminBlogCreatePageUrl,
     getAdminVideoCreatePageUrl,
     getAdminReviewBlogPersonalPageUrl,
@@ -225,9 +80,6 @@ import {
     getAdminOurTeamPageUrl,
     getAdminOurTeamPersonalPageUrl,
     getAdminOurTeamCreatePageUrl,
-    getDonationPayPageUrl,
-    getDonationPaySuccessPageUrl,
-    getDonationPayFailPageUrl,
     getAdminSystemAdminPageUrl,
     getAdminSystemAdminCreatePageUrl,
     getAdminBannerMarketingPageUrl,
@@ -237,339 +89,251 @@ import {
     getAdminFeedbackPersonalPageUrl,
     getAdminMembershipLogPageUrl,
 } from "@/shared/config/routes/AppUrls";
-import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
-import { RouteType } from "../types/langRouter";
-import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
-import { BlogPage } from "@/pages/BlogPage";
-import { BlogPersonalPage } from "@/pages/BlogPersonalPage";
-import { BecomeHostPage } from "@/pages/BecomeHostPage";
-import { GoodsurfingAmbassadorsPage } from "@/pages/GoodsurfingAmbassadorsPage";
-import { AcademyLessonPage } from "@/pages/AcademyLessonPage";
-import { EmailExpiredPage } from "@/pages/EmailExpiredPage";
-import { ConfirmErrorPage } from "@/pages/ConfirmErrorPage";
-import { EmailAlreadyConfirmedPage } from "@/pages/EmailAlreadyConfirmedPage";
-import { VerifyEmailPage } from "@/pages/VerifyEmailPage";
-import { VerifyEmailHashPage } from "@/pages/VerifyEmailHashPage";
-import { AdminUsersPage } from "@/pages/AdminUsersPage";
-import { AdminLayoutPage } from "@/pages/AdminLayoutPage";
-import { AdminUserPersonalPage } from "@/pages/AdminUserPersonalPage";
-import { AdminOrganizationsPage } from "@/pages/AdminOrganizationsPage";
-import { AdminPersonalOrganizationPage } from "@/pages/AdminPersonalOrganizationPage";
-import { AdminSkillsAchievementsPage } from "@/pages/AdminSkillAchievementsPage";
-import { AdminSkillPersonalPage } from "@/pages/AdminSkillPersonalPage";
-import { AdminAchievementPersonalPage } from "@/pages/AdminAchievementPersonalPage";
-import { AdminCategoriesPage } from "@/pages/AdminCategoriesPage";
-import { AdminCategoriesPersonalPage } from "@/pages/AdminCategoriesPersonalPage";
-import { AdminCategoriesCreatePage } from "@/pages/AdminCategoriesCreatePage";
-import { AdminSkillCreatePage } from "@/pages/AdminSkillCreatePage";
-import { AdminAchievementsCreatePage } from "@/pages/AdminAchievementsCreatePage";
-import { AdminConditionsOfferPage } from "@/pages/AdminConditionsOfferPage";
-import { AdminHousePersonalPage } from "@/pages/AdminHousePersonalPage";
-import { AdminHouseCreatePage } from "@/pages/AdminHouseCreatePage";
-import { AdminFoodCreatePage } from "@/pages/AdminFoodCreatePage";
-import { AdminFoodPersonalPage } from "@/pages/AdminFoodPersonalPage";
-import { AdminTransferCreatePage } from "@/pages/AdminTransferCreatePage";
-import { AdminTransferPersonalPage } from "@/pages/AdminTransferPersonalPage";
-import { AdminReviewPage } from "@/pages/AdminReviewPage";
-import { AdminReviewVacanciesPersonalPage } from "@/pages/AdminReviewVacanciesPersonalPage";
-import { AdminReviewVolunteerPersonalPage } from "@/pages/AdminReviewVolunteerPersonalPage";
-import { AdminOffersPage } from "@/pages/AdminOffersPage";
-import { AdminOfferLayoutPage } from "@/pages/AdminOfferLayoutPage";
-import { AdminOfferWherePage } from "@/pages/AdminOfferWherePage";
-import { AdminOfferWhenPage } from "@/pages/AdminOfferWhenPage";
-import { AdminOfferWhatToDoPage } from "@/pages/AdminOfferWhatToDoPage";
-import { AdminOfferConditionsPage } from "@/pages/AdminOfferConditionsPage";
-import { HostRegisterPage } from "@/pages/HostRegisterPage";
-import { AdminOfferWhoNeedsPage } from "@/pages/AdminOfferWhoNeedsPage";
-import { AdminOfferDescriptionPage } from "@/pages/AdminOfferDescriptionPage";
-import { AdminOfferFinishingTouchesPage } from "@/pages/AdminOfferFinishingTouchesPage";
-import { AdminCoursesPage } from "@/pages/AdminCoursesPage";
-import { AdminCourseCreatePage } from "@/pages/AdminCourseCreatePage";
-import { AdminCoursePersonalPage } from "@/pages/AdminCoursePersonalPage";
-import { AdminReviewsCoursesPage } from "@/pages/AdminReviewsCoursesPage";
-import { AdminReviewCoursePersonalPage } from "@/pages/AdminReviewCoursePersonalPage";
-import { AdminNewsPage } from "@/pages/AdminNewsPage";
-import { AdminNewsPersonalPage } from "@/pages/AdminNewsPersonalPage";
-import { AdminNewsCreatePage } from "@/pages/AdminNewsCreatePage";
-import { AdminReviewsCommunityPage } from "@/pages/AdminReviewsCommunityPage";
-import { AdminReviewNewsPersonalPage } from "@/pages/AdminReviewNewsPersonalPage";
-import { AdminCategoriesBlogPage } from "@/pages/AdminCategoriesBlogPage";
-import { AdminCategoriesBlogCreatePage } from "@/pages/AdminCategoriesBlogCreatePage";
-import { AdminCategoriesBlogPersonalPage } from "@/pages/AdminCategoriesBlogPersonalPage";
-import { VolunteerArticlePersonalPage } from "@/pages/VolunteerArticlePersonalPage";
-import { AdminBlogPage } from "@/pages/AdminBlogPage";
-import { AdminBlogPersonalPage } from "@/pages/AdminBlogPersonalPage";
-import { AdminJournalPage } from "@/pages/AdminJournalPage";
-import { AdminJournalCreatePage } from "@/pages/AdminJournalCreatePage";
-import { AdminJournalPersonalPage } from "@/pages/AdminJournalPersonalPage";
-import { AdminReviewJournalPersonalPage } from "@/pages/AdminReviewJournalPersonalPage";
-import { AdminVideoPage } from "@/pages/AdminVideoPage";
-import { AdminVideoPersonalPage } from "@/pages/AdminVideoPersonalPage";
-import { AdminReviewVideoPersonalPage } from "@/pages/AdminRevieVideoPersonalPage";
-import { DonationsMapPage } from "@/pages/DonationsMapPage";
-import { DonationPersonalPage } from "@/pages/DonationPersonalPage";
-import { AdminDonationReportsPage } from "@/pages/AdminDonationReportsPage";
-import { AdminDonationReportCreatePage } from "@/pages/AdminDonationReportCreatePage";
-import { AdminDonationReportPersonalPage } from "@/pages/AdminDonationReportPersonalPage";
-import { DonationReportsPage } from "@/pages/DonationReportsPage";
-import { DonationRatingPage } from "@/pages/DonationRatingPage";
-import { HostDonationsPage } from "@/pages/HostDonationsPage";
-import { HostFundraisePage } from "@/pages/HostFundraisePage";
-import { VolunteerDonationsPage } from "@/pages/VolunteerDonationsPage";
-import { AdminBlogCreatePage } from "@/pages/AdminBlogCreatePage";
-import { AdminVideoCreatePage } from "@/pages/AdminVideoCreatePage";
-import { AdminReviewBlogPersonalPage } from "@/pages/AdminReviewBlogPersonalPage";
-import { AdminDonationsPage } from "@/pages/AdminDonationsPage";
-import { AdminAmbassadorsPage } from "@/pages/AdminAmbassadorsPage";
+import {
+    RouteType,
+} from "../types/langRouter";
+
+import {
+    AdminUsersPage,
+} from "@/pages/AdminUsersPage";
+import {
+    AdminLayoutPage,
+} from "@/pages/AdminLayoutPage";
+import {
+    AdminUserPersonalPage,
+} from "@/pages/AdminUserPersonalPage";
+import {
+    AdminOrganizationsPage,
+} from "@/pages/AdminOrganizationsPage";
+import {
+    AdminPersonalOrganizationPage,
+} from "@/pages/AdminPersonalOrganizationPage";
+import {
+    AdminSkillsAchievementsPage,
+} from "@/pages/AdminSkillAchievementsPage";
+import {
+    AdminSkillPersonalPage,
+} from "@/pages/AdminSkillPersonalPage";
+import {
+    AdminAchievementPersonalPage,
+} from "@/pages/AdminAchievementPersonalPage";
+import {
+    AdminCategoriesPage,
+} from "@/pages/AdminCategoriesPage";
+import {
+    AdminCategoriesPersonalPage,
+} from "@/pages/AdminCategoriesPersonalPage";
+import {
+    AdminCategoriesCreatePage,
+} from "@/pages/AdminCategoriesCreatePage";
+import {
+    AdminSkillCreatePage,
+} from "@/pages/AdminSkillCreatePage";
+import {
+    AdminAchievementsCreatePage,
+} from "@/pages/AdminAchievementsCreatePage";
+import {
+    AdminConditionsOfferPage,
+} from "@/pages/AdminConditionsOfferPage";
+import {
+    AdminHousePersonalPage,
+} from "@/pages/AdminHousePersonalPage";
+import {
+    AdminHouseCreatePage,
+} from "@/pages/AdminHouseCreatePage";
+import {
+    AdminFoodCreatePage,
+} from "@/pages/AdminFoodCreatePage";
+import {
+    AdminFoodPersonalPage,
+} from "@/pages/AdminFoodPersonalPage";
+import {
+    AdminTransferCreatePage,
+} from "@/pages/AdminTransferCreatePage";
+import {
+    AdminTransferPersonalPage,
+} from "@/pages/AdminTransferPersonalPage";
+import {
+    AdminReviewPage,
+} from "@/pages/AdminReviewPage";
+import {
+    AdminReviewVacanciesPersonalPage,
+} from "@/pages/AdminReviewVacanciesPersonalPage";
+import {
+    AdminReviewVolunteerPersonalPage,
+} from "@/pages/AdminReviewVolunteerPersonalPage";
+import {
+    AdminOffersPage,
+} from "@/pages/AdminOffersPage";
+import {
+    AdminOfferLayoutPage,
+} from "@/pages/AdminOfferLayoutPage";
+import {
+    AdminOfferWherePage,
+} from "@/pages/AdminOfferWherePage";
+import {
+    AdminOfferWhenPage,
+} from "@/pages/AdminOfferWhenPage";
+import {
+    AdminOfferWhatToDoPage,
+} from "@/pages/AdminOfferWhatToDoPage";
+import {
+    AdminOfferConditionsPage,
+} from "@/pages/AdminOfferConditionsPage";
+
+import {
+    AdminOfferWhoNeedsPage,
+} from "@/pages/AdminOfferWhoNeedsPage";
+import {
+    AdminOfferDescriptionPage,
+} from "@/pages/AdminOfferDescriptionPage";
+import {
+    AdminOfferFinishingTouchesPage,
+} from "@/pages/AdminOfferFinishingTouchesPage";
+import {
+    AdminCoursesPage,
+} from "@/pages/AdminCoursesPage";
+import {
+    AdminCourseCreatePage,
+} from "@/pages/AdminCourseCreatePage";
+import {
+    AdminCoursePersonalPage,
+} from "@/pages/AdminCoursePersonalPage";
+import {
+    AdminReviewsCoursesPage,
+} from "@/pages/AdminReviewsCoursesPage";
+import {
+    AdminReviewCoursePersonalPage,
+} from "@/pages/AdminReviewCoursePersonalPage";
+import {
+    AdminNewsPage,
+} from "@/pages/AdminNewsPage";
+import {
+    AdminNewsPersonalPage,
+} from "@/pages/AdminNewsPersonalPage";
+import {
+    AdminNewsCreatePage,
+} from "@/pages/AdminNewsCreatePage";
+import {
+    AdminReviewsCommunityPage,
+} from "@/pages/AdminReviewsCommunityPage";
+import {
+    AdminReviewNewsPersonalPage,
+} from "@/pages/AdminReviewNewsPersonalPage";
+import {
+    AdminCategoriesBlogPage,
+} from "@/pages/AdminCategoriesBlogPage";
+import {
+    AdminCategoriesBlogCreatePage,
+} from "@/pages/AdminCategoriesBlogCreatePage";
+import {
+    AdminCategoriesBlogPersonalPage,
+} from "@/pages/AdminCategoriesBlogPersonalPage";
+
+import {
+    AdminBlogPage,
+} from "@/pages/AdminBlogPage";
+import {
+    AdminBlogPersonalPage,
+} from "@/pages/AdminBlogPersonalPage";
+import {
+    AdminJournalPage,
+} from "@/pages/AdminJournalPage";
+import {
+    AdminJournalCreatePage,
+} from "@/pages/AdminJournalCreatePage";
+import {
+    AdminJournalPersonalPage,
+} from "@/pages/AdminJournalPersonalPage";
+import {
+    AdminReviewJournalPersonalPage,
+} from "@/pages/AdminReviewJournalPersonalPage";
+import {
+    AdminVideoPage,
+} from "@/pages/AdminVideoPage";
+import {
+    AdminVideoPersonalPage,
+} from "@/pages/AdminVideoPersonalPage";
+import {
+    AdminReviewVideoPersonalPage,
+} from "@/pages/AdminRevieVideoPersonalPage";
+
+import {
+    AdminDonationReportsPage,
+} from "@/pages/AdminDonationReportsPage";
+import {
+    AdminDonationReportCreatePage,
+} from "@/pages/AdminDonationReportCreatePage";
+import {
+    AdminDonationReportPersonalPage,
+} from "@/pages/AdminDonationReportPersonalPage";
+
+import {
+    AdminBlogCreatePage,
+} from "@/pages/AdminBlogCreatePage";
+import {
+    AdminVideoCreatePage,
+} from "@/pages/AdminVideoCreatePage";
+import {
+    AdminReviewBlogPersonalPage,
+} from "@/pages/AdminReviewBlogPersonalPage";
+import {
+    AdminDonationsPage,
+} from "@/pages/AdminDonationsPage";
+import {
+    AdminAmbassadorsPage,
+} from "@/pages/AdminAmbassadorsPage";
 import AdminAmbassadorCreatePage from "@/pages/AdminAmbassadorCreatePage/ui/AdminAmbassadorCreatePage";
-import { AdminAmbassadorPersonalPage } from "@/pages/AdminAmbassadorPersonalPage";
-import { AdminAboutProjectPersonalPage } from "@/pages/AdminAboutProjectPersonalPage";
-import { AdminOurTeamPage } from "@/pages/AdminOurTeamPage";
-import { AdminOurTeamPersonalPage } from "@/pages/AdminOurTeamPersonalPage";
-import { AdminOurTeamCreatePage } from "@/pages/AdminOurTeamCreatePage";
-import { DonationPayPage } from "@/pages/DonationPayPage";
-import { DonationPaySuccessPage } from "@/pages/DonationPaySuccessPage";
-import { DonationPayFailPage } from "@/pages/DonationPayFailPage";
-import { AdminSystemAdminPage } from "@/pages/AdminSystemAdminPage";
-import { AdminSystemAdminCreatePage } from "@/pages/AdminSystemAdminCreatePage";
-import { AdminBannerMarketingPage } from "@/pages/AdminBannerMarketingPage";
-import { AdminBannerMarketingCreatePage } from "@/pages/AdminBannerMarketingCreatePage";
-import { AdminBannerMarketingPersonalPage } from "@/pages/AdminBannerMarketingPersonalPage";
-import { AdminFeedbackPage } from "@/pages/AdminFeedbackPage";
-import { AdminFeedbackPersonalPage } from "@/pages/AdminFeedbackPersonalPage";
-import { AdminMembershipLogPage } from "@/pages/AdminMembershipLogPage";
-import { localePrefix } from "@/shared/config/routes/localePath";
+import {
+    AdminAmbassadorPersonalPage,
+} from "@/pages/AdminAmbassadorPersonalPage";
+import {
+    AdminAboutProjectPersonalPage,
+} from "@/pages/AdminAboutProjectPersonalPage";
+import {
+    AdminOurTeamPage,
+} from "@/pages/AdminOurTeamPage";
+import {
+    AdminOurTeamPersonalPage,
+} from "@/pages/AdminOurTeamPersonalPage";
+import {
+    AdminOurTeamCreatePage,
+} from "@/pages/AdminOurTeamCreatePage";
+
+import {
+    AdminSystemAdminPage,
+} from "@/pages/AdminSystemAdminPage";
+import {
+    AdminSystemAdminCreatePage,
+} from "@/pages/AdminSystemAdminCreatePage";
+import {
+    AdminBannerMarketingPage,
+} from "@/pages/AdminBannerMarketingPage";
+import {
+    AdminBannerMarketingCreatePage,
+} from "@/pages/AdminBannerMarketingCreatePage";
+import {
+    AdminBannerMarketingPersonalPage,
+} from "@/pages/AdminBannerMarketingPersonalPage";
+import {
+    AdminFeedbackPage,
+} from "@/pages/AdminFeedbackPage";
+import {
+    AdminFeedbackPersonalPage,
+} from "@/pages/AdminFeedbackPersonalPage";
+import {
+    AdminMembershipLogPage,
+} from "@/pages/AdminMembershipLogPage";
+import {
+    localePrefix,
+} from "@/shared/config/routes/localePath";
 
 const publicRoutes: RouteType[] = [
-    {
-        element: <MainPage />,
-        label: "main",
-        path: (locale: string) => getMainPageUrl(locale),
-    },
-    {
-        element: <OffersMapPage />,
-        label: "offers-map",
-        path: (locale: string) => getOffersMapPageUrl(locale),
-    },
-    {
-        // refactor this three Messenger page routes with children routes
-        element: AuthRoutes.messenger,
-        label: "messenger",
-        path: (locale: string) => getMessengerPageUrl(locale),
-    },
-    {
-        element: AuthRoutes.messenger,
-        label: "messengerId",
-        path: (locale: string) => getMessengerPageIdUrl(locale),
-    },
-    {
-        element: AuthRoutes.messenger,
-        label: "messengerCreate",
-        path: (locale: string) => getMessengerPageCreateUrl(locale),
-    },
-    {
-        element: <CategoriesPage />,
-        label: "categories",
-        path: (locale: string) => getCategoriesPageUrl(locale),
-    },
-    {
-        element: AuthRoutes.favorite_offers,
-        label: "favorite-offers",
-        path: (locale: string) => getFavoriteOffersPageUrl(locale),
-    },
-    {
-        element: <SignInPage />,
-        label: "sign-in",
-        path: (locale: string) => getSignInPageUrl(locale),
-    },
-    {
-        element: <SignUpPage />,
-        label: "sign-up",
-        path: (locale: string) => getSignUpPageUrl(locale),
-    },
-    {
-        label: "confirm-email",
-        element: <ConfirmEmailPage />,
-        path: (locale: string) => getConfirmEmailPageUrl(locale),
-    },
-    {
-        label: "unsubscribed",
-        element: <UnsubscribedPage />,
-        path: (locale: string) => getUnsubscribedPageUrl(locale),
-    },
-    {
-        label: "confirm-email-success",
-        element: <ConfirmEmailSuccessPage />,
-        path: (locale: string) => getConfirmEmailSuccessPageUrl(locale),
-    },
-    {
-        label: "email-expired",
-        element: <EmailExpiredPage />,
-        path: (locale: string) => getEmailExpiredPageUrl(locale),
-    },
-    {
-        label: "confirm-email",
-        element: <ConfirmErrorPage />,
-        path: (locale: string) => getConfirmErrorPageUrl(locale),
-    },
-    {
-        label: "email-already-confirmed",
-        element: <EmailAlreadyConfirmedPage />,
-        path: (locale: string) => getEmailAlreadyConfirmedPageUrl(locale),
-    },
-    {
-        label: "verify-email",
-        element: <VerifyEmailPage />,
-        path: (locale: string) => getVerifyEmailPageUrl(locale),
-    },
-    {
-        label: "verify-email-hash",
-        element: <VerifyEmailHashPage />,
-        path: (locale: string) => getVerifyEmailHashPageUrl(locale),
-    },
-    {
-        label: "host-register",
-        element: <HostRegisterPage />,
-        path: (locale: string) => getHostRegisterPageUrl(locale),
-    },
-    {
-        label: "host-layout",
-        element: (
-            AuthRoutes.host
-        ),
-        path: (locale: string) => getHostPageUrl(locale),
-        children: [
-            {
-                label: "host-dashboard",
-                element: <HostDashboardPage />,
-                path: (locale) => getHostDashboardPageUrl(locale),
-            },
-            {
-                label: "host-offers",
-                element: <HostOffersPage />,
-                path: (locale) => getMyOffersPageUrl(locale),
-            },
-            {
-                label: "host-main-info",
-                element: <HostMainInfoPage />,
-                path: (locale) => getHostInfoUrl(locale),
-            },
-            {
-                label: "host-gallery",
-                element: <HostGalleryPage />,
-                path: (locale) => getHostGalleryPageUrl(locale),
-            },
-            {
-                label: "host-video",
-                element: <HostVideoPage />,
-                path: (locale) => getHostVideoPageUrl(locale),
-            },
-            {
-                label: "host-team",
-                element: <HostTeamPage />,
-                path: (locale) => getHostTeamPageUrl(locale),
-            },
-            {
-                label: "host-review",
-                element: <HostReviewPage />,
-                path: (locale: string) => getHostReviewPageUrl(locale),
-            },
-            {
-                label: "host-notes",
-                element: <HostNotesPage />,
-                path: (locale: string) => getHostNotesPageUrl(locale),
-            },
-            {
-                label: "host-donations",
-                element: <HostFundraisePage />,
-                path: (locale: string) => getHostDonationsPageUrl(locale),
-            },
-            {
-                label: "host-donation-rating",
-                element: <HostDonationsPage />,
-                path: (locale: string) => getHostDonationRatingPageUrl(locale),
-            },
-        ],
-    },
-    {
-        label: "host-personal",
-        element: <HostPersonalPage />,
-        path: (locale: string) => getHostPersonalPageUrl(locale),
-    },
     {
         label: "host-personal-legacy-redirect",
         element: <LegacyIdRedirect to={getHostPersonalPageUrl} />,
         path: (locale: string) => `${localePrefix(locale)}/host-personal/:id`,
-    },
-    {
-        label: "fundraise-layout",
-        element: AuthRoutes.fundraise,
-        path: (locale: string) => getFundraisePageUrl(locale),
-        children: [
-            {
-                label: "fundraise-welcome",
-                element: <FundraiseWelcomePage />,
-                path: (locale: string) => getFundraiseWelcomePageUrl(locale),
-            },
-            {
-                label: "fundraise-step",
-                element: <FundraiseStepPage />,
-                path: (locale: string) => getFundraiseStepPageUrl(locale),
-            },
-        ],
-    },
-    {
-        label: "offer-layout",
-        element: AuthRoutes.offers,
-        path: (locale: string) => getOffersPageUrl(locale),
-        children: [
-            {
-                label: "offer-welcome",
-                element: <OfferWelcomePage />,
-                path: (locale: string) => getOffersWelcomePageUrl(locale),
-            },
-            {
-                label: "offer-description",
-                element: <OfferDescriptionPage />,
-                path: (locale: string) => getOffersDescriptionPageUrl(locale),
-            },
-            {
-                label: "offer-when",
-                element: <OfferWhenPage />,
-                path: (locale: string) => getOffersWhenPageUrl(locale),
-            },
-            {
-                label: "offer-where",
-                element: <OfferWherePage />,
-                path: (locale: string) => getOffersWherePageUrl(locale),
-            },
-            {
-                label: "offer-who-needs",
-                element: <OfferWhoNeedsPage />,
-                path: (locale: string) => getOffersWhoNeedsPageUrl(locale),
-            },
-            {
-                label: "offer-what-to-do",
-                element: <OfferWhatToDoPage />,
-                path: (locale: string) => getOffersWhatToDoPageUrl(locale),
-            },
-            {
-                label: "offer-conditions",
-                element: <OfferConditionsPage />,
-                path: (locale: string) => getOffersConditionsPageUrl(locale),
-            },
-            {
-                label: "offer-finishing-touches",
-                element: <OfferFinishingTouchesPage />,
-                path: (locale: string) => getOffersFinishingTouchesPageUrl(locale),
-            },
-        ],
-    },
-    {
-        label: "offer-personal",
-        element: <OfferPersonalPage />,
-        path: (locale: string) => getOfferPersonalPageUrl(locale),
     },
     {
         label: "offer-personal-legacy-redirect",
@@ -577,285 +341,15 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => `${localePrefix(locale)}/offer-personal/:id`,
     },
     {
-        label: "volunteer-personal",
-        element: <VolunteerPersonalPage />,
-        path: (locale: string) => getVolunteerPersonalPageUrl(locale),
-    },
-    {
         label: "volunteer-personal-legacy-redirect",
         element: <LegacyIdRedirect to={getVolunteerPersonalPageUrl} />,
         path: (locale: string) => `${localePrefix(locale)}/volunteer-personal/:id`,
-    },
-    {
-        label: "volunteer-layout",
-        element: (
-            AuthRoutes.volunteer
-        ),
-        path: (locale: string) => getVolunteerPageUrl(locale),
-        children: [
-            {
-                label: "volunteer-dashboard",
-                element: <VolunteerDashboardPage />,
-                path: (locale: string) => getVolunteerDashboardPageUrl(locale),
-            },
-            {
-                label: "volunteer-skills",
-                element: <VolunteerSkillsPage />,
-                path: (locale: string) => getVolunteerSkillsPageUrl(locale),
-            },
-            {
-                label: "volunteer-review",
-                element: <VolunteerReviewPage />,
-                path: (locale: string) => getVolunteerReviewPageUrl(locale),
-            },
-            {
-                label: "volunteer-notes",
-                element: <VolunteerNotesPage />,
-                path: (locale: string) => getVolunteerNotesPageUrl(locale),
-            },
-            {
-                label: "volunteer-donations",
-                element: <VolunteerDonationsPage />,
-                path: (locale: string) => getVolunteerDonationsPageUrl(locale),
-            },
-            {
-                label: "volunteer-subscribers",
-                element: <VolunteerSubscribersPage />,
-                path: (locale: string) => getVolunteerSubscribersPageUrl(locale),
-            },
-            {
-                label: "volunteer-gallery",
-                element: <VolunteerGalleryPage />,
-                path: (locale: string) => getVolunteerGalleryPageUrl(locale),
-            },
-            {
-                label: "volunteer-create-article",
-                element: <VolunteerCreateArticlePage />,
-                path: (locale: string) => getVolunteerCreateArticlePageUrl(locale),
-            },
-            {
-                label: "volunteer-articles",
-                element: <VolunteerArticlesPage />,
-                path: (locale: string) => getVolunteerArticlesPageUrl(locale),
-            },
-            {
-                label: "volunteer-articles-personal",
-                element: <VolunteerArticlePersonalPage />,
-                path: (locale: string) => getVolunteerArticlesPersonalPageUrl(locale),
-            },
-        ],
-    },
-    {
-        label: "membership",
-        element: <MembershipPage />,
-        path: (locale: string) => getMembershipPageUrl(locale),
-    },
-    {
-        label: "payment",
-        element: <PaymentPage />,
-        path: (locale: string) => getPaymentPageUrl(locale),
-        authOnly: true,
-    },
-    {
-        label: "payment-success",
-        element: <PaymentSuccessPage />,
-        path: (locale: string) => getPaymentSuccessPageUrl(locale),
-    },
-    {
-        label: "payment-fail",
-        element: <PaymentFailPage />,
-        path: (locale: string) => getPaymentFailPageUrl(locale),
-    },
-    {
-        label: "reset-password",
-        element: <ResetPasswordPage />,
-        path: (locale: string) => getResetPasswordPageUrl(locale),
-    },
-    {
-        label: "reset-password-verify",
-        element: <ResetPasswordVerifyPage />,
-        path: (locale: string) => getResetPasswordVerifyPageUrl(locale),
-    },
-    {
-        label: "profile",
-        element: AuthRoutes.profile,
-        path: (locale: string) => getProfilePageUrl(locale),
-        children: [
-            {
-                label: "profile-info",
-                element: <ProfileInfoPage />,
-                path: (locale: string) => getProfileInfoPageUrl(locale),
-            },
-            {
-                label: "profile-preferences",
-                element: <ProfilePreferencesPage />,
-                path: (locale: string) => getProfilePreferencesPageUrl(locale),
-            },
-            {
-                label: "reset-password-profile",
-                element: AuthRoutes.profile_reset_password,
-                path: (locale: string) => getProfileResetPasswordPageUrl(locale),
-            },
-            {
-                label: "profile-role",
-                element: <ProfileRolePage />,
-                path: (locale: string) => getProfileRolePageUrl(locale),
-            },
-            {
-                label: "profile-privacy",
-                element: <ProfilePrivacyPage />,
-                path: (locale: string) => getProfilePrivacyPageUrl(locale),
-            },
-        ],
-    },
-
-    {
-        label: "about-page",
-        element: <AboutProjectPage />,
-        path: (locale: string) => getAboutProjectPageUrl(locale),
-    },
-    {
-        label: "npo-page",
-        element: <NPOPage />,
-        path: (locale: string) => getNPOPageUrl(locale),
-    },
-    {
-        label: "our-team",
-        element: <OurTeamPage />,
-        path: (locale: string) => getOurTeamPageUrl(locale),
-    },
-    {
-        label: "ambassadors",
-        element: <GoodsurfingAmbassadorsPage />,
-        path: (locale: string) => getAmbassadorsPageUrl(locale),
-    },
-    {
-        label: "rules",
-        element: <RulesPage />,
-        path: (locale: string) => getRulesPageUrl(locale),
-    },
-    {
-        label: "find-job",
-        element: <FindJobPage />,
-        path: (locale: string) => getFindJobPageUrl(locale),
-    },
-    {
-        label: "become-host",
-        element: <BecomeHostPage />,
-        path: (locale: string) => getBecomeHostPageUrl(locale),
-    },
-    {
-        label: "blog",
-        element: <BlogPage />,
-        path: (locale: string) => getBlogPageUrl(locale),
-    },
-    {
-        label: "blog-personal",
-        element: <BlogPersonalPage />,
-        path: (locale: string) => getBlogPersonalPageUrl(locale),
-    },
-    {
-        label: "news",
-        element: <NewsPage />,
-        path: (locale: string) => getNewsPageUrl(locale),
-    },
-    {
-        label: "news-personal",
-        element: <NewsPersonalPage />,
-        path: (locale: string) => getNewsPersonalPageUrl(locale),
-    },
-    {
-        label: "journals",
-        element: <JournalsPage />,
-        path: (locale: string) => getJournalsPageUrl(locale),
-    },
-    {
-        label: "journal-personal",
-        element: <JournalPersonalPage />,
-        path: (locale: string) => getJournalPersonalPageUrl(locale),
-    },
-    {
-        label: "video",
-        element: <VideoPage />,
-        path: (locale: string) => getVideoPageUrl(locale),
-    },
-    {
-        label: "video-personal",
-        element: <VideoPersonalPage />,
-        path: (locale: string) => getVideoPersonalPageUrl(locale),
-    },
-    {
-        label: "rules",
-        element: <PrivacyPolicyPage />,
-        path: (locale: string) => getPrivacyPolicyPageUrl(locale),
-    },
-    {
-        label: "payment-security-policy",
-        element: <PaymentSecurityPolicyPage />,
-        path: (locale: string) => getPaymentSecurityPolicyPageUrl(locale),
-    },
-    {
-        label: "feedback",
-        element: <FeedbackPage />,
-        path: (locale: string) => getFeedbackPageUrl(locale),
-    },
-    {
-        label: "academy-main",
-        element: <AcademyMainPage />,
-        path: (locale: string) => getAcademyMainPageUrl(locale),
-    },
-    {
-        label: "academy-course",
-        element: <AcademyCoursePage />,
-        path: (locale: string) => getAcademyCoursePageUrl(locale),
-    },
-    {
-        label: "academy-lesson",
-        element: <AcademyLessonPage />,
-        path: (locale: string) => getAcademyLessonPageUrl(locale),
-    },
-    // Donation
-    {
-        label: "donations-map",
-        element: <DonationsMapPage />,
-        path: (locale: string) => getDonationsMapPageUrl(locale),
-    },
-    {
-        label: "donation-personal",
-        element: <DonationPersonalPage />,
-        path: (locale: string) => getDonationPersonalPage(locale),
     },
     {
         label: "donation-personal-legacy-redirect",
         element: <LegacyIdRedirect to={getDonationPersonalPage} />,
         path: (locale: string) => `${localePrefix(locale)}/donation-personal/:id`,
     },
-    {
-        label: "donation-reports",
-        element: <DonationReportsPage />,
-        path: (locale: string) => getDonationReports(locale),
-    },
-    {
-        label: "donation-rating",
-        element: <DonationRatingPage />,
-        path: (locale: string) => getDonationRating(locale),
-    },
-    {
-        label: "donation-pay",
-        element: <DonationPayPage />,
-        path: (locale: string) => getDonationPayPageUrl(locale),
-    },
-    {
-        label: "donation-pay-success",
-        element: <DonationPaySuccessPage />,
-        path: (locale: string) => getDonationPaySuccessPageUrl(locale),
-    },
-    {
-        label: "donation-pay-fail",
-        element: <DonationPayFailPage />,
-        path: (locale: string) => getDonationPayFailPageUrl(locale),
-    },
-    // Admin dashboard
     {
         label: "admin-sign-in",
         element: <AdminSignInPage />,

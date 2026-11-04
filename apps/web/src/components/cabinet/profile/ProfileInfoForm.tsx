@@ -279,7 +279,7 @@ export function ProfileInfoForm({ volunteerHref, preferencesHref, verifyHref, as
                         </div>
                         <label className="relative mt-[2.8rem] flex h-[172px] w-[172px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary down-sm:mt-0">
                             {/* eslint-disable-next-line @next/next/no-img-element -- аватар или значок фотоаппарата */}
-                            <img src={avatar || "/web/images/default-image-file.png"} alt="profile-pic" className={avatar ? "absolute h-full w-full rounded-[inherit] object-cover" : ""} />
+                            <img loading="lazy" decoding="async" src={avatar || "/web/images/default-image-file.png"} alt="profile-pic" className={avatar ? "absolute h-full w-full rounded-[inherit] object-cover" : ""} />
                             <input type="file" accept="image/*" className="hidden" onChange={(event) => { void upload(event.target.files?.[0]); event.target.value = ""; }} />
                         </label>
                         <span className={`mt-[.9rem] text-center text-[.625rem] ${sizeError ? "text-[red]" : "text-[#82949F]"}`}>{labels.maxSize}</span>

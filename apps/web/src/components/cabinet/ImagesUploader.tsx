@@ -190,7 +190,7 @@ export function ImagesUploader({ items, token, onUpload, onDelete, onError, onBu
                         {isImage(media) ? (
                             <button type="button" aria-label={`${labels.gallery.photo} ${imageIndex + 1}`} onClick={() => setLightbox(imageIndex)} className="h-full w-full cursor-pointer">
                                 {/* eslint-disable-next-line @next/next/no-img-element -- превью из хранилища */}
-                                <img src={mediaUrl(media, "medium")} alt="" className="inline-block h-full w-full object-cover" />
+                                <img loading="lazy" decoding="async" src={mediaUrl(media, "medium")} alt="" className="inline-block h-full w-full object-cover" />
                             </button>
                         ) : (
                             <a href={mediaUrl(media)} download target="_blank" rel="noreferrer" className="flex h-full w-full items-center justify-center bg-accent-bg">
@@ -208,7 +208,7 @@ export function ImagesUploader({ items, token, onUpload, onDelete, onError, onBu
                     <div key={item.key} className="relative flex h-[130px] w-[130px] flex-col gap-1">
                         {item.preview
                             // eslint-disable-next-line @next/next/no-img-element -- превью выбранного файла
-                            ? <img src={item.preview} alt={item.name} className="inline-block h-full w-full object-cover" />
+                            ? <img loading="lazy" decoding="async" src={item.preview} alt={item.name} className="inline-block h-full w-full object-cover" />
                             : <div className="h-full w-full bg-accent-bg" />}
                         {item.status !== "saving" && <button type="button" aria-label={labels.remove} onClick={() => cancel(item.key)} className={cross}>×</button>}
                         {item.tooBig && <div className="mt-1 text-[12px] text-[red]">{labels.tooBig}</div>}

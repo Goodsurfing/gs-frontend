@@ -40,9 +40,10 @@ export function FundraiseActions({ fundraiseId, variant, hrefs, labels }: {
     const signedIn = session.status === "user";
     const needVolunteerRole = signedIn && !session.profile?.volunteer;
     const disabled = signedIn && !needVolunteerRole && !rights.canSupport;
-    let href = `${hrefs.signIn}?next=donation&nextId=${fundraiseId}`;
+    // Пока сессия не узнала, кто вошёл, — сразу к оплате: страница оплаты сама
+    // отправит гостя на вход с возвратом к сбору (раньше ссылка вела вошедшего на вход)
+    let href = session.status === "guest" ? `${hrefs.signIn}?next=donation&nextId=${fundraiseId}` : hrefs.pay;
     if (needVolunteerRole) href = `${hrefs.profileRole}?nextDonation=${fundraiseId}`;
-    else if (signedIn) href = hrefs.pay;
     const text = needVolunteerRole ? labels.becomeVolunteer : labels.support;
 
     return (

@@ -98,7 +98,7 @@ export default async function AcademyCoursePage({ params, searchParams }: Props)
                         <ScrollToButton target="lessons" label={t("Начать обучение")} className="w-fit max-[567px]:mt-[30px] max-[567px]:w-full" />
                     </div>
                     {/* eslint-disable-next-line @next/next/no-img-element -- обложка из хранилища */}
-                    {cover && <img src={cover} alt={course.name} className="h-full max-h-[300px] w-full max-w-[565px] object-cover" />}
+                    {cover && <img loading="lazy" decoding="async" src={cover} alt={course.name} className="h-full max-h-[300px] w-full max-w-[565px] object-cover" />}
                 </div>
             </div>
             <div className="pb-[70px] [@media(max-width:1000px)]:pb-0">

@@ -145,7 +145,7 @@ export function ArticleComments({ kind, id, count, volunteerHref, texts }: {
                             <a href={volunteerHref.replace("{id}", comment.authorId)} className="flex items-center gap-2">
                                 {comment.authorAvatar
                                     // eslint-disable-next-line @next/next/no-img-element -- аватар
-                                    ? <img src={comment.authorAvatar} alt="" className="h-[22px] w-[22px] rounded-full object-cover" />
+                                    ? <img loading="lazy" decoding="async" src={comment.authorAvatar} alt="" className="h-[22px] w-[22px] rounded-full object-cover" />
                                     : <div className="h-[22px] w-[22px] rounded-full bg-field" />}
                                 <span className="text-[0.875rem] text-primary">{comment.authorName}</span>
                             </a>

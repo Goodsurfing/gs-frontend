@@ -17,7 +17,7 @@ export function ArticleCard({ href, image, name, created, tags, likeCount, revie
         <a href={href} className="w-full text-inherit no-underline">
             <div className="flex cursor-pointer flex-col">
                 {/* eslint-disable-next-line @next/next/no-img-element -- обложка из хранилища */}
-                <img src={image} alt={name} className="h-[250px] w-full object-cover" />
+                <img loading="lazy" decoding="async" src={image} alt={name} className="h-[250px] w-full object-cover" />
                 <span className="mt-5 text-[18px] font-medium">{name}</span>
                 <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
                     <span className="text-[14px] text-caption">{created}</span>

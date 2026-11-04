@@ -12,6 +12,7 @@ import { getPrices, TARIFF } from "@/lib/membershipPrices";
 import { mediaUrl } from "@/lib/media";
 import { INTERNATIONAL_URL, routes } from "@/lib/routes";
 import { pageMetadata, siteUrl } from "@/lib/seo";
+import { jsonLdGraph } from "@/lib/structuredData";
 
 export const revalidate = 300;
 
@@ -86,7 +87,7 @@ export default async function MembershipPage({ params }: Props) {
 
     return (
         <PublicShell locale={locale} topGap>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph(structuredData)) }} />
             <div className="mx-auto max-w-[1920px]">
                 {/* Шапка: заголовок на оранжевых плашках, две кнопки-якоря */}
                 <section className="box-border flex min-h-[480px] w-full items-center bg-[url(/web/images/membership/membership-header.webp)] bg-cover bg-center px-40 py-24 down-lg:px-8 down-lg:py-12 down-sm:min-h-0 down-sm:px-5 down-sm:py-10">
@@ -180,7 +181,7 @@ export default async function MembershipPage({ params }: Props) {
                             </div>
                             <div className="min-h-[360px] overflow-hidden rounded-lg bg-[#dfe7eb] down-md:min-h-[280px] down-xs:min-h-[220px]">
                                 {/* eslint-disable-next-line @next/next/no-img-element -- иллюстрация */}
-                                <img src="/web/images/membership/international-club.png" alt={t("international-club.image-alt")} loading="lazy" className="block h-full w-full object-cover outline-1 -outline-offset-1 outline-black/6" />
+                                <img src="/web/images/membership/international-club.webp" alt={t("international-club.image-alt")} loading="lazy" className="block h-full w-full object-cover outline-1 -outline-offset-1 outline-black/6" />
                             </div>
                         </div>
                         <div className="mx-auto mt-7 max-w-[720px] text-center">

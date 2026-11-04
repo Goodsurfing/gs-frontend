@@ -99,7 +99,7 @@ export function HomeSearch({ catalogHref, offerHref, categories, labels }: {
                             {items.length > 0 ? items.map((offer) => (
                                 <a key={offer.id} href={offerHref.replace("{id}", String(offer.id))} className={`flex gap-[15px] ${offer.status === "active" ? "" : "opacity-45"}`}>
                                     {/* eslint-disable-next-line @next/next/no-img-element -- превью из хранилища */}
-                                    <img src={offer.image ?? "/web/images/home/default-offer.png"} alt={offer.title} className="h-[60px] w-20 object-cover" />
+                                    <img loading="lazy" decoding="async" src={offer.image ?? "/web/images/home/default-offer.png"} alt={offer.title} className="h-[60px] w-20 object-cover" />
                                     <div className="min-w-0 overflow-hidden">
                                         <p className="truncate text-[14px]">{offer.title}</p>
                                         <p className="truncate text-[12px] text-primary">{offer.category}</p>

@@ -77,7 +77,7 @@ export default async function JournalsPage({ params, searchParams }: Props) {
                                     <div key={journal.id} className="flex max-w-[320px] cursor-pointer flex-col">
                                         <a href={`${base}/${journal.slug}`} className="text-inherit no-underline">
                                             {/* eslint-disable-next-line @next/next/no-img-element -- обложка из хранилища; строчная, как в старом фронте */}
-                                            <img src={mediaUrl(journal.image, "medium") ?? ""} alt={journal.name} className="min-h-[200px] w-full max-w-[320px] object-cover" />
+                                            <img loading="eager" src={mediaUrl(journal.image, "medium") ?? ""} alt={journal.name} className="min-h-[200px] w-full max-w-[320px] object-cover" />
                                             <span className="mt-5 text-[18px] font-medium">{journal.name}</span>
                                             <div className="mt-2 flex items-center gap-5">
                                                 <span className="text-[14px] text-caption">{journal.created}</span>

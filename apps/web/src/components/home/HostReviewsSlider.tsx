@@ -36,7 +36,7 @@ export function HostReviewsSlider({ reviews, labels }: { reviews: SliderReview[]
                         </div>
                         {review.image && (
                             // eslint-disable-next-line @next/next/no-img-element -- фото из отзыва
-                            <img src={review.image} alt="" className="w-full max-w-[50%] object-cover down-lg:hidden" />
+                            <img loading="eager" src={review.image} alt="" className="w-full max-w-[50%] object-cover down-lg:hidden" />
                         )}
                     </div>
                 ))}

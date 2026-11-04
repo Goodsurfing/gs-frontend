@@ -1,6 +1,6 @@
 # apps/web — новый веб-фронт Goodsurfing
 
-Эпик GS-212: веб-фронт переезжает сюда по разделам (публичная часть → кабинет → админка). Старое SPA — корень репозитория; каждый раздел удаляется из него сразу после переключения.
+Эпик GS-212: веб-фронт переезжает сюда по разделам (публичная часть → кабинет → админка). Старое SPA — корень репозитория; с 03.11.2026 в нём только админка, перенесённые страницы и их код удалены.
 
 ## Главное правило: внешний вид как у старого сайта, внутри — заново
 
@@ -29,7 +29,7 @@
 ## Как это работает на стенде
 
 - Образ: `apps/web/Dockerfile` (контекст — корень репозитория), standalone-сервер Next на порту 3100, `/healthz` для проверок, ~40 МБ памяти в простое.
-- **Канарейка по cookie:** Traefik отправляет запрос в новый фронт только при cookie `gs_web=1` и только по уже перенесённым адресам (`/_next`, `/web/`, `/healthz` и страницы из списка в правиле `web-canary`, `gs-infra/envs/staging/cloud-init.yaml`). Без cookie — старое SPA. Так новый фронт проверяется на настоящем домене, пользователи его не видят.
+- **Маршрутизация (с 03.11.2026 — для всех):** Traefik отправляет в новый фронт все перенесённые адреса (роутер `web-all`, `gs-infra/envs/{staging,prod}/cloud-init.yaml`; приоритет 290, выше SPA). Старое SPA отдаёт только админку `/admin…`, `robots.txt`, `sitemap.xml` и неизвестные адреса. Роутер `web-canary` (cookie `gs_web=1`) и `/web/preview` остались, но больше ничего не меняют. Новый адрес — в обоих правилах (`web-all` и `web-canary`). Откат — убрать метки `web-all` на VM и `docker compose up -d web`.
 - **Перенесённые страницы:** публичные — `/payment-security-policy`, `/rules`, `/privacy-policy`, `/npo`, `/find-job`, `/our-team`, `/ambassadors`, `/about-project`, `/journals`, `/news`, `/blog`, `/offers-map`, `/` (главная), `/become-host`, `/categories`, `/video`, `/news/:slug`, `/blog/:slug`, `/journals/:slug`, `/video/:id`, `/feedback`, `/offers/:id`, `/organizations/:id`, `/volunteers/:id`, `/academy-main`, `/academy-course/:id`, `/academy-lesson/:id`, `/donation-reports`, `/donation-rating`, `/fundraise/:id`, `/donation/pay/:id`, `/donation/success/:id`, `/donation/fail/:id`, `/membership`, `/payment`, `/payment/success`, `/payment/fail`, `/signin`, `/signup`, `/reset-password`, `/reset-password-verify`, `/confirm-email`, `/confirm-email-success`, `/confirm-error`, `/email-already-confirmed`, `/email-expired`, `/verify-email`, `/verify-email-hash/:hash`, `/unsubscribed`, `/donation-map`; кабинеты и сообщения — см. ниже; всё — и с `/en/…`, `/es/…` (GS-219). В старом SPA осталась только админка.
 - **Кабинет** (`components/cabinet`): каркас `CabinetShell` — лента соцсетей, шапка, меню раздела (`lib/cabinetMenus.ts`), гость → вход, `need="host"|"volunteer"` → выбор роли. Данные кабинета — в браузере с токеном из `useSession()` (cookie входа на проде выключена). Поля форм — `components/form/fields.tsx`, сообщения и переключатель — `ui/Toast.tsx`, подтверждение — `ui/ConfirmDialog.tsx`, загрузка файлов — `lib/uploadMedia.ts`. `/host`, `/volunteer`, `/profile` без продолжения ведут на главную раздела.
   - Профиль: `/profile/info`, `/profile/preferences`, `/profile/role`, `/profile/reset-password`, `/profile/privacy`.
@@ -38,6 +38,7 @@
   - Мастер вакансии (`components/offer-wizard`, шаги — `lib/offerWizard.ts`, последние шаги — `lib/offerWizardFinish.ts`): `/offers/{welcome,where,when,who-needs,description,what-to-do,conditions,finishing-touches}/:id`.
   - Мастер сбора (`components/fundraise-wizard`, тексты — `lib/fundraiseWizard.ts`, меню — `fundraiseMenu`): `/fundraise/welcome/:id`, `/fundraise/{where,when,amount,description,auto-messages}/:id`; голый `/fundraise` → `/host/donations`. Формы «Где» и «Описание» общие с мастером вакансии (`WhereEditor`, `DescriptionEditor`).
 - **Сообщения** (`components/messenger`, `lib/messenger.ts`): `/messenger`, `/messenger/:id`, `/messenger/create/:offerId` (отклик на вакансию), `/messenger/create?recipientVolunteer=…|recipientOrganization=…` (первое сообщение) — одна страница `[[...slug]]`, переход между чатами без перезагрузки. Новые сообщения — одна подписка Mercure (токен старого SPA из localStorage), без токена — опрос раз в 20 секунд.
+- **Подводный камень SSR:** на сервере `usePathname()` отдаёт русский адрес с внутренним `/ru` (rewrite в `proxy.ts`), в браузере — без него. Сравнивать адреса только через `normalizePath` / `isSamePage` (`lib/currentPage.ts`), иначе React #418 (так было с меню кабинета организатора).
 - **Проверка личного:** с localhost в обычном браузере не проверить (CORS стейджа); для сверки `scripts/visual-compare.mjs --login почта:пароль` входит на обеих страницах и запускает браузер без CORS, e2e — на стейдже.
 
 ## Команды
@@ -55,6 +56,6 @@ npm run lint && npm run typecheck && npm test && npm run build
 2. Тексты сверены со старым сайтом: `node scripts/text-compare.mjs --old https://staging.goodsurfing.org/ru/… --new http://localhost:3100/ru/…` (на ru/en/es) — неверный ключ словаря даёт доли процента пиксельной разницы и иначе незаметен.
 3. Внешний вид сверен со старым сайтом на 390/768/1280: `node scripts/visual-compare.mjs --old https://staging.goodsurfing.org/ru/… --new http://localhost:3100/ru/… --part имя=селектор`. Остаток в доли процента при совпадающих координатах элементов — сглаживание из‑за дробного начала элемента на странице, это норма; разница в размерах или координатах — нет.
 4. E2E раздела (`e2e/tests`) зелёные против нового фронта (cookie `gs_web=1`), визуальное сравнение с эталоном старого — в пределах допуска.
-5. Путь добавляется в маршрутизацию Traefik (сначала за cookie, после проверки — для всех).
+5. Путь добавляется в маршрутизацию Traefik — в правила `web-all` и `web-canary`.
 6. Страница и её мёртвый код удаляются из старого SPA.
 7. Для оплаты — живой тестовый платёж на стейдже.

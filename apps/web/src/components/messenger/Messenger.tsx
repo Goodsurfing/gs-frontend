@@ -463,7 +463,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                         <Dialog.Content className="relative outline-none" aria-describedby={undefined}>
                             <Dialog.Title className="sr-only">{labels.title}</Dialog.Title>
                             {/* eslint-disable-next-line @next/next/no-img-element -- вложение с API */}
-                            {image && <img src={image} alt="" className="max-h-[90vh] max-w-[80vw] object-contain down-xs:max-w-[90vw]" />}
+                            {image && <img loading="eager" src={image} alt="" className="max-h-[90vh] max-w-[80vw] object-contain down-xs:max-w-[90vw]" />}
                             <Dialog.Close aria-label={labels.close} className="absolute -top-8 right-0 cursor-pointer border-0 bg-transparent text-[28px] leading-none text-white">×</Dialog.Close>
                         </Dialog.Content>
                     </Dialog.Overlay>

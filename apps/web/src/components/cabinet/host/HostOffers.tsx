@@ -236,7 +236,7 @@ function HostOfferCard({ offer, href, onEdit, onToggle, onDelete, labels }: {
             <a href={href} className="flex text-inherit no-underline down-sm:flex-wrap">
                 <div className="h-[140px] w-[180px] down-sm:h-[180px] down-sm:w-full">
                     {/* eslint-disable-next-line @next/next/no-img-element -- обложка вакансии */}
-                    <img src={mediaUrl(offer.image, "medium") ?? "/web/images/default-offer.png"} alt="travel-img" className="h-full w-full object-cover" />
+                    <img loading="lazy" decoding="async" src={mediaUrl(offer.image, "medium") ?? "/web/images/default-offer.png"} alt="travel-img" className="h-full w-full object-cover" />
                 </div>
                 <div className="ml-3.5 down-sm:mt-[15px] down-sm:ml-0">
                     <p className="text-[1.125rem] leading-[22px] font-medium text-ink-secondary">{textSlice(offer.title, 34, "Без заголовка")}</p>
