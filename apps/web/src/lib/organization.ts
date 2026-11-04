@@ -9,6 +9,7 @@ import { OPTIONAL_BLOCK_TIMEOUT_MS, serverApi } from "./api";
 import { categoryName } from "./categories";
 import { type OrganizationOffersPage, type OrganizationReview, toOrganizationOffer } from "./organizationLists";
 import type { Page } from "./offerReview";
+import { isClientError } from "@/lib/apiUnavailable";
 
 export type Organization = components["schemas"]["Organization-organization.read_user.member_media_object.read"];
 
@@ -24,7 +25,7 @@ export async function getOrganization(locale: Locale, id: string): Promise<Organ
             params: { path: { id } },
             signal: AbortSignal.timeout(8000),
         });
-        if (response.status === 404) return { kind: "notFound" };
+        if (isClientError(response.status)) return { kind: "notFound" };
         return data ? { kind: "ok", organization: data } : { kind: "error" };
     } catch {
         return { kind: "error" };

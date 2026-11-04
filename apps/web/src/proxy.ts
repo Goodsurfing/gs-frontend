@@ -2,11 +2,13 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { DEFAULT_LOCALE, localeFromPath, stripLocale } from "@/i18n/config";
 import { LOCALE_HEADER } from "@/i18n/request";
+import { legacyRedirect } from "@/lib/legacyRedirects";
 
 /**
  * Адреса без префикса для русского (src/i18n/config.ts):
  * - /ru, /ru/… — 301 на адрес без префикса (ссылки из писем, закладки, поиск);
  * - /en/…, /es/… — как есть;
+ * - старые адреса (lib/legacyRedirects.ts) — 301 на новые;
  * - остальное — русский: внутри переписывается на маршрут [locale]=ru, так что
  *   страницы остаются статическими (ISR).
  * Язык передаётся в заголовке для app/global-not-found.tsx — параметров
@@ -26,6 +28,14 @@ export function proxy(request: NextRequest) {
     if (/^\/ru(?=\/|$)/.test(pathname)) {
         const target = request.nextUrl.clone();
         target.pathname = stripLocale(pathname);
+        target.search = search;
+        return NextResponse.redirect(target, 301);
+    }
+
+    const legacy = legacyRedirect(pathname);
+    if (legacy) {
+        const target = request.nextUrl.clone();
+        target.pathname = legacy;
         target.search = search;
         return NextResponse.redirect(target, 301);
     }

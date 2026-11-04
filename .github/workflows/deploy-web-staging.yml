@@ -77,6 +77,12 @@ jobs:
             sudo docker image prune -f || true
             sleep 5
             sudo docker compose ps web
+            # Прогрев кэша (ISR): новый контейнер начинает с пустым кэшем, и первый обход
+            # поисковиком рендерил бы каждую вакансию заново (04.11 — до 7 с на страницу).
+            # Обходим адреса из sitemap по одному с паузой — примерно половина ядра, чтобы
+            # не мешать посетителям; в фоне на VM, без ожидания в Actions. Журнал —
+            # /tmp/gs-cache-warmup.log.
+            setsid nohup bash -c 'sleep 20; for m in vacancies organizations content; do curl -s -m 30 https://staging.goodsurfing.org/sitemap-$m.xml | grep -o "<loc>[^<]*" | sed "s/<loc>//"; done | while read -r url; do curl -s -o /dev/null -m 30 -A gs-cache-warmup "$url"; sleep 0.3; done; echo "прогрев завершён $(date -Is)"' > /tmp/gs-cache-warmup.log 2>&1 < /dev/null &
 
       - name: Smoke test (через канарейку)
         run: |

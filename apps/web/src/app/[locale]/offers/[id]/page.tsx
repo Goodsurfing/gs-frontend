@@ -19,6 +19,7 @@ import { SectionTitle } from "@/components/offer/parts";
 import { GalleryCarousel } from "@/components/gallery/GalleryCarousel";
 import { HistoryBack } from "@/components/ui/HistoryBack";
 import { SectionSubmenu } from "@/components/ui/SectionSubmenu";
+import { failOnApiError } from "@/lib/apiUnavailable";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getTranslator, type Translate } from "@/i18n/dictionary";
 import { categoryName } from "@/lib/categories";
@@ -32,6 +33,18 @@ import { pageMetadata, siteUrl } from "@/lib/seo";
 type Props = { params: Promise<{ locale: string; id: string }> };
 
 export const revalidate = 300;
+
+/**
+ * Кэш страницы (ISR): без generateStaticParams страница с параметром в адресе
+ * рендерилась на каждый показ (cache-control: no-store), и обход поисковиком
+ * пачкой страниц грузил процессор (04.11 — до 7 с на страницу). Пустой список:
+ * при сборке ничего не готовим, каждая страница рендерится при первом заходе
+ * и отдаётся из кэша, обновляясь раз в revalidate секунд. Личное (откликнуться,
+ * редактировать) браузер дозапрашивает сам — в кэше только общие данные.
+ */
+export function generateStaticParams() {
+    return [];
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale, id } = await params;
@@ -103,6 +116,7 @@ export default async function OfferPage({ params }: Props) {
         getTranslator(locale, "host"),
     ]);
 
+    failOnApiError(result, `вакансия ${id}`);
     if (result.kind !== "ok") {
         return (
             <PublicShell locale={locale} headerVariant="static">
