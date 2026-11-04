@@ -7,6 +7,9 @@ import { useSession } from "@/components/session/SessionProvider";
 import { Loading } from "@/components/ui/Loading";
 import { browserApi } from "@/lib/browserApi";
 
+import { DuoPanel } from "./DuoPanel";
+import type { DuoLabels } from "./duo";
+
 const POLL_INTERVAL_MS = 3000;
 const POLL_TIMEOUT_MS = 60_000;
 const FAIL_STATUSES = new Set(["CANCELLED", "FAILED", "REFUNDED"]);
@@ -42,11 +45,13 @@ const blueButton = "flex items-center justify-center rounded-[10px] border borde
  * статус каждые 3 секунды; отменённый — на страницу неудачи. Какой тариф
  * куплен — по самому платежу: активных членств может быть несколько.
  */
-export function PaymentSuccessView({ paymentId, signInHref, failHref, membershipHref, labels }: {
+export function PaymentSuccessView({ paymentId, signInHref, failHref, membershipHref, duo, labels }: {
     paymentId: string | null;
     signInHref: string;
     failHref: string;
     membershipHref: string;
+    /** «На двоих»: после оплаты сразу показать ссылку для второго участника */
+    duo: { inviteBase: string; labels: DuoLabels };
     labels: SuccessLabels;
 }) {
     const session = useSession();
@@ -119,6 +124,7 @@ export function PaymentSuccessView({ paymentId, signInHref, failHref, membership
                     {texts.title} <span className="text-[#1976d2]">{name}</span>{kind === "international" ? "!" : ","}
                 </h1>
                 <p className="mb-8 text-[1.5rem] text-[#333]">{texts.subtitle}</p>
+                {tariffCode === "volunteer_duo" && <DuoPanel inviteBase={duo.inviteBase} labels={duo.labels} className="mb-8" />}
                 <div className="mb-8 [&_p]:mb-4 [&_p]:text-[1.125rem] [&_p]:leading-7 [&_p]:text-[#666]">
                     {kind === "international"
                         ? <p>{labels.international}</p>

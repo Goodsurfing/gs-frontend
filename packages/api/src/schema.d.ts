@@ -363,6 +363,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/v1/dashboard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Сводка админки
+         * @description Агрегаты без персональных данных: за 7/30 дней и по неделям (12 недель)
+         */
+        get: operations["get_app_admin_v1_dashboard_dashboard"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/v1/expert": {
         parameters: {
             query?: never;
@@ -969,6 +989,46 @@ export interface paths {
          * @description Тарифы, по которым можно выдать членство вручную
          */
         get: operations["get_app_admin_v1_membership_tariffs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/v1/membership/tariffs/{code}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Цена и включение тарифа
+         * @description Поменять цену (рубли) и/или включить-выключить тариф. Новая цена действует для следующих оплат; уже начатые оплаты идут по старой. Бессрочные тарифы не меняются.
+         */
+        patch: operations["patch_app_admin_v1_membership_updatetariff"];
+        trace?: never;
+    };
+    "/admin/v1/membership/tariffs/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Тарифы: цены и включение
+         * @description Все тарифы с ценой и признаком «на сайте» — для управления тарифами
+         */
+        get: operations["get_app_admin_v1_membership_tariffsettings"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2464,6 +2524,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/app-events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Отправить события аналитики
+         * @description Пачка событий приложения (до 50). Можно без входа; с токеном событие привязывается к пользователю. Неверные события отбрасываются молча, персональные данные не принимаются.
+         */
+        post: operations["post_app_api_v1_appevent_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/app/config": {
         parameters: {
             query?: never;
@@ -3588,6 +3668,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/membership_duo_exceptions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves a MembershipDuoException resource.
+         * @description Retrieves a MembershipDuoException resource.
+         */
+        get: operations["api_membership_duo_exceptions_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/membership/checkout": {
         parameters: {
             query?: never;
@@ -3642,6 +3742,106 @@ export interface paths {
         get: operations["get_app_api_v1_membership_currentall"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/membership/duo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Моё членство на двоих
+         * @description Членство на двоих текущего пользователя: покупатель видит ссылку (token) или второго участника, второй участник — кто его пригласил. role=null — такого членства нет.
+         */
+        get: operations["get_app_api_v1_membershipduo_mine"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/membership/duo/invite/{token}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Приглашение по ссылке
+         * @description Что за приглашение — для страницы по ссылке, доступно без входа. Показывает только имя пригласившего и срок.
+         */
+        get: operations["get_app_api_v1_membershipduo_invite"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/membership/duo/invite/{token}/accept": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Принять приглашение
+         * @description Принять приглашение: членство на остаток общего срока, а если своё уже есть — остаток добавляется к его концу. Повторное принятие тем же человеком ничего не меняет.
+         */
+        post: operations["post_app_api_v1_membershipduo_accept"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/membership/duo/regenerate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Новая ссылка-приглашение
+         * @description Перевыпустить ссылку: старая перестаёт работать. Только покупателю и только пока второй участник не присоединился.
+         */
+        post: operations["post_app_api_v1_membershipduo_regenerate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/membership/duo/send": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Приглашение письмом
+         * @description Отправить приглашение письмом на адрес второго участника. Не больше 5 писем на одно членство.
+         */
+        post: operations["post_app_api_v1_membershipduo_send"];
         delete?: never;
         options?: never;
         head?: never;
@@ -4549,6 +4749,46 @@ export interface paths {
          * @description Редактирование видео галереи
          */
         patch: operations["patch_app_api_v1_profile_editvideogallery"];
+        trace?: never;
+    };
+    "/api/v1/push-devices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Зарегистрировать устройство
+         * @description Запомнить устройство вошедшего для пушей. Тот же токен у другого пользователя переходит к вошедшему.
+         */
+        post: operations["post_app_api_v1_pushdevice_register"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/push-devices/unregister": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Отключить пуши на устройстве
+         * @description Забыть устройство вошедшего (при выходе из аккаунта).
+         */
+        post: operations["post_app_api_v1_pushdevice_unregister"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/report": {
@@ -6202,6 +6442,30 @@ export interface components {
             /** @enum {string} */
             forRole: "VOLUNTEER" | "HOST" | "BOTH";
             name: string;
+        };
+        /**
+         * AdminTariffSettingsResult
+         * @description Тариф с ценой и признаком «показывать на сайте» — для управления тарифами
+         */
+        AdminTariffSettingsResult: {
+            /** @description Показывается на сайте и доступен к оплате */
+            active: boolean;
+            /** @enum {string} */
+            billingType: "ONE_TIME_PERIOD" | "LIFETIME";
+            /** @enum {string} */
+            category: "REGULAR" | "INTERNATIONAL";
+            code: string;
+            currency: string;
+            durationDays: number;
+            /** @description Цену и включение можно менять (бессрочные тарифы — нет) */
+            editable: boolean;
+            /** @enum {string} */
+            forRole: "VOLUNTEER" | "HOST" | "BOTH";
+            name: string;
+            /** @description Цена в рублях */
+            priceRub: number;
+            /** @description Сколько человек по одной оплате */
+            seats: number;
         };
         "Application-application-form.create": {
             /** Format: date-time */
@@ -8352,6 +8616,8 @@ export interface components {
              * @description ID созданного пожертвования
              */
             donationId: string;
+            /** @description ID платежа — по нему GET /payments/{id} отдаёт статус оплаты (мобильное приложение проверяет его после страницы оплаты) */
+            paymentId?: string | null;
             /** @description URL для оплаты через платёжную систему */
             paymentUrl: string;
             /**
@@ -8422,6 +8688,49 @@ export interface components {
             shortDescription: string;
             /** @example  */
             title: string;
+        };
+        DuoInviteResult: {
+            /** @description Конец общего срока (ATOM). Если у принявшего уже есть членство, остаток добавится к его концу */
+            endDate?: string | null;
+            ownerFirstName?: string | null;
+            /** @enum {string|null} */
+            reason?: "duo_invite_expired" | "duo_seat_taken" | null;
+            /** @description Можно принять: членство пригласившего активно и место свободно */
+            valid: boolean;
+        };
+        DuoPersonResult: {
+            firstName?: string | null;
+            id: string;
+            lastName?: string | null;
+        };
+        DuoResult: {
+            /**
+             * @description Сколько ещё писем-приглашений можно отправить
+             * @default null
+             */
+            emailsLeft: number | null;
+            /**
+             * @description Конец срока членства этого пользователя (ATOM)
+             * @default null
+             */
+            endDate: string | null;
+            /**
+             * @description Куда последний раз отправили приглашение
+             * @default null
+             */
+            invitedEmail: string | null;
+            /**
+             * @description Второй участник (для покупателя) или покупатель (для второго участника)
+             * @default null
+             */
+            person: components["schemas"]["DuoPersonResult"] | null;
+            /** @enum {string|null} */
+            role?: "owner" | "partner" | null;
+            /**
+             * @description Секрет ссылки-приглашения (только покупателю, пока второй не присоединился); адрес — /membership/duo/{token}
+             * @default null
+             */
+            token: string | null;
         };
         /**
          * EditAddressCommand
@@ -14320,6 +14629,63 @@ export interface components {
             readonly traceAsString?: string;
             readonly type?: string;
         };
+        /** @description Ошибки членства «на двоих». type — машинный код для сайта и приложения. */
+        MembershipDuoException: {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            type?: string;
+        };
+        /** @description Ошибки членства «на двоих». type — машинный код для сайта и приложения. */
+        "MembershipDuoException.jsonapi": {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable.jsonapi"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            type?: string;
+        };
+        /** @description Ошибки членства «на двоих». type — машинный код для сайта и приложения. */
+        "MembershipDuoException.jsonld": components["schemas"]["HydraItemBaseSchema"] & {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable.jsonld"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            type?: string;
+        };
         "Message-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read": {
             /**
              * Format: iri-reference
@@ -15993,6 +16359,11 @@ export interface components {
             name: string;
             price: number;
             priceRub: number;
+            /**
+             * Сколько человек получают членство по одной оплате: 2 — «на двоих»
+             * @default 1
+             */
+            seats: number;
             sort: number;
         };
         Throwable: {
@@ -21225,6 +21596,26 @@ export interface operations {
             };
         };
     };
+    get_app_admin_v1_dashboard_dashboard: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Сводка */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
     get_app_admin_v1_expert_list: {
         parameters: {
             query?: {
@@ -22479,6 +22870,74 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AdminTariffResult"][];
+                };
+            };
+        };
+    };
+    patch_app_admin_v1_membership_updatetariff: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    active?: boolean;
+                    priceRub?: number;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminTariffSettingsResult"];
+                };
+            };
+            /** @description Неверная цена */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Тариф не найден */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Бессрочный тариф не меняется */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_app_admin_v1_membership_tariffsettings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminTariffSettingsResult"][];
                 };
             };
         };
@@ -25306,6 +25765,49 @@ export interface operations {
             };
         };
     };
+    post_app_api_v1_appevent_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    appVersion?: string;
+                    events: {
+                        /** @example vacancy_view */
+                        name?: string;
+                        props?: Record<string, never>;
+                        /** @description Время на устройстве, мс */
+                        ts?: number;
+                    }[];
+                    installId?: string;
+                    locale?: string;
+                    /** @enum {string} */
+                    platform: "ios" | "android" | "web";
+                    sessionId: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Принято */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Слишком часто */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     get_api_app_config: {
         parameters: {
             query?: never;
@@ -27361,6 +27863,41 @@ export interface operations {
             };
         };
     };
+    api_membership_duo_exceptions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description MembershipDuoException resource */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MembershipDuoException"];
+                    "application/ld+json": components["schemas"]["MembershipDuoException.jsonld"];
+                    "application/problem+json": components["schemas"]["MembershipDuoException"];
+                    "application/vnd.api+json": components["schemas"]["MembershipDuoException.jsonapi"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/vnd.api+json": components["schemas"]["Error.jsonapi"];
+                };
+            };
+        };
+    };
     post_app_api_v1_membership_checkout: {
         parameters: {
             query?: never;
@@ -27464,6 +28001,196 @@ export interface operations {
             };
             /** @description Не авторизован */
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_app_api_v1_membershipduo_mine: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DuoResult"];
+                };
+            };
+            /** @description Не авторизован */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_app_api_v1_membershipduo_invite: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DuoInviteResult"];
+                };
+            };
+            /** @description duo_invite_not_found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_membershipduo_accept: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurrentMembershipResult"];
+                };
+            };
+            /** @description Не авторизован */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description duo_invite_not_found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description duo_own_invite / duo_seat_taken / duo_has_host_membership / duo_has_lifetime */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description duo_invite_expired */
+            410: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_membershipduo_regenerate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DuoResult"];
+                };
+            };
+            /** @description duo_not_owner */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description duo_already_accepted */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_membershipduo_send: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** Format: email */
+                    email: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DuoResult"];
+                };
+            };
+            /** @description Неверный адрес */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description duo_not_owner */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description duo_already_accepted */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description duo_email_limit */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -29171,6 +29898,64 @@ export interface operations {
                 content: {
                     "application/json": Record<string, never>;
                 };
+            };
+        };
+    };
+    post_app_api_v1_pushdevice_register: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    platform: "ios" | "android";
+                    /** @example ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx] */
+                    token: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Запомнено */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Неверный токен или платформа */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_pushdevice_unregister: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    token: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Готово */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

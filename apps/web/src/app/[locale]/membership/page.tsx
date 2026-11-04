@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { PublicShell } from "@/components/layout/PublicShell";
+import { duoLabels } from "@/components/membership/duo";
+import { DuoOffer } from "@/components/membership/DuoOffer";
 import { FaqAccordion } from "@/components/membership/FaqAccordion";
 import { MembershipReviews } from "@/components/membership/MembershipReviews";
 import { TariffCards } from "@/components/membership/TariffCards";
@@ -135,6 +137,13 @@ export default async function MembershipPage({ params }: Props) {
                     signUpHref={routes.signUp(locale)}
                     hostNote={{ text: t("for-volunteer.host-note"), link: t("for-volunteer.host-note-link") }}
                     labels={tariffLabels("for-volunteer")}
+                />
+
+                <DuoOffer
+                    price={prices[TARIFF.duo] ?? null}
+                    payHref={pay(TARIFF.duo)}
+                    inviteBase={routes.membershipDuo(locale, "")}
+                    labels={duoLabels(t)}
                 />
 
                 {/* Как это работает */}

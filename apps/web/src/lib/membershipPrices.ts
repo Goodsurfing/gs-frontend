@@ -2,7 +2,7 @@ import type { Locale } from "@/i18n/config";
 import { serverApi } from "@/lib/api";
 
 // Коды тарифов и цены на случай, если API недоступен — как shared/constants/membership старого фронта
-export const TARIFF = { volunteer: "volunteer_990", host: "host_4990", international: "international_5000" } as const;
+export const TARIFF = { volunteer: "volunteer_990", host: "host_4990", international: "international_5000", duo: "volunteer_duo" } as const;
 const FALLBACK_PRICE: Record<string, number> = { volunteer_990: 990, host_4990: 4990, international_5000: 5000 };
 
 /** Цены тарифов в рублях по коду (на сервере; API недоступен — цены по умолчанию) */
@@ -13,7 +13,11 @@ export async function getPrices(locale: Locale): Promise<Record<string, number>>
             signal: AbortSignal.timeout(5000),
         });
         const prices = Object.fromEntries((data ?? []).map((tariff) => [tariff.code, (tariff as { priceRub?: number }).priceRub]));
-        return Object.fromEntries(Object.entries(FALLBACK_PRICE).map(([code, price]) => [code, prices[code] ?? price]));
+        const result = Object.fromEntries(Object.entries(FALLBACK_PRICE).map(([code, price]) => [code, prices[code] ?? price]));
+        // «На двоих» — без цены по умолчанию: есть в ответе только когда включён в админке
+        const duo = prices[TARIFF.duo];
+        if (typeof duo === "number") result[TARIFF.duo] = duo;
+        return result;
     } catch {
         return FALLBACK_PRICE;
     }
