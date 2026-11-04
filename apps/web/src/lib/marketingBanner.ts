@@ -3,6 +3,7 @@ import "server-only";
 import type { Locale } from "@/i18n/config";
 
 import { OPTIONAL_BLOCK_TIMEOUT_MS, serverApi } from "./api";
+import { safeHref } from "./safeHref";
 
 export interface MarketingBanner {
     url: string;
@@ -19,7 +20,9 @@ export async function getHeaderBanner(locale: Locale): Promise<MarketingBanner |
             params: { path: { type: "UNDER_HEADER_ALL_PAGES" } },
             signal: AbortSignal.timeout(OPTIONAL_BLOCK_TIMEOUT_MS),
         });
-        return data?.url && data.description ? { url: data.url, description: data.description } : null;
+        // Ссылка не http(s) (javascript: и т. п.) — баннер не показываем
+        const url = safeHref(data?.url);
+        return url && data?.description ? { url, description: data.description } : null;
     } catch {
         return null;
     }
