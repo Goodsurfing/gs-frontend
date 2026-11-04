@@ -25,4 +25,9 @@ describe("тело PATCH пользователя в админке", () => {
         expect(body.skillIds).toEqual([1, 2]);
         expect(body.achievementIds).toEqual([]);
     });
+
+    it("старые пользователи с null в навыках не ломают сохранение", () => {
+        const body = userUpdateBody({ ...user, additionalSkills: null, skills: null, achievements: null });
+        expect(body).toMatchObject({ additionalSkills: [], skillIds: [], achievementIds: [] });
+    });
 });

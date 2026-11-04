@@ -29,9 +29,10 @@ interface AdminUser {
     facebook: string | null;
     instagram: string | null;
     telegram: string | null;
-    additionalSkills: string[];
-    skills: Named[];
-    achievements: Named[];
+    // У старых пользователей приходят null
+    additionalSkills: string[] | null;
+    skills: Named[] | null;
+    achievements: Named[] | null;
     created: string | null;
     lastVisit: string | null;
     isVerified: boolean;
@@ -102,8 +103,8 @@ export function userUpdateBody(user: AdminUser, changes: Partial<AdminUser> & { 
         telegram: u.telegram ?? "",
         additionalSkills: u.additionalSkills ?? [],
         imageId: u.image?.id ?? null,
-        skillIds: changes.skillIds ?? user.skills.map((s) => s.id),
-        achievementIds: changes.achievementIds ?? user.achievements.map((a) => a.id),
+        skillIds: changes.skillIds ?? (user.skills ?? []).map((s) => s.id),
+        achievementIds: changes.achievementIds ?? (user.achievements ?? []).map((a) => a.id),
     };
 }
 
@@ -359,9 +360,9 @@ function SkillsPanel({ user, busy, save }: { user: AdminUser; busy: boolean; sav
     const api = useAdminApi();
     const [skills, setSkills] = useState<Named[]>([]);
     const [achievements, setAchievements] = useState<Named[]>([]);
-    const [selectedSkills, setSelectedSkills] = useState(() => new Set(user.skills.map((s) => s.id)));
-    const [selectedAchievements, setSelectedAchievements] = useState(() => new Set(user.achievements.map((a) => a.id)));
-    const [extra, setExtra] = useState(user.additionalSkills.join(", "));
+    const [selectedSkills, setSelectedSkills] = useState(() => new Set((user.skills ?? []).map((s) => s.id)));
+    const [selectedAchievements, setSelectedAchievements] = useState(() => new Set((user.achievements ?? []).map((a) => a.id)));
+    const [extra, setExtra] = useState((user.additionalSkills ?? []).join(", "));
 
     useEffect(() => {
         api.get<AdminPage<Named>>("skill", { page: 1, limit: 500 }).then((r) => setSkills(r.data ?? [])).catch(() => undefined);
