@@ -9,18 +9,24 @@ import { Spinner } from "@/components/ui/Spinner";
 import { Toast } from "@/components/ui/Toast";
 import { useAdminApi } from "@/lib/admin/api";
 
-export type AdminFieldValue = string | number | boolean | File | null;
+// unknown — для полей со своей отрисовкой (списки id, HTML, автор)
+export type AdminFieldValue = string | number | boolean | File | null | unknown;
 
 export interface AdminField {
     key: string;
     label: string;
-    type?: "text" | "textarea" | "number" | "color" | "image" | "checkbox" | "select" | "date";
+    type?: "text" | "textarea" | "number" | "color" | "image" | "checkbox" | "select" | "date" | "custom";
     options?: { value: string; label: string }[];
     required?: boolean;
     /** Подсказка под полем */
     hint?: string;
     /** Для картинки — откуда взять адрес текущей (imagePath и т. п.) */
     preview?: (record: Record<string, unknown>) => string | null | undefined;
+    /** type "custom": начальное значение из записи и отрисовка поля */
+    initial?: (record: Record<string, unknown> | null) => unknown;
+    render?: (value: unknown, set: (value: unknown) => void, record: Record<string, unknown> | null) => ReactNode;
+    /** Во всю ширину формы */
+    wide?: boolean;
 }
 
 export interface AdminFormConfig {
@@ -42,6 +48,7 @@ export interface AdminFormConfig {
 }
 
 const initialValue = (field: AdminField, record: Record<string, unknown> | null): AdminFieldValue => {
+    if (field.initial) return field.initial(record);
     const raw = record?.[field.key];
     if (field.type === "image") return null;
     if (field.type === "checkbox") return raw === true;
@@ -111,7 +118,7 @@ export function AdminForm({ config, id }: { config: AdminFormConfig; id: string 
             else setVersion((v) => v + 1);
         } catch (e) {
             // Ключи полей в ошибке проверки API → подписи формы
-            const message = e instanceof Error ? config.fields.reduce((text, f) => text.replaceAll(`${f.key}:`, `${f.label}:`), e.message) : "Не удалось сохранить";
+            const message = e instanceof Error ? config.fields.reduce((text, f) => text.replaceAll(`${f.key}Id:`, `${f.label}:`).replaceAll(`${f.key}:`, `${f.label}:`), e.message) : "Не удалось сохранить";
             setToast({ text: message, ok: false });
         } finally {
             setBusy(false);
@@ -133,7 +140,16 @@ export function AdminForm({ config, id }: { config: AdminFormConfig; id: string 
             >
                 {config.fields.map((field) => {
                     const value = values[field.key];
-                    const wide = field.type === "textarea" || field.type === "image";
+                    const wide = field.wide || field.type === "textarea" || field.type === "image";
+                    if (field.type === "custom" && field.render) {
+                        return (
+                            <div key={field.key} className={`flex flex-col gap-1 ${wide ? "col-span-2 down-md:col-span-1" : ""}`}>
+                                <span className="text-[12px] text-muted">{field.label}{field.required ? " *" : ""}</span>
+                                {field.render(value, (v) => set(field.key, v), record)}
+                                {field.hint && <span className="text-[11px] text-muted">{field.hint}</span>}
+                            </div>
+                        );
+                    }
                     const label = `${field.label}${field.required ? " *" : ""}`;
                     if (field.type === "checkbox") {
                         return (
