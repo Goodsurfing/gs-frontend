@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/config";
 
 import { OPTIONAL_BLOCK_TIMEOUT_MS, serverApi } from "./api";
 import { type OfferPerson, type OfferReview, type Page, toReviewClient as toReview } from "./offerReview";
+import { isClientError } from "@/lib/apiUnavailable";
 
 export type { OfferPerson, OfferReview, Page };
 
@@ -28,7 +29,7 @@ export async function getOffer(locale: Locale, id: string): Promise<OfferResult>
             params: { path: { id: Number(id) } },
             signal: AbortSignal.timeout(8000),
         });
-        if (response.status === 404) return { kind: "notFound" };
+        if (isClientError(response.status)) return { kind: "notFound" };
         // Бэкенд отдаёт null у незаполненных шагов, хотя в схеме они обязательные
         return data ? { kind: "ok", offer: data } : { kind: "error" };
     } catch {

@@ -14,6 +14,7 @@ import { CertificatesCarousel } from "@/components/volunteer/CertificatesCarouse
 import { VolunteerAchievements } from "@/components/volunteer/VolunteerAchievements";
 import { VolunteerOffers } from "@/components/volunteer/VolunteerOffers";
 import { VolunteerReviews } from "@/components/volunteer/VolunteerReviews";
+import { failOnApiError } from "@/lib/apiUnavailable";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { categoryLabels } from "@/lib/categories";
@@ -32,6 +33,18 @@ type Props = { params: Promise<{ locale: string; id: string }> };
 const withImage = (item: object) => item as { image?: { contentUrl?: string; thumbnails?: unknown } | null };
 
 export const revalidate = 300;
+
+/**
+ * Кэш страницы (ISR): без generateStaticParams страница с параметром в адресе
+ * рендерилась на каждый показ (cache-control: no-store), и обход поисковиком
+ * пачкой страниц грузил процессор (04.11 — до 7 с на страницу). Пустой список:
+ * при сборке ничего не готовим, каждая страница рендерится при первом заходе
+ * и отдаётся из кэша, обновляясь раз в revalidate секунд. Личное (откликнуться,
+ * редактировать) браузер дозапрашивает сам — в кэше только общие данные.
+ */
+export function generateStaticParams() {
+    return [];
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale, id } = await params;
@@ -66,7 +79,7 @@ export default async function VolunteerPage({ params }: Props) {
             </div>
         </PublicShell>
     );
-    if (result.kind === "error") return message(p("Произошла ошибка"));
+    failOnApiError(result, `волонтёр ${id}`);
     if (result.kind === "notFound") return message(p("Произошла ошибка или пользователь не зарегистрирован как волонтёр"));
     const profile = result.profile;
     // Заблокированный профиль: старый фронт показывал его только самому владельцу; страница общая — не показываем

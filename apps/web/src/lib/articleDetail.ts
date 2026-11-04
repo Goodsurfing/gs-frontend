@@ -3,23 +3,28 @@ import "server-only";
 import type { Locale } from "@/i18n/config";
 
 import { serverApi } from "./api";
+import { ApiUnavailableError, isClientError } from "./apiUnavailable";
 import type { ArticleKind } from "./articleActions";
 
 /**
- * Материал по id или slug (старые ссылки — по id, новые — по slug). Нет —
- * null. Новости и статьи блога отдаются на языке страницы.
+ * Материал по id или slug (старые ссылки — по id, новые — по slug). Нет (API
+ * отвечает 400/404) — null. Сбой API — ApiUnavailableError, чтобы в кэш
+ * страницы не попало «не найдено». Новости и статьи блога отдаются на языке страницы.
  */
 export async function getArticle(kind: ArticleKind, locale: Locale, idOrSlug: string) {
     const api = serverApi(locale);
     const options = { params: { path: { id: idOrSlug }, query: { lang: locale } }, signal: AbortSignal.timeout(5000) } as never;
-    try {
-        if (kind === "news") return (await api.GET("/api/v1/news/{id}", options)).data ?? null;
-        if (kind === "blog") return (await api.GET("/api/v1/blog/{id}", options)).data ?? null;
-        if (kind === "journal") return (await api.GET("/api/v1/journal/{id}", options)).data ?? null;
-        return (await api.GET("/api/v1/video/{id}", options)).data ?? null;
-    } catch {
-        return null;
-    }
+    const request = kind === "news" ? api.GET("/api/v1/news/{id}", options)
+        : kind === "blog" ? api.GET("/api/v1/blog/{id}", options)
+            : kind === "journal" ? api.GET("/api/v1/journal/{id}", options)
+                : api.GET("/api/v1/video/{id}", options);
+    // Ответы разных разделов — разные типы; страница приводит к своему (Loaded в ArticlePage)
+    const result: { data?: unknown; response: Response } = await request.catch(() => {
+        throw new ApiUnavailableError(`${kind} ${idOrSlug}`);
+    });
+    if (result.data) return result.data;
+    if (isClientError(result.response.status)) return null;
+    throw new ApiUnavailableError(`${kind} ${idOrSlug}`);
 }
 
 /** «Журнал на Calameo» — адрес встраивания, если ссылка на Calameo */
