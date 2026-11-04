@@ -110,7 +110,9 @@ export function AdminForm({ config, id }: { config: AdminFormConfig; id: string 
             if (isNew) router.push(config.afterCreate?.(response) ?? config.back.href);
             else setVersion((v) => v + 1);
         } catch (e) {
-            setToast({ text: e instanceof Error ? e.message : "Не удалось сохранить", ok: false });
+            // Ключи полей в ошибке проверки API → подписи формы
+            const message = e instanceof Error ? config.fields.reduce((text, f) => text.replaceAll(`${f.key}:`, `${f.label}:`), e.message) : "Не удалось сохранить";
+            setToast({ text: message, ok: false });
         } finally {
             setBusy(false);
         }
