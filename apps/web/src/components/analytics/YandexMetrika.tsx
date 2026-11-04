@@ -128,18 +128,34 @@ function FlushPendingGoals() {
     return null;
 }
 
+/**
+ * Параметры адреса, которые не делают новую страницу: выбор вакансии на карте
+ * (offerId) только подсвечивает карточку. Без этого каждый клик по карте был
+ * «просмотром» — ~800 лишних в день, глубина просмотра выросла втрое (04.11.2026).
+ */
+const NOT_A_PAGE = ["offerId"];
+
+/** Адрес для сравнения «та же страница или нет» — без NOT_A_PAGE */
+export function pageKey(href: string): string {
+    const url = new URL(href);
+    for (const name of NOT_A_PAGE) url.searchParams.delete(name);
+    url.hash = "";
+    return url.toString();
+}
+
 /** Просмотр при переходах внутри приложения (первый засчитывает init). */
 function PageHits() {
     const pathname = usePathname();
     const search = useSearchParams().toString();
-    const previous = useRef<string | null>(null);
+    const previous = useRef<{ key: string; url: string } | null>(null);
 
     useEffect(() => {
         const url = window.location.href;
-        if (previous.current !== null && previous.current !== url) {
-            window.ym?.(COUNTER_ID, "hit", url, { referer: previous.current });
+        const key = pageKey(url);
+        if (previous.current !== null && previous.current.key !== key) {
+            window.ym?.(COUNTER_ID, "hit", url, { referer: previous.current.url });
         }
-        previous.current = url;
+        if (previous.current === null || previous.current.key !== key) previous.current = { key, url };
     }, [pathname, search]);
 
     return null;
