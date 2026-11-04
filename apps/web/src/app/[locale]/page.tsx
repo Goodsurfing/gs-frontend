@@ -21,6 +21,7 @@ import { formatStatNumber, roundStat } from "@/lib/formatStat";
 import { routes } from "@/lib/routes";
 import { pageMetadata, siteUrl } from "@/lib/seo";
 import { jsonLdGraph } from "@/lib/structuredData";
+import { HERO_IMAGES } from "@/lib/heroImages";
 
 // Подборки и баннер меняются в админке — страница пересобирается раз в 5 минут
 export const revalidate = 300;
@@ -152,7 +153,7 @@ export default async function HomePage({ params }: Props) {
                                 description: today?.volunteerCount
                                     ? tMain("slider.volunteerCount", { count: today.volunteerCount, displayCount: round(today.volunteerCount) })
                                     : tMain("С нами уже 90 000 путешественников со смыслом со всего мира"),
-                                image: "/web/images/home/slide-1.webp",
+                                image: HERO_IMAGES.volunteers,
                                 descriptionHref: routes.signIn(locale),
                                 button: { text: tMain("Присоединиться к сообществу"), href: routes.signIn(locale), signedInHref: routes.offersMap(locale) },
                             },
@@ -162,7 +163,7 @@ export default async function HomePage({ params }: Props) {
                                 description: today?.vacancyCount
                                     ? tMain("slider.vacancyCount", { count: today.vacancyCount, displayCount: round(today.vacancyCount) })
                                     : tMain("С нами уже больше 1500 проектов"),
-                                image: "/web/images/home/slide-2.webp",
+                                image: HERO_IMAGES.hosts,
                                 descriptionHref: routes.signIn(locale),
                                 button: { text: tMain("Стать хостом"), href: routes.becomeHost(locale) },
                             },
