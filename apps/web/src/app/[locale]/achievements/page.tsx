@@ -40,14 +40,14 @@ export default async function AchievementsPage({ params }: Props) {
                     <>
                         <section aria-labelledby="for-volunteers" className="flex flex-col gap-8">
                             <h2 id="for-volunteers" className="text-[26px] font-bold">{t("volunteers")}</h2>
-                            <BadgeGroup title={t("auto")} badges={volunteers.filter((badge) => badge.auto)} t={t} />
-                            <BadgeGroup title={t("team")} badges={volunteers.filter((badge) => !badge.auto)} t={t} />
+                            <BadgeGroup title={t("auto")} badges={volunteers.filter((badge) => badge.auto)} t={t} locale={locale} />
+                            <BadgeGroup title={t("team")} badges={volunteers.filter((badge) => !badge.auto)} t={t} locale={locale} />
                         </section>
                         {organizations.length > 0 && (
                             <section aria-labelledby="for-organizations" className="flex flex-col gap-4">
                                 <h2 id="for-organizations" className="text-[26px] font-bold">{t("organizations")}</h2>
                                 <p className="text-ink-secondary">{t("organizationsHint")}</p>
-                                <BadgeGroup badges={organizations} t={t} />
+                                <BadgeGroup badges={organizations} t={t} locale={locale} />
                             </section>
                         )}
                     </>
@@ -57,7 +57,7 @@ export default async function AchievementsPage({ params }: Props) {
     );
 }
 
-function BadgeGroup({ title, badges, t }: { title?: string; badges: Badge[]; t: Translate }) {
+function BadgeGroup({ title, badges, t, locale }: { title?: string; badges: Badge[]; t: Translate; locale: string }) {
     if (badges.length === 0) return null;
     return (
         <div className="flex flex-col gap-4">
@@ -71,7 +71,7 @@ function BadgeGroup({ title, badges, t }: { title?: string; badges: Badge[]; t: 
                             <span className="text-[17px] font-semibold text-ink-secondary">{badge.name}</span>
                             {badge.description && <span className="text-[14px] leading-[140%] text-ink-secondary">{badge.description}</span>}
                             <span className="mt-1 text-[13px] text-caption">
-                                {badge.holders ? t("holders", { count: badge.holders.toLocaleString("ru-RU") }) : t("none")}
+                                {badge.holders ? t("holders", { count: badge.holders.toLocaleString(locale === "ru" ? "ru-RU" : locale) }) : t("none")}
                             </span>
                         </div>
                     </li>
