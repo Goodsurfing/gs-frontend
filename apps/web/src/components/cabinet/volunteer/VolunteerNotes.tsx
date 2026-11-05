@@ -116,6 +116,7 @@ export function VolunteerNotes({ hrefs, categories, labels }: {
             <OfferReviewDialog
                 open={!!selected}
                 labels={labels.dialog}
+                assistant={selected ? { token: session.token, vacancyId: selected.vacancy.id } : undefined}
                 onClose={() => setSelected(null)}
                 offer={selected && (
                     <div className="flex min-h-[100px] w-full flex-col border border-accent-bg bg-white p-3.5 select-none">

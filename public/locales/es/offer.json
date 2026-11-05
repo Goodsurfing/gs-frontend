@@ -265,5 +265,21 @@
     "Опубликовать": "Publicar",
     "Отмена": "Cancelar",
     "Добавить вопрос": "Añadir pregunta",
-    "Черновик сохранён": "Borrador guardado"
+    "Черновик сохранён": "Borrador guardado",
+    "assistant": {
+        "title": "Asistente: describe el proyecto en pocas palabras",
+        "hint": "Por ejemplo: «granja, Altái, cuidado de cabras, alojamiento y comida, desde 2 semanas». El asistente escribirá una descripción corta y una completa; puedes editarlas.",
+        "placeholder": "granja, Altái, cuidado de cabras, alojamiento y comida, desde 2 semanas",
+        "write": "Escribir textos",
+        "writing": "Escribiendo…",
+        "applied": "Los textos están en los campos de abajo: revísalos y edítalos",
+        "whatToDo": "Qué harán los voluntarios",
+        "hello": "Saludo para un nuevo voluntario",
+        "missing": "Conviene aclarar:",
+        "copy": "Copiar",
+        "copied": "Copiado",
+        "nextSteps": "Útil para los siguientes pasos:",
+        "limit": "El asistente alcanzó el límite de hoy, inténtalo mañana",
+        "failed": "No se pudieron escribir los textos, inténtalo de nuevo"
+    }
 }

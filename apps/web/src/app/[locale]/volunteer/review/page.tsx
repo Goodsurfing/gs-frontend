@@ -5,6 +5,7 @@ import { CabinetShell } from "@/components/cabinet/CabinetShell";
 import { VolunteerReviews } from "@/components/cabinet/volunteer/VolunteerReviews";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
+import { reviewAssistantLabels } from "@/lib/reviewAssistantLabels";
 import { authMetadata } from "@/lib/authPages";
 import { galleryLabels, uploaderLabels } from "@/lib/cabinetLabels";
 import { categoryLabels } from "@/lib/categories";
@@ -56,6 +57,7 @@ export default async function VolunteerReviewPage({ params }: Props) {
                             send: th("host-dashboard.Оставить отзыв"),
                             sent: "Ваш отзыв был отправлен",
                             close: t("Закрыть"),
+                            assistant: reviewAssistantLabels(tv),
                         },
                     }}
                 />

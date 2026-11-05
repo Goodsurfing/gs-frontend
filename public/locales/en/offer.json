@@ -265,5 +265,21 @@
     "Опубликовать": "Publish",
     "Отмена": "Cancel",
     "Добавить вопрос": "Add question",
-    "Черновик сохранён": "Draft saved"
+    "Черновик сохранён": "Draft saved",
+    "assistant": {
+        "title": "Helper: describe the project in a few words",
+        "hint": "For example: “farm, Altai, goat care, housing and meals, from 2 weeks”. The helper will write a short and a full description — you can edit them.",
+        "placeholder": "farm, Altai, goat care, housing and meals, from 2 weeks",
+        "write": "Write texts",
+        "writing": "Writing…",
+        "applied": "The texts are in the fields below — check and edit them",
+        "whatToDo": "What volunteers will do",
+        "hello": "Welcome message for a new volunteer",
+        "missing": "Worth clarifying:",
+        "copy": "Copy",
+        "copied": "Copied",
+        "nextSteps": "Useful for the next steps:",
+        "limit": "The helper has reached today's limit — try tomorrow",
+        "failed": "Couldn't write the texts, please try again"
+    }
 }

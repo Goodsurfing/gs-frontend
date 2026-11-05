@@ -2788,6 +2788,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/assistant/recommendations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** «Вам могут подойти»: вакансии под волонтёра с причинами (направление, навыки, языки, рейтинг). Подбор без нейросети, работает и при выключенных помощниках */
+        get: operations["get_app_api_v1_assistant_recommendations"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/assistant/review-text": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Черновик отзыва о вакансии по оценке и подсказкам */
+        post: operations["post_app_api_v1_assistant_reviewtext"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/assistant/status": {
         parameters: {
             query?: never;
@@ -2799,6 +2833,23 @@ export interface paths {
         get: operations["get_app_api_v1_assistant_status"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/assistant/vacancy-text": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Тексты вакансии по ключевым словам: короткое описание, описание, что делать, приветствие */
+        post: operations["post_app_api_v1_assistant_vacancytext"];
         delete?: never;
         options?: never;
         head?: never;
@@ -26946,6 +26997,91 @@ export interface operations {
             };
         };
     };
+    get_app_api_v1_assistant_recommendations: {
+        parameters: {
+            query?: {
+                lang?: "ru" | "en" | "es";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description До 12 вакансий, лучшие первыми; карточки — GET /api/v1/vacancy?ids[]=… */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        id?: number;
+                        reasons?: {
+                            /** @enum {string} */
+                            type?: "category" | "skill" | "language" | "rating" | "top";
+                            value?: string;
+                        }[];
+                        score?: number;
+                    }[];
+                };
+            };
+        };
+    };
+    post_app_api_v1_assistant_reviewtext: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Своими словами (необязательно) */
+                    comment?: string;
+                    /** @enum {string} */
+                    lang?: "ru" | "en" | "es";
+                    rating: number;
+                    tags?: string[];
+                    vacancy: number;
+                };
+            };
+        };
+        responses: {
+            /** @description Черновик */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        text?: string;
+                    };
+                };
+            };
+            /** @description Неверный запрос */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Лимит на сегодня исчерпан */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Помощник недоступен */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     get_app_api_v1_assistant_status: {
         parameters: {
             query?: never;
@@ -26964,6 +27100,72 @@ export interface operations {
                         enabled?: boolean;
                     };
                 };
+            };
+        };
+    };
+    post_app_api_v1_assistant_vacancytext: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    address?: string;
+                    /** @example ферма, Алтай, уход за козами, жильё и еда */
+                    keywords: string;
+                    /** @enum {string} */
+                    lang?: "ru" | "en" | "es";
+                    title?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Черновики */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        description?: string;
+                        helloText?: string;
+                        /** @description Что стоит уточнить */
+                        missing?: string;
+                        shortDescription?: string;
+                        whatToDo?: string;
+                    };
+                };
+            };
+            /** @description Нужны ключевые слова */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Только организатору */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Лимит на сегодня исчерпан */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Помощник недоступен */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

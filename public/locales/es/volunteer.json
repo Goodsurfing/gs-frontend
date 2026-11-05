@@ -105,5 +105,23 @@
         "Не удалось загрузить статьи. Попробуйте обновить страницу": "No se pudieron cargar los artículos. Intenta recargar la página"
     },
     "Добро пожаловать!": "¡Bienvenido!",
-    "Рады приветствовать вас на нашем сайте Для вашего удобства предлагаем максимально подробно заполнить свой профиль": "Le damos la bienvenida a nuestro sitio. Para su comodidad, le recomendamos completar su perfil con el mayor detalle posible."
+    "Рады приветствовать вас на нашем сайте Для вашего удобства предлагаем максимально подробно заполнить свой профиль": "Le damos la bienvenida a nuestro sitio. Para su comodidad, le recomendamos completar su perfil con el mayor detalle posible.",
+    "reviewAssistant": {
+        "title": "¿No sabes qué escribir? Marca cómo fue y el asistente redactará la reseña",
+        "write": "Ayúdame a escribir",
+        "writing": "Escribiendo…",
+        "hint": "El texto está en el campo de abajo: adáptalo a tu gusto",
+        "limit": "El asistente alcanzó el límite de hoy, inténtalo mañana",
+        "failed": "No funcionó, inténtalo de nuevo",
+        "good": "equipo amable|comida rica|trabajo interesante|naturaleza bonita|anfitrión atento|buen alojamiento|aprendí mucho|tuve tiempo libre",
+        "bad": "trabajo duro|poco tiempo libre|condiciones básicas|no todo como en la descripción|anfitrión poco disponible"
+    },
+    "why": {
+        "title": "Por qué encaja:",
+        "category": "tu interés «{value}»",
+        "skill": "tu habilidad «{value}»",
+        "language": "idioma: {value}",
+        "rating": "valoración {value}",
+        "top": "Top anfitrión"
+    }
 }

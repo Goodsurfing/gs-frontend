@@ -74,6 +74,22 @@ export default async function OfferDescriptionPage({ params }: Props) {
                     unsaved: tOffer("У вас есть несохраненные изменения"),
                     loading: t("Загрузка"),
                     missing: tMain("Вакансия не найдена или произошла ошибка"),
+                    assistant: {
+                        title: tOffer("assistant.title"),
+                        hint: tOffer("assistant.hint"),
+                        placeholder: tOffer("assistant.placeholder"),
+                        write: tOffer("assistant.write"),
+                        writing: tOffer("assistant.writing"),
+                        applied: tOffer("assistant.applied"),
+                        whatToDo: tOffer("assistant.whatToDo"),
+                        hello: tOffer("assistant.hello"),
+                        missing: tOffer("assistant.missing"),
+                        copy: tOffer("assistant.copy"),
+                        copied: tOffer("assistant.copied"),
+                        nextSteps: tOffer("assistant.nextSteps"),
+                        limit: tOffer("assistant.limit"),
+                        failed: tOffer("assistant.failed"),
+                    },
                 }}
             />
         </OfferWizardShell>
