@@ -1,127 +1,208 @@
 "use client";
 
-import * as Menu from "@radix-ui/react-dropdown-menu";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { Avatar } from "@/components/ui/Avatar";
 import type { Locale } from "@/i18n/config";
 import { mediaUrl } from "@/lib/media";
-import { type ApplicationStatus, type Chat, formatMessageDate, STATUS_COLORS } from "@/lib/messenger";
+import { type Chat, CHAT_TABS, chatInTab, type ChatTab, formatDateRange, formatListTime, readByOthers, statusChip } from "@/lib/messenger";
+
+import { ReadMark } from "./ReadMark";
+import { type StatusLabels, StatusBadge } from "./StatusBadge";
 
 export interface ChatListLabels {
     search: string;
-    filter: string;
-    statuses: Record<ApplicationStatus, string>;
+    tabs: Record<ChatTab, string>;
+    statuses: StatusLabels;
+    you: string;
     attachment: string;
     application: string;
     noDate: string;
     noName: string;
+    empty: string;
+    emptyTab: string;
+    loadError: string;
+    retry: string;
+    read: string;
 }
 
-const STEP = 20;
+const STEP = 30;
 
 /**
- * Список чатов (MessengerList старого фронта): поиск, фильтр по статусу
- * заявки (повторный выбор снимает фильтр), карточки с последним
- * сообщением, датой, числом непрочитанных и цветной точкой статуса; по 20,
- * дальше — при прокрутке.
+ * Список переписок (как входящие в Worldpackers): поиск, вкладки «Все»,
+ * «Непрочитанные», «Ждут ответа», «Принятые»; в строке — собеседник, время,
+ * вакансия с датами и статусом заявки, последнее сообщение («Вы: …» со
+ * значком прочтения) и число непрочитанных. Строки дорисовываются при
+ * прокрутке по 30, чтобы длинный список не тормозил слабые телефоны.
  */
-export function ChatList({ locale, chats, selectedId, chatHref, onOpen, search, onSearch, status, onStatus, labels, className = "" }: {
+export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerIsVolunteer, selectedId, chatHref, onOpen, search, onSearch, labels, className = "" }: {
     locale: Locale;
     chats: Chat[];
+    loaded: boolean;
+    failed: boolean;
+    onRetry: () => void;
+    myId: string | undefined;
+    viewerIsVolunteer: (chat: Chat) => boolean;
     selectedId?: string;
     chatHref: (id: number) => string;
     onOpen: (id: number) => void;
     search: string;
     onSearch: (value: string) => void;
-    status: ApplicationStatus | null;
-    onStatus: (value: ApplicationStatus | null) => void;
     labels: ChatListLabels;
     className?: string;
 }) {
+    const [tab, setTab] = useState<ChatTab>("all");
     const [visible, setVisible] = useState(STEP);
-    const shown = chats.slice(0, visible);
+    const counts = useMemo(() => Object.fromEntries(CHAT_TABS.map((value) => [value, chats.filter((chat) => chatInTab(chat, value, myId)).length])) as Record<ChatTab, number>, [chats, myId]);
+    const filtered = useMemo(() => chats.filter((chat) => chatInTab(chat, tab, myId)), [chats, tab, myId]);
+    const shown = filtered.slice(0, visible);
 
     return (
-        <div className={`flex h-auto w-full max-w-[450px] min-w-[200px] flex-col border-r border-accent-bg ${className}`}>
-            <div className="flex items-center gap-2 border-b border-accent-bg px-2 py-[11px]">
+        <div className={`flex h-full w-full max-w-[400px] min-w-[300px] flex-col border-r border-accent-bg bg-white ${className}`}>
+            <div className="flex flex-col gap-2 border-b border-accent-bg px-4 pt-4">
                 <input
                     type="search"
                     value={search}
                     aria-label={labels.search}
                     placeholder={labels.search}
                     onChange={(event) => onSearch(event.target.value)}
-                    className="h-10 w-full rounded-[10px] border border-accent-bg bg-white px-3 text-[14px] outline-none placeholder:text-caption focus:border-primary"
+                    className="h-10 w-full rounded-full border border-accent-bg bg-field px-4 text-[14px] outline-none placeholder:text-caption focus:border-primary focus:bg-white"
                 />
-                <Menu.Root>
-                    <Menu.Trigger aria-label={labels.filter} className="flex h-[25px] w-[25px] shrink-0 cursor-pointer items-center justify-center border-0 bg-transparent p-0">
-                        {/* eslint-disable-next-line @next/next/no-img-element -- значок меню */}
-                        <img src="/web/icons/messenger/three-dots.svg" alt="" width={20} height={4} />
-                    </Menu.Trigger>
-                    <Menu.Portal>
-                        <Menu.Content align="end" className="z-30 flex flex-col border border-accent-bg bg-white">
-                            {(Object.keys(STATUS_COLORS) as ApplicationStatus[]).map((value) => (
-                                <Menu.CheckboxItem
-                                    key={value}
-                                    checked={status === value}
-                                    onCheckedChange={() => onStatus(status === value ? null : value)}
-                                    className={`flex cursor-pointer items-center gap-2.5 p-3.5 text-[14px] font-medium outline-none data-[highlighted]:bg-accent-bg/60 ${status === value ? "bg-accent-bg" : ""}`}
-                                >
-                                    <span aria-hidden className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: STATUS_COLORS[value] }} />
-                                    {labels.statuses[value]}
-                                </Menu.CheckboxItem>
-                            ))}
-                        </Menu.Content>
-                    </Menu.Portal>
-                </Menu.Root>
+                <div role="tablist" aria-label={labels.search} className="-mx-4 flex overflow-x-auto px-2 [scrollbar-width:none]">
+                    {CHAT_TABS.map((value) => {
+                        const active = tab === value;
+                        const count = value === "unread" || value === "awaiting" ? counts[value] : 0;
+                        return (
+                            <button
+                                key={value}
+                                type="button"
+                                role="tab"
+                                aria-selected={active}
+                                onClick={() => {
+                                    setTab(value);
+                                    setVisible(STEP);
+                                }}
+                                className={`-mb-px flex h-10 shrink-0 cursor-pointer items-center gap-1 border-0 border-b-2 bg-transparent px-2 text-[13px] font-medium whitespace-nowrap transition-colors ${active ? "border-primary text-primary" : "border-transparent text-caption hover:text-ink-secondary"}`}
+                            >
+                                {labels.tabs[value]}
+                                {count > 0 && <span className={`rounded-full px-1.5 text-[11px] leading-[18px] ${active ? "bg-primary text-white" : "bg-field text-caption"}`}>{count}</span>}
+                            </button>
+                        );
+                    })}
+                </div>
             </div>
             <div
-                className="relative flex h-full w-full flex-col overflow-x-hidden overflow-y-auto"
+                className="relative flex min-h-0 w-full flex-1 flex-col overflow-x-hidden overflow-y-auto"
                 onScroll={(event) => {
                     const box = event.currentTarget;
-                    if (box.scrollTop + box.clientHeight >= box.scrollHeight * 0.7 && visible < chats.length) setVisible((value) => value + STEP);
+                    if (box.scrollTop + box.clientHeight >= box.scrollHeight * 0.7 && visible < filtered.length) setVisible((value) => value + STEP);
                 }}
             >
-                {shown.map((chat) => {
-                    const id = chat.id ?? 0;
-                    const companion = chat.otherParticipants?.[0];
-                    const name = [companion?.firstName, companion?.lastName].filter(Boolean).join(" ") || labels.noName;
-                    const active = selectedId === String(id);
-                    const unread = chat.countUnreadMessages ?? 0;
-                    const last = chat.lastMessage;
-                    const preview = last?.attachments?.length ? labels.attachment : (last?.text ?? labels.application);
-                    return (
-                        <a
-                            key={id}
-                            href={chatHref(id)}
-                            aria-current={active ? "page" : undefined}
-                            onClick={(event) => {
-                                if (event.metaKey || event.ctrlKey) return;
-                                event.preventDefault();
-                                onOpen(id);
-                            }}
-                            className={`relative flex w-full gap-2 border-b border-accent-bg py-2 pr-3.5 pl-6 text-inherit no-underline ${active ? "bg-primary text-white" : unread ? "bg-field" : ""}`}
-                        >
-                            <span aria-hidden className="absolute top-2 left-3.5 h-2.5 w-2.5 rounded-full" style={{ backgroundColor: STATUS_COLORS[chat.applicationStatus ?? "new"] }} />
-                            <Avatar src={mediaUrl(companion?.image, "small")} name={name} size={40} />
-                            <div className="flex w-full min-w-0 flex-col gap-2">
-                                <div className="grid grid-cols-[1fr_auto] gap-2.5 overflow-hidden whitespace-nowrap">
-                                    <span className="overflow-hidden text-[0.875rem] text-ellipsis">{name}</span>
-                                    <span className={`text-[0.75rem] ${active ? "text-white" : "text-caption"}`}>{formatMessageDate(locale, last?.createdAt, labels.noDate)}</span>
-                                </div>
-                                <div className="grid grid-cols-[1fr_auto] gap-2.5 overflow-hidden whitespace-nowrap">
-                                    <span className={`overflow-hidden text-[0.75rem] text-ellipsis ${active ? "text-white" : "text-caption"}`}>{preview}</span>
-                                    {unread > 0 && (
-                                        <span className="flex h-4 min-w-4 shrink-0 items-center justify-center rounded-full bg-error text-[0.625rem] font-extrabold text-white">
-                                            {unread > 9 ? "9+" : unread}
-                                        </span>
-                                    )}
-                                </div>
-                            </div>
-                        </a>
-                    );
-                })}
+                {!loaded && <ListSkeleton />}
+                {loaded && failed && chats.length === 0 && (
+                    <div className="flex flex-col items-center gap-3 px-6 py-10 text-center text-[14px] text-caption">
+                        {labels.loadError}
+                        <button type="button" onClick={onRetry} className="cursor-pointer rounded-full border border-primary bg-white px-4 py-1.5 text-[14px] text-primary">{labels.retry}</button>
+                    </div>
+                )}
+                {loaded && !failed && filtered.length === 0 && (
+                    <p className="px-6 py-10 text-center text-[14px] text-caption">{chats.length === 0 && !search ? labels.empty : labels.emptyTab}</p>
+                )}
+                {shown.map((chat) => (
+                    <ChatRow
+                        key={chat.id}
+                        locale={locale}
+                        chat={chat}
+                        myId={myId}
+                        viewerIsVolunteer={viewerIsVolunteer(chat)}
+                        active={selectedId === String(chat.id)}
+                        href={chatHref(chat.id ?? 0)}
+                        onOpen={onOpen}
+                        labels={labels}
+                    />
+                ))}
             </div>
+        </div>
+    );
+}
+
+function ChatRow({ locale, chat, myId, viewerIsVolunteer, active, href, onOpen, labels }: {
+    locale: Locale;
+    chat: Chat;
+    myId: string | undefined;
+    viewerIsVolunteer: boolean;
+    active: boolean;
+    href: string;
+    onOpen: (id: number) => void;
+    labels: ChatListLabels;
+}) {
+    const id = chat.id ?? 0;
+    const companion = chat.otherParticipants?.[0];
+    const name = [companion?.firstName, companion?.lastName].filter(Boolean).join(" ") || labels.noName;
+    const unread = chat.countUnreadMessages ?? 0;
+    const last = chat.lastMessage;
+    const mine = !!last && !!myId && last.author?.id === myId;
+    const text = last?.attachments?.length && !last.text ? labels.attachment : (last?.text ?? labels.application);
+    const application = chat.application;
+    const chip = statusChip(application?.status, viewerIsVolunteer);
+    const dates = formatDateRange(locale, application?.startDate, application?.endDate);
+    const context = [application?.vacancyTitle, dates].filter(Boolean).join(" · ");
+
+    return (
+        <a
+            href={href}
+            aria-current={active ? "page" : undefined}
+            onClick={(event) => {
+                if (event.metaKey || event.ctrlKey) return;
+                event.preventDefault();
+                onOpen(id);
+            }}
+            className={`relative flex w-full gap-3 border-b border-field px-4 py-3 text-inherit no-underline transition-colors ${active ? "bg-field" : "hover:bg-surface-2"}`}
+        >
+            {active && <span aria-hidden className="absolute inset-y-0 left-0 w-[3px] bg-primary" />}
+            <Avatar src={mediaUrl(companion?.image, "small")} name={name} size={48} />
+            <div className="flex min-w-0 flex-1 flex-col gap-1">
+                <div className="flex items-baseline gap-2">
+                    <span className={`min-w-0 flex-1 truncate text-[15px] ${unread ? "font-bold text-ink" : "font-medium text-ink-secondary"}`}>{name}</span>
+                    <span className={`shrink-0 text-[12px] ${unread ? "font-semibold text-primary" : "text-caption"}`}>{formatListTime(locale, last?.createdAt)}</span>
+                </div>
+                {(chip || context) && (
+                    <div className="flex min-w-0 items-center gap-2">
+                        {chip && <StatusBadge chip={chip} labels={labels.statuses} />}
+                        {context && <span className="min-w-0 truncate text-[12px] text-caption">{context}</span>}
+                    </div>
+                )}
+                <div className="flex items-center gap-2">
+                    <span className={`min-w-0 flex-1 truncate text-[13px] ${unread ? "font-medium text-ink-secondary" : "text-caption"}`}>
+                        {mine && <ReadMark read={readByOthers(last, myId)} label={labels.read} />}
+                        {mine && `${labels.you} `}
+                        {text}
+                    </span>
+                    {unread > 0 && (
+                        <span className="flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-bold text-white">
+                            {unread > 99 ? "99+" : unread}
+                        </span>
+                    )}
+                </div>
+            </div>
+        </a>
+    );
+}
+
+/** Заглушка списка, пока грузится: место под строки зарезервировано */
+function ListSkeleton() {
+    return (
+        <div aria-hidden className="flex flex-col">
+            {[0, 1, 2, 3, 4].map((index) => (
+                <div key={index} className="flex gap-3 border-b border-field px-4 py-3">
+                    <span className="h-12 w-12 shrink-0 animate-pulse rounded-full bg-field" />
+                    <div className="flex flex-1 flex-col gap-2 pt-1">
+                        <span className="h-3.5 w-1/2 animate-pulse rounded bg-field" />
+                        <span className="h-3 w-3/4 animate-pulse rounded bg-field" />
+                        <span className="h-3 w-2/3 animate-pulse rounded bg-field" />
+                    </div>
+                </div>
+            ))}
         </div>
     );
 }

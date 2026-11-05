@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import {
-    applyIncomingMessage, type Chat, companionTarget, formatMessageDate, idFromIri, isImageAttachment, linkify, mergeMessages, setArrival, setDeparture, sortChats,
+    applyIncomingMessage, type Chat, chatInTab, companionTarget, formatDateRange, formatDayLabel, formatListTime, formatMessageDate, idFromIri, isImageAttachment, linkify,
+    mergeMessages, readByOthers, sameGroup, setArrival, setDeparture, sortChats, statusChip,
 } from "../messenger";
 
 const chat = (id: number, createdAt?: string, unread = 0): Chat => ({
@@ -81,5 +82,83 @@ describe("даты заявки", () => {
         expect(setArrival({ start: "2026-12-01", end: "2026-12-10" }, "2026-12-20")).toEqual({ start: "2026-12-20", end: "2026-12-20" });
         expect(setDeparture({ start: "2026-12-05", end: "2026-12-10" }, "2026-12-01", "2026-11-02")).toEqual({ start: "2026-12-05", end: "2026-12-10" });
         expect(setDeparture({ start: null, end: null }, "2026-12-01", "2026-11-02")).toEqual({ start: "2026-11-02", end: "2026-12-01" });
+    });
+});
+
+describe("мессенджер как в Worldpackers", () => {
+    const now = new Date(2026, 10, 5, 15, 0);
+    const at = (days: number, hours = 10) => new Date(2026, 10, 5 - days, hours, 5).toISOString();
+
+    it("время в списке: сегодня — часы, вчера — «Вчера», на неделе — день, в этом году — число и месяц", () => {
+        expect(formatListTime("ru", at(0), now)).toBe("10:05");
+        expect(formatListTime("ru", at(1), now)).toBe("Вчера");
+        expect(formatListTime("ru", at(2), now)).toBe("Вт");
+        expect(formatListTime("ru", new Date(2026, 9, 3).toISOString(), now)).toBe("3 окт.");
+        expect(formatListTime("ru", new Date(2025, 9, 3).toISOString(), now)).toBe("03.10.2025");
+        expect(formatListTime("ru", null, now)).toBe("");
+    });
+
+    it("разделитель дней: «Сегодня», «Вчера», дата словами", () => {
+        expect(formatDayLabel("ru", at(0), now)).toBe("Сегодня");
+        expect(formatDayLabel("ru", at(1), now)).toBe("Вчера");
+        expect(formatDayLabel("en", at(1), now)).toBe("Yesterday");
+        expect(formatDayLabel("ru", new Date(2026, 9, 3).toISOString(), now)).toBe("3 октября");
+        expect(formatDayLabel("ru", new Date(2025, 9, 3).toISOString(), now).replace(/[\s\u202f]+/g, " ")).toBe("3 октября 2025 г.");
+    });
+
+    it("даты заявки коротким диапазоном, без сдвига часового пояса", () => {
+        // Версии ICU расходятся в пробелах (обычный, неразрывный, узкий) — сравниваем без них
+        const plain = (text: string) => text.replace(/[\s\u202f\u2009]+/g, " ");
+        expect(plain(formatDateRange("ru", "2026-12-01", "2026-12-20"))).toBe("1–20 дек. 2026 г.");
+        expect(plain(formatDateRange("ru", "2026-12-28", "2027-01-05"))).toBe("28 дек. 2026 г. – 5 янв. 2027 г.");
+        expect(plain(formatDateRange("ru", "2026-12-01", "2026-12-01"))).toBe("1 дек. 2026 г.");
+        expect(formatDateRange("ru", null, "2026-12-01")).toBe("");
+    });
+
+    const withApp = (status: string | null, lastAuthor: string | null, unread = 0): Chat => ({
+        id: 1,
+        countUnreadMessages: unread,
+        lastMessage: lastAuthor ? { id: 1, text: "x", createdAt: at(0), author: { id: lastAuthor } } as Chat["lastMessage"] : null,
+        otherParticipants: [],
+        application: status ? { id: 5, status } : null,
+    });
+
+    it("вкладки: непрочитанные, ждут ответа (последнее — от собеседника), принятые", () => {
+        expect(chatInTab(withApp(null, "me"), "all", "me")).toBe(true);
+        expect(chatInTab(withApp(null, "me", 2), "unread", "me")).toBe(true);
+        expect(chatInTab(withApp(null, "me"), "unread", "me")).toBe(false);
+        expect(chatInTab(withApp("new", "other"), "awaiting", "me")).toBe(true);
+        expect(chatInTab(withApp("new", "me"), "awaiting", "me")).toBe(false);
+        expect(chatInTab(withApp("new", null), "awaiting", "me")).toBe(false);
+        expect(chatInTab(withApp("accepted", "me"), "accepted", "me")).toBe(true);
+        expect(chatInTab(withApp("new", "me"), "accepted", "me")).toBe(false);
+    });
+
+    it("плашка статуса: новая заявка у организатора и отправленная у волонтёра", () => {
+        expect(statusChip("new", false)).toBe("incoming");
+        expect(statusChip("new", true)).toBe("sent");
+        expect(statusChip("accepted", true)).toBe("accepted");
+        expect(statusChip("canceled", false)).toBe("canceled");
+        expect(statusChip(null, true)).toBeNull();
+    });
+
+    it("две галочки — когда прочитал кто-то кроме автора", () => {
+        expect(readByOthers({ readByUserIds: ["me"] }, "me")).toBe(false);
+        expect(readByOthers({ readByUserIds: ["me", "other"] }, "me")).toBe(true);
+        expect(readByOthers({}, "me")).toBe(false);
+    });
+
+    it("группа сообщений — один автор в пределах 5 минут", () => {
+        const a = { author: "/api/v1/users/a", createdAt: "2026-11-05T10:00:00Z" };
+        expect(sameGroup(a, { author: a.author, createdAt: "2026-11-05T10:04:00Z" })).toBe(true);
+        expect(sameGroup(a, { author: a.author, createdAt: "2026-11-05T10:06:00Z" })).toBe(false);
+        expect(sameGroup(a, { author: "/api/v1/users/b", createdAt: a.createdAt })).toBe(false);
+        expect(sameGroup(a, undefined)).toBe(false);
+    });
+
+    it("событие Mercure меняет автора последнего сообщения", () => {
+        const before = [withApp(null, "me")];
+        const after = applyIncomingMessage(before, { id: 2, text: "ответ", chat: "/api/v1/chats/1", author: "/api/v1/users/other" });
+        expect(after[0]?.lastMessage?.author?.id).toBe("other");
     });
 });

@@ -7955,6 +7955,8 @@ export interface components {
             name: string;
         };
         "Chat-chat.read": {
+            /** @description Заявка, о которой переписка: вакансия, даты, статус — для списка чатов и шапки (null — переписка без заявки) */
+            readonly application?: components["schemas"]["ChatApplication-chat.read"] | null;
             /** @enum {string|null} */
             readonly applicationStatus?: "new" | "accepted" | "canceled" | null;
             readonly countUnreadMessages?: number;
@@ -7967,6 +7969,8 @@ export interface components {
             readonly otherParticipants?: string[];
         };
         "Chat-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read": {
+            /** @description Заявка, о которой переписка: вакансия, даты, статус — для списка чатов и шапки (null — переписка без заявки) */
+            readonly application?: components["schemas"]["ChatApplication-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read"] | null;
             /** @enum {string|null} */
             readonly applicationStatus?: "new" | "accepted" | "canceled" | null;
             readonly countUnreadMessages?: number;
@@ -7975,6 +7979,8 @@ export interface components {
             readonly otherParticipants?: components["schemas"]["User-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read"][];
         };
         "Chat.jsonld-chat.read": components["schemas"]["HydraItemBaseSchema"] & {
+            /** @description Заявка, о которой переписка: вакансия, даты, статус — для списка чатов и шапки (null — переписка без заявки) */
+            readonly application?: components["schemas"]["ChatApplication.jsonld-chat.read"] | null;
             /** @enum {string|null} */
             readonly applicationStatus?: "new" | "accepted" | "canceled" | null;
             readonly countUnreadMessages?: number;
@@ -7987,6 +7993,8 @@ export interface components {
             readonly otherParticipants?: string[];
         };
         "Chat.jsonld-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read": components["schemas"]["HydraItemBaseSchema"] & {
+            /** @description Заявка, о которой переписка: вакансия, даты, статус — для списка чатов и шапки (null — переписка без заявки) */
+            readonly application?: components["schemas"]["ChatApplication.jsonld-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read"] | null;
             /** @enum {string|null} */
             readonly applicationStatus?: "new" | "accepted" | "canceled" | null;
             readonly countUnreadMessages?: number;
@@ -7995,6 +8003,8 @@ export interface components {
             readonly otherParticipants?: components["schemas"]["User.jsonld-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read"][];
         };
         "Chat.multipart-chat.read": {
+            /** @description Заявка, о которой переписка: вакансия, даты, статус — для списка чатов и шапки (null — переписка без заявки) */
+            readonly application?: components["schemas"]["ChatApplication.multipart-chat.read"] | null;
             /** @enum {string|null} */
             readonly applicationStatus?: "new" | "accepted" | "canceled" | null;
             readonly countUnreadMessages?: number;
@@ -8007,6 +8017,8 @@ export interface components {
             readonly otherParticipants?: string[];
         };
         "Chat.multipart-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read": {
+            /** @description Заявка, о которой переписка: вакансия, даты, статус — для списка чатов и шапки (null — переписка без заявки) */
+            readonly application?: components["schemas"]["ChatApplication.multipart-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read"] | null;
             /** @enum {string|null} */
             readonly applicationStatus?: "new" | "accepted" | "canceled" | null;
             readonly countUnreadMessages?: number;
@@ -8020,6 +8032,102 @@ export interface components {
              * @example https://example.com/
              */
             message: string | null;
+        };
+        "ChatApplication-chat.read": {
+            endDate?: string | null;
+            id?: number;
+            organizationId?: string | null;
+            organizationName?: string | null;
+            /** @description Даты заявки, ГГГГ-ММ-ДД */
+            startDate?: string | null;
+            /** @description new / accepted / canceled */
+            status?: string;
+            vacancyId?: number | null;
+            /**
+             * Format: iri-reference
+             * @description Обложка вакансии (превью для списка чатов)
+             * @example https://example.com/
+             */
+            vacancyImage?: string | null;
+            vacancyTitle?: string | null;
+        };
+        "ChatApplication-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read": {
+            endDate?: string | null;
+            id?: number;
+            organizationId?: string | null;
+            organizationName?: string | null;
+            /** @description Даты заявки, ГГГГ-ММ-ДД */
+            startDate?: string | null;
+            /** @description new / accepted / canceled */
+            status?: string;
+            vacancyId?: number | null;
+            /** @description Обложка вакансии (превью для списка чатов) */
+            vacancyImage?: components["schemas"]["MediaObject-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read"] | null;
+            vacancyTitle?: string | null;
+        };
+        "ChatApplication.jsonld-chat.read": {
+            endDate?: string | null;
+            id?: number;
+            organizationId?: string | null;
+            organizationName?: string | null;
+            /** @description Даты заявки, ГГГГ-ММ-ДД */
+            startDate?: string | null;
+            /** @description new / accepted / canceled */
+            status?: string;
+            vacancyId?: number | null;
+            /**
+             * Format: iri-reference
+             * @description Обложка вакансии (превью для списка чатов)
+             * @example https://example.com/
+             */
+            vacancyImage?: string | null;
+            vacancyTitle?: string | null;
+        };
+        "ChatApplication.jsonld-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read": {
+            endDate?: string | null;
+            id?: number;
+            organizationId?: string | null;
+            organizationName?: string | null;
+            /** @description Даты заявки, ГГГГ-ММ-ДД */
+            startDate?: string | null;
+            /** @description new / accepted / canceled */
+            status?: string;
+            vacancyId?: number | null;
+            /** @description Обложка вакансии (превью для списка чатов) */
+            vacancyImage?: components["schemas"]["MediaObject.jsonld-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read"] | null;
+            vacancyTitle?: string | null;
+        };
+        "ChatApplication.multipart-chat.read": {
+            endDate?: string | null;
+            id?: number;
+            organizationId?: string | null;
+            organizationName?: string | null;
+            /** @description Даты заявки, ГГГГ-ММ-ДД */
+            startDate?: string | null;
+            /** @description new / accepted / canceled */
+            status?: string;
+            vacancyId?: number | null;
+            /**
+             * Format: iri-reference
+             * @description Обложка вакансии (превью для списка чатов)
+             * @example https://example.com/
+             */
+            vacancyImage?: string | null;
+            vacancyTitle?: string | null;
+        };
+        "ChatApplication.multipart-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read": {
+            endDate?: string | null;
+            id?: number;
+            organizationId?: string | null;
+            organizationName?: string | null;
+            /** @description Даты заявки, ГГГГ-ММ-ДД */
+            startDate?: string | null;
+            /** @description new / accepted / canceled */
+            status?: string;
+            vacancyId?: number | null;
+            /** @description Обложка вакансии (превью для списка чатов) */
+            vacancyImage?: components["schemas"]["MediaObject.multipart-chat.read_organization.short_message.read_volunteer.read-with-profile_user.short_media_object.read"] | null;
+            vacancyTitle?: string | null;
         };
         /**
          * MembershipCheckoutCommand

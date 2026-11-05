@@ -8,6 +8,8 @@ export type ChatParticipant = NonNullable<Chat["otherParticipants"]>[number];
 /** Сообщение; в событии Mercure есть ещё IRI чата */
 export type ChatMessage = components["schemas"]["Message-message.read"] & { chat?: string };
 export type ApplicationStatus = "new" | "accepted" | "canceled";
+/** Заявка, о которой переписка: вакансия, даты, статус (null — переписка без заявки) */
+export type ChatApplication = NonNullable<Chat["application"]>;
 
 /** Цвета статусов заявки (offerState старого фронта): точка в списке чатов и в фильтре */
 export const STATUS_COLORS: Record<ApplicationStatus, string> = {
@@ -35,9 +37,12 @@ export function applyIncomingMessage(chats: Chat[], message: ChatMessage): Chat[
     if (!chatId) return chats;
     return chats.map((chat) => {
         if (chat.id !== chatId || !chat.lastMessage) return chat;
+        // В событии автор — IRI; в списке нужен объект с id, чтобы понять «Вы:» и «Ждут ответа»
+        const authorId = idFromIri(message.author);
+        const author = authorId && authorId !== chat.lastMessage.author?.id ? { id: authorId } : chat.lastMessage.author;
         return {
             ...chat,
-            lastMessage: { ...chat.lastMessage, ...message, author: chat.lastMessage.author } as Chat["lastMessage"],
+            lastMessage: { ...chat.lastMessage, ...message, author } as Chat["lastMessage"],
             countUnreadMessages: (chat.countUnreadMessages ?? 0) + 1,
         };
     });
@@ -64,10 +69,92 @@ export function formatMessageDate(locale: Locale, iso: string | null | undefined
     return date.toLocaleDateString(tag, { day: "2-digit", month: "2-digit", year: "numeric" }).replace(/[-/]/g, ".");
 }
 
-/** Дата-разделитель в переписке (formatDate старого фронта) */
+/** Дата текстом ДД.ММ.ГГГГ (даты заявки в карточке) */
 export function formatDay(locale: Locale, value: string | Date): string {
     return new Date(value).toLocaleDateString(LOCALES[locale], { day: "2-digit", month: "2-digit", year: "numeric" }).replace(/[-/]/g, ".");
 }
+
+const startOfDay = (date: Date) => new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+const daysAgo = (date: Date, now: Date) => Math.round((startOfDay(now) - startOfDay(date)) / 86_400_000);
+const capitalize = (text: string) => text.charAt(0).toLocaleUpperCase() + text.slice(1);
+/** «Сегодня», «Вчера» на языке страницы — из Intl, без своих словарей */
+const relativeDay = (locale: Locale, days: 0 | 1) => capitalize(new Intl.RelativeTimeFormat(LOCALES[locale], { numeric: "auto" }).format(-days, "day"));
+
+/**
+ * Время в списке чатов (как в почте и мессенджерах): сегодня — «14:05»,
+ * вчера — «Вчера», на этой неделе — день недели, в этом году — «5 нояб.»,
+ * раньше — ДД.ММ.ГГГГ.
+ */
+export function formatListTime(locale: Locale, iso: string | null | undefined, now = new Date()): string {
+    if (!iso) return "";
+    const date = new Date(iso);
+    const tag = LOCALES[locale];
+    const days = daysAgo(date, now);
+    if (days <= 0) return date.toLocaleTimeString(tag, { hour: "2-digit", minute: "2-digit" });
+    if (days === 1) return relativeDay(locale, 1);
+    if (days < 7) return capitalize(date.toLocaleDateString(tag, { weekday: "short" }));
+    if (date.getFullYear() === now.getFullYear()) return date.toLocaleDateString(tag, { day: "numeric", month: "short" });
+    return formatDay(locale, date);
+}
+
+/** Время под сообщением: только часы и минуты (день — в разделителе) */
+export const formatTime = (locale: Locale, iso: string | null | undefined): string => (iso ? new Date(iso).toLocaleTimeString(LOCALES[locale], { hour: "2-digit", minute: "2-digit" }) : "");
+
+/** Разделитель дней в переписке: «Сегодня», «Вчера», «5 ноября», в прошлые годы — «5 ноября 2025 г.» */
+export function formatDayLabel(locale: Locale, iso: string, now = new Date()): string {
+    const date = new Date(iso);
+    const days = daysAgo(date, now);
+    if (days === 0 || days === 1) return relativeDay(locale, days);
+    return date.toLocaleDateString(LOCALES[locale], date.getFullYear() === now.getFullYear() ? { day: "numeric", month: "long" } : { day: "numeric", month: "long", year: "numeric" });
+}
+
+/** "ГГГГ-ММ-ДД" → дата без часового пояса (иначе на западе страны дата съезжает на день) */
+const parseDay = (value: string | null | undefined): Date | null => {
+    const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(value ?? "");
+    return match ? new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3])) : null;
+};
+
+/** Даты заявки коротко: «1–20 дек. 2026 г.», «28 дек. 2026 г. – 5 янв. 2027 г.»; без дат — "" */
+export function formatDateRange(locale: Locale, start: string | null | undefined, end: string | null | undefined): string {
+    const from = parseDay(start);
+    const to = parseDay(end);
+    if (!from) return "";
+    const format = new Intl.DateTimeFormat(LOCALES[locale], { day: "numeric", month: "short", year: "numeric" });
+    return to && to.getTime() !== from.getTime() ? format.formatRange(from, to) : format.format(from);
+}
+
+/** Вкладки над списком чатов (как в Worldpackers и почте) */
+export type ChatTab = "all" | "unread" | "awaiting" | "accepted";
+export const CHAT_TABS: ChatTab[] = ["all", "unread", "awaiting", "accepted"];
+
+/** Последнее сообщение в чате от собеседника — ждёт ответа вошедшего */
+export const awaitsReply = (chat: Chat, myId: string | undefined): boolean => !!chat.lastMessage && !!myId && chat.lastMessage.author?.id !== myId;
+
+export function chatInTab(chat: Chat, tab: ChatTab, myId: string | undefined): boolean {
+    switch (tab) {
+        case "unread": return (chat.countUnreadMessages ?? 0) > 0;
+        case "awaiting": return awaitsReply(chat, myId);
+        case "accepted": return chat.application?.status === "accepted";
+        default: return true;
+    }
+}
+
+/** Статус заявки для плашки: у новой заявки организатор видит «Новая заявка», волонтёр — «Заявка отправлена» */
+export type StatusChip = "incoming" | "sent" | "accepted" | "canceled";
+
+export function statusChip(status: string | null | undefined, viewerIsVolunteer: boolean): StatusChip | null {
+    if (status === "accepted" || status === "canceled") return status;
+    if (status === "new") return viewerIsVolunteer ? "sent" : "incoming";
+    return null;
+}
+
+/** Своё сообщение прочитано собеседником — две галочки */
+export const readByOthers = (message: { author?: unknown; readByUserIds?: string[] | null }, myId: string | undefined): boolean =>
+    !!myId && (message.readByUserIds ?? []).some((id) => id !== myId);
+
+/** Подряд идущие сообщения одного автора в пределах 5 минут рисуются одной группой — без лишних отступов и хвостиков */
+export const sameGroup = (a: { author?: string | null; createdAt?: string | null } | undefined, b: { author?: string | null; createdAt?: string | null } | undefined): boolean =>
+    !!a && !!b && a.author === b.author && Math.abs(new Date(a.createdAt ?? 0).getTime() - new Date(b.createdAt ?? 0).getTime()) < 5 * 60_000;
 
 const URL_REGEX = /(https?:\/\/[^\s<>"']+)/g;
 

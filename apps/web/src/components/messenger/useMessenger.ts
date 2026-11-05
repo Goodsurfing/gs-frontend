@@ -53,27 +53,52 @@ export function useLiveMessages(profileId: string | undefined, onMessage: (messa
     }, [profileId]);
 }
 
-/** Список чатов вошедшего с поиском и фильтром по статусу заявки */
+const LIST_PAGE = 100;
+/** Предохранитель: больше 2000 переписок у одного человека не бывает */
+const LIST_MAX_PAGES = 20;
+
+/**
+ * Список чатов вошедшего с поиском. API отдаёт по страницам — грузим все
+ * (раньше бралась только первая страница из 30, и у организаторов старые
+ * переписки пропадали). Вкладки «Непрочитанные», «Ждут ответа» и т. п.
+ * фильтруются в браузере по загруженному списку.
+ */
 export function useChatList(token: string | undefined, enabled: boolean) {
     const [chats, setChats] = useState<Chat[]>([]);
     const [loaded, setLoaded] = useState(false);
+    const [failed, setFailed] = useState(false);
     const [search, setSearch] = useState("");
-    const [status, setStatus] = useState<ApplicationStatus | null>(null);
+    // Поиск — на сервере, после паузы в наборе: не перезапрашивать все страницы на каждую букву
+    const [query, setQuery] = useState("");
+    useEffect(() => {
+        const timer = window.setTimeout(() => setQuery(search.trim()), 300);
+        return () => window.clearTimeout(timer);
+    }, [search]);
 
     const reload = useCallback(async () => {
         if (!enabled) return;
-        const query: Record<string, string> = {};
-        if (search) query.search = search;
-        if (status) query.status = status;
-        const result = await browserApi(token)
-            .GET("/api/v1/personal/chats", { params: { query: query as never } })
-            .catch(() => null);
-        if (Array.isArray(result?.data)) setChats(sortChats(result.data));
+        const all: Chat[] = [];
+        let ok = true;
+        for (let page = 1; page <= LIST_MAX_PAGES; page += 1) {
+            const params: Record<string, string | number> = { page, itemsPerPage: LIST_PAGE };
+            if (query) params.search = query;
+            const result = await browserApi(token)
+                .GET("/api/v1/personal/chats", { params: { query: params as never } })
+                .catch(() => null);
+            if (!Array.isArray(result?.data)) {
+                ok = page > 1;
+                break;
+            }
+            all.push(...result.data);
+            if (result.data.length < LIST_PAGE) break;
+        }
+        if (ok) setChats(sortChats(all));
+        setFailed(!ok);
         setLoaded(true);
-    }, [enabled, search, status, token]);
+    }, [enabled, query, token]);
 
     useEffect(() => {
-        // Загрузка данных при смене поиска и фильтра
+        // Загрузка данных при смене поиска
         // eslint-disable-next-line react-hooks/set-state-in-effect
         void reload();
     }, [reload]);
@@ -87,7 +112,12 @@ export function useChatList(token: string | undefined, enabled: boolean) {
         setChats((current) => current.map((chat) => (chat.id === chatId && chat.countUnreadMessages ? { ...chat, countUnreadMessages: 0 } : chat)));
     }, []);
 
-    return { chats, loaded, search, setSearch, status, setStatus, reload, applyMessage, markRead };
+    /** Организатор принял или отклонил заявку — плашка в списке меняется сразу */
+    const setApplicationStatus = useCallback((chatId: number, status: ApplicationStatus) => {
+        setChats((current) => current.map((chat) => (chat.id === chatId && chat.application ? { ...chat, applicationStatus: status, application: { ...chat.application, status } } : chat)));
+    }, []);
+
+    return { chats, loaded, failed, search, setSearch, reload, applyMessage, markRead, setApplicationStatus };
 }
 
 const PAGE_SIZE = 50;

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { DateField } from "@/components/offer-wizard/DateField";
 import { type OfferListCardLabels, OfferListCard } from "@/components/offers-map/OfferListCard";
 import type { Locale } from "@/i18n/config";
-import { formatDay, setArrival, setDeparture, type Terms } from "@/lib/messenger";
+import { formatDateRange, formatDay, setArrival, setDeparture, type Terms } from "@/lib/messenger";
 import type { CatalogOffer } from "@/lib/offersCatalog";
 import { today } from "@/lib/offerWizard";
 
@@ -93,6 +93,29 @@ export function ApplicationBlock({ locale, offer, offerHref, terms, onTerms, sen
                     <button type="button" onClick={() => decide("canceled")} className="cursor-pointer rounded-[10px] border border-caption bg-transparent px-[30px] py-2 text-[14px] text-caption transition-all duration-300 hover:bg-caption hover:text-white">{labels.decline}</button>
                 </div>
             )}
+        </div>
+    );
+}
+
+/**
+ * Отправленная заявка в переписке — событие посередине ленты (как в
+ * Worldpackers): кто подал, на какую вакансию и на какие даты. Решение
+ * организатора — в полосе под шапкой, не здесь.
+ */
+export function ApplicationEvent({ locale, title, offerHref, terms, username, labels }: {
+    locale: Locale;
+    title: string;
+    offerHref: string;
+    terms: Terms;
+    username: string;
+    labels: Pick<ApplicationLabels, "applied" | "card">;
+}) {
+    const dates = formatDateRange(locale, terms.start, terms.end);
+    return (
+        <div className="mx-auto my-3 flex w-full max-w-[420px] flex-col items-center gap-0.5 rounded-[14px] border border-accent-bg bg-white px-4 py-3 text-center">
+            <span className="text-[12px] text-caption">{username} {labels.applied}</span>
+            <a href={offerHref} className="max-w-full truncate text-[15px] font-semibold text-ink no-underline hover:text-primary">{title || labels.card.noTitle}</a>
+            {dates && <span className="text-[13px] text-ink-tertiary">{dates}</span>}
         </div>
     );
 }

@@ -30,5 +30,20 @@
     "Загрузка...": "Cargando...",
     "Участвовал в проектах:": "Participó en proyectos:",
     "Укажите даты, чтобы отправить заявку": "Indica las fechas para enviar la solicitud",
-    "Произошла ошибка при отправке сообщения": "Se produjo un error al enviar el mensaje"
+    "Произошла ошибка при отправке сообщения": "Se produjo un error al enviar el mensaje",
+    "Новая заявка — примите или отклоните её, волонтёр ждёт ответа": "Nueva solicitud: acéptala o recházala, el voluntario espera respuesta",
+    "Все": "Todos",
+    "Непрочитанные": "No leídos",
+    "Ждут ответа": "Esperan respuesta",
+    "Принятые": "Aceptados",
+    "Новая заявка": "Nueva solicitud",
+    "Заявка отправлена": "Solicitud enviada",
+    "Принята": "Aceptada",
+    "Отклонена": "Rechazada",
+    "Вы:": "Tú:",
+    "Прочитано": "Leído",
+    "Переписок пока нет": "Aún no hay conversaciones",
+    "Здесь пока пусто": "Aquí aún no hay nada",
+    "Не удалось загрузить переписки": "No se pudieron cargar las conversaciones",
+    "Повторить": "Reintentar"
 }
