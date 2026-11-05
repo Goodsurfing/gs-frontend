@@ -16,7 +16,9 @@ const PERSONAL: Record<string, (l: Locale, id: string) => string> = {
  *   адреса старого SPA до переезда на вложенные пути;
  * - /offers/index, /offers/host — списки вакансий со старого сайта (Yii2) → карта вакансий;
  * - /en|es/offers/host/:legacyId — старая вакансия с префиксом языка → /offers/host/:legacyId,
- *   его бэкенд переводит в актуальный id (старый сайт языков в адресе не различал).
+ *   его бэкенд переводит в актуальный id (старый сайт языков в адресе не различал);
+ * - /about, /about-nko, /offers, /offers/ — страницы старого сайта (раньше их переводил
+ *   бэкенд через nginx старого SPA, а /offers показывал само старое SPA) — 05.11.2026.
  */
 export function legacyRedirect(pathname: string): string | null {
     const personal = /^\/(?:(en|es)\/)?(offer|host|volunteer|donation)-personal\/([^/]+)\/?$/.exec(pathname);
@@ -29,5 +31,22 @@ export function legacyRedirect(pathname: string): string | null {
     if (list) return routes.offersMap((list[1] as Locale | undefined) ?? DEFAULT_LOCALE);
     const legacyOffer = /^\/(?:en|es)\/offers\/host\/(\d+)\/?$/.exec(pathname);
     if (legacyOffer) return `/offers/host/${legacyOffer[1]}`;
-    return null;
+    const page = STATIC[pathname.replace(/(.)\/$/, "$1")];
+    return page ? page(DEFAULT_LOCALE) : null;
+}
+
+const STATIC: Record<string, (l: Locale) => string> = {
+    "/about": routes.aboutProject,
+    "/about-nko": routes.npo,
+    "/offers": routes.offersMap,
+};
+
+/**
+ * Старые адреса, которые переводит в новые только бэкенд — по базе: вакансия по
+ * старому id (/offers/host/:legacyId) и статья по старому id (/blog/article/:id).
+ * Новый фронт проксирует их на API как есть (одним переходом, 301 отдаёт бэкенд);
+ * раньше это делал nginx старого SPA.
+ */
+export function legacyBackendPath(pathname: string): string | null {
+    return /^\/(offers\/host|blog\/article)\/\d+$/.test(pathname) ? pathname : null;
 }
