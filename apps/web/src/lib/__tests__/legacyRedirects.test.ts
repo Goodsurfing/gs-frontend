@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { legacyRedirect } from "../legacyRedirects";
+import { legacyBackendPath, legacyRedirect } from "../legacyRedirects";
 
 describe("старые адреса — 301 с сервера", () => {
     it("адреса *-personal старого SPA", () => {
@@ -20,6 +20,21 @@ describe("старые адреса — 301 с сервера", () => {
     it("старая вакансия с языком — на адрес, который разбирает бэкенд", () => {
         expect(legacyRedirect("/en/offers/host/857")).toBe("/offers/host/857");
         expect(legacyRedirect("/es/offers/host/1644")).toBe("/offers/host/1644");
+    });
+
+    it("страницы старого сайта, которые раньше переводил nginx старого SPA", () => {
+        expect(legacyRedirect("/about")).toBe("/about-project");
+        expect(legacyRedirect("/about-nko")).toBe("/npo");
+        expect(legacyRedirect("/offers")).toBe("/offers-map");
+        expect(legacyRedirect("/offers/")).toBe("/offers-map");
+    });
+
+    it("вакансия и статья по старому id — на бэкенд как есть", () => {
+        expect(legacyBackendPath("/offers/host/857")).toBe("/offers/host/857");
+        expect(legacyBackendPath("/blog/article/100")).toBe("/blog/article/100");
+        expect(legacyBackendPath("/offers/857")).toBeNull();
+        expect(legacyBackendPath("/blog/some-slug")).toBeNull();
+        expect(legacyBackendPath("/offers/host/857/extra")).toBeNull();
     });
 
     it("остальное не трогает", () => {

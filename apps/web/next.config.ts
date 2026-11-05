@@ -16,6 +16,18 @@ const config: NextConfig = {
         // (app/global-not-found.tsx): не вкладывается в страницы и не делает их динамическими
         globalNotFound: true,
     },
+    // Карта сайта собирается бэкендом из базы (GS-213); раньше её проксировал nginx старого SPA
+    async rewrites() {
+        const api = (process.env.NEXT_PUBLIC_API_URL || "https://api-staging.goodsurfing.org").replace(/\/$/, "");
+        return {
+            beforeFiles: [
+                { source: "/sitemap.xml", destination: `${api}/sitemap.xml` },
+                { source: "/sitemap-:name([a-z]+).xml", destination: `${api}/sitemap-:name.xml` },
+            ],
+            afterFiles: [],
+            fallback: [],
+        };
+    },
     images: {
         remotePatterns: [
             { protocol: "https", hostname: "storage.yandexcloud.net" },

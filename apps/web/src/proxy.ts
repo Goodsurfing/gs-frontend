@@ -2,13 +2,14 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { DEFAULT_LOCALE, localeFromPath, stripLocale } from "@/i18n/config";
 import { LOCALE_HEADER } from "@/i18n/request";
-import { legacyRedirect } from "@/lib/legacyRedirects";
+import { legacyBackendPath, legacyRedirect } from "@/lib/legacyRedirects";
 
 /**
  * Адреса без префикса для русского (src/i18n/config.ts):
  * - /ru, /ru/… — 301 на адрес без префикса (ссылки из писем, закладки, поиск);
  * - /en/…, /es/… — как есть;
- * - старые адреса (lib/legacyRedirects.ts) — 301 на новые;
+ * - старые адреса (lib/legacyRedirects.ts) — 301 на новые; те, что переводит только
+ *   бэкенд по базе (/offers/host/:id, /blog/article/:id), — проксируются на API;
  * - остальное — русский: внутри переписывается на маршрут [locale]=ru, так что
  *   страницы остаются статическими (ISR).
  * Язык передаётся в заголовке для app/global-not-found.tsx — параметров
@@ -30,6 +31,13 @@ export function proxy(request: NextRequest) {
         target.pathname = stripLocale(pathname);
         target.search = search;
         return NextResponse.redirect(target, 301);
+    }
+
+    const backendPath = legacyBackendPath(pathname);
+    if (backendPath) {
+        // Адрес на стороне сервера (внутри Docker), иначе публичный API
+        const api = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL || "https://api-staging.goodsurfing.org";
+        return NextResponse.rewrite(new URL(`${backendPath}${search}`, api));
     }
 
     const legacy = legacyRedirect(pathname);
