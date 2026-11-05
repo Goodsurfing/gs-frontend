@@ -123,6 +123,14 @@ export default async function VolunteerPage({ params }: Props) {
         image: mediaUrl(withImage(item).image, "small"),
     }));
 
+    const place = [profile.country, profile.city].filter(Boolean).join(", ");
+    const skills = volunteer?.skills ?? [];
+    const additionalSkills = volunteer?.additionalSkills ?? [];
+    const participated = volunteer?.participatedVacancyIds ?? [];
+    // Профиль совсем пустой — одна строка вместо пустой страницы (отзывы, если есть, всё равно ниже)
+    const blank = !profile.aboutMe && !volunteer?.externalInfo && !(organization?.kind === "ok" && profile.hostId) && skills.length === 0 && additionalSkills.length === 0
+        && languages.length === 0 && participated.length === 0 && gallery.length === 0 && videos.length === 0 && certificates.length === 0;
+
     return (
         <PublicShell locale={locale} headerVariant="static">
             <div className="mx-auto flex min-h-[80vh] w-full max-w-[1920px] flex-col px-[50px] pt-[92px] down-lg:px-5">
@@ -152,14 +160,18 @@ export default async function VolunteerPage({ params }: Props) {
                                 {profile.isInternationalMember && <InternationalBadge label={t("membershipBadge.Международный клуб")} />}
                             </h1>
                             <div className="flex flex-col gap-2 text-[14px] font-medium text-caption">
-                                <span>
-                                    {p("Город")}:{" "}
-                                    <span className="text-ink-secondary"><span>{[profile.country, profile.city].filter(Boolean).join(", ") || "—"}</span></span>
-                                </span>
-                                <span>
-                                    {p("Языки")}:{" "}
-                                    <span className="text-ink-secondary"><span>{languages.length > 0 ? languageNames(languages, tOffer) : "—"}</span></span>
-                                </span>
+                                {place && (
+                                    <span>
+                                        {p("Город")}:{" "}
+                                        <span className="text-ink-secondary"><span>{place}</span></span>
+                                    </span>
+                                )}
+                                {languages.length > 0 && (
+                                    <span>
+                                        {p("Языки")}:{" "}
+                                        <span className="text-ink-secondary"><span>{languageNames(languages, tOffer)}</span></span>
+                                    </span>
+                                )}
                                 <div className="mt-5 grid max-w-[250px] grid-cols-2 gap-2 down-sm:grid-cols-1">
                                     {socials.map((social) => (
                                         <a key={social.icon} href={social.href} target="_blank" rel="noreferrer" className="flex items-center gap-1">
@@ -188,25 +200,30 @@ export default async function VolunteerPage({ params }: Props) {
                 </div>
 
                 <SectionSubmenu
+                    // Пустые разделы не показываются — и в меню их нет (решение владельца 05.11.2026);
+                    // отзывы грузятся в браузере, их пункт меню прячет само меню, если раздела нет на странице
                     items={[
-                        { id: "1", text: p("О себе") },
-                        { id: "skills", text: p("Умения") },
-                        { id: "2", text: p("Вакансии") },
-                        { id: "4", text: p("Фото") },
-                        { id: "5", text: p("Видео") },
-                        { id: "6", text: p("Сертификаты") },
+                        profile.aboutMe ? { id: "1", text: p("О себе") } : null,
+                        skills.length > 0 || additionalSkills.length > 0 ? { id: "skills", text: p("Умения") } : null,
+                        participated.length > 0 ? { id: "2", text: p("Вакансии") } : null,
+                        gallery.length > 0 ? { id: "4", text: p("Фото") } : null,
+                        videos.length > 0 ? { id: "5", text: p("Видео") } : null,
+                        certificates.length > 0 ? { id: "6", text: p("Сертификаты") } : null,
                         { id: "3", text: p("Отзывы") },
-                    ]}
+                    ].filter((item) => item !== null)}
                 >
                     {actions("max-h-9 max-w-[150px]")}
                 </SectionSubmenu>
 
                 <div className="flex w-full max-w-[1200px] flex-col items-center self-center pt-10 pb-[100px]">
                     <div className="w-full">
-                        <div id="1">
-                            <SectionTitle>{p("О себе")}</SectionTitle>
-                            <p className="mt-5 whitespace-pre-line break-words">{profile.aboutMe || p("Пользователь не указал информацию о себе")}</p>
-                        </div>
+                        {blank && <p className="text-caption">{p("Пользователь не указал информацию о себе")}</p>}
+                        {profile.aboutMe && (
+                            <div id="1">
+                                <SectionTitle>{p("О себе")}</SectionTitle>
+                                <p className="mt-5 whitespace-pre-line break-words">{profile.aboutMe}</p>
+                            </div>
+                        )}
                         {volunteer?.externalInfo && (
                             <div className="mt-10">
                                 <SectionTitle>{p("Дополнительная информация")}</SectionTitle>
@@ -223,53 +240,55 @@ export default async function VolunteerPage({ params }: Props) {
                                 labels={{ title: tOffer("personalOffer.Организация"), more: tOffer("personalOffer.Подробнее") }}
                             />
                         )}
-                        <div id="skills" className="mt-10 flex flex-col gap-10">
-                            <div className="flex w-full flex-col gap-5">
-                                <SectionTitle>{p("Умения")}</SectionTitle>
-                                <IconGrid>
-                                    {(volunteer?.skills ?? []).length === 0 ? <span>{p("Пользователь не указал умения")}</span> : (volunteer?.skills ?? []).map((skill, index) => (
-                                        <IconText key={skill.id} icon={<RemoteSvg svg={svgs[index] ?? null} className="h-5 w-5" />} text={skillName(skill.name, t)} />
-                                    ))}
-                                </IconGrid>
-                            </div>
-                            <div className="flex w-full flex-col gap-5">
-                                <SectionTitle>{p("Дополнительные умения")}</SectionTitle>
-                                {(volunteer?.additionalSkills ?? []).length === 0 ? <span>{p("Пользователь не указал дополнительные умения")}</span> : (
-                                    <IconGrid>
-                                        {(volunteer?.additionalSkills ?? []).map((skill, index) => (
-                                             
-                                            <IconText key={index} icon={<MaskIcon name="success" className="h-5 w-5" />} text={skill} />
-                                        ))}
-                                    </IconGrid>
+                        {(skills.length > 0 || additionalSkills.length > 0) && (
+                            <div id="skills" className="mt-10 flex flex-col gap-10">
+                                {skills.length > 0 && (
+                                    <div className="flex w-full flex-col gap-5">
+                                        <SectionTitle>{p("Умения")}</SectionTitle>
+                                        <IconGrid>
+                                            {skills.map((skill, index) => (
+                                                <IconText key={skill.id} icon={<RemoteSvg svg={svgs[index] ?? null} className="h-5 w-5" />} text={skillName(skill.name, t)} />
+                                            ))}
+                                        </IconGrid>
+                                    </div>
+                                )}
+                                {additionalSkills.length > 0 && (
+                                    <div className="flex w-full flex-col gap-5">
+                                        <SectionTitle>{p("Дополнительные умения")}</SectionTitle>
+                                        <IconGrid>
+                                            {additionalSkills.map((skill, index) => (
+                                                 
+                                                <IconText key={index} icon={<MaskIcon name="success" className="h-5 w-5" />} text={skill} />
+                                            ))}
+                                        </IconGrid>
+                                    </div>
                                 )}
                             </div>
-                        </div>
-                        {volunteer && (
+                        )}
+                        {languages.length > 0 && (
                             <div className="mt-10">
                                 <SectionTitle>{p("Языки")}</SectionTitle>
                                 <div className="mt-5">
-                                    {languages.length > 0 ? (
-                                        <div className="text-[16px] font-medium">
-                                            {(() => {
-                                                const value = languagesText(languages as { language: string; languageLevel: string }[], tOffer);
-                                                return Array.isArray(value) ? value.map((item, index) => (
-                                                     
-                                                    <span key={index}>
-                                                        <span className="text-black">{item.language}</span>/<span className="text-caption">{item.level}</span>
-                                                        {index < value.length - 1 && ", "}
-                                                    </span>
-                                                )) : value;
-                                            })()}
-                                        </div>
-                                    ) : p("Языки не были указаны")}
+                                    <div className="text-[16px] font-medium">
+                                        {(() => {
+                                            const value = languagesText(languages as { language: string; languageLevel: string }[], tOffer);
+                                            return Array.isArray(value) ? value.map((item, index) => (
+                                                 
+                                                <span key={index}>
+                                                    <span className="text-black">{item.language}</span>/<span className="text-caption">{item.level}</span>
+                                                    {index < value.length - 1 && ", "}
+                                                </span>
+                                            )) : value;
+                                        })()}
+                                    </div>
                                 </div>
                             </div>
                         )}
-                        {volunteer && (
+                        {volunteer && participated.length > 0 && (
                             <div id="2" className="mt-10 w-full">
                                 <SectionTitle>{p("Вакансии")}</SectionTitle>
                                 <VolunteerOffers
-                                    ids={volunteer.participatedVacancyIds ?? []}
+                                    ids={participated}
                                     initial={offers}
                                     offerHref={routes.offer(locale, "{id}")}
                                     categories={categoryLabels(t)}
@@ -291,7 +310,6 @@ export default async function VolunteerPage({ params }: Props) {
                             volunteerId={id}
                             labels={{
                                 title: p("Отзывы"),
-                                empty: p("Пока ещё никто не оставлял отзывов о гудсёрфере"),
                                 error: p("Произошла ошибка загрузки отзывов"),
                                 showNext: tOffer("personalOffer.Посмотреть следующие"),
                                 gallery: { close: t("Закрыть"), photo: t("gallery.photo"), ...sliderLabels },

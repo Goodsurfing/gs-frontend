@@ -107,6 +107,7 @@ export default async function FundraisePage({ params }: Props) {
     };
     const actionLabels = { support: d("Поддержать"), becomeVolunteer: d("Чтобы участвовать, станьте гудсёрфером"), edit: d("Редактировать") };
     const hasProgress = fundraise.collectedAmount > 0 || (fundraise.amount ?? 0) > 0;
+    const hasMap = fundraise.latitude !== null && fundraise.longitude !== null;
 
     return (
         <PublicShell locale={locale} headerVariant="static">
@@ -135,22 +136,25 @@ export default async function FundraisePage({ params }: Props) {
                     labels={{ status: ["active", "close", "draft"].includes(fundraise.status) ? d(fundraise.status) : "", reviewsCount: "", noReviews: "" }}
                 />
                 <SectionSubmenu
+                    // Пустые разделы не показываются — и в меню их нет (решение владельца 05.11.2026)
                     items={[
                         { id: "description", text: d("Описание") },
-                        { id: "address", text: d("Местоположение") },
+                        hasMap ? { id: "address", text: d("Местоположение") } : null,
                         { id: "organization", text: d("Организация") },
-                        { id: "gallery", text: d("Фотографии") },
+                        gallery.length > 0 ? { id: "gallery", text: d("Фотографии") } : null,
                         { id: "participants", text: d("Участники") },
-                    ]}
+                    ].filter((item) => item !== null)}
                 >
                     <FundraiseActions fundraiseId={id} variant="menu" hrefs={hrefs} labels={actionLabels} />
                 </SectionSubmenu>
                 <div className="w-full max-w-[980px] pt-10">
                     <div id="description">
                         <InfoCard className="flex-nowrap">
-                            <InfoCardItem title={d("Дата старта")} className="w-full">
-                                {fundraise.startDate || d("Не имеет даты старта")}
-                            </InfoCardItem>
+                            {fundraise.startDate && (
+                                <InfoCardItem title={d("Дата старта")} className="w-full">
+                                    {fundraise.startDate}
+                                </InfoCardItem>
+                            )}
                             {fundraise.daysLeft !== null && !fundraise.isSuccess && (
                                 <InfoCardItem title={d("Дней осталось")} text={fundraise.daysLeft} className="w-full" />
                             )}
@@ -172,22 +176,19 @@ export default async function FundraisePage({ params }: Props) {
                             )}
                         </InfoCard>
                     </div>
-                    <div className="mt-10 flex w-full flex-col gap-10">
-                        <div className="flex flex-col gap-5">
-                            <SectionTitle>{d("Описание")}</SectionTitle>
-                            <p className="text-[14px] font-medium [overflow-wrap:break-word] whitespace-pre-line">{fundraise.description || d("Описание не было заполнено")}</p>
+                    {fundraise.description && (
+                        <div className="mt-10 flex w-full flex-col gap-10">
+                            <div className="flex flex-col gap-5">
+                                <SectionTitle>{d("Описание")}</SectionTitle>
+                                <p className="text-[14px] font-medium [overflow-wrap:break-word] whitespace-pre-line">{fundraise.description}</p>
+                            </div>
                         </div>
-                    </div>
-                    {fundraise.latitude !== null && fundraise.longitude !== null ? (
+                    )}
+                    {hasMap && (
                         <div id="address" className="mt-10 flex flex-col gap-5">
                             <SectionTitle>{d("Местоположение")}</SectionTitle>
                             <span>{fundraise.address}</span>
                             <OfferAddressMap latitude={Number(fundraise.latitude)} longitude={Number(fundraise.longitude)} locale={locale} />
-                        </div>
-                    ) : (
-                        <div className="mt-10 flex flex-col gap-5">
-                            <SectionTitle>{d("Местоположение")}</SectionTitle>
-                            <span>{d("Местоположение не было указано")}</span>
                         </div>
                     )}
                     <OfferOrganization
@@ -198,12 +199,13 @@ export default async function FundraisePage({ params }: Props) {
                         href={routes.organization(locale, fundraise.organization.id)}
                         labels={{ title: d("Организация"), more: d("Подробнее") }}
                     />
-                    <div id="gallery" className="mt-10 flex flex-col gap-5">
-                        <SectionTitle>{d("Фотографии")}</SectionTitle>
-                        {gallery.length > 0
-                            ? <GalleryCarousel images={gallery} className="mt-[30px]" labels={{ open: t("gallery.open"), ...galleryLabels }} />
-                            : <p className="text-[14px] font-medium">{d("Фотографии не были добавлены")}</p>}
-                    </div>
+                    {gallery.length > 0 && (
+                        <div id="gallery" className="mt-10 flex flex-col gap-5">
+                            <SectionTitle>{d("Фотографии")}</SectionTitle>
+                            <GalleryCarousel images={gallery} className="mt-[30px]" labels={{ open: t("gallery.open"), ...galleryLabels }} />
+                        </div>
+                    )}
+                    {/* Участники — всегда: «Пока нет пожертвований» зовёт стать первым */}
                     <div id="participants" className="mt-10">
                         <h3 className="mb-4 text-[20px] font-bold text-[#212b36]">{d("Участники сбора")}</h3>
                         {!donors || donors.count === 0 ? (
