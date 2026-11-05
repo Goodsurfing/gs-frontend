@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { type ParticipateLabels, participateText } from "@/lib/offerText";
 
 import { useOfferViewer } from "./OfferViewer";
@@ -29,8 +31,11 @@ const button = "flex items-center justify-center rounded-[10px] border border-pr
 export function OfferActions({ offerId, status, variant, hrefs, labels }: {
     offerId: number;
     status: string;
-    /** hero — в карточке (светлый текст подсказки), menu — в меню разделов */
-    variant: "hero" | "menu";
+    /**
+     * hero — в карточке (светлый текст подсказки), menu — в меню разделов,
+     * sticky — кнопка внизу экрана на телефоне после прокрутки обложки
+     */
+    variant: "hero" | "menu" | "sticky";
     hrefs: OfferActionsHrefs;
     labels: OfferActionsLabels;
 }) {
@@ -41,6 +46,13 @@ export function OfferActions({ offerId, status, variant, hrefs, labels }: {
     if (viewer.needVolunteerRole) href = `${hrefs.profileRole}?next=${offerId}`;
     else if (viewer.signedIn) href = `${hrefs.messenger}/create/${offerId}`;
     const text = participateText({ closed, needVolunteerRole: viewer.needVolunteerRole, textParticipate: viewer.textParticipate }, labels);
+
+    if (variant === "sticky") {
+        // На телефоне кнопка «Участвовать» была только в обложке: кто дочитывал описание,
+        // её уже не видел — с телефона нажимали ~24 % открывших вакансию (05.11.2026)
+        if (disabled || viewer.canEdit) return null;
+        return <StickyBar href={viewer.requiresMembership ? hrefs.membership : href} text={viewer.requiresMembership ? labels.upsell.button : text} />;
+    }
 
     return (
         <>
@@ -68,5 +80,24 @@ export function OfferActions({ offerId, status, variant, hrefs, labels }: {
                 </a>
             )}
         </>
+    );
+}
+
+/** Полоса с кнопкой внизу экрана на телефоне (до 768 px): появляется, когда обложка вакансии уехала вверх */
+function StickyBar({ href, text }: { href: string; text: string }) {
+    const [shown, setShown] = useState(false);
+    useEffect(() => {
+        const update = () => setShown(window.scrollY > window.innerHeight * 0.9);
+        update();
+        window.addEventListener("scroll", update, { passive: true });
+        return () => window.removeEventListener("scroll", update);
+    }, []);
+    return (
+        <div
+            aria-hidden={!shown}
+            className={`fixed inset-x-0 bottom-0 z-40 hidden border-t border-accent-bg bg-white/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-4px_16px_rgba(0,0,0,0.08)] transition-transform duration-300 down-md:block ${shown ? "translate-y-0" : "translate-y-full"}`}
+        >
+            <a href={href} tabIndex={shown ? 0 : -1} className={`${button} w-full bg-primary py-3 text-white`}>{text}</a>
+        </div>
     );
 }
