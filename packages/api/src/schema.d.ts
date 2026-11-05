@@ -8430,6 +8430,13 @@ export interface components {
          */
         CreateCommand12: {
             /**
+             * @description За что выдаётся (на странице «Все достижения»)
+             * @default
+             */
+            description: string | null;
+            /** @default  */
+            descriptionEn: string | null;
+            /**
              * Format: binary
              * @description Изображение достижения
              */
@@ -29907,7 +29914,10 @@ export interface operations {
     };
     get_app_api_v1_profile_elementbyid: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Язык названий значков */
+                lang?: "ru" | "en" | "es";
+            };
             header?: never;
             path: {
                 /** @description Id пользователя */

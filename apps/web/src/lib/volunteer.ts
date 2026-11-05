@@ -22,7 +22,8 @@ export async function getVolunteer(locale: Locale, id: string): Promise<Voluntee
     if (!UUID.test(id)) return { kind: "notFound" };
     try {
         const { data, response } = await serverApi(locale).GET("/api/v1/profile/{id}", {
-            params: { path: { id } },
+            // Названия значков — на языке страницы
+            params: { path: { id }, query: { lang: locale } },
             signal: AbortSignal.timeout(8000),
         });
         if (isClientError(response.status)) return { kind: "notFound" };
