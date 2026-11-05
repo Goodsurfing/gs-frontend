@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { type KeyboardEvent, useEffect, useRef, useState } from "react";
+import { type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from "react";
 
 import { Spinner } from "@/components/ui/Spinner";
 import { MAX_UPLOAD_SIZE, uploadMedia } from "@/lib/uploadMedia";
@@ -33,12 +33,16 @@ const mask = (name: string) => ({ maskImage: `url(/web/icons/messenger/${name}.s
  * 5 МБ, многострочный текст (Enter — отправить, Shift+Enter — новая строка),
  * смайлы, стрелка отправки. Пустое сообщение без вложения не уходит.
  */
-export function ChatInput({ token, disabled, labels, onSend, onError }: {
+export function ChatInput({ token, disabled, labels, onSend, onError, prefill, extra }: {
     token: string | undefined;
     disabled: boolean;
     labels: ChatInputLabels;
     onSend: (message: OutgoingMessage) => void;
     onError: (text: string) => void;
+    /** Текст, который надо подставить в поле (черновик ответа); key — чтобы подставить и тот же текст повторно */
+    prefill?: { text: string; key: number } | null;
+    /** Над полем: кнопка «Предложить ответ» */
+    extra?: ReactNode;
 }) {
     const [text, setText] = useState("");
     const [attachment, setAttachment] = useState<{ name: string; iri: string } | null>(null);
@@ -57,6 +61,14 @@ export function ChatInput({ token, disabled, labels, onSend, onError }: {
         document.addEventListener("mousedown", close);
         return () => document.removeEventListener("mousedown", close);
     }, [emoji]);
+
+    // Черновик подставляется в поле и остаётся на правку — отправляет человек сам
+    useEffect(() => {
+        if (!prefill) return;
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setText(prefill.text);
+        textRef.current?.focus();
+    }, [prefill]);
 
     // Высота поля — по тексту, не больше 10 строк
     useEffect(() => {
@@ -102,7 +114,9 @@ export function ChatInput({ token, disabled, labels, onSend, onError }: {
     };
 
     return (
-        <div className="relative flex items-center gap-2 border-t border-accent-bg px-4 py-2">
+        <div className="border-t border-accent-bg">
+        {extra}
+        <div className="relative flex items-center gap-2 px-4 py-2">
             {attachment && (
                 <div className="absolute bottom-full left-0 flex w-full items-center gap-[15px] bg-white p-5 text-primary">
                     {attachment.name}
@@ -154,6 +168,7 @@ export function ChatInput({ token, disabled, labels, onSend, onError }: {
             <button type="button" aria-label={labels.send} disabled={!canSend} onClick={send} className={iconButton}>
                 <span aria-hidden className={`h-5 w-5 ${canSend ? "bg-primary" : "bg-caption"}`} style={mask("send-arrow")} />
             </button>
+        </div>
         </div>
     );
 }
