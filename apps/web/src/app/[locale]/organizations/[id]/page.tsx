@@ -108,15 +108,16 @@ export default async function OrganizationPage({ params }: Props) {
     return (
         <PublicShell locale={locale} headerVariant="static">
             <div className="mx-auto min-h-[80vh] w-full max-w-[1920px] px-[50px] pt-[92px] pb-[50px] down-lg:p-5">
-                <div className="box-border flex min-h-[230px] w-full flex-wrap gap-[60px] rounded-[10px] bg-field px-[60px] py-10 down-sm:p-5">
+                <div className="box-border flex min-h-[230px] w-full flex-wrap gap-[60px] rounded-[10px] bg-field px-[60px] py-10 down-sm:gap-6 down-sm:p-5">
                     <Avatar src={mediaUrl(organization.avatar, "medium")} name={organization.name} size={150} />
-                    <div className="w-full max-w-[510px]">
-                        <span className="text-[14px] font-medium text-ink-secondary">
+                    {/* Тип, название и адрес — с воздухом между строками, чтобы не слипались */}
+                    <div className="flex w-full max-w-[510px] flex-col items-start gap-2">
+                        <span className="text-[14px] leading-[140%] font-medium text-ink-secondary">
                             {h("Организация/")}
                             {organizationType(organization.type ?? "", tHost)}
                         </span>
                         <div className="flex items-center">
-                            <h1 className="text-[26px] font-normal text-ink-secondary">{organization.name}</h1>
+                            <h1 className="text-[26px] leading-[125%] font-normal text-ink-secondary">{organization.name}</h1>
                             {owner?.isMember && (
                                 <MembershipBadges
                                     badge={t("membershipBadge.Партнёр Гудсёрфинга")}
@@ -128,9 +129,9 @@ export default async function OrganizationPage({ params }: Props) {
                                 />
                             )}
                         </div>
-                        <span>{organization.address}</span>
-                        <BadgeChips badges={badges} href={routes.achievements(locale)} className="mt-3" />
-                        <div className="mt-5 grid max-w-[250px] grid-cols-2 gap-2 down-sm:grid-cols-1">
+                        <span className="leading-[140%]">{organization.address}</span>
+                        <BadgeChips badges={badges} href={routes.achievements(locale)} className="mt-1" />
+                        <div className="mt-3 grid w-full max-w-[250px] grid-cols-2 gap-2 down-sm:grid-cols-1">
                             {vk && (
                                 <a href={vk} target="_blank" rel="noreferrer" className="flex items-center gap-1">
                                     {/* Строчная иконка в блоке, как в старом фронте: строка 21 px */}
