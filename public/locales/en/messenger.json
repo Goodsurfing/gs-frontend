@@ -30,5 +30,20 @@
     "Загрузка...": "Loading...",
     "Участвовал в проектах:": "Participated in projects:",
     "Укажите даты, чтобы отправить заявку": "Specify the dates to send the application",
-    "Произошла ошибка при отправке сообщения": "An error occurred while sending the message"
+    "Произошла ошибка при отправке сообщения": "An error occurred while sending the message",
+    "Новая заявка — примите или отклоните её, волонтёр ждёт ответа": "New application — accept or decline it, the volunteer is waiting",
+    "Все": "All",
+    "Непрочитанные": "Unread",
+    "Ждут ответа": "Awaiting reply",
+    "Принятые": "Accepted",
+    "Новая заявка": "New application",
+    "Заявка отправлена": "Application sent",
+    "Принята": "Accepted",
+    "Отклонена": "Declined",
+    "Вы:": "You:",
+    "Прочитано": "Read",
+    "Переписок пока нет": "No conversations yet",
+    "Здесь пока пусто": "Nothing here yet",
+    "Не удалось загрузить переписки": "Couldn't load conversations",
+    "Повторить": "Try again"
 }
