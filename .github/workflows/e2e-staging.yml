@@ -8,7 +8,8 @@ name: E2E staging
 
 on:
   workflow_run:
-    workflows: ['Deploy to staging']
+    # Старое SPA и его «Deploy to staging» удалены 05.11.2026 (GS-222)
+    workflows: ['Deploy web (новый фронт) to staging']
     types: [completed]
   workflow_dispatch:
   schedule:
@@ -30,15 +31,15 @@ jobs:
       actions: read
     steps:
       - name: Wait for staging deploys to finish
-        # Запуск — по окончании «Deploy to staging» (старое SPA, ~1,5 мин), а выкатка
-        # нового фронта идёт ещё 3–4 мин и пересоздаёт его контейнер посреди тестов:
-        # 502 и «упавшие с первой попытки» (04.11.2026). Ждём, пока выкатки закончатся.
+        # Пока были два фронта, запуск шёл по окончании выкатки старого SPA, а новый
+        # ещё выкатывался — 502 посреди тестов (04.11.2026). Теперь выкатка одна, но
+        # запуск по расписанию или вручную может совпасть с ней — ждём.
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           for i in $(seq 1 60); do
             busy=$(gh run list -R "$GITHUB_REPOSITORY" -b develop -L 20 --json workflowName,status \
-              -q '[.[] | select((.workflowName == "Deploy web (новый фронт) to staging" or .workflowName == "Deploy to staging") and .status != "completed")] | length')
+              -q '[.[] | select(.workflowName == "Deploy web (новый фронт) to staging" and .status != "completed")] | length')
             [ "$busy" = "0" ] && exit 0
             echo "Идёт выкатка на стейдж ($busy), ждём…"; sleep 10
           done
