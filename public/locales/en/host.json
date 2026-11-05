@@ -226,5 +226,9 @@
     "slowReply": {
         "label": "Slow to reply",
         "hint": "More than half of applications wait a week or longer for the host's reply"
+    },
+    "verifiedHost": {
+        "hint": "Verified host: the host has a paid GoodSurfing membership.",
+        "howTo": "How to get verified?"
     }
 }

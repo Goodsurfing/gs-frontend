@@ -50,5 +50,6 @@
         "manage": "Mis suscripciones",
         "limit": "Máximo 5 suscripciones: elimina alguna en «Mis suscripciones».",
         "error": "No se pudo suscribir. Inténtalo de nuevo"
-    }
+    },
+    "Только верифицированные хосты": "Solo anfitriones verificados"
 }

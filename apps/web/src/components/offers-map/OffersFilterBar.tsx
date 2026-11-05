@@ -15,6 +15,7 @@ export interface FilterBarLabels {
     days: string;
     extra: string;
     withChildren: string;
+    verifiedHost: string;
     languages: string;
     provided: string;
     housing: string;
@@ -185,6 +186,15 @@ export function OffersFilterBar({ basePath, filters, categories, languages, labe
                         className="h-[18px] w-[18px] accent-primary"
                     />
                     {labels.withChildren}
+                </label>
+                <label className="flex cursor-pointer items-center gap-2.5">
+                    <input
+                        type="checkbox"
+                        checked={draft.verifiedHost}
+                        onChange={(event) => setDraft((current) => ({ ...current, verifiedHost: event.target.checked }))}
+                        className="h-[18px] w-[18px] accent-primary"
+                    />
+                    {labels.verifiedHost}
                 </label>
                 <fieldset>
                     <legend className="mb-2.5">{labels.languages}</legend>

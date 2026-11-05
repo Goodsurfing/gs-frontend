@@ -26,7 +26,7 @@ describe("фильтры каталога вакансий", () => {
 
     it("адрес и разбор — взаимно обратны, значения по умолчанию не пишутся", () => {
         expect(offersFiltersQuery(parseOffersFilters({}))).toBe("");
-        const query = "category=1%2C2&search=sea&sort=popularity&past=0&from=2026-11-01&to=2026-12-01&minDays=7&maxDays=30&lang=en&kids=1&provided=food%2Chousing&page=2";
+        const query = "category=1%2C2&search=sea&sort=popularity&past=0&from=2026-11-01&to=2026-12-01&minDays=7&maxDays=30&lang=en&kids=1&verified=1&provided=food%2Chousing&page=2";
         expect(offersFiltersQuery(parseOffersFilters(new URLSearchParams(query)))).toBe(query);
     });
 
@@ -40,5 +40,13 @@ describe("фильтры каталога вакансий", () => {
             "transferIds[]": [1, 2, 3, 4],
             maxDurationDays: "30",
         });
+    });
+
+    it("GS-245: «Только верифицированные хосты» — в адресе verified=1, в API verifiedHost", () => {
+        const filters = parseOffersFilters({ verified: "1" });
+        expect(filters.verifiedHost).toBe(true);
+        expect(offersApiQuery(filters)).toEqual({ verifiedHost: true });
+        expect(parseOffersFilters({}).verifiedHost).toBe(false);
+        expect(offersApiQuery(parseOffersFilters({}))).toEqual({});
     });
 });

@@ -22,6 +22,8 @@ export interface OffersFilters {
     maxDays?: number;
     languages: string[];
     withChildren: boolean;
+    /** «Только верифицированные хосты» (GS-245): у организатора оплачено членство */
+    verifiedHost: boolean;
     provided: Provided[];
     /** Выбранная вакансия (подсвечена в списке, открыта на карте) */
     offerId?: number;
@@ -64,6 +66,7 @@ export function parseOffersFilters(params: RawParams): OffersFilters {
         maxDays: maxDays && maxDays < DURATION_MAX ? maxDays : undefined,
         languages: list(get("lang")),
         withChildren: get("kids") === "1",
+        verifiedHost: get("verified") === "1",
         provided: list(get("provided")).filter((item): item is Provided => (PROVIDED as string[]).includes(item)),
         offerId: positiveInt(get("offerId")),
     };
@@ -82,6 +85,7 @@ export function offersFiltersQuery(filters: Partial<OffersFilters>): string {
     if (filters.maxDays) query.set("maxDays", String(filters.maxDays));
     if (filters.languages?.length) query.set("lang", filters.languages.join(","));
     if (filters.withChildren) query.set("kids", "1");
+    if (filters.verifiedHost) query.set("verified", "1");
     if (filters.provided?.length) query.set("provided", filters.provided.join(","));
     if (filters.page && filters.page > 1) query.set("page", String(filters.page));
     if (filters.offerId) query.set("offerId", String(filters.offerId));
@@ -107,6 +111,7 @@ export function offersApiQuery(filters: OffersFilters) {
         "houseIds[]"?: number[];
         "transferIds[]"?: number[];
         hidePassed?: boolean;
+        verifiedHost?: boolean;
     } = {};
     if (filters.categories.length) query["categoryIds[]"] = filters.categories;
     if (filters.search) query.search = filters.search;
@@ -120,5 +125,6 @@ export function offersApiQuery(filters: OffersFilters) {
     if (filters.provided.includes("housing")) query["houseIds[]"] = [1, 2, 3, 4, 5];
     if (filters.provided.includes("paidTravel")) query["transferIds[]"] = [1, 2, 3, 4];
     if (!filters.showPassed) query.hidePassed = true;
+    if (filters.verifiedHost) query.verifiedHost = true;
     return query;
 }

@@ -93,6 +93,7 @@ export default async function OffersMapPage({ params, searchParams }: Props) {
                         days: tMap("days"),
                         extra: tMap("Доп. фильтры"),
                         withChildren: tMap("Можно с детьми"),
+                        verifiedHost: tMap("Только верифицированные хосты"),
                         languages: tMap("Знание языков"),
                         provided: tMap("Предоставляется"),
                         housing: tMap("Проживание"),
