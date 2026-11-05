@@ -16,7 +16,7 @@ export interface OfferHeroLabels {
  * внизу — стопка фото и кнопки. Без обложки — светлый фон и тёмный текст.
  * Так же устроена карточка сбора (HeaderDonationCard) — со своими показателями.
  */
-export function OfferHero({ title, image, status, categories, address, reviews, rating, stats, gallery, actions, labels }: {
+export function OfferHero({ title, image, status, categories, address, reviews, rating, stats, highlights = [], gallery, actions, labels }: {
     title: string;
     image?: string;
     status: string;
@@ -26,6 +26,8 @@ export function OfferHero({ title, image, status, categories, address, reviews, 
     rating?: number;
     /** Вместо отзывов и рейтинга — свои показатели (у сбора: поддержавшие, собрано, дней осталось) */
     stats?: (tone: string) => ReactNode;
+    /** «Главное кратко»: жильё, питание, часы, срок (вакансия) */
+    highlights?: string[];
     gallery: ReactNode;
     actions: ReactNode;
     labels: OfferHeroLabels;
@@ -60,6 +62,13 @@ export function OfferHero({ title, image, status, categories, address, reviews, 
                                 ))}
                             </div>
                             <span className={`text-[14px] leading-[120%] font-medium ${tone}`}>{address}</span>
+                            {highlights.length > 0 && (
+                                <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+                                    {highlights.map((item) => (
+                                        <li key={item} className={`rounded-full px-3 py-1.5 text-[13px] leading-none font-medium ${image ? "bg-white/20 text-white backdrop-blur-[2px]" : "bg-white text-ink-secondary"}`}>{item}</li>
+                                    ))}
+                                </ul>
+                            )}
                             {stats ? stats(tone) : reviews ? (
                                 <>
                                     <p className={tone}>{labels.reviewsCount} {reviews}</p>

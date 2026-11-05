@@ -281,5 +281,10 @@
         "nextSteps": "Useful for the next steps:",
         "limit": "The helper has reached today's limit — try tomorrow",
         "failed": "Couldn't write the texts, please try again"
+    },
+    "highlights": {
+        "hours": "{hours} h {per}",
+        "dayOff": "days off a week: {n}",
+        "minDays": "from {n} days"
     }
 }

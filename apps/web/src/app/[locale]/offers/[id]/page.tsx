@@ -29,6 +29,7 @@ import { getOffer, getOfferBanner, getOfferParticipants, getOfferReviews, inline
 import { type Badge, getOrganizationBadges } from "@/lib/achievements";
 import { organizationType, PARTICIPATE_STATES, responseStatsText } from "@/lib/offerText";
 import { routes } from "@/lib/routes";
+import { offerHighlights } from "@/lib/offerHighlights";
 import { pageMetadata, siteUrl } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string; id: string }> };
@@ -204,6 +205,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
                 address={offer.where?.address}
                 reviews={offer.reviewsCount}
                 rating={Number(offer.averageRating) || 0}
+                highlights={offerHighlights({ condition, whatToDo: offer.whatToDo, when: offer.when }, tOffer)}
                 gallery={<OfferPhotoStack images={gallery} thumbs={galleryThumbs} labels={{ photos: p("Фотографии"), ...galleryLabels }} />}
                 actions={<OfferActions offerId={offer.id} status={offer.status} variant="hero" hrefs={hrefs} labels={labels} />}
                 labels={{ status: statusLabel, reviewsCount: tOffer("Кол-во отзывов:"), noReviews: tOffer("Пока нет отзывов") }}
