@@ -5,6 +5,9 @@ import { routes } from "@/lib/routes";
 
 import { EventFeedStrip } from "./EventFeedStrip";
 
+/** Заглушки вместо адреса у организаций, заведённых без него, — не показываем */
+const PLACEHOLDER_PLACES = new Set(["Не указано", "Без адреса", "—"]);
+
 const href = (locale: Locale, event: FeedEventView): string => {
     switch (event.targetKind) {
         case "volunteer": return routes.volunteerPublic(locale, event.targetId);
@@ -71,7 +74,7 @@ export function EventFeed({ locale, events, title, labels, prevLabel, nextLabel 
                                         <Avatar src={event.personAvatar ?? undefined} name={event.personName} size={44} />
                                         <div className="flex min-w-0 flex-col">
                                             <span className="line-clamp-2 text-[14px] leading-[130%] font-semibold text-ink">{event.personName}</span>
-                                            {event.personPlace && <span className="truncate text-[12px] text-caption">{event.personPlace}</span>}
+                                            {event.personPlace && !PLACEHOLDER_PLACES.has(event.personPlace) && <span className="truncate text-[12px] text-caption">{event.personPlace}</span>}
                                         </div>
                                     </div>
                                 ) : <div className="min-h-[44px] text-[12px] font-semibold tracking-wide text-caption uppercase">{eventAction(event, labels)}</div>}

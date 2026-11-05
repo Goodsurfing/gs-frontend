@@ -10,7 +10,7 @@ import { Switch, Toast } from "@/components/ui/Toast";
 import { browserApi } from "@/lib/browserApi";
 
 type Message = { text: string; ok: boolean } | null;
-type Profile = Record<string, unknown> & { volunteer?: unknown; hostId?: string | null; isActive?: boolean; marketingConsent?: boolean; favoriteCategories?: number[] };
+type Profile = Record<string, unknown> & { volunteer?: unknown; hostId?: string | null; isActive?: boolean; marketingConsent?: boolean; showInEventFeed?: boolean; favoriteCategories?: number[] };
 
 /**
  * «Куда бы вы хотели поехать» (ProfilePreferencesForm старого фронта):
@@ -233,12 +233,14 @@ export function PrivacySettings({ mainHref, labels }: {
         hide: string; hideText: string; newsletter: string; newsletterText: string; newsletterWording: string;
         delete: string; deleteText: string; deleteConfirm: string; yes: string; no: string;
         deleteError: string; hideError: string; blocked: string; newsletterError: string;
+        feed: string; feedText: string; feedError: string;
     };
 }) {
     const session = useSession();
     const profile = session.profile as Profile | null;
     const [hidden, setHidden] = useState<boolean | null>(null);
     const [consent, setConsent] = useState(false);
+    const [inFeed, setInFeed] = useState(true);
     const [asking, setAsking] = useState(false);
     const [busy, setBusy] = useState(false);
     const [message, setMessage] = useState<Message>(null);
@@ -250,6 +252,7 @@ export function PrivacySettings({ mainHref, labels }: {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setHidden(!profile.isActive);
         setConsent(!!profile.marketingConsent);
+        setInFeed(profile.showInEventFeed !== false);
     }, [profile, hidden]);
     useEffect(() => () => clearTimeout(timer.current), []);
     if (hidden === null) return <Loading className="min-h-[200px]" />;
@@ -272,6 +275,15 @@ export function PrivacySettings({ mainHref, labels }: {
         if (error) {
             setConsent(!value);
             setMessage({ text: labels.newsletterError, ok: false });
+        }
+    };
+    // Лента событий на главной (GS-241): имя, город и аватар в карточках «получен значок», «едет в проект»
+    const toggleFeed = async (value: boolean) => {
+        setInFeed(value);
+        const { error } = await api().PATCH("/api/v1/profile/event-feed", { body: { show: value } }).catch(() => ({ error: true }));
+        if (error) {
+            setInFeed(!value);
+            setMessage({ text: labels.feedError, ok: false });
         }
     };
     const remove = async () => {
@@ -298,6 +310,10 @@ export function PrivacySettings({ mainHref, labels }: {
             <div className={block}>
                 <div className="flex items-center gap-1"><Switch checked={consent} onChange={(value) => void toggleConsent(value)} labelledBy="privacy-newsletter" /><span id="privacy-newsletter" className="text-ink-secondary">{labels.newsletter}</span></div>
                 <p className="max-w-[415px] text-[12px]">{labels.newsletterText}</p>
+            </div>
+            <div className={block}>
+                <div className="flex items-center gap-1"><Switch checked={inFeed} onChange={(value) => void toggleFeed(value)} labelledBy="privacy-feed" /><span id="privacy-feed" className="text-ink-secondary">{labels.feed}</span></div>
+                <p className="max-w-[415px] text-[12px]">{labels.feedText}</p>
             </div>
             <div className={block}>
                 <button type="button" onClick={() => setAsking(true)} className="cursor-pointer rounded-[10px] border border-primary bg-primary px-[50px] py-2.5 text-[16px] leading-[120%] text-white transition-all hover:bg-white hover:text-primary">{labels.delete}</button>
