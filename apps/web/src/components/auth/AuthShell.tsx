@@ -7,6 +7,7 @@ import { getTranslator } from "@/i18n/dictionary";
 import { routes } from "@/lib/routes";
 
 import { RedirectIfSignedIn } from "./RedirectIfSignedIn";
+import { TestRibbon } from "@/components/layout/SocialRibbon";
 
 /**
  * Каркас страниц входа и регистрации (SignLayout старого фронта): узкая
@@ -24,6 +25,7 @@ export async function AuthShell({ locale, cancelHref, stayIfSignedIn = false, ch
     return (
         <SessionProvider>
             {!stayIfSignedIn && <RedirectIfSignedIn href={routes.main(locale)} prefix={localePrefix(locale)} />}
+            <TestRibbon />
             <header className="box-border flex w-full items-center border-b border-accent-bg bg-white px-[50px] py-5 down-xs:hidden">
                 <a href={routes.main(locale)} className="mr-[25px]">
                     {/* eslint-disable-next-line @next/next/no-img-element -- логотип */}
