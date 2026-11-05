@@ -15,6 +15,68 @@ interface Dashboard {
     payments30: Record<"MEMBERSHIP" | "DONATION", { count: number; amount: number }>;
     feedbackNew: number;
     weekly: { week: string; users: number; applications: number; payments: number }[];
+    /** Помощники (GS-256); нет — бэкенд старее */
+    assistant?: AssistantUsage;
+}
+
+interface AssistantPeriod { requests: number; failed: number; promptTokens: number; completionTokens: number; cost: number }
+interface AssistantUsage {
+    enabled: boolean;
+    dailyLimit: number;
+    day: AssistantPeriod;
+    week: AssistantPeriod;
+    month: AssistantPeriod;
+    days30: AssistantPeriod;
+    byTask30: Record<string, { requests: number; failed: number; users: number; cost: number }>;
+}
+
+/** Названия помощников по коду задачи в журнале */
+const TASKS: Record<string, string> = {
+    host_reply: "Ответ хоста на заявку",
+    vacancy_text: "Тексты вакансии",
+    review_text: "Отзыв волонтёра",
+};
+
+/** Копейки видны, пока сумма меньше 100 ₽ — иначе первые дни всё время «0 ₽» */
+const money = (n: number) => `${n < 100 ? n.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : Math.round(n).toLocaleString("ru-RU")} ₽`;
+
+/**
+ * Расходы на помощников: обращения и примерная сумма по журналу (тарифы модели на
+ * бэкенде, AssistantUsage::PRICES). Точная сумма — в счёте Яндекс.Облака.
+ */
+function AssistantCosts({ usage }: { usage: AssistantUsage }) {
+    const tasks = Object.entries(usage.byTask30).sort((a, b) => b[1].cost - a[1].cost);
+    return (
+        <section className="mt-6" aria-labelledby="assistant-costs">
+            <h2 id="assistant-costs" className="mb-3 flex items-baseline gap-2 text-[18px] font-semibold">
+                Помощники: расходы
+                <span className={`rounded-full px-2 py-0.5 text-[12px] font-normal ${usage.enabled ? "bg-status-accepted/40 text-cta-hover" : "bg-field text-muted"}`}>{usage.enabled ? "включены" : "выключены"}</span>
+            </h2>
+            <div className="mb-3 grid grid-cols-4 gap-3 down-lg:grid-cols-2">
+                <Tile label="За сутки" value={money(usage.day.cost)} note={`${num(usage.day.requests)} обращений из ${num(usage.dailyLimit)} в сутки${usage.day.failed ? ` · ${num(usage.day.failed)} без ответа` : ""}`} />
+                <Tile label="За 7 дней" value={money(usage.week.cost)} note={`${num(usage.week.requests)} обращений`} />
+                <Tile label="С начала месяца" value={money(usage.month.cost)} note={`${num(usage.month.requests)} обращений`} />
+                <Tile label="Токены за 30 дней" value={num(usage.days30.promptTokens + usage.days30.completionTokens)} note={`вход ${num(usage.days30.promptTokens)} · выход ${num(usage.days30.completionTokens)} · ${money(usage.days30.cost)}`} />
+            </div>
+            {tasks.length > 0 && (
+                <table className="w-full rounded-[8px] bg-surface text-left">
+                    <thead><tr className="text-[12px] text-muted"><th className="px-3 py-2">Помощник, 30 дней</th><th>Обращений</th><th>Людей</th><th>Без ответа</th><th>Сумма</th></tr></thead>
+                    <tbody>
+                        {tasks.map(([task, row]) => (
+                            <tr key={task} className="border-t border-accent-bg/60">
+                                <td className="px-3 py-1.5">{TASKS[task] ?? task}</td>
+                                <td>{num(row.requests)}</td>
+                                <td>{num(row.users)}</td>
+                                <td>{num(row.failed)}</td>
+                                <td>{money(row.cost)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+            <p className="mt-2 text-[12px] text-muted">Сумма примерная — по журналу обращений и тарифам модели. Точная — в счёте Яндекс.Облака. Подбор «Почему подходит» нейросеть не использует и в расходы не входит.</p>
+        </section>
+    );
 }
 
 const num = (n: number) => n.toLocaleString("ru-RU");
@@ -93,6 +155,7 @@ export function DashboardStats() {
                 <WeeklyBars title="Отклики" data={data.weekly.map((w) => ({ week: w.week, value: w.applications }))} />
                 <WeeklyBars title="Успешные оплаты" data={data.weekly.map((w) => ({ week: w.week, value: w.payments }))} />
             </div>
+            {data.assistant && <AssistantCosts usage={data.assistant} />}
             <details className="mt-2 rounded-[8px] bg-surface p-3">
                 <summary className="cursor-pointer text-primary">Таблица по неделям</summary>
                 <table className="mt-2 w-full text-left">
