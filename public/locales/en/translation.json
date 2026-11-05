@@ -55,7 +55,8 @@
         "Подтвердить": "Confirm",
         "Пользователь был удален или не создавался": "The user was deleted or was never created",
         "Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга": "Send me picks of new projects and Goodsurfing news",
-        "marketingConsentHint": "You can unsubscribe at any time in your profile or via the link in any email."
+        "marketingConsentHint": "You can unsubscribe at any time in your profile or via the link in any email.",
+        "Войти и вернуться к вакансии": "Log in and back to the opportunity"
     },
     "main": {
         "welcome": {

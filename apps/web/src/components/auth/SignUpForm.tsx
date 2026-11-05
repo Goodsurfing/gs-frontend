@@ -1,9 +1,10 @@
 "use client";
 
-import { type FormEvent, useCallback, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useState } from "react";
 
-import type { Locale } from "@/i18n/config";
+import { type Locale, localePrefix } from "@/i18n/config";
 import { reachGoalThen } from "@/components/analytics/YandexMetrika";
+import { forgetReturnAfterAuth, keepReturn, returnAfterAuth } from "@/lib/authSession";
 import { API_URL } from "@/lib/browserApi";
 
 import { AuthInput } from "./AuthInput";
@@ -72,6 +73,10 @@ export function SignUpForm({ locale, signInHref, resetHref, privacyHref, confirm
     const [toast, setToast] = useState<string | null>(null);
     const [busy, setBusy] = useState(false);
     const wording = `${labels.consent}. ${labels.consentHint}`;
+    // Запомнить вакансию, с которой пришли: вход через VK вернёт сюда без параметров
+    useEffect(() => {
+        returnAfterAuth(localePrefix(locale));
+    }, [locale]);
 
     const changeConsent = (value: boolean) => {
         setConsent(value);
@@ -90,8 +95,10 @@ export function SignUpForm({ locale, signInHref, resetHref, privacyHref, confirm
                 body: JSON.stringify({ consent: true, source: "registration", wording }),
             }).catch(() => undefined);
         }
-        window.location.href = profileHref;
-    }, [profileHref, wording]);
+        const target = returnAfterAuth(localePrefix(locale));
+        forgetReturnAfterAuth();
+        window.location.href = target ?? profileHref;
+    }, [locale, profileHref, wording]);
 
     const submit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -115,6 +122,8 @@ export function SignUpForm({ locale, signInHref, resetHref, privacyHref, confirm
                     locale,
                     isActive: true,
                     marketingConsent: consent,
+                    // Вакансия, с которой пришли: письмо-подтверждение вернёт к ней (gs-backend #524)
+                    returnPath: returnAfterAuth(localePrefix(locale)) ?? undefined,
                     ...(consent ? { marketingConsentWording: wording } : {}),
                 }),
             });
@@ -143,7 +152,7 @@ export function SignUpForm({ locale, signInHref, resetHref, privacyHref, confirm
                 {duplicate && (
                     <div className="mt-2 text-[14px] text-caption">
                         {labels.maybeRegistered}{" "}
-                        <a href={signInHref}>{labels.signIn}</a>{" / "}<a href={resetHref}>{labels.forgot}</a>
+                        <a href={signInHref} onClick={(event) => keepReturn(event, signInHref)}>{labels.signIn}</a>{" / "}<a href={resetHref}>{labels.forgot}</a>
                     </div>
                 )}
                 <AuthInput label="E-mail" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} />

@@ -307,6 +307,9 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
                     <OfferShare url={`${siteUrl()}${routes.offer(locale, offer.id)}`} title={description.title} label={p("Поделиться вакансией")} />
                 )}
             </div>
+            {/* Кнопка внизу экрана на телефоне; отступ — чтобы она не закрывала конец страницы */}
+            <OfferActions offerId={offer.id} status={offer.status} variant="sticky" hrefs={hrefs} labels={labels} />
+            <div aria-hidden className="hidden h-20 down-md:block" />
         </>
     );
 }

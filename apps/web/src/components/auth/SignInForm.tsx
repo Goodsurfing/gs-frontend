@@ -1,11 +1,11 @@
 "use client";
 
-import { type FormEvent, useCallback, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useState } from "react";
 
 import type { Locale } from "@/i18n/config";
 import { localePrefix } from "@/i18n/config";
 import { API_URL } from "@/lib/browserApi";
-import { nextRoute, saveSession, type TokenResponse } from "@/lib/authSession";
+import { forgetReturnAfterAuth, keepReturn, returnAfterAuth, saveSession, type TokenResponse } from "@/lib/authSession";
 
 import { AuthInput } from "./AuthInput";
 import { AuthToast } from "./AuthToast";
@@ -55,9 +55,14 @@ export function SignInForm({ locale, resetHref, signUpHref, profileHref, labels,
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    // Вакансия, с которой пришли, — и на регистрацию (ссылка ниже), и после входа через VK
+    useEffect(() => {
+        returnAfterAuth(localePrefix(locale));
+    }, [locale]);
     const done = useCallback(() => {
-        const params = new URLSearchParams(window.location.search);
-        window.location.href = nextRoute(localePrefix(locale), params.get("next"), params.get("nextId")) ?? profileHref;
+        const target = returnAfterAuth(localePrefix(locale));
+        forgetReturnAfterAuth();
+        window.location.href = target ?? profileHref;
     }, [locale, profileHref]);
     const showError = useCallback((text: string) => setError(labels.errors[text] ?? text), [labels.errors]);
 
@@ -124,7 +129,7 @@ export function SignInForm({ locale, resetHref, signUpHref, profileHref, labels,
                     <VkIdButton locale={locale} page="signin" onSuccess={done} onError={showError} deletedText={labels.deleted} />
                     <div className="text-center leading-[138%] text-ink-secondary">
                         {labels.notRegistered}{" "}
-                        <a href={signUpHref} className="font-semibold text-primary">{labels.signUp}</a>
+                        <a href={signUpHref} onClick={(event) => keepReturn(event, signUpHref)} className="font-semibold text-primary">{labels.signUp}</a>
                     </div>
                 </>
             )}
