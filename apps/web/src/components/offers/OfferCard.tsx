@@ -19,7 +19,7 @@ export function OfferCard({ offer, href, category }: {
     return (
         <a
             href={href}
-            className="box-border flex min-h-[438px] max-w-[347px] cursor-pointer flex-col justify-around border border-accent-bg px-[19px] py-[21px] text-inherit no-underline shadow-line down-lg:max-w-none"
+            className="box-border flex h-full min-h-[438px] max-w-[347px] cursor-pointer flex-col justify-around border border-accent-bg px-[19px] py-[21px] text-inherit no-underline shadow-line down-lg:max-w-none"
         >
             {/* eslint-disable-next-line @next/next/no-img-element -- превью из хранилища, размеры задаёт карточка */}
             <img
