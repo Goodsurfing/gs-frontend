@@ -42,6 +42,8 @@ export const usersConfig: AdminListConfig<AdminUserRow> = {
         { key: "lastName", label: "Фамилия" },
         { key: "id", label: "ID" },
         { key: "membershipStatus", label: "Членство", options: [{ value: "active", label: "Активно" }, { value: "inactive", label: "Неактивно" }] },
+        // GS-239: оплатившие Международный клуб (5 000 ₽/год); «Членство» выше — только обычное
+        { key: "internationalStatus", label: "Международный клуб", options: [{ value: "active", label: "Оплачен" }, { value: "inactive", label: "Нет" }] },
     ],
     columns: [
         { label: "Пользователь", cell: (r) => <span>{fullName(r)}<span className="block text-[12px] text-muted">{r.email}</span></span> },
