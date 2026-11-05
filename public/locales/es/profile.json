@@ -150,7 +150,8 @@
         "Ещё": "Más",
         "Произошла ошибка загрузки отзывов": "Se produjo un error al cargar las reseñas",
         "Все достижения пользователя": "Todos los logros del usuario",
-        "Статьи об организации": "Artículos sobre la organización"
+        "Статьи об организации": "Artículos sobre la organización",
+        "allAchievements": "Todos los logros"
     },
     "Произошла ошибка при загрузке изображения": "Se produjo un error al cargar la imagen",
     "Удалить изображение": "Eliminar imagen",

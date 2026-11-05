@@ -2524,6 +2524,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/achievement/catalog": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Все значки: за что выдаются и сколько получили (страница «Все достижения») */
+        get: operations["get_app_api_v1_achievement_catalog"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/achievement/organization/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Значки организации (отзывчивый, проверенный организатор) */
+        get: operations["get_app_api_v1_achievement_organization"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/app-events": {
         parameters: {
             query?: never;
@@ -6421,6 +6455,20 @@ export interface components {
             accessToken: string;
         };
         Achievement: {
+            /**
+             * @description volunteer — волонтёрам, organization — организациям
+             * @default volunteer
+             */
+            audience: string;
+            /** @description Код значка, который выдаётся сам (Catalog); null — выдаёт команда вручную */
+            code?: string | null;
+            /**
+             * @description За что выдаётся — показывается на странице «Все достижения»
+             * @default
+             */
+            description: string;
+            /** @default  */
+            descriptionEn: string;
             readonly id?: number;
             /**
              * Format: iri-reference
@@ -6430,9 +6478,28 @@ export interface components {
             name?: string;
             nameEn?: string;
             nameEs?: string;
+            /**
+             * @description Порядок на странице «Все достижения»
+             * @default 100
+             */
+            position: number;
             volunteers?: components["schemas"]["Volunteer"][];
         };
         "Achievement.multipart": {
+            /**
+             * @description volunteer — волонтёрам, organization — организациям
+             * @default volunteer
+             */
+            audience: string;
+            /** @description Код значка, который выдаётся сам (Catalog); null — выдаёт команда вручную */
+            code?: string | null;
+            /**
+             * @description За что выдаётся — показывается на странице «Все достижения»
+             * @default
+             */
+            description: string;
+            /** @default  */
+            descriptionEn: string;
             readonly id?: number;
             /**
              * Format: iri-reference
@@ -6442,6 +6509,11 @@ export interface components {
             name?: string;
             nameEn?: string;
             nameEs?: string;
+            /**
+             * @description Порядок на странице «Все достижения»
+             * @default 100
+             */
+            position: number;
             volunteers?: components["schemas"]["Volunteer.multipart"][];
         };
         AddRoleCommand: {
@@ -7330,6 +7402,37 @@ export interface components {
             id: string;
             /** @example  */
             lastName?: string | null;
+        };
+        /**
+         * AchievementBadge
+         * @description Значок (достижение) — на странице «Все достижения», у волонтёра и организации
+         */
+        BadgeResult: {
+            /**
+             * @description volunteer или organization
+             * @example volunteer
+             */
+            audience: string;
+            /** @description Выдаётся сам (по данным сайта) */
+            auto: boolean;
+            /**
+             * @description Код значка, который выдаётся сам; null — выдаёт команда
+             * @example first_trip
+             */
+            code?: string | null;
+            /** @description За что выдаётся */
+            description: string;
+            /**
+             * @description Сколько человек или организаций его получили (только в общем списке)
+             * @default null
+             */
+            holders: number | null;
+            /** @example 3 */
+            id: number;
+            /** @description Адрес картинки */
+            image: string;
+            /** @example Первая поездка */
+            name: string;
         };
         Blog: {
             readonly active?: boolean;
@@ -8978,6 +9081,9 @@ export interface components {
          * @description Достижения
          */
         EditCommand5: {
+            /** @description За что выдаётся (на странице «Все достижения»); не передано — без изменений */
+            description?: string | null;
+            descriptionEn?: string | null;
             /**
              * Format: binary
              * @description Изображение навыка
@@ -10431,6 +10537,12 @@ export interface components {
          * @description Детальная достижения
          */
         ElementResult12: {
+            /** @description volunteer или organization */
+            audience: string;
+            /** @description Код значка, который выдаётся сам; null — выдаёт команда */
+            code?: string | null;
+            description: string;
+            descriptionEn: string;
             /** @example 1 */
             id: number;
             /** @example  */
@@ -12935,6 +13047,12 @@ export interface components {
          * @description Список навыков
          */
         ListResult22: {
+            /** @description volunteer или organization */
+            audience: string;
+            /** @description Код значка, который выдаётся сам; null — выдаёт команда */
+            code?: string | null;
+            description: string;
+            descriptionEn: string;
             /** @example 1 */
             id: number;
             /** @example  */
@@ -16907,6 +17025,8 @@ export interface components {
             password?: string;
             phone?: string | null;
             plainPassword?: string | null;
+            /** @description Куда вернуть на сайте после подтверждения почты (вакансия, на которую нажали «Участвовать»). */
+            returnPath?: string | null;
             reviewJournals?: components["schemas"]["ReviewJournal"][];
             reviewNews?: components["schemas"]["ReviewNews"][];
             reviewVacancies?: components["schemas"]["ReviewVacancy"][];
@@ -17048,6 +17168,8 @@ export interface components {
             marketingConsentWording?: string | null;
             phone?: string | null;
             plainPassword: string | null;
+            /** @description Куда вернуть на сайте после подтверждения почты (вакансия, на которую нажали «Участвовать»). */
+            returnPath?: string | null;
             telegram?: string | null;
             videoGallery?: string[];
             vk?: string | null;
@@ -17340,6 +17462,8 @@ export interface components {
             password?: string;
             phone?: string | null;
             plainPassword?: string | null;
+            /** @description Куда вернуть на сайте после подтверждения почты (вакансия, на которую нажали «Участвовать»). */
+            returnPath?: string | null;
             reviewJournals?: components["schemas"]["ReviewJournal.jsonld"][];
             reviewNews?: components["schemas"]["ReviewNews.jsonld"][];
             reviewVacancies?: components["schemas"]["ReviewVacancy.jsonld"][];
@@ -17705,6 +17829,8 @@ export interface components {
             password?: string;
             phone?: string | null;
             plainPassword?: string | null;
+            /** @description Куда вернуть на сайте после подтверждения почты (вакансия, на которую нажали «Участвовать»). */
+            returnPath?: string | null;
             reviewJournals?: components["schemas"]["ReviewJournal.multipart"][];
             reviewNews?: components["schemas"]["ReviewNews.multipart"][];
             reviewVacancies?: components["schemas"]["ReviewVacancy.multipart"][];
@@ -20865,6 +20991,11 @@ export interface components {
          * @description Волонтер
          */
         VolunteerResult: {
+            /**
+             * Значки волонтёра — организатор видит опыт прямо в отклике
+             * @default []
+             */
+            achievements: components["schemas"]["BadgeResult"][];
             /** @example  */
             city: string;
             /** @example  */
@@ -25911,6 +26042,50 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ListResult"][];
+                };
+            };
+        };
+    };
+    get_app_api_v1_achievement_catalog: {
+        parameters: {
+            query?: {
+                lang?: "ru" | "en" | "es";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BadgeResult"][];
+                };
+            };
+        };
+    };
+    get_app_api_v1_achievement_organization: {
+        parameters: {
+            query?: {
+                lang?: "ru" | "en" | "es";
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BadgeResult"][];
                 };
             };
         };
