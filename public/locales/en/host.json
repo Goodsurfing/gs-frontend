@@ -222,5 +222,9 @@
     "Функция станет доступна позже": "This feature will be available later",
     "personal.На данный момент отзывов нет": "There are no reviews yet",
     "Произошла ошибка при загрузке изображения": "An error occurred while uploading the image",
-    "Удалить изображение": "Delete image"
+    "Удалить изображение": "Delete image",
+    "slowReply": {
+        "label": "Slow to reply",
+        "hint": "More than half of applications wait a week or longer for the host's reply"
+    }
 }

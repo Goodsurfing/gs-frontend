@@ -22,6 +22,19 @@ export async function getAchievementCatalog(locale: Locale): Promise<Badge[] | n
 }
 
 /** Значки организации — необязательный блок: не ответило API — без значков. */
+/** «Долго отвечает» для страницы организации (на вакансии признак приходит в organization.responseStats) */
+export async function getOrganizationSlowReply(locale: Locale, organizationId: string): Promise<boolean> {
+    try {
+        const { data } = await serverApi(locale).GET("/api/v1/achievement/organization/{id}/response-stats", {
+            params: { path: { id: organizationId } },
+            signal: AbortSignal.timeout(OPTIONAL_BLOCK_TIMEOUT_MS),
+        });
+        return Boolean(data?.slow);
+    } catch {
+        return false;
+    }
+}
+
 export async function getOrganizationBadges(locale: Locale, organizationId: string): Promise<Badge[]> {
     try {
         const { data } = await serverApi(locale).GET("/api/v1/achievement/organization/{id}", {

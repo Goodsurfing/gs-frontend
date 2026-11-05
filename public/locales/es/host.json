@@ -220,5 +220,9 @@
     "Функция станет доступна позже": "Esta función estará disponible más adelante",
     "personal.На данный момент отзывов нет": "Todavía no hay reseñas",
     "Произошла ошибка при загрузке изображения": "Se produjo un error al cargar la imagen",
-    "Удалить изображение": "Eliminar imagen"
+    "Удалить изображение": "Eliminar imagen",
+    "slowReply": {
+        "label": "Responde con demora",
+        "hint": "Más de la mitad de las solicitudes esperan una semana o más la respuesta del anfitrión"
+    }
 }

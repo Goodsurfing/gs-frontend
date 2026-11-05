@@ -1,8 +1,9 @@
 import { BadgeChips } from "@/components/achievements/BadgeChips";
+import { SlowReplyChip } from "@/components/achievements/SlowReplyChip";
 import { Avatar } from "@/components/ui/Avatar";
 
 /** «Организация»: аватар, название, тип и «Подробнее» (OfferOrganizationCard) */
-export function OfferOrganization({ name, type, response, image, href, labels, badges = [], badgesHref = "" }: {
+export function OfferOrganization({ name, type, response, image, href, labels, badges = [], badgesHref = "", slowReply = null }: {
     name: string;
     type: string;
     /** «Обычно отвечает за …» — responseStatsText; null — не показываем */
@@ -13,6 +14,8 @@ export function OfferOrganization({ name, type, response, image, href, labels, b
     /** Значки организации («Отзывчивый организатор» и т. п.) */
     badges?: { id: number; name: string; description: string; image: string }[];
     badgesHref?: string;
+    /** «Долго отвечает» — подпись и подсказка; null — организация отвечает нормально */
+    slowReply?: { label: string; hint: string } | null;
 }) {
     return (
         <div id="organization" className="mt-10 flex flex-col gap-[30px] rounded-[10px] border border-caption p-[30px]">
@@ -25,7 +28,12 @@ export function OfferOrganization({ name, type, response, image, href, labels, b
                     </a>
                     <p>{type}</p>
                     {response && <p className="text-[14px] text-caption">{response}</p>}
-                    <BadgeChips badges={badges} href={badgesHref} />
+                    {(slowReply || badges.length > 0) && (
+                        <div className="flex flex-wrap items-center gap-2">
+                            {slowReply && <SlowReplyChip {...slowReply} />}
+                            <BadgeChips badges={badges} href={badgesHref} />
+                        </div>
+                    )}
                 </div>
                 <a
                     href={href}

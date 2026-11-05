@@ -36,6 +36,9 @@
     --color-surface-2: #fbfdfe;        /* --bg-primary-2 */
     --color-accent-bg: #dfe6eb;        /* --bg-accent, --accent-elements */
     --color-field: #ecf1f4;            /* --bg-field */
+    /* Предупреждение (пометка «Долго отвечает», GS-242): тёплый жёлтый, как полоса тестовой версии */
+    --color-attention-bg: #fff4d6;
+    --color-attention: #8a5a00;
     --color-cta: #02cc9b;              /* --button-1: зелёные CTA */
     --color-cta-hover: #00aa74;        /* --hover-green */
     --color-status-new: #79c8ff;
