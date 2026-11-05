@@ -26,6 +26,7 @@ import { categoryName } from "@/lib/categories";
 import { mediaUrl } from "@/lib/media";
 import { getPrices, TARIFF } from "@/lib/membershipPrices";
 import { getOffer, getOfferBanner, getOfferParticipants, getOfferReviews, inlineSvg, type OfferDetail } from "@/lib/offer";
+import { type Badge, getOrganizationBadges } from "@/lib/achievements";
 import { organizationType, PARTICIPATE_STATES, responseStatsText } from "@/lib/offerText";
 import { routes } from "@/lib/routes";
 import { pageMetadata, siteUrl } from "@/lib/seo";
@@ -133,32 +134,35 @@ export default async function OfferPage({ params }: Props) {
         );
     }
 
-    const [participants, reviews, banner, svgs, prices] = await Promise.all([
+    const [participants, reviews, banner, svgs, prices, badges] = await Promise.all([
         getOfferParticipants(locale, id),
         getOfferReviews(locale, id),
         getOfferBanner(locale),
         referenceIcons(offer),
         // Цена членства — в предложении, когда кончились бесплатные отклики
         getPrices(locale),
+        getOrganizationBadges(locale, offer.organization.id),
     ]);
     return (
         <PublicShell locale={locale}>
             <OfferViewerProvider offerId={offer.id}>
                 <div className="mx-auto flex min-h-[500px] w-full max-w-[1920px] flex-col items-center justify-center px-[50px] pt-[100px] pb-[50px] down-lg:p-5">
-                    <OfferBody locale={locale} offer={offer} participants={participants} reviews={reviews} banner={banner} svgs={svgs} volunteerPrice={prices[TARIFF.volunteer] ?? 990} t={t} tOffer={tOffer} tHost={tHost} />
+                    <OfferBody locale={locale} offer={offer} participants={participants} reviews={reviews} banner={banner} svgs={svgs} badges={badges} volunteerPrice={prices[TARIFF.volunteer] ?? 990} t={t} tOffer={tOffer} tHost={tHost} />
                 </div>
             </OfferViewerProvider>
         </PublicShell>
     );
 }
 
-function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunteerPrice, t, tOffer, tHost }: {
+function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges, volunteerPrice, t, tOffer, tHost }: {
     locale: Locale;
     offer: OfferDetail;
     participants: Awaited<ReturnType<typeof getOfferParticipants>>;
     reviews: Awaited<ReturnType<typeof getOfferReviews>>;
     banner: Awaited<ReturnType<typeof getOfferBanner>>;
     svgs: SvgMap;
+    /** Значки организации — в блоке «Организация» */
+    badges: Badge[];
     /** Цена годового членства волонтёра — для предложения, когда кончились бесплатные отклики */
     volunteerPrice: number;
     t: Translate;
@@ -265,6 +269,8 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
                     image={mediaUrl(organization.image, "small")}
                     href={routes.organization(locale, organization.id)}
                     labels={{ title: p("Организация"), more: p("Подробнее") }}
+                    badges={badges}
+                    badgesHref={routes.achievements(locale)}
                 />
                 <OfferParticipants
                     offerId={offer.id}

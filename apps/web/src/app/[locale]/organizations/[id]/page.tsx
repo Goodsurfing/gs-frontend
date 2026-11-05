@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { GalleryCarousel } from "@/components/gallery/GalleryCarousel";
 import { PublicShell } from "@/components/layout/PublicShell";
+import { BadgeChips } from "@/components/achievements/BadgeChips";
 import { MembershipBadges } from "@/components/membership/MembershipBadges";
 import { SectionTitle } from "@/components/offer/parts";
 import { OrganizationOffers } from "@/components/organization/OrganizationOffers";
@@ -17,6 +18,7 @@ import { getTranslator } from "@/i18n/dictionary";
 import { categoryLabels } from "@/lib/categories";
 import { mediaUrl } from "@/lib/media";
 import { organizationType } from "@/lib/offerText";
+import { getOrganizationBadges } from "@/lib/achievements";
 import { getOrganization, getOrganizationOffers, getOrganizationReviews } from "@/lib/organization";
 import { routes } from "@/lib/routes";
 import { pageMetadata, seoDescription } from "@/lib/seo";
@@ -82,9 +84,10 @@ export default async function OrganizationPage({ params }: Props) {
         );
     }
     const organization = result.organization;
-    const [offers, reviews] = await Promise.all([
+    const [offers, reviews, badges] = await Promise.all([
         getOrganizationOffers(locale, id, t),
         getOrganizationReviews(locale, id),
+        getOrganizationBadges(locale, id),
     ]);
     const owner = organization.owner as { id?: string; isMember?: boolean } | undefined;
     const gallery = (organization.galleryImages ?? [])
@@ -126,6 +129,7 @@ export default async function OrganizationPage({ params }: Props) {
                             )}
                         </div>
                         <span>{organization.address}</span>
+                        <BadgeChips badges={badges} href={routes.achievements(locale)} className="mt-3" />
                         <div className="mt-5 grid max-w-[250px] grid-cols-2 gap-2 down-sm:grid-cols-1">
                             {vk && (
                                 <a href={vk} target="_blank" rel="noreferrer" className="flex items-center gap-1">

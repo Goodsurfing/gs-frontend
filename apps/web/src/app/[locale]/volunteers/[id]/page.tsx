@@ -175,9 +175,14 @@ export default async function VolunteerPage({ params }: Props) {
                         </div>
                     </div>
                     <div className="flex flex-col gap-[30px]">
-                        <div className="flex gap-2">
-                            <VolunteerAchievements achievements={achievements} labels={{ more: p("Ещё"), title: p("Все достижения пользователя"), close: t("Закрыть") }} />
-                        </div>
+                        {achievements.length > 0 && (
+                            <div className="flex flex-col gap-2">
+                                <div className="flex gap-4">
+                                    <VolunteerAchievements achievements={achievements} labels={{ more: p("Ещё"), title: p("Все достижения пользователя"), close: t("Закрыть") }} />
+                                </div>
+                                <a href={routes.achievements(locale)} className="text-[13px] text-primary">{p("allAchievements")}</a>
+                            </div>
+                        )}
                         <div className="mt-auto">{actions("")}</div>
                     </div>
                 </div>

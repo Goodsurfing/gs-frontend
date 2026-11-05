@@ -1,7 +1,8 @@
+import { BadgeChips } from "@/components/achievements/BadgeChips";
 import { Avatar } from "@/components/ui/Avatar";
 
 /** «Организация»: аватар, название, тип и «Подробнее» (OfferOrganizationCard) */
-export function OfferOrganization({ name, type, response, image, href, labels }: {
+export function OfferOrganization({ name, type, response, image, href, labels, badges = [], badgesHref = "" }: {
     name: string;
     type: string;
     /** «Обычно отвечает за …» — responseStatsText; null — не показываем */
@@ -9,6 +10,9 @@ export function OfferOrganization({ name, type, response, image, href, labels }:
     image?: string;
     href: string;
     labels: { title: string; more: string };
+    /** Значки организации («Отзывчивый организатор» и т. п.) */
+    badges?: { id: number; name: string; description: string; image: string }[];
+    badgesHref?: string;
 }) {
     return (
         <div id="organization" className="mt-10 flex flex-col gap-[30px] rounded-[10px] border border-caption p-[30px]">
@@ -21,6 +25,7 @@ export function OfferOrganization({ name, type, response, image, href, labels }:
                     </a>
                     <p>{type}</p>
                     {response && <p className="text-[14px] text-caption">{response}</p>}
+                    <BadgeChips badges={badges} href={badgesHref} />
                 </div>
                 <a
                     href={href}
