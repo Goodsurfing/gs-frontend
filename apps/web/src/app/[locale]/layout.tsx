@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { YandexMetrika } from "@/components/analytics/YandexMetrika";
+import { TestBanner } from "@/components/layout/TestBanner";
 import { isLocale, LOCALES } from "@/i18n/config";
 
 import "../globals.css";
@@ -48,6 +49,7 @@ export default async function LocaleLayout({
         <html lang={locale}>
             <body>
                 <script dangerouslySetInnerHTML={{ __html: BROKEN_IMAGE_FALLBACK }} />
+                <TestBanner />
                 {children}
                 <YandexMetrika />
             </body>
