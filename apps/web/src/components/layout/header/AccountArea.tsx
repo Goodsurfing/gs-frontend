@@ -20,14 +20,19 @@ export interface AccountLinks {
     exit: string;
 }
 
-/** Иконка сообщений с числом непрочитанных (shared/ui/MessageIcon старого фронта). */
+/** Иконка сообщений с числом непрочитанных: облачко в цвет сайта и заметный счётчик. */
 export function MessagesIcon({ count }: { count: number }) {
     return (
-        <span className="relative block">
-            {/* eslint-disable-next-line @next/next/no-img-element -- иконка */}
-            <img src="/web/icons/header/messages.svg" alt="" width={31} height={22} className="block" />
+        <span className="relative flex h-10 w-10 items-center justify-center rounded-full text-primary transition-colors hover:bg-field">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <path
+                    d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.6A.5.5 0 0 1 5 19.2V16h0a1 1 0 0 1-1-1V5.5Z"
+                    stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"
+                />
+                <path d="M8 8.5h8M8 12h5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            </svg>
             {count > 0 && (
-                <span className="absolute -top-[5px] right-0 flex items-center justify-center rounded-full border-2 border-white bg-error px-[3px] py-[2px] text-center text-[6px] leading-none font-extrabold text-white">
+                <span className="absolute top-0.5 right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full border-2 border-white bg-error px-1 text-[10px] leading-none font-bold text-white">
                     {count > 9 ? "9+" : count}
                 </span>
             )}
@@ -35,8 +40,11 @@ export function MessagesIcon({ count }: { count: number }) {
     );
 }
 
-/** Сокращение имени как в старой шапке: до 13 символов. */
-const short = (value: string) => takeChars(value, 13);
+/** Как называть человека в шапке: имя, иначе начало почты (без «@…» — раньше показывался обрезанный адрес). */
+export function displayName(profile: { firstName?: string | null; email?: string | null }): string {
+    const name = profile.firstName?.trim() || (profile.email ?? "").split("@")[0] || "";
+    return takeChars(name, 40); // дальше режет CSS с «…» по ширине
+}
 
 /**
  * Правая часть десктопной шапки: «Вход» для гостя, для вошедшего —
@@ -57,28 +65,38 @@ export function AccountArea({ signIn, links }: { signIn: NavLink; links: Account
         );
     }
 
-    const name = short(profile.firstName || profile.email || "");
-    const item = "relative w-full cursor-pointer border-0 bg-transparent p-0 text-left text-[14px] text-ink-secondary no-underline outline-none before:absolute before:top-[110%] before:h-[2px] before:w-0 before:bg-ink-secondary before:transition-all before:duration-300 hover:before:w-full focus-visible:before:w-full";
+    const name = displayName(profile);
+    // Без имени фамилия одна выглядит странно — тогда то же, что на кнопке (начало почты)
+    const fullName = profile.firstName?.trim() ? [profile.firstName, profile.lastName].filter(Boolean).join(" ") : name;
+    const avatar = mediaUrl(profile.image, "small");
+    const itemBase = "flex w-full cursor-pointer items-center rounded-[8px] px-3 py-2 text-[14px] no-underline outline-none transition-colors hover:bg-field focus-visible:bg-field data-[highlighted]:bg-field";
+    const item = `${itemBase} text-ink-secondary`;
 
     return (
         <>
-            <div className="flex items-center gap-3">
-                <a href={links.messages.href} aria-label={session.unreadMessages ? `${links.messages.label} (${session.unreadMessages})` : links.messages.label}>
-                    <MessagesIcon count={session.unreadMessages} />
-                </a>
-            </div>
+            <a href={links.messages.href} aria-label={session.unreadMessages ? `${links.messages.label} (${session.unreadMessages})` : links.messages.label} title={links.messages.label}>
+                <MessagesIcon count={session.unreadMessages} />
+            </a>
             <DropdownMenu.Root modal={false}>
-                <DropdownMenu.Trigger className="group flex cursor-pointer items-center gap-[5px] border-0 bg-transparent p-0 text-[16px]">
-                    <span>{name}</span>
-                    <Avatar src={mediaUrl(profile.image, "small")} name={profile.firstName} className="mx-2.5" />
+                <DropdownMenu.Trigger className="group flex h-10 cursor-pointer items-center gap-2 rounded-full border border-accent-bg bg-white py-1 pr-3 pl-1 transition-colors hover:bg-field data-[state=open]:bg-field">
+                    <Avatar src={avatar} name={name} size={30} />
+                    <span className="max-w-[140px] truncate text-[14px] font-semibold text-ink-secondary">{name}</span>
                     <Arrow />
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Portal>
                     <DropdownMenu.Content
-                        align="start"
-                        sideOffset={10}
-                        className="z-50 flex min-w-[190px] animate-fade-in flex-col items-center gap-4 rounded-[10px] bg-field p-[17px] pt-[23px]"
+                        align="end"
+                        sideOffset={8}
+                        className="z-50 flex w-[260px] animate-fade-in flex-col rounded-[12px] border border-accent-bg bg-white p-2 shadow-[0_12px_32px_rgba(14,29,39,0.16)]"
                     >
+                        <div className="flex items-center gap-3 px-3 pt-2 pb-3">
+                            <Avatar src={avatar} name={name} size={40} />
+                            <div className="min-w-0">
+                                <p className="truncate text-[15px] font-semibold text-ink-secondary">{fullName}</p>
+                                {profile.email && <p className="truncate text-[12px] text-caption">{profile.email}</p>}
+                            </div>
+                        </div>
+                        <DropdownMenu.Separator className="mx-2 mb-1 h-px bg-accent-bg" />
                         {[
                             { label: links.myPage.label, href: links.myPage.href.replace("{id}", profile.id) },
                             links.aboutMe,
@@ -89,7 +107,8 @@ export function AccountArea({ signIn, links }: { signIn: NavLink; links: Account
                                 <a href={link.href} className={item}>{link.label}</a>
                             </DropdownMenu.Item>
                         ))}
-                        <DropdownMenu.Item className={item} onSelect={() => void session.logout().then(() => window.location.reload())}>
+                        <DropdownMenu.Separator className="mx-2 my-1 h-px bg-accent-bg" />
+                        <DropdownMenu.Item className={`${itemBase} text-error`} onSelect={() => void session.logout().then(() => window.location.reload())}>
                             {links.exit}
                         </DropdownMenu.Item>
                     </DropdownMenu.Content>
