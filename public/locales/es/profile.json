@@ -158,5 +158,31 @@
     "Вконтакте": "VKontakte",
     "Выберите страны": "Seleccione los países",
     "Укажите страны через запятую": "Indique los países separados por comas",
-    "По России": "Por Rusia"
+    "По России": "Por Rusia",
+    "subscriptions": {
+        "menu": "Suscripciones de búsqueda",
+        "title": "Mis suscripciones",
+        "intro": "Nuevas vacantes de tus búsquedas guardadas — por correo y como notificación en la app. Máximo 5 suscripciones.",
+        "empty": "Aún no tienes suscripciones. Abre el mapa, elige filtros y pulsa «Avisarme de nuevas vacantes».",
+        "toMap": "Abrir el mapa",
+        "name": "Nombre",
+        "email": "Por correo",
+        "weekly": "Cada semana",
+        "daily": "Cada día",
+        "off": "No enviar",
+        "push": "Notificaciones de la app",
+        "open": "Abrir búsqueda",
+        "delete": "Eliminar",
+        "deleteConfirm": "¿Eliminar la suscripción «{{name}}»?",
+        "cancel": "Cancelar",
+        "saved": "Guardado",
+        "error": "No se pudo guardar",
+        "loadError": "No se pudieron cargar las suscripciones",
+        "retry": "Reintentar",
+        "unsubTitle": "Darse de baja",
+        "unsubText": "¿Dejar de enviar por correo la selección «{{name}}»?",
+        "unsubButton": "Darme de baja",
+        "unsubDone": "Listo: ya no recibirás correos de «{{name}}». Puedes reactivarlos o eliminar la suscripción en «Mis suscripciones».",
+        "unsubInvalid": "El enlace ya no es válido: quizá la suscripción se eliminó."
+    }
 }

@@ -33,6 +33,8 @@ export function nextRoute(prefix: string, next: string | null, nextId: string | 
         case "payment": return `${prefix}/payment?tariff=${id}`;
         case "donation": return `${prefix}/fundraise/${id}`;
         case "duo": return `${prefix}/membership/duo/${id}`;
+        // Подписка на подборку: вернуть на карту с теми же фильтрами (nextId — строка параметров)
+        case "offersMap": return `${prefix}/offers-map?${new URLSearchParams(nextId).toString()}`;
         default: return null;
     }
 }

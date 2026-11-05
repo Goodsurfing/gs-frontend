@@ -82,6 +82,9 @@ export const routes = {
     verifyEmail: (l: Locale) => path(l, "/verify-email"),
     verifyEmailHash: (l: Locale, hash: string) => path(l, `/verify-email-hash/${hash}`),
     profilePrivacy: (l: Locale) => path(l, "/profile/privacy"),
+    /** Подписки на подборку вакансий */
+    profileSubscriptions: (l: Locale) => path(l, "/profile/subscriptions"),
+    savedSearchUnsubscribe: (l: Locale, token: string) => path(l, `/saved-searches/unsubscribe/${token}`),
     /** Оплата членства; тариф — в ?tariff= */
     payment: (l: Locale) => path(l, "/payment"),
     /** Сюда возвращает ЮKassa после оплаты членства (бэкенд: YookassaProvider, ?payment_id=) */

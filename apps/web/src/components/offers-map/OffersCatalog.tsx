@@ -11,6 +11,8 @@ import { type OffersFilters, offersFiltersQuery, OFFERS_PER_PAGE } from "@/lib/o
 import { type FilterBarLabels, OffersFilterBar } from "./OffersFilterBar";
 import { OfferListCard, type OfferListCardLabels } from "./OfferListCard";
 import { OffersMap, type OffersMapLabels } from "./OffersMap";
+import { SavedSearchButton, type SubscribeLabels } from "./SavedSearchButton";
+import type { SavedSearchSource } from "@/lib/savedSearch";
 
 export interface CatalogLabels {
     count: string;
@@ -44,7 +46,7 @@ type MobileTab = "list" | "map" | "filter";
  * без перезагрузки — «назад» со страницы вакансии возвращает к ней же.
  * Фильтры, поиск, сортировка и страница — в адресе, список рендерит сервер.
  */
-export function OffersCatalog({ locale, basePath, filters, page, offerHref, categories, languages, labels }: {
+export function OffersCatalog({ locale, basePath, filters, page, offerHref, categories, languages, subscribe, labels }: {
     locale: string;
     basePath: string;
     filters: OffersFilters;
@@ -53,6 +55,8 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, cate
     /** null — список не загрузился */
     page: CatalogPage | null;
     offerHref: string;
+    /** Подписка на подборку по этим фильтрам; source — пришли по ссылке «подписаться» (?subscribe=) */
+    subscribe: { source: SavedSearchSource | null; signInHref: string; manageHref: string; labels: SubscribeLabels };
     labels: CatalogLabels;
 }) {
     const router = useRouter();
@@ -180,6 +184,10 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, cate
                     </div>
                 </form>
 
+                {subscribe.source === null && page !== null && page.offers.length > 0 && (
+                    <SavedSearchButton filters={filters} source="button" variant="line" signInHref={subscribe.signInHref} manageHref={subscribe.manageHref} labels={subscribe.labels} />
+                )}
+
                 <div className="relative flex min-h-20 items-center gap-5 bg-field px-[30px] py-3 down-lg:min-h-0 down-lg:px-5">
                     <span className="text-[1.125rem] font-medium text-ink-secondary">{labels.count}</span>
                     <div className="contents down-lg:hidden">
@@ -214,7 +222,19 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, cate
                             </button>
                         </div>
                     )}
-                    {page?.offers.length === 0 && <p className="w-full p-5 text-center text-[14px] font-medium">{labels.notFound}</p>}
+                    {subscribe.source !== null && page !== null && (
+                        <div className="w-full">
+                            <SavedSearchButton filters={filters} source={subscribe.source} variant="prompt" signInHref={subscribe.signInHref} manageHref={subscribe.manageHref} labels={subscribe.labels} />
+                        </div>
+                    )}
+                    {page?.offers.length === 0 && (
+                        <div className="w-full">
+                            <p className="w-full p-5 pb-0 text-center text-[14px] font-medium">{labels.notFound}</p>
+                            {subscribe.source === null && (
+                                <SavedSearchButton filters={filters} source="empty" variant="empty" signInHref={subscribe.signInHref} manageHref={subscribe.manageHref} labels={subscribe.labels} />
+                            )}
+                        </div>
+                    )}
                     {page?.offers.map((offer) => (
                         <OfferListCard
                             key={offer.id}

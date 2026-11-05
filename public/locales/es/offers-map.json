@@ -37,5 +37,18 @@
     "durationRange": "de {{min}} a {{max}} días",
     "days": "días",
     "Дата начала": "Fecha de inicio",
-    "Дата окончания": "Fecha de fin"
+    "Дата окончания": "Fecha de fin",
+    "subscribe": {
+        "button": "Avisarme de nuevas vacantes para esta búsqueda",
+        "empty": "Aún no hay nada — ¿te avisamos cuando aparezca?",
+        "emptyButton": "Avisarme",
+        "prompt": "¿Recibir cada semana las nuevas vacantes de esta búsqueda?",
+        "promptButton": "Suscribirme",
+        "guest": "Inicia sesión para recibir la selección",
+        "done": "¡Listo! Te enviaremos cada semana las nuevas vacantes de esta búsqueda.",
+        "already": "Ya estás suscrito a esta búsqueda.",
+        "manage": "Mis suscripciones",
+        "limit": "Máximo 5 suscripciones: elimina alguna en «Mis suscripciones».",
+        "error": "No se pudo suscribir. Inténtalo de nuevo"
+    }
 }

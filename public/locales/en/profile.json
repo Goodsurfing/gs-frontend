@@ -158,5 +158,31 @@
     "Вконтакте": "VKontakte",
     "Выберите страны": "Select countries",
     "Укажите страны через запятую": "Enter countries separated by commas",
-    "По России": "Across Russia"
+    "По России": "Across Russia",
+    "subscriptions": {
+        "menu": "Search subscriptions",
+        "title": "My search subscriptions",
+        "intro": "New opportunities for your saved searches — by email and as app notifications. Up to 5 subscriptions.",
+        "empty": "No subscriptions yet. Open the map, set filters and click “Notify me about new opportunities”.",
+        "toMap": "Open the map",
+        "name": "Name",
+        "email": "Email",
+        "weekly": "Weekly",
+        "daily": "Daily",
+        "off": "Don't send",
+        "push": "App notifications",
+        "open": "Open search",
+        "delete": "Delete",
+        "deleteConfirm": "Delete subscription “{{name}}”?",
+        "cancel": "Cancel",
+        "saved": "Saved",
+        "error": "Couldn't save",
+        "loadError": "Couldn't load subscriptions",
+        "retry": "Retry",
+        "unsubTitle": "Unsubscribe",
+        "unsubText": "Stop emailing the “{{name}}” digest?",
+        "unsubButton": "Unsubscribe",
+        "unsubDone": "Done — no more emails for “{{name}}”. You can turn them back on or delete the subscription in “My subscriptions”.",
+        "unsubInvalid": "The link is no longer valid — the subscription may have been deleted."
+    }
 }
