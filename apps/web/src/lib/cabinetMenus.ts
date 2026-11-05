@@ -12,6 +12,7 @@ export function profileMenu(locale: Locale, t: Translate): CabinetMenuItem[] {
         { text: t("main.sidebar.Роль"), href: `${p}/profile/role`, icon: "role-icon" },
         { text: t("main.sidebar.Пароль"), href: `${p}/profile/reset-password`, icon: "lock-icon" },
         { text: t("main.sidebar.Приватность"), href: `${p}/profile/privacy`, icon: "shield-icon" },
+        { text: t("main.sidebar.Подписки на поиск"), href: `${p}/profile/subscriptions`, icon: "mail" },
     ];
 }
 

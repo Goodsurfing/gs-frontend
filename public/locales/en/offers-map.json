@@ -36,5 +36,18 @@
     "durationRange": "from {{min}} to {{max}} days",
     "days": "days",
     "Дата начала": "Start date",
-    "Дата окончания": "End date"
+    "Дата окончания": "End date",
+    "subscribe": {
+        "button": "Notify me about new opportunities for this search",
+        "empty": "Nothing yet — let you know when something appears?",
+        "emptyButton": "Notify me",
+        "prompt": "Get new opportunities for this search weekly?",
+        "promptButton": "Subscribe",
+        "guest": "Sign in to get the digest",
+        "done": "Done! We'll send new opportunities for this search weekly.",
+        "already": "You're already subscribed to this search.",
+        "manage": "My subscriptions",
+        "limit": "Up to 5 subscriptions — remove one in “My subscriptions”.",
+        "error": "Couldn't subscribe. Please try again"
+    }
 }

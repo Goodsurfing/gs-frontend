@@ -5219,6 +5219,86 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/saved_search_exceptions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves a SavedSearchException resource.
+         * @description Retrieves a SavedSearchException resource.
+         */
+        get: operations["api_saved_search_exceptions_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/saved-searches": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Мои подписки */
+        get: operations["get_app_api_v1_savedsearch_list"];
+        put?: never;
+        /**
+         * Подписаться на подборку
+         * @description Подписаться на поиск. Такой же поиск уже есть — вернётся он (200), новый — 201. Не больше 5 подписок (409).
+         */
+        post: operations["post_app_api_v1_savedsearch_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/saved-searches/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Удалить подписку */
+        delete: operations["delete_app_api_v1_savedsearch_delete"];
+        options?: never;
+        head?: never;
+        /** Изменить подписку */
+        patch: operations["patch_app_api_v1_savedsearch_update"];
+        trace?: never;
+    };
+    "/api/v1/saved-searches/unsubscribe/{token}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Подписка по ссылке «Отписаться» из письма (без входа): название */
+        get: operations["get_app_api_v1_savedsearch_unsubscribeinfo"];
+        put?: never;
+        /**
+         * Отписаться от писем подборки (без входа)
+         * @description Письма по этой подписке больше не приходят; сама подписка и пуши остаются. Отдельный POST — почтовые программы открывают ссылки из писем заранее.
+         */
+        post: operations["post_app_api_v1_savedsearch_unsubscribe"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/send-email": {
         parameters: {
             query?: never;
@@ -13229,16 +13309,16 @@ export interface components {
          */
         ListResult42: {
             /** @example  */
-            email: string;
+            email?: string | null;
             /** @example  */
-            firstName: string;
+            firstName?: string | null;
             /**
              * @description id пользователя
              * @example
              */
             id: string;
             /** @example  */
-            lastName: string;
+            lastName?: string | null;
         };
         /**
          * AdminTransferListResult
@@ -16100,6 +16180,76 @@ export interface components {
             readonly id?: number;
             name?: string;
             users?: components["schemas"]["User.multipart"][];
+        };
+        SavedSearchException: {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            type?: string;
+        };
+        "SavedSearchException.jsonapi": {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable.jsonapi"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            type?: string;
+        };
+        "SavedSearchException.jsonld": components["schemas"]["HydraItemBaseSchema"] & {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable.jsonld"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            type?: string;
+        };
+        /**
+         * SavedSearchResult
+         * @description Подписка на подборку вакансий
+         */
+        SavedSearchResult: {
+            createdAt: string;
+            /** @enum {string} */
+            emailFrequency: "weekly" | "daily" | "off";
+            /** @description Фильтры в формате параметров GET /api/v1/vacancy */
+            filters: Record<string, never>;
+            id: string;
+            name: string;
+            pushEnabled: boolean;
+            /** @description Параметры адреса карты вакансий сайта: /offers-map?{siteQuery} */
+            siteQuery: string;
         };
         /**
          * SearchResult
@@ -30598,6 +30748,234 @@ export interface operations {
                         pagination?: components["schemas"]["PaginationResult"];
                     };
                 };
+            };
+        };
+    };
+    api_saved_search_exceptions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description SavedSearchException resource */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SavedSearchException"];
+                    "application/ld+json": components["schemas"]["SavedSearchException.jsonld"];
+                    "application/problem+json": components["schemas"]["SavedSearchException"];
+                    "application/vnd.api+json": components["schemas"]["SavedSearchException.jsonapi"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/vnd.api+json": components["schemas"]["Error.jsonapi"];
+                };
+            };
+        };
+    };
+    get_app_api_v1_savedsearch_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SavedSearchResult"][];
+                };
+            };
+            /** @description Не авторизован */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_savedsearch_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description Параметры GET /api/v1/vacancy: categoryIds, search, startDate, endDate, minDurationDays, maxDurationDays, languages, additionalConditions, foodIds, houseIds, transferIds, hidePassed */
+                    filters: Record<string, never>;
+                    name?: string | null;
+                    /** @enum {string} */
+                    source?: "button" | "empty" | "email" | "app";
+                };
+            };
+        };
+        responses: {
+            /** @description Такая подписка уже есть */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SavedSearchResult"];
+                };
+            };
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SavedSearchResult"];
+                };
+            };
+            /** @description saved_search_limit */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    delete_app_api_v1_savedsearch_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description saved_search_not_found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    patch_app_api_v1_savedsearch_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    emailFrequency?: "weekly" | "daily" | "off";
+                    filters?: Record<string, never>;
+                    name?: string;
+                    pushEnabled?: boolean;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SavedSearchResult"];
+                };
+            };
+            /** @description saved_search_not_found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_app_api_v1_savedsearch_unsubscribeinfo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        emailFrequency?: "weekly" | "daily" | "off";
+                        name?: string;
+                    };
+                };
+            };
+            /** @description Ссылка недействительна */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_savedsearch_unsubscribe: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Ссылка недействительна */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

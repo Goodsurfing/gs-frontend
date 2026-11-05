@@ -9,6 +9,7 @@ import { getCatalogPage } from "@/lib/offersCatalog";
 import { filterLanguages, getFilterCategories } from "@/lib/offersFilterOptions";
 import { parseOffersFilters } from "@/lib/offersFilters";
 import { routes } from "@/lib/routes";
+import { parseSubscribeSource } from "@/lib/savedSearch";
 import { pageMetadata } from "@/lib/seo";
 
 type Props = {
@@ -23,11 +24,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return pageMetadata({ locale, path: routes.offersMap(locale), title: t("offersMap.title"), description: t("offersMap.description") });
 }
 
+const SUBSCRIBE_KEYS = ["button", "empty", "emptyButton", "prompt", "promptButton", "guest", "done", "already", "manage", "limit", "error"] as const;
+
+
 /** Каталог вакансий: список и карта (GS-219). Фильтры, поиск, сортировка и страница — в адресе. */
 export default async function OffersMapPage({ params, searchParams }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
-    const filters = parseOffersFilters(await searchParams);
+    const query = await searchParams;
+    const filters = parseOffersFilters(query);
+    const subscribeSource = parseSubscribeSource(typeof query.subscribe === "string" ? query.subscribe : undefined);
     const [t, tMap, tOffer, categories] = await Promise.all([
         getTranslator(locale),
         getTranslator(locale, "offers-map"),
@@ -47,6 +53,12 @@ export default async function OffersMapPage({ params, searchParams }: Props) {
                 categories={categories}
                 languages={filterLanguages(tOffer)}
                 offerHref={routes.offer(locale, "{id}")}
+                subscribe={{
+                    source: subscribeSource,
+                    signInHref: routes.signIn(locale),
+                    manageHref: routes.profileSubscriptions(locale),
+                    labels: Object.fromEntries(SUBSCRIBE_KEYS.map((key) => [key, tMap(`subscribe.${key}`)])) as Record<(typeof SUBSCRIBE_KEYS)[number], string>,
+                }}
                 labels={{
                     count: `${total} ${tMap(`variants_${new Intl.PluralRules(locale).select(total)}`)}`,
                     showPassed: tMap("Показать прошедние"),
