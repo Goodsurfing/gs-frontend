@@ -52,5 +52,10 @@
     "На iPhone уведомления о сообщениях приходят, если добавить сайт на экран «Домой»: «Поделиться» → «На экран „Домой“»": "On iPhone, message notifications work once you add the site to the Home Screen: Share → Add to Home Screen",
     "Понятно": "Got it",
     "Уведомления включены": "Notifications are on",
-    "Браузер не разрешил уведомления — их можно включить в настройках сайта": "The browser didn't allow notifications — you can turn them on in the site settings"
+    "Браузер не разрешил уведомления — их можно включить в настройках сайта": "The browser didn't allow notifications — you can turn them on in the site settings",
+    "Предложить ответ": "Suggest a reply",
+    "Пишу черновик…": "Writing a draft…",
+    "Это черновик — проверьте и поправьте перед отправкой": "This is a draft — check and edit it before sending",
+    "Помощник на сегодня устал — попробуйте завтра": "The helper has reached today's limit — try tomorrow",
+    "Не получилось предложить ответ, попробуйте ещё раз": "Couldn't suggest a reply, please try again"
 }

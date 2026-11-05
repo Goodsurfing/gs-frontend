@@ -23,6 +23,7 @@ import { type ChatListLabels, ChatList } from "./ChatList";
 import { type CompanionLabels, type CompanionProfile, CompanionInfo } from "./CompanionInfo";
 import { MessageBubble } from "./MessageBubble";
 import { type PushOfferLabels, PushOffer } from "./PushOffer";
+import { type ReplyDraftLabels, ReplyDraft } from "./ReplyDraft";
 import { useChatList, useChatMessages, useLiveMessages } from "./useMessenger";
 
 export interface MessengerLabels {
@@ -42,6 +43,7 @@ export interface MessengerLabels {
     application: ApplicationLabels;
     companion: CompanionLabels;
     push: PushOfferLabels;
+    draft: ReplyDraftLabels;
 }
 
 export interface MessengerHrefs {
@@ -309,6 +311,8 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     };
 
     const [infoOpen, setInfoOpen] = useState(false);
+    // Черновик ответа хоста от помощника — подставляется в поле ввода
+    const [draft, setDraft] = useState<{ text: string; key: number } | null>(null);
     const [image, setImage] = useState<string | null>(null);
 
     const headerPerson = companion ?? participant;
@@ -483,6 +487,17 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                                 labels={labels.input}
                                 onSend={(message) => void send(message)}
                                 onError={fail}
+                                prefill={draft}
+                                extra={application?.id && !volunteerHere && realChatId ? (
+                                    <ReplyDraft
+                                        key={realChatId}
+                                        token={token}
+                                        applicationId={application.id}
+                                        onDraft={(text) => setDraft({ text, key: Date.now() })}
+                                        onError={fail}
+                                        labels={labels.draft}
+                                    />
+                                ) : null}
                             />
                         </div>
                         {companion && (

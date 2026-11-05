@@ -2771,6 +2771,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/assistant/application-reply": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Черновик ответа хоста волонтёру по заявке */
+        post: operations["post_app_api_v1_assistant_applicationreply"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/assistant/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Включены ли нейропомощники (показывать ли кнопки «Предложить текст») */
+        get: operations["get_app_api_v1_assistant_status"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/blog": {
         parameters: {
             query?: never;
@@ -26859,6 +26893,76 @@ export interface operations {
                     "application/ld+json": components["schemas"]["Error.jsonld"];
                     "application/problem+json": components["schemas"]["Error"];
                     "application/vnd.api+json": components["schemas"]["Error.jsonapi"];
+                };
+            };
+        };
+    };
+    post_app_api_v1_assistant_applicationreply: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    application: number;
+                };
+            };
+        };
+        responses: {
+            /** @description Черновик */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        text?: string;
+                    };
+                };
+            };
+            /** @description Заявка не на вакансию вашей организации */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Лимит на сегодня исчерпан */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Помощник недоступен */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_app_api_v1_assistant_status: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        enabled?: boolean;
+                    };
                 };
             };
         };
