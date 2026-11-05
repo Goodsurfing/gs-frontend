@@ -103,13 +103,15 @@ describe("мессенджер как в Worldpackers", () => {
         expect(formatDayLabel("ru", at(1), now)).toBe("Вчера");
         expect(formatDayLabel("en", at(1), now)).toBe("Yesterday");
         expect(formatDayLabel("ru", new Date(2026, 9, 3).toISOString(), now)).toBe("3 октября");
-        expect(formatDayLabel("ru", new Date(2025, 9, 3).toISOString(), now)).toBe("3 октября 2025 г.");
+        expect(formatDayLabel("ru", new Date(2025, 9, 3).toISOString(), now).replace(/[\s\u202f]+/g, " ")).toBe("3 октября 2025 г.");
     });
 
     it("даты заявки коротким диапазоном, без сдвига часового пояса", () => {
-        expect(formatDateRange("ru", "2026-12-01", "2026-12-20")).toBe("1–20 дек. 2026 г.");
-        expect(formatDateRange("ru", "2026-12-28", "2027-01-05")).toBe("28 дек. 2026 г. – 5 янв. 2027 г.");
-        expect(formatDateRange("ru", "2026-12-01", "2026-12-01")).toBe("1 дек. 2026 г.");
+        // Версии ICU расходятся в пробелах (обычный, неразрывный, узкий) — сравниваем без них
+        const plain = (text: string) => text.replace(/[\s\u202f\u2009]+/g, " ");
+        expect(plain(formatDateRange("ru", "2026-12-01", "2026-12-20"))).toBe("1–20 дек. 2026 г.");
+        expect(plain(formatDateRange("ru", "2026-12-28", "2027-01-05"))).toBe("28 дек. 2026 г. – 5 янв. 2027 г.");
+        expect(plain(formatDateRange("ru", "2026-12-01", "2026-12-01"))).toBe("1 дек. 2026 г.");
         expect(formatDateRange("ru", null, "2026-12-01")).toBe("");
     });
 
