@@ -65,11 +65,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function OrganizationPage({ params }: Props) {
     const { locale, id } = await params;
     if (!isLocale(locale)) notFound();
-    const [result, t, tHost, tProfile, tOffer] = await Promise.all([
+    const [result, t, tHost, tOffer] = await Promise.all([
         getOrganization(locale, id),
         getTranslator(locale),
         getTranslator(locale, "host"),
-        getTranslator(locale, "profile"),
         getTranslator(locale, "offer"),
     ]);
     const h = (key: string) => tHost(`personalHost.${key}`);
@@ -125,8 +124,8 @@ export default async function OrganizationPage({ params }: Props) {
                                     badge={t("membershipBadge.Партнёр Гудсёрфинга")}
                                     membershipHref={routes.membership(locale)}
                                     labels={{
-                                        verified: tProfile("personal.Верифицированный пользователь. Хочешь, чтобы тебе тоже больше доверяли? Оформи членство!"),
-                                        howTo: tProfile("personal.Как это сделать?"),
+                                        verified: tHost("verifiedHost.hint"),
+                                        howTo: tHost("verifiedHost.howTo"),
                                     }}
                                 />
                             )}

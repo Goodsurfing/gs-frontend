@@ -49,5 +49,6 @@
         "manage": "My subscriptions",
         "limit": "Up to 5 subscriptions — remove one in “My subscriptions”.",
         "error": "Couldn't subscribe. Please try again"
-    }
+    },
+    "Только верифицированные хосты": "Verified hosts only"
 }

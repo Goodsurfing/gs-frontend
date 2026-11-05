@@ -224,5 +224,9 @@
     "slowReply": {
         "label": "Responde con demora",
         "hint": "Más de la mitad de las solicitudes esperan una semana o más la respuesta del anfitrión"
+    },
+    "verifiedHost": {
+        "hint": "Anfitrión verificado: tiene la membresía de GoodSurfing pagada.",
+        "howTo": "¿Cómo verificarse?"
     }
 }

@@ -15635,6 +15635,12 @@ export interface components {
             /** @example  */
             id: string;
             image: components["schemas"]["ImageResultDto"];
+            /**
+             * @description Верифицированный хост (GS-245): у владельца организации активное членство организатора — как «Партнёр Гудсёрфинга» на странице организации
+             * @default false
+             * @example false
+             */
+            isVerified: boolean;
             /** @example  */
             name: string;
             /** @example  */
@@ -32458,6 +32464,8 @@ export interface operations {
                 startDate?: string;
                 /** @description Ids трансферов */
                 "transferIds[]"?: number[];
+                /** @description Только вакансии верифицированных хостов: у владельца организации активное членство организатора */
+                verifiedHost?: boolean;
             };
             header?: never;
             path?: never;
@@ -32782,6 +32790,8 @@ export interface operations {
                 startDate?: string;
                 /** @description Ids трансферов */
                 "transferIds[]"?: number[];
+                /** @description Только вакансии верифицированных хостов: у владельца организации активное членство организатора */
+                verifiedHost?: boolean;
             };
             header?: never;
             path?: never;
