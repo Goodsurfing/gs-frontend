@@ -105,5 +105,23 @@
         "Не удалось загрузить статьи. Попробуйте обновить страницу": "Failed to load articles. Try reloading the page"
     },
     "Добро пожаловать!": "Welcome!",
-    "Рады приветствовать вас на нашем сайте Для вашего удобства предлагаем максимально подробно заполнить свой профиль": "Welcome to our site. For your convenience, we recommend filling in your profile in as much detail as possible."
+    "Рады приветствовать вас на нашем сайте Для вашего удобства предлагаем максимально подробно заполнить свой профиль": "Welcome to our site. For your convenience, we recommend filling in your profile in as much detail as possible.",
+    "reviewAssistant": {
+        "title": "Not sure what to write? Tick what it was like — the helper will put the review together",
+        "write": "Help me write",
+        "writing": "Writing…",
+        "hint": "The text is in the field below — make it your own",
+        "limit": "The helper has reached today's limit — try tomorrow",
+        "failed": "Didn't work, please try again",
+        "good": "friendly team|tasty food|interesting work|beautiful nature|caring host|good housing|learned a lot|had free time",
+        "bad": "hard work|little free time|basic living conditions|not quite as described|host rarely in touch"
+    },
+    "why": {
+        "title": "Why it fits:",
+        "category": "your interest “{value}”",
+        "skill": "your skill “{value}”",
+        "language": "language: {value}",
+        "rating": "rating {value}",
+        "top": "Top host"
+    }
 }

@@ -13,6 +13,7 @@ import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
 import type { CatalogOffer } from "@/lib/offersCatalog";
+import { whyText, type WhyLabels } from "@/lib/recommendations";
 
 import { Doughnut } from "./Doughnut";
 
@@ -39,7 +40,11 @@ export interface VolunteerDashboardLabels {
     welcomeText: string;
     card: OfferListCardLabels;
     favorite: { add: string; remove: string };
+    /** «Почему подходит» под рекомендацией (GS-256); {value} — что совпало */
+    why: WhyLabels;
 }
+
+interface Reason { type: string; value: string }
 
 const card = "bg-white shadow-[0_5px_20px_rgba(14,29,39,0.05)]";
 const cardTop = "flex justify-between border-b border-caption px-5 py-[13px]";
@@ -61,6 +66,8 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
     const profile = session.status === "user" ? session.profile : null;
     const [occupancy, setOccupancy] = useState<Occupancy | null>(null);
     const [offers, setOffers] = useState<CatalogOffer[] | null>(null);
+    // Подбор под волонтёра (направления, навыки, языки, прошлые поездки); пусто — подборка по любимым направлениям
+    const [picked, setPicked] = useState<{ offers: CatalogOffer[]; reasons: Record<number, Reason[]> } | null>(null);
     const [date, setDate] = useState("");
     const favorite = (profile?.favoriteCategories ?? []).join(",");
 
@@ -76,29 +83,38 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
     }, [session.status, session.token]);
 
     useEffect(() => {
+        if (session.status !== "user") return;
+        let cancelled = false;
+        const api = browserApi(session.token);
+        void api.GET("/api/v1/assistant/recommendations", { params: { query: { lang: locale } } })
+            .then(async ({ data }) => {
+                const list = (Array.isArray(data) ? data : []) as { id: number; reasons: Reason[] }[];
+                if (list.length === 0) {
+                    if (!cancelled) setPicked({ offers: [], reasons: {} });
+                    return;
+                }
+                const cards = await api.GET("/api/v1/vacancy", { params: { query: { "ids[]": list.map((item) => item.id), fields: "card", limit: list.length } } });
+                if (cancelled) return;
+                const byId = new Map((cards.data?.data ?? []).map((offer) => [offer.id, offer]));
+                setPicked({
+                    offers: list.map((item) => byId.get(item.id)).filter((offer) => offer !== undefined).map((offer) => toCard(offer, categories)),
+                    reasons: Object.fromEntries(list.map((item) => [item.id, item.reasons])),
+                });
+            })
+            .catch(() => !cancelled && setPicked({ offers: [], reasons: {} }));
+        return () => {
+            cancelled = true;
+        };
+    }, [session.status, session.token, locale, categories]);
+
+    useEffect(() => {
         if (session.status !== "user" || !favorite) return;
         let cancelled = false;
         void browserApi(session.token)
             .GET("/api/v1/vacancy", { params: { query: { "categoryIds[]": favorite.split(",").map(Number), sort: "recommendation", fields: "card", limit: 10 } } })
             .then(({ data }) => {
                 if (cancelled) return;
-                setOffers((data?.data ?? []).slice(0, 10).map((offer) => {
-                    const name = offer.categories[0]?.name?.trim();
-                    return {
-                        id: offer.id,
-                        title: offer.title,
-                        description: offer.shortDescription,
-                        image: mediaUrl(offer.image, "medium"),
-                        address: offer.address,
-                        category: name ? categories[name] ?? name : undefined,
-                        rating: Number(offer.averageRating) || 0,
-                        reviews: offer.reviewsCount,
-                        went: offer.acceptedApplicationsCount,
-                        active: String(offer.status) === "active",
-                        // Отметки «нет на карте» на дашборде старого фронта не было
-                        onMap: true,
-                    };
-                }));
+                setOffers((data?.data ?? []).slice(0, 10).map((offer) => toCard(offer, categories)));
             })
             .catch(() => !cancelled && setOffers([]));
         return () => {
@@ -130,8 +146,10 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
         { text: labels.points.blog, done: !!occupancy?.isBlogPost },
         { text: labels.points.membership, done: !!occupancy?.isMembership },
     ];
-    // Без любимых направлений подборки нет
-    const shownOffers = profile && !favorite ? [] : offers;
+    // Подбор под волонтёра, если нашёлся; иначе — по любимым направлениям (без них подборки нет)
+    const fallback = profile && !favorite ? [] : offers;
+    const shownOffers = picked === null ? null : picked.offers.length > 0 ? picked.offers : fallback;
+    const reasonsOf = (id: number) => (picked?.offers.length ? picked.reasons[id] ?? [] : []);
     const share = points.filter((point) => point.done).length / points.length;
 
     return (
@@ -174,14 +192,20 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
                     </div>
                     <div>
                         {shownOffers === null ? <Spinner /> : shownOffers.map((offer) => (
-                            <OfferListCard
-                                key={offer.id}
-                                offer={offer}
-                                href={hrefs.offer.replace("{id}", String(offer.id))}
-                                wide={false}
-                                labels={labels.card}
-                                favorite={favorites.enabled ? { active: favorites.isFavorite(offer.id), busy: favorites.isBusy(offer.id), labels: labels.favorite, onToggle: () => void favorites.toggleFavorite(offer.id) } : undefined}
-                            />
+                            <div key={offer.id}>
+                                <OfferListCard
+                                    offer={offer}
+                                    href={hrefs.offer.replace("{id}", String(offer.id))}
+                                    wide={false}
+                                    labels={labels.card}
+                                    favorite={favorites.enabled ? { active: favorites.isFavorite(offer.id), busy: favorites.isBusy(offer.id), labels: labels.favorite, onToggle: () => void favorites.toggleFavorite(offer.id) } : undefined}
+                                />
+                                {reasonsOf(offer.id).length > 0 && (
+                                    <p className="mx-5 mt-2.5 mb-4 text-[12px] leading-[140%] text-cta-hover">
+                                        <b>{labels.why.title}</b> {reasonsOf(offer.id).map((reason) => whyText(reason, labels.why, locale)).filter(Boolean).join(" · ")}
+                                    </p>
+                                )}
+                            </div>
                         ))}
                     </div>
                 </section>
@@ -249,4 +273,37 @@ function Quota({ occupancy, href, labels }: { occupancy: Occupancy; href: string
             </div>
         </div>
     );
+}
+
+/** Поля карточки вакансии из списка API (fields=card), которые нужны дашборду */
+interface CardOffer {
+    id: number;
+    title: string;
+    shortDescription: string;
+    image?: Parameters<typeof mediaUrl>[0];
+    address: string;
+    categories: { name?: string | null }[];
+    averageRating?: unknown;
+    reviewsCount: number;
+    acceptedApplicationsCount: number;
+    status?: unknown;
+}
+
+/** Карточка вакансии из списка API (fields=card) */
+function toCard(offer: CardOffer, categories: Record<string, string>): CatalogOffer {
+    const name = offer.categories[0]?.name?.trim();
+    return {
+        id: offer.id,
+        title: offer.title,
+        description: offer.shortDescription,
+        image: mediaUrl(offer.image, "medium"),
+        address: offer.address,
+        category: name ? categories[name] ?? name : undefined,
+        rating: Number(offer.averageRating) || 0,
+        reviews: offer.reviewsCount,
+        went: offer.acceptedApplicationsCount,
+        active: String(offer.status) === "active",
+        // Отметки «нет на карте» на дашборде старого фронта не было
+        onMap: true,
+    };
 }
