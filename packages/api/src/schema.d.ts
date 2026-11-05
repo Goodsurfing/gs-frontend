@@ -2558,6 +2558,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/achievement/organization/{id}/response-stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Как организация отвечает на заявки: доля, обычное время, «долго отвечает». null — заявок меньше трёх */
+        get: operations["get_app_api_v1_achievement_organizationresponsestats"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/app-events": {
         parameters: {
             query?: never;
@@ -15907,6 +15924,12 @@ export interface components {
              * @example 12
              */
             sample: number;
+            /**
+             * @description «Долго отвечает» (GS-242): от 5 заявок, и больше половины из них неделю и дольше без ответа — ни сообщения, ни смены статуса
+             * @default false
+             * @example false
+             */
+            slow: boolean;
         };
         ReviewJournal: {
             /**
@@ -24914,11 +24937,13 @@ export interface operations {
                 firstName?: string;
                 /** @description Поиск по id пользователя */
                 id?: string;
+                /** @description Фильтр по членству в Международном клубе */
+                internationalStatus?: "active" | "inactive";
                 /** @description Поиск по фамилии пользователя */
                 lastName?: string;
                 /** @description Количество элементов на странице */
                 limit?: number;
-                /** @description Фильтр по личному членству пользователя */
+                /** @description Фильтр по обычному членству пользователя (без Международного клуба) */
                 membershipStatus?: "active" | "inactive";
                 /** @description Номер страницы */
                 page?: number;
@@ -26093,6 +26118,27 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BadgeResult"][];
+                };
+            };
+        };
+    };
+    get_app_api_v1_achievement_organizationresponsestats: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseStatsResult"] | null;
                 };
             };
         };

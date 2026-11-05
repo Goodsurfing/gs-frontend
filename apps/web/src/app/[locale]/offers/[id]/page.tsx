@@ -271,6 +271,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
                     labels={{ title: p("Организация"), more: p("Подробнее") }}
                     badges={badges}
                     badgesHref={routes.achievements(locale)}
+                    slowReply={organization.responseStats?.slow ? { label: tHost("slowReply.label"), hint: tHost("slowReply.hint") } : null}
                 />
                 <OfferParticipants
                     offerId={offer.id}
