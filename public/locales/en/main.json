@@ -83,5 +83,21 @@
         "review": "New review",
         "article": "New article",
         "holders": "Earned by {count}"
+    },
+    "landing": {
+        "allOnMap": "All opportunities on the map",
+        "openCount": "Open opportunities: {n}",
+        "empty": "No open opportunities in this category right now — check the map or subscribe to a saved search.",
+        "faq": "FAQ",
+        "more": "Other categories",
+        "title": "Volunteering: {name} — free stay in exchange for help",
+        "h1": "Volunteering: {name}",
+        "description": "{name}: volunteering projects in Russia and abroad with free accommodation (often meals) in exchange for a few hours of help a day.",
+        "intro1": "Hosts in the {name} category offer accommodation, and often meals, in exchange for a few hours of help a day.",
+        "intro2": "Below are opportunities with open dates — conditions, schedule and housing are described in each.",
+        "faqCostQ": "How much does it cost?",
+        "faqCostA": "Applying and messaging hosts is free; your first applications each year don't need a membership. Travel is usually at your own expense — see each opportunity for details.",
+        "faqExpQ": "Do I need experience?",
+        "faqExpA": "Usually not — hosts explain the tasks on site. Required skills are listed under “Who is needed”."
     }
 }

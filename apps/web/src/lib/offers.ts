@@ -5,6 +5,7 @@ import type { components } from "@goodsurfing/api";
 import type { Locale } from "@/i18n/config";
 
 import { OPTIONAL_BLOCK_TIMEOUT_MS, serverApi } from "./api";
+import { ApiUnavailableError } from "./apiUnavailable";
 
 export type OfferCardData = components["schemas"]["ListResult6"];
 
@@ -26,3 +27,27 @@ export async function getOffersByCategories(locale: Locale, categoryIds: number[
         return [];
     }
 }
+
+/**
+ * Открытые вакансии направления для посадочной страницы (`/volunteering/<slug>`):
+ * только с будущими датами или «круглый год» (hidePassed), до 24, сначала
+ * рекомендованные. Сколько всего — для строки «N открытых вакансий».
+ * Список — главное содержимое страницы: ждём дольше необязательных блоков, а при
+ * сбое API бросаем ApiUnavailableError, чтобы пустая страница не попала в кэш.
+ */
+export async function getOpenOffersOfCategory(locale: Locale, categoryId: number): Promise<{ offers: OfferCardData[]; total: number }> {
+    let result;
+    try {
+        result = await serverApi(locale).GET("/api/v1/vacancy", {
+            params: { query: { "categoryIds[]": [categoryId], hidePassed: true, sort: "recommendation", fields: "card", limit: 24 } as never },
+            signal: AbortSignal.timeout(LANDING_TIMEOUT_MS),
+        });
+    } catch {
+        throw new ApiUnavailableError(`вакансии направления ${categoryId}`);
+    }
+    if (!result.data) throw new ApiUnavailableError(`вакансии направления ${categoryId}`);
+    const offers = (result.data.data ?? []) as OfferCardData[];
+    return { offers, total: (result.data as { pagination?: { total?: number } }).pagination?.total ?? offers.length };
+}
+
+const LANDING_TIMEOUT_MS = 8000;
