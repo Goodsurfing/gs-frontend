@@ -5,6 +5,7 @@ import { createContext, type ReactNode, useCallback, useContext, useEffect, useM
 
 import type { Locale } from "@/i18n/config";
 import { API_URL, browserApi } from "@/lib/browserApi";
+import { forgetPush } from "@/lib/webPush";
 
 import { clearLegacySession, legacyAccessToken, legacyRefreshToken } from "./legacySession";
 
@@ -78,6 +79,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const logout = useCallback(async () => {
+        // Пока вход ещё действует: этот браузер перестаёт получать пуши вышедшего
+        await forgetPush(token);
         const refresh = legacyRefreshToken();
         await fetch(`${API_URL}/api/v1/token/logout`, {
             method: "POST",
@@ -88,7 +91,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         }).catch(() => undefined);
         clearLegacySession();
         setState(GUEST);
-    }, []);
+    }, [token]);
 
     // Язык писем и интерфейса — в профиль; переход на другой язык не ждёт ответа
     const saveLocale = useCallback((locale: Locale) => {

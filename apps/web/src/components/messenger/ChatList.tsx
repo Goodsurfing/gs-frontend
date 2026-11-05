@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 
 import { Avatar } from "@/components/ui/Avatar";
 import type { Locale } from "@/i18n/config";
@@ -35,7 +35,7 @@ const STEP = 30;
  * значком прочтения) и число непрочитанных. Строки дорисовываются при
  * прокрутке по 30, чтобы длинный список не тормозил слабые телефоны.
  */
-export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerIsVolunteer, selectedId, chatHref, onOpen, search, onSearch, labels, className = "" }: {
+export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerIsVolunteer, selectedId, chatHref, onOpen, search, onSearch, labels, top, className = "" }: {
     locale: Locale;
     chats: Chat[];
     loaded: boolean;
@@ -49,6 +49,8 @@ export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerI
     search: string;
     onSearch: (value: string) => void;
     labels: ChatListLabels;
+    /** Над поиском: предложение включить уведомления */
+    top?: ReactNode;
     className?: string;
 }) {
     const [tab, setTab] = useState<ChatTab>("all");
@@ -59,6 +61,7 @@ export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerI
 
     return (
         <div className={`flex h-full w-full max-w-[400px] min-w-[300px] flex-col border-r border-accent-bg bg-white ${className}`}>
+            {top}
             <div className="flex flex-col gap-2 border-b border-accent-bg px-4 pt-4">
                 <input
                     type="search"

@@ -9,7 +9,10 @@ import "../globals.css";
 
 export const metadata: Metadata = {
     title: "GoodSurfing",
-    icons: { icon: "/favicon.png" },
+    icons: { icon: "/favicon.png", apple: "/web/icons/app/icon-180.png" },
+    // Установка на экран «Домой»: на iPhone веб-пуши работают только у установленного сайта
+    manifest: "/web/manifest.webmanifest",
+    appleWebApp: { capable: true, title: "GoodSurfing", statusBarStyle: "default" },
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://goodsurfing.org"),
 };
 
