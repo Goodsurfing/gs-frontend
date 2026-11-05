@@ -32,4 +32,12 @@ describe("buildNavigation", () => {
         const items = community?.kind === "group" ? community.items : [];
         expect(items.at(-1)).toEqual({ label: "main.welcome.header.expeditions", href: "https://expedition.goodsurfing.org/" });
     });
+
+    it("«Достижения» — в «Сообществе», сразу после «Амбассадоров», как в подвале", () => {
+        const community = buildNavigation("ru", t).entries[0];
+        const items = community?.kind === "group" ? community.items : [];
+        const index = items.findIndex((item) => item.href === "/achievements");
+        expect(items[index]?.label).toBe("main.welcome.header.community.achievements");
+        expect(items[index - 1]?.label).toBe("main.welcome.header.community.ambassadors");
+    });
 });
