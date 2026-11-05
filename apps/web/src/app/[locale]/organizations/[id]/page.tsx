@@ -165,22 +165,26 @@ export default async function OrganizationPage({ params }: Props) {
 
                 <SectionSubmenu
                     className="z-[8]"
+                    // Пустые разделы не показываются — и в меню их нет (решение владельца 05.11.2026)
                     items={[
-                        { id: "1", text: h("Об организации") },
+                        organization.description ? { id: "1", text: h("Об организации") } : null,
                         { id: "2", text: h("Вакансии") },
-                        { id: "3", text: h("Фото") },
-                        { id: "4", text: h("Видео") },
-                        { id: "6", text: h("Отзывы") },
-                    ]}
+                        gallery.length > 0 ? { id: "3", text: h("Фото") } : null,
+                        videos.length > 0 ? { id: "4", text: h("Видео") } : null,
+                        reviews && reviews.total > 0 ? { id: "6", text: h("Отзывы") } : null,
+                    ].filter((item) => item !== null)}
                 >
                     {actions}
                 </SectionSubmenu>
 
                 <div className="mx-auto flex max-w-[980px] flex-col items-center justify-center">
-                    <div id="1" className="mt-[60px] w-full">
-                        <SectionTitle>{h("Об организации")}</SectionTitle>
-                        <p className="mt-5 whitespace-pre-line break-words">{organization.description || h("Организатор не указал данную информацию")}</p>
-                    </div>
+                    {organization.description && (
+                        <div id="1" className="mt-[60px] w-full">
+                            <SectionTitle>{h("Об организации")}</SectionTitle>
+                            <p className="mt-5 whitespace-pre-line break-words">{organization.description}</p>
+                        </div>
+                    )}
+                    {/* Вакансии — всегда: «У организации пока нет вакансий» тоже ответ для волонтёра */}
                     <div id="2" className="mt-[60px] w-full">
                         <SectionTitle>{h("Вакансии")}</SectionTitle>
                         <OrganizationOffers
@@ -201,26 +205,26 @@ export default async function OrganizationPage({ params }: Props) {
                             }}
                         />
                     </div>
-                    <div id="3" className="mt-[60px] w-full">
-                        <SectionTitle>{h("Фото")}</SectionTitle>
-                        {gallery.length > 0 ? (
+                    {gallery.length > 0 && (
+                        <div id="3" className="mt-[60px] w-full">
+                            <SectionTitle>{h("Фото")}</SectionTitle>
                             <GalleryCarousel
                                 images={gallery}
                                 className="mt-[30px]"
                                 labels={{ open: t("gallery.open"), photo: t("gallery.photo"), close: t("Закрыть"), ...sliderLabels }}
                             />
-                        ) : <p className="mt-[30px]">{h("Галерея не заполнена")}</p>}
-                    </div>
-                    <div id="4" className="mt-[60px] w-full">
-                        <SectionTitle>{h("Видео")}</SectionTitle>
-                        {videos.length > 0 ? (
+                        </div>
+                    )}
+                    {videos.length > 0 && (
+                        <div id="4" className="mt-[60px] w-full">
+                            <SectionTitle>{h("Видео")}</SectionTitle>
                             <VideoCarousel
                                 videos={videos}
                                 className="mt-[30px]"
                                 labels={{ ...sliderLabels, video: h("Видео"), unsupported: t("Неподдерживаемая ссылка на видео") }}
                             />
-                        ) : <p className="mt-[30px]">{h("Видеогалерея не заполнена")}</p>}
-                    </div>
+                        </div>
+                    )}
                     {reviews && reviews.total > 0 && (
                         <div id="6" className="mt-[60px] w-full">
                             <SectionTitle>{h("Отзывы")}</SectionTitle>
