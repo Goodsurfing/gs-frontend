@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { CommunityNews } from "@/components/home/CommunityNews";
+import { EventFeed } from "@/components/home/EventFeed";
 import { HeroSlider } from "@/components/home/HeroSlider";
 import { HomeSearch } from "@/components/home/HomeSearch";
 import { HowItWork } from "@/components/home/HowItWork";
@@ -15,7 +16,7 @@ import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { getAboutProject } from "@/lib/aboutProject";
 import { categoryLabels, categoryName } from "@/lib/categories";
-import { getFeaturedOffers, getFeaturedReviews, getHomeCategories, getLatestArticles, getMainBanner } from "@/lib/home";
+import { getEventFeed, getFeaturedOffers, getFeaturedReviews, getHomeCategories, getLatestArticles, getMainBanner } from "@/lib/home";
 import { mediaUrl } from "@/lib/media";
 import { formatStatNumber, roundStat } from "@/lib/formatStat";
 import { routes } from "@/lib/routes";
@@ -60,7 +61,7 @@ const BENEFIT_WIDTHS = [197, 208, 197];
 export default async function HomePage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
-    const [t, tMain, categories, offers, reviews, articles, banner, about] = await Promise.all([
+    const [t, tMain, categories, offers, reviews, articles, banner, about, feed] = await Promise.all([
         getTranslator(locale),
         getTranslator(locale, "main"),
         getHomeCategories(locale),
@@ -69,6 +70,7 @@ export default async function HomePage({ params }: Props) {
         getLatestArticles(locale),
         getMainBanner(locale),
         getAboutProject(locale),
+        getEventFeed(locale),
     ]);
     const labels = categoryLabels(t);
     const today = (about as { today?: { volunteerCount?: number; vacancyCount?: number; tripCount?: number } } | null)?.today;
@@ -195,6 +197,24 @@ export default async function HomePage({ params }: Props) {
                         ))}
                 </PersonalOffers>
             </Section>
+
+            <EventFeed
+                locale={locale}
+                events={feed}
+                title={tMain("eventFeed.title")}
+                prevLabel={t("slider.previous")}
+                nextLabel={t("slider.next")}
+                labels={{
+                    badge: tMain("eventFeed.badge"),
+                    trip: tMain("eventFeed.trip"),
+                    member: tMain("eventFeed.member"),
+                    memberInternational: tMain("eventFeed.memberInternational"),
+                    vacancy: tMain("eventFeed.vacancy"),
+                    review: tMain("eventFeed.review"),
+                    article: tMain("eventFeed.article"),
+                    holders: tMain("eventFeed.holders"),
+                }}
+            />
 
             <Section title={tMain("Наши преимущества")}>
                 <div className="mt-5 flex w-full items-center justify-between down-md:flex-col">

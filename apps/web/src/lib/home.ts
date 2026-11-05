@@ -92,3 +92,18 @@ export async function getMainBanner(locale: Locale): Promise<{ url: string; desc
         return null;
     }
 }
+
+export type FeedEvent = components["schemas"]["FeedEvent"];
+
+/** Лента событий Гудсёрфинга (GS-241); необязательный блок — при сбое API его просто нет */
+export async function getEventFeed(locale: Locale): Promise<FeedEvent[]> {
+    try {
+        const { data } = await serverApi(locale).GET("/api/v1/event-feed", {
+            params: { query: { lang: locale } },
+            signal: AbortSignal.timeout(OPTIONAL_BLOCK_TIMEOUT_MS),
+        });
+        return Array.isArray(data) ? data : [];
+    } catch {
+        return [];
+    }
+}

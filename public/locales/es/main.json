@@ -72,5 +72,16 @@
     },
     "Вакансия не найдена или произошла ошибка": "No se encontró la oportunidad o se produjo un error",
     "Назад": "Atrás",
-    "Вакансия не опубликована": "La oportunidad no está publicada"
+    "Вакансия не опубликована": "La oportunidad no está publicada",
+    "eventFeed": {
+        "title": "Novedades de Goodsurfing",
+        "badge": "Insignia obtenida",
+        "trip": "Va a un proyecto",
+        "member": "Se unió a la comunidad Goodsurfing",
+        "memberInternational": "Se unió al club internacional",
+        "vacancy": "Nueva vacante",
+        "review": "Nueva reseña",
+        "article": "Nuevo artículo",
+        "holders": "La tienen: {count}"
+    }
 }

@@ -106,7 +106,10 @@
         "Отмена": "Cancelar",
         "Выберете настройки приватности": "Elija la configuración de privacidad",
         "Получать рассылку от Гудсёрфинга с новостями и обновлениями": "Recibir el boletín de Goodsurfing con noticias y novedades",
-        "Не удалось сохранить настройку рассылки": "No se pudo guardar el ajuste del boletín"
+        "Не удалось сохранить настройку рассылки": "No se pudo guardar el ajuste del boletín",
+        "Показывать меня в ленте событий на главной": "Mostrarme en las novedades de la página principal",
+        "В ленте видны имя, город и фото: получен значок, поездка в проект, вступление в сообщество": "Las novedades muestran tu nombre, ciudad y foto: insignias, viajes a proyectos, unirte a la comunidad",
+        "Не удалось сохранить настройку ленты событий": "No se pudo guardar la configuración de novedades"
     },
     "personal": {
         "Произошла ошибка": "Ocurrió un error",

@@ -3163,6 +3163,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/event-feed": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Лента событий Гудсёрфинга: значки, поездки, членство, вакансии, отзывы, статьи за 30 дней (до 24, свежие первыми) */
+        get: operations["get_app_api_v1_eventfeed_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/favorites/vacancies": {
         parameters: {
             query?: never;
@@ -4586,6 +4603,23 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profile/event-feed": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Показывать ли меня в ленте событий на главной */
+        patch: operations["patch_app_api_v1_eventfeed_setvisibility"];
         trace?: never;
     };
     "/api/v1/profile/favorite-category": {
@@ -10592,6 +10626,12 @@ export interface components {
             marketingConsent: Record<string, never>;
             /** @example  */
             phone: string;
+            /**
+             * @description Показывать в ленте событий на главной (GS-241)
+             * @default true
+             * @example true
+             */
+            showInEventFeed: Record<string, never>;
             /** @example  */
             telegram: string;
             /** @default [] */
@@ -11740,6 +11780,66 @@ export interface components {
             title: string;
             /** @example 123 */
             vacancyId: number;
+        };
+        /**
+         * FeedEvent
+         * @description Событие ленты на главной (GS-241): значок, поездка, членство, вакансия, отзыв, статья
+         */
+        FeedEvent: {
+            /**
+             * @description Когда (ISO 8601)
+             * @example 2026-11-05T12:00:00+03:00
+             */
+            at: string;
+            /**
+             * @description У скольких есть этот значок
+             * @default null
+             */
+            holders: number | null;
+            /**
+             * @description Картинка события: значок, обложка вакансии или статьи (превью)
+             * @default null
+             */
+            image: string | null;
+            /**
+             * @description Членство: regular или international
+             * @default null
+             */
+            membership: string | null;
+            /**
+             * @description Аватар (маленькое превью)
+             * @default null
+             */
+            personAvatar: string | null;
+            /**
+             * @description Кто: волонтёр или организация
+             * @default null
+             */
+            personName: string | null;
+            /**
+             * @description Город или адрес
+             * @default null
+             */
+            personPlace: string | null;
+            /**
+             * @description Оценка отзыва, 1–5
+             * @default null
+             */
+            rating: number | null;
+            /** @description id профиля или организации, номер вакансии, адрес статьи */
+            targetId: string;
+            /**
+             * @description Куда ведёт карточка: volunteer, organization, offer, blog
+             * @enum {string}
+             */
+            targetKind: "volunteer" | "organization" | "offer" | "blog";
+            /** @description Главная строка: название значка, вакансии или статьи */
+            title: string;
+            /**
+             * @description badge — получил значок; trip — отправился в проект; member — стал членом сообщества; vacancy — новая вакансия; review — новый отзыв; article — статья в блоге
+             * @enum {string}
+             */
+            type: "badge" | "trip" | "member" | "vacancy" | "review" | "article";
         };
         /**
          * FileResult
@@ -17239,6 +17339,11 @@ export interface components {
             reviewVolunteers?: components["schemas"]["ReviewVolunteer"][];
             /** @description The user roles */
             roles?: string[];
+            /**
+             * @description Показывать ли человека в ленте событий на главной (GS-241); выключается в «Приватности»
+             * @default true
+             */
+            showInEventFeed: boolean;
             telegram?: string | null;
             readonly unreadMessagesCount?: number;
             /** @description A visual identifier that represents this user. */
@@ -17676,6 +17781,11 @@ export interface components {
             reviewVolunteers?: components["schemas"]["ReviewVolunteer.jsonld"][];
             /** @description The user roles */
             roles?: string[];
+            /**
+             * @description Показывать ли человека в ленте событий на главной (GS-241); выключается в «Приватности»
+             * @default true
+             */
+            showInEventFeed: boolean;
             telegram?: string | null;
             readonly unreadMessagesCount?: number;
             /** @description A visual identifier that represents this user. */
@@ -18043,6 +18153,11 @@ export interface components {
             reviewVolunteers?: components["schemas"]["ReviewVolunteer.multipart"][];
             /** @description The user roles */
             roles?: string[];
+            /**
+             * @description Показывать ли человека в ленте событий на главной (GS-241); выключается в «Приватности»
+             * @default true
+             */
+            showInEventFeed: boolean;
             telegram?: string | null;
             readonly unreadMessagesCount?: number;
             /** @description A visual identifier that represents this user. */
@@ -27419,6 +27534,27 @@ export interface operations {
             };
         };
     };
+    get_app_api_v1_eventfeed_list: {
+        parameters: {
+            query?: {
+                lang?: "ru" | "en" | "es";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FeedEvent"][];
+                };
+            };
+        };
+    };
     get_app_api_v1_favoritevacancy_list: {
         parameters: {
             query?: {
@@ -30176,6 +30312,37 @@ export interface operations {
         requestBody?: never;
         responses: {
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    patch_app_api_v1_eventfeed_setvisibility: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    show: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description Сохранено */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Нужно поле show */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };

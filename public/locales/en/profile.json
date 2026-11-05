@@ -106,7 +106,10 @@
         "Отмена": "Cancel",
         "Выберете настройки приватности": "Choose privacy settings",
         "Получать рассылку от Гудсёрфинга с новостями и обновлениями": "Receive the Goodsurfing newsletter with news and updates",
-        "Не удалось сохранить настройку рассылки": "Could not save the newsletter setting"
+        "Не удалось сохранить настройку рассылки": "Could not save the newsletter setting",
+        "Показывать меня в ленте событий на главной": "Show me in the event feed on the home page",
+        "В ленте видны имя, город и фото: получен значок, поездка в проект, вступление в сообщество": "The feed shows your name, city and photo: badges earned, trips to projects, joining the community",
+        "Не удалось сохранить настройку ленты событий": "Couldn't save the event feed setting"
     },
     "personal": {
         "Произошла ошибка": "An error occurred",
