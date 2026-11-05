@@ -3,7 +3,7 @@ import type { components } from "@goodsurfing/api";
 import type { Translate } from "@/i18n/dictionary";
 import {
     ageText, conditionName, EXTRA_CONDITIONS, EXTRA_FEATURES, GOODS, gendersText, languagesText,
-    money, receptionPlaceText, skillName, timeTypeText,
+    money, receptionPlaceText, skillName, timeTypeText, workTimeType,
 } from "@/lib/offerText";
 
 import { IconGrid, IconText, InfoCard, InfoCardItem, MaskIcon, RemoteSvg, SectionTitle } from "./parts";
@@ -97,7 +97,7 @@ export function OfferWhatToDo({ todo, svgs, t, tCommon }: { todo: S["WhatToDoRes
             </div>
             <div className="flex w-full flex-col gap-[30px]">
                 <InfoCard>
-                    <InfoCardItem title={t("personalOffer.Количество рабочих часов")} text={`${todo.hour} ${timeTypeText(todo.timeType, t)}`} />
+                    <InfoCardItem title={t("personalOffer.Количество рабочих часов")} text={`${todo.hour} ${timeTypeText(workTimeType(todo.hour, todo.timeType), t)}`} />
                     <InfoCardItem title={t("personalOffer.Выходных дней в неделю")} text={todo.dayOff} />
                 </InfoCard>
             </div>

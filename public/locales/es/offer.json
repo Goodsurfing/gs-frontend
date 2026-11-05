@@ -281,5 +281,10 @@
         "nextSteps": "Útil para los siguientes pasos:",
         "limit": "El asistente alcanzó el límite de hoy, inténtalo mañana",
         "failed": "No se pudieron escribir los textos, inténtalo de nuevo"
+    },
+    "highlights": {
+        "hours": "{hours} h {per}",
+        "dayOff": "días libres por semana: {n}",
+        "minDays": "desde {n} días"
     }
 }
