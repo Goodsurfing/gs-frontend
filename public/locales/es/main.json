@@ -83,5 +83,21 @@
         "review": "Nueva reseña",
         "article": "Nuevo artículo",
         "holders": "La tienen: {count}"
+    },
+    "landing": {
+        "allOnMap": "Todas las vacantes en el mapa",
+        "openCount": "Vacantes abiertas: {n}",
+        "empty": "Ahora no hay vacantes abiertas en esta categoría: mira el mapa o suscríbete a una búsqueda.",
+        "faq": "Preguntas frecuentes",
+        "more": "Otras categorías",
+        "title": "Voluntariado: {name} — alojamiento a cambio de ayuda",
+        "h1": "Voluntariado: {name}",
+        "description": "{name}: proyectos de voluntariado en Rusia y en el extranjero con alojamiento gratuito (a menudo comida) a cambio de unas horas de ayuda al día.",
+        "intro1": "Los anfitriones de la categoría {name} ofrecen alojamiento, y a menudo comida, a cambio de unas horas de ayuda al día.",
+        "intro2": "Abajo están las vacantes con fechas abiertas; las condiciones se describen en cada una.",
+        "faqCostQ": "¿Cuánto cuesta?",
+        "faqCostA": "Postularse y escribir a los anfitriones es gratis; las primeras postulaciones del año no requieren membresía. El viaje suele correr por tu cuenta.",
+        "faqExpQ": "¿Necesito experiencia?",
+        "faqExpA": "Normalmente no: los anfitriones explican las tareas en el lugar."
     }
 }

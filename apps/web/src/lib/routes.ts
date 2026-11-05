@@ -11,6 +11,7 @@ export const routes = {
     main: (l: Locale) => path(l),
     offersMap: (l: Locale) => path(l, "/offers-map"),
     offersMapCategory: (l: Locale, categoryId: number) => path(l, `/offers-map?category=${categoryId}`),
+    volunteering: (l: Locale, slug: string) => path(l, `/volunteering/${slug}`),
     blog: (l: Locale) => path(l, "/blog"),
     blogArticle: (l: Locale, slug: string) => path(l, `/blog/${slug}`),
     categories: (l: Locale) => path(l, "/categories"),
