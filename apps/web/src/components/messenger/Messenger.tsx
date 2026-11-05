@@ -22,6 +22,7 @@ import { type ChatInputLabels, ChatInput, type OutgoingMessage } from "./ChatInp
 import { type ChatListLabels, ChatList } from "./ChatList";
 import { type CompanionLabels, type CompanionProfile, CompanionInfo } from "./CompanionInfo";
 import { MessageBubble } from "./MessageBubble";
+import { type PushOfferLabels, PushOffer } from "./PushOffer";
 import { useChatList, useChatMessages, useLiveMessages } from "./useMessenger";
 
 export interface MessengerLabels {
@@ -40,6 +41,7 @@ export interface MessengerLabels {
     input: ChatInputLabels;
     application: ApplicationLabels;
     companion: CompanionLabels;
+    push: PushOfferLabels;
 }
 
 export interface MessengerHrefs {
@@ -413,6 +415,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                     search={list.search}
                     onSearch={list.setSearch}
                     labels={labels.list}
+                    top={<PushOffer token={token} enabled={ready && list.chats.length > 0} labels={labels.push} />}
                     className={hasChat ? "down-lg:hidden" : "down-lg:flex down-lg:max-w-none"}
                 />
                 {!hasChat ? (

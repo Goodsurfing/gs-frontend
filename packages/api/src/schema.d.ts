@@ -6354,6 +6354,66 @@ export interface paths {
         patch: operations["api_volunteers_profileId_patch"];
         trace?: never;
     };
+    "/api/v1/web-push/key": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Ключ для веб-пушей
+         * @description Открытый ключ VAPID для подписки браузера (PushManager.subscribe, applicationServerKey). null — веб-пуши выключены, предлагать не нужно.
+         */
+        get: operations["get_app_api_v1_webpush_key"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/web-push/subscriptions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Подписать браузер
+         * @description Запомнить подписку браузера вошедшего (PushSubscription.toJSON()). Та же подписка у другого пользователя переходит к вошедшему.
+         */
+        post: operations["post_app_api_v1_webpush_subscribe"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/web-push/subscriptions/unregister": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Отписать браузер
+         * @description Забыть подписку браузера вошедшего (выключил уведомления или вышел из аккаунта).
+         */
+        post: operations["post_app_api_v1_webpush_unsubscribe"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/blog/article/{id}": {
         parameters: {
             query?: never;
@@ -33650,6 +33710,88 @@ export interface operations {
                     "application/problem+json": components["schemas"]["ConstraintViolation"];
                     "application/vnd.api+json": components["schemas"]["ConstraintViolation.jsonapi"];
                 };
+            };
+        };
+    };
+    get_app_api_v1_webpush_key: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Ключ */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        publicKey?: string | null;
+                    };
+                };
+            };
+        };
+    };
+    post_app_api_v1_webpush_subscribe: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @example https://fcm.googleapis.com/fcm/send/… */
+                    endpoint: string;
+                    keys: {
+                        auth?: string;
+                        p256dh?: string;
+                    };
+                };
+            };
+        };
+        responses: {
+            /** @description Запомнено */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Неверная подписка */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_webpush_unsubscribe: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    endpoint: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Готово */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
