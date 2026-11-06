@@ -84,6 +84,9 @@ export function RoleCards({ hrefs, labels }: {
     labels: {
         volunteer: { title: string; text: string; become: string; already: string; confirm: string };
         host: { title: string; text: string; become: string; already: string; confirm: string };
+        /** Пометка выбранной роли и ссылка на её рабочий стол */
+        current: string;
+        toDashboard: string;
         yes: string;
         no: string;
         becameVolunteer: string;
@@ -123,13 +126,21 @@ export function RoleCards({ hrefs, labels }: {
         const has = role === "volunteer" ? !!profile.volunteer : !!profile.hostId;
         const text = labels[role];
         return (
-            <div className="flex w-full max-w-[485px] flex-col items-center justify-center gap-y-[60px] self-stretch bg-white px-[30px] pt-[50px] pb-[60px] shadow-[0_5px_20px_0_rgba(14,29,39,0.05)]">
+            // Выбранная роль — зелёная рамка и «✓ Ваша роль», а вместо кнопки-призыва ссылка на рабочий стол:
+            // одинаковые синие кнопки «Вы уже стали…» и «Стать…» читались как «роль можно выбрать снова»
+            <div className={`relative flex w-full max-w-[485px] flex-col items-center justify-center gap-y-[60px] self-stretch bg-white px-[30px] pt-[50px] pb-[60px] shadow-[0_5px_20px_0_rgba(14,29,39,0.05)] ${has ? "outline-2 -outline-offset-2 outline-cta" : ""}`}>
+                {has && (
+                    <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-cta px-3 py-1 text-[14px] font-semibold text-white">
+                        <svg aria-hidden viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8.5l3.2 3L13 4.5" /></svg>
+                        {labels.current}
+                    </span>
+                )}
                 {/* eslint-disable-next-line @next/next/no-img-element -- иллюстрация роли */}
                 <img src={`/web/icons/navbar/${image}.svg`} alt="" />
                 <span className="text-[26px] leading-[120%]">{text.title}</span>
                 <span className="text-center text-[18px] font-medium text-primary">{text.text}</span>
                 {has
-                    ? <a href={role === "volunteer" ? hrefs.volunteerDashboard : hrefs.hostDashboard} className="rounded-[10px] bg-primary px-[60px] py-2.5 text-center text-[16px] leading-[1.75] tracking-[0.02857em] text-white uppercase hover:bg-[#60bdff] down-lg:w-[90%] down-lg:px-10">{text.already}</a>
+                    ? <a href={role === "volunteer" ? hrefs.volunteerDashboard : hrefs.hostDashboard} aria-label={`${text.already}. ${labels.toDashboard}`} className="rounded-[10px] border border-primary bg-white px-8 py-2.5 text-center text-[16px] leading-[1.75] tracking-[0.02857em] text-primary uppercase no-underline hover:bg-primary hover:text-white down-lg:w-[90%] down-lg:px-10">{`${labels.toDashboard}\u00a0→`}</a>
                     : <button type="button" onClick={() => setAsking(role)} className="cursor-pointer rounded-[10px] bg-primary px-[60px] py-2.5 text-[16px] leading-[1.75] tracking-[0.02857em] text-white uppercase hover:bg-[#60bdff] down-lg:w-[90%] down-lg:px-10">{text.become}</button>}
             </div>
         );
