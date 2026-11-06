@@ -32,6 +32,8 @@ export default async function VolunteerDashboardPage({ params }: Props) {
                     hrefs={{
                         volunteer: routes.volunteerPublicTemplate(locale),
                         skills: routes.volunteerSkills(locale),
+                        about: routes.profileInfo(locale),
+                        gallery: routes.volunteerGallery(locale),
                         preferences: routes.profilePreferences(locale),
                         membership: routes.membership(locale),
                         offer: routes.offerTemplate(locale),
@@ -43,6 +45,13 @@ export default async function VolunteerDashboardPage({ params }: Props) {
                         fill: d("Заполненность профиля"),
                         viewProfile: d("Посмотреть свой профиль"),
                         edit: d("Редактировать профиль"),
+                        nextStep: {
+                            title: d("nextStep.title"),
+                            about: { action: d("nextStep.about.action"), why: d("nextStep.about.why") },
+                            skills: { action: d("nextStep.skills.action"), why: d("nextStep.skills.why") },
+                            photo: { action: d("nextStep.photo.action"), why: d("nextStep.photo.why") },
+                            membership: { action: d("nextStep.membership.action"), why: d("nextStep.membership.why") },
+                        },
                         points: {
                             about: t("stats-points.О себе"),
                             skills: t("stats-points.Навыки"),
