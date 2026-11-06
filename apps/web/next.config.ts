@@ -28,6 +28,17 @@ const config: NextConfig = {
             fallback: [],
         };
     },
+    // Статика из public/web: по умолчанию Next отдаёт её с max-age=0, и браузер перед каждой страницей
+    // переспрашивает сервер про шрифты и картинки — шрифт приходил позже текста, текст перескакивал.
+    // Шрифты не меняются (новый шрифт — новое имя файла) — на год; картинки и значки могут смениться под
+    // тем же именем — сутки и ещё неделю из кэша, пока проверяется свежая. push-sw.js и manifest не трогаем:
+    // обработчик уведомлений должен обновляться сразу.
+    async headers() {
+        return [
+            { source: "/web/fonts/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] },
+            { source: "/web/:dir(images|icons)/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" }] },
+        ];
+    },
     images: {
         remotePatterns: [
             { protocol: "https", hostname: "storage.yandexcloud.net" },

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
+import { preload } from "react-dom";
 
 import { YandexMetrika } from "@/components/analytics/YandexMetrika";
 import { isLocale, LOCALES } from "@/i18n/config";
@@ -46,6 +47,10 @@ export default async function LocaleLayout({
 }) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
+    // Обычный Lato — основной текст страницы: просим его сразу, а не после разбора CSS, чтобы он чаще
+    // успевал до первой отрисовки. Остальные начертания не предзагружаем: на медленном телефоне они
+    // отняли бы канал у самой страницы; пока грузятся — подогнанный запасной шрифт (globals.css).
+    preload("/web/fonts/Lato-Regular.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
 
     return (
         <html lang={locale}>
