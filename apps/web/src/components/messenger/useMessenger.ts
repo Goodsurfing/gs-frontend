@@ -63,7 +63,8 @@ const LIST_MAX_PAGES = 20;
  * переписки пропадали). Вкладки «Непрочитанные», «Ждут ответа» и т. п.
  * фильтруются в браузере по загруженному списку.
  */
-export function useChatList(token: string | undefined, enabled: boolean) {
+/** locale — на /en и /es бэкенд отдаёт переведённые названия вакансий (GS-227) */
+export function useChatList(token: string | undefined, enabled: boolean, locale = "ru") {
     const [chats, setChats] = useState<Chat[]>([]);
     const [loaded, setLoaded] = useState(false);
     const [failed, setFailed] = useState(false);
@@ -82,6 +83,7 @@ export function useChatList(token: string | undefined, enabled: boolean) {
         for (let page = 1; page <= LIST_MAX_PAGES; page += 1) {
             const params: Record<string, string | number> = { page, itemsPerPage: LIST_PAGE };
             if (query) params.search = query;
+            if (locale !== "ru") params.lang = locale;
             const result = await browserApi(token)
                 .GET("/api/v1/personal/chats", { params: { query: params as never } })
                 .catch(() => null);
@@ -95,7 +97,7 @@ export function useChatList(token: string | undefined, enabled: boolean) {
         if (ok) setChats(sortChats(all));
         setFailed(!ok);
         setLoaded(true);
-    }, [enabled, query, token]);
+    }, [enabled, query, token, locale]);
 
     useEffect(() => {
         // Загрузка данных при смене поиска
