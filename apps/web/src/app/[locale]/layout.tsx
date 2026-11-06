@@ -47,10 +47,12 @@ export default async function LocaleLayout({
 }) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
-    // Обычный Lato — основной текст страницы: просим его сразу, а не после разбора CSS, чтобы он чаще
-    // успевал до первой отрисовки. Остальные начертания не предзагружаем: на медленном телефоне они
-    // отняли бы канал у самой страницы; пока грузятся — подогнанный запасной шрифт (globals.css).
+    // Обычный Lato — основной текст страницы, средний — меню шапки (оно на каждой странице, и подмена
+    // шрифта там заметна): просим их сразу, а не после разбора CSS, чтобы успевали до первой отрисовки.
+    // Остальные начертания не предзагружаем: на медленном телефоне они отняли бы канал у самой
+    // страницы; пока грузятся — подогнанный запасной шрифт (globals.css).
     preload("/web/fonts/Lato-Regular.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
+    preload("/web/fonts/Lato-Medium.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
 
     return (
         <html lang={locale}>
