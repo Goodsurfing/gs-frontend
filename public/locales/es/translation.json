@@ -406,5 +406,20 @@
     "Отправилось:": "Participaron:",
     "Без заголовка": "Sin título",
     "Без адреса": "Sin dirección",
-    "Организатор давно не заходил": "El anfitrión no entra hace tiempo"
+    "Организатор давно не заходил": "El anfitrión no entra hace tiempo",
+    "relevance": {
+        "title": "¿Tus oportunidades siguen abiertas?",
+        "text": "Marca las oportunidades para las que aún buscas voluntarios y pulsa «Confirmar». No hace falta iniciar sesión.",
+        "asked": "preguntado en el correo",
+        "confirm": "Confirmar",
+        "all": "Marcar todas",
+        "done": "¡Gracias! Oportunidades confirmadas: {{count}}. Los voluntarios verán que los esperas.",
+        "none": "Marca al menos una oportunidad",
+        "manage": "Despublicar o editar en «Mis oportunidades»",
+        "invalid": "El enlace caducó o no es válido. Inicia sesión y abre «Mis oportunidades».",
+        "empty": "No hay oportunidades activas.",
+        "error": "No se pudo guardar. Inténtalo de nuevo.",
+        "stale": "Vigencia no confirmada",
+        "staleNote": "El anfitrión no confirma desde hace tiempo que la oportunidad sigue abierta: consúltalo por mensaje antes de viajar."
+    }
 }

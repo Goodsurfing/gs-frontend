@@ -233,6 +233,12 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
                         <span>{tOffer("Организатор давно не заходил на Гудсёрфинг — ответа на заявку может не быть.")} <a href={routes.offersMap(locale)} className="text-primary underline">{tOffer("Посмотреть другие вакансии")}</a></span>
                     </p>
                 )}
+                {!offer.organizationSleeping && offer.relevanceStale && (
+                    <p role="note" className="mb-8 flex items-start gap-3 rounded-[10px] bg-field px-5 py-4 text-[15px] leading-[140%] text-ink-secondary">
+                        <svg aria-hidden viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 shrink-0 text-caption" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 9v4" /><path d="M12 17h.01" /><circle cx="12" cy="12" r="10" /></svg>
+                        <span>{t("relevance.staleNote")}</span>
+                    </p>
+                )}
                 {banner && (
                     <section
                         className="relative mb-10 flex items-center overflow-hidden rounded-[10px] bg-cover bg-center bg-no-repeat p-5 before:absolute before:inset-0 before:bg-black/40 down-md:min-h-[200px] down-md:rounded-2xl down-md:px-5 down-md:py-6"
