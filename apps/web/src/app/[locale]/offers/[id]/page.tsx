@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import { PublicShell } from "@/components/layout/PublicShell";
 import { OfferActions, type OfferActionsHrefs, type OfferActionsLabels } from "@/components/offer/OfferActions";
@@ -29,10 +29,14 @@ import { getOffer, getOfferBanner, getOfferParticipants, getOfferReviews, inline
 import { type Badge, getOrganizationBadges } from "@/lib/achievements";
 import { organizationType, PARTICIPATE_STATES, responseStatsText } from "@/lib/offerText";
 import { routes } from "@/lib/routes";
+import { legacyOffersListTarget } from "@/lib/legacyOffersLink";
 import { offerHighlights } from "@/lib/offerHighlights";
 import { pageMetadata, siteUrl } from "@/lib/seo";
 
-type Props = { params: Promise<{ locale: string; id: string }> };
+type Props = {
+    params: Promise<{ locale: string; id: string }>;
+    searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
 
 export const revalidate = 300;
 
@@ -107,9 +111,11 @@ function actionsLabels(t: Translate, price: number): OfferActionsLabels {
 }
 
 /** Страница вакансии (OfferPersonalPage старого фронта, GS-219) */
-export default async function OfferPage({ params }: Props) {
+export default async function OfferPage({ params, searchParams }: Props) {
     const { locale, id } = await params;
     if (!isLocale(locale)) notFound();
+    const legacyTarget = legacyOffersListTarget(await searchParams, routes.offersMap(locale));
+    if (legacyTarget) redirect(legacyTarget);
     const [result, t, tOffer, tMain, tHost] = await Promise.all([
         getOffer(locale, id),
         getTranslator(locale),
