@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { DescriptionForm } from "@/components/offer-wizard/DescriptionForm";
+import { TranslationsEditor } from "@/components/offer-wizard/TranslationsEditor";
 import { OfferWizardShell, offerWizardMetadata } from "@/components/offer-wizard/OfferWizardShell";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
@@ -90,6 +91,24 @@ export default async function OfferDescriptionPage({ params }: Props) {
                         limit: tOffer("assistant.limit"),
                         failed: tOffer("assistant.failed"),
                     },
+                }}
+            />
+            <TranslationsEditor
+                id={offerId}
+                labels={{
+                    heading: tOffer("translations.heading"),
+                    intro: tOffer("translations.intro"),
+                    tabs: { en: "English", es: "Español" },
+                    auto: tOffer("translations.auto"),
+                    host: tOffer("translations.host"),
+                    outdated: tOffer("translations.outdated"),
+                    pending: tOffer("translations.pending"),
+                    title: d("Название мероприятия"),
+                    short: d("Краткое описание"),
+                    full: d("Полное описание"),
+                    save: tOffer("translations.save"),
+                    saved: tOffer("translations.saved"),
+                    error: tOffer("translations.error"),
                 }}
             />
         </OfferWizardShell>

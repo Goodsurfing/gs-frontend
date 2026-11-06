@@ -296,5 +296,16 @@
     "Произошла ошибка загрузки отзывов": "No se pudieron cargar las reseñas",
     "Не удалось отправить отзыв. Попробуйте позже.": "No se pudo enviar la reseña. Inténtalo más tarde.",
     "Не удалось удалить отзыв. Попробуйте позже.": "No se pudo eliminar la reseña. Inténtalo más tarde.",
-    "Удалить отзыв? Это действие нельзя отменить.": "¿Eliminar la reseña? Esta acción no se puede deshacer."
+    "Удалить отзыв? Это действие нельзя отменить.": "¿Eliminar la reseña? Esta acción no se puede deshacer.",
+    "translations": {
+        "heading": "Traducción al inglés y al español",
+        "intro": "Los voluntarios extranjeros ven la oportunidad en su idioma. Se traduce automáticamente al guardar la descripción; aquí puedes corregirla.",
+        "auto": "Traducido automáticamente",
+        "host": "Editado por ti: no se cambiará automáticamente",
+        "outdated": "El texto en ruso cambió: revisa la traducción",
+        "pending": "Aún no hay traducción: aparecerá en una hora tras guardar la descripción. Puedes escribir la tuya.",
+        "save": "Guardar traducción",
+        "saved": "Traducción guardada",
+        "error": "No se pudo guardar la traducción"
+    }
 }
