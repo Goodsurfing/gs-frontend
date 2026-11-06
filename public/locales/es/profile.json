@@ -75,7 +75,9 @@
         "Чтобы принимать гудсёрферов как организатор": "Para recibir a los buenos surfers como organizador",
         "Стать организатором": "Convertirse en organizador",
         "Вы уже стали гудсёрфером": "Ya te has convertido en un buen surfista",
-        "Вы уже стали организатором": "Ya te has convertido en un organizador"
+        "Вы уже стали организатором": "Ya te has convertido en un organizador",
+        "Ваша роль": "Tu rol",
+        "Перейти на рабочий стол": "Ir al panel"
     },
     "password": {
         "Изменение пароля": "Cambiar contraseña",

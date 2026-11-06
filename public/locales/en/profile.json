@@ -75,7 +75,9 @@
         "Чтобы принимать гудсёрферов как организатор": "To host good surfers as an organizer",
         "Стать организатором": "Become an organizer",
         "Вы уже стали гудсёрфером": "You have already become a goodsurfer",
-        "Вы уже стали организатором": "You have already become an host"
+        "Вы уже стали организатором": "You have already become an host",
+        "Ваша роль": "Your role",
+        "Перейти на рабочий стол": "Go to dashboard"
     },
     "password": {
         "Изменение пароля": "Change password",
