@@ -1,11 +1,14 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { type ReactNode, useEffect, useState } from "react";
 
 import { OffersCarousel } from "@/components/offers/OffersCarousel";
 
 import { OfferCard, type OfferCardLabels } from "@/components/offers/OfferCard";
 import { useOptionalSession } from "@/components/session/SessionProvider";
+import { localeFromPath } from "@/i18n/config";
+import { localizeCard, vacancyLang } from "@/lib/offerLocale";
 import { browserApi } from "@/lib/browserApi";
 import type { OfferCardData } from "@/lib/offers";
 
@@ -23,6 +26,7 @@ export function PersonalOffers({ children, offerHref, categories, labels, cardLa
     cardLabels: OfferCardLabels;
 }) {
     const session = useOptionalSession();
+    const locale = localeFromPath(usePathname() ?? "");
     const favorite = session?.profile?.favoriteCategories ?? [];
     const key = favorite.join(",");
     const [offers, setOffers] = useState<OfferCardData[] | null>(null);
@@ -31,13 +35,13 @@ export function PersonalOffers({ children, offerHref, categories, labels, cardLa
         if (!key) return;
         let cancelled = false;
         void browserApi(session?.token)
-            .GET("/api/v1/vacancy", { params: { query: { "categoryIds[]": key.split(",").map(Number), sort: "recommendation", fields: "card", limit: 10 } } })
-            .then(({ data }) => !cancelled && (data?.data ?? []).length > 0 && setOffers((data?.data ?? []).slice(0, 10)))
+            .GET("/api/v1/vacancy", { params: { query: { "categoryIds[]": key.split(",").map(Number), sort: "recommendation", fields: "card", limit: 10, ...vacancyLang(locale) } } })
+            .then(({ data }) => !cancelled && (data?.data ?? []).length > 0 && setOffers((data?.data ?? []).slice(0, 10).map(localizeCard)))
             .catch(() => undefined);
         return () => {
             cancelled = true;
         };
-    }, [key, session?.token]);
+    }, [key, session?.token, locale]);
 
     return (
         <OffersCarousel prevLabel={labels.prev} nextLabel={labels.next}>

@@ -9,14 +9,9 @@ import { ApiUnavailableError } from "./apiUnavailable";
 
 export type OfferCardData = components["schemas"]["ListResult6"];
 
-/** Параметр языка для GET /vacancy: на /en и /es бэкенд добавит переводы названий (GS-227) */
-export const vacancyLang = (locale: Locale): { lang?: "en" | "es" } => (locale === "ru" ? {} : { lang: locale });
+import { localizeCard, vacancyLang } from "./offerLocale";
 
-/** Карточка на языке страницы: перевод названия и краткого описания, если есть */
-export function localizeCard<T extends { title?: string | null; shortDescription?: string | null; translatedTitle?: string | null; translatedShortDescription?: string | null }>(card: T): T {
-    if (!card.translatedTitle) return card;
-    return { ...card, title: card.translatedTitle, shortDescription: card.translatedShortDescription ?? card.shortDescription };
-}
+export { localizeCard, vacancyLang };
 
 /** Сколько вакансий в слайдере «Интересные вакансии» (как SLIDER_OFFERS_LIMIT старого фронта) */
 export const SLIDER_OFFERS_LIMIT = 10;

@@ -1,7 +1,10 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+import { localeFromPath } from "@/i18n/config";
+import { localizeCard, vacancyLang } from "@/lib/offerLocale";
 import { browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
 
@@ -19,6 +22,7 @@ export function HomeSearch({ catalogHref, offerHref, categories, labels }: {
     categories: Record<string, string>;
     labels: { placeholder: string; search: string; find: string; clear: string; showAll: string; empty: string };
 }) {
+    const locale = localeFromPath(usePathname() ?? "");
     const [value, setValue] = useState("");
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState<Suggestion[] | null>(null);
@@ -30,10 +34,10 @@ export function HomeSearch({ catalogHref, offerHref, categories, labels }: {
         let cancelled = false;
         const timer = setTimeout(() => {
             void browserApi()
-                .GET("/api/v1/vacancy", { params: { query: { search: query, sort: "updated:desc", fields: "card", limit: 3 } } })
+                .GET("/api/v1/vacancy", { params: { query: { search: query, sort: "updated:desc", fields: "card", limit: 3, ...vacancyLang(locale) } } })
                 .then(({ data }) => {
                     if (cancelled) return;
-                    setItems((data?.data ?? []).slice(0, 3).map((offer) => ({
+                    setItems((data?.data ?? []).slice(0, 3).map(localizeCard).map((offer) => ({
                         id: offer.id,
                         title: offer.title,
                         status: String(offer.status),
@@ -47,7 +51,7 @@ export function HomeSearch({ catalogHref, offerHref, categories, labels }: {
             cancelled = true;
             clearTimeout(timer);
         };
-    }, [query, categories]);
+    }, [query, categories, locale]);
 
     useEffect(() => {
         const close = (event: MouseEvent) => {

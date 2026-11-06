@@ -291,5 +291,10 @@
     "Показать оригинал": "Show original (Russian)",
     "Показать перевод": "Show translation",
     "Организатор давно не заходил на Гудсёрфинг — ответа на заявку может не быть.": "The host hasn’t visited Goodsurfing for a while — your application may go unanswered.",
-    "Посмотреть другие вакансии": "See other opportunities"
+    "Посмотреть другие вакансии": "See other opportunities",
+    "На данный момент отзывов нет": "No reviews yet",
+    "Произошла ошибка загрузки отзывов": "Couldn't load reviews",
+    "Не удалось отправить отзыв. Попробуйте позже.": "Couldn't send the review. Please try again later.",
+    "Не удалось удалить отзыв. Попробуйте позже.": "Couldn't delete the review. Please try again later.",
+    "Удалить отзыв? Это действие нельзя отменить.": "Delete the review? This can't be undone."
 }

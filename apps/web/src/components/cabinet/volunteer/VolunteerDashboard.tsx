@@ -10,6 +10,7 @@ import { useFavoriteOffers } from "@/components/offers/useFavoriteOffers";
 import { useSession } from "@/components/session/SessionProvider";
 import { Spinner } from "@/components/ui/Spinner";
 import type { Locale } from "@/i18n/config";
+import { localizeCard, vacancyLang } from "@/lib/offerLocale";
 import { browserApi } from "@/lib/browserApi";
 import { formatLongDate } from "@/lib/formatDate";
 import { mediaUrl } from "@/lib/media";
@@ -98,9 +99,9 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
                     if (!cancelled) setPicked({ offers: [], reasons: {} });
                     return;
                 }
-                const cards = await api.GET("/api/v1/vacancy", { params: { query: { "ids[]": list.map((item) => item.id), fields: "card", limit: list.length } } });
+                const cards = await api.GET("/api/v1/vacancy", { params: { query: { "ids[]": list.map((item) => item.id), fields: "card", limit: list.length, ...vacancyLang(locale) } } });
                 if (cancelled) return;
-                const byId = new Map((cards.data?.data ?? []).map((offer) => [offer.id, offer]));
+                const byId = new Map((cards.data?.data ?? []).map(localizeCard).map((offer) => [offer.id, offer]));
                 setPicked({
                     offers: list.map((item) => byId.get(item.id)).filter((offer) => offer !== undefined).map((offer) => toCard(offer, categories)),
                     reasons: Object.fromEntries(list.map((item) => [item.id, item.reasons])),
@@ -116,16 +117,16 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
         if (session.status !== "user" || !favorite) return;
         let cancelled = false;
         void browserApi(session.token)
-            .GET("/api/v1/vacancy", { params: { query: { "categoryIds[]": favorite.split(",").map(Number), sort: "recommendation", fields: "card", limit: 10 } } })
+            .GET("/api/v1/vacancy", { params: { query: { "categoryIds[]": favorite.split(",").map(Number), sort: "recommendation", fields: "card", limit: 10, ...vacancyLang(locale) } } })
             .then(({ data }) => {
                 if (cancelled) return;
-                setOffers((data?.data ?? []).slice(0, 10).map((offer) => toCard(offer, categories)));
+                setOffers((data?.data ?? []).slice(0, 10).map(localizeCard).map((offer) => toCard(offer, categories)));
             })
             .catch(() => !cancelled && setOffers([]));
         return () => {
             cancelled = true;
         };
-    }, [session.status, session.token, favorite, categories]);
+    }, [session.status, session.token, favorite, categories, locale]);
 
     useEffect(() => {
         try {

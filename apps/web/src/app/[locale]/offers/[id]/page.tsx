@@ -315,12 +315,11 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
                     volunteerHref={volunteerHref}
                     labels={{
                         title: p("Отзывы"),
-                        // Тексты ниже в старом фронте не переводились — оставлены как были
-                        empty: "На данный момент отзывов нет",
-                        loadError: "Произошла ошибка загрузки отзывов",
-                        sendError: "Не удалось отправить отзыв. Попробуйте позже.",
-                        deleteError: "Не удалось удалить отзыв. Попробуйте позже.",
-                        deleteConfirm: "Удалить отзыв? Это действие нельзя отменить.",
+                        empty: tOffer("На данный момент отзывов нет"),
+                        loadError: tOffer("Произошла ошибка загрузки отзывов"),
+                        sendError: tOffer("Не удалось отправить отзыв. Попробуйте позже."),
+                        deleteError: tOffer("Не удалось удалить отзыв. Попробуйте позже."),
+                        deleteConfirm: tOffer("Удалить отзыв? Это действие нельзя отменить."),
                         delete: t("Удалить отзыв"),
                         showNext: p("Посмотреть следующие"),
                         anonymous: t("Анонимный пользователь"),
