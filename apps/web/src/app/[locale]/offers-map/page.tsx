@@ -77,6 +77,7 @@ export default async function OffersMapPage({ params, searchParams }: Props) {
                     card: {
                         more: t("Подробнее"),
                         notOnMap: t("нет на карте"),
+                        sleeping: t("Организатор давно не заходил"),
                         reviews: t("Отзывов"),
                         went: t("Отправились"),
                         noTitle: t("Без заголовка"),

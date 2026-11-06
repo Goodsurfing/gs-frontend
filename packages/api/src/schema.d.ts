@@ -1220,8 +1220,8 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Не скрывать вакансии спящего организатора
-         * @description «Не скрывать»: вакансии организации не скрываются из каталога, даже если владелец давно не заходит (app:hosts:sleep). exempt=false — снова по общим правилам.
+         * Не помечать вакансии спящего организатора
+         * @description «Не помечать»: у вакансий организации не будет отметки «давно не заходил» и они не опустятся в каталоге (app:hosts:sleep). exempt=false — снова по общим правилам.
          */
         post: operations["post_app_admin_v1_organization_sleepexempt"];
         delete?: never;
@@ -10823,7 +10823,7 @@ export interface components {
             id: number;
             organization: components["schemas"]["OrganizationResult4"];
             /**
-             * @description Организатор давно не заходит, а волонтёры ждут ответа: вакансия скрыта из каталога (app:hosts:sleep). Показать плашку «ответа может не быть»
+             * @description Организатор давно не заходит, а волонтёры ждут ответа: вакансия ниже в каталоге (app:hosts:sleep). Показать плашку «ответа может не быть»
              * @default false
              */
             organizationSleeping: boolean;
@@ -11196,13 +11196,13 @@ export interface components {
             /** @example  */
             shortDescription: string;
             /**
-             * @description «Не скрывать» — решение администратора
+             * @description «Не помечать» — решение администратора
              * @default false
              */
             sleepExempt: boolean;
-            /** @description С этой даты вакансии скрыты как у «спящего» организатора (null — не скрыты) */
+            /** @description С этой даты у вакансий отметка «давно не заходил» и они ниже в каталоге (null — нет) */
             sleepingSince?: string | null;
-            /** @description Когда предупредили, что вакансии скроются */
+            /** @description Когда предупредили, что вакансии получат отметку */
             sleepWarnedAt?: string | null;
             /** @example  */
             telegram: string;
@@ -13224,6 +13224,11 @@ export interface components {
             latitude: number;
             longitude: number;
             organization: components["schemas"]["OrganizationResult"];
+            /**
+             * @description Организатор давно не заходит, а волонтёры ждут ответа (app:hosts:sleep): значок на карточке, в списке — ниже остальных
+             * @default false
+             */
+            organizationSleeping: boolean;
             /** @default [] */
             periods: components["schemas"]["PeriodResult"][];
             reviewsCount: number;

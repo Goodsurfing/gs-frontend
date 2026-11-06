@@ -12,6 +12,8 @@ export interface OfferListCardLabels {
     went: string;
     noTitle: string;
     noDescription: string;
+    /** «Организатор давно не заходил» — значок у вакансий «спящих» организаторов (каталог) */
+    sleeping?: string;
 }
 
 /**
@@ -73,6 +75,12 @@ export function OfferListCard({ offer, href, selected = false, onSelect, wide, c
                 )}
                 <div className="min-w-0 flex-1">
                     <p className="line-clamp-2 text-[1rem] leading-5 font-medium text-ink-secondary">{textSlice(offer.title, 50, labels.noTitle)}</p>
+                    {offer.sleeping && labels.sleeping && (
+                        <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-notice-bg px-2 py-0.5 text-[12px] font-medium text-ink-secondary">
+                            <svg aria-hidden viewBox="0 0 24 24" className="h-3.5 w-3.5 text-notice" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 7v5l3 2" /></svg>
+                            {labels.sleeping}
+                        </span>
+                    )}
                     <div className="mt-1.5 text-[14px] leading-[18px] font-medium text-caption down-xs:flex down-xs:flex-col">
                         <span className="block max-w-full truncate">{offer.address}</span>
                         {!offer.onMap && <span className="mt-0.5 inline-block text-[0.75rem] opacity-70">{labels.notOnMap}</span>}
