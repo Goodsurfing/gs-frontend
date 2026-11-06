@@ -191,7 +191,9 @@ export function participateText(
     labels: ParticipateLabels,
 ): string {
     if (closed) return labels.closed;
-    if (needVolunteerRole) return labels.becomeVolunteer;
+    // Без роли волонтёра — тоже «Участвовать»: роль создаётся сама по нажатию (OfferActions, 06.11.2026);
+    // «Чтобы участвовать, станьте гудсёрфером» уводило новичка на лишний экран выбора роли
+    void needVolunteerRole;
     return (textParticipate && labels.states[textParticipate]) || labels.participate;
 }
 

@@ -114,6 +114,11 @@ function toBody(form: Form) {
     };
 }
 
+/** Ни роли волонтёра, ни организации — новичок, который ещё не откликался и не создавал вакансий */
+export function isNewcomer(profile: Record<string, unknown>): boolean {
+    return !profile.volunteer && !profile.hostId;
+}
+
 /** Есть ли несохранённые правки полей (фото сохраняется сразу и сюда не входит) */
 export function hasChanges(saved: Form, form: Form): boolean {
     return (Object.keys(form) as (keyof Form)[]).some((key) => key !== "image" && form[key] !== saved[key]);
@@ -276,8 +281,9 @@ export function ProfileInfoForm({ volunteerHref, preferencesHref, verifyHref, as
                     <a href={verifyHref} className="rounded-[10px] bg-primary px-[50px] py-3.5 text-[1rem] leading-[1.375rem] text-white hover:bg-primary-hover">{labels.verify}</a>
                 </div>
             )}
-            <div className="flex gap-5 down-lg:flex-col-reverse down-lg:flex-wrap down-lg:pt-[15px]">
-                <form onSubmit={submit} className="relative flex min-w-0 flex-1 flex-col gap-10">
+            {/* Телефон: фото → анкета → баннеры членства (раньше баннеры «Оформить членство» стояли над анкетой) */}
+            <div className="flex gap-5 down-lg:flex-col down-lg:pt-[15px]">
+                <form onSubmit={submit} className="relative flex min-w-0 flex-1 flex-col gap-10 down-lg:order-2">
                     <div className="flex flex-col gap-[30px]">
                         <div className="flex gap-6 down-lg:flex-wrap">
                             <TextField label={labels.firstName} autoComplete="given-name" {...field("firstName")} />
@@ -336,8 +342,8 @@ export function ProfileInfoForm({ volunteerHref, preferencesHref, verifyHref, as
                         {!dirty && <a href={preferencesHref} className="text-[15px] font-medium text-primary no-underline hover:underline">{labels.next}&nbsp;→</a>}
                     </div>
                 </form>
-                <div className="flex flex-col items-center gap-6">
-                    <div className="flex w-[182px] flex-col items-center">
+                <div className="flex flex-col items-center gap-6 down-lg:contents">
+                    <div className="flex w-[182px] flex-col items-center down-lg:order-1 down-lg:self-center">
                         <a href={volunteerHref.replace("{id}", profile.id)} className="relative text-[1rem] font-semibold text-primary no-underline before:absolute before:top-[102%] before:h-[1.7px] before:w-full before:bg-primary">
                             {labels.viewProfile}
                         </a>
@@ -363,7 +369,8 @@ export function ProfileInfoForm({ volunteerHref, preferencesHref, verifyHref, as
                             </button>
                         )}
                     </div>
-                    {aside}
+                    {/* Новичку (ещё ни одной роли — значит, ещё ни разу не откликался) деньги не предлагаем */}
+                    {(isNewcomer(profile) ? null : aside) && <div className="flex flex-col items-center gap-6 down-lg:order-3">{aside}</div>}
                 </div>
             </div>
         </>

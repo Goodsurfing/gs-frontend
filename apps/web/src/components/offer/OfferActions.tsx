@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { browserApi } from "@/lib/browserApi";
 import { type ParticipateLabels, participateText } from "@/lib/offerText";
 
 import { useOfferViewer } from "./OfferViewer";
@@ -25,8 +26,10 @@ const button = "flex items-center justify-center rounded-[10px] border border-pr
 /**
  * «Участвовать» и «Редактировать» (PersonalCard и OfferSubmenu старого
  * фронта). Гость — на вход с возвратом к вакансии; вошёл без роли
- * волонтёра — на выбор роли; волонтёр — в сообщения, отклик. На закрытую
- * вакансию откликнуться нельзя (GS-230).
+ * волонтёра — роль волонтёра создаётся сама по нажатию и сразу отклик
+ * (раньше — экран выбора роли с «Вы уверены?»; 57 % новичков роль так и не
+ * выбирали, 06.11.2026); не вышло — на выбор роли, как раньше; волонтёр —
+ * в сообщения, отклик. На закрытую вакансию откликнуться нельзя (GS-230).
  */
 export function OfferActions({ offerId, status, variant, hrefs, labels }: {
     offerId: number;
@@ -46,12 +49,29 @@ export function OfferActions({ offerId, status, variant, hrefs, labels }: {
     if (viewer.needVolunteerRole) href = `${hrefs.profileRole}?next=${offerId}`;
     else if (viewer.signedIn) href = `${hrefs.messenger}/create/${offerId}`;
     const text = participateText({ closed, needVolunteerRole: viewer.needVolunteerRole, textParticipate: viewer.textParticipate }, labels);
+    const [busy, setBusy] = useState(false);
+    // Без роли: создать профиль волонтёра (как «Стать гудсёрфером» на странице роли) и сразу к отклику
+    const becomeVolunteer = viewer.needVolunteerRole ? (event: React.MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault();
+        if (busy) return;
+        setBusy(true);
+        void browserApi(viewer.token)
+            .POST("/api/v1/personal/volunteer", { body: { externalInfo: "", skills: [], additionalSkills: [] } as never })
+            .then(({ error }) => {
+                // Полная загрузка, не router.push: сессия должна заново прочитать профиль — уже с ролью волонтёра
+                window.location.assign(error ? href : `${hrefs.messenger}/create/${offerId}`);
+            })
+            .catch(() => {
+                // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- на выбор роли, как раньше
+                window.location.assign(href);
+            });
+    } : undefined;
 
     if (variant === "sticky") {
         // На телефоне кнопка «Участвовать» была только в обложке: кто дочитывал описание,
         // её уже не видел — с телефона нажимали ~24 % открывших вакансию (05.11.2026)
         if (disabled || viewer.canEdit) return null;
-        return <StickyBar href={viewer.requiresMembership ? hrefs.membership : href} text={viewer.requiresMembership ? labels.upsell.button : text} />;
+        return <StickyBar href={viewer.requiresMembership ? hrefs.membership : href} text={viewer.requiresMembership ? labels.upsell.button : text} onClick={viewer.requiresMembership ? undefined : becomeVolunteer} />;
     }
 
     return (
@@ -59,7 +79,7 @@ export function OfferActions({ offerId, status, variant, hrefs, labels }: {
             {disabled ? (
                 <span aria-disabled className={`${button} bg-primary text-white opacity-70`}>{text}</span>
             ) : (
-                <a href={href} className={`${button} bg-primary text-white hover:bg-white hover:text-primary`}>{text}</a>
+                <a href={href} onClick={becomeVolunteer} aria-busy={busy} className={`${button} bg-primary text-white hover:bg-white hover:text-primary aria-busy:cursor-wait aria-busy:opacity-70`}>{text}</a>
             )}
             {viewer.requiresMembership && (
                 // Бесплатные отклики на год кончились — сразу предложение членства с ценой
@@ -84,7 +104,7 @@ export function OfferActions({ offerId, status, variant, hrefs, labels }: {
 }
 
 /** Полоса с кнопкой внизу экрана на телефоне (до 768 px): появляется, когда обложка вакансии уехала вверх */
-function StickyBar({ href, text }: { href: string; text: string }) {
+function StickyBar({ href, text, onClick }: { href: string; text: string; onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void }) {
     const [shown, setShown] = useState(false);
     useEffect(() => {
         const update = () => setShown(window.scrollY > window.innerHeight * 0.9);
@@ -97,7 +117,7 @@ function StickyBar({ href, text }: { href: string; text: string }) {
             aria-hidden={!shown}
             className={`fixed inset-x-0 bottom-0 z-40 hidden border-t border-accent-bg bg-white/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-4px_16px_rgba(0,0,0,0.08)] transition-transform duration-300 down-md:block ${shown ? "translate-y-0" : "translate-y-full"}`}
         >
-            <a href={href} tabIndex={shown ? 0 : -1} className={`${button} w-full bg-primary py-3 text-white`}>{text}</a>
+            <a href={href} onClick={onClick} tabIndex={shown ? 0 : -1} className={`${button} w-full bg-primary py-3 text-white`}>{text}</a>
         </div>
     );
 }

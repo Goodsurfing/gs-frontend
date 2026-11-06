@@ -16,3 +16,12 @@ describe("«Обо мне»: несохранённые правки", () => {
         expect(hasChanges(base, { ...base, image: { id: "1", contentUrl: "/a.jpg" } })).toBe(false);
     });
 });
+
+describe("«Обо мне»: новичку без роли не предлагаем членство", () => {
+    it("ни роли волонтёра, ни организации — новичок", async () => {
+        const { isNewcomer } = await import("../ProfileInfoForm");
+        expect(isNewcomer({ volunteer: null, hostId: null })).toBe(true);
+        expect(isNewcomer({ volunteer: { id: "1" }, hostId: null })).toBe(false);
+        expect(isNewcomer({ volunteer: null, hostId: "h1" })).toBe(false);
+    });
+});

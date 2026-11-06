@@ -56,7 +56,9 @@
         "Пользователь был удален или не создавался": "El usuario fue eliminado o nunca fue creado",
         "Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга": "Enviarme selecciones de nuevos proyectos y noticias de Goodsurfing",
         "marketingConsentHint": "Puedes darte de baja en cualquier momento desde tu perfil o con el enlace del correo.",
-        "Войти и вернуться к вакансии": "Iniciar sesión y volver a la vacante"
+        "Войти и вернуться к вакансии": "Iniciar sesión y volver a la vacante",
+        "Вернуться к вакансии": "Volver a la vacante",
+        "Перейти к вакансиям": "Ver vacantes"
     },
     "main": {
         "welcome": {
