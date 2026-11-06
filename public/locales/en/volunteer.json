@@ -8,7 +8,26 @@
         "Настроить": "Configure",
         "Оформи членство Гудсёрфинга и открой для себя бескрайний мир путешествий со смыслом!": "Sign up for a Goodsurfing membership and discover the endless world of meaningful travel!",
         "Получить членство": "Get a membership",
-        "Уведомления": "Notifications"
+        "Уведомления": "Notifications",
+        "nextStep": {
+            "title": "Next step",
+            "about": {
+                "action": "Tell about yourself",
+                "why": "Hosts reply more readily when they can see who is writing: name, photo and a few words about you"
+            },
+            "skills": {
+                "action": "Add your skills",
+                "why": "We'll use your skills to pick opportunities and explain why they suit you"
+            },
+            "photo": {
+                "action": "Add travel photos",
+                "why": "Real photos are the best introduction for a host"
+            },
+            "membership": {
+                "action": "Get membership",
+                "why": "Apply without limits — 990 ₽ a year"
+            }
+        }
     },
     "volunteer-skills": {
         "Навыки и умения": "Skills and Abilities",

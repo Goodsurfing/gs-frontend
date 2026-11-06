@@ -25,12 +25,16 @@ const FREE_APPLICATIONS_LIMIT = 3;
 /** Дата первого визита на дашборд — тот же ключ localStorage, что у старого фронта */
 const NOTIFICATION_DATE_KEY = "firstNotificationDate";
 
+type NextStepKey = "about" | "skills" | "photo" | "membership";
+
 export interface VolunteerDashboardLabels {
     reviewReminders: ReviewRemindersLabels;
     fill: string;
     viewProfile: string;
     edit: string;
     points: { about: string; skills: string; photo: string; video: string; blog: string; membership: string };
+    /** Что сделать дальше — вместо голого «40 %» (06.11.2026) */
+    nextStep: { title: string } & Record<NextStepKey, { action: string; why: string }>;
     quota: { unlimited: string; left: string; renew: string; more: string };
     offers: string;
     settings: string;
@@ -58,7 +62,7 @@ const h3 = "text-[1.17em] font-bold";
  */
 export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
     locale: Locale;
-    hrefs: { volunteer: string; skills: string; preferences: string; membership: string; offer: string; review: string };
+    hrefs: { volunteer: string; skills: string; about: string; gallery: string; preferences: string; membership: string; offer: string; review: string };
     categories: Record<string, string>;
     labels: VolunteerDashboardLabels;
 }) {
@@ -152,6 +156,15 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
     const shownOffers = picked === null ? null : picked.offers.length > 0 ? picked.offers : fallback;
     const reasonsOf = (id: number) => (picked?.offers.length ? picked.reasons[id] ?? [] : []);
     const share = points.filter((point) => point.done).length / points.length;
+    // Следующий шаг — первое несделанное по пользе для отклика; видео и статьи — необязательные, их не предлагаем
+    const steps: { key: NextStepKey; done: boolean; href: string }[] = [
+        { key: "about", done: points[0]?.done ?? true, href: hrefs.about },
+        { key: "skills", done: points[1]?.done ?? true, href: hrefs.skills },
+        { key: "photo", done: points[2]?.done ?? true, href: hrefs.gallery },
+        { key: "membership", done: points[5]?.done ?? true, href: hrefs.membership },
+    ];
+    // Пока занятость не загружена, пункты выглядят несделанными — шаг не угадываем
+    const next = occupancy ? steps.find((step) => !step.done) : undefined;
 
     return (
         <div className="w-full max-w-[1400px]">
@@ -171,9 +184,10 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
                                     </li>
                                 ))}
                             </ul>
-                            <div>
-                                <a href={hrefs.skills} className="inline-flex items-center justify-center rounded-[10px] border border-cta bg-cta px-[50px] py-2.5 text-center text-label text-white no-underline transition-all duration-300 hover:bg-white hover:text-cta max-[567px]:flex max-[567px]:w-full max-[567px]:p-2.5">
-                                    {labels.edit}
+                            <div className="flex flex-col gap-2">
+                                {next && <p className="max-w-[420px] text-[14px] leading-[140%] text-ink-tertiary"><b className="text-ink-secondary">{labels.nextStep.title}:</b> {labels.nextStep[next.key].why}</p>}
+                                <a href={next?.href ?? hrefs.skills} className="inline-flex w-fit items-center justify-center rounded-[10px] border border-cta bg-cta px-[50px] py-2.5 text-center text-label text-white no-underline transition-all duration-300 hover:bg-white hover:text-cta max-[567px]:flex max-[567px]:w-full max-[567px]:p-2.5">
+                                    {next ? labels.nextStep[next.key].action : labels.edit}
                                 </a>
                             </div>
                         </div>
