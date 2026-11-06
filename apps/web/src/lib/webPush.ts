@@ -57,6 +57,40 @@ const sameKey = (subscription: PushSubscription, key: Uint8Array): boolean => {
     return bytes.length === key.length && bytes.every((value, index) => value === key[index]);
 };
 
+/** Сколько ждать запуска service worker, прежде чем сдаться */
+export const SW_ACTIVATE_TIMEOUT_MS = 10_000;
+
+/** Что нужно от ServiceWorker (настоящий подходит; в тестах — заглушка) */
+interface Worker {
+    readonly state: string;
+    addEventListener(type: "statechange", listener: () => void): void;
+    removeEventListener(type: "statechange", listener: () => void): void;
+}
+
+/** Дождаться, пока service worker этой регистрации заработает (activated); false — не дождались */
+export function workerActivated(
+    registration: { active: Worker | null; installing: Worker | null; waiting: Worker | null },
+    timeoutMs = SW_ACTIVATE_TIMEOUT_MS,
+): Promise<boolean> {
+    if (registration.active) return Promise.resolve(true);
+    const worker = registration.installing ?? registration.waiting;
+    if (!worker) return Promise.resolve(false);
+    return new Promise((resolve) => {
+        const timer = setTimeout(() => done(false), timeoutMs);
+        function done(ok: boolean) {
+            clearTimeout(timer);
+            worker?.removeEventListener("statechange", onChange);
+            resolve(ok);
+        }
+        function onChange() {
+            if (worker?.state === "activated") done(true);
+            else if (worker?.state === "redundant") done(false);
+        }
+        worker.addEventListener("statechange", onChange);
+        onChange();
+    });
+}
+
 /**
  * Подписать браузер вошедшего: service worker, подписка в браузере, запись на
  * сервере. Разрешение уже дано (granted). Подписка с другим ключом (ключи на
@@ -65,7 +99,9 @@ const sameKey = (subscription: PushSubscription, key: Uint8Array): boolean => {
 export async function subscribePush(token: string | undefined, publicKey: string): Promise<boolean> {
     try {
         const registration = await navigator.serviceWorker.register(PUSH_SW_URL, { scope: PUSH_SW_SCOPE });
-        await navigator.serviceWorker.ready.catch(() => undefined);
+        // Не navigator.serviceWorker.ready: он ждёт обработчик для адреса текущей страницы,
+        // а у нашего область /web/push/ — на /messenger он не дождётся никогда (кнопка «Включить» зависала)
+        if (!await workerActivated(registration)) return false;
         const key = keyBytes(publicKey);
         let subscription = await registration.pushManager.getSubscription();
         if (subscription && !sameKey(subscription, key)) {

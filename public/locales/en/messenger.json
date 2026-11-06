@@ -53,6 +53,7 @@
     "Понятно": "Got it",
     "Уведомления включены": "Notifications are on",
     "Браузер не разрешил уведомления — их можно включить в настройках сайта": "The browser didn't allow notifications — you can turn them on in the site settings",
+    "Окно браузера не появилось? Нажмите на значок слева от адреса сайта (замок или перечёркнутый колокольчик) и разрешите уведомления": "No browser prompt? Click the icon to the left of the site address (the lock or the crossed-out bell) and allow notifications",
     "Предложить ответ": "Suggest a reply",
     "Пишу черновик…": "Writing a draft…",
     "Это черновик — проверьте и поправьте перед отправкой": "This is a draft — check and edit it before sending",
