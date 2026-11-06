@@ -121,14 +121,14 @@ function OrganizationActions({ record, reload }: { record: Record<string, unknow
                 <dd>{record.isHostMembership ? `до ${String(record.membershipEndDate ?? "бессрочно")}` : "нет"}{record.isPrivilegedMembership === true && <span className="ml-1 text-[12px] text-muted">(привилегированное)</span>}</dd>
                 <dt className="text-muted">Спящий организатор</dt>
                 <dd>
-                    {exempt ? "не скрывать (решение администратора)" : record.sleepingSince ? `вакансии скрыты с ${String(record.sleepingSince)} — владелец давно не заходит` : record.sleepWarnedAt ? `предупреждён ${String(record.sleepWarnedAt)}, скроем через 7 дней` : "нет"}
+                    {exempt ? "не помечать (решение администратора)" : record.sleepingSince ? `с ${String(record.sleepingSince)} — отметка «давно не заходил», вакансии ниже в каталоге` : record.sleepWarnedAt ? `предупреждён ${String(record.sleepWarnedAt)}, отметка через 7 дней` : "нет"}
                 </dd>
                 <dt className="text-muted">На сайте</dt><dd><a href={`/organizations/${id}`} target="_blank" rel="noreferrer" className="text-primary hover:underline">страница организации</a></dd>
             </dl>
             <div className="flex flex-wrap gap-2">
                 <button type="button" className={active ? adminButtonDanger : adminButton} disabled={busy} onClick={() => setConfirm("toggle")}>{active ? "Деактивировать" : "Активировать"}</button>
-                <button type="button" className={adminButton} disabled={busy} onClick={() => void run(() => api.post(`organization/${id}/sleep-exempt`, { exempt: !exempt }), exempt ? "Снова по общим правилам" : "Вакансии не будут скрываться")}>
-                    {exempt ? "Скрывать, если давно не заходит" : "Не скрывать вакансии"}
+                <button type="button" className={adminButton} disabled={busy} onClick={() => void run(() => api.post(`organization/${id}/sleep-exempt`, { exempt: !exempt }), exempt ? "Снова по общим правилам" : "Вакансии не будут помечаться")}>
+                    {exempt ? "Помечать, если давно не заходит" : "Не помечать вакансии"}
                 </button>
                 {!record.isHostMembership && <button type="button" className={adminButton} disabled={busy} onClick={() => setConfirm("membership")}>Активировать членство</button>}
                 <button type="button" className={adminButtonDanger} disabled={busy} onClick={() => setConfirm("delete")}>Удалить организацию</button>

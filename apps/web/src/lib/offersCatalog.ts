@@ -24,6 +24,8 @@ export interface CatalogOffer {
     active: boolean;
     /** Есть координаты — вакансия есть на карте */
     onMap: boolean;
+    /** Организатор давно не заходит и не отвечает — значок, в списке ниже (gs-backend #562) */
+    sleeping?: boolean;
 }
 
 export interface CatalogPage {
@@ -65,6 +67,7 @@ export async function getCatalogPage(locale: Locale, filters: OffersFilters, t: 
                 went: offer.acceptedApplicationsCount,
                 active: String(offer.status) === "active",
                 onMap: Number.isFinite(offer.latitude) && Number.isFinite(offer.longitude),
+                sleeping: offer.organizationSleeping === true,
             })),
         };
     } catch {
