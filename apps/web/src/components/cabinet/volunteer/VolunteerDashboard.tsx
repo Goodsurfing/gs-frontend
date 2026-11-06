@@ -11,6 +11,7 @@ import { useSession } from "@/components/session/SessionProvider";
 import { Spinner } from "@/components/ui/Spinner";
 import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
+import { formatLongDate } from "@/lib/formatDate";
 import { mediaUrl } from "@/lib/media";
 import type { CatalogOffer } from "@/lib/offersCatalog";
 import { whyText, type WhyLabels } from "@/lib/recommendations";
@@ -221,7 +222,7 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
                         <div className="flex min-h-[450px] flex-col gap-3.5 bg-white p-[30px]">
                             <div className="flex cursor-pointer flex-col">
                                 <p className="text-[14px] font-bold text-primary">{labels.welcome}</p>
-                                <p className="mt-[3px] text-[12px] font-medium text-[#82949F]">{date}</p>
+                                <p className="mt-[3px] text-[12px] font-medium text-[#82949F]">{formatLongDate(date, locale)}</p>
                                 <p className="mt-[3px] text-[12px] leading-4 text-ink-secondary">{labels.welcomeText}</p>
                             </div>
                         </div>
