@@ -2,13 +2,18 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { DEFAULT_LOCALE, localeFromPath, stripLocale } from "@/i18n/config";
 import { LOCALE_HEADER } from "@/i18n/request";
+import { legacyOffersListTarget } from "@/lib/legacyOffersLink";
 import { legacyRedirect } from "@/lib/legacyRedirects";
+import { routes } from "@/lib/routes";
 
 /**
  * Адреса без префикса для русского (src/i18n/config.ts):
  * - /ru, /ru/… — 301 на адрес без префикса (ссылки из писем, закладки, поиск);
  * - /en/…, /es/… — как есть;
  * - старые адреса (lib/legacyRedirects.ts) — 301 на новые;
+ * - ссылки старого каталога из рекламы `/offers/2?host_categories=…` — на карту
+ *   вакансий (lib/legacyOffersLink.ts). Здесь, а не на странице вакансии:
+ *   чтение searchParams там делает кэшируемую (ISR) страницу динамической;
  * - остальное — русский: внутри переписывается на маршрут [locale]=ru, так что
  *   страницы остаются статическими (ISR).
  * Язык передаётся в заголовке для app/global-not-found.tsx — параметров
@@ -41,6 +46,12 @@ export function proxy(request: NextRequest) {
     }
 
     const locale = localeFromPath(pathname);
+
+    if (/^(\/(en|es))?\/offers\/\d+\/?$/.test(pathname)) {
+        const target = legacyOffersListTarget(Object.fromEntries(request.nextUrl.searchParams), routes.offersMap(locale));
+        if (target) return NextResponse.redirect(new URL(target, request.url), 301);
+    }
+
     const headers = new Headers(request.headers);
     headers.set(LOCALE_HEADER, locale);
 
