@@ -68,5 +68,15 @@
         "photo": "Add a photo",
         "uploading": "Saving…",
         "error": "Couldn't save — please try again"
+    },
+    "hint": {
+        "from": "Goodsurfing",
+        "responsive": "This host replies to {{percent}}% of applications",
+        "period": ", usually within {{period}}",
+        "hours": "{{count}} h",
+        "days": "{{count}} days",
+        "slow": "This host rarely replies. To save time, apply to 2–3 more places:",
+        "new": "This host is new on Goodsurfing. A reply usually comes within a week.",
+        "close": "If there’s no reply within three weeks, the application closes automatically and we’ll send you similar opportunities."
     }
 }

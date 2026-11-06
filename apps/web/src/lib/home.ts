@@ -6,7 +6,7 @@ import type { Locale } from "@/i18n/config";
 
 import { OPTIONAL_BLOCK_TIMEOUT_MS, serverApi } from "./api";
 
-import { type OfferCardData, SLIDER_OFFERS_LIMIT } from "./offers";
+import { localizeCard, type OfferCardData, SLIDER_OFFERS_LIMIT, vacancyLang } from "./offers";
 
 // Направления, вакансии и статьи — основное содержимое главной: ждём дольше необязательных блоков,
 // иначе на сборке (девять запросов разом) страница кэшировалась пустой
@@ -39,10 +39,10 @@ export async function getHomeCategories(locale: Locale): Promise<HomeCategory[]>
 export async function getFeaturedOffers(locale: Locale): Promise<OfferCardData[]> {
     const load = async (query: { isFeatured?: boolean; sort?: "recommendation" }) => {
         const { data } = await serverApi(locale).GET("/api/v1/vacancy", {
-            params: { query: { ...query, fields: "card", limit: SLIDER_OFFERS_LIMIT } },
+            params: { query: { ...query, fields: "card", limit: SLIDER_OFFERS_LIMIT, ...vacancyLang(locale) } },
             signal: AbortSignal.timeout(MAIN_BLOCK_TIMEOUT_MS),
         });
-        return (data?.data ?? []).slice(0, SLIDER_OFFERS_LIMIT);
+        return (data?.data ?? []).slice(0, SLIDER_OFFERS_LIMIT).map(localizeCard);
     };
     try {
         const featured = await load({ isFeatured: true });

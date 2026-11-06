@@ -1,5 +1,6 @@
 import type { components } from "@goodsurfing/api";
 
+import { type TranslatedLabels, TranslatedText } from "@/components/offer/TranslatedText";
 import type { Translate } from "@/i18n/dictionary";
 import {
     ageText, conditionName, EXTRA_CONDITIONS, EXTRA_FEATURES, GOODS, gendersText, languagesText,
@@ -106,7 +107,24 @@ export function OfferWhatToDo({ todo, svgs, t, tCommon }: { todo: S["WhatToDoRes
 }
 
 /** Описание и краткое описание (OfferDescriptionCard) */
-export function OfferDescription({ description, t }: { description: S["DescriptionResult"]; t: Translate }) {
+export function OfferDescription({ description, original, translatedLabels, t }: {
+    description: S["DescriptionResult"];
+    /** Русский оригинал, если показан перевод (GS-227) */
+    original?: { shortDescription: string; description: string } | null;
+    translatedLabels?: TranslatedLabels;
+    t: Translate;
+}) {
+    if (original && translatedLabels) {
+        return (
+            <TranslatedText
+                labels={translatedLabels}
+                blocks={[
+                    { title: <SectionTitle>{t("personalOffer.Описание")}</SectionTitle>, translated: description.description, original: original.description },
+                    { title: <SectionTitle>{t("personalOffer.Дополнительная информация")}</SectionTitle>, translated: description.shortDescription, original: original.shortDescription },
+                ]}
+            />
+        );
+    }
     const text = "text-[14px] font-medium whitespace-pre-line break-words";
     return (
         <div className="mt-10 flex w-full flex-col gap-10">

@@ -129,6 +129,17 @@ export default async function MessengerPage({ params }: Props) {
                             uploading: m("intro.uploading"),
                             error: m("intro.error"),
                         },
+                        // Подстановки {{…}} заполняет браузер — словарь их не трогает
+                        hint: {
+                            from: m("hint.from"),
+                            responsive: tm("hint.responsive", { percent: "{{percent}}" }),
+                            period: tm("hint.period", { period: "{{period}}" }),
+                            hours: tm("hint.hours", { count: "{{count}}" }),
+                            days: tm("hint.days", { count: "{{count}}" }),
+                            slow: m("hint.slow"),
+                            new: m("hint.new"),
+                            close: tm("hint.close", { days: "{{days}}" }),
+                        },
                         push: {
                             text: m("Включите уведомления — узнаете о новых сообщениях и заявках сразу, даже когда сайт закрыт"),
                             enable: m("Включить"),

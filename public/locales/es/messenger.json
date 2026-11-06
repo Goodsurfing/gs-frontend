@@ -68,5 +68,15 @@
         "photo": "Añadir foto",
         "uploading": "Guardando…",
         "error": "No se pudo guardar, inténtalo de nuevo"
+    },
+    "hint": {
+        "from": "Goodsurfing",
+        "responsive": "Este anfitrión responde al {{percent}} % de las solicitudes",
+        "period": ", normalmente en {{period}}",
+        "hours": "{{count}} h",
+        "days": "{{count}} días",
+        "slow": "Este anfitrión rara vez responde. Para no perder tiempo, postúlate a 2–3 lugares más:",
+        "new": "El anfitrión es nuevo en Goodsurfing. La respuesta suele llegar en una semana.",
+        "close": "Si no hay respuesta en tres semanas, la solicitud se cerrará sola y te enviaremos oportunidades similares."
     }
 }

@@ -286,5 +286,10 @@
         "hours": "{hours} h {per}",
         "dayOff": "días libres por semana: {n}",
         "minDays": "desde {n} días"
-    }
+    },
+    "Переведено автоматически": "Traducido automáticamente",
+    "Показать оригинал": "Ver original (ruso)",
+    "Показать перевод": "Ver traducción",
+    "Организатор давно не заходил на Гудсёрфинг — ответа на заявку может не быть.": "El anfitrión no entra en Goodsurfing desde hace tiempo: es posible que tu solicitud no reciba respuesta.",
+    "Посмотреть другие вакансии": "Ver otras oportunidades"
 }

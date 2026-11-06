@@ -1210,6 +1210,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/v1/organization/{id}/sleep-exempt": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Не скрывать вакансии спящего организатора
+         * @description «Не скрывать»: вакансии организации не скрываются из каталога, даже если владелец давно не заходит (app:hosts:sleep). exempt=false — снова по общим правилам.
+         */
+        post: operations["post_app_admin_v1_organization_sleepexempt"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/v1/organization/{id}/toggle-active": {
         parameters: {
             query?: never;
@@ -2683,6 +2703,23 @@ export interface paths {
          * @description Retrieves a ApplicationPeriodClosedException resource.
          */
         get: operations["api_application_period_closed_exceptions_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/application/{id}/response-hint": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Заметка волонтёру после заявки: как отвечает организатор (GS-247) */
+        get: operations["get_app_api_v1_applicationresponsehint_hint"];
         put?: never;
         post?: never;
         delete?: never;
@@ -6000,6 +6037,40 @@ export interface paths {
          * @description Изменение статуса вакансии
          */
         patch: operations["patch_app_api_v1_vacancy_togglestatus"];
+        trace?: never;
+    };
+    "/api/v1/vacancy/{id}/translations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Переводы вакансии (для организатора) */
+        get: operations["get_app_api_v1_vacancytranslation_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vacancy/{id}/translations/{locale}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Сохранить перевод вакансии, поправленный организатором */
+        patch: operations["patch_app_api_v1_vacancytranslation_edit"];
         trace?: never;
     };
     "/api/v1/vacancy/condition/{id}": {
@@ -10752,6 +10823,11 @@ export interface components {
             id: number;
             organization: components["schemas"]["OrganizationResult4"];
             /**
+             * @description Организатор давно не заходит, а волонтёры ждут ответа: вакансия скрыта из каталога (app:hosts:sleep). Показать плашку «ответа может не быть»
+             * @default false
+             */
+            organizationSleeping: boolean;
+            /**
              * true — canParticipate = false конкретно из-за исчерпанного бесплатного
              *     лимита заявок (а не из-за закрытого приёма/владения вакансией/уже
              *     поданной заявки). Фронт показывает по этому флагу текст с призывом
@@ -10769,6 +10845,8 @@ export interface components {
             status: string;
             /** @example  */
             textParticipate: string;
+            /** @description Перевод текстов на язык из ?lang=en|es (GS-227); null — перевода нет или язык русский */
+            translation?: components["schemas"]["TranslationResult"] | null;
             /** @example 01.01.2000 */
             updated: string;
             whatToDo: components["schemas"]["WhatToDoResult"];
@@ -11117,6 +11195,15 @@ export interface components {
             otherType: string;
             /** @example  */
             shortDescription: string;
+            /**
+             * @description «Не скрывать» — решение администратора
+             * @default false
+             */
+            sleepExempt: boolean;
+            /** @description С этой даты вакансии скрыты как у «спящего» организатора (null — не скрыты) */
+            sleepingSince?: string | null;
+            /** @description Когда предупредили, что вакансии скроются */
+            sleepWarnedAt?: string | null;
             /** @example  */
             telegram: string;
             /** @example  */
@@ -13146,6 +13233,10 @@ export interface components {
             title: string;
             /** @default 0 */
             totalApplicationsCount: number;
+            /** @description Краткое описание на языке из ?lang=en|es, если есть перевод */
+            translatedShortDescription?: string | null;
+            /** @description Название на языке из ?lang=en|es, если есть перевод */
+            translatedTitle?: string | null;
             updated: string;
         };
         /**
@@ -16264,6 +16355,37 @@ export interface components {
             email: string;
         };
         /**
+         * ApplicationResponseHint
+         * @description Заметка волонтёру в переписке сразу после заявки (GS-247): как обычно отвечает этот организатор и что будет без ответа. Видит только волонтёр.
+         */
+        ResponseHint: {
+            /**
+             * @description Доля заявок с ответом, %
+             * @default null
+             */
+            answeredPercent: number | null;
+            /**
+             * @description Через сколько дней без ответа заявка закроется сама
+             * @default 21
+             */
+            closeAfterDays: number;
+            /**
+             * @description responsive — отвечает часто; slow — отвечает редко (показать похожие); new — мало данных; null — заметка не нужна (заявку уже рассмотрели)
+             * @enum {string|null}
+             */
+            kind?: "responsive" | "slow" | "new" | null;
+            /**
+             * @description Обычно отвечает за столько часов
+             * @default null
+             */
+            medianReplyHours: number | null;
+            /**
+             * @description Похожие вакансии (только при slow)
+             * @default []
+             */
+            similar: components["schemas"]["SimilarVacancy"][];
+        };
+        /**
          * OrganizationResponseStats
          * @description Как организация отвечает на заявки за последний год (заявки старше 7 дней). null — заявок меньше трёх
          */
@@ -16808,6 +16930,13 @@ export interface components {
         "Security.multipart-vacancy.read_media_object.read_organization.short": Record<string, never>;
         "Security.multipart-vacancy.read_vacancy_gallery_item.read_media_object.read_organization.short": Record<string, never>;
         "Security.multipart-vacancy.status_vacancy.read": Record<string, never>;
+        /** ApplicationHintSimilarVacancy */
+        SimilarVacancy: {
+            id: number;
+            /** @description Место коротко: «Россия, Бурятия» */
+            place: string;
+            title: string;
+        };
         Skill: {
             readonly id?: number;
             /**
@@ -17329,6 +17458,24 @@ export interface components {
         "Transfer.multipart-vacancy.read_media_object.read_organization.short": Record<string, never>;
         "Transfer.multipart-vacancy.read_vacancy_gallery_item.read_media_object.read_organization.short": Record<string, never>;
         "Transfer.multipart-vacancy.status_vacancy.read": Record<string, never>;
+        /**
+         * VacancyTranslationResult
+         * @description Перевод текстов вакансии на язык страницы
+         */
+        TranslationResult: {
+            description: string;
+            /** @enum {string} */
+            locale: "en" | "es";
+            /** @description Русский текст изменился после перевода */
+            outdated: boolean;
+            shortDescription: string;
+            /**
+             * @description auto — машинный перевод, host — правка организатора
+             * @enum {string}
+             */
+            source: "auto" | "host";
+            title: string;
+        };
         User: {
             aboutMe?: string | null;
             readonly active?: boolean;
@@ -23988,6 +24135,39 @@ export interface operations {
             };
         };
     };
+    post_app_admin_v1_organization_sleepexempt: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Uuid организации */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    exempt?: boolean;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Организация не найдена */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     post_app_admin_v1_organization_toggleactive: {
         parameters: {
             query?: never;
@@ -26773,6 +26953,41 @@ export interface operations {
                     "application/problem+json": components["schemas"]["Error"];
                     "application/vnd.api+json": components["schemas"]["Error.jsonapi"];
                 };
+            };
+        };
+    };
+    get_app_api_v1_applicationresponsehint_hint: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseHint"];
+                };
+            };
+            /** @description Не своя заявка */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Заявка не найдена */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -33086,6 +33301,8 @@ export interface operations {
                 "ids[]"?: number[];
                 /** @description Фильтр по признаку показа в блоке "Интересные вакансии" на главной */
                 isFeatured?: boolean;
+                /** @description Язык страницы: en или es — добавить перевод текстов (GS-227) */
+                lang?: "en" | "es";
                 /** @description Языки */
                 "languages[]"?: string[];
                 /** @description Количество элементов на странице */
@@ -33234,7 +33451,10 @@ export interface operations {
     };
     get_app_api_v1_vacancy_element: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Язык страницы: en или es — добавить перевод текстов (GS-227) */
+                lang?: "en" | "es";
+            };
             header?: never;
             path: {
                 /** @description Id вакансии */
@@ -33314,6 +33534,57 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorResult"];
+                };
+            };
+        };
+    };
+    get_app_api_v1_vacancytranslation_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TranslationResult"][];
+                };
+            };
+        };
+    };
+    patch_app_api_v1_vacancytranslation_edit: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                locale: "en" | "es";
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    description: string;
+                    shortDescription: string;
+                    title: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TranslationResult"];
                 };
             };
         };
