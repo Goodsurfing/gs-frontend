@@ -11952,6 +11952,8 @@ export interface components {
             title: string;
             /** @example 123 */
             vacancyId: number;
+            /** @description Обложка вакансии — для отзыва без своих фото на главной (06.11.2026: из 641 отзыва фото только у 8) */
+            vacancyImage?: components["schemas"]["ImageResultDto"] | null;
         };
         /**
          * FeedEvent
@@ -24741,6 +24743,8 @@ export interface operations {
                 authorFirstName?: string;
                 /** @description Поиск по фамилии автора отзыва */
                 authorLastName?: string;
+                /** @description true — только отзывы с фото, false — только без фото */
+                hasImages?: boolean;
                 /** @description Фильтр по признаку показа на главной странице */
                 isFeatured?: boolean;
                 /** @description Количество элементов на странице */
