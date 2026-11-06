@@ -3265,6 +3265,58 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/email-change": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Текущая почта, есть ли пароль и незавершённая смена */
+        get: operations["get_app_api_v1_emailchange_state"];
+        put?: never;
+        /** Сменить почту: письмо со ссылкой уходит на новый адрес */
+        post: operations["post_app_api_v1_emailchange_request"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/email-change/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Подтвердить новую почту по ссылке из письма (без входа) */
+        post: operations["post_app_api_v1_emailchange_confirm"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/email-change/revert": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Отменить смену почты по ссылке из письма на прежний адрес (без входа) */
+        post: operations["post_app_api_v1_emailchange_revert"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/email-verifications/resend": {
         parameters: {
             query?: never;
@@ -28062,6 +28114,176 @@ export interface operations {
                     "application/problem+json": components["schemas"]["Error"];
                     "application/vnd.api+json": components["schemas"]["Error.jsonapi"];
                 };
+            };
+        };
+    };
+    get_app_api_v1_emailchange_state: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        email: string;
+                        /** @description false — входит только через VK, для смены нужен свежий вход */
+                        hasPassword: boolean;
+                        pending: {
+                            /** @example 07.11.2026 21:15 */
+                            expiresAt?: string;
+                            newEmail?: string;
+                        } | null;
+                    };
+                };
+            };
+        };
+    };
+    post_app_api_v1_emailchange_request: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    newEmail: string;
+                    /** @description Текущий пароль (если он есть) */
+                    password?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description Письмо отправлено */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        sentTo: string;
+                    };
+                };
+            };
+            /** @description invalid_email | same_email | wrong_password */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description reauth_required — войти заново (нет пароля, вход старше 15 минут) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description email_taken */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description too_many_requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_emailchange_confirm: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    token: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Почта изменена, все сессии завершены — войти с новой почтой */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        email: string;
+                    };
+                };
+            };
+            /** @description invalid_token */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description email_taken */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_emailchange_revert: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    token: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Почта возвращена, сессии завершены, пароль сброшен — задать новый через «Забыли пароль» */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        email: string;
+                    };
+                };
+            };
+            /** @description invalid_token */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description old_email_taken */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

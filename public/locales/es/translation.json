@@ -421,5 +421,49 @@
         "error": "No se pudo guardar. Inténtalo de nuevo.",
         "stale": "Vigencia no confirmada",
         "staleNote": "El anfitrión no confirma desde hace tiempo que la oportunidad sigue abierta: consúltalo por mensaje antes de viajar."
+    },
+    "emailChange": {
+        "change": "Cambiar correo",
+        "title": "Cambiar correo",
+        "text": "Ahora inicias sesión con {{email}}. Escribe una nueva dirección: te enviaremos un enlace. El correo cambiará solo cuando lo abras.",
+        "newEmail": "Nuevo correo",
+        "password": "Contraseña actual",
+        "passwordHint": "Para confirmar que eres tú",
+        "vkHint": "Inicias sesión con VK, así que no hace falta contraseña: basta con un inicio de sesión reciente.",
+        "submit": "Enviar correo",
+        "cancel": "Cancelar",
+        "sent": "Enviamos un correo a {{email}}. Abre el enlace en 24 horas; después inicia sesión con el nuevo correo. ¿No llega? Revisa la carpeta de spam.",
+        "pending": "Pendiente de confirmación: {{email}}; el enlace es válido hasta {{date}}",
+        "close": "Entendido",
+        "signInAgain": "Iniciar sesión de nuevo",
+        "errors": {
+            "invalid_email": "Revisa la dirección de correo",
+            "same_email": "Es tu dirección actual",
+            "wrong_password": "Contraseña incorrecta",
+            "reauth_required": "Para cambiar el correo, vuelve a iniciar sesión; así sabremos que eres tú.",
+            "email_taken": "Esta dirección ya la usa otra cuenta",
+            "too_many_requests": "Demasiados intentos, inténtalo mañana",
+            "invalid_token": "El enlace no es válido o ha caducado. Solicita el cambio de nuevo en tu perfil.",
+            "old_email_taken": "Tu dirección anterior ya la usa otra cuenta; escribe a soporte.",
+            "unknown": "Algo salió mal, inténtalo de nuevo",
+            "network": "Sin conexión con el servidor, inténtalo de nuevo"
+        },
+        "missing": "El enlace no tiene código. Abre el enlace completo del correo.",
+        "confirm": {
+            "title": "Confirma tu nuevo correo",
+            "text": "Pulsa el botón para cambiar el correo de tu cuenta. Después tendrás que iniciar sesión de nuevo en todos los dispositivos, con el nuevo correo y tu contraseña actual.",
+            "button": "Confirmar nuevo correo",
+            "doneTitle": "Correo cambiado",
+            "doneText": "Ahora inicias sesión con {{email}} y tu contraseña actual.",
+            "doneButton": "Iniciar sesión"
+        },
+        "revert": {
+            "title": "Recuperar el correo anterior",
+            "text": "Si otra persona cambió el correo de tu cuenta, pulsa el botón: restauraremos tu dirección anterior y cerraremos todas las sesiones. También se restablecerá la contraseña: crea una nueva.",
+            "button": "Recuperar correo anterior",
+            "doneTitle": "Correo recuperado",
+            "doneText": "Vuelves a iniciar sesión con {{email}}. Todas las sesiones están cerradas y la contraseña se restableció: crea una nueva con «¿Olvidaste tu contraseña?».",
+            "doneButton": "Crear nueva contraseña"
+        }
     }
 }

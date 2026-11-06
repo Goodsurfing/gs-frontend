@@ -420,5 +420,49 @@
         "error": "Couldn’t save. Please try again.",
         "stale": "Not confirmed as current",
         "staleNote": "The host hasn’t confirmed for a while that this opportunity is still open — check in a message before you travel."
+    },
+    "emailChange": {
+        "change": "Change email",
+        "title": "Change email",
+        "text": "You currently sign in with {{email}}. Enter a new address — we will send a link there. The email changes only after you open it.",
+        "newEmail": "New email",
+        "password": "Current password",
+        "passwordHint": "To make sure it's you",
+        "vkHint": "You sign in with VK, so no password is needed — a recent sign-in is enough.",
+        "submit": "Send email",
+        "cancel": "Cancel",
+        "sent": "We sent an email to {{email}}. Open the link within 24 hours — after that, sign in with the new email. No email? Check your spam folder.",
+        "pending": "Awaiting confirmation: {{email}} — the link is valid until {{date}}",
+        "close": "Got it",
+        "signInAgain": "Sign in again",
+        "errors": {
+            "invalid_email": "Check the email address",
+            "same_email": "This is your current address",
+            "wrong_password": "Wrong password",
+            "reauth_required": "To change your email, sign in again — so we know it's you.",
+            "email_taken": "This address is already used by another account",
+            "too_many_requests": "Too many attempts, try again tomorrow",
+            "invalid_token": "The link is invalid or expired. Request the change again in your profile.",
+            "old_email_taken": "Your previous address is now used by another account — please contact support.",
+            "unknown": "Something went wrong, please try again",
+            "network": "No connection to the server, please try again"
+        },
+        "missing": "The link has no code. Open the full link from the email.",
+        "confirm": {
+            "title": "Confirm your new email",
+            "text": "Press the button to change your account email. After that you will need to sign in again on all devices — with the new email and your current password.",
+            "button": "Confirm new email",
+            "doneTitle": "Email changed",
+            "doneText": "You now sign in with {{email}} and your current password.",
+            "doneButton": "Sign in"
+        },
+        "revert": {
+            "title": "Restore your previous email",
+            "text": "If someone else changed the email of your account, press the button: we will restore your previous address and sign out all sessions. Your password will be reset too — set a new one.",
+            "button": "Restore previous email",
+            "doneTitle": "Email restored",
+            "doneText": "You sign in with {{email}} again. All sessions are closed and your password is reset — set a new one via “Forgot password”.",
+            "doneButton": "Set a new password"
+        }
     }
 }

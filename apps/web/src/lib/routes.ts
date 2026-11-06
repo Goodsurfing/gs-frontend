@@ -94,6 +94,8 @@ export const routes = {
     paymentFail: (l: Locale) => path(l, "/payment/fail"),
     myOffers: (l: Locale) => path(l, "/host/my-offers"),
     hostRelevance: (l: Locale) => path(l, "/host/relevance"),
+    emailChangeConfirm: (l: Locale) => path(l, "/email-change/confirm"),
+    emailChangeRevert: (l: Locale) => path(l, "/email-change/revert"),
     messenger: (l: Locale) => path(l, "/messenger"),
     /** Чат по заявке (мессенджер — в старом SPA) */
     messengerChat: (l: Locale, id: string | number) => path(l, `/messenger/${id}`),
