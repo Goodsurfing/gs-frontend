@@ -18,6 +18,7 @@ import { dayFromApi } from "@/lib/offerWizard";
 
 import { type ApplicationLabels, ApplicationBlock, ApplicationEvent } from "./ApplicationBlock";
 import { needsIntro, QuickIntro, type QuickIntroLabels } from "./QuickIntro";
+import { ResponseHintNote, type ResponseHintLabels } from "./ResponseHintNote";
 import { ChatHeader } from "./ChatHeader";
 import { type ChatInputLabels, ChatInput, type OutgoingMessage } from "./ChatInput";
 import { type ChatListLabels, ChatList } from "./ChatList";
@@ -30,6 +31,7 @@ import { useChatList, useChatMessages, useLiveMessages } from "./useMessenger";
 export interface MessengerLabels {
     /** Над откликом новичка без имени или фото */
     intro: QuickIntroLabels;
+    hint: ResponseHintLabels;
     title: string;
     choose: string;
     back: string;
@@ -388,8 +390,11 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                     />
                 );
             }
+            // Заметка «как отвечает организатор» — волонтёру, под его новой заявкой (column-reverse: в разметке раньше)
+            const hintHere = applicationId !== undefined && volunteerHere && application?.status === "new" && String(application.id) === applicationId;
             items.push(
                 <Fragment key={message.id}>
+                    {hintHere && <ResponseHintNote applicationId={applicationId} token={token} offerHref={hrefs.offer} labels={labels.hint} />}
                     {node}
                     {/* column-reverse: разделитель идёт после сообщения в разметке, на экране — над ним */}
                     {dayStart && (
@@ -403,7 +408,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         return items;
         // href — без состояния, пересоздаётся при каждом рендере
          
-    }, [chat.messages, applications, me?.id, myName, companionName, companionAvatar, companionHref, locale, token, labels, hrefs]);
+    }, [chat.messages, applications, me?.id, myName, companionName, companionAvatar, companionHref, locale, token, labels, hrefs, volunteerHere, application?.status, application?.id]);
 
     const hasChat = !!chatId;
     const scroller = useRef<HTMLDivElement>(null);

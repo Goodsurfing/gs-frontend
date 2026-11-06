@@ -25,7 +25,7 @@ import { getTranslator, type Translate } from "@/i18n/dictionary";
 import { categoryName } from "@/lib/categories";
 import { mediaUrl } from "@/lib/media";
 import { getPrices, TARIFF } from "@/lib/membershipPrices";
-import { getOffer, getOfferBanner, getOfferParticipants, getOfferReviews, inlineSvg, type OfferDetail } from "@/lib/offer";
+import { getOffer, getOfferBanner, getOfferParticipants, getOfferReviews, inlineSvg, localizedDescription, type OfferDetail } from "@/lib/offer";
 import { type Badge, getOrganizationBadges } from "@/lib/achievements";
 import { organizationType, PARTICIPATE_STATES, responseStatsText } from "@/lib/offerText";
 import { routes } from "@/lib/routes";
@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (result.kind !== "ok") {
         return pageMetadata({ locale, path, title: tMain("seo.title"), description: tMain("seo.description"), noindex: true });
     }
-    const { description } = result.offer;
+    const { description } = localizedDescription(result.offer);
     return pageMetadata({
         locale,
         path,
@@ -171,7 +171,9 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
     tHost: Translate;
 }) {
     const p = (key: string) => tOffer(`personalOffer.${key}`);
-    const { description, condition, organization } = offer;
+    const { condition, organization } = offer;
+    // На /en и /es — перевод текстов (GS-227), оригинал — по кнопке
+    const { description, original } = localizedDescription(offer);
     // Как galleryUrls старого фронта: large, иначе medium, иначе оригинал
     const gallery = (offer.galleryImages ?? [])
         .map((image) => mediaUrl(image, "large") === mediaUrl(image) ? mediaUrl(image, "medium") : mediaUrl(image, "large"))
@@ -225,6 +227,12 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
             </SectionSubmenu>
 
             <div className="w-full max-w-[980px] pt-10">
+                {offer.organizationSleeping && (
+                    <p role="note" className="mb-8 flex items-start gap-3 rounded-[10px] bg-notice-bg px-5 py-4 text-[15px] leading-[140%] text-ink-secondary">
+                        <svg aria-hidden viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 shrink-0 text-notice" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 7v5l3 2" /></svg>
+                        <span>{tOffer("Организатор давно не заходил на Гудсёрфинг — ответа на заявку может не быть.")} <a href={routes.offersMap(locale)} className="text-primary underline">{tOffer("Посмотреть другие вакансии")}</a></span>
+                    </p>
+                )}
                 {banner && (
                     <section
                         className="relative mb-10 flex items-center overflow-hidden rounded-[10px] bg-cover bg-center bg-no-repeat p-5 before:absolute before:inset-0 before:bg-black/40 down-md:min-h-[200px] down-md:rounded-2xl down-md:px-5 down-md:py-6"
@@ -241,7 +249,14 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
                 {offer.when && <OfferWhen when={offer.when} t={tOffer} />}
                 {offer.howNeed && <OfferWhoNeeds need={offer.howNeed} t={tOffer} />}
                 {offer.whatToDo && <OfferWhatToDo todo={offer.whatToDo} svgs={svgs} t={tOffer} tCommon={t} />}
-                {description && <OfferDescription description={description} t={tOffer} />}
+                {description && (
+                    <OfferDescription
+                        description={description}
+                        original={original}
+                        t={tOffer}
+                        translatedLabels={{ note: tOffer("Переведено автоматически"), showOriginal: tOffer("Показать оригинал"), showTranslation: tOffer("Показать перевод") }}
+                    />
+                )}
                 {condition && (
                     <>
                         <OfferTerms condition={condition} svgs={svgs} t={tOffer} />

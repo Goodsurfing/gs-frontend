@@ -9,6 +9,15 @@ import { ApiUnavailableError } from "./apiUnavailable";
 
 export type OfferCardData = components["schemas"]["ListResult6"];
 
+/** Параметр языка для GET /vacancy: на /en и /es бэкенд добавит переводы названий (GS-227) */
+export const vacancyLang = (locale: Locale): { lang?: "en" | "es" } => (locale === "ru" ? {} : { lang: locale });
+
+/** Карточка на языке страницы: перевод названия и краткого описания, если есть */
+export function localizeCard<T extends { title?: string | null; shortDescription?: string | null; translatedTitle?: string | null; translatedShortDescription?: string | null }>(card: T): T {
+    if (!card.translatedTitle) return card;
+    return { ...card, title: card.translatedTitle, shortDescription: card.translatedShortDescription ?? card.shortDescription };
+}
+
 /** Сколько вакансий в слайдере «Интересные вакансии» (как SLIDER_OFFERS_LIMIT старого фронта) */
 export const SLIDER_OFFERS_LIMIT = 10;
 
@@ -19,10 +28,10 @@ export const SLIDER_OFFERS_LIMIT = 10;
 export async function getOffersByCategories(locale: Locale, categoryIds: number[]): Promise<OfferCardData[]> {
     try {
         const { data } = await serverApi(locale).GET("/api/v1/vacancy", {
-            params: { query: { "categoryIds[]": categoryIds, sort: "recommendation", fields: "card", limit: SLIDER_OFFERS_LIMIT } },
+            params: { query: { "categoryIds[]": categoryIds, sort: "recommendation", fields: "card", limit: SLIDER_OFFERS_LIMIT, ...vacancyLang(locale) } },
             signal: AbortSignal.timeout(OPTIONAL_BLOCK_TIMEOUT_MS),
         });
-        return (data?.data ?? []).slice(0, SLIDER_OFFERS_LIMIT);
+        return (data?.data ?? []).slice(0, SLIDER_OFFERS_LIMIT).map(localizeCard);
     } catch {
         return [];
     }
@@ -39,14 +48,14 @@ export async function getOpenOffersOfCategory(locale: Locale, categoryId: number
     let result;
     try {
         result = await serverApi(locale).GET("/api/v1/vacancy", {
-            params: { query: { "categoryIds[]": [categoryId], hidePassed: true, sort: "recommendation", fields: "card", limit: 24 } as never },
+            params: { query: { "categoryIds[]": [categoryId], hidePassed: true, sort: "recommendation", fields: "card", limit: 24, ...vacancyLang(locale) } as never },
             signal: AbortSignal.timeout(LANDING_TIMEOUT_MS),
         });
     } catch {
         throw new ApiUnavailableError(`вакансии направления ${categoryId}`);
     }
     if (!result.data) throw new ApiUnavailableError(`вакансии направления ${categoryId}`);
-    const offers = (result.data.data ?? []) as OfferCardData[];
+    const offers = ((result.data.data ?? []) as OfferCardData[]).map(localizeCard);
     return { offers, total: (result.data as { pagination?: { total?: number } }).pagination?.total ?? offers.length };
 }
 

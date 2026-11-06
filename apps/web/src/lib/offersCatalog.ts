@@ -6,6 +6,7 @@ import type { Translate } from "@/i18n/dictionary";
 import { serverApi } from "./api";
 import { categoryName } from "./categories";
 import { mediaUrl } from "./media";
+import { localizeCard, vacancyLang } from "./offers";
 import { OFFERS_PER_PAGE, offersApiQuery, type OffersFilters } from "./offersFilters";
 
 /** Вакансия в списке каталога — ровно то, что рисует карточка. */
@@ -43,6 +44,7 @@ export async function getCatalogPage(locale: Locale, filters: OffersFilters, t: 
                     page: filters.page,
                     limit: OFFERS_PER_PAGE,
                     fields: "card",
+                    ...vacancyLang(locale),
                 },
             },
             signal: AbortSignal.timeout(8000),
@@ -50,7 +52,7 @@ export async function getCatalogPage(locale: Locale, filters: OffersFilters, t: 
         if (!data) return null;
         return {
             total: data.pagination?.total ?? 0,
-            offers: (data.data ?? []).map((offer) => ({
+            offers: (data.data ?? []).map(localizeCard).map((offer) => ({
                 id: offer.id,
                 title: offer.title,
                 description: offer.shortDescription,

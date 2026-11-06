@@ -62,7 +62,7 @@ const TEXT = [
 ] as const;
 
 // Поля, которые API не принимает обратно (считаются сами) — остальное отправляем целиком: PATCH перезаписывает организацию
-const READ_ONLY = new Set(["id", "image", "countVacancies", "countApplications"]);
+const READ_ONLY = new Set(["id", "image", "countVacancies", "countApplications", "sleepingSince", "sleepWarnedAt", "sleepExempt", "isHostMembership", "membershipEndDate", "isPrivilegedMembership"]);
 
 const formConfig: AdminFormConfig = {
     title: (r) => String(r?.name ?? "Организация"),
@@ -91,6 +91,7 @@ function OrganizationActions({ record, reload }: { record: Record<string, unknow
     const router = useRouter();
     const id = String(record.id);
     const active = record.isActive === true;
+    const exempt = record.sleepExempt === true;
     const [confirm, setConfirm] = useState<null | "toggle" | "membership" | "delete">(null);
     const [busy, setBusy] = useState(false);
     const [toast, setToast] = useState<{ text: string; ok: boolean } | null>(null);
@@ -118,10 +119,17 @@ function OrganizationActions({ record, reload }: { record: Record<string, unknow
                 <dt className="text-muted">Активна</dt><dd><YesNo value={active} /></dd>
                 <dt className="text-muted">Членство организатора</dt>
                 <dd>{record.isHostMembership ? `до ${String(record.membershipEndDate ?? "бессрочно")}` : "нет"}{record.isPrivilegedMembership === true && <span className="ml-1 text-[12px] text-muted">(привилегированное)</span>}</dd>
+                <dt className="text-muted">Спящий организатор</dt>
+                <dd>
+                    {exempt ? "не скрывать (решение администратора)" : record.sleepingSince ? `вакансии скрыты с ${String(record.sleepingSince)} — владелец давно не заходит` : record.sleepWarnedAt ? `предупреждён ${String(record.sleepWarnedAt)}, скроем через 7 дней` : "нет"}
+                </dd>
                 <dt className="text-muted">На сайте</dt><dd><a href={`/organizations/${id}`} target="_blank" rel="noreferrer" className="text-primary hover:underline">страница организации</a></dd>
             </dl>
             <div className="flex flex-wrap gap-2">
                 <button type="button" className={active ? adminButtonDanger : adminButton} disabled={busy} onClick={() => setConfirm("toggle")}>{active ? "Деактивировать" : "Активировать"}</button>
+                <button type="button" className={adminButton} disabled={busy} onClick={() => void run(() => api.post(`organization/${id}/sleep-exempt`, { exempt: !exempt }), exempt ? "Снова по общим правилам" : "Вакансии не будут скрываться")}>
+                    {exempt ? "Скрывать, если давно не заходит" : "Не скрывать вакансии"}
+                </button>
                 {!record.isHostMembership && <button type="button" className={adminButton} disabled={busy} onClick={() => setConfirm("membership")}>Активировать членство</button>}
                 <button type="button" className={adminButtonDanger} disabled={busy} onClick={() => setConfirm("delete")}>Удалить организацию</button>
             </div>
