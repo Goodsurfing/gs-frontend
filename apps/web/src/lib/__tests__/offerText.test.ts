@@ -36,7 +36,8 @@ describe("offerText", () => {
     it("кнопка «Участвовать»: закрыта, нужна роль, состояние заявки", () => {
         const labels = { participate: "Участвовать", closed: "Закрыта", becomeVolunteer: "Станьте", states: { "Вы участвуете": "Участвуете" } };
         expect(participateText({ closed: true, needVolunteerRole: true, textParticipate: null }, labels)).toBe("Закрыта");
-        expect(participateText({ closed: false, needVolunteerRole: true, textParticipate: null }, labels)).toBe("Станьте");
+        // Без роли — тоже «Участвовать»: роль создаётся сама по нажатию
+        expect(participateText({ closed: false, needVolunteerRole: true, textParticipate: null }, labels)).toBe("Участвовать");
         expect(participateText({ closed: false, needVolunteerRole: false, textParticipate: "Вы участвуете" }, labels)).toBe("Участвуете");
         expect(participateText({ closed: false, needVolunteerRole: false, textParticipate: "Что-то новое" }, labels)).toBe("Участвовать");
     });

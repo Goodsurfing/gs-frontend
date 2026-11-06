@@ -104,32 +104,28 @@ export function RoleCards({ hrefs, labels }: {
 }) {
     const session = useSession();
     const profile = session.profile as Profile | null;
-    const [asking, setAsking] = useState<"volunteer" | "host" | null>(null);
     const [busy, setBusy] = useState(false);
     const [message, setMessage] = useState<Message>(null);
     if (!profile) return <Loading className="min-h-[300px]" />;
 
-    const confirm = async () => {
-        if (asking === "host") {
-            window.location.href = hrefs.hostRegister;
+    // Сразу, без «Вы уверены?» и трёх секунд паузы (06.11.2026): роль можно добавить в любой момент,
+    // а лишний шаг терял новичков — роль волонтёра выбирали 43 % зарегистрировавшихся
+    const become = async (role: "volunteer" | "host") => {
+        if (role === "host") {
+            window.location.assign(hrefs.hostRegister);
             return;
         }
         setBusy(true);
         const { error } = await browserApi(session.token).POST("/api/v1/personal/volunteer", { body: { externalInfo: "", skills: [], additionalSkills: [] } as never }).catch(() => ({ error: true }));
-        setBusy(false);
-        setAsking(null);
         if (error) {
+            setBusy(false);
             setMessage({ text: String((error as { detail?: string })?.detail ?? "Ошибка"), ok: false });
             return;
         }
-        setMessage({ text: labels.becameVolunteer, ok: true });
         const params = new URLSearchParams(window.location.search);
         const next = params.get("next");
         const donation = params.get("nextDonation");
-        // Как в старом фронте: сообщение видно три секунды, потом переход
-        setTimeout(() => {
-            window.location.href = next ? hrefs.offer.replace("{id}", next) : donation ? hrefs.fundraise.replace("{id}", donation) : hrefs.volunteerDashboard;
-        }, 3000);
+        window.location.assign(next ? hrefs.offer.replace("{id}", next) : donation ? hrefs.fundraise.replace("{id}", donation) : hrefs.volunteerDashboard);
     };
 
     const card = (role: "volunteer" | "host", image: string) => {
@@ -151,7 +147,7 @@ export function RoleCards({ hrefs, labels }: {
                 <span className="text-center text-[18px] font-medium text-primary">{text.text}</span>
                 {has
                     ? <a href={role === "volunteer" ? hrefs.volunteerDashboard : hrefs.hostDashboard} aria-label={`${text.already}. ${labels.toDashboard}`} className="rounded-[10px] border border-primary bg-white px-8 py-2.5 text-center text-[16px] leading-[1.75] tracking-[0.02857em] text-primary uppercase no-underline hover:bg-primary hover:text-white down-lg:w-[90%] down-lg:px-10">{`${labels.toDashboard}\u00a0→`}</a>
-                    : <button type="button" onClick={() => setAsking(role)} className="cursor-pointer rounded-[10px] bg-primary px-[60px] py-2.5 text-[16px] leading-[1.75] tracking-[0.02857em] text-white uppercase hover:bg-[#60bdff] down-lg:w-[90%] down-lg:px-10">{text.become}</button>}
+                    : <button type="button" disabled={busy} onClick={() => void become(role)} className="cursor-pointer rounded-[10px] bg-primary disabled:cursor-wait disabled:opacity-70 px-[60px] py-2.5 text-[16px] leading-[1.75] tracking-[0.02857em] text-white uppercase hover:bg-[#60bdff] down-lg:w-[90%] down-lg:px-10">{text.become}</button>}
             </div>
         );
     };
@@ -161,15 +157,6 @@ export function RoleCards({ hrefs, labels }: {
             <Toast text={message?.text ?? null} ok={message?.ok} onClose={() => setMessage(null)} />
             {card("volunteer", "profile-goodsurfer")}
             {card("host", "profile-host")}
-            <ConfirmDialog
-                open={asking !== null}
-                text={asking ? labels[asking].confirm : ""}
-                confirm={labels.yes}
-                cancel={labels.no}
-                busy={busy}
-                onConfirm={() => void confirm()}
-                onClose={() => setAsking(null)}
-            />
         </div>
     );
 }
