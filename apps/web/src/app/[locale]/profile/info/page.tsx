@@ -4,10 +4,12 @@ import { notFound } from "next/navigation";
 import { CabinetShell } from "@/components/cabinet/CabinetShell";
 import { MembershipBanner } from "@/components/cabinet/profile/MembershipBanner";
 import { ProfileInfoForm } from "@/components/cabinet/profile/ProfileInfoForm";
+import { EmailChangeButton } from "@/components/email-change/EmailChangeButton";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { authMetadata } from "@/lib/authPages";
 import { profileMenu } from "@/lib/cabinetMenus";
+import { emailChangeLabels } from "@/lib/emailChangeLabels";
 import { routes } from "@/lib/routes";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -35,6 +37,7 @@ export default async function ProfileInfoPage({ params }: Props) {
                     volunteerHref={routes.volunteerPublicTemplate(locale)}
                     preferencesHref={routes.profilePreferences(locale)}
                     verifyHref={routes.verifyEmail(locale)}
+                    emailChange={<EmailChangeButton signInHref={routes.signIn(locale)} labels={emailChangeLabels(t)} />}
                     aside={(
                         <MembershipBanner
                             locale={locale}

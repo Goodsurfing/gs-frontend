@@ -58,12 +58,14 @@ export function hasChanges(saved: Form, form: Form): boolean {
  * перед отправкой уменьшается до 1024 px, в PATCH уходит последний сохранённый профиль
  * с новым фото — несохранённые правки полей не записываются молча.
  */
-export function ProfileInfoForm({ volunteerHref, preferencesHref, verifyHref, aside, labels }: {
+export function ProfileInfoForm({ volunteerHref, preferencesHref, verifyHref, aside, emailChange, labels }: {
     /** Публичная страница с {id} */
     volunteerHref: string;
     preferencesHref: string;
     verifyHref: string;
     aside?: ReactNode;
+    /** «Изменить почту» под полем почты */
+    emailChange?: ReactNode;
     labels: ProfileInfoLabels;
 }) {
     const session = useSession();
@@ -245,7 +247,10 @@ export function ProfileInfoForm({ volunteerHref, preferencesHref, verifyHref, as
                             </SelectField>
                         </div>
                         <div className="flex max-w-[624px] gap-6 down-lg:flex-wrap">
-                            <TextField label="E-mail" value={profile.email ?? ""} disabled readOnly />
+                            <div className="flex w-full flex-col gap-2">
+                                <TextField label="E-mail" value={profile.email ?? ""} disabled readOnly />
+                                {emailChange}
+                            </div>
                             <TextField label={labels.phone} type="tel" autoComplete="tel" {...field("phone")} />
                         </div>
                         <TextAreaField label={labels.aboutMe} maxLength={1000} description={`${labels.aboutHint} · ${form.aboutMe.length}/1000`} {...field("aboutMe")} />
