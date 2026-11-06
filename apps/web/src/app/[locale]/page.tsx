@@ -258,7 +258,8 @@ export default async function HomePage({ params }: Props) {
                         id: String(review.id),
                         title: review.title,
                         text: review.description,
-                        image: mediaUrl(review.images[0], "large") ?? "",
+                        // Своих фото почти ни у кого нет (8 из 641 на 06.11.2026) — тогда обложка вакансии
+                        image: mediaUrl(review.images[0], "large") ?? mediaUrl(review.vacancyImage, "large") ?? "",
                         author: review.authorName,
                         avatar: mediaUrl(review.authorAvatar, "small"),
                         href: routes.offer(locale, review.vacancyId),

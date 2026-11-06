@@ -60,7 +60,8 @@ export async function getFeaturedReviews(locale: Locale): Promise<FeaturedReview
         const { data } = await serverApi(locale).GET("/api/v1/review-vacancy/featured", {
             signal: AbortSignal.timeout(MAIN_BLOCK_TIMEOUT_MS),
         });
-        return (data ?? []).filter((review) => (review.images ?? []).length > 0);
+        // Нужна картинка: своё фото отзыва или обложка вакансии
+        return (data ?? []).filter((review) => (review.images ?? []).length > 0 || !!review.vacancyImage);
     } catch {
         return [];
     }
