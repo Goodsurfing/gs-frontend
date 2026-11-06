@@ -75,12 +75,14 @@ export function Chip({ selected, color, onClick, children }: { selected: boolean
  * обновятся), «Очистить все» — сброс. Выбор копится в черновике, как в
  * старом фронте, — список не перезагружается на каждый щелчок.
  */
-export function OffersFilterBar({ basePath, filters, categories, languages, labels, stacked = false, onApplied }: {
+export function OffersFilterBar({ basePath, filters, categories, languages, labels, stacked = false, onApplied, search }: {
     basePath: string;
     /** Телефон: фильтры столбиком во всю ширину, раскрывающиеся части — в потоке */
     stacked?: boolean;
     /** После «Применить» / «Очистить все» (телефон: вернуться к списку) */
     onApplied?: () => void;
+    /** Десктоп: поле поиска в той же строке, что и фильтры */
+    search?: ReactNode;
     filters: OffersFilters;
     categories: { id: number; name: string; color: string }[];
     languages: { value: string; label: string }[];
@@ -120,6 +122,19 @@ export function OffersFilterBar({ basePath, filters, categories, languages, labe
         router.push(basePath);
         onApplied?.();
     };
+    // Десктоп: без кнопки «Применить» — фильтр срабатывает сам, когда раскрытый список закрыли
+    // (или поменяли даты), с небольшой паузой, чтобы не дёргать список на каждую цифру даты.
+    // На телефоне фильтры на отдельной вкладке — там «Применить» остаётся.
+    const pending = offersFiltersQuery({ ...draft, page: 1, offerId: undefined }) !== offersFiltersQuery({ ...filters, page: 1, offerId: undefined });
+    useEffect(() => {
+        if (stacked || panel !== null || !pending) return;
+        const timer = setTimeout(() => {
+            const query = offersFiltersQuery({ ...draft, page: 1, offerId: undefined });
+            router.push(query ? `${basePath}?${query}` : basePath);
+        }, 600);
+        return () => clearTimeout(timer);
+    }, [stacked, panel, pending, draft, basePath, router]);
+    const active = offersFiltersQuery({ ...filters, page: 1, offerId: undefined, sort: "novelty", showPassed: true }) !== "";
     // Раскрывающиеся части: на десктопе — поверх списка, на телефоне — в потоке
     const floating = stacked ? "static" : "absolute top-full";
 
@@ -233,38 +248,39 @@ export function OffersFilterBar({ basePath, filters, categories, languages, labe
             ref={rootRef}
             className="relative"
             onKeyDown={(event) => {
-                if (event.key === "Enter" && event.target instanceof HTMLInputElement) {
+                // Поле поиска (десктоп — в этой же строке) отправляет свою форму само
+                if (event.key === "Enter" && event.target instanceof HTMLInputElement && event.target.type !== "search") {
                     event.preventDefault();
                     apply();
                 }
             }}
         >
-            <div className={stacked ? "flex flex-col gap-2.5 px-5 py-[15px]" : "flex flex-wrap items-center gap-2.5 border-b border-accent-bg px-[50px] py-5"}>
+            <div className={stacked ? "flex flex-col gap-2.5 px-5 py-[15px]" : "flex flex-wrap items-center gap-2.5 border-b border-accent-bg px-[30px] py-2.5"}>
                 <div className={stacked ? "flex flex-wrap gap-2.5" : "flex"}>
-                    <label className={`flex items-center border border-field bg-white px-2.5 py-3 ${stacked ? "flex-1" : ""}`}>
+                    <label className={`flex items-center border border-field bg-white px-2.5 ${stacked ? "flex-1 py-3" : "py-2"}`}>
                         <span className="sr-only">{labels.from}</span>
                         <input
                             type="date"
                             value={draft.from ?? ""}
                             max={draft.to}
                             onChange={(event) => setDraft((current) => ({ ...current, from: event.target.value || undefined }))}
-                            className="w-[146px] text-[14px] text-ink-tertiary outline-none"
+                            className={`${stacked ? "w-[146px]" : "w-[124px]"} text-[14px] text-ink-tertiary outline-none`}
                         />
                     </label>
-                    <label className={`flex items-center border border-field bg-white px-2.5 py-3 ${stacked ? "flex-1" : "border-l-0"}`}>
+                    <label className={`flex items-center border border-field bg-white px-2.5 ${stacked ? "flex-1 py-3" : "border-l-0 py-2"}`}>
                         <span className="sr-only">{labels.to}</span>
                         <input
                             type="date"
                             value={draft.to ?? ""}
                             min={draft.from}
                             onChange={(event) => setDraft((current) => ({ ...current, to: event.target.value || undefined }))}
-                            className="w-[146px] text-[14px] text-ink-tertiary outline-none"
+                            className={`${stacked ? "w-[146px]" : "w-[124px]"} text-[14px] text-ink-tertiary outline-none`}
                         />
                     </label>
                 </div>
 
                 <div className="relative flex flex-col">
-                    <DropdownButton label={labels.categories} active={draft.categories.length > 0} open={panel === "categories"} onClick={() => toggle("categories")} minWidth={stacked ? "w-full" : "min-w-[260px]"} />
+                    <DropdownButton label={labels.categories} active={draft.categories.length > 0} open={panel === "categories"} onClick={() => toggle("categories")} minWidth={stacked ? "w-full" : "min-w-[210px] !py-2"} />
                     {panel === "categories" && (
                         <div className={`${floating} z-[4] bg-white px-[15px] py-[17px] shadow-[0_4px_6px_0_rgba(0,0,0,0.1)] ${stacked ? "w-full" : "w-max max-w-[420px]"}`}>
                             <div className="flex max-w-[624px] flex-wrap gap-2.5">
@@ -291,19 +307,24 @@ export function OffersFilterBar({ basePath, filters, categories, languages, labe
                     active={draft.minDays !== undefined || draft.maxDays !== undefined}
                     open={panel === "duration"}
                     onClick={() => toggle("duration")}
-                    minWidth={stacked ? "w-full" : "min-w-[200px]"}
+                    minWidth={stacked ? "w-full" : "min-w-[170px] !py-2"}
                 />
-                <DropdownButton label={labels.extra} active={false} open={panel === "extra"} onClick={() => toggle("extra")} minWidth={stacked ? "w-full" : "min-w-[200px]"} />
+                <DropdownButton label={labels.extra} active={false} open={panel === "extra"} onClick={() => toggle("extra")} minWidth={stacked ? "w-full" : "min-w-[170px] !py-2"} />
+                {!stacked && search}
 
                 {stacked && panel === "duration" && durationPanel}
                 {stacked && panel === "extra" && extraPanel}
-                <div className={stacked ? "mt-2 flex gap-2.5" : "ml-auto flex gap-2.5"}>
-                    <button type="button" onClick={apply} className="cursor-pointer rounded-[10px] border border-primary bg-primary px-3 py-2.5 text-[14px] text-white transition-colors hover:bg-white hover:text-primary">
-                        {labels.apply}
-                    </button>
-                    <button type="button" onClick={reset} className="cursor-pointer rounded-[10px] px-3 py-2.5 text-[14px] text-primary transition-colors hover:text-primary-hover">
-                        {labels.reset}
-                    </button>
+                <div className={stacked ? "mt-2 flex gap-2.5" : "flex gap-2.5"}>
+                    {stacked && (
+                        <button type="button" onClick={apply} className="cursor-pointer rounded-[10px] border border-primary bg-primary px-3 py-2.5 text-[14px] text-white transition-colors hover:bg-white hover:text-primary">
+                            {labels.apply}
+                        </button>
+                    )}
+                    {(stacked || active || pending) && (
+                        <button type="button" onClick={reset} className="cursor-pointer rounded-[10px] px-3 py-2.5 text-[14px] whitespace-nowrap text-primary transition-colors hover:text-primary-hover">
+                            {labels.reset}
+                        </button>
+                    )}
                 </div>
             </div>
 

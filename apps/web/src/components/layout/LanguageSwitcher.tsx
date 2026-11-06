@@ -34,8 +34,8 @@ export function LanguageSwitcher({ locale, label, className = "" }: { locale: Lo
                     aria-label={`${label}: ${current.name}`}
                     className="mr-[10%] flex cursor-pointer items-center gap-[5px] border-0 bg-transparent p-0"
                 >
-                    {/* eslint-disable-next-line @next/next/no-img-element -- флаг-иконка */}
                     {/* Размер задан: пока флажок грузится, кнопка не меняет ширину и меню шапки не сдвигается */}
+                    {/* eslint-disable-next-line @next/next/no-img-element -- флаг-иконка */}
                     <img src={current.icon} alt="" aria-hidden width={17} height={13} className="block h-[13px] w-[17px] object-contain" />
                     <Arrow open={open} />
                 </DropdownMenu.Trigger>

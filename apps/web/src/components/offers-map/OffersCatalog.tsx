@@ -83,6 +83,34 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, cate
     const pages = page ? Math.max(1, Math.ceil(page.total / OFFERS_PER_PAGE)) : 1;
     const hrefFor = (id: number) => offerHref.replace("{id}", String(id));
 
+    const searchForm = (className: string) => (
+        <form
+            role="search"
+            className={className}
+            onSubmit={(event) => {
+                event.preventDefault();
+                router.push(href({ search: search.trim(), page: 1 }));
+            }}
+        >
+            <div className="flex items-center gap-1.5 rounded-[4px] border border-field bg-white px-1.5 py-[3px] transition-colors focus-within:border-primary">
+                <input
+                    type="search"
+                    name="search"
+                    value={search}
+                    onChange={(event) => setSearch(event.target.value)}
+                    placeholder={labels.search}
+                    aria-label={labels.searchLabel}
+                    autoComplete="off"
+                    className="h-[1.4375em] min-w-0 flex-1 bg-transparent py-1 pl-0 font-[Roboto,Helvetica,Arial,sans-serif] text-[16px] text-black/87 outline-none placeholder:text-black/42 [&::-webkit-search-cancel-button]:hidden"
+                />
+                <button type="submit" aria-label={labels.searchLabel} className="flex cursor-pointer items-center justify-center p-2 text-black/54">
+                    <svg aria-hidden width="16" height="16" viewBox="0 0 18 18" fill="transparent" className="block stroke-caption">
+                        <path d="M11.2188 11.2192L16.9996 17.0001M7.1315 13.263C10.5178 13.263 13.263 10.5178 13.263 7.1315C13.263 3.74517 10.5178 1 7.1315 1C3.74517 1 1 3.74517 1 7.1315C1 10.5178 3.74517 13.263 7.1315 13.263Z" strokeWidth="2" />
+                    </svg>
+                </button>
+            </div>
+        </form>
+    );
     const filterKey = mapQuery;
     const filterBar = (stacked: boolean) => (
         <OffersFilterBar
@@ -94,6 +122,7 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, cate
             labels={labels.filters}
             stacked={stacked}
             onApplied={stacked ? () => setTab("list") : undefined}
+            search={stacked ? undefined : searchForm("min-w-[180px] flex-1")}
         />
     );
     const tabButton = (name: MobileTab, text: string, icon?: boolean) => (
@@ -156,43 +185,27 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, cate
         {tab === "filter" && <div className="hidden down-lg:block">{filterBar(true)}</div>}
 
         <div className="flex">
-            <div className={`flex h-[calc(100vh-12rem)] min-w-0 flex-1 flex-col [@media(max-width:1400px)]:h-[calc(100vh-13.75rem)] down-lg:h-auto ${mapOpen ? "max-w-[1000px] down-lg:max-w-none" : "max-w-full"} ${tab === "list" ? "" : "down-lg:hidden"}`}>
-                <form
-                    role="search"
-                    className="px-[30px] py-3 down-lg:px-5 down-lg:pt-0 down-lg:pb-[15px]"
-                    onSubmit={(event) => {
-                        event.preventDefault();
-                        router.push(href({ search: search.trim(), page: 1 }));
-                    }}
-                >
-                    <div className="flex items-center gap-1.5 rounded-[4px] border border-field bg-white px-1.5 py-[3px] transition-colors focus-within:border-primary">
-                        <input
-                            type="search"
-                            name="search"
-                            value={search}
-                            onChange={(event) => setSearch(event.target.value)}
-                            placeholder={labels.search}
-                            aria-label={labels.searchLabel}
-                            autoComplete="off"
-                            className="h-[1.4375em] min-w-0 flex-1 bg-transparent py-1 pl-0 font-[Roboto,Helvetica,Arial,sans-serif] text-[16px] text-black/87 outline-none placeholder:text-black/42 [&::-webkit-search-cancel-button]:hidden"
-                        />
-                        <button type="submit" aria-label={labels.searchLabel} className="flex cursor-pointer items-center justify-center p-2.5 text-black/54">
-                            <svg aria-hidden width="16" height="16" viewBox="0 0 18 18" fill="transparent" className="block stroke-caption">
-                                <path d="M11.2188 11.2192L16.9996 17.0001M7.1315 13.263C10.5178 13.263 13.263 10.5178 13.263 7.1315C13.263 3.74517 10.5178 1 7.1315 1C3.74517 1 1 3.74517 1 7.1315C1 10.5178 3.74517 13.263 7.1315 13.263Z" strokeWidth="2" />
-                            </svg>
-                        </button>
-                    </div>
-                </form>
+            {/* Десктоп: прокручивается вся страница (раньше — только список в своей половине под высокой
+                шапкой фильтров, на ноутбуке было видно 1–2 вакансии), карта справа прилипает под шапкой сайта */}
+            <div className={`flex min-w-0 flex-col ${mapOpen ? "flex-[0_0_60%] down-lg:flex-1" : "max-w-full flex-1"} ${tab === "list" ? "" : "down-lg:hidden"}`}>
+                <div className="hidden down-lg:block">{searchForm("px-5 pb-[15px]")}</div>
 
                 {subscribe.source === null && page !== null && page.offers.length > 0 && (
-                    <SavedSearchButton filters={filters} source="button" variant="line" signInHref={subscribe.signInHref} manageHref={subscribe.manageHref} labels={subscribe.labels} />
+                    <div className="hidden down-lg:block">
+                        <SavedSearchButton filters={filters} source="button" variant="line" signInHref={subscribe.signInHref} manageHref={subscribe.manageHref} labels={subscribe.labels} />
+                    </div>
                 )}
 
-                <div className="relative flex min-h-20 items-center gap-5 bg-field px-[30px] py-3 down-lg:min-h-0 down-lg:px-5">
+                <div className="relative flex min-h-[52px] items-center gap-5 bg-field px-[30px] py-2 down-lg:min-h-0 down-lg:px-5 down-lg:py-3">
                     <span className="text-[1.125rem] font-medium text-ink-secondary">{labels.count}</span>
                     <div className="contents down-lg:hidden">
                         {passedSwitch}
                         {sortSelect("h-[30px] w-[200px]")}
+                        {subscribe.source === null && page !== null && page.offers.length > 0 && (
+                            <span className="ml-auto">
+                                <SavedSearchButton filters={filters} source="button" variant="inline" signInHref={subscribe.signInHref} manageHref={subscribe.manageHref} labels={subscribe.labels} />
+                            </span>
+                        )}
                     </div>
                     {!mapOpen && (
                         <button type="button" onClick={() => setMapOpen(true)} className="ml-auto cursor-pointer font-medium text-primary down-lg:hidden">
@@ -212,7 +225,7 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, cate
                     </button>
                 </div>
 
-                <div className={`flex flex-1 overflow-y-scroll down-lg:overflow-visible [&::-webkit-scrollbar]:w-2.5 [&::-webkit-scrollbar-thumb]:rounded-[10px] [&::-webkit-scrollbar-thumb]:bg-accent-bg ${mapOpen ? "flex-col" : "flex-row flex-wrap content-baseline"}`}>
+                <div className={`flex flex-1 ${mapOpen ? "flex-col" : "flex-row flex-wrap content-baseline"}`}>
                     {page === null && (
                         <div className="flex w-full flex-col items-center gap-2 p-5 text-center">
                             <p className="text-[14px] font-medium">{labels.loadError}</p>
@@ -243,6 +256,7 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, cate
                             selected={offer.id === selected}
                             onSelect={select}
                             wide={!mapOpen}
+                            compact={mapOpen}
                             labels={labels.card}
                             favorite={favorites.enabled ? {
                                 active: favorites.isFavorite(offer.id),
@@ -260,7 +274,8 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, cate
             </div>
 
             {(mapOpen || tab === "map") && (
-                <div className={`relative mr-2.5 flex h-[calc(100vh-12rem)] min-w-0 flex-1 [@media(max-width:1400px)]:h-[calc(100vh-13.75rem)] down-lg:mr-0 down-lg:h-[calc(100vh-14rem)] ${tab === "map" ? "" : "down-lg:hidden"} ${mapOpen ? "" : "min-[993px]:hidden"}`}>
+                // 65px — высота прилипающей шапки сайта (Header, вариант «плоская»)
+                <div className={`relative flex min-w-0 flex-1 self-start min-[993px]:sticky min-[993px]:top-[65px] min-[993px]:h-[calc(100vh-65px)] down-lg:h-[calc(100vh-14rem)] down-lg:self-auto ${tab === "map" ? "" : "down-lg:hidden"} ${mapOpen ? "" : "min-[993px]:hidden"}`}>
                     <OffersMap locale={locale} filtersQuery={mapQuery} selectedOfferId={selected} offerHref={offerHref} labels={labels.map} />
                 </div>
             )}

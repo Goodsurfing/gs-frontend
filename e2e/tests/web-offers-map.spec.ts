@@ -35,7 +35,8 @@ test.describe('Новый фронт: каталог вакансий', () => {
 
         await page.getByRole('button', { name: 'Доп. фильтры' }).first().click();
         await page.getByLabel('Можно с детьми').first().check();
-        await page.getByRole('button', { name: 'Применить' }).first().click();
+        // На десктопе «Применить» нет: фильтр срабатывает сам, когда список закрыли
+        await page.keyboard.press('Escape');
         await expect(page).toHaveURL(/kids=1/);
         const after = Number((await page.getByText(/^\d+ вариант/).textContent())?.match(/\d+/)?.[0]);
         expect(after).toBeLessThan(before);
