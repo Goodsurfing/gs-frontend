@@ -128,7 +128,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     const recipientVolunteer = params.get("recipientVolunteer") ?? undefined;
     const recipientOrganization = params.get("recipientOrganization") ?? undefined;
 
-    const list = useChatList(token, ready);
+    const list = useChatList(token, ready, locale);
     const chat = useChatMessages(token, ready ? realChatId : undefined);
     const [toast, setToast] = useState<{ text: string; ok: boolean } | null>(null);
     const fail = useCallback((text: string) => setToast({ text, ok: false }), []);
