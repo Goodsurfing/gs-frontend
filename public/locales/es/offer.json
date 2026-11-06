@@ -291,5 +291,10 @@
     "Показать оригинал": "Ver original (ruso)",
     "Показать перевод": "Ver traducción",
     "Организатор давно не заходил на Гудсёрфинг — ответа на заявку может не быть.": "El anfitrión no entra en Goodsurfing desde hace tiempo: es posible que tu solicitud no reciba respuesta.",
-    "Посмотреть другие вакансии": "Ver otras oportunidades"
+    "Посмотреть другие вакансии": "Ver otras oportunidades",
+    "На данный момент отзывов нет": "Aún no hay reseñas",
+    "Произошла ошибка загрузки отзывов": "No se pudieron cargar las reseñas",
+    "Не удалось отправить отзыв. Попробуйте позже.": "No se pudo enviar la reseña. Inténtalo más tarde.",
+    "Не удалось удалить отзыв. Попробуйте позже.": "No se pudo eliminar la reseña. Inténtalo más tarde.",
+    "Удалить отзыв? Это действие нельзя отменить.": "¿Eliminar la reseña? Esta acción no se puede deshacer."
 }
