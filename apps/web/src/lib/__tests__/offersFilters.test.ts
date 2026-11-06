@@ -9,8 +9,17 @@ describe("фильтры каталога вакансий", () => {
         expect(filters.search).toBe("Байкал");
         expect(filters.page).toBe(3);
         expect(filters.offerId).toBe(7243);
-        expect(filters.showPassed).toBe(true);
+        expect(filters.showPassed).toBe(false);
         expect(filters.sort).toBe("novelty");
+    });
+
+    it("прошедшие по умолчанию скрыты; past=1 — показать, старые ссылки с past=0 — скрыть", () => {
+        expect(parseOffersFilters({}).showPassed).toBe(false);
+        expect(offersApiQuery(parseOffersFilters({})).hidePassed).toBe(true);
+        expect(parseOffersFilters({ past: "1" }).showPassed).toBe(true);
+        expect(offersApiQuery(parseOffersFilters({ past: "1" })).hidePassed).toBeUndefined();
+        expect(parseOffersFilters({ past: "0" }).showPassed).toBe(false);
+        expect(offersFiltersQuery(parseOffersFilters({ past: "0" }))).toBe("");
     });
 
     it("мусор в адресе не ломает фильтры", () => {
@@ -26,7 +35,7 @@ describe("фильтры каталога вакансий", () => {
 
     it("адрес и разбор — взаимно обратны, значения по умолчанию не пишутся", () => {
         expect(offersFiltersQuery(parseOffersFilters({}))).toBe("");
-        const query = "category=1%2C2&search=sea&sort=popularity&past=0&from=2026-11-01&to=2026-12-01&minDays=7&maxDays=30&lang=en&kids=1&verified=1&provided=food%2Chousing&page=2";
+        const query = "category=1%2C2&search=sea&sort=popularity&past=1&from=2026-11-01&to=2026-12-01&minDays=7&maxDays=30&lang=en&kids=1&verified=1&provided=food%2Chousing&page=2";
         expect(offersFiltersQuery(parseOffersFilters(new URLSearchParams(query)))).toBe(query);
     });
 
@@ -45,8 +54,9 @@ describe("фильтры каталога вакансий", () => {
     it("GS-245: «Только верифицированные хосты» — в адресе verified=1, в API verifiedHost", () => {
         const filters = parseOffersFilters({ verified: "1" });
         expect(filters.verifiedHost).toBe(true);
-        expect(offersApiQuery(filters)).toEqual({ verifiedHost: true });
+        // hidePassed — умолчание каталога (прошедшие скрыты)
+        expect(offersApiQuery(filters)).toEqual({ verifiedHost: true, hidePassed: true });
         expect(parseOffersFilters({}).verifiedHost).toBe(false);
-        expect(offersApiQuery(parseOffersFilters({}))).toEqual({});
+        expect(offersApiQuery(parseOffersFilters({}))).toEqual({ hidePassed: true });
     });
 });

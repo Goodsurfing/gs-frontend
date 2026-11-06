@@ -41,9 +41,11 @@ test.describe('Новый фронт: каталог вакансий', () => {
         const after = Number((await page.getByText(/^\d+ вариант/).textContent())?.match(/\d+/)?.[0]);
         expect(after).toBeLessThan(before);
 
-        await page.getByRole('switch', { name: 'Показать прошедшие' }).first().click();
-        await expect(page).toHaveURL(/past=0/);
+        // Прошедшие по умолчанию скрыты, переключатель их показывает
         await expect(page.getByRole('switch', { name: 'Показать прошедшие' }).first()).toHaveAttribute('aria-checked', 'false');
+        await page.getByRole('switch', { name: 'Показать прошедшие' }).first().click();
+        await expect(page).toHaveURL(/past=1/);
+        await expect(page.getByRole('switch', { name: 'Показать прошедшие' }).first()).toHaveAttribute('aria-checked', 'true');
 
         await page.getByRole('combobox', { name: 'По новизне' }).first().selectOption('popularity');
         await expect(page).toHaveURL(/sort=popularity/);
