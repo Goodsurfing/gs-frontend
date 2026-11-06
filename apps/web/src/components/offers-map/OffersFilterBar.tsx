@@ -147,6 +147,16 @@ export function OffersFilterBar({ basePath, filters, categories, languages, labe
     }));
     const toggleIn = <T,>(list: T[], value: T) => (list.includes(value) ? list.filter((item) => item !== value) : [...list, value]);
 
+    // Десктоп: в раскрытой панели — явная кнопка «Применить» (иначе фильтр срабатывал только
+    // при закрытии панели, и это было неочевидно: «как тут искать, нет кнопки применить?»)
+    const panelApply = stacked ? null : (
+        <div className="flex w-full justify-end">
+            <button type="button" onClick={apply} className="cursor-pointer rounded-[10px] border border-primary bg-primary px-6 py-2.5 text-[14px] text-white transition-colors hover:bg-white hover:text-primary">
+                {labels.apply}
+            </button>
+        </div>
+    );
+
     const durationPanel = (
 
         <div className={`${floating} z-[3] w-full bg-white py-5 ${stacked ? "px-[15px]" : "px-[50px]"}`} style={{ boxShadow: "0 1px 1px rgb(0 0 0 / 16%), 0 3px 1px rgb(0 0 0 / 10%)" }}>
@@ -185,6 +195,7 @@ export function OffersFilterBar({ basePath, filters, categories, languages, labe
                     <span>{DURATION_MIN} {labels.days}</span>
                     <span>{DURATION_MAX} {labels.days}</span>
                 </div>
+                {panelApply}
             </div>
         </div>
     );
@@ -240,6 +251,7 @@ export function OffersFilterBar({ basePath, filters, categories, languages, labe
                     </label>
                 ))}
             </fieldset>
+            {panelApply}
         </div>
     );
 
@@ -298,6 +310,7 @@ export function OffersFilterBar({ basePath, filters, categories, languages, labe
                                     </Chip>
                                 ))}
                             </div>
+                            {panelApply && <div className="mt-4">{panelApply}</div>}
                         </div>
                     )}
                 </div>
