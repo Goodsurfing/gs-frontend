@@ -35,7 +35,8 @@ export function LanguageSwitcher({ locale, label, className = "" }: { locale: Lo
                     className="mr-[10%] flex cursor-pointer items-center gap-[5px] border-0 bg-transparent p-0"
                 >
                     {/* eslint-disable-next-line @next/next/no-img-element -- флаг-иконка */}
-                    <img src={current.icon} alt="" aria-hidden />
+                    {/* Размер задан: пока флажок грузится, кнопка не меняет ширину и меню шапки не сдвигается */}
+                    <img src={current.icon} alt="" aria-hidden width={17} height={13} className="block h-[13px] w-[17px] object-contain" />
                     <Arrow open={open} />
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Portal>
@@ -55,7 +56,7 @@ export function LanguageSwitcher({ locale, label, className = "" }: { locale: Lo
                                     className="flex items-center p-[9px] outline-none transition-colors hover:bg-accent-bg focus:bg-accent-bg"
                                 >
                                     {/* eslint-disable-next-line @next/next/no-img-element -- флаг-иконка */}
-                                    <img src={LANGUAGES[code].icon} alt="" aria-hidden />
+                                    <img src={LANGUAGES[code].icon} alt="" aria-hidden width={17} height={13} className="block h-[13px] w-[17px] object-contain" />
                                     <span className="ml-2.5 text-[14px] font-bold text-primary">{LANGUAGES[code].name}</span>
                                 </a>
                             </DropdownMenu.Item>

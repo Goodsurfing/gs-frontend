@@ -50,18 +50,22 @@ export function displayName(profile: { firstName?: string | null; email?: string
  * Правая часть десктопной шапки: «Вход» для гостя, для вошедшего —
  * сообщения и меню профиля (Radix: клавиатура, Esc, закрытие кликом мимо).
  */
-export function AccountArea({ signIn, links }: { signIn: NavLink; links: AccountLinks }) {
+export function AccountArea({ signIn, signUp, links }: { signIn: NavLink; signUp: NavLink; links: AccountLinks }) {
     const session = useSession();
     const profile = session.profile;
 
+    // Место под вход/аккаунт одной ширины при любом состоянии: раньше гостевой «Вход» сменялся
+    // на «сообщения + имя» шире, и меню шапки уезжало влево. Пока не знаем, кто зашёл, — пусто,
+    // а не «Вход» (вошедшие видели его секунду-две). Ширина = самый широкий вариант (имя до 100 px).
+    const slot = "flex w-[226px] shrink-0 items-center justify-end gap-3";
+    if (session.status === "unknown") return <div aria-hidden className={slot} />;
     if (session.status !== "user" || !profile) {
+        const button = "inline-flex h-10 items-center justify-center rounded-[10px] border border-primary text-center text-[14px] leading-[1.375rem] font-semibold whitespace-nowrap no-underline transition-all duration-300 ease-in-out";
         return (
-            <a
-                href={signIn.href}
-                className="inline-flex h-10 items-center justify-center rounded-[10px] border border-primary px-[18px] text-center text-[14px] leading-[1.375rem] font-semibold whitespace-nowrap text-primary no-underline transition-all duration-300 ease-in-out hover:bg-primary hover:text-white"
-            >
-                {signIn.label}
-            </a>
+            <div className={slot}>
+                <a href={signIn.href} className={`${button} px-[18px] text-primary hover:bg-primary hover:text-white`}>{signIn.label}</a>
+                <a href={signUp.href} className={`${button} bg-primary px-3.5 text-white hover:bg-white hover:text-primary`}>{signUp.label}</a>
+            </div>
         );
     }
 
@@ -73,14 +77,14 @@ export function AccountArea({ signIn, links }: { signIn: NavLink; links: Account
     const item = `${itemBase} text-ink-secondary`;
 
     return (
-        <>
+        <div className={slot}>
             <a href={links.messages.href} aria-label={session.unreadMessages ? `${links.messages.label} (${session.unreadMessages})` : links.messages.label} title={links.messages.label}>
                 <MessagesIcon count={session.unreadMessages} />
             </a>
             <DropdownMenu.Root modal={false}>
                 <DropdownMenu.Trigger className="group flex h-10 cursor-pointer items-center gap-2 rounded-full border border-accent-bg bg-white py-1 pr-3 pl-1 transition-colors hover:bg-field data-[state=open]:bg-field">
                     <Avatar src={avatar} name={name} size={30} />
-                    <span className="max-w-[140px] truncate text-[14px] font-semibold text-ink-secondary">{name}</span>
+                    <span className="max-w-[100px] truncate text-[14px] font-semibold text-ink-secondary">{name}</span>
                     <Arrow />
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Portal>
@@ -114,6 +118,6 @@ export function AccountArea({ signIn, links }: { signIn: NavLink; links: Account
                     </DropdownMenu.Content>
                 </DropdownMenu.Portal>
             </DropdownMenu.Root>
-        </>
+        </div>
     );
 }
