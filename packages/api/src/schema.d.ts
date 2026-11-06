@@ -5998,6 +5998,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/vacancy-relevance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Вакансии владельца для подтверждения актуальности (по токену из письма) */
+        get: operations["get_app_api_v1_vacancyrelevance_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vacancy-relevance/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Подтвердить, что вакансии актуальны (по токену из письма) */
+        post: operations["post_app_api_v1_vacancyrelevance_confirm"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/vacancy/{id}": {
         parameters: {
             query?: never;
@@ -10828,6 +10862,11 @@ export interface components {
              */
             organizationSleeping: boolean;
             /**
+             * @description Организатор не подтвердил актуальность вакансии (GS-248): плашка
+             * @default false
+             */
+            relevanceStale: boolean;
+            /**
              * true — canParticipate = false конкретно из-за исчерпанного бесплатного
              *     лимита заявок (а не из-за закрытого приёма/владения вакансией/уже
              *     поданной заявки). Фронт показывает по этому флагу текст с призывом
@@ -13233,6 +13272,11 @@ export interface components {
             organizationSleeping: boolean;
             /** @default [] */
             periods: components["schemas"]["PeriodResult"][];
+            /**
+             * @description Организатора спросили, актуальна ли вакансия, и он не ответил 30 дней (GS-248): значок
+             * @default false
+             */
+            relevanceStale: boolean;
             reviewsCount: number;
             shortDescription: string;
             /** @example  */
@@ -18828,6 +18872,8 @@ export interface components {
              * @example https://example.com/
              */
             readonly organization?: string;
+            /** @description Спросили больше RELEVANCE_ANSWER_DAYS дней назад, а организатор так и не подтвердил и не правил вакансию */
+            readonly relevanceStale?: boolean;
             /** @default 0 */
             reviewsCount: number;
             reviewVacancies?: components["schemas"]["ReviewVacancy"][];
@@ -19057,6 +19103,8 @@ export interface components {
              * @example https://example.com/
              */
             readonly organization?: string;
+            /** @description Спросили больше RELEVANCE_ANSWER_DAYS дней назад, а организатор так и не подтвердил и не правил вакансию */
+            readonly relevanceStale?: boolean;
             /** @default 0 */
             reviewsCount: number;
             reviewVacancies?: components["schemas"]["ReviewVacancy.jsonld"][];
@@ -19261,6 +19309,8 @@ export interface components {
              * @example https://example.com/
              */
             readonly organization?: string;
+            /** @description Спросили больше RELEVANCE_ANSWER_DAYS дней назад, а организатор так и не подтвердил и не правил вакансию */
+            readonly relevanceStale?: boolean;
             /** @default 0 */
             reviewsCount: number;
             reviewVacancies?: components["schemas"]["ReviewVacancy.multipart"][];
@@ -33455,6 +33505,76 @@ export interface operations {
                     "application/problem+json": components["schemas"]["Error"];
                     "application/vnd.api+json": components["schemas"]["Error.jsonapi"];
                 };
+            };
+        };
+    };
+    get_app_api_v1_vacancyrelevance_list: {
+        parameters: {
+            query: {
+                token: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        vacancies?: {
+                            /** @description О ней спрашивали в письме и ответа ещё не было */
+                            asked?: boolean;
+                            id?: number;
+                            title?: string | null;
+                        }[];
+                    };
+                };
+            };
+            /** @description Ссылка неверная или устарела */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_vacancyrelevance_confirm: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    token: string;
+                    vacancyIds: number[];
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        confirmed?: number;
+                    };
+                };
+            };
+            /** @description Ссылка неверная или устарела */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

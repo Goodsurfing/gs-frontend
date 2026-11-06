@@ -405,5 +405,20 @@
     "Отправилось:": "Went:",
     "Без заголовка": "Untitled",
     "Без адреса": "No address",
-    "Организатор давно не заходил": "Host hasn’t visited for a while"
+    "Организатор давно не заходил": "Host hasn’t visited for a while",
+    "relevance": {
+        "title": "Are your opportunities still open?",
+        "text": "Tick the opportunities you are still recruiting for and press “Confirm”. No need to sign in.",
+        "asked": "asked in the email",
+        "confirm": "Confirm",
+        "all": "Select all",
+        "done": "Thank you! Opportunities confirmed: {{count}}. Volunteers will see you’re waiting for them.",
+        "none": "Select at least one opportunity",
+        "manage": "Unpublish or edit in “My opportunities”",
+        "invalid": "The link is outdated or invalid. Sign in and open “My opportunities”.",
+        "empty": "No active opportunities.",
+        "error": "Couldn’t save. Please try again.",
+        "stale": "Not confirmed as current",
+        "staleNote": "The host hasn’t confirmed for a while that this opportunity is still open — check in a message before you travel."
+    }
 }

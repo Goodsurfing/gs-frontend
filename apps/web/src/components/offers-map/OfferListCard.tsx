@@ -14,6 +14,8 @@ export interface OfferListCardLabels {
     noDescription: string;
     /** «Организатор давно не заходил» — значок у вакансий «спящих» организаторов (каталог) */
     sleeping?: string;
+    /** «Актуальность не подтверждена» (GS-248) */
+    stale?: string;
 }
 
 /**
@@ -75,6 +77,12 @@ export function OfferListCard({ offer, href, selected = false, onSelect, wide, c
                 )}
                 <div className="min-w-0 flex-1">
                     <p className="line-clamp-2 text-[1rem] leading-5 font-medium text-ink-secondary">{textSlice(offer.title, 50, labels.noTitle)}</p>
+                    {!offer.sleeping && offer.stale && labels.stale && (
+                        <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-field px-2 py-0.5 text-[12px] font-medium text-ink-tertiary">
+                            <svg aria-hidden viewBox="0 0 24 24" className="h-3.5 w-3.5 text-caption" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 9v4" /><path d="M12 17h.01" /><circle cx="12" cy="12" r="10" /></svg>
+                            {labels.stale}
+                        </span>
+                    )}
                     {offer.sleeping && labels.sleeping && (
                         <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-notice-bg px-2 py-0.5 text-[12px] font-medium text-ink-secondary">
                             <svg aria-hidden viewBox="0 0 24 24" className="h-3.5 w-3.5 text-notice" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 7v5l3 2" /></svg>

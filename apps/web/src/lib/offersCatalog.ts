@@ -26,6 +26,8 @@ export interface CatalogOffer {
     onMap: boolean;
     /** Организатор давно не заходит и не отвечает — значок, в списке ниже (gs-backend #562) */
     sleeping?: boolean;
+    /** Организатор не подтвердил актуальность (GS-248) — значок */
+    stale?: boolean;
 }
 
 export interface CatalogPage {
@@ -68,6 +70,7 @@ export async function getCatalogPage(locale: Locale, filters: OffersFilters, t: 
                 active: String(offer.status) === "active",
                 onMap: Number.isFinite(offer.latitude) && Number.isFinite(offer.longitude),
                 sleeping: offer.organizationSleeping === true,
+                stale: offer.relevanceStale === true,
             })),
         };
     } catch {
