@@ -9,6 +9,7 @@ import { Ring } from "@/components/ui/Ring";
 import { Toast } from "@/components/ui/Toast";
 import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
+import { formatLongDate } from "@/lib/formatDate";
 import { hasHostMembership } from "@/lib/occupancy";
 
 import { type Application, ApplicationCard, type ApplicationCardLabels } from "./ApplicationCard";
@@ -196,7 +197,7 @@ export function HostDashboard({ locale, routes, labels }: {
                         <div className="flex min-h-[450px] flex-col gap-3.5 bg-white p-[30px]">
                             <div className="flex cursor-pointer flex-col">
                                 <p className="text-[14px] font-bold text-primary">{labels.welcome}</p>
-                                <p className="mt-[3px] text-[12px] font-medium text-muted">{notificationDate}</p>
+                                <p className="mt-[3px] text-[12px] font-medium text-muted">{formatLongDate(notificationDate, locale)}</p>
                                 <p className="mt-[3px] text-[12px] leading-4 text-ink-secondary">{labels.welcomeText}</p>
                             </div>
                         </div>
