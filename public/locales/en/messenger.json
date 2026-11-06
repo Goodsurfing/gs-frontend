@@ -58,5 +58,15 @@
     "Пишу черновик…": "Writing a draft…",
     "Это черновик — проверьте и поправьте перед отправкой": "This is a draft — check and edit it before sending",
     "Помощник на сегодня устал — попробуйте завтра": "The helper has reached today's limit — try tomorrow",
-    "Не получилось предложить ответ, попробуйте ещё раз": "Couldn't suggest a reply, please try again"
+    "Не получилось предложить ответ, попробуйте ещё раз": "Couldn't suggest a reply, please try again",
+    "intro": {
+        "title": "Let the host see who you are",
+        "text": "The host will see your name and photo next to your application. You can skip this.",
+        "name": "Your name",
+        "save": "Save",
+        "saved": "Saved — the host will see it",
+        "photo": "Add a photo",
+        "uploading": "Saving…",
+        "error": "Couldn't save — please try again"
+    }
 }
