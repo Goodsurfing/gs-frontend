@@ -296,5 +296,16 @@
     "Произошла ошибка загрузки отзывов": "Couldn't load reviews",
     "Не удалось отправить отзыв. Попробуйте позже.": "Couldn't send the review. Please try again later.",
     "Не удалось удалить отзыв. Попробуйте позже.": "Couldn't delete the review. Please try again later.",
-    "Удалить отзыв? Это действие нельзя отменить.": "Delete the review? This can't be undone."
+    "Удалить отзыв? Это действие нельзя отменить.": "Delete the review? This can't be undone.",
+    "translations": {
+        "heading": "English and Spanish translation",
+        "intro": "Volunteers from abroad see the opportunity in their language. It is translated automatically after you save the description — you can correct it here.",
+        "auto": "Translated automatically",
+        "host": "Edited by you — won’t be changed automatically",
+        "outdated": "The Russian text has changed — please check the translation",
+        "pending": "No translation yet — it will appear within an hour after you save the description. You can write your own.",
+        "save": "Save translation",
+        "saved": "Translation saved",
+        "error": "Couldn’t save the translation"
+    }
 }
