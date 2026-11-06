@@ -1,0 +1,22 @@
+{
+    "title": "Por dónde empezar",
+    "text": "Tres pasos y los anfitriones empezarán a responderte. En cualquier orden.",
+    "done": "Hecho",
+    "skip": "Omitir — ir a la página principal",
+    "host": "Soy anfitrión — publicar una vacante",
+    "apply": {
+        "title": "Encuentra un proyecto y postula",
+        "why": "Primero, las vacantes donde los anfitriones responden ahora. Las tres primeras solicitudes del año son gratis.",
+        "action": "Abrir catálogo"
+    },
+    "intro": {
+        "title": "Nombre y foto",
+        "why": "Los anfitriones responden antes si ven quién escribe.",
+        "action": "Añadir"
+    },
+    "directions": {
+        "title": "Direcciones favoritas",
+        "why": "Elegiremos vacantes para tu panel y tus selecciones.",
+        "action": "Elegir"
+    }
+}

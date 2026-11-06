@@ -102,6 +102,8 @@ export const routes = {
     profileResetPassword: (l: Locale) => path(l, "/profile/reset-password"),
     hostDashboard: (l: Locale) => path(l, "/host/host-dashboard"),
     volunteerDashboard: (l: Locale) => path(l, "/volunteer/volunteer-dashboard"),
+    /** «С чего начать» — после входа без адреса возврата (06.11.2026) */
+    start: (l: Locale) => path(l, "/start"),
     volunteerSkills: (l: Locale) => path(l, "/volunteer/skills"),
     volunteerReview: (l: Locale) => path(l, "/volunteer/review"),
     volunteerNotes: (l: Locale) => path(l, "/volunteer/notes"),

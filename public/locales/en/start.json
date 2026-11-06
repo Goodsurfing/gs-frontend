@@ -1,0 +1,22 @@
+{
+    "title": "Where to start",
+    "text": "Three steps — and hosts will start replying. Any order is fine.",
+    "done": "Done",
+    "skip": "Skip — go to the home page",
+    "host": "I'm a host — post an opportunity",
+    "apply": {
+        "title": "Find a project and apply",
+        "why": "Opportunities where hosts reply now come first. Your first three applications each year are free.",
+        "action": "Open catalogue"
+    },
+    "intro": {
+        "title": "Name and photo",
+        "why": "Hosts reply more readily when they can see who is writing.",
+        "action": "Add"
+    },
+    "directions": {
+        "title": "Favourite directions",
+        "why": "We'll pick opportunities for your dashboard and digests.",
+        "action": "Choose"
+    }
+}
