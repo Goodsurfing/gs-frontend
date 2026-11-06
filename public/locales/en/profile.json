@@ -57,6 +57,8 @@
     "preferences": {
         "Куда бы вы хотели поехать": "Where would you like to go",
         "Какой тип путешествий вы предпочитаете": "What type of travel do you prefer",
+        "hint": "We'll use your choice to pick vacancies on your dashboard and in your digests",
+        "Выбрано": "Selected",
         "Сохранить": "Save",
         "Данные успешно изменены": "Data updated successfully",
         "Удалить {{tag}}": "Remove {{tag}}"

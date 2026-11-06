@@ -34,11 +34,12 @@ export default async function ProfilePreferencesPage({ params }: Props) {
     return (
         <CabinetShell locale={locale} items={profileMenu(locale, t)}>
             <main className="w-full">
-                <h2 className="text-[1.625rem] font-normal down-lg:text-center">{tp("preferences.Куда бы вы хотели поехать")}</h2>
                 <PreferencesForm
                     categories={categories}
                     labels={{
                         title: tp("preferences.Какой тип путешествий вы предпочитаете"),
+                        hint: tp("preferences.hint"),
+                        selected: tp("preferences.Выбрано"),
                         save: tp("preferences.Сохранить"),
                         saved: tp("preferences.Данные успешно изменены"),
                         error: tp("password.Произошла ошибка"),
