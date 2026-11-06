@@ -39,8 +39,8 @@ test.describe('Профиль', () => {
             name: 'avatar-e2e.png', mimeType: 'image/png', buffer: PNG,
         });
         expect((await uploaded).status()).toBe(201);
-        // Аватар привязывается к профилю при сохранении формы
-        await page.getByRole('button', { name: 'Сохранить' }).click();
+        // Фото сохраняется в профиль сразу после загрузки, без кнопки «Сохранить»
+        await expect(page.getByText('Фото обновлено')).toBeVisible({ timeout: 20_000 });
         await expect.poll(async () => (await profile()).image?.contentUrl ?? null, { timeout: 20_000 })
             .toContain('avatar-e2e');
         await api.dispose();

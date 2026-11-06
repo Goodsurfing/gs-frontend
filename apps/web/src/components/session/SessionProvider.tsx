@@ -22,9 +22,11 @@ export interface Session {
     token?: string;
     logout: () => Promise<void>;
     saveLocale: (locale: Locale) => void;
+    /** Профиль после сохранения (фото, имя) — чтобы шапка обновилась без перезагрузки */
+    updateProfile: (profile: Profile) => void;
 }
 
-const GUEST: Omit<Session, "logout" | "saveLocale"> = { status: "guest", profile: null, unreadMessages: 0, memberships: [] };
+const GUEST: Omit<Session, "logout" | "saveLocale" | "updateProfile"> = { status: "guest", profile: null, unreadMessages: 0, memberships: [] };
 
 const SessionContext = createContext<Session | null>(null);
 
@@ -37,7 +39,7 @@ const timeout = () => ({ signal: AbortSignal.timeout(10_000) });
  * шапке дорисовывается после загрузки. Так же было в старом SPA.
  */
 export function SessionProvider({ children }: { children: ReactNode }) {
-    const [state, setState] = useState<Omit<Session, "logout" | "saveLocale">>({ ...GUEST, status: "unknown" });
+    const [state, setState] = useState<Omit<Session, "logout" | "saveLocale" | "updateProfile">>({ ...GUEST, status: "unknown" });
     const [token, setToken] = useState<string | undefined>();
 
     useEffect(() => {
@@ -99,7 +101,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         void browserApi(token).PATCH("/api/v1/profile/locale", { body: { locale }, keepalive: true }).catch(() => undefined);
     }, [state.status, token]);
 
-    const value = useMemo(() => ({ ...state, token, logout, saveLocale }), [state, token, logout, saveLocale]);
+    const updateProfile = useCallback((profile: Profile) => setState((prev) => (prev.status === "user" ? { ...prev, profile } : prev)), []);
+
+    const value = useMemo(() => ({ ...state, token, logout, saveLocale, updateProfile }), [state, token, logout, saveLocale, updateProfile]);
     return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 }
 
