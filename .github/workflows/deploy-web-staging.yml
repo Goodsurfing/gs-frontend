@@ -73,7 +73,32 @@ jobs:
             # Две выкладки стейджа (SPA и новый фронт) идут на одну VM параллельно:
             # docker image prune одной может сорвать pull другой («failed to lease content») — повторяем
             for attempt in 1 2 3; do sudo docker compose pull web && break; [ "$attempt" = 3 ] && exit 1; sleep 15; done
-            sudo docker compose up -d web
+            # Выкатка без простоя: новый контейнер поднимается рядом со старым; Traefik начинает слать
+            # на него запросы, когда он здоров (healthcheck образа), и только потом старый останавливается.
+            # Раньше «up -d» сначала гасил старый — на 1–8 с сайт/API отвечали 404 (06.11.2026).
+            S=web
+            OLD=$(sudo docker compose ps -q $S)
+            sudo docker compose up -d --no-deps --no-recreate --scale $S=2 $S
+            NEW=$(sudo docker compose ps -q $S | grep -v -x -F "${OLD:-none}" | head -1)
+            [ -n "$NEW" ] || { echo "новый контейнер $S не создан"; exit 1; }
+            ok=""; st=""
+            for i in $(seq 1 60); do
+              st=$(sudo docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' "$NEW")
+              if [ "$st" = healthy ]; then ok=1; break; fi
+              if [ "$st" = unhealthy ] || [ "$st" = exited ]; then break; fi
+              sleep 3
+            done
+            if [ -z "$ok" ]; then
+              echo "новый контейнер $S не стал здоровым ($st) — оставляем старый"
+              sudo docker logs --tail 80 "$NEW" || true
+              sudo docker rm -f "$NEW"
+              exit 1
+            fi
+            # Пара секунд, чтобы Traefik подхватил новый; дольше не ждём — пока работают оба,
+            # страница от новой версии может запросить свои файлы у старой
+            sleep 2
+            if [ -n "$OLD" ]; then sudo docker stop -t 30 $OLD; sudo docker rm $OLD; fi
+            sudo docker compose up -d --no-deps --no-recreate --scale $S=1 $S
             # Старый образ после обновления остаётся «висящим» (1+ ГБ у бэкенда) — без
             # очистки диск стейджа 29.10 заполнился на 90% (142 таких образа)
             sudo docker image prune -f || true

@@ -52,6 +52,6 @@ COPY --from=build --chown=web:web /repo/apps/web/public ./apps/web/public
 COPY --from=build --chown=web:web /repo/apps/web/locales ./apps/web/locales
 USER web
 EXPOSE 3100
-HEALTHCHECK --interval=30s --timeout=3s --start-period=10s CMD wget -qO- http://127.0.0.1:3100/healthz || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --start-interval=2s CMD wget -qO- http://127.0.0.1:3100/healthz || exit 1
 WORKDIR /app/apps/web
 CMD ["node", "server.js"]
