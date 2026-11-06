@@ -17,6 +17,7 @@ import type { CatalogOffer } from "@/lib/offersCatalog";
 import { dayFromApi } from "@/lib/offerWizard";
 
 import { type ApplicationLabels, ApplicationBlock, ApplicationEvent } from "./ApplicationBlock";
+import { needsIntro, QuickIntro, type QuickIntroLabels } from "./QuickIntro";
 import { ChatHeader } from "./ChatHeader";
 import { type ChatInputLabels, ChatInput, type OutgoingMessage } from "./ChatInput";
 import { type ChatListLabels, ChatList } from "./ChatList";
@@ -27,6 +28,8 @@ import { type ReplyDraftLabels, ReplyDraft } from "./ReplyDraft";
 import { useChatList, useChatMessages, useLiveMessages } from "./useMessenger";
 
 export interface MessengerLabels {
+    /** Над откликом новичка без имени или фото */
+    intro: QuickIntroLabels;
     title: string;
     choose: string;
     back: string;
@@ -113,6 +116,12 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     const me = session.profile;
     const ready = session.status === "user";
     const isCreate = chatId === "create";
+    // Решаем один раз: после сохранения имени блок не должен пропасть посреди ввода
+    const [introShown, setIntroShown] = useState(false);
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        if (isCreate && ready && needsIntro(me as Record<string, unknown> | null)) setIntroShown(true);
+    }, [isCreate, ready]); // eslint-disable-line react-hooks/exhaustive-deps
     const realChatId = chatId && !isCreate ? chatId : undefined;
     const recipientVolunteer = params.get("recipientVolunteer") ?? undefined;
     const recipientOrganization = params.get("recipientOrganization") ?? undefined;
@@ -464,6 +473,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                             >
                                 {isCreate && offerId && offer
                                     ? (
+                                        <>
                                         <ApplicationBlock
                                             locale={locale}
                                             offer={toCatalogOffer(offer, dict.categories)}
@@ -477,6 +487,10 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                                             busy={applying}
                                             labels={labels.application}
                                         />
+                                        {/* Лента сообщений идёт снизу вверх (column-reverse) — этот блок окажется над откликом.
+                                            Показываем, если при открытии не было имени или фото; после сохранения — с «Сохранено» */}
+                                        {introShown && <QuickIntro labels={labels.intro} />}
+                                        </>
                                     )
                                     : rendered}
                                 {realChatId && chat.loading && chat.messages.length === 0 && <MessagesSkeleton />}

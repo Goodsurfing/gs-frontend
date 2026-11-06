@@ -58,5 +58,15 @@
     "Пишу черновик…": "Escribiendo un borrador…",
     "Это черновик — проверьте и поправьте перед отправкой": "Es un borrador: revísalo y edítalo antes de enviar",
     "Помощник на сегодня устал — попробуйте завтра": "El asistente alcanzó el límite de hoy, inténtalo mañana",
-    "Не получилось предложить ответ, попробуйте ещё раз": "No se pudo sugerir una respuesta, inténtalo de nuevo"
+    "Не получилось предложить ответ, попробуйте ещё раз": "No se pudo sugerir una respuesta, inténtalo de nuevo",
+    "intro": {
+        "title": "Que el anfitrión sepa quién eres",
+        "text": "El anfitrión verá tu nombre y foto junto a la solicitud. Puedes omitirlo.",
+        "name": "Tu nombre",
+        "save": "Guardar",
+        "saved": "Guardado: el anfitrión lo verá",
+        "photo": "Añadir foto",
+        "uploading": "Guardando…",
+        "error": "No se pudo guardar, inténtalo de nuevo"
+    }
 }

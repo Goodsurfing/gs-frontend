@@ -10,6 +10,7 @@ import { Loading } from "@/components/ui/Loading";
 import { browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
 import { shrinkImage } from "@/lib/shrinkImage";
+import { isNewcomer, type Profile, type ProfileForm as Form, toBody, toForm } from "@/lib/profileForm";
 import { MAX_UPLOAD_SIZE, uploadMedia } from "@/lib/uploadMedia";
 
 export interface ProfileInfoLabels {
@@ -42,82 +43,7 @@ export interface ProfileInfoLabels {
     errors: { day: string; month: string; year: string; dayInvalid: string; yearMin: string; yearMax: string };
 }
 
-interface Form {
-    firstName: string;
-    lastName: string;
-    day: string;
-    month: string;
-    year: string;
-    gender: string;
-    country: string;
-    city: string;
-    locale: string;
-    phone: string;
-    aboutMe: string;
-    vk: string;
-    facebook: string;
-    instagram: string;
-    telegram: string;
-    image: { id: string; contentUrl: string; thumbnails?: unknown } | null;
-}
-
-type Profile = Record<string, unknown> & { id: string; email?: string | null; isVerified?: boolean };
-
-const text = (value: unknown) => (typeof value === "string" ? value : "");
-
-/** Профиль из API → поля формы; дата рождения приходит строкой d.m.Y */
-function toForm(profile: Profile): Form {
-    const [day = "", month = "", year = ""] = text(profile.birthDate).split(/[.-]/);
-    const image = profile.image as Form["image"] | undefined;
-    return {
-        firstName: text(profile.firstName),
-        lastName: text(profile.lastName),
-        day: day ? String(Number(day)) : "",
-        month: month ? String(Number(month)) : "",
-        year,
-        gender: text(profile.gender),
-        country: text(profile.country),
-        city: text(profile.city),
-        locale: text(profile.locale) || "ru",
-        phone: text(profile.phone),
-        aboutMe: text(profile.aboutMe),
-        vk: text(profile.vk),
-        facebook: text(profile.facebook),
-        instagram: text(profile.instagram),
-        telegram: text(profile.telegram),
-        image: image?.id ? image : null,
-    };
-}
-
-const nullable = (value: string) => value.trim() || null;
-
-/** Тело PATCH /profile: он перезаписывает профиль целиком, поэтому всегда все поля */
-function toBody(form: Form) {
-    const birthDate = form.day && form.month && form.year
-        ? `${form.day.padStart(2, "0")}.${form.month.padStart(2, "0")}.${form.year}`
-        : null;
-    return {
-        locale: form.locale,
-        firstName: nullable(form.firstName),
-        lastName: nullable(form.lastName),
-        birthDate,
-        phone: nullable(form.phone),
-        city: nullable(form.city),
-        country: nullable(form.country),
-        aboutMe: nullable(form.aboutMe),
-        gender: nullable(form.gender),
-        vk: nullable(form.vk),
-        facebook: nullable(form.facebook),
-        telegram: nullable(form.telegram),
-        instagram: nullable(form.instagram),
-        imageId: form.image?.id ?? null,
-    };
-}
-
-/** Ни роли волонтёра, ни организации — новичок, который ещё не откликался и не создавал вакансий */
-export function isNewcomer(profile: Record<string, unknown>): boolean {
-    return !profile.volunteer && !profile.hostId;
-}
+export { isNewcomer };
 
 /** Есть ли несохранённые правки полей (фото сохраняется сразу и сюда не входит) */
 export function hasChanges(saved: Form, form: Form): boolean {

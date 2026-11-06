@@ -119,6 +119,16 @@ export default async function MessengerPage({ params }: Props) {
                             limit: m("Помощник на сегодня устал — попробуйте завтра"),
                             failed: m("Не получилось предложить ответ, попробуйте ещё раз"),
                         },
+                        intro: {
+                            title: m("intro.title"),
+                            text: m("intro.text"),
+                            name: m("intro.name"),
+                            save: m("intro.save"),
+                            saved: m("intro.saved"),
+                            photo: m("intro.photo"),
+                            uploading: m("intro.uploading"),
+                            error: m("intro.error"),
+                        },
                         push: {
                             text: m("Включите уведомления — узнаете о новых сообщениях и заявках сразу, даже когда сайт закрыт"),
                             enable: m("Включить"),
