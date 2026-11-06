@@ -10,7 +10,7 @@ import { HowItWork } from "@/components/home/HowItWork";
 import { PersonalOffers } from "@/components/home/PersonalOffers";
 import { ReviewsShowcase } from "@/components/home/ReviewsShowcase";
 import { PublicShell } from "@/components/layout/PublicShell";
-import { OfferCard } from "@/components/offers/OfferCard";
+import { OfferCard, offerCardLabels } from "@/components/offers/OfferCard";
 import { Reveal } from "@/components/ui/Reveal";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
@@ -191,9 +191,9 @@ export default async function HomePage({ params }: Props) {
             )}
 
             <Section title={tMain("Интересные вакансии")} className="down-md:w-full down-xs:w-full">
-                <PersonalOffers offerHref={routes.offer(locale, "{id}")} categories={labels} labels={{ prev: t("slider.previous"), next: t("slider.next") }}>
+                <PersonalOffers offerHref={routes.offer(locale, "{id}")} categories={labels} cardLabels={offerCardLabels(t)} labels={{ prev: t("slider.previous"), next: t("slider.next") }}>
                         {offers.map((offer) => (
-                            <OfferCard key={offer.id} offer={offer} href={routes.offer(locale, offer.id)} category={categoryName(offer.categories[0]?.name, t)} />
+                            <OfferCard key={offer.id} offer={offer} href={routes.offer(locale, offer.id)} category={categoryName(offer.categories[0]?.name, t)} labels={offerCardLabels(t)} />
                         ))}
                 </PersonalOffers>
             </Section>

@@ -2,17 +2,35 @@ import { mediaUrl } from "@/lib/media";
 import type { OfferCardData } from "@/lib/offers";
 import { textSlice } from "@/lib/textSlice";
 
+export interface OfferCardLabels {
+    reviews: string;
+    went: string;
+    noTitle: string;
+    noAddress: string;
+    noCategory: string;
+}
+
+/** Подписи карточки из общего словаря (translation.json) */
+export const offerCardLabels = (t: (key: string) => string): OfferCardLabels => ({
+    reviews: t("Отзывов:"),
+    went: t("Отправилось:"),
+    noTitle: t("Без заголовка"),
+    noAddress: t("Без адреса"),
+    noCategory: t("Без категории"),
+});
+
 /**
  * Карточка вакансии в слайдере (как widgets/OffersSlider/ui/Offer старого
- * фронта). Подписи «Отзывов» и «Отправилось» в старом фронте не переводились —
- * оставлены как есть, перевод — отдельной правкой вместе со старым фронтом.
- * Без серверных зависимостей: её рисует и браузер (подборка вошедшего).
+ * фронта). Подписи — на языке страницы (до 06.11.2026 «Отзывов» и «Отправилось»
+ * были по-русски и на /en, /es — GS-227). Без серверных зависимостей: её рисует
+ * и браузер (подборка вошедшего).
  */
-export function OfferCard({ offer, href, category }: {
+export function OfferCard({ offer, href, category, labels }: {
     offer: Pick<OfferCardData, "title" | "address" | "image" | "averageRating" | "reviewsCount" | "acceptedApplicationsCount">;
     href: string;
     /** Название категории на языке страницы; нет — «Без категории» */
     category: string | undefined;
+    labels: OfferCardLabels;
 }) {
     const rating = Number(offer.averageRating) || 0;
 
@@ -29,9 +47,9 @@ export function OfferCard({ offer, href, category }: {
                 className="h-[220px] w-full object-cover"
             />
             <div>
-                <h4 className="mt-[25px] mb-2.5 h-11 text-[1.125rem] leading-[122%] font-medium">{textSlice(offer.title, 30, "Без заголовка")}</h4>
-                <p className="text-[0.875rem] leading-[143%] text-ink opacity-50">{textSlice(offer.address, 30, "Без адреса")}</p>
-                <p className="mt-0.5 text-[0.875rem] leading-[143%] text-ink opacity-50">{category ?? "Без категории"}</p>
+                <h4 className="mt-[25px] mb-2.5 h-11 text-[1.125rem] leading-[122%] font-medium">{textSlice(offer.title, 30, labels.noTitle)}</h4>
+                <p className="text-[0.875rem] leading-[143%] text-ink opacity-50">{textSlice(offer.address, 30, labels.noAddress)}</p>
+                <p className="mt-0.5 text-[0.875rem] leading-[143%] text-ink opacity-50">{category ?? labels.noCategory}</p>
             </div>
             <div className="mt-[18px] flex flex-wrap items-center gap-2.5 down-xs:flex-col down-xs:items-start">
                 {rating ? (
@@ -43,9 +61,9 @@ export function OfferCard({ offer, href, category }: {
                     </div>
                 ) : null}
                 {offer.reviewsCount ? (
-                    <div className="down-xs:mt-2.5"><span>Отзывов: {offer.reviewsCount}</span></div>
+                    <div className="down-xs:mt-2.5"><span>{labels.reviews} {offer.reviewsCount}</span></div>
                 ) : null}
-                <div className="down-xs:mt-2.5"><span>Отправилось: {offer.acceptedApplicationsCount}</span></div>
+                <div className="down-xs:mt-2.5"><span>{labels.went} {offer.acceptedApplicationsCount}</span></div>
             </div>
         </a>
     );
