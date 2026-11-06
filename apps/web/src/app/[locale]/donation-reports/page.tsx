@@ -36,6 +36,53 @@ const title = "w-full text-[18px] font-medium";
 const text = "mt-2.5 text-[14px] font-medium";
 
 /** «Публичная отчётность»: реквизиты АНО и отчёты (DonationReportsPage старого фронта, GS-219) */
+const FULL_NAME = "АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ «ИНФОРМАЦИОННЫЙ ЦЕНТР РАЗВИТИЯ ДОБРОВОЛЬЧЕСТВА «ГУДСЁРФИНГ – ДОБРЫЕ ПУТЕШЕСТВИЯ»";
+const REGISTRAR = "МЕЖРАЙОННАЯ ИНСПЕКЦИЯ ФЕДЕРАЛЬНОЙ НАЛОГОВОЙ СЛУЖБЫ № 18 ПО РЕСПУБЛИКЕ ТАТАРСТАН";
+const BANK = "ТОЧКА ПАО БАНКА «ФК ОТКРЫТИЕ», г. Москва";
+
+/**
+ * Реквизиты организации (GS-227): подписи переведены, официальные наименования, адрес и номера
+ * оставлены как в учредительных документах — так их ищут в реестрах и банке.
+ */
+const REQUISITES: Record<Locale, { legal: string[]; bank: string[] }> = {
+    ru: {
+        legal: [
+            `Полное название: ${FULL_NAME}`,
+            "Сокращенное название: АНО «Гудсёрфинг»",
+            `Зарегистрирована 20 июля 2018 г. регистратором ${REGISTRAR}.`,
+            "Руководитель организации: директор Попов Илья Александрович.",
+            "Юридический адрес: 420043, республика Татарстан, город Казань, Бойничная улица, дом 5, помещение 25.",
+            "Основным видом деятельности является «Деятельность по оказанию консультационных и информационных услуг», зарегистрировано 5 дополнительных видов деятельности.",
+            "Организации присвоены ИНН 1655405070, ОГРН 1181690059682, ОКПО 31801426.",
+        ],
+        bank: ["Счёт (₽) 40703810207500000136", `Банк получателя ${BANK}`, "БИК 044525999, Корр. Счёт 30101810845250000999"],
+    },
+    en: {
+        legal: [
+            `Full name: ${FULL_NAME}`,
+            "Short name: ANO Goodsurfing (АНО «Гудсёрфинг»)",
+            `Registered on 20 July 2018 by ${REGISTRAR}.`,
+            "Head of the organization: Director Ilya Popov (Попов Илья Александрович).",
+            "Legal address: office 25, 5 Boinichnaya St., Kazan, Republic of Tatarstan, 420043, Russia.",
+            "Main activity: consulting and information services; 5 additional activities are registered.",
+            "TIN (INN) 1655405070, PSRN (OGRN) 1181690059682, OKPO 31801426.",
+        ],
+        bank: ["Account (RUB) 40703810207500000136", `Beneficiary bank: ${BANK}`, "BIC 044525999, correspondent account 30101810845250000999"],
+    },
+    es: {
+        legal: [
+            `Nombre completo: ${FULL_NAME}`,
+            "Nombre abreviado: ANO Goodsurfing (АНО «Гудсёрфинг»)",
+            `Registrada el 20 de julio de 2018 por ${REGISTRAR}.`,
+            "Director de la organización: Ilya Popov (Попов Илья Александрович).",
+            "Domicilio legal: oficina 25, calle Boinichnaya 5, Kazán, República de Tartaristán, 420043, Rusia.",
+            "Actividad principal: servicios de consultoría e información; 5 actividades adicionales registradas.",
+            "NIF (INN) 1655405070, OGRN 1181690059682, OKPO 31801426.",
+        ],
+        bank: ["Cuenta (RUB) 40703810207500000136", `Banco beneficiario: ${BANK}`, "BIC 044525999, cuenta corresponsal 30101810845250000999"],
+    },
+};
+
 export default async function DonationReportsPage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
@@ -52,37 +99,15 @@ export default async function DonationReportsPage({ params }: Props) {
                         </h2>
                         <br />
                         <p className={title}>{t("Реквизиты организации")}:</p>
-                        {/* Реквизиты — юридический текст, в старом фронте не переводился */}
+                        {/* Реквизиты: подписи на языке страницы, официальные названия и номера — как в документах */}
                         <p className={text}>
-                            Полное название: АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ
-                            «ИНФОРМАЦИОННЫЙ ЦЕНТР РАЗВИТИЯ ДОБРОВОЛЬЧЕСТВА «ГУДСЁРФИНГ – ДОБРЫЕ ПУТЕШЕСТВИЯ»
-                            <br />
-                            Сокращенное название: АНО «Гудсёрфинг»
-                            <br />
-                            Зарегистрирована 20 июля 2018 г. регистратором
-                            МЕЖРАЙОННАЯ ИНСПЕКЦИЯ ФЕДЕРАЛЬНОЙ НАЛОГОВОЙ СЛУЖБЫ № 18 ПО РЕСПУБЛИКЕ ТАТАРСТАН.
-                            <br />
-                            Руководитель организации: директор Попов Илья Александрович.
-                            <br />
-                            Юридический адрес: 420043, республика Татарстан, город Казань,
-                            Бойничная улица, дом 5, помещение 25.
-                            <br />
-                            Основным видом деятельности является «Деятельность по оказанию консультационных
-                            и информационных услуг», зарегистрировано 5 дополнительных видов деятельности.
-                            <br />
-                            Организации присвоены ИНН 1655405070, ОГРН 1181690059682,
-                            ОКПО 31801426.
-                            <br />
+                            {REQUISITES[locale].legal.map((line, index) => <span key={index}>{line}<br /></span>)}
                             support@goodsurfing.org
                         </p>
                         <br />
                         <p className={title}>{t("Банковские реквизиты")}:</p>
                         <p className={text}>
-                            Счёт (₽) 40703810207500000136
-                            <br />
-                            Банк получателя ТОЧКА ПАО БАНКА «ФК ОТКРЫТИЕ», г. Москва
-                            <br />
-                            БИК 044525999, Корр. Счёт 30101810845250000999
+                            {REQUISITES[locale].bank.map((line, index) => <span key={index}>{index > 0 && <br />}{line}</span>)}
                         </p>
                         <br />
                         <p className={text}>
