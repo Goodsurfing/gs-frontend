@@ -18,7 +18,7 @@ type Profile = Record<string, unknown> & { volunteer?: unknown; hostId?: string 
  */
 export function PreferencesForm({ categories, labels }: {
     categories: { id: number; name: string; image?: string }[];
-    labels: { title: string; save: string; saved: string; error: string };
+    labels: { title: string; hint: string; selected: string; save: string; saved: string; error: string };
 }) {
     const session = useSession();
     const profile = session.profile as Profile | null;
@@ -45,9 +45,12 @@ export function PreferencesForm({ categories, labels }: {
     return (
         <form onSubmit={save} className="flex max-w-[950px] flex-col gap-5">
             <Toast text={message?.text ?? null} ok={message?.ok} onClose={() => setMessage(null)} />
+            {/* Один заголовок и пояснение (раньше было два заголовка подряд). Плитки — ровная сетка, подпись внизу
+                на затемнении, перенос по слогам вместо разрыва слова посередине; выбранная — в зелёной рамке. */}
             <div className="mt-[30px]">
                 <h2 className="text-[26px] font-normal down-lg:text-center">{labels.title}</h2>
-                <div className="mt-[30px] mt-5 flex flex-wrap gap-x-5 gap-y-[30px] down-lg:justify-center">
+                <p className="mt-2 text-[15px] leading-[140%] text-ink-tertiary down-lg:text-center">{labels.hint}</p>
+                <div className="mt-6 grid grid-cols-[repeat(auto-fill,minmax(130px,1fr))] gap-4 down-sm:grid-cols-3 down-sm:gap-2.5">
                     {categories.map((category) => {
                         const on = selected.includes(category.id);
                         return (
@@ -57,17 +60,24 @@ export function PreferencesForm({ categories, labels }: {
                                 aria-pressed={on}
                                 onClick={() => toggle(category.id)}
                                 style={category.image ? { backgroundImage: `url(${JSON.stringify(category.image)})` } : undefined}
-                                className="relative flex h-[174px] w-[130px] shrink-0 cursor-pointer items-center justify-center bg-accent-bg bg-cover bg-no-repeat"
+                                className={`group relative aspect-[3/4] cursor-pointer overflow-hidden rounded-[10px] bg-accent-bg bg-cover bg-center bg-no-repeat -outline-offset-3 transition-[outline-color] ${on ? "outline-3 outline-cta" : "outline-3 outline-transparent hover:outline-accent-bg"}`}
                             >
-                                <span className={`box-border max-w-full min-w-0 px-2 text-center text-[18px] leading-[23.4px] font-medium break-words text-white transition-transform duration-300 ${on ? "translate-y-10" : ""}`}>{category.name}</span>
-                                {/* eslint-disable-next-line @next/next/no-img-element -- галочка выбора */}
-                                <img src="/web/icons/offer/select-check.svg" alt="" className={`absolute top-2.5 right-2.5 ${on ? "visible" : "invisible"}`} />
+                                <span aria-hidden className="absolute inset-0 bg-linear-to-t from-black/75 via-black/20 to-transparent" />
+                                <span className="absolute inset-x-0 bottom-0 p-2.5 text-left text-[15px] leading-[120%] font-semibold text-white hyphens-auto down-sm:p-2 down-sm:text-[13px]">{category.name}</span>
+                                {on && (
+                                    <span aria-hidden className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-cta text-white shadow">
+                                        <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8.5l3.2 3L13 4.5" /></svg>
+                                    </span>
+                                )}
                             </button>
                         );
                     })}
                 </div>
             </div>
-            <button type="submit" disabled={busy} className={`${blueButton} w-fit !px-[55px]`}>{labels.save}</button>
+            <div className="flex items-center gap-5 down-lg:justify-center">
+                <button type="submit" disabled={busy} className={`${blueButton} w-fit !px-[55px]`}>{labels.save}</button>
+                <span className="text-[15px] whitespace-nowrap text-ink-tertiary">{labels.selected}: {selected.length}</span>
+            </div>
         </form>
     );
 }

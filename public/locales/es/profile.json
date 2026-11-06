@@ -57,6 +57,8 @@
     "preferences": {
         "Куда бы вы хотели поехать": "¿A dónde le gustaría ir?",
         "Какой тип путешествий вы предпочитаете": "¿Qué tipo de viaje prefiere?",
+        "hint": "Con tu elección elegiremos vacantes para tu panel y tus selecciones",
+        "Выбрано": "Seleccionado",
         "Сохранить": "Guardar",
         "Данные успешно изменены": "Datos actualizados con éxito",
         "Удалить {{tag}}": "Eliminar {{tag}}"
