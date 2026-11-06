@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { PublicShell } from "@/components/layout/PublicShell";
-import { OfferCard } from "@/components/offers/OfferCard";
+import { OfferCard, offerCardLabels } from "@/components/offers/OfferCard";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { categoryName } from "@/lib/categories";
@@ -98,7 +98,7 @@ export default async function VolunteeringLandingPage({ params }: Props) {
                     <ul className="m-0 mt-10 grid list-none grid-cols-3 gap-5 p-0 down-lg:grid-cols-2 down-sm:grid-cols-1">
                         {offers.map((offer) => (
                             <li key={offer.id} className="flex [&>a]:w-full">
-                                <OfferCard offer={offer} href={routes.offer(locale, offer.id)} category={categoryName(offer.categories[0]?.name, tCommon)} />
+                                <OfferCard offer={offer} href={routes.offer(locale, offer.id)} category={categoryName(offer.categories[0]?.name, tCommon)} labels={offerCardLabels(tCommon)} />
                             </li>
                         ))}
                     </ul>
