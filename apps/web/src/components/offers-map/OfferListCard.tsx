@@ -22,13 +22,15 @@ export interface OfferListCardLabels {
  * слева, закрытая — бледнее. Сердечко — не внутри карточки-ссылки (кнопка
  * в ссылке недоступна читалкам), а поверх неё, в углу картинки.
  */
-export function OfferListCard({ offer, href, selected = false, onSelect, wide, labels, favorite, showImage = true }: {
+export function OfferListCard({ offer, href, selected = false, onSelect, wide, compact = false, labels, favorite, showImage = true }: {
     offer: CatalogOffer;
     href: string;
     selected?: boolean;
     onSelect?: (id: number) => void;
     /** Карта свёрнута — карточки в две колонки */
     wide: boolean;
+    /** Каталог с картой на десктопе: фото меньше, без описания — на экране больше вакансий */
+    compact?: boolean;
     labels: OfferListCardLabels;
     /** Сердечко «в избранное» на картинке — только вошедшим (gs-backend #407) */
     favorite?: { active: boolean; busy?: boolean; onToggle: () => void; labels: { add: string; remove: string } };
@@ -62,7 +64,7 @@ export function OfferListCard({ offer, href, selected = false, onSelect, wide, l
                 className={`flex h-full cursor-pointer items-start gap-3.5 border-l-[3px] ${onSelect ? "p-2.5" : "px-5 py-3.5"} shadow-[0_5px_20px_0_#2121210d] transition-colors duration-200 down-xs:flex-wrap down-xs:p-4 ${selected ? "border-l-primary bg-accent-bg" : "border-l-transparent bg-white"}`}
             >
                 {showImage && (
-                    <div className="relative h-[110px] w-40 shrink-0 bg-accent-bg down-xs:h-[180px] down-xs:w-full">
+                    <div className={`relative shrink-0 overflow-hidden bg-accent-bg down-xs:h-[180px] down-xs:w-full ${compact ? "h-[110px] w-40 min-[993px]:h-[84px] min-[993px]:w-28 min-[993px]:rounded-[6px]" : "h-[110px] w-40"}`}>
                         {offer.image && !imageFailed && (
                             // eslint-disable-next-line @next/next/no-img-element -- превью из хранилища
                             <img ref={imageRef} src={offer.image} alt="" loading="lazy" onError={() => setImageFailed(true)} className="block h-full w-full object-cover" />
@@ -74,8 +76,8 @@ export function OfferListCard({ offer, href, selected = false, onSelect, wide, l
                     <div className="mt-1.5 text-[14px] leading-[18px] font-medium text-caption down-xs:flex down-xs:flex-col">
                         <span className="block max-w-full truncate">{offer.address}</span>
                         {!offer.onMap && <span className="mt-0.5 inline-block text-[0.75rem] opacity-70">{labels.notOnMap}</span>}
-                        <br />
-                        <span>{offer.category}</span>
+                        <br className={compact ? "min-[993px]:hidden" : undefined} />
+                        <span className={compact ? "min-[993px]:block" : undefined}>{offer.category}</span>
                     </div>
                     <div className="mt-2 flex flex-wrap gap-6 down-xs:gap-2">
                         {offer.rating > 0 && (
@@ -90,7 +92,7 @@ export function OfferListCard({ offer, href, selected = false, onSelect, wide, l
                             {offer.went > 0 && <span>{labels.went}: {offer.went}</span>}
                         </div>
                     </div>
-                    <p className="mt-1.5 line-clamp-2 max-w-full text-[14px] leading-[17px] font-medium text-caption">
+                    <p className={`mt-1.5 line-clamp-2 max-w-full text-[14px] leading-[17px] font-medium text-caption ${compact ? "min-[993px]:hidden" : ""}`}>
                         {textSlice(offer.description, 110, labels.noDescription)}
                     </p>
                     <a

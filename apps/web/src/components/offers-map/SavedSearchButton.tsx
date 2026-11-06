@@ -26,13 +26,13 @@ type State = { kind: "idle" } | { kind: "busy" } | { kind: "done"; already: bool
 /**
  * Подписка на подборку по текущим фильтрам карты. Гостю — вход, после него
  * возврат на карту с теми же фильтрами и тем же предложением (?subscribe=).
- * variant: line — строка под поиском; empty — вместо «ничего не нашлось»;
+ * variant: line — строка под поиском; inline — в строке со счётчиком (десктоп); empty — вместо «ничего не нашлось»;
  * prompt — плашка после перехода из письма или входа.
  */
 export function SavedSearchButton({ filters, source, variant, signInHref, manageHref, labels }: {
     filters: OffersFilters;
     source: SavedSearchSource;
-    variant: "line" | "empty" | "prompt";
+    variant: "line" | "inline" | "empty" | "prompt";
     /** Адрес входа; возврат на карту с теми же фильтрами — через ?next=offersMap */
     signInHref: string;
     manageHref: string;
@@ -52,7 +52,7 @@ export function SavedSearchButton({ filters, source, variant, signInHref, manage
             .catch(() => setState({ kind: "error" }));
     };
 
-    const action = variant === "line" ? labels.button : variant === "empty" ? labels.emptyButton : labels.promptButton;
+    const action = variant === "line" || variant === "inline" ? labels.button : variant === "empty" ? labels.emptyButton : labels.promptButton;
     const manage = <a href={manageHref} className="text-primary underline">{labels.manage}</a>;
     let control;
     if (state.kind === "done") {
@@ -62,13 +62,13 @@ export function SavedSearchButton({ filters, source, variant, signInHref, manage
     } else if (session.status === "guest") {
         control = (
             <a href={`${signInHref}?next=offersMap&nextId=${encodeURIComponent(subscribeReturnQuery(filters, source))}`} className="inline-flex items-center gap-1.5 text-[14px] font-medium text-primary hover:underline">
-                <Bell /> {action} <span className="text-[12px] font-normal text-muted">· {labels.guest}</span>
+                <Bell /> {action} {variant !== "inline" && <span className="text-[12px] font-normal text-muted">· {labels.guest}</span>}
             </a>
         );
     } else {
         control = (
             <span className="inline-flex flex-wrap items-center gap-2">
-                <button type="button" disabled={state.kind === "busy" || session.status !== "user"} onClick={subscribe} className={variant === "line"
+                <button type="button" disabled={state.kind === "busy" || session.status !== "user"} onClick={subscribe} className={variant === "line" || variant === "inline"
                     ? "inline-flex cursor-pointer items-center gap-1.5 text-[14px] font-medium text-primary hover:underline disabled:cursor-default disabled:opacity-60"
                     : "inline-flex cursor-pointer items-center gap-1.5 rounded-[10px] bg-cta px-5 py-2.5 text-[14px] font-medium text-white hover:bg-cta-hover disabled:cursor-default disabled:opacity-60"}>
                     <Bell /> {action}
@@ -79,6 +79,8 @@ export function SavedSearchButton({ filters, source, variant, signInHref, manage
     }
 
     if (variant === "line") return <div className="px-[30px] pb-2 down-lg:px-5">{control}</div>;
+    // inline — в строке со счётчиком (десктоп), без своих отступов
+    if (variant === "inline") return control;
     return (
         <div className={`m-5 flex flex-col items-center gap-3 rounded-xl p-5 text-center ${variant === "prompt" ? "border-2 border-cta bg-white" : "bg-field"}`}>
             <p className="text-[15px] font-medium">{variant === "empty" ? labels.empty : labels.prompt}</p>
