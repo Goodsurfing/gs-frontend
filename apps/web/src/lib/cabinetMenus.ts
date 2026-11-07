@@ -23,6 +23,7 @@ export function hostMenu(locale: Locale, t: Translate): CabinetMenuItem[] {
         { text: t("main.sidebar.Рабочий стол"), href: routes.hostDashboard(locale), icon: "home" },
         { text: t("main.sidebar.Предложения"), href: routes.myOffers(locale), icon: "globe" },
         { text: t("main.sidebar.Заявки"), href: routes.hostNotes(locale), icon: "mail" },
+        { text: t("main.sidebar.Уведомления"), href: routes.hostNotifications(locale), icon: "bell" },
         { text: t("main.sidebar.Сборы"), href: routes.hostDonations(locale), icon: "check" },
         { text: t("main.sidebar.Пожертвования"), href: routes.hostDonationRating(locale), icon: "support" },
         {

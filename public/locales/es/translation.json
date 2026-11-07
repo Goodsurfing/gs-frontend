@@ -179,7 +179,8 @@
             "Мои статьи": "Mis artículos",
             "Создать организацию": "Create an organization",
             "Подписки на поиск": "Suscripciones de búsqueda",
-            "Пригласить друга": "Invitar a un amigo"
+            "Пригласить друга": "Invitar a un amigo",
+            "Уведомления": "Notificaciones"
         }
     },
     "stats-points": {
@@ -481,5 +482,47 @@
         "badgeDone": "La insignia «Asistente de recomendaciones» aparecerá en tu perfil en un día.",
         "error": "No se pudo cargar tu enlace.",
         "retry": "Reintentar"
+    },
+    "notifications": {
+        "title": "Notificaciones",
+        "intro": "Elige de qué y dónde quieres que te avisemos. Las nuevas solicitudes y los mensajes de voluntarios es mejor recibirlos en un mensajero: responderás antes, y los voluntarios eligen a quien responde rápido.",
+        "connectTitle": "Mensajeros",
+        "telegram": "Telegram",
+        "max": "MAX",
+        "connect": "Conectar Telegram",
+        "connecting": "Esperando «Iniciar» en Telegram…",
+        "connectHint": "Se abrirá el bot de Goodsurfing: pulsa «Iniciar». Esta página se actualizará sola.",
+        "connected": "Conectado",
+        "disconnect": "Desconectar",
+        "soon": "Próximamente",
+        "unavailable": "Aún no disponible",
+        "tableTitle": "Qué enviar y dónde",
+        "channels": {
+            "email": "Correo",
+            "telegram": "Telegram",
+            "max": "MAX",
+            "push": "Push en la app"
+        },
+        "types": {
+            "new_application": "Nueva solicitud",
+            "new_message": "Nuevo mensaje de un voluntario",
+            "unanswered_reminder": "Recordatorio de solicitudes sin respuesta",
+            "news": "Noticias y selecciones de Goodsurfing"
+        },
+        "hints": {
+            "new_application": "Al momento: quién, a qué oportunidad, fechas y el inicio del mensaje",
+            "new_message": "A los 10 minutos si no lo has leído; como mucho una vez por hora por conversación",
+            "unanswered_reminder": "A los 3 y 7 días de la solicitud",
+            "news": "Correos con noticias del proyecto"
+        },
+        "needConnect": "Primero conecta el mensajero",
+        "service": "Los correos de servicio — confirmación de correo, cambio de contraseña, pago — llegan siempre.",
+        "quiet": "De noche, de 23:00 a 08:00 hora de Moscú, las notificaciones llegan sin sonido.",
+        "saveError": "No se pudo guardar, inténtalo de nuevo",
+        "loadError": "No se pudieron cargar los ajustes.",
+        "retry": "Reintentar",
+        "banner": "Recibe solicitudes en Telegram: responderás antes",
+        "bannerButton": "Conectar",
+        "bannerClose": "Ocultar"
     }
 }

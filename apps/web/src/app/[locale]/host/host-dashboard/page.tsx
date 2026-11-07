@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { CabinetShell } from "@/components/cabinet/CabinetShell";
 import { HostDashboard } from "@/components/cabinet/host/HostDashboard";
+import { TelegramBanner } from "@/components/cabinet/host/notifications/TelegramBanner";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { authMetadata } from "@/lib/authPages";
@@ -28,6 +29,10 @@ export default async function HostDashboardPage({ params }: Props) {
     return (
         <CabinetShell locale={locale} items={hostMenu(locale, t)} need="host" fitContent>
             <main>
+                <TelegramBanner
+                    href={routes.hostNotifications(locale)}
+                    labels={{ text: t("notifications.banner"), button: t("notifications.bannerButton"), close: t("notifications.bannerClose") }}
+                />
                 <HostDashboard
                     locale={locale}
                     routes={{

@@ -50,6 +50,7 @@ export const routes = {
     hostTeam: (l: Locale) => path(l, "/host/team"),
     hostReview: (l: Locale) => path(l, "/host/review"),
     hostNotes: (l: Locale) => path(l, "/host/notes"),
+    hostNotifications: (l: Locale) => path(l, "/host/notifications"),
     /** Сборы организатора */
     hostDonations: (l: Locale) => path(l, "/host/donations"),
     /** Пожертвования, полученные организатором (не путать с публичным рейтингом /donation-rating) */
