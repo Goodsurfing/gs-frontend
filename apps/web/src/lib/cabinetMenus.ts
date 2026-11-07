@@ -38,6 +38,7 @@ export function hostMenu(locale: Locale, t: Translate): CabinetMenuItem[] {
                 { text: t("main.sidebar.Видеогалерея"), href: routes.hostVideo(locale) },
                 { text: t("main.sidebar.Команда"), href: routes.hostTeam(locale) },
                 { text: t("main.sidebar.Отзывы"), href: routes.hostReview(locale) },
+                { text: t("main.sidebar.Значок для сайта"), href: routes.hostBadge(locale) },
             ],
         },
     ];

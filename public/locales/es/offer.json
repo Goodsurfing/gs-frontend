@@ -307,5 +307,21 @@
         "save": "Guardar traducción",
         "saved": "Traducción guardada",
         "error": "No se pudo guardar la traducción"
+    },
+    "share": {
+        "button": "Compartir",
+        "title": "Compartir la vacante",
+        "intro-host": "Cuéntaselo a tus seguidores: los voluntarios te encontrarán antes.",
+        "intro-published": "¡Vacante publicada! Cuéntaselo a tus seguidores: los voluntarios te encontrarán antes.",
+        "intro-volunteer": "Cuenta a tus amigos adónde vas: quizá alguien se apunte.",
+        "text": "Texto de la publicación",
+        "copy": "Copiar texto y enlace",
+        "copied": "Copiado",
+        "download-post": "Descargar imagen para publicación",
+        "download-story": "Descargar imagen para historias",
+        "max-hint": "Para otras apps, copia el texto y adjunta la imagen.",
+        "close": "Cerrar",
+        "error": "No se pudo preparar el texto. Inténtalo de nuevo.",
+        "card-cta": "Solicitar en goodsurfing.org"
     }
 }

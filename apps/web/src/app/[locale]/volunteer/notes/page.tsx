@@ -9,6 +9,7 @@ import { reviewAssistantLabels } from "@/lib/reviewAssistantLabels";
 import { authMetadata } from "@/lib/authPages";
 import { categoryLabels } from "@/lib/categories";
 import { routes } from "@/lib/routes";
+import { offerShareLabels } from "@/lib/shareLabels";
 import { volunteerMenu } from "@/lib/volunteerMenu";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -22,12 +23,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function VolunteerNotesPage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
-    const [t, tv, th] = await Promise.all([getTranslator(locale), getTranslator(locale, "volunteer"), getTranslator(locale, "host")]);
+    const [t, tv, th, tOffer] = await Promise.all([getTranslator(locale), getTranslator(locale, "volunteer"), getTranslator(locale, "host"), getTranslator(locale, "offer")]);
     return (
         <CabinetShell locale={locale} items={volunteerMenu(locale, t)} need="volunteer">
             <main className="w-full">
                 <h2 className="text-[1.625rem] leading-8 font-normal">{tv("volunteer-notes.Мои заявки")}</h2>
                 <VolunteerNotes
+                    locale={locale}
                     hrefs={{ offer: routes.offerTemplate(locale), chat: routes.messengerChatTemplate(locale) }}
                     categories={categoryLabels(t)}
                     labels={{
@@ -49,6 +51,8 @@ export default async function VolunteerNotesPage({ params }: Props) {
                             close: t("Закрыть"),
                             assistant: reviewAssistantLabels(tv),
                         },
+                        share: tOffer("share.button"),
+                        shareDialog: offerShareLabels(tOffer, "intro-volunteer"),
                     }}
                 />
             </main>

@@ -307,5 +307,21 @@
         "save": "Save translation",
         "saved": "Translation saved",
         "error": "Couldn’t save the translation"
+    },
+    "share": {
+        "button": "Share",
+        "title": "Share the opportunity",
+        "intro-host": "Tell your followers about it — volunteers will find you faster.",
+        "intro-published": "Your opportunity is published! Tell your followers about it — volunteers will find you faster.",
+        "intro-volunteer": "Tell your friends where you're going — maybe someone will join you.",
+        "text": "Post text",
+        "copy": "Copy text and link",
+        "copied": "Copied",
+        "download-post": "Download image for a post",
+        "download-story": "Download image for stories",
+        "max-hint": "For other apps, copy the text and attach the image.",
+        "close": "Close",
+        "error": "Couldn't prepare the text. Please try again.",
+        "card-cta": "Apply on goodsurfing.org"
     }
 }

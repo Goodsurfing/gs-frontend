@@ -4,9 +4,11 @@ import type { components } from "@goodsurfing/api";
 import { useEffect, useState } from "react";
 
 import { PageButtons } from "@/components/list/PageButtons";
+import { OfferShareDialog, type OfferShareLabels } from "@/components/share/OfferShareDialog";
 import { useSession } from "@/components/session/SessionProvider";
 import { Avatar } from "@/components/ui/Avatar";
 import { Spinner } from "@/components/ui/Spinner";
+import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
 import { textSlice } from "@/lib/textSlice";
@@ -32,6 +34,8 @@ export interface VolunteerNotesLabels {
     sendError: string;
     pagination: { prev: string; next: string; page: string };
     dialog: OfferReviewDialogLabels;
+    share: string;
+    shareDialog: OfferShareLabels;
 }
 
 const isStatus = (value: string): value is Status => (STATUSES as string[]).includes(value);
@@ -41,7 +45,8 @@ const isStatus = (value: string): value is Status => (STATUSES as string[]).incl
  * заявки текущей страницы (по 10) в трёх колонках по статусу, без
  * перетаскивания; у принятой без отзыва — «Написать отзыв».
  */
-export function VolunteerNotes({ hrefs, categories, labels }: {
+export function VolunteerNotes({ locale, hrefs, categories, labels }: {
+    locale: Locale;
     hrefs: { offer: string; chat: string };
     categories: Record<string, string>;
     labels: VolunteerNotesLabels;
@@ -50,6 +55,17 @@ export function VolunteerNotes({ hrefs, categories, labels }: {
     const [page, setPage] = useState(1);
     const [data, setData] = useState<{ items: Application[]; total: number } | null>(null);
     const [selected, setSelected] = useState<Application | null>(null);
+
+    // «Поделиться» принятой заявкой: ссылка на вакансию со своим кодом «Пригласи друга» (GS-265)
+    const [shareId, setShareId] = useState<string | null>(null);
+    const [refCode, setRefCode] = useState<string | null>(null);
+    const openShare = (id: string) => {
+        setShareId(id);
+        if (refCode) return;
+        void browserApi(session.token).GET("/api/v1/referral")
+            .then(({ data: referral }) => setRefCode((referral as { code?: string } | undefined)?.code ?? null))
+            .catch(() => undefined);
+    };
 
     // Увеличивается после отзыва — список перечитывается («Написать отзыв» пропадает)
     const [version, setVersion] = useState(0);
@@ -101,6 +117,9 @@ export function VolunteerNotes({ hrefs, categories, labels }: {
                                         <div className="mt-1">{offerCard(application)}</div>
                                         <div className="flex flex-wrap">
                                             {!!application.chatId && <a href={hrefs.chat.replace("{id}", String(application.chatId))} className={button}>{labels.message}</a>}
+                                            {status === "accepted" && (
+                                                <button type="button" onClick={() => openShare(String(application.vacancy.id))} className={button}>{labels.share}</button>
+                                            )}
                                             {status === "accepted" && !application.isHasReview && (
                                                 <button type="button" onClick={() => setSelected(application)} className={button}>{labels.review}</button>
                                             )}
@@ -112,6 +131,18 @@ export function VolunteerNotes({ hrefs, categories, labels }: {
                     );
                 })}
             </div>
+            {shareId && (
+                <OfferShareDialog
+                    open
+                    onOpenChange={(next) => !next && setShareId(null)}
+                    offerId={shareId}
+                    offerUrl={`${window.location.origin}${hrefs.offer.replace("{id}", shareId)}${refCode ? `?ref=${encodeURIComponent(refCode)}` : ""}`}
+                    cardUrl={`${hrefs.offer.replace("{id}", shareId)}/card`}
+                    source="volunteer"
+                    locale={locale}
+                    labels={labels.shareDialog}
+                />
+            )}
             <PageButtons page={page} count={Math.ceil(data.total / PER_PAGE)} onChange={setPage} labels={labels.pagination} />
             <OfferReviewDialog
                 open={!!selected}
