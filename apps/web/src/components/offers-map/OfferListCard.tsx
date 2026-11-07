@@ -51,7 +51,7 @@ export function OfferListCard({ offer, href, selected = false, onSelect, wide, c
     }, []);
 
     return (
-        <div className={`relative border-b border-accent-bg ${offer.active ? "" : "opacity-45"} ${wide ? "w-1/2 border-l down-2xl:w-full" : `w-full ${onSelect ? "min-w-[520px]" : ""}`}`}>
+        <div className={`relative border-b border-accent-bg ${offer.active ? "" : "opacity-45"} ${wide ? "w-1/2 border-l down-2xl:w-full" : `w-full ${onSelect ? "min-w-[520px] down-lg:min-w-0" : ""}`}`}>
             {/* В каталоге отступы 10 px (OffersList старого фронта), в остальных списках — базовые 14/20 */}
             <div
                 role={onSelect ? "button" : "link"}
