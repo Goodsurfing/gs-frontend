@@ -82,10 +82,10 @@ export interface OfferCardData {
 
 const clampTitle = (title: string, max: number) => (title.length > max ? `${title.slice(0, max - 1).replace(/\s+\S*$/, "")}…` : title);
 
-function Chips({ items, size }: { items: string[]; size: number }) {
+function Chips({ items, size, max = 4 }: { items: string[]; size: number; max?: number }) {
     return (
         <div style={{ display: "flex", flexWrap: "wrap", gap: size * 0.5 }}>
-            {items.slice(0, 4).map((item) => (
+            {items.slice(0, max).map((item) => (
                 <div key={item} style={{ display: "flex", padding: `${size * 0.3}px ${size * 0.7}px`, borderRadius: size, background: "rgba(255,255,255,0.18)", color: "white", fontSize: size }}>
                     {item}
                 </div>
@@ -105,13 +105,12 @@ export async function offerPostImage(data: OfferCardData): Promise<Response> {
                 <div style={{ position: "absolute", inset: 0, display: "flex", background: "linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.85) 100%)" }} />
                 {/* eslint-disable-next-line @next/next/no-img-element -- рисуется в картинку */}
                 {logoSrc && <img loading="eager" src={logoSrc} width={195} height={63} style={{ position: "absolute", top: 40, left: 56 }} alt="" />}
+                <div style={{ position: "absolute", top: 54, right: 56, display: "flex", fontSize: 30, fontWeight: 700, color: "white" }}>{data.site}</div>
                 <div style={{ position: "absolute", left: 56, right: 56, bottom: 48, display: "flex", flexDirection: "column", gap: 18 }}>
                     <div style={{ display: "flex", fontSize: 60, fontWeight: 700, lineHeight: 1.12, color: "white" }}>{clampTitle(data.title, 70)}</div>
                     {data.place && <div style={{ display: "flex", fontSize: 32, color: "rgba(255,255,255,0.92)" }}>{data.place}</div>}
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 24 }}>
-                        <Chips items={data.highlights} size={26} />
-                        <div style={{ display: "flex", fontSize: 28, fontWeight: 700, color: ACCENT, whiteSpace: "nowrap" }}>{data.site}</div>
-                    </div>
+                    {/* Не больше трёх плашек — четвёртая («выходных в неделю: 1») не помещалась в строку */}
+                    <Chips items={data.highlights} size={26} max={3} />
                 </div>
             </div>
         ),
