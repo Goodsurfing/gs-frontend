@@ -1,5 +1,8 @@
 /** Настройки уведомлений (gs-backend NotificationSettings): типы и каналы — в порядке таблицы */
-export const TYPES = ["new_application", "new_message", "unanswered_reminder", "news"] as const;
+export const HOST_TYPES = ["new_application", "new_message", "unanswered_reminder", "news"] as const;
+export const VOLUNTEER_TYPES = ["host_reply", "application_status", "news"] as const;
+/** Все виды — для подписей (страница организатора и профиль волонтёра) */
+export const TYPES = ["new_application", "new_message", "unanswered_reminder", "host_reply", "application_status", "news"] as const;
 export const CHANNELS = ["email", "telegram", "max", "push"] as const;
 export type NotificationType = (typeof TYPES)[number];
 export type Channel = (typeof CHANNELS)[number];
