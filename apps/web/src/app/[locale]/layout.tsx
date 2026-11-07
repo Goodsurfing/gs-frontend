@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { preload } from "react-dom";
 
 import { YandexMetrika } from "@/components/analytics/YandexMetrika";
+import { ReferralCapture } from "@/components/referral/ReferralCapture";
 import { isLocale, LOCALES } from "@/i18n/config";
 
 import "../globals.css";
@@ -60,6 +61,7 @@ export default async function LocaleLayout({
                 <script dangerouslySetInnerHTML={{ __html: BROKEN_IMAGE_FALLBACK }} />
                 {children}
                 <YandexMetrika />
+                <ReferralCapture />
             </body>
         </html>
     );

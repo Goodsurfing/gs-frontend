@@ -178,7 +178,8 @@
             "Написать в блог": "Write article",
             "Мои статьи": "My articles",
             "Создать организацию": "Create organization",
-            "Подписки на поиск": "Search subscriptions"
+            "Подписки на поиск": "Search subscriptions",
+            "Пригласить друга": "Invite a friend"
         }
     },
     "stats-points": {
@@ -464,5 +465,20 @@
             "doneText": "You sign in with {{email}} again. All sessions are closed and your password is reset — set a new one via “Forgot password”.",
             "doneButton": "Set a new password"
         }
+    },
+    "referral": {
+        "title": "Invite a friend",
+        "intro": "Share your link with friends. When a friend signs up with it and confirms their email, you get the “Recommendation Wizard” badge.",
+        "linkLabel": "Your link",
+        "copy": "Copy",
+        "copied": "Copied",
+        "share": "Share",
+        "shareText": "Volunteer trips in Russia and around the world — join Goodsurfing",
+        "invited": "Friends who signed up with your link: {{count}}",
+        "none": "No one has signed up with your link yet",
+        "badge": "Your first friend earns you the “Recommendation Wizard” badge.",
+        "badgeDone": "The “Recommendation Wizard” badge will appear in your profile within a day.",
+        "error": "Couldn’t load your link.",
+        "retry": "Retry"
     }
 }
