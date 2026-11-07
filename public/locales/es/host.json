@@ -228,5 +228,23 @@
     "verifiedHost": {
         "hint": "Anfitrión verificado: tiene la membresía de GoodSurfing pagada.",
         "howTo": "¿Cómo verificarse?"
+    },
+    "badge": {
+        "title": "Insignia para tu web",
+        "intro": "Pon la insignia «Estamos en GoodSurfing» en tu web o red social: los voluntarios verán tu valoración y reseñas e irán a tus vacantes. La insignia se actualiza sola con las nuevas reseñas.",
+        "preview": "Así se ve la insignia",
+        "code-title": "Código para tu web",
+        "code-hint": "Pega el código en una página de tu web (por ejemplo, en el pie o en una sección «Voluntarios»).",
+        "copy-code": "Copiar código",
+        "copied": "Copiado",
+        "download": "Descargar imagen",
+        "link-title": "Enlace a tu página",
+        "link-hint": "Añádelo a la descripción de tu red social, perfil o publicación: los voluntarios verán todas tus vacantes y reseñas.",
+        "copy-link": "Copiar enlace",
+        "share-text": "Recibimos voluntarios: todas nuestras vacantes y reseñas en GoodSurfing",
+        "no-organization": "Primero completa la descripción de la organización.",
+        "image-title": "Estamos en GoodSurfing",
+        "image-rating": "valoración {rating}",
+        "image-reviews": "reseñas: {{count}}"
     }
 }

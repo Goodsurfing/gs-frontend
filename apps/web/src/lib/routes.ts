@@ -49,6 +49,7 @@ export const routes = {
     hostVideo: (l: Locale) => path(l, "/host/video"),
     hostTeam: (l: Locale) => path(l, "/host/team"),
     hostReview: (l: Locale) => path(l, "/host/review"),
+    hostBadge: (l: Locale) => path(l, "/host/badge"),
     hostNotes: (l: Locale) => path(l, "/host/notes"),
     hostNotifications: (l: Locale) => path(l, "/host/notifications"),
     /** Сборы организатора */

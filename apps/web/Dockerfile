@@ -50,6 +50,8 @@ COPY --from=build --chown=web:web /repo/apps/web/.next/standalone ./
 COPY --from=build --chown=web:web /repo/apps/web/.next/static ./apps/web/.next/static
 COPY --from=build --chown=web:web /repo/apps/web/public ./apps/web/public
 COPY --from=build --chown=web:web /repo/apps/web/locales ./apps/web/locales
+# Шрифты для картинок-карточек и значка (lib/shareCard.tsx читает их с диска)
+COPY --from=build --chown=web:web /repo/apps/web/assets ./apps/web/assets
 USER web
 EXPOSE 3100
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --start-interval=2s CMD wget -qO- http://127.0.0.1:3100/healthz || exit 1

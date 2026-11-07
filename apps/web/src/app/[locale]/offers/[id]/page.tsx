@@ -72,8 +72,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         path,
         title: seo ? offerSeoTitle(seo, locale) : tMain("seo.title"),
         description: seo ? offerSeoDescription(seo) : tMain("seo.description"),
-        // Краулерам нужен оригинал обложки
-        image: mediaUrl(description?.image),
+        // Карточка для соцсетей: обложка + название, регион, условия (/offers/:id/card)
+        image: description?.title ? `${siteUrl()}${path}/card` : mediaUrl(description?.image),
         noindex: result.offer.status === "draft",
     });
 }

@@ -230,5 +230,23 @@
     "verifiedHost": {
         "hint": "Verified host: the host has a paid GoodSurfing membership.",
         "howTo": "How to get verified?"
+    },
+    "badge": {
+        "title": "Website badge",
+        "intro": "Put the “We are on GoodSurfing” badge on your website or social page — volunteers will see your rating and reviews and go to your opportunities. The badge updates itself as new reviews come in.",
+        "preview": "This is how the badge looks",
+        "code-title": "Code for your website",
+        "code-hint": "Paste the code into a page of your website (for example, the footer or a “Volunteers” section).",
+        "copy-code": "Copy code",
+        "copied": "Copied",
+        "download": "Download image",
+        "link-title": "Link to your page",
+        "link-hint": "Add it to your social page description, profile or a post — volunteers will see all your opportunities and reviews.",
+        "copy-link": "Copy link",
+        "share-text": "We welcome volunteers — all our opportunities and reviews on GoodSurfing",
+        "no-organization": "Fill in your organization description first.",
+        "image-title": "We are on GoodSurfing",
+        "image-rating": "rating {rating}",
+        "image-reviews": "reviews: {{count}}"
     }
 }
