@@ -16,11 +16,13 @@ const button = "inline-flex cursor-pointer items-center justify-center rounded-[
  * второй участник — кто его пригласил. Нет «на двоих» — ничего не рисуем.
  * Данные личные, поэтому запрашиваются в браузере (страница общая для всех).
  */
-export function DuoPanel({ inviteBase, labels, className = "" }: {
+export function DuoPanel({ inviteBase, labels, className = "", onRole }: {
     /** Начало пути приглашения с языком: /membership/duo/ или /en/membership/duo/ — сайт подставляется свой (стейдж или прод) */
     inviteBase: string;
     labels: DuoLabels;
     className?: string;
+    /** Роль в «на двоих», как только узнали: null — нет членства на двоих */
+    onRole?: (role: DuoState["role"]) => void;
 }) {
     const session = useSession();
     const [state, setState] = useState<DuoState | null>(null);
@@ -36,13 +38,16 @@ export function DuoPanel({ inviteBase, labels, className = "" }: {
             .then(({ data, error }) => {
                 if (cancelled) return;
                 if (error || !data) setFailed(true);
-                else setState(data as DuoState);
+                else {
+                    setState(data as DuoState);
+                    onRole?.((data as DuoState).role);
+                }
             })
             .catch(() => !cancelled && setFailed(true));
         return () => {
             cancelled = true;
         };
-    }, [session.status, session.token]);
+    }, [session.status, session.token, onRole]);
 
     if (session.status !== "user") return null;
     if (failed) return <p className={`text-[14px] text-[#86909a] ${className}`}>{labels["panel-error"]}</p>;
