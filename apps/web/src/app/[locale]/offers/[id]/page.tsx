@@ -22,6 +22,7 @@ import { SectionSubmenu } from "@/components/ui/SectionSubmenu";
 import { failOnApiError } from "@/lib/apiUnavailable";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getTranslator, type Translate } from "@/i18n/dictionary";
+import { offerSeoDescription, offerSeoTitle } from "@/lib/offerSeo";
 import { categoryName } from "@/lib/categories";
 import { mediaUrl } from "@/lib/media";
 import { getPrices, TARIFF } from "@/lib/membershipPrices";
@@ -51,17 +52,26 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale, id } = await params;
     if (!isLocale(locale)) return {};
-    const [result, tMain] = await Promise.all([getOffer(locale, id), getTranslator(locale, "main")]);
+    const [result, tMain, tOffer] = await Promise.all([getOffer(locale, id), getTranslator(locale, "main"), getTranslator(locale, "offer")]);
     const path = routes.offer(locale, id);
     if (result.kind !== "ok") {
         return pageMetadata({ locale, path, title: tMain("seo.title"), description: tMain("seo.description"), noindex: true });
     }
     const { description } = localizedDescription(result.offer);
+    const offer = result.offer;
+    // Название — как написал организатор; для поиска к нему добавляются «волонтёрство», регион и условия
+    const seo = description?.title ? {
+        title: description.title,
+        address: offer.where?.address,
+        category: description.categories?.[0]?.name,
+        highlights: offerHighlights({ condition: offer.condition, whatToDo: offer.whatToDo, when: offer.when }, tOffer),
+        shortDescription: description.shortDescription || description.description,
+    } : null;
     return pageMetadata({
         locale,
         path,
-        title: description?.title || tMain("seo.title"),
-        description: description?.shortDescription || description?.description || tMain("seo.description"),
+        title: seo ? offerSeoTitle(seo, locale) : tMain("seo.title"),
+        description: seo ? offerSeoDescription(seo) : tMain("seo.description"),
         // Краулерам нужен оригинал обложки
         image: mediaUrl(description?.image),
         noindex: result.offer.status === "draft",
