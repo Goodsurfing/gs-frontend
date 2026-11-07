@@ -1,6 +1,7 @@
 import { pageItems } from "@/lib/pagination";
 
-export const PAGE_ITEM = "mx-[3px] box-border inline-flex h-10 min-w-10 items-center justify-center rounded-[20px] px-2.5 font-[Roboto,Helvetica,Arial,sans-serif] text-[15px] leading-[1.43] tracking-[0.01071em] text-black/87";
+/** На узком телефоне кнопки компактнее — иначе стрелка «›» уезжает на вторую строку (07.11) */
+export const PAGE_ITEM = "mx-[3px] box-border inline-flex h-10 min-w-10 items-center justify-center rounded-[20px] px-2.5 down-xs:mx-px down-xs:h-9 down-xs:min-w-9 down-xs:px-1.5 font-[Roboto,Helvetica,Arial,sans-serif] text-[15px] leading-[1.43] tracking-[0.01071em] text-black/87";
 /** MUI Pagination size="small" (колонки заявок организатора) */
 const ITEM_SMALL = "mx-px box-border inline-flex h-[26px] min-w-[26px] items-center justify-center rounded-[13px] px-1 font-[Roboto,Helvetica,Arial,sans-serif] text-[13px] leading-[1.43] tracking-[0.01071em] text-black/87";
 

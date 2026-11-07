@@ -43,7 +43,8 @@ export async function AuthShell({ locale, cancelHref, stayIfSignedIn = false, ch
                 </a>
             </div>
             {/* На телефоне поля и кнопки не прижимаются к краям экрана (04.11) */}
-            <main className="box-border flex w-full justify-center down-sm:px-5">{children}</main>
+            {/* Снизу — отступ: у этих страниц нет подвала, иначе последняя строка прилипает к краю экрана (07.11) */}
+            <main className="box-border flex w-full justify-center pb-20 down-sm:px-5 down-xs:pb-12">{children}</main>
         </SessionProvider>
     );
 }
