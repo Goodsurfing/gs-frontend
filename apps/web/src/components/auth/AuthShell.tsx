@@ -10,10 +10,9 @@ import { RedirectIfSignedIn } from "./RedirectIfSignedIn";
 import { TestRibbon } from "@/components/layout/SocialRibbon";
 
 /**
- * Каркас страниц входа и регистрации (SignLayout старого фронта): узкая
- * шапка с логотипом и языком (уже 480 px её нет), справа «Отменить» —
- * рамкой, на телефоне крестиком. Вошедшего уводит на главную, если не
- * сказано иначе (подтверждение почты, отписка).
+ * Каркас страниц входа и регистрации: узкая шапка с логотипом, языком и
+ * ссылкой «← На главную» / «← Назад» (cancelHref). Вошедшего уводит на
+ * главную, если не сказано иначе (подтверждение почты, отписка).
  */
 export async function AuthShell({ locale, cancelHref, stayIfSignedIn = false, children }: {
     locale: Locale;
@@ -22,29 +21,27 @@ export async function AuthShell({ locale, cancelHref, stayIfSignedIn = false, ch
     children: ReactNode;
 }) {
     const t = await getTranslator(locale);
+    const toMain = cancelHref === routes.main(locale) || cancelHref === "/";
     return (
         <SessionProvider>
             {!stayIfSignedIn && <RedirectIfSignedIn href={routes.main(locale)} prefix={localePrefix(locale)} />}
             <TestRibbon />
-            <header className="box-border flex w-full items-center border-b border-accent-bg bg-white px-[50px] py-5 down-xs:hidden">
-                <a href={routes.main(locale)} className="mr-[25px]">
+            {/* Шапка: логотип и язык слева, «← На главную» (или «← Назад» — ко входу, к профилю) справа.
+                Раньше «Отменить» висела отдельной кнопкой под шапкой и давала много пустоты сверху (07.11) */}
+            <header className="box-border flex w-full items-center gap-[25px] border-b border-accent-bg bg-white px-[50px] py-5 down-sm:px-5 down-sm:py-3">
+                <a href={routes.main(locale)} className="shrink-0">
                     {/* eslint-disable-next-line @next/next/no-img-element -- логотип */}
-                    <img src="/web/icons/header/logo.svg" alt="Logotype" />
+                    <img src="/web/icons/header/logo.svg" alt="Logotype" className="down-xs:h-9" />
                 </a>
                 <LanguageSwitcher locale={locale} label={t("Язык")} />
+                <a href={cancelHref} className="ml-auto inline-flex items-center gap-1.5 text-[15px] whitespace-nowrap text-caption no-underline transition-colors hover:text-primary">
+                    <span aria-hidden>←</span>
+                    {toMain ? t("На главную") : t("login.Назад")}
+                </a>
             </header>
-            <div className="mb-[50px] box-border flex w-full justify-end p-5 down-xs:mb-2.5 down-xs:px-5 down-xs:py-[30px]">
-                <a href={cancelHref} className="inline-block rounded-[10px] border border-caption px-[50px] py-3.5 text-center text-[1rem] leading-[1.375rem] text-caption transition-all duration-300 hover:border-primary down-xs:hidden">
-                    {t("login.Отменить")}
-                </a>
-                <a href={cancelHref} className="hidden down-xs:block">
-                    {/* eslint-disable-next-line @next/next/no-img-element -- иконка */}
-                    <img src="/web/icons/auth/mobile-cancel.svg" alt={t("login.Отменить")} />
-                </a>
-            </div>
             {/* На телефоне поля и кнопки не прижимаются к краям экрана (04.11) */}
             {/* Снизу — отступ: у этих страниц нет подвала, иначе последняя строка прилипает к краю экрана (07.11) */}
-            <main className="box-border flex w-full justify-center pb-20 down-sm:px-5 down-xs:pb-12">{children}</main>
+            <main className="box-border flex w-full justify-center pt-14 pb-20 down-sm:px-5 down-xs:pt-8 down-xs:pb-12">{children}</main>
         </SessionProvider>
     );
 }
