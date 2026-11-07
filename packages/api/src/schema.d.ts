@@ -3073,6 +3073,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/bot/whois": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Бот: кто пишет в поддержку — подключённый к чату аккаунт (для команды поддержки) */
+        get: operations["get_app_api_v1_messengerbot_whois"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/cannot_apply_to_own_organization_vacancy_exceptions": {
         parameters: {
             query?: never;
@@ -27991,6 +28008,37 @@ export interface operations {
             };
         };
     };
+    get_app_api_v1_messengerbot_whois: {
+        parameters: {
+            query: {
+                channel?: string;
+                chatId: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description user — null, если чат не подключён */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        user: {
+                            email: string;
+                            locale: string;
+                            name: string;
+                            /** @enum {string} */
+                            role: "host" | "volunteer";
+                        } | null;
+                    };
+                };
+            };
+        };
+    };
     api_cannot_apply_to_own_organization_vacancy_exceptions_get: {
         parameters: {
             query?: never;
@@ -30274,7 +30322,7 @@ export interface operations {
                     channel: "email" | "telegram" | "max" | "push";
                     enabled: boolean;
                     /** @enum {string} */
-                    type: "new_application" | "new_message" | "unanswered_reminder" | "news";
+                    type: "new_application" | "new_message" | "unanswered_reminder" | "news" | "host_reply" | "application_status";
                     /** @description Текст переключателя — для журнала согласия на рассылку (news/email) */
                     wording?: string | null;
                 };

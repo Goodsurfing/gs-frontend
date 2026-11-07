@@ -13,6 +13,7 @@ export function profileMenu(locale: Locale, t: Translate): CabinetMenuItem[] {
         { text: t("main.sidebar.Пароль"), href: `${p}/profile/reset-password`, icon: "lock-icon" },
         { text: t("main.sidebar.Приватность"), href: `${p}/profile/privacy`, icon: "shield-icon" },
         { text: t("main.sidebar.Подписки на поиск"), href: `${p}/profile/subscriptions`, icon: "mail" },
+        { text: t("main.sidebar.Уведомления"), href: `${p}/profile/notifications`, icon: "bell" },
         { text: t("main.sidebar.Пригласить друга"), href: `${p}/profile/invite`, icon: "support" },
     ];
 }

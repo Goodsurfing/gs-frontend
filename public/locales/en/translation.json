@@ -506,22 +506,27 @@
             "new_application": "New application",
             "new_message": "New message from a volunteer",
             "unanswered_reminder": "Reminder about unanswered applications",
-            "news": "Goodsurfing news and selections"
+            "news": "Goodsurfing news and selections",
+            "host_reply": "Host's reply",
+            "application_status": "Application decision"
         },
         "hints": {
             "new_application": "Right away: who, which opportunity, dates and the start of the message",
             "new_message": "After 10 minutes if you haven't read it; at most once an hour per conversation",
             "unanswered_reminder": "3 and 7 days after the application",
-            "news": "Emails about project news"
+            "news": "Emails about project news",
+            "host_reply": "After 10 minutes if you haven't read it; at most once an hour per conversation",
+            "application_status": "Right away when your application is accepted or declined"
         },
         "needConnect": "Connect the messenger first",
-        "service": "Service emails — email confirmation, password reset, payment — always come.",
+        "service": "Service messages — email confirmation, password reset, payment, membership ending, opportunity relevance — always come, and to Telegram if it's connected.",
         "quiet": "At night, 23:00–08:00 Moscow time, messenger notifications come silently.",
         "saveError": "Couldn't save, please try again",
         "loadError": "Couldn't load the settings.",
         "retry": "Retry",
         "banner": "Get applications in Telegram — reply faster",
         "bannerButton": "Connect",
-        "bannerClose": "Hide"
+        "bannerClose": "Hide",
+        "introVolunteer": "Choose what to be notified about and where. In Telegram you'll see the host's reply right away and can agree on the trip quickly."
     }
 }

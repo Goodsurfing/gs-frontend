@@ -102,6 +102,7 @@ export const routes = {
     messengerChat: (l: Locale, id: string | number) => path(l, `/messenger/${id}`),
     profileInfo: (l: Locale) => path(l, "/profile/info"),
     profileInvite: (l: Locale) => path(l, "/profile/invite"),
+    profileNotifications: (l: Locale) => path(l, "/profile/notifications"),
     profileRole: (l: Locale) => path(l, "/profile/role"),
     profilePreferences: (l: Locale) => path(l, "/profile/preferences"),
     profileResetPassword: (l: Locale) => path(l, "/profile/reset-password"),

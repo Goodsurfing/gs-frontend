@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useSession } from "@/components/session/SessionProvider";
 import { Loading } from "@/components/ui/Loading";
 import { browserApi } from "@/lib/browserApi";
-import { CHANNELS, type Channel, type NotificationState, TYPES, type NotificationType, toggleCell } from "@/lib/notificationSettings";
+import { CHANNELS, type Channel, type NotificationState, type NotificationType, toggleCell } from "@/lib/notificationSettings";
 
 export interface NotificationSettingsLabels {
     intro: string;
@@ -32,11 +32,12 @@ export interface NotificationSettingsLabels {
 }
 
 /**
- * Кабинет организатора → «Уведомления» (документ «Уведомления организаторам в Telegram и MAX»):
+ * «Уведомления» — у организатора (кабинет) и у волонтёра (профиль), каждому свои строки (types).
+ * Документ «Уведомления организаторам в Telegram и MAX»:
  * подключение Telegram (MAX — «скоро») и таблица «что и куда присылать». Галочки сохраняются
  * сразу; канал мессенджера включается только после подключения.
  */
-export function NotificationSettings({ labels }: { labels: NotificationSettingsLabels }) {
+export function NotificationSettings({ types, labels }: { types: readonly NotificationType[]; labels: NotificationSettingsLabels }) {
     const session = useSession();
     const [state, setState] = useState<NotificationState | null>(null);
     const [failed, setFailed] = useState(false);
@@ -168,7 +169,7 @@ export function NotificationSettings({ labels }: { labels: NotificationSettingsL
                             </tr>
                         </thead>
                         <tbody>
-                            {TYPES.map((type) => (
+                            {types.map((type) => (
                                 <tr key={type} className="border-b border-accent-bg">
                                     <th scope="row" className="py-3 pr-4 text-left font-normal">
                                         {labels.types[type]}

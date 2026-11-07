@@ -507,22 +507,27 @@
             "new_application": "Nueva solicitud",
             "new_message": "Nuevo mensaje de un voluntario",
             "unanswered_reminder": "Recordatorio de solicitudes sin respuesta",
-            "news": "Noticias y selecciones de Goodsurfing"
+            "news": "Noticias y selecciones de Goodsurfing",
+            "host_reply": "Respuesta del anfitrión",
+            "application_status": "Decisión sobre la solicitud"
         },
         "hints": {
             "new_application": "Al momento: quién, a qué oportunidad, fechas y el inicio del mensaje",
             "new_message": "A los 10 minutos si no lo has leído; como mucho una vez por hora por conversación",
             "unanswered_reminder": "A los 3 y 7 días de la solicitud",
-            "news": "Correos con noticias del proyecto"
+            "news": "Correos con noticias del proyecto",
+            "host_reply": "A los 10 minutos si no lo has leído; como mucho una vez por hora por conversación",
+            "application_status": "Al momento, cuando aceptan o rechazan tu solicitud"
         },
         "needConnect": "Primero conecta el mensajero",
-        "service": "Los correos de servicio — confirmación de correo, cambio de contraseña, pago — llegan siempre.",
+        "service": "Los mensajes de servicio — confirmación de correo, cambio de contraseña, pago, fin de la membresía, vigencia de oportunidades — llegan siempre, y a Telegram si está conectado.",
         "quiet": "De noche, de 23:00 a 08:00 hora de Moscú, las notificaciones llegan sin sonido.",
         "saveError": "No se pudo guardar, inténtalo de nuevo",
         "loadError": "No se pudieron cargar los ajustes.",
         "retry": "Reintentar",
         "banner": "Recibe solicitudes en Telegram: responderás antes",
         "bannerButton": "Conectar",
-        "bannerClose": "Ocultar"
+        "bannerClose": "Ocultar",
+        "introVolunteer": "Elige de qué y dónde quieres que te avisemos. En Telegram verás al momento la respuesta del anfitrión y podrás acordar el viaje rápido."
     }
 }
