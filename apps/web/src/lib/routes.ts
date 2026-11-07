@@ -93,6 +93,7 @@ export const routes = {
     /** Сюда возвращает ЮKassa после оплаты членства (бэкенд: YookassaProvider, ?payment_id=) */
     paymentSuccess: (l: Locale) => path(l, "/payment/success"),
     paymentFail: (l: Locale) => path(l, "/payment/fail"),
+    paymentFeedback: (l: Locale) => path(l, "/payment/feedback"),
     myOffers: (l: Locale) => path(l, "/host/my-offers"),
     hostRelevance: (l: Locale) => path(l, "/host/relevance"),
     emailChangeConfirm: (l: Locale) => path(l, "/email-change/confirm"),

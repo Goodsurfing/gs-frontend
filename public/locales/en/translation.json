@@ -529,5 +529,25 @@
         "bannerButton": "Connect",
         "bannerClose": "Hide",
         "introVolunteer": "Choose what to be notified about and where. In Telegram you'll see the host's reply right away and can agree on the trip quickly."
+    },
+    "checkoutFeedback": {
+        "title": "What stopped you from paying?",
+        "hint": "It takes a couple of seconds and helps us improve. No money was charged.",
+        "intro": "Your membership payment didn't go through — no money was charged.",
+        "hide": "Hide",
+        "reasons": {
+            "expensive": "Too expensive",
+            "later": "I'll think about it and pay later",
+            "payment_method": "No convenient payment method",
+            "unclear": "I didn't understand what I get",
+            "technical": "Didn't work — an error or the card was declined",
+            "other": "Something else"
+        },
+        "comment": "Comment (optional)",
+        "submit": "Send",
+        "thanks": "Thank you! We got your answer. If something didn't work, write to support@goodsurfing.org — we'll help.",
+        "error": "Couldn't send, please try again",
+        "invalid": "The link is incomplete — open the full link from the email.",
+        "back": "← Back to membership"
     }
 }

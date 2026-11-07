@@ -3190,6 +3190,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/checkout-feedback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ответ «что помешало оплатить» (вошедший пользователь) */
+        post: operations["post_app_api_v1_checkoutfeedback_save"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/checkout-feedback/by-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ответ по ссылке из письма «Оплата не завершилась» (без входа) */
+        post: operations["post_app_api_v1_checkoutfeedback_bytoken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/checkout-feedback/pending": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Есть ли недавняя брошенная оплата, о которой стоит спросить (страница членства) */
+        get: operations["get_app_api_v1_checkoutfeedback_pending"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/course": {
         parameters: {
             query?: never;
@@ -28226,6 +28277,96 @@ export interface operations {
                     "application/ld+json": components["schemas"]["ConstraintViolation.jsonld"];
                     "application/problem+json": components["schemas"]["ConstraintViolation"];
                     "application/vnd.api+json": components["schemas"]["ConstraintViolation.jsonapi"];
+                };
+            };
+        };
+    };
+    post_app_api_v1_checkoutfeedback_save: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    comment?: string | null;
+                    paymentId?: string | null;
+                    /** @enum {string} */
+                    reason: "expensive" | "later" | "payment_method" | "unclear" | "technical" | "other";
+                };
+            };
+        };
+        responses: {
+            /** @description Сохранено */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Неверная причина или платёж */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_checkoutfeedback_bytoken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    comment?: string | null;
+                    /** @enum {string} */
+                    reason: "expensive" | "later" | "payment_method" | "unclear" | "technical" | "other";
+                    token: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Сохранено */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Ссылка неверная или устарела */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_app_api_v1_checkoutfeedback_pending: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description paymentId — null, если спрашивать не о чем */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        paymentId: string | null;
+                    };
                 };
             };
         };

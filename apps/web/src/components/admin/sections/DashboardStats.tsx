@@ -17,6 +17,58 @@ interface Dashboard {
     weekly: { week: string; users: number; applications: number; payments: number }[];
     /** Помощники (GS-256); нет — бэкенд старее */
     assistant?: AssistantUsage;
+    /** Почему не оплатили членство (GS-260); нет — бэкенд старее */
+    checkoutFeedback?: CheckoutFeedbackSummary;
+}
+
+interface CheckoutFeedbackSummary {
+    days: number;
+    answers: number;
+    abandonedPeople: number;
+    byReason: Record<string, number>;
+    comments: { date: string; reason: string; comment: string; source: string; amount: string | null }[];
+}
+
+const CHECKOUT_REASON_TEXT: Record<string, string> = {
+    expensive: "Дорого",
+    later: "Подумаю, оплачу позже",
+    payment_method: "Нет удобного способа оплаты",
+    unclear: "Не понял, что получит",
+    technical: "Ошибка или карта не прошла",
+    other: "Другое",
+};
+
+/** Почему не оплатили (GS-260): ответы людей, бросивших оплату на странице ЮKassa */
+function CheckoutFeedback({ data }: { data: CheckoutFeedbackSummary }) {
+    const rows = Object.entries(data.byReason).sort((a, b) => b[1] - a[1]);
+    return (
+        <section className="mt-6" aria-labelledby="checkout-feedback">
+            <h2 id="checkout-feedback" className="mb-1 text-[18px] font-semibold">Почему не оплатили членство · {data.days} дней</h2>
+            <p className="mb-3 text-[13px] text-muted">
+                Бросили оплату и так и не оплатили: {num(data.abandonedPeople)} чел. Ответили: {num(data.answers)}. Спрашиваем на странице после возврата с оплаты и в письме «Оплата не завершилась».
+            </p>
+            <div className="grid grid-cols-2 gap-6 down-lg:grid-cols-1">
+                <table className="w-full rounded-[8px] bg-surface text-left">
+                    <thead><tr className="text-[12px] text-muted"><th className="px-3 py-2">Причина</th><th>Ответов</th></tr></thead>
+                    <tbody>
+                        {rows.map(([reason, n]) => (
+                            <tr key={reason} className="border-t border-accent-bg/60"><td className="px-3 py-1.5">{CHECKOUT_REASON_TEXT[reason] ?? reason}</td><td>{num(n)}</td></tr>
+                        ))}
+                    </tbody>
+                </table>
+                <div className="rounded-[8px] bg-surface p-3">
+                    <p className="mb-2 text-[12px] text-muted">Последние комментарии</p>
+                    {data.comments.length === 0 ? <p className="text-[14px] text-muted">Пока нет</p> : (
+                        <ul className="flex flex-col gap-2 text-[14px]">
+                            {data.comments.map((c, i) => (
+                                <li key={i}><span className="text-muted">{c.date} · {CHECKOUT_REASON_TEXT[c.reason] ?? c.reason}{c.amount ? ` · ${Math.round(Number(c.amount))} ₽` : ""}:</span> {c.comment}</li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            </div>
+        </section>
+    );
 }
 
 interface AssistantPeriod { requests: number; failed: number; promptTokens: number; completionTokens: number; cost: number }
@@ -155,6 +207,7 @@ export function DashboardStats() {
                 <WeeklyBars title="Отклики" data={data.weekly.map((w) => ({ week: w.week, value: w.applications }))} />
                 <WeeklyBars title="Успешные оплаты" data={data.weekly.map((w) => ({ week: w.week, value: w.payments }))} />
             </div>
+            {data.checkoutFeedback && <CheckoutFeedback data={data.checkoutFeedback} />}
             {data.assistant && <AssistantCosts usage={data.assistant} />}
             <details className="mt-2 rounded-[8px] bg-surface p-3">
                 <summary className="cursor-pointer text-primary">Таблица по неделям</summary>
