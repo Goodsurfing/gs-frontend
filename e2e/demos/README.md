@@ -34,3 +34,7 @@ e2e/demos/make-video.sh membership-duo
 3. видео и скриншоты;
 4. как попробовать на стейдже;
 5. что сделать при релизе.
+
+## Демо «Поделиться» (`share.demo.ts`)
+
+Нужна открытая вакансия «Волонтёрство с видом на Байкал» у host@test.com — ночной restore стейджа её удаляет. Завести перед записью через API от имени host@test.com: `POST /api/v1/vacancies` → `PATCH /api/v1/vacancies/{id}` (where, when, howNeeds из вакансии 5516) → обложка `POST /api/v1/media_objects` (своя копия: у каждой вакансии своя картинка) → `PATCH /api/v1/vacancy/description/{id}`, `/condition/{id}`, `/what-to-do/{id}` → `PATCH /api/v1/vacancy/{id}/toggle-status` `{"status":"active"}`. Волонтёра и принятую заявку сценарий заводит сам.
