@@ -1,3 +1,7 @@
+"use client";
+
+import { useCallback, useState } from "react";
+
 import { DuoPanel } from "./DuoPanel";
 import { type DuoLabels, fill } from "./duo";
 
@@ -6,7 +10,8 @@ const greenButton = "inline-flex items-center justify-center rounded-[10px] bord
 /**
  * «Едете вдвоём?» под тарифами волонтёра — только если тариф «на двоих»
  * включён в админке (цена — из API, меняется там же). Вошедшему с «на двоих»
- * здесь же — ссылка-приглашение или кто присоединился.
+ * здесь же — ссылка-приглашение или кто присоединился. Тем, у кого «на двоих»
+ * уже есть (оплатил или присоединился), предложение купить ещё раз не показываем.
  */
 export function DuoOffer({ price, payHref, inviteBase, labels }: {
     price: number | null;
@@ -14,10 +19,13 @@ export function DuoOffer({ price, payHref, inviteBase, labels }: {
     inviteBase: string;
     labels: DuoLabels;
 }) {
+    const [hasDuo, setHasDuo] = useState(false);
+    // Стабильная ссылка: DuoPanel перезапрашивает данные при смене onRole
+    const onRole = useCallback((role: string | null) => setHasDuo(role !== null), []);
     return (
         <section className="bg-white">
             <div className="mx-auto flex max-w-[1150px] flex-col gap-6 px-5 py-10">
-                {price !== null && (
+                {price !== null && !hasDuo && (
                     <div className="flex items-center gap-8 rounded-xl bg-[#f5f7f5] p-7 down-md:flex-col down-md:items-stretch down-md:gap-5">
                         <div className="min-w-0 flex-1">
                             <h2 className="mb-2 text-[1.5rem] leading-[1.3] font-bold text-[#1a1a1a] down-md:text-[1.25rem]">{labels["offer-title"]}</h2>
@@ -32,7 +40,7 @@ export function DuoOffer({ price, payHref, inviteBase, labels }: {
                         </div>
                     </div>
                 )}
-                <DuoPanel inviteBase={inviteBase} labels={labels} />
+                <DuoPanel inviteBase={inviteBase} labels={labels} onRole={onRole} />
             </div>
         </section>
     );
