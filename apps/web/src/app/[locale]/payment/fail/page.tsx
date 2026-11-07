@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { PublicShell } from "@/components/layout/PublicShell";
+import { PaymentFailFeedback } from "@/components/checkout-feedback/PaymentFailFeedback";
+import { checkoutFeedbackLabels } from "@/lib/checkoutFeedback";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { routes } from "@/lib/routes";
@@ -28,7 +31,7 @@ export default async function PaymentFailPage({ params, searchParams }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
     const { reason } = await searchParams;
-    const t = await getTranslator(locale, "donation");
+    const [t, tCommon] = await Promise.all([getTranslator(locale, "donation"), getTranslator(locale)]);
     const message = reason === "not_found" ? t("Платеж не найден") : reason === "cancelled" ? t("Оплата была отменена") : t("Произошла ошибка при обработке платежа");
     return (
         <PublicShell locale={locale} topGap>
@@ -43,6 +46,10 @@ export default async function PaymentFailPage({ params, searchParams }: Props) {
                             {t("Вернуться на страницу членства")}
                         </a>
                     </div>
+                    {/* Что помешало оплатить (GS-260) — только вошедшему и только по своему платежу */}
+                    <Suspense>
+                        <PaymentFailFeedback labels={checkoutFeedbackLabels(tCommon)} />
+                    </Suspense>
                 </div>
             </div>
         </PublicShell>

@@ -40,7 +40,7 @@ export default async function PaymentSuccessPage({ params, searchParams }: Props
             <PaymentSuccessView
                 paymentId={typeof paymentId === "string" ? paymentId : null}
                 signInHref={routes.signIn(locale)}
-                failHref={`${routes.paymentFail(locale)}?reason=cancelled`}
+                failHref={`${routes.paymentFail(locale)}?reason=cancelled${typeof paymentId === "string" ? `&payment_id=${encodeURIComponent(paymentId)}` : ""}`}
                 membershipHref={routes.membership(locale)}
                 duo={{ inviteBase: routes.membershipDuo(locale, ""), labels: duoLabels(tMembership) }}
                 labels={{

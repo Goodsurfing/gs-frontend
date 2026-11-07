@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { PublicShell } from "@/components/layout/PublicShell";
+import { CheckoutFeedbackPrompt } from "@/components/checkout-feedback/CheckoutFeedbackPrompt";
+import { checkoutFeedbackLabels } from "@/lib/checkoutFeedback";
 import { duoLabels } from "@/components/membership/duo";
 import { DuoOffer } from "@/components/membership/DuoOffer";
 import { FaqAccordion } from "@/components/membership/FaqAccordion";
@@ -90,6 +92,8 @@ export default async function MembershipPage({ params }: Props) {
     return (
         <PublicShell locale={locale} topGap>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph(structuredData)) }} />
+            {/* Вернулся «Назад» со страницы оплаты, не заплатив, — спросить, что помешало (GS-260) */}
+            <CheckoutFeedbackPrompt labels={checkoutFeedbackLabels(tCommon)} intro={tCommon("checkoutFeedback.intro")} hide={tCommon("checkoutFeedback.hide")} />
             <div className="mx-auto max-w-[1920px]">
                 {/* Шапка: заголовок на оранжевых плашках, две кнопки-якоря */}
                 <section className="box-border flex min-h-[480px] w-full items-center bg-[url(/web/images/membership/membership-header.webp)] bg-cover bg-center px-40 py-24 down-lg:px-8 down-lg:py-12 down-sm:min-h-0 down-sm:px-5 down-sm:py-10">

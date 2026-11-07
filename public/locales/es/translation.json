@@ -530,5 +530,25 @@
         "bannerButton": "Conectar",
         "bannerClose": "Ocultar",
         "introVolunteer": "Elige de qué y dónde quieres que te avisemos. En Telegram verás al momento la respuesta del anfitrión y podrás acordar el viaje rápido."
+    },
+    "checkoutFeedback": {
+        "title": "¿Qué te impidió pagar?",
+        "hint": "Te llevará un par de segundos y nos ayuda a mejorar. No se cobró nada.",
+        "intro": "El pago de la membresía no se completó: no se cobró nada.",
+        "hide": "Ocultar",
+        "reasons": {
+            "expensive": "Es caro",
+            "later": "Lo pensaré y pagaré más tarde",
+            "payment_method": "No hay un método de pago cómodo",
+            "unclear": "No entendí qué obtengo",
+            "technical": "No funcionó: un error o la tarjeta fue rechazada",
+            "other": "Otra cosa"
+        },
+        "comment": "Comentario (opcional)",
+        "submit": "Enviar",
+        "thanks": "¡Gracias! Recibimos tu respuesta. Si algo no funcionó, escribe a support@goodsurfing.org y te ayudaremos.",
+        "error": "No se pudo enviar, inténtalo de nuevo",
+        "invalid": "El enlace está incompleto: ábrelo completo desde el correo.",
+        "back": "← A la página de membresía"
     }
 }
