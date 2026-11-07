@@ -33,6 +33,14 @@ const duoTariff = async (admin: E2eSession): Promise<TariffRow> => {
     return row as TariffRow;
 };
 
+/** Скрыть тариф до записи — чтобы в видео было видно, как его включают */
+const setDuoActive = async (admin: E2eSession, active: boolean) => {
+    const api = await request.newContext({ baseURL: API_URL });
+    const res = await api.patch('/admin/v1/membership/tariffs/volunteer_duo', { data: { active }, headers: authHeaders(admin) });
+    expect(res.ok(), await res.text()).toBeTruthy();
+    await api.dispose();
+};
+
 /** Страница «Членство» кешируется на 5 минут — ждём, пока на ней появится блок «на двоих» */
 const waitForOfferOnSite = async () => {
     const deadline = Date.now() + 7 * 60_000;
@@ -53,6 +61,7 @@ test('Демо: членство на двоих', async ({ browser }) => {
     const boris = await createSession(`demo-duo-boris-${stamp}`, { volunteer: true });
     await setName(anna, 'Анна', 'Смирнова');
     await setName(boris, 'Борис', 'Петров');
+    await setDuoActive(admin, false);
 
     // Сцена 1. Админка: тариф включается и цена меняется здесь же
     {
@@ -170,7 +179,9 @@ test('Демо: членство на двоих', async ({ browser }) => {
         const { page, finish } = await startScene(browser, FEATURE, 5, { session: anna });
         await page.goto('/membership');
         await scrollTo(page, 'text=с вами — членство активно у обоих');
+        await expect(page.getByRole('link', { name: 'Оформить на двоих' })).toHaveCount(0);
         await say(page, 'Анна на странице «Членство» видит, что Борис присоединился. Ссылка больше не нужна.', 4500);
+        await say(page, 'Предложение «Оформить на двоих» у неё больше не показывается — членство на двоих уже есть.', 4000);
         await shot(page, FEATURE, '09-owner-joined');
         await titleCard(page, 'Членство на двоих', 'Включается в админке («Тарифы членства») после релиза. Цена — там же.', 4000);
         await finish();
