@@ -7,6 +7,7 @@ import { checkoutFeedbackLabels } from "@/lib/checkoutFeedback";
 import { duoLabels } from "@/components/membership/duo";
 import { DuoOffer } from "@/components/membership/DuoOffer";
 import { FaqAccordion } from "@/components/membership/FaqAccordion";
+import { MembershipHeroCta, MembershipStickyBar, ReadMore } from "@/components/membership/MembershipCta";
 import { MembershipReviews } from "@/components/membership/MembershipReviews";
 import { TariffCards } from "@/components/membership/TariffCards";
 import { isLocale } from "@/i18n/config";
@@ -87,6 +88,12 @@ export default async function MembershipPage({ params }: Props) {
         signUp: t(`${ns}.Зарегистрироваться`),
         get: t(`${ns}.Получить членство`),
     });
+    // Кнопки с ценой: волонтёру — его тариф, организатору — свой (выбирает браузер по профилю)
+    const ctaOption = (code: string) => {
+        const price = prices[code]!.toLocaleString("ru-RU");
+        return { href: pay(code), button: t("header.cta-pay", { price }), stickyTitle: t("sticky.title", { price }) };
+    };
+    const cta = { volunteer: ctaOption(TARIFF.volunteer), host: ctaOption(TARIFF.host) };
     const list = (prefix: string, count: number) => Array.from({ length: count }, (_, index) => t(`${prefix}-${index + 1}`));
 
     return (
@@ -105,8 +112,8 @@ export default async function MembershipPage({ params }: Props) {
                         </h1>
                         <p className="mb-3 text-[1.125rem] leading-[1.6] text-white/85 down-sm:text-[1rem]">{t("header.desc1")}</p>
                         <p className="mb-3 text-[1.125rem] leading-[1.6] text-white/85 down-sm:text-[1rem]">{t("header.desc2")}</p>
-                        <div className="mt-10 flex flex-wrap items-center gap-4 down-sm:flex-col down-sm:items-stretch">
-                            <a href="#tariffs" className={`${greenButton} down-sm:text-center`}>{t("header.cta-main")}</a>
+                        <div className="mt-10 flex flex-wrap items-start gap-4 down-sm:flex-col down-sm:items-stretch">
+                            <MembershipHeroCta volunteer={cta.volunteer} host={cta.host} fallback={t("header.cta-main")} note={t("header.cta-note")} />
                             <a href="#support" className="inline-flex items-center justify-center rounded-lg border border-white px-7 py-3 text-[1rem] font-medium text-white no-underline transition-all duration-300 hover:bg-white hover:text-primary down-sm:text-center">
                                 {t("header.cta-secondary")}
                             </a>
@@ -119,13 +126,16 @@ export default async function MembershipPage({ params }: Props) {
                     <div className="mx-auto flex max-w-[1150px] items-center gap-12 px-5 py-[60px] down-md:flex-col-reverse down-md:gap-8 down-md:py-10">
                         <div className="min-w-0 flex-1">
                             <h2 className="mb-6 text-[1.75rem] leading-[1.3] font-bold text-[#1a1a1a] down-md:text-[1.375rem]">{t("why-membership.title")}</h2>
-                            <p className="mb-4 text-[1.0625rem] leading-[1.7] text-[#424242]">{t("why-membership.p1")}</p>
-                            <p className="mb-4 text-[1.0625rem] leading-[1.7] text-[#424242]">{t("why-membership.p2")}</p>
+                            {/* На телефоне — 3 строки и «Читать дальше»: длинный текст отодвигал тарифы на третий экран */}
+                            <ReadMore more={t("why-membership.more")}>
+                                <p className="mb-4 text-[1.0625rem] leading-[1.7] text-[#424242]">{t("why-membership.p1")}</p>
+                                <p className="mb-4 text-[1.0625rem] leading-[1.7] text-[#424242]">{t("why-membership.p2")}</p>
+                            </ReadMore>
                             <p className="mt-2 border-l-[3px] border-cta pl-4 text-[1.0625rem] leading-[1.7] font-semibold text-cta">{t("why-membership.p3")}</p>
                         </div>
-                        <div className="flex min-h-[280px] min-w-0 flex-1 items-center justify-center overflow-hidden rounded-xl down-md:min-h-[200px] down-md:w-full">
+                        <div className="flex min-h-[280px] min-w-0 flex-1 items-center justify-center overflow-hidden rounded-xl down-md:hidden">
                             {/* eslint-disable-next-line @next/next/no-img-element -- иллюстрация */}
-                            <img src="/web/images/membership/why.webp" alt={t("Волонтёры Гудсёрфинга")} className="block h-full w-full rounded-xl object-cover" />
+                            <img src="/web/images/membership/why.webp" alt={t("Волонтёры Гудсёрфинга")} loading="lazy" className="block h-full w-full rounded-xl object-cover" />
                         </div>
                     </div>
                 </section>
@@ -311,6 +321,9 @@ export default async function MembershipPage({ params }: Props) {
                     <FaqAccordion items={faq(t)} />
                 </div>
             </div>
+            <MembershipStickyBar volunteer={cta.volunteer} host={cta.host} button={t("sticky.button")} afterId="tariffs" />
+            {/* Отступ под полосу внизу экрана — чтобы она не закрывала конец страницы */}
+            <div aria-hidden className="hidden h-20 down-md:block" />
         </PublicShell>
     );
 }

@@ -34,6 +34,7 @@ function CardHeader({ title, price, unit }: { title: string; price: string; unit
  * Гостю — «Зарегистрироваться» в бесплатной карточке; организатору у
  * волонтёрского тарифа — пояснение, что для хостовых возможностей нужен
  * другой (gs-backend #421). Страница общая, поэтому это — в браузере.
+ * На телефоне платная карточка — первой: раньше цену видели только под «0 ₽».
  */
 export function TariffCards({ id, title, free, paid, price, payHref, signUpHref, hostNote, background, labels }: {
     id: string;
@@ -67,7 +68,7 @@ export function TariffCards({ id, title, free, paid, price, payHref, signUpHref,
                             <a href={signUpHref} className={`${smallButton} mt-2 border-primary bg-primary hover:bg-white hover:text-primary`}>{labels.signUp}</a>
                         )}
                     </div>
-                    <div className={`flex flex-1 flex-col gap-5 rounded-xl border-2 border-[#4CAF50] bg-white p-7 ${background ? "" : "shadow-[0_2px_12px_rgba(0,0,0,0.08)]"}`}>
+                    <div className={`flex flex-1 flex-col gap-5 rounded-xl border-2 border-[#4CAF50] bg-white p-7 down-md:order-first ${background ? "" : "shadow-[0_2px_12px_rgba(0,0,0,0.08)]"}`}>
                         <CardHeader title={labels.paid} price={price.toLocaleString("ru-RU")} unit={labels.unit} />
                         <Features items={paid} />
                         {hostNote && isHost && (

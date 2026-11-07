@@ -28,6 +28,23 @@ test.describe('Новый фронт: членство', () => {
             await question.click();
             await expect(question).toHaveAttribute('aria-expanded', 'true');
         });
+
+        test('телефон: кнопка с ценой в шапке ведёт к оплате, платная карточка первой, полоса после тарифов', async ({ page }) => {
+            await page.setViewportSize({ width: 390, height: 844 });
+            await page.goto('/membership');
+            await expect(page.getByRole('link', { name: /^Оформить за [\d\s]+ ₽$/ })).toHaveAttribute('href', '/payment?tariff=volunteer_990');
+            await expect(page.getByText('Членство включается сразу после оплаты', { exact: false })).toBeVisible();
+
+            const tariffs = page.locator('#tariffs');
+            const paidY = (await tariffs.getByRole('heading', { name: 'Членство', exact: true }).boundingBox())?.y ?? 0;
+            const freeY = (await tariffs.getByRole('heading', { name: 'Без членства' }).boundingBox())?.y ?? 0;
+            expect(paidY).toBeLessThan(freeY);
+
+            const bar = page.getByRole('link', { name: 'Оформить', exact: true });
+            await page.evaluate(() => window.scrollTo(0, (document.getElementById('tariffs')?.getBoundingClientRect().bottom ?? 0) + window.scrollY + 50));
+            await expect(bar).toBeInViewport();
+            await expect(bar).toHaveAttribute('href', '/payment?tariff=volunteer_990');
+        });
     });
 
     test('волонтёр: без кнопок регистрации', async ({ page }) => {

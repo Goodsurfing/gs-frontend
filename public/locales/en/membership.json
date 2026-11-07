@@ -16,7 +16,9 @@
         "desc2": "Membership is a way not just to use the project, but to help it live and grow.",
         "cta-main": "Get membership",
         "cta-secondary": "Support without membership",
-        "title": "Become part of the GoodSurfing community, travel with meaning, and support the project that makes it possible."
+        "title": "Become part of the GoodSurfing community, travel with meaning, and support the project that makes it possible.",
+        "cta-pay": "Join for {{price}} ₽",
+        "cta-note": "Unlimited applications for a year. Membership starts right after payment."
     },
     "how-it-works": {
         "Как это работает": "How It Works",
@@ -158,7 +160,8 @@
         "title": "Why membership matters",
         "p1": "GoodSurfing was born from the idea that travel can be not only exciting but also useful. Inspired by the idea of mutual aid, we created a platform that makes outbound volunteering accessible, clear, and safe. Today we're an international community bringing together thousands of people ready to help others and make themselves and the world around them better.",
         "p2": "For GoodSurfing to remain a living project, it needs support — and that support comes from the community members themselves.",
-        "p3": "Your membership is a contribution toward making sure meaningful travel and volunteer projects continue to exist."
+        "p3": "Your membership is a contribution toward making sure meaningful travel and volunteer projects continue to exist.",
+        "more": "Read more"
     },
     "donation": {
         "title": "Support GoodSurfing",
@@ -221,5 +224,9 @@
         "invite-lifetime": "You already have a lifetime membership.",
         "invite-error": "Something went wrong. Please try again",
         "seo-title": "Invitation to GoodSurfing"
+    },
+    "sticky": {
+        "title": "Membership for a year — {{price}} ₽",
+        "button": "Join"
     }
 }
