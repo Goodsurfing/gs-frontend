@@ -179,7 +179,8 @@
             "Мои статьи": "My articles",
             "Создать организацию": "Create organization",
             "Подписки на поиск": "Search subscriptions",
-            "Пригласить друга": "Invite a friend"
+            "Пригласить друга": "Invite a friend",
+            "Уведомления": "Notifications"
         }
     },
     "stats-points": {
@@ -480,5 +481,47 @@
         "badgeDone": "The “Recommendation Wizard” badge will appear in your profile within a day.",
         "error": "Couldn’t load your link.",
         "retry": "Retry"
+    },
+    "notifications": {
+        "title": "Notifications",
+        "intro": "Choose what to be notified about and where. New applications and volunteers' messages are best received in a messenger — you reply faster, and volunteers choose hosts who reply quickly.",
+        "connectTitle": "Messengers",
+        "telegram": "Telegram",
+        "max": "MAX",
+        "connect": "Connect Telegram",
+        "connecting": "Waiting for “Start” in Telegram…",
+        "connectHint": "The Goodsurfing bot will open — press “Start” there. This page updates by itself.",
+        "connected": "Connected",
+        "disconnect": "Disconnect",
+        "soon": "Coming soon",
+        "unavailable": "Not available yet",
+        "tableTitle": "What to send and where",
+        "channels": {
+            "email": "Email",
+            "telegram": "Telegram",
+            "max": "MAX",
+            "push": "App push"
+        },
+        "types": {
+            "new_application": "New application",
+            "new_message": "New message from a volunteer",
+            "unanswered_reminder": "Reminder about unanswered applications",
+            "news": "Goodsurfing news and selections"
+        },
+        "hints": {
+            "new_application": "Right away: who, which opportunity, dates and the start of the message",
+            "new_message": "After 10 minutes if you haven't read it; at most once an hour per conversation",
+            "unanswered_reminder": "3 and 7 days after the application",
+            "news": "Emails about project news"
+        },
+        "needConnect": "Connect the messenger first",
+        "service": "Service emails — email confirmation, password reset, payment — always come.",
+        "quiet": "At night, 23:00–08:00 Moscow time, messenger notifications come silently.",
+        "saveError": "Couldn't save, please try again",
+        "loadError": "Couldn't load the settings.",
+        "retry": "Retry",
+        "banner": "Get applications in Telegram — reply faster",
+        "bannerButton": "Connect",
+        "bannerClose": "Hide"
     }
 }

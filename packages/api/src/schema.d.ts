@@ -3005,6 +3005,74 @@ export interface paths {
         patch: operations["patch_app_api_v1_blog_like"];
         trace?: never;
     };
+    "/api/v1/bot/link": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Бот: подключить чат по коду из ссылки /start n_… */
+        post: operations["post_app_api_v1_messengerbot_link"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/bot/outbox": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Бот: уведомления, готовые к отправке */
+        get: operations["get_app_api_v1_messengerbot_outbox"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/bot/outbox/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Бот: результат отправки */
+        post: operations["post_app_api_v1_messengerbot_result"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/bot/unlink": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Бот: отключить чат (/stop) */
+        post: operations["post_app_api_v1_messengerbot_unlink"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/cannot_apply_to_own_organization_vacancy_exceptions": {
         parameters: {
             query?: never;
@@ -4228,6 +4296,58 @@ export interface paths {
          * @description Проставить реакцию на новость (лайк)
          */
         patch: operations["patch_app_api_v1_news_like"];
+        trace?: never;
+    };
+    "/api/v1/notification-settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Настройки уведомлений: таблица «что и куда» и подключённые мессенджеры */
+        get: operations["get_app_api_v1_notificationsettings_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Включить или выключить уведомление в канале */
+        patch: operations["patch_app_api_v1_notificationsettings_patch"];
+        trace?: never;
+    };
+    "/api/v1/notification-settings/telegram": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Отключить Telegram */
+        delete: operations["delete_app_api_v1_notificationsettings_unlink"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/notification-settings/telegram/link": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ссылка «Подключить Telegram» (одноразовая, 15 минут) */
+        post: operations["post_app_api_v1_notificationsettings_link"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/only_verified_volunteers_allowed_exceptions": {
@@ -27739,6 +27859,138 @@ export interface operations {
             };
         };
     };
+    post_app_api_v1_messengerbot_link: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    channel: "telegram";
+                    chatId: string;
+                    token: string;
+                    username?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description Подключено: текст приветствия на языке пользователя */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        text: string;
+                    };
+                };
+            };
+            /** @description Нет секрета */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Код неверный или устарел */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_app_api_v1_messengerbot_outbox: {
+        parameters: {
+            query?: {
+                channel?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description silent — ночью без звука */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        items: {
+                            chatId: string;
+                            id: string;
+                            silent: boolean;
+                            text: string;
+                        }[];
+                    };
+                };
+            };
+        };
+    };
+    post_app_api_v1_messengerbot_result: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Пользователь заблокировал бота — подключение снять */
+                    blocked?: boolean;
+                    error?: string | null;
+                    ok: boolean;
+                };
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_messengerbot_unlink: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    channel: "telegram";
+                    chatId: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        unlinked: boolean;
+                    };
+                };
+            };
+        };
+    };
     api_cannot_apply_to_own_organization_vacancy_exceptions_get: {
         parameters: {
             query?: never;
@@ -29956,6 +30208,139 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ErrorResult"];
                 };
+            };
+        };
+    };
+    get_app_api_v1_notificationsettings_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description matrix: тип → канал → true/false; null — канал для этого уведомления не предусмотрен */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        channels: {
+                            max: {
+                                /** @description Пока false — «скоро» */
+                                available: boolean;
+                                connected: boolean;
+                            };
+                            telegram: {
+                                /** @description Бот настроен на этом стенде */
+                                available: boolean;
+                                connected: boolean;
+                                username?: string | null;
+                            };
+                        };
+                        /**
+                         * @example {
+                         *       "new_application": {
+                         *         "email": true,
+                         *         "max": true,
+                         *         "push": true,
+                         *         "telegram": true
+                         *       }
+                         *     }
+                         */
+                        matrix: {
+                            [key: string]: {
+                                [key: string]: boolean | null;
+                            };
+                        };
+                    };
+                };
+            };
+        };
+    };
+    patch_app_api_v1_notificationsettings_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    channel: "email" | "telegram" | "max" | "push";
+                    enabled: boolean;
+                    /** @enum {string} */
+                    type: "new_application" | "new_message" | "unanswered_reminder" | "news";
+                    /** @description Текст переключателя — для журнала согласия на рассылку (news/email) */
+                    wording?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description Новое состояние, как в GET */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Такой настройки нет */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    delete_app_api_v1_notificationsettings_unlink: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Новое состояние, как в GET */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_notificationsettings_link: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example https://t.me/goodsurfing_bot?start=n_abc */
+                        url: string;
+                    };
+                };
+            };
+            /** @description Бот на этом стенде не настроен */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
