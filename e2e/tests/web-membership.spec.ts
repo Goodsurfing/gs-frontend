@@ -19,7 +19,7 @@ test.describe('Новый фронт: членство', () => {
 
             const volunteer = page.locator('#tariffs');
             await expect(volunteer.getByRole('link', { name: 'Получить членство' })).toHaveAttribute('href', '/payment?tariff=volunteer_990');
-            await expect(volunteer.getByRole('link', { name: 'Зарегистрироваться' })).toHaveAttribute('href', '/signup');
+            await expect(volunteer.getByRole('link', { name: 'Присоединиться' })).toHaveAttribute('href', '/signup');
             await expect(volunteer).toContainText(/\d[\d\s]* руб\/год/);
             await expect(page.locator('#host').getByRole('link', { name: 'Получить членство' })).toHaveAttribute('href', '/payment?tariff=host_4990');
             await expect(page.locator('#international').getByRole('link', { name: /Стать участником/ })).toHaveAttribute('href', '/payment?tariff=international_5000');
@@ -33,6 +33,6 @@ test.describe('Новый фронт: членство', () => {
     test('волонтёр: без кнопок регистрации', async ({ page }) => {
         await page.goto('/membership');
         await expect(page.locator('#tariffs').getByRole('link', { name: 'Получить членство' })).toBeVisible();
-        await expect(page.getByRole('link', { name: 'Зарегистрироваться' })).toHaveCount(0);
+        await expect(page.getByRole('link', { name: 'Присоединиться' })).toHaveCount(0);
     });
 });
