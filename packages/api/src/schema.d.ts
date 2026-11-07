@@ -5050,6 +5050,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/referral": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Моя ссылка «Пригласи друга» и сколько друзей по ней пришло */
+        get: operations["get_app_api_v1_referral_mine"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/referral/claim": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Засчитать приглашение: новый аккаунт пришёл по ссылке друга (один раз) */
+        post: operations["post_app_api_v1_referral_claim"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/report": {
         parameters: {
             query?: never;
@@ -31480,6 +31514,61 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    get_app_api_v1_referral_mine: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example k7m2xq9p */
+                        code: string;
+                        /** @description Друзья, которые зарегистрировались по ссылке и подтвердили аккаунт */
+                        invited: number;
+                        /** @example https://goodsurfing.org/?ref=k7m2xq9p */
+                        link: string;
+                    };
+                };
+            };
+        };
+    };
+    post_app_api_v1_referral_claim: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    code: string;
+                };
+            };
+        };
+        responses: {
+            /** @description claimed — засчитано; already — уже был пригласивший; invalid, self, too_old — не засчитано */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        result: "claimed" | "already" | "invalid" | "self" | "too_old";
+                    };
+                };
             };
         };
     };

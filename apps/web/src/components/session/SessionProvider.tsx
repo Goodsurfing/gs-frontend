@@ -5,6 +5,7 @@ import { createContext, type ReactNode, useCallback, useContext, useEffect, useM
 
 import type { Locale } from "@/i18n/config";
 import { API_URL, browserApi } from "@/lib/browserApi";
+import { forgetReferral, storedReferral } from "@/lib/referral";
 import { forgetPush } from "@/lib/webPush";
 
 import { clearLegacySession, legacyAccessToken, legacyRefreshToken } from "./legacySession";
@@ -62,6 +63,14 @@ export function SessionProvider({ children }: { children: ReactNode }) {
             setState({ status: "user", profile, unreadMessages: 0, memberships: [] });
 
             const api = browserApi(auth);
+            // Пришёл по ссылке «Пригласи друга» и вошёл — засчитать один раз (сервер сам
+            // отсеет старые аккаунты и своё приглашение)
+            const referral = storedReferral();
+            if (referral) {
+                void api.POST("/api/v1/referral/claim", { body: { code: referral }, ...timeout() })
+                    .then(({ response }) => { if (response.status < 500) forgetReferral(); })
+                    .catch(() => undefined);
+            }
             const [unread, memberships] = await Promise.all([
                 api.GET("/api/v1/personal/unread-messages", timeout()).catch(() => null),
                 api.GET("/api/v1/membership/current-all", timeout()).catch(() => null),

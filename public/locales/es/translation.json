@@ -178,7 +178,8 @@
             "Написать в блог": "Escribe un blog",
             "Мои статьи": "Mis artículos",
             "Создать организацию": "Create an organization",
-            "Подписки на поиск": "Suscripciones de búsqueda"
+            "Подписки на поиск": "Suscripciones de búsqueda",
+            "Пригласить друга": "Invitar a un amigo"
         }
     },
     "stats-points": {
@@ -465,5 +466,20 @@
             "doneText": "Vuelves a iniciar sesión con {{email}}. Todas las sesiones están cerradas y la contraseña se restableció: crea una nueva con «¿Olvidaste tu contraseña?».",
             "doneButton": "Crear nueva contraseña"
         }
+    },
+    "referral": {
+        "title": "Invitar a un amigo",
+        "intro": "Comparte tu enlace con tus amigos. Cuando un amigo se registre con él y confirme su correo, recibirás la insignia «Asistente de recomendaciones».",
+        "linkLabel": "Tu enlace",
+        "copy": "Copiar",
+        "copied": "Copiado",
+        "share": "Compartir",
+        "shareText": "Viajes de voluntariado por Rusia y el mundo: únete a Goodsurfing",
+        "invited": "Amigos que se registraron con tu enlace: {{count}}",
+        "none": "Aún nadie se ha registrado con tu enlace",
+        "badge": "Por tu primer amigo recibes la insignia «Asistente de recomendaciones».",
+        "badgeDone": "La insignia «Asistente de recomendaciones» aparecerá en tu perfil en un día.",
+        "error": "No se pudo cargar tu enlace.",
+        "retry": "Reintentar"
     }
 }
