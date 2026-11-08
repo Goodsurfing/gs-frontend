@@ -152,6 +152,9 @@ export function ChatInput({ token, disabled, labels, onSend, onError, prefill, e
                         <div className="absolute right-0 bottom-[300%] z-10 down-lg:w-[70vw] down-xs:-right-[180%] down-xs:w-[85vw]">
                             <EmojiPicker
                                 lazyLoadEmojis
+                                // Системные смайлики, как в самом сообщении: картинки Apple со стороннего
+                                // сервера выглядели иначе, чем отправленный смайлик, и не всегда загружались
+                                emojiStyle={"native" as never}
                                 width="100%"
                                 // Значения перечисления Categories из emoji-picker-react: сам модуль грузится только по кнопке
                                 categories={[

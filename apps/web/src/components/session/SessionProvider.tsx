@@ -39,6 +39,9 @@ const timeout = () => ({ signal: AbortSignal.timeout(10_000) });
  * остаются статическими (ISR) и одинаковыми для всех, а блок пользователя в
  * шапке дорисовывается после загрузки. Так же было в старом SPA.
  */
+/** Как часто обновлять счётчик непрочитанных в шапке, пока вкладка открыта */
+const UNREAD_REFRESH_MS = 60_000;
+
 export function SessionProvider({ children }: { children: ReactNode }) {
     const [state, setState] = useState<Omit<Session, "logout" | "saveLocale" | "updateProfile">>({ ...GUEST, status: "unknown" });
     const [token, setToken] = useState<string | undefined>();
@@ -88,6 +91,32 @@ export function SessionProvider({ children }: { children: ReactNode }) {
             cancelled = true;
         };
     }, []);
+
+    // Счётчик непрочитанных в шапке: раньше брался один раз при входе, и новое сообщение
+    // было видно только после перезагрузки (тестировщик, 07.11.2026). Теперь — раз в минуту,
+    // пока вкладка на экране, и сразу при возвращении на вкладку. Ответ — одно число.
+    const userSignedIn = state.status === "user";
+    useEffect(() => {
+        if (!userSignedIn) return;
+        let stopped = false;
+        const refresh = () => {
+            if (document.visibilityState !== "visible") return;
+            void browserApi(token).GET("/api/v1/personal/unread-messages", timeout())
+                .then(({ data }) => {
+                    const count = (data as { unreadMessagesCount?: unknown } | undefined)?.unreadMessagesCount;
+                    if (stopped || typeof count !== "number") return;
+                    setState((prev) => (prev.status === "user" && prev.unreadMessages !== count ? { ...prev, unreadMessages: count } : prev));
+                })
+                .catch(() => undefined);
+        };
+        const timer = window.setInterval(refresh, UNREAD_REFRESH_MS);
+        document.addEventListener("visibilitychange", refresh);
+        return () => {
+            stopped = true;
+            window.clearInterval(timer);
+            document.removeEventListener("visibilitychange", refresh);
+        };
+    }, [userSignedIn, token]);
 
     const logout = useCallback(async () => {
         // Пока вход ещё действует: этот браузер перестаёт получать пуши вышедшего
