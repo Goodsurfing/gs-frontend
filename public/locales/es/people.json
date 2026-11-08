@@ -1,0 +1,16 @@
+{
+    "seo": {
+        "title": "Miembros de GoodSurfing",
+        "description": "Encuentra a un miembro de la comunidad GoodSurfing por su nombre."
+    },
+    "title": "Miembros",
+    "intro": "Encuentra a un amigo o a otro voluntario por nombre y apellido. Solo aparecen quienes no se han ocultado en la configuración de privacidad.",
+    "label": "Nombre y apellido",
+    "placeholder": "Por ejemplo, Ana García",
+    "hint": "Escribe al menos 2 letras",
+    "empty": "No encontramos a nadie. Revisa la ortografía o prueba solo con el nombre.",
+    "error": "No se pudo buscar. Inténtalo de nuevo.",
+    "guest": "Solo los miembros con sesión iniciada pueden buscar.",
+    "signIn": "Iniciar sesión",
+    "privacy": "¿No quieres que te encuentren? Desactívalo en la configuración de privacidad."
+}

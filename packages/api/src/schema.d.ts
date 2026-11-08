@@ -4779,6 +4779,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/people/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Найти участников по имени: до 20 волонтёров, которые не скрыли себя в «Приватности» */
+        get: operations["get_app_api_v1_people_search"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/personal/chats": {
         parameters: {
             query?: never;
@@ -5116,6 +5133,23 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profile/people-search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Находить ли меня по имени в поиске участников */
+        patch: operations["patch_app_api_v1_people_setvisibility"];
         trace?: never;
     };
     "/api/v1/profile/remove-avatar/{imageId}": {
@@ -11096,6 +11130,12 @@ export interface components {
              * @example true
              */
             showInEventFeed: Record<string, never>;
+            /**
+             * @description Находить ли меня по имени в поиске участников
+             * @default true
+             * @example true
+             */
+            showInPeopleSearch: Record<string, never>;
             /** @example  */
             telegram: string;
             /** @default [] */
@@ -17901,6 +17941,11 @@ export interface components {
              * @default true
              */
             showInEventFeed: boolean;
+            /**
+             * @description Находить ли человека в поиске участников по имени (08.11.2026); выключается в «Приватности»
+             * @default true
+             */
+            showInPeopleSearch: boolean;
             telegram?: string | null;
             readonly unreadMessagesCount?: number;
             /** @description A visual identifier that represents this user. */
@@ -18343,6 +18388,11 @@ export interface components {
              * @default true
              */
             showInEventFeed: boolean;
+            /**
+             * @description Находить ли человека в поиске участников по имени (08.11.2026); выключается в «Приватности»
+             * @default true
+             */
+            showInPeopleSearch: boolean;
             telegram?: string | null;
             readonly unreadMessagesCount?: number;
             /** @description A visual identifier that represents this user. */
@@ -18715,6 +18765,11 @@ export interface components {
              * @default true
              */
             showInEventFeed: boolean;
+            /**
+             * @description Находить ли человека в поиске участников по имени (08.11.2026); выключается в «Приватности»
+             * @default true
+             */
+            showInPeopleSearch: boolean;
             telegram?: string | null;
             readonly unreadMessagesCount?: number;
             /** @description A visual identifier that represents this user. */
@@ -31330,6 +31385,41 @@ export interface operations {
             };
         };
     };
+    get_app_api_v1_people_search: {
+        parameters: {
+            query: {
+                /** @description Имя и/или фамилия, от 2 символов */
+                q: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        avatar: string | null;
+                        city: string | null;
+                        firstName: string;
+                        id: string;
+                        lastName: string;
+                    }[];
+                };
+            };
+            /** @description Нужен вход */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_personalchats_get_collection: {
         parameters: {
             query?: {
@@ -31934,6 +32024,37 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["IsChangePasswordResult"];
                 };
+            };
+        };
+    };
+    patch_app_api_v1_people_setvisibility: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    show: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description Сохранено */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Нужно поле show */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

@@ -133,7 +133,10 @@
         "Не удалось сохранить настройку рассылки": "Could not save the newsletter setting",
         "Показывать меня в ленте событий на главной": "Show me in the event feed on the home page",
         "В ленте видны имя, город и фото: получен значок, поездка в проект, вступление в сообщество": "The feed shows your name, city and photo: badges earned, trips to projects, joining the community",
-        "Не удалось сохранить настройку ленты событий": "Couldn't save the event feed setting"
+        "Не удалось сохранить настройку ленты событий": "Couldn't save the event feed setting",
+        "Находить меня по имени в поиске участников": "Let members find me by name",
+        "Другие участники, вошедшие на сайт, смогут найти вас по имени и фамилии и открыть ваш профиль": "Signed-in members can find you by first and last name and open your profile",
+        "Не удалось сохранить настройку поиска": "Couldn't save the search setting"
     },
     "personal": {
         "Произошла ошибка": "An error occurred",
