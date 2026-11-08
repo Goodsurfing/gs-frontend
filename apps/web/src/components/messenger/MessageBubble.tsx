@@ -11,24 +11,32 @@ import { ReadMark } from "./ReadMark";
 
 type Media = { contentUrl?: string | null; thumbnails?: unknown; originalName?: string | null };
 
-/** Вложение по IRI: у сообщения в списке только ссылка, сам файл запрашивается отдельно */
-function useAttachment(token: string | undefined, iri: string | undefined) {
-    const [media, setMedia] = useState<Media | null>(null);
+/** Вложение сообщения: API отдаёт его объектом (с адресом файла), а иногда — ссылкой-IRI */
+export type Attachment = string | (Media & { "@id"?: string; id?: string });
+
+/**
+ * Файл вложения. Объект с адресом — сразу; IRI или объект без адреса — запрос файла.
+ * Раньше ждали только строку: объект ломал чат («e?.split is not a function», Bugsink 08.11.2026),
+ * а картинки во вложениях не показывались.
+ */
+function useAttachment(token: string | undefined, attachment: Attachment | undefined) {
+    const inline = typeof attachment === "object" && attachment?.contentUrl ? attachment : null;
+    const id = inline ? undefined : typeof attachment === "string" ? idFromIri(attachment) : attachment?.id ?? idFromIri(attachment?.["@id"]);
+    const [fetched, setFetched] = useState<Media | null>(null);
     useEffect(() => {
-        const id = idFromIri(iri);
         if (!id) return;
         let cancelled = false;
         void browserApi(token)
             .GET("/api/v1/media_objects/{id}", { params: { path: { id } } })
             .then(({ data }) => {
-                if (!cancelled && data) setMedia(data as Media);
+                if (!cancelled && data) setFetched(data as Media);
             })
             .catch(() => undefined);
         return () => {
             cancelled = true;
         };
-    }, [iri, token]);
-    return media;
+    }, [id, token]);
+    return inline ?? fetched;
 }
 
 /**
@@ -45,8 +53,8 @@ export const MessageBubble = memo(function MessageBubble({ own, name, avatar, sh
     showAvatar: boolean;
     profileHref?: string;
     text: string;
-    /** IRI первого вложения */
-    attachment?: string;
+    /** Первое вложение: объект из API или IRI */
+    attachment?: Attachment;
     time: string;
     /** Своё сообщение прочитано собеседником */
     read: boolean;
