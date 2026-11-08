@@ -74,7 +74,8 @@
                     "courses": "Academia",
                     "clubs": "Clubes",
                     "journal": "Revista",
-                    "achievements": "Logros"
+                    "achievements": "Logros",
+                    "people": "Miembros"
                 },
                 "offers": {
                     "title": "Vacantes",

@@ -74,7 +74,8 @@
                     "courses": "Академия",
                     "clubs": "Клубы",
                     "journal": "Журналы",
-                    "achievements": "Достижения"
+                    "achievements": "Достижения",
+                    "people": "Участники"
                 },
                 "offers": {
                     "title": "Все вакансии",

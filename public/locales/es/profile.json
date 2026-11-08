@@ -133,7 +133,10 @@
         "Не удалось сохранить настройку рассылки": "No se pudo guardar el ajuste del boletín",
         "Показывать меня в ленте событий на главной": "Mostrarme en las novedades de la página principal",
         "В ленте видны имя, город и фото: получен значок, поездка в проект, вступление в сообщество": "Las novedades muestran tu nombre, ciudad y foto: insignias, viajes a proyectos, unirte a la comunidad",
-        "Не удалось сохранить настройку ленты событий": "No se pudo guardar la configuración de novedades"
+        "Не удалось сохранить настройку ленты событий": "No se pudo guardar la configuración de novedades",
+        "Находить меня по имени в поиске участников": "Permitir que me encuentren por mi nombre",
+        "Другие участники, вошедшие на сайт, смогут найти вас по имени и фамилии и открыть ваш профиль": "Los miembros con sesión iniciada podrán encontrarte por nombre y apellido y abrir tu perfil",
+        "Не удалось сохранить настройку поиска": "No se pudo guardar el ajuste de búsqueda"
     },
     "personal": {
         "Произошла ошибка": "Ocurrió un error",

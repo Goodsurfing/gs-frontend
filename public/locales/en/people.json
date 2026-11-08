@@ -1,0 +1,16 @@
+{
+    "seo": {
+        "title": "GoodSurfing members",
+        "description": "Find a GoodSurfing community member by name."
+    },
+    "title": "Members",
+    "intro": "Find a friend or a fellow volunteer by first and last name. Only members who haven't hidden themselves in privacy settings are shown.",
+    "label": "First and last name",
+    "placeholder": "For example, Anna Smith",
+    "hint": "Type at least 2 letters",
+    "empty": "No one found. Check the spelling or try just the first name.",
+    "error": "Search failed. Please try again.",
+    "guest": "Only signed-in members can search.",
+    "signIn": "Sign in",
+    "privacy": "Don't want to be found? Turn it off in privacy settings."
+}

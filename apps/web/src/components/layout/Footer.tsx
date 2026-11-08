@@ -31,6 +31,7 @@ export function Footer({ locale, t }: { locale: Locale; t: Translate }) {
                 { label: t(`${h}.community.video`), href: routes.video(locale) },
                 { label: t(`${h}.community.ambassadors`), href: routes.ambassadors(locale) },
                 { label: t(`${h}.community.achievements`), href: routes.achievements(locale) },
+                { label: t(`${h}.community.people`), href: routes.people(locale) },
                 { label: t(`${h}.community.courses`), href: routes.academy(locale) },
                 { label: t(`${h}.expeditions`), href: EXPEDITIONS_URL, external: true },
             ],

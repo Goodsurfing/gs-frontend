@@ -25,6 +25,7 @@ export const routes = {
     ourTeam: (l: Locale) => path(l, "/our-team"),
     membership: (l: Locale) => path(l, "/membership"),
     achievements: (l: Locale) => path(l, "/achievements"),
+    people: (l: Locale) => path(l, "/people"),
     /** Приглашение в членство «на двоих» */
     membershipDuo: (l: Locale, token: string) => path(l, `/membership/duo/${token}`),
     rules: (l: Locale) => path(l, "/rules"),

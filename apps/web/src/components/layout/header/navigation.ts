@@ -36,6 +36,7 @@ export function buildNavigation(locale: Locale, t: Translate): Navigation {
                     link(h("community.video"), routes.video(locale)),
                     link(h("community.ambassadors"), routes.ambassadors(locale)),
                     link(h("community.achievements"), routes.achievements(locale)),
+                    link(h("community.people"), routes.people(locale)),
                     link(h("community.courses"), routes.academy(locale)),
                     link(h("community.journal"), routes.journals(locale)),
                     // GS-243: экспедиции — внутри «Сообщества», а не отдельным пунктом
