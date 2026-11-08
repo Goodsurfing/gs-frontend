@@ -78,5 +78,6 @@
         "slow": "This host rarely replies. To save time, apply to 2–3 more places:",
         "new": "This host is new on Goodsurfing. A reply usually comes within a week.",
         "close": "If there’s no reply within three weeks, the application closes automatically and we’ll send you similar opportunities."
-    }
+    },
+    "Этот браузер не умеет получать уведомления. Откройте сайт в Chrome, Яндекс Браузере, Safari или Firefox — на iPhone добавьте сайт на экран «Домой»": "This browser can't receive notifications. Open the site in Chrome, Yandex Browser, Safari or Firefox — on iPhone, add the site to your Home Screen"
 }

@@ -13,6 +13,8 @@ export interface PushOfferLabels {
     ok: string;
     enabled: string;
     blocked: string;
+    /** Разрешение дано, но браузер не умеет получать уведомления (сборки Chromium без службы уведомлений) */
+    unsupported: string;
     /** Разрешение спрошено, а ответа нет: Chrome мог спрятать запрос в значок у адреса */
     noPrompt: string;
 }
@@ -36,7 +38,7 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
     const [visible, setVisible] = useState(false);
     const [busy, setBusy] = useState(false);
     const [slow, setSlow] = useState(false);
-    const [result, setResult] = useState<"enabled" | "blocked" | null>(null);
+    const [result, setResult] = useState<"enabled" | "blocked" | "unsupported" | null>(null);
 
     useEffect(() => {
         if (!enabled) return;
@@ -76,7 +78,9 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
         window.clearTimeout(slowTimer);
         setSlow(false);
         setBusy(false);
-        setResult(ok ? "enabled" : "blocked");
+        // Разрешил, но подписка не создалась — браузер без службы уведомлений (Comodo Dragon и т. п.):
+        // честно сказать и посоветовать другой браузер, а не «браузер не разрешил»
+        setResult(ok ? "enabled" : permission === "granted" ? "unsupported" : "blocked");
         if (!ok && permission !== "denied") window.localStorage.setItem(OFFER_DISMISSED_KEY, String(Date.now()));
         window.setTimeout(() => setVisible(false), 4000);
     };
@@ -85,7 +89,7 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
     const ios = support === "ios-install";
     return (
         <div role="status" className="flex flex-col gap-2 border-b border-accent-bg bg-status-new/10 px-4 py-3 text-[13px] text-ink-secondary">
-            {result ? <span>{result === "enabled" ? labels.enabled : labels.blocked}</span> : (
+            {result ? <span>{result === "enabled" ? labels.enabled : result === "unsupported" ? labels.unsupported : labels.blocked}</span> : (
                 <>
                     <span className="flex gap-2">
                         <svg aria-hidden viewBox="0 0 24 24" className="mt-0.5 h-4 w-4 shrink-0 text-primary" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8" /><path d="M10.3 20a1.9 1.9 0 0 0 3.4 0" /></svg>
