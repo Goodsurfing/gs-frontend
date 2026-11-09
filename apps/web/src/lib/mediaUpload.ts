@@ -1,6 +1,7 @@
 import type { components } from "@goodsurfing/api";
 
 import { API_URL } from "./browserApi";
+import { downscaleImage } from "./imageDownscale";
 
 export type UploadedMedia = components["schemas"]["ImageResultDto"];
 
@@ -30,7 +31,8 @@ export function matchesAccept(file: { name: string; type: string }, accept: stri
  */
 export async function uploadMedia(file: File, token: string | undefined, signal?: AbortSignal): Promise<UploadedMedia> {
     const body = new FormData();
-    body.append("file", file);
+    // Фото уменьшаем в браузере: меньше трафика и нагрузки на сервер (imageDownscale.ts)
+    body.append("file", await downscaleImage(file));
     const response = await fetch(`${API_URL}/api/v1/media_objects`, {
         method: "POST",
         credentials: "include",
