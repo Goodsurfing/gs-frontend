@@ -68,6 +68,7 @@ export function toBody(form: ProfileForm) {
         aboutMe: nullable(form.aboutMe),
         gender: nullable(form.gender),
         vk: nullable(form.vk),
+        // Facebook и Instagram в форме не показываем (Meta запрещена в РФ), но прежние значения не стираем
         facebook: nullable(form.facebook),
         telegram: nullable(form.telegram),
         instagram: nullable(form.instagram),
