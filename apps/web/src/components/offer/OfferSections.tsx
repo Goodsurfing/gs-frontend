@@ -18,7 +18,8 @@ const iconKey = (item: { image?: { contentUrl?: string } | null }) => item.image
 
 /** «Когда»: периоды, минимум/максимум дней, приём заявок до (OfferWhenCard). id="description" — первый пункт меню */
 export function OfferWhen({ when, t }: { when: S["WhenResult"]; t: Translate }) {
-    const empty = t("personalOffer.Точная дата не указана");
+    // Без периодов и «принимаю круглый год» — так и пишем, как пометка в обложке (раньше — «Точная дата не указана»)
+    const empty = when.isFullYearAcceptable ? t("highlights.fullYear") : t("personalOffer.Точная дата не указана");
     const days = (value: number) => (value > 0 ? value : t("personalOffer.notSpecified"));
     const periods = when.periods ?? [];
     const list = periods.length > 0
