@@ -3,14 +3,13 @@ import { describe, expect, it } from "vitest";
 import { WORKAWAY } from "../workawayLanding";
 
 describe("страница «Как Workaway, но в России»", () => {
-    it("сравнение — с живым числом вакансий и ценой из тарифов", () => {
-        const rows = WORKAWAY.comparison(812, 990);
-        expect(rows[0]?.us).toBe("Открытых вакансий: 812");
-        expect(rows[1]?.us).toContain("990 ₽");
-        expect(WORKAWAY.comparison(0, 990)[0]?.us).toBe("Сотни проектов по всей стране");
+    it("сравнение — с живым числом вакансий", () => {
+        expect(WORKAWAY.comparison(812)[0]?.us).toBe("Открытых вакансий: 812");
+        expect(WORKAWAY.comparison(0)[0]?.us).toBe("Сотни проектов по всей стране");
     });
 
-    it("цена в ответах FAQ — та же, что в тарифах", () => {
-        expect(WORKAWAY.faq(1190).filter((item) => item.a.includes("1190 ₽"))).toHaveLength(2);
+    it("Гудсёрфинг — НКО: в текстах нет цен и «стоит» (решение 10.11.2026)", () => {
+        const text = JSON.stringify(WORKAWAY);
+        expect(text).not.toMatch(/₽|\$|стоит|стоимост|цен[аы]\b|дешевле|членств|оплат/i);
     });
 });
