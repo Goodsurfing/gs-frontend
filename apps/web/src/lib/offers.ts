@@ -40,16 +40,24 @@ export async function getOffersByCategories(locale: Locale, categoryIds: number[
  * сбое API бросаем ApiUnavailableError, чтобы пустая страница не попала в кэш.
  */
 export async function getOpenOffersOfCategory(locale: Locale, categoryId: number): Promise<{ offers: OfferCardData[]; total: number }> {
+    return getOpenOffers(locale, { categoryIds: [categoryId], limit: 24, what: `вакансии направления ${categoryId}` });
+}
+
+/** То же для любой посадочной страницы: без categoryIds — все направления (страница «Как Workaway, но в России») */
+export async function getOpenOffers(
+    locale: Locale,
+    { categoryIds, limit, what }: { categoryIds?: number[]; limit: number; what: string },
+): Promise<{ offers: OfferCardData[]; total: number }> {
     let result;
     try {
         result = await serverApi(locale).GET("/api/v1/vacancy", {
-            params: { query: { "categoryIds[]": [categoryId], hidePassed: true, sort: "recommendation", fields: "card", limit: 24, ...vacancyLang(locale) } as never },
+            params: { query: { ...(categoryIds ? { "categoryIds[]": categoryIds } : {}), hidePassed: true, sort: "recommendation", fields: "card", limit, ...vacancyLang(locale) } as never },
             signal: AbortSignal.timeout(LANDING_TIMEOUT_MS),
         });
     } catch {
-        throw new ApiUnavailableError(`вакансии направления ${categoryId}`);
+        throw new ApiUnavailableError(what);
     }
-    if (!result.data) throw new ApiUnavailableError(`вакансии направления ${categoryId}`);
+    if (!result.data) throw new ApiUnavailableError(what);
     const offers = ((result.data.data ?? []) as OfferCardData[]).map(localizeCard);
     return { offers, total: (result.data as { pagination?: { total?: number } }).pagination?.total ?? offers.length };
 }
