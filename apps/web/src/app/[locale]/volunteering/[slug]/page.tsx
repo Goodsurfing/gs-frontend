@@ -7,6 +7,7 @@ import { isLocale, type Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { categoryName } from "@/lib/categories";
 import { getOpenOffersOfCategory } from "@/lib/offers";
+import { specialLandingLinks } from "@/lib/specialLandings";
 import { routes } from "@/lib/routes";
 import { pageMetadata, siteUrl } from "@/lib/seo";
 import { jsonLdGraph } from "@/lib/structuredData";
@@ -125,6 +126,13 @@ export default async function VolunteeringLandingPage({ params }: Props) {
                             <li key={item.slug}>
                                 <a href={routes.volunteering(locale, item.slug)} className="block rounded-full border border-accent-bg px-4 py-2 text-[14px] text-ink-secondary no-underline transition-colors hover:border-primary hover:text-primary">
                                     {locale === "ru" ? item.ru.h1 : categoryName(categoryRuName(item.categoryId), tCommon) ?? item.ru.h1}
+                                </a>
+                            </li>
+                        ))}
+                        {specialLandingLinks(locale).map((item) => (
+                            <li key={item.href}>
+                                <a href={item.href} className="block rounded-full border border-accent-bg px-4 py-2 text-[14px] text-ink-secondary no-underline transition-colors hover:border-primary hover:text-primary">
+                                    {item.title}
                                 </a>
                             </li>
                         ))}
