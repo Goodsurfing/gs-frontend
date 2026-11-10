@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 
 import { Pagination } from "@/components/list/Pagination";
 import { useFavoriteOffers } from "@/components/offers/useFavoriteOffers";
+import { searchLandingHint } from "@/lib/specialLandings";
 import type { CatalogPage } from "@/lib/offersCatalog";
 import { type OffersFilters, offersFiltersQuery, OFFERS_PER_PAGE } from "@/lib/offersFilters";
 
@@ -64,6 +65,8 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, cate
     const [selected, setSelected] = useState<number | undefined>(filters.offerId);
     const [mapOpen, setMapOpen] = useState(true);
     const [search, setSearch] = useState(filters.search);
+    // GS-280: «зима…» или «workaway» в поиске — ссылка на страницу-подборку (только по-русски)
+    const searchHint = searchLandingHint(filters.search, locale);
     // Телефон (до 992 px): список, карта и фильтр — вкладками, как в старом фронте
     const [tab, setTab] = useState<MobileTab>("list");
 
@@ -196,6 +199,11 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, cate
                     </div>
                 )}
 
+                {searchHint && (
+                    <p className="border-b border-accent-bg px-[30px] py-3 text-[15px] text-ink-secondary down-lg:px-5">
+                        Подборка по запросу: <a href={searchHint.href} className="font-medium text-primary underline">{searchHint.title}</a>
+                    </p>
+                )}
                 <div className="relative flex min-h-[52px] items-center gap-5 bg-field px-[30px] py-2 down-lg:min-h-0 down-lg:px-5 down-lg:py-3">
                     <span className="text-[1.125rem] font-medium text-ink-secondary">{labels.count}</span>
                     <div className="contents down-lg:hidden">

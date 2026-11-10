@@ -5,6 +5,7 @@ import { PublicShell } from "@/components/layout/PublicShell";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { OPTIONAL_BLOCK_TIMEOUT_MS, serverApi } from "@/lib/api";
+import { specialLandingLinks } from "@/lib/specialLandings";
 import { routes } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
 import { VOLUNTEERING_LANDINGS } from "@/lib/volunteeringLandings";
@@ -84,6 +85,9 @@ export default async function CategoriesPage({ params }: Props) {
                             const name = locale === "ru" ? item.ru.h1 : categories.find((category) => category.id === item.categoryId)?.name;
                             return name ? <li key={item.slug}><a href={routes.volunteering(locale, item.slug)} className="text-[14px] text-primary no-underline hover:underline">{name}</a></li> : null;
                         })}
+                        {specialLandingLinks(locale).map((item) => (
+                            <li key={item.href}><a href={item.href} className="text-[14px] text-primary no-underline hover:underline">{item.title}</a></li>
+                        ))}
                     </ul>
                 </nav>
             </div>
