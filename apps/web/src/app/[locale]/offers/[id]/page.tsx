@@ -31,7 +31,7 @@ import { getOffer, getOfferBanner, getOfferParticipants, getOfferReviews, getSim
 import { type Badge, getOrganizationBadges } from "@/lib/achievements";
 import { organizationType, PARTICIPATE_STATES, responseStatsText } from "@/lib/offerText";
 import { routes } from "@/lib/routes";
-import { offerHighlights } from "@/lib/offerHighlights";
+import { offerDatesChip, offerHighlights, shortAddress } from "@/lib/offerHighlights";
 import { pageMetadata, siteUrl } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string; id: string }> };
@@ -118,6 +118,11 @@ function actionsLabels(t: Translate, price: number): OfferActionsLabels {
 }
 
 /** Страница вакансии (OfferPersonalPage старого фронта, GS-219) */
+/** Сегодня по Москве в формате API (d.m.Y) — для пометки «когда» в обложке */
+function moscowToday(): string {
+    return new Intl.DateTimeFormat("ru-RU", { timeZone: "Europe/Moscow", day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date());
+}
+
 export default async function OfferPage({ params }: Props) {
     const { locale, id } = await params;
     if (!isLocale(locale)) notFound();
@@ -210,6 +215,8 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
         name: categoryName(category.name, t) ?? "",
         color: category.color,
     }));
+    // Пустой блок «Участники (0)» — только место на странице (10.11.2026); не загрузились — показываем, там своя ошибка
+    const hasParticipants = participants === null || participants.total > 0;
     const statusLabel = ["active", "disabled", "draft"].includes(offer.status) ? p(offer.status) : "";
 
     return (
@@ -219,13 +226,14 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
                 image={mediaUrl(description?.image, "large")}
                 status={offer.status}
                 categories={categories}
-                address={offer.where?.address}
+                address={shortAddress(offer.where?.address)}
                 reviews={offer.reviewsCount}
                 rating={Number(offer.averageRating) || 0}
+                dates={offerDatesChip(offer.when, offer.datesPassed, tOffer, moscowToday())}
                 highlights={offerHighlights({ condition, whatToDo: offer.whatToDo, when: offer.when }, tOffer)}
                 gallery={<OfferPhotoStack images={gallery} thumbs={galleryThumbs} labels={{ photos: p("Фотографии"), ...galleryLabels }} />}
                 actions={<OfferActions offerId={offer.id} status={offer.status} variant="hero" hrefs={hrefs} labels={labels} />}
-                labels={{ status: statusLabel, reviewsCount: tOffer("Кол-во отзывов:"), noReviews: tOffer("Пока нет отзывов") }}
+                labels={{ status: statusLabel, reviewsCount: t("Отзывов:") }}
             />
             <SectionSubmenu
                 items={[
@@ -234,7 +242,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
                     { id: "terms", text: p("Условия") },
                     { id: "gallery", text: p("Фото") },
                     { id: "organization", text: p("Организация") },
-                    { id: "participants", text: p("Участники") },
+                    ...(hasParticipants ? [{ id: "participants", text: p("Участники") }] : []),
                     { id: "review", text: p("Отзывы") },
                 ]}
             >
@@ -300,7 +308,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
                 )}
                 {offer.finishingTouche && <OfferFinishing finishing={offer.finishingTouche} t={tOffer} />}
                 {condition && <OfferPayment condition={condition} t={tOffer} />}
-                {offer.howNeed && <OfferLanguages languages={offer.howNeed.languages ?? []} t={tOffer} />}
+                {offer.howNeed && (offer.howNeed.languages ?? []).length > 0 && <OfferLanguages languages={offer.howNeed.languages ?? []} t={tOffer} />}
                 {offer.where && (
                     <div className="mt-10 flex flex-col gap-5">
                         <SectionTitle>{p("Местоположение")}</SectionTitle>
@@ -331,7 +339,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
                         membershipHref: routes.membership(locale),
                     } : null}
                 />
-                <OfferParticipants
+                {hasParticipants && <OfferParticipants
                     offerId={offer.id}
                     initial={participants}
                     volunteerHref={volunteerHref}
@@ -343,7 +351,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
                         showNext: p("Посмотреть следующие"),
                         anonymous: t("Анонимный пользователь"),
                     }}
-                />
+                />}
                 <OfferReviews
                     offerId={offer.id}
                     initial={reviews}

@@ -285,7 +285,9 @@
     "highlights": {
         "hours": "{hours} h {per}",
         "dayOff": "days off a week: {n}",
-        "minDays": "from {n} days"
+        "minDays": "from {n} days",
+        "datesPassed": "Dates have passed",
+        "fullYear": "All year round"
     },
     "Переведено автоматически": "Translated automatically",
     "Показать оригинал": "Show original (Russian)",

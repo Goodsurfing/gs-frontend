@@ -133,7 +133,7 @@ export default async function FundraisePage({ params }: Props) {
                     )}
                     gallery={<OfferPhotoStack images={gallery} thumbs={galleryThumbs} labels={{ photos: tOffer("personalOffer.Фотографии"), ...galleryLabels }} />}
                     actions={<FundraiseActions fundraiseId={id} variant="hero" hrefs={hrefs} labels={actionLabels} />}
-                    labels={{ status: ["active", "close", "draft"].includes(fundraise.status) ? d(fundraise.status) : "", reviewsCount: "", noReviews: "" }}
+                    labels={{ status: ["active", "close", "draft"].includes(fundraise.status) ? d(fundraise.status) : "", reviewsCount: "" }}
                 />
                 <SectionSubmenu
                     // Пустые разделы не показываются — и в меню их нет (решение владельца 05.11.2026)
