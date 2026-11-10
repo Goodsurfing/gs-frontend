@@ -1,10 +1,9 @@
-type SocialPlatform = "vk" | "telegram" | "facebook" | "instagram";
+/** Facebook и Instagram не выводим: Meta признана в РФ экстремистской (10.11.2026) */
+type SocialPlatform = "vk" | "telegram";
 
 const PLATFORM_HOST: Record<SocialPlatform, string> = {
     vk: "vk.com",
     telegram: "t.me",
-    facebook: "facebook.com",
-    instagram: "instagram.com",
 };
 
 /**
