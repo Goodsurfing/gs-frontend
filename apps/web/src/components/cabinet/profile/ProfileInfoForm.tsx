@@ -256,8 +256,6 @@ export function ProfileInfoForm({ volunteerHref, preferencesHref, verifyHref, as
                         <TextAreaField label={labels.aboutMe} maxLength={1000} description={`${labels.aboutHint} · ${form.aboutMe.length}/1000`} {...field("aboutMe")} />
                         <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-6">
                             <TextField label="VK" placeholder={labels.socialHint} icon="/web/icons/social-mini/vk-mini-logo.svg" {...field("vk")} />
-                            <TextField label="Facebook" placeholder={labels.socialHint} icon="/web/icons/social-mini/facebook-mini-logo.svg" {...field("facebook")} />
-                            <TextField label="Instagram" placeholder={labels.socialHint} icon="/web/icons/social-mini/instagram-mini-logo.svg" {...field("instagram")} />
                             <TextField label="Telegram" placeholder={labels.socialHint} icon="/web/icons/social-mini/telegram-mini-logo.svg" {...field("telegram")} />
                         </div>
                     </div>

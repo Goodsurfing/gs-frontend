@@ -105,8 +105,7 @@ export default async function VolunteerPage({ params }: Props) {
     const socials = [
         { href: socialLink(profile.vk, "vk"), icon: "vk", label: tProfile("Вконтакте") },
         { href: socialLink(profile.telegram, "telegram"), icon: "telegram", label: "Telegram" },
-        { href: socialLink(profile.facebook, "facebook"), icon: "facebook", label: "Facebook" },
-        { href: socialLink(profile.instagram, "instagram"), icon: "instagram", label: "Instagram" },
+        // Facebook и Instagram не показываем: Meta признана в РФ экстремистской (решение 10.11.2026)
     ].filter((item) => item.href);
     const sliderLabels = { prev: t("slider.previous"), next: t("slider.next") };
     const actions = (className: string) => (

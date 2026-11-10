@@ -21,7 +21,6 @@ export async function hostDescriptionLabels(locale: Locale): Promise<HostDescrip
         aboutHint: d("Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия"),
         aboutLimit: d("Не более 1000 знаков"),
         vk: th("Вконтакте"),
-        bannedNotice: th("Ссылки на Facebook и Instagram не отображаются на публичной странице — эти сервисы заблокированы на территории РФ"),
         required: d("Это поле является обязательным"),
         save: d("Сохранить"),
         created: d("Организация создана"),
