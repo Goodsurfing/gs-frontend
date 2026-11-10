@@ -1,4 +1,5 @@
 import { test, expect, request } from '@playwright/test';
+import { expectSectionLinksResolve } from '../support/pageCheck';
 import { API_URL } from '../config';
 import { enableNewFrontend } from '../support/newFrontend';
 
@@ -30,15 +31,18 @@ test.describe('Новый фронт: страница организации', 
             expect(response?.status()).toBe(200);
             await expect(page.locator('script[src*="/_next/"]').first()).toBeAttached();
             await expect(page.getByRole('heading', { level: 1 })).toHaveText(organization!.name);
-            for (const id of ['1', '2', '3', '4']) await expect(page.locator(`[id="${id}"]`)).toBeAttached();
+            // Пустые разделы скрыты вместе с пунктом меню (#834): у случайной организации могут быть не все
+            const sections = await expectSectionLinksResolve(page);
             await expect(page).toHaveTitle(`${organization!.name} — GoodSurfing`);
 
-            const card = page.locator('[id="2"] [role="link"]').first();
-            await expect(card).toBeVisible();
-            await card.click();
-            await expect(page).toHaveURL(/\/offers\/\d+$/);
-
-            await page.goBack();
+            // Раздел «Вакансии» (id 2) есть, только если у организации есть вакансии
+            if (sections.includes('2')) {
+                const card = page.locator('[id="2"] [role="link"]').first();
+                await expect(card).toBeVisible();
+                await card.click();
+                await expect(page).toHaveURL(/\/offers\/\d+$/);
+                await page.goBack();
+            }
             await expect(page.getByRole('link', { name: 'Написать' })).toHaveCount(0);
         });
     });

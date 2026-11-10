@@ -31,6 +31,10 @@ test.describe('Авторизация', () => {
         await page.goto(linkByText(html, 'Подтвердить почту'));
         await expect(page).toHaveURL(/confirm-email-success|profile/, { timeout: 20_000 });
 
+        // Подтверждение почты сразу выполняет вход, а вошедшего /signin уводит на главную —
+        // выходим, чтобы проверить сам вход по почте и паролю
+        await page.context().clearCookies();
+        await page.evaluate(() => localStorage.clear());
         await page.goto('/signin');
         await page.getByLabel('E-mail').fill(email);
         await page.getByLabel('Пароль', { exact: true }).first().fill(password);

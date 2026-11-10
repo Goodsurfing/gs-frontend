@@ -1,4 +1,5 @@
 import { test, expect, request } from '@playwright/test';
+import { expectSectionLinksResolve } from '../support/pageCheck';
 import { API_URL } from '../config';
 import { enableNewFrontend } from '../support/newFrontend';
 
@@ -32,7 +33,9 @@ test.describe('Новый фронт: страница волонтёра', () =
             await expect(page.locator('script[src*="/_next/"]').first()).toBeAttached();
             if (volunteer!.name) await expect(page.getByRole('heading', { level: 1 })).toContainText(volunteer!.name);
             await expect(page.locator('head meta[name="robots"]')).toHaveAttribute('content', /noindex/);
-            for (const id of ['1', 'skills', '2']) await expect(page.locator(`[id="${id}"]`)).toBeAttached();
+            // Пустые разделы скрыты вместе с пунктом меню (#834): у случайного волонтёра могут быть не все
+            await expectSectionLinksResolve(page);
+            // Отзывы гостю не показываются
             await expect(page.locator('[id="3"]')).toHaveCount(0);
             await expect(page.getByRole('link', { name: 'Написать' })).toHaveCount(0);
         });
@@ -51,6 +54,7 @@ test.describe('Новый фронт: страница волонтёра', () =
         await page.goto(`/volunteers/${volunteer!.id}`);
         await expect(page.getByRole('main').getByRole('link', { name: 'Написать' }).first())
             .toHaveAttribute('href', /^\/messenger\/(\d+|create\?recipientVolunteer=)/, { timeout: 15_000 });
-        await expect(page.locator('[id="3"]')).toBeAttached();
+        // Отзывы вошедшему — только если они есть (пустой раздел не показывается, #834); меню с ними согласовано
+        await expectSectionLinksResolve(page);
     });
 });

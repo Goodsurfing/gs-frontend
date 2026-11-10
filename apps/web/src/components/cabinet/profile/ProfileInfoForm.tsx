@@ -4,7 +4,7 @@ import { type FormEvent, type ReactNode, useEffect, useState } from "react";
 
 import { AuthToast } from "@/components/auth/AuthToast";
 import { blueButton, SelectField, TextAreaField, TextField } from "@/components/form/fields";
-import { useSession } from "@/components/session/SessionProvider";
+import { activeMembership, useSession } from "@/components/session/SessionProvider";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { Loading } from "@/components/ui/Loading";
 import { browserApi } from "@/lib/browserApi";
@@ -69,6 +69,8 @@ export function ProfileInfoForm({ volunteerHref, preferencesHref, verifyHref, as
     labels: ProfileInfoLabels;
 }) {
     const session = useSession();
+    const hasMembership = session.status === "user"
+        && (!!activeMembership(session.memberships, "REGULAR") || !!activeMembership(session.memberships, "INTERNATIONAL"));
     const [form, setForm] = useState<Form | null>(null);
     const [saved, setSaved] = useState<Form | null>(null);
     const [errors, setErrors] = useState<Partial<Record<"day" | "month" | "year", string>>>({});
@@ -298,8 +300,9 @@ export function ProfileInfoForm({ volunteerHref, preferencesHref, verifyHref, as
                             </button>
                         )}
                     </div>
-                    {/* Новичку (ещё ни одной роли — значит, ещё ни разу не откликался) деньги не предлагаем */}
-                    {(isNewcomer(profile) ? null : aside) && <div className="flex flex-col items-center gap-6 down-lg:order-3">{aside}</div>}
+                    {/* Новичку (ещё ни одной роли — значит, ещё ни разу не откликался) деньги не предлагаем.
+                        Но если у него уже есть членство (например, вступил в Международный клуб) — показываем, до какого числа */}
+                    {(isNewcomer(profile) && !hasMembership ? null : aside) && <div className="flex flex-col items-center gap-6 down-lg:order-3">{aside}</div>}
                 </div>
             </div>
         </>

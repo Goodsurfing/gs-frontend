@@ -36,3 +36,20 @@ export const expectPageWorks = async (page: Page, url: string, { allowSignin = f
         page.off('pageerror', onError);
     }
 };
+
+/**
+ * Пункты меню разделов страницы (ссылки «#id») ведут на существующие разделы. Пустые разделы
+ * не показываются вместе с пунктом меню (#834), поэтому проверяем соответствие, а не жёсткий
+ * список: у случайной организации или волонтёра части разделов может не быть.
+ */
+export async function expectSectionLinksResolve(page: Page): Promise<string[]> {
+    const ids = await page.locator('a[href^="#"]').evaluateAll((links) => links
+        .map((link) => decodeURIComponent((link.getAttribute('href') ?? '').slice(1)))
+        .filter((id) => id !== ''));
+    const unique = [...new Set(ids)];
+    for (const id of unique) {
+        const found = await page.locator(`[id="${id}"]`).count();
+        if (found === 0) throw new Error(`пункт меню «#${id}» ведёт на несуществующий раздел`);
+    }
+    return unique;
+}
