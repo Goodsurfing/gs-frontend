@@ -6,7 +6,6 @@ import { OfferCard, offerCardLabels } from "@/components/offers/OfferCard";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { categoryName } from "@/lib/categories";
-import { getPrices, TARIFF } from "@/lib/membershipPrices";
 import { getOpenOffers } from "@/lib/offers";
 import { routes } from "@/lib/routes";
 import { pageMetadata, siteUrl } from "@/lib/seo";
@@ -20,7 +19,7 @@ const INTERNATIONAL_CATEGORY = 14;
 export const revalidate = 3600;
 
 const TITLE = "Как Workaway, но в России — волонтёрство за жильё и питание | Гудсёрфинг";
-const DESCRIPTION = "Ищете Workaway в России? Гудсёрфинг: волонтёрские проекты по всей стране — фермы, заповедники, хостелы, экспедиции. Жильё и питание за помощь, оплата российской картой.";
+const DESCRIPTION = "Ищете Workaway в России? Гудсёрфинг — некоммерческое сообщество волонтёров: проекты по всей стране — фермы, заповедники, хостелы, экспедиции. Жильё и питание за помощь.";
 
 /** Только по-русски: страницу ищут русскоязычные («workaway россия»), en/es-версии нет */
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -33,16 +32,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 /**
  * «Как Workaway, но в России» (GS-280). Спрос: «workaway» в Яндексе — около 2 860 запросов в месяц
- * (Вордстат, ноябрь 2026), а у самого Workaway в России хозяев нет, и оплатить его российской картой
- * нельзя. Чужой бренд — только в заголовке и честном сравнении; цены Workaway — с их страницы
- * регистрации (lib/workawayLanding.ts, проверять раз в полгода).
+ * (Вордстат, ноябрь 2026), а у самого Workaway в России хозяев нет. Чужой бренд — только в заголовке
+ * и честном сравнении (lib/workawayLanding.ts). Цен нет: Гудсёрфинг — НКО (решение 10.11.2026).
  */
 export default async function WorkawayRussiaPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     if (!isLocale(locale) || locale !== "ru") notFound();
-    const [t, prices, all, international] = await Promise.all([
+    const [t, all, international] = await Promise.all([
         getTranslator(locale),
-        getPrices(locale),
         // С запасом: зарубежные из подборки убираем, нужно 12 по России
         getOpenOffers(locale, { limit: 36, what: "вакансии для страницы «Как Workaway»" }),
         getOpenOffers(locale, { categoryIds: [INTERNATIONAL_CATEGORY], limit: 1, what: "зарубежные вакансии для страницы «Как Workaway»" }),
@@ -50,13 +47,12 @@ export default async function WorkawayRussiaPage({ params }: { params: Promise<{
     const offers = all.offers.filter((offer) => !offer.categories.some((category) => category.id === INTERNATIONAL_CATEGORY)).slice(0, 12);
     // Сравнение — про Россию: открытые вакансии без направления «Международные»
     const total = Math.max(0, all.total - international.total);
-    const price = prices[TARIFF.volunteer] ?? 990;
-    const rows = WORKAWAY.comparison(total, price);
+    const rows = WORKAWAY.comparison(total);
     const structuredData = jsonLdGraph([
         {
             "@context": "https://schema.org",
             "@type": "FAQPage",
-            mainEntity: WORKAWAY.faq(price).map((item) => ({ "@type": "Question", name: item.q, acceptedAnswer: { "@type": "Answer", text: item.a } })),
+            mainEntity: WORKAWAY.faq.map((item) => ({ "@type": "Question", name: item.q, acceptedAnswer: { "@type": "Answer", text: item.a } })),
         },
     ]);
 
@@ -115,14 +111,13 @@ export default async function WorkawayRussiaPage({ params }: { params: Promise<{
                     )}
                     <div className="mt-8 flex flex-wrap gap-4">
                         <a href={routes.offersMap(locale)} className="rounded-[10px] bg-cta px-8 py-3 text-[16px] text-white no-underline transition-colors hover:bg-cta-hover">Все вакансии на карте</a>
-                        <a href={routes.membership(locale)} className="rounded-[10px] border border-primary px-8 py-3 text-[16px] text-primary no-underline transition-colors hover:bg-primary hover:text-white">Членство за {price} ₽ в год</a>
                     </div>
                 </section>
 
                 <section className="mt-16 max-w-[820px]" aria-labelledby="workaway-faq">
                     <h2 id="workaway-faq" className="text-[1.5rem] font-bold text-ink">Частые вопросы</h2>
                     <div className="mt-4 flex flex-col gap-3">
-                        {WORKAWAY.faq(price).map((item) => (
+                        {WORKAWAY.faq.map((item) => (
                             <details key={item.q} className="rounded-[10px] bg-field px-5 py-4">
                                 <summary className="cursor-pointer text-[16px] font-semibold text-ink">{item.q}</summary>
                                 <p className="mt-2 text-[15px] leading-[150%] text-ink-secondary">{item.a}</p>

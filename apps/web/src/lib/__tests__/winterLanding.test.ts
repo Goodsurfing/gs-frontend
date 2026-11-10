@@ -14,3 +14,11 @@ describe("ближайшая зима", () => {
         expect(winterSeason("2028-02-10")).toEqual({ start: "2027-12-01", end: "2028-02-29", label: "2027/28" });
     });
 });
+
+describe("тексты зимней страницы", () => {
+    it("Гудсёрфинг — НКО: нет цен и «стоит» (решение 10.11.2026)", async () => {
+        const { WINTER } = await import("../winterLanding");
+        const { VOLUNTEERING_LANDINGS } = await import("../volunteeringLandings");
+        expect(JSON.stringify([WINTER, VOLUNTEERING_LANDINGS])).not.toMatch(/₽|\$|стоит|стоимост|цен[аы]\b|дешевле/i);
+    });
+});

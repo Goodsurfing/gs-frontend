@@ -6,7 +6,6 @@ import { OfferCard, offerCardLabels } from "@/components/offers/OfferCard";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { categoryName } from "@/lib/categories";
-import { getPrices, TARIFF } from "@/lib/membershipPrices";
 import { getOpenOffers, type OfferCardData } from "@/lib/offers";
 import { routes } from "@/lib/routes";
 import { pageMetadata, siteUrl } from "@/lib/seo";
@@ -40,17 +39,15 @@ export default async function WinterVolunteeringPage({ params }: { params: Promi
     const { locale } = await params;
     if (!isLocale(locale) || locale !== "ru") notFound();
     const season = winterSeason(moscowToday());
-    const [t, prices, dated, withFullYear] = await Promise.all([
+    const [t, dated, withFullYear] = await Promise.all([
         getTranslator(locale),
-        getPrices(locale),
         getOpenOffers(locale, { limit: 24, overlap: { ...season, fullYear: false }, what: "зимние вакансии" }),
         getOpenOffers(locale, { limit: 36, overlap: { ...season, fullYear: true }, what: "зимние и круглогодичные вакансии" }),
     ]);
     const datedIds = new Set(dated.offers.map((offer) => offer.id));
     const fullYear = withFullYear.offers.filter((offer) => !datedIds.has(offer.id)).slice(0, 12);
     const fullYearTotal = Math.max(0, withFullYear.total - dated.total);
-    const price = prices[TARIFF.volunteer] ?? 990;
-    const faq = WINTER.faq(price);
+    const faq = WINTER.faq;
     const structuredData = jsonLdGraph([
         {
             "@context": "https://schema.org",
