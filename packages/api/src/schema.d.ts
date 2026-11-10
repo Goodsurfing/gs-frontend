@@ -34408,6 +34408,12 @@ export interface operations {
                 maxDurationDays?: string;
                 /** @description Минимальная продолжительность */
                 minDurationDays?: number;
+                /** @description Конец окна для overlapStart (включительно). Формат: YYYY-MM-DD */
+                overlapEnd?: string;
+                /** @description С окном overlapStart/overlapEnd — добавлять вакансии «круглый год» без периодов (по умолчанию true) */
+                overlapFullYear?: boolean;
+                /** @description Период заезда пересекается с окном [overlapStart, overlapEnd] (GS-280, например зима). Формат: YYYY-MM-DD, нужен вместе с overlapEnd */
+                overlapStart?: string;
                 /** @description Номер страницы */
                 page?: number;
                 search?: string;
@@ -34884,6 +34890,12 @@ export interface operations {
                 maxDurationDays?: string;
                 /** @description Минимальная продолжительность */
                 minDurationDays?: number;
+                /** @description Конец окна для overlapStart (включительно). Формат: YYYY-MM-DD */
+                overlapEnd?: string;
+                /** @description С окном overlapStart/overlapEnd — добавлять вакансии «круглый год» без периодов (по умолчанию true) */
+                overlapFullYear?: boolean;
+                /** @description Период заезда пересекается с окном [overlapStart, overlapEnd] (GS-280, например зима). Формат: YYYY-MM-DD, нужен вместе с overlapEnd */
+                overlapStart?: string;
                 search?: string;
                 /** @description Ids навыков */
                 "skillIds[]"?: number[];

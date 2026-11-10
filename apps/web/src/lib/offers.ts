@@ -46,12 +46,22 @@ export async function getOpenOffersOfCategory(locale: Locale, categoryId: number
 /** То же для любой посадочной страницы: без categoryIds — все направления (страница «Как Workaway, но в России») */
 export async function getOpenOffers(
     locale: Locale,
-    { categoryIds, limit, what }: { categoryIds?: number[]; limit: number; what: string },
+    { categoryIds, limit, what, overlap }: {
+        categoryIds?: number[];
+        limit: number;
+        what: string;
+        /** Период заезда пересекается с окном (Y-m-d); fullYear — добавить «круглый год» без периодов */
+        overlap?: { start: string; end: string; fullYear: boolean };
+    },
 ): Promise<{ offers: OfferCardData[]; total: number }> {
     let result;
     try {
         result = await serverApi(locale).GET("/api/v1/vacancy", {
-            params: { query: { ...(categoryIds ? { "categoryIds[]": categoryIds } : {}), hidePassed: true, sort: "recommendation", fields: "card", limit, ...vacancyLang(locale) } as never },
+            params: { query: {
+                ...(categoryIds ? { "categoryIds[]": categoryIds } : {}),
+                ...(overlap ? { overlapStart: overlap.start, overlapEnd: overlap.end, overlapFullYear: overlap.fullYear } : {}),
+                hidePassed: true, sort: "recommendation", fields: "card", limit, ...vacancyLang(locale),
+            } as never },
             signal: AbortSignal.timeout(LANDING_TIMEOUT_MS),
         });
     } catch {
