@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { OfferActions, type OfferActionsHrefs, type OfferActionsLabels } from "@/components/offer/OfferActions";
 import { OfferAddressMap } from "@/components/offer/OfferAddressMap";
+import { OfferDatesPassed } from "@/components/offer/OfferDatesPassed";
 import { OfferHero } from "@/components/offer/OfferHero";
 import { OfferOrganization } from "@/components/offer/OfferOrganization";
 import { OfferParticipants } from "@/components/offer/OfferParticipants";
@@ -26,7 +27,7 @@ import { offerSeoDescription, offerSeoTitle } from "@/lib/offerSeo";
 import { categoryName } from "@/lib/categories";
 import { mediaUrl } from "@/lib/media";
 import { getPrices, TARIFF } from "@/lib/membershipPrices";
-import { getOffer, getOfferBanner, getOfferParticipants, getOfferReviews, inlineSvg, localizedDescription, type OfferDetail } from "@/lib/offer";
+import { getOffer, getOfferBanner, getOfferParticipants, getOfferReviews, getSimilarOffers, inlineSvg, localizedDescription, type OfferDetail, type SimilarOffer } from "@/lib/offer";
 import { type Badge, getOrganizationBadges } from "@/lib/achievements";
 import { organizationType, PARTICIPATE_STATES, responseStatsText } from "@/lib/offerText";
 import { routes } from "@/lib/routes";
@@ -145,7 +146,7 @@ export default async function OfferPage({ params }: Props) {
         );
     }
 
-    const [participants, reviews, banner, svgs, prices, badges] = await Promise.all([
+    const [participants, reviews, banner, svgs, prices, badges, similar] = await Promise.all([
         getOfferParticipants(locale, id),
         getOfferReviews(locale, id),
         getOfferBanner(locale),
@@ -153,19 +154,21 @@ export default async function OfferPage({ params }: Props) {
         // Цена членства — в предложении, когда кончились бесплатные отклики
         getPrices(locale),
         getOrganizationBadges(locale, offer.organization.id),
+        // Даты прошли (GS-277) — похожие актуальные; иначе запрос не нужен
+        offer.datesPassed ? getSimilarOffers(locale, offer.id) : Promise.resolve([]),
     ]);
     return (
         <PublicShell locale={locale}>
             <OfferViewerProvider offerId={offer.id}>
                 <div className="mx-auto flex min-h-[500px] w-full max-w-[1920px] flex-col items-center justify-center px-[50px] pt-[100px] pb-[50px] down-lg:p-5">
-                    <OfferBody locale={locale} offer={offer} participants={participants} reviews={reviews} banner={banner} svgs={svgs} badges={badges} volunteerPrice={prices[TARIFF.volunteer] ?? 990} t={t} tOffer={tOffer} tHost={tHost} />
+                    <OfferBody locale={locale} offer={offer} participants={participants} reviews={reviews} banner={banner} svgs={svgs} badges={badges} similar={similar} volunteerPrice={prices[TARIFF.volunteer] ?? 990} t={t} tOffer={tOffer} tHost={tHost} />
                 </div>
             </OfferViewerProvider>
         </PublicShell>
     );
 }
 
-function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges, volunteerPrice, t, tOffer, tHost }: {
+function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges, similar, volunteerPrice, t, tOffer, tHost }: {
     locale: Locale;
     offer: OfferDetail;
     participants: Awaited<ReturnType<typeof getOfferParticipants>>;
@@ -174,6 +177,8 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
     svgs: SvgMap;
     /** Значки организации — в блоке «Организация» */
     badges: Badge[];
+    /** Похожие актуальные — только когда даты вакансии прошли (GS-277) */
+    similar: SimilarOffer[];
     /** Цена годового членства волонтёра — для предложения, когда кончились бесплатные отклики */
     volunteerPrice: number;
     t: Translate;
@@ -237,6 +242,20 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
             </SectionSubmenu>
 
             <div className="w-full max-w-[980px] pt-10">
+                {offer.datesPassed && (
+                    <OfferDatesPassed
+                        similar={similar}
+                        offerHref={(similarId) => routes.offer(locale, similarId)}
+                        catalogHref={routes.offersMap(locale)}
+                        labels={{
+                            title: tOffer("Даты этой вакансии прошли"),
+                            text: tOffer("Организатор ещё не указал новые даты — откликнуться можно, но ответа может не быть."),
+                            similar: tOffer("Похожие проекты с актуальными датами"),
+                            all: tOffer("Все актуальные вакансии"),
+                            noAddress: t("Без адреса"),
+                        }}
+                    />
+                )}
                 {offer.organizationSleeping && (
                     <p role="note" className="mb-8 flex items-start gap-3 rounded-[10px] bg-notice-bg px-5 py-4 text-[15px] leading-[140%] text-ink-secondary">
                         <svg aria-hidden viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 shrink-0 text-notice" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 7v5l3 2" /></svg>

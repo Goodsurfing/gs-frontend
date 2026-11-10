@@ -323,5 +323,9 @@
         "close": "Close",
         "error": "Couldn't prepare the text. Please try again.",
         "card-cta": "Apply on goodsurfing.org"
-    }
+    },
+    "Даты этой вакансии прошли": "The dates of this opportunity have passed",
+    "Организатор ещё не указал новые даты — откликнуться можно, но ответа может не быть.": "The host hasn’t added new dates yet — you can still apply, but you may not get a reply.",
+    "Похожие проекты с актуальными датами": "Similar projects with upcoming dates",
+    "Все актуальные вакансии": "All open opportunities"
 }
