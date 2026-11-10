@@ -19,10 +19,20 @@ test.describe('Новый фронт: кабинет — профиль', () => 
         await expect(page.getByLabel('E-mail')).toHaveValue('vol@test.com');
         await expect(page.getByLabel('E-mail')).toBeDisabled();
 
-        await page.getByRole('button', { name: 'Сохранить' }).click();
+        // Форма всегда открыта для правки (#851): «Сохранить» активна только при изменениях
+        const save = page.getByRole('button', { name: 'Сохранить', exact: true });
+        await expect(save).toBeDisabled();
+        const city = page.getByLabel('Город');
+        const before = await city.inputValue();
+        await city.fill(`E2E-город ${Date.now() % 1000}`);
+        await expect(page.getByText('Есть несохранённые изменения')).toBeVisible();
+        await save.click();
         await expect(page.getByText('Данные успешно изменены')).toBeVisible();
-        await expect(page.getByRole('button', { name: 'Редактировать' })).toBeVisible();
-        await expect(page.getByLabel('Имя')).toBeDisabled();
+        await expect(save).toBeDisabled();
+        // Вернуть как было (данные стейджа общие для всех прогонов)
+        await city.fill(before);
+        await save.click();
+        await expect(save).toBeDisabled();
     });
 
     test('предпочтения, роль, пароль, приватность открываются и показывают свои разделы', async ({ page }) => {

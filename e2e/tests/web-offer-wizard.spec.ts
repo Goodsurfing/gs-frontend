@@ -67,7 +67,7 @@ test.describe('Новый фронт: мастер вакансии — хост
         await page.getByRole('option').first().click();
         await expect(page.getByText('Укажите пожалуйста адрес')).toHaveCount(0);
 
-        await page.getByRole('button', { name: 'Сохранить' }).click();
+        await page.getByRole('button', { name: 'Сохранить', exact: true }).first().click();
         await expect(page.getByText('Адрес успешно изменён')).toBeVisible();
         await expect(page.getByText('У вас есть несохраненные изменения')).toHaveCount(0);
         await expect.poll(async () => (await vacancy())?.where?.address ?? null, { timeout: 15_000 }).toMatch(/Баумана/);
@@ -102,7 +102,7 @@ test.describe('Новый фронт: мастер вакансии — хост
         await page.getByRole('switch', { name: 'Принимаю в последний момент' }).check();
         await expect(page.getByRole('switch', { name: 'Нет даты окончания' })).toBeChecked();
 
-        await page.getByRole('button', { name: 'Сохранить' }).click();
+        await page.getByRole('button', { name: 'Сохранить', exact: true }).first().click();
         await expect(page.getByText('Данные успешно сохранены')).toBeVisible();
         await expect.poll(async () => {
             const when = (await vacancy())?.when;
@@ -116,7 +116,7 @@ test.describe('Новый фронт: мастер вакансии — хост
         await isNewFrontend(page);
         await expect(page.getByRole('heading', { name: 'Кого бы вы хотели видеть у себя в волонтерах' })).toBeVisible();
 
-        await page.getByRole('button', { name: 'Сохранить' }).click();
+        await page.getByRole('button', { name: 'Сохранить', exact: true }).first().click();
         await expect(page.getByText('Это поле является обязательным')).toHaveCount(2);
 
         await page.getByRole('switch', { name: 'Женщина' }).check();
@@ -128,7 +128,7 @@ test.describe('Новый фронт: мастер вакансии — хост
         await page.getByRole('button', { name: 'Добавить язык' }).click();
         await page.getByLabel('Сколько волонтерских мест одновременно').fill('3');
         await page.getByRole('switch', { name: 'Только иностранцев' }).check();
-        await page.getByRole('button', { name: 'Сохранить' }).click();
+        await page.getByRole('button', { name: 'Сохранить', exact: true }).first().click();
         await expect(page.getByText('Данные успешно сохранены')).toBeVisible();
         await expect.poll(async () => {
             const h = (await vacancy())?.howNeeds;
@@ -143,15 +143,15 @@ test.describe('Новый фронт: мастер вакансии — хост
         await isNewFrontend(page);
         await expect(page.getByRole('heading', { name: 'Описание вакансии' })).toBeVisible();
 
-        await page.getByRole('button', { name: 'Сохранить' }).click();
+        await page.getByRole('button', { name: 'Сохранить', exact: true }).first().click();
         await expect(page.getByText('Название вакансии не может быть пустым')).toBeVisible();
         await expect(page.getByText('Загрузите обложку')).toBeVisible();
 
-        await page.getByLabel('Название мероприятия').fill(title);
+        await page.getByLabel('Название мероприятия').first().fill(title);
         await page.getByRole('button', { name: 'Заповедники и нац. парки' }).click();
         await expect(page.getByRole('button', { name: 'Заповедники и нац. парки' })).toHaveAttribute('aria-pressed', 'true');
-        await page.getByLabel('Краткое описание').fill('Короткое описание вакансии для проверки.');
-        await page.getByLabel('Полное описание').fill('Полное описание вакансии. Создано e2e-тестом и удаляется после проверки.');
+        await page.getByLabel('Краткое описание').first().fill('Короткое описание вакансии для проверки.');
+        await page.getByLabel('Полное описание').first().fill('Полное описание вакансии. Создано e2e-тестом и удаляется после проверки.');
 
         // Обложка меньше 1280×720 не принимается; снимок окна 1280×720 — подходит
         const small = await page.screenshot({ clip: { x: 0, y: 0, width: 300, height: 200 } });
@@ -169,7 +169,7 @@ test.describe('Новый фронт: мастер вакансии — хост
         expect((await gallery).ok()).toBeTruthy();
         await expect(page.getByText('Галерея успешно обновлена')).toBeVisible();
 
-        await page.getByRole('button', { name: 'Сохранить' }).click();
+        await page.getByRole('button', { name: 'Сохранить', exact: true }).first().click();
         await expect(page.getByText('Данные успешно сохранены')).toBeVisible();
         await expect.poll(async () => {
             const v = await (await api!.get(`/api/v1/vacancy/${id}`, { headers })).json();

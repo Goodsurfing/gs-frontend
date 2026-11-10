@@ -46,6 +46,9 @@ test.describe('Новый фронт: каталог вакансий', () => {
         await page.getByRole('switch', { name: 'Показать прошедшие' }).first().click();
         await expect(page).toHaveURL(/past=1/);
         await expect(page.getByRole('switch', { name: 'Показать прошедшие' }).first()).toHaveAttribute('aria-checked', 'true');
+        // Дождаться, пока список обновится после переключателя: иначе на медленной машине CI
+        // выбор сортировки попадает в незавершённый переход и теряется
+        await page.waitForLoadState('networkidle');
 
         await page.getByRole('combobox', { name: 'По новизне' }).first().selectOption('popularity');
         await expect(page).toHaveURL(/sort=popularity/);
