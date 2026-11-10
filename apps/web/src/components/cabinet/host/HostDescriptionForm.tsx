@@ -26,7 +26,6 @@ export interface HostDescriptionLabels {
     aboutHint: string;
     aboutLimit: string;
     vk: string;
-    bannedNotice: string;
     required: string;
     save: string;
     created: string;
@@ -189,7 +188,6 @@ export function HostDescriptionForm({ organizationHref, infoHref, aside, onCreat
                         <div className="mt-[1.875rem] grid grid-cols-2 gap-x-[1.625rem] down-800:grid-cols-1 down-800:gap-y-[1.125rem]">
                             <TextField label={labels.vk} icon="/web/icons/social-mini/vk-mini-logo.svg" type="url" {...field("vk")} />
                             <TextField label="Telegram" icon="/web/icons/social-mini/telegram-mini-logo.svg" type="url" {...field("telegram")} />
-                            <p className="col-span-full mt-3 text-[0.8125rem] text-caption">{labels.bannedNotice}</p>
                         </div>
                     </div>
                     <div className="flex w-60 shrink-0 flex-col items-center gap-6 down-lg:w-full">

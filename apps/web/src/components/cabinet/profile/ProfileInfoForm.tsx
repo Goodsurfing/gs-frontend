@@ -162,6 +162,7 @@ export function ProfileInfoForm({ volunteerHref, preferencesHref, verifyHref, as
                     aboutMe: nullable(form.aboutMe),
                     gender: nullable(form.gender),
                     vk: nullable(form.vk),
+                    // Facebook и Instagram в форме не показываем (Meta запрещена в РФ), прежние значения не стираем
                     facebook: nullable(form.facebook),
                     telegram: nullable(form.telegram),
                     instagram: nullable(form.instagram),
@@ -259,8 +260,6 @@ export function ProfileInfoForm({ volunteerHref, preferencesHref, verifyHref, as
                         <TextAreaField label={labels.aboutMe} maxLength={1000} description={labels.aboutHint} {...field("aboutMe")} />
                         <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-6">
                             <TextField label="VK" icon="/web/icons/social-mini/vk-mini-logo.svg" {...field("vk")} />
-                            <TextField label="Facebook" icon="/web/icons/social-mini/facebook-mini-logo.svg" {...field("facebook")} />
-                            <TextField label="Instagram" icon="/web/icons/social-mini/instagram-mini-logo.svg" {...field("instagram")} />
                             <TextField label="Telegram" icon="/web/icons/social-mini/telegram-mini-logo.svg" {...field("telegram")} />
                         </div>
                     </div>
