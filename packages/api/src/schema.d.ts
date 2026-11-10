@@ -6361,6 +6361,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/vacancy/{id}/similar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Похожие актуальные вакансии (GS-277)
+         * @description Для страницы вакансии, у которой даты прошли: та же категория, другие организации, приём заявок открыт, даты не прошли. До 4 штук; вошедшему волонтёру — без тех, куда он уже откликался.
+         */
+        get: operations["get_app_api_v1_vacancy_similar"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/vacancy/{id}/toggle-status": {
         parameters: {
             query?: never;
@@ -11163,6 +11183,11 @@ export interface components {
              */
             canReview: boolean;
             condition: components["schemas"]["ConditionResult"];
+            /**
+             * @description Все периоды заезда уже закончились (GS-277): плашка «Даты прошли» и похожие актуальные вакансии
+             * @default false
+             */
+            datesPassed: boolean;
             description: components["schemas"]["DescriptionResult"];
             finishingTouche: components["schemas"]["FinishingToucheResult"];
             galleryImages: components["schemas"]["ImageResultDto"][];
@@ -17295,6 +17320,13 @@ export interface components {
         "Security.multipart-vacancy.read_media_object.read_organization.short": Record<string, never>;
         "Security.multipart-vacancy.read_vacancy_gallery_item.read_media_object.read_organization.short": Record<string, never>;
         "Security.multipart-vacancy.status_vacancy.read": Record<string, never>;
+        /** VacancySimilarResult */
+        SimilarResult: {
+            address?: string | null;
+            id: number;
+            image?: components["schemas"]["ImageResultDto"] | null;
+            title: string;
+        };
         /** ApplicationHintSimilarVacancy */
         SimilarVacancy: {
             id: number;
@@ -34634,6 +34666,28 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorResult"];
+                };
+            };
+        };
+    };
+    get_app_api_v1_vacancy_similar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id вакансии */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SimilarResult"][];
                 };
             };
         };

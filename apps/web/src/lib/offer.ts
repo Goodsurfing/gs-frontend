@@ -104,6 +104,24 @@ export async function getOfferBanner(locale: Locale): Promise<{ url: string; des
     }
 }
 
+export type SimilarOffer = components["schemas"]["SimilarResult"];
+
+/**
+ * Похожие актуальные вакансии для страницы, у которой даты прошли (GS-277): та же категория,
+ * другие организации, даты не прошли. Необязательный блок: ошибка или долгий ответ — пусто.
+ */
+export async function getSimilarOffers(locale: Locale, id: number): Promise<SimilarOffer[]> {
+    try {
+        const { data } = await serverApi(locale).GET("/api/v1/vacancy/{id}/similar", {
+            params: { path: { id } },
+            signal: AbortSignal.timeout(OPTIONAL_BLOCK_TIMEOUT_MS),
+        });
+        return Array.isArray(data) ? data.filter((item) => item.title) : [];
+    } catch {
+        return [];
+    }
+}
+
 /**
  * SVG-иконка с API (навыки, жильё, питание) для вставки в разметку: старый
  * фронт вставлял её как есть (react-svg) и перекрашивал через fill. Нет
