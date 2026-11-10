@@ -1,4 +1,5 @@
 import { mediaUrl } from "@/lib/media";
+import { shortAddress } from "@/lib/offerHighlights";
 import type { SimilarOffer } from "@/lib/offer";
 
 /**
@@ -41,7 +42,7 @@ export function OfferDatesPassed({ similar, offerHref, catalogHref, labels }: {
                                     />
                                     <span className="min-w-0">
                                         <span className="line-clamp-2 font-medium text-ink">{item.title}</span>
-                                        <span className="mt-0.5 block truncate text-[13px] text-caption">{item.address || labels.noAddress}</span>
+                                        <span className="mt-0.5 block truncate text-[13px] text-caption">{shortAddress(item.address) || labels.noAddress}</span>
                                     </span>
                                 </a>
                             </li>

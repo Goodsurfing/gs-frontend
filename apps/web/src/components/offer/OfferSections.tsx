@@ -99,7 +99,7 @@ export function OfferWhatToDo({ todo, svgs, t, tCommon }: { todo: S["WhatToDoRes
             <div className="flex w-full flex-col gap-[30px]">
                 <InfoCard>
                     <InfoCardItem title={t("personalOffer.Количество рабочих часов")} text={`${todo.hour} ${timeTypeText(workTimeType(todo.hour, todo.timeType), t)}`} />
-                    <InfoCardItem title={t("personalOffer.Выходных дней в неделю")} text={todo.dayOff} />
+                    {todo.dayOff ? <InfoCardItem title={t("personalOffer.Выходных дней в неделю")} text={todo.dayOff} /> : null}
                 </InfoCard>
             </div>
         </div>
