@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 
 import { Header } from "@/components/layout/header/Header";
+import { nudgeLabels } from "@/components/layout/PublicShell";
 import { SocialRibbon } from "@/components/layout/SocialRibbon";
+import { MembershipNudge } from "@/components/membership/MembershipNudge";
 import { SessionProvider } from "@/components/session/SessionProvider";
 import type { Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
@@ -23,7 +25,9 @@ export async function CabinetShell({ locale, items, need, fitContent, children }
     fitContent?: boolean;
     children: ReactNode;
 }) {
-    const [t, tProfile, banner] = await Promise.all([getTranslator(locale), getTranslator(locale, "profile"), getHeaderBanner(locale)]);
+    const [t, tProfile, tVolunteer, tHost, banner] = await Promise.all([
+        getTranslator(locale), getTranslator(locale, "profile"), getTranslator(locale, "volunteer"), getTranslator(locale, "host"), getHeaderBanner(locale),
+    ]);
     return (
         <SessionProvider>
             <RequireUser locale={locale} need={need} />
@@ -32,6 +36,7 @@ export async function CabinetShell({ locale, items, need, fitContent, children }
                 <Header locale={locale} t={t} tProfile={tProfile} banner={banner} variant="static" />
                 <CabinetFrame items={items} labels={{ toggle: t("main.welcome.header.menu") }} fitContent={fitContent}>{children}</CabinetFrame>
             </div>
+            <MembershipNudge locale={locale} labels={nudgeLabels(t, tVolunteer, tHost)} />
         </SessionProvider>
     );
 }
