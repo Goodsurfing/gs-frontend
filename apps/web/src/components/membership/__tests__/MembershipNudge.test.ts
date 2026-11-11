@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { quotaText } from "@/components/offers-map/FreeApplicationsHint";
 
-import { NUDGE_DELAY_MS, nudgeAllowedOn } from "../MembershipNudge";
+import { NUDGE_DELAY_MS, nudgeAllowedOn, nudgeWaitMs } from "../MembershipNudge";
 
 describe("предложение членства (GS-174, вернули 11.11.2026)", () => {
     it("не показываем на страницах членства, оплаты, входа и в админке", () => {
@@ -14,8 +14,11 @@ describe("предложение членства (GS-174, вернули 11.11.
         }
     });
 
-    it("через 2 минуты, как в старом сайте", () => {
+    it("через 2 минуты от начала визита, переходы между страницами отсчёт не сбрасывают", () => {
         expect(NUDGE_DELAY_MS).toBe(120_000);
+        expect(nudgeWaitMs(1_000, 1_000)).toBe(120_000);
+        expect(nudgeWaitMs(1_000, 91_000)).toBe(30_000);
+        expect(nudgeWaitMs(1_000, 500_000)).toBe(0);
     });
 });
 
