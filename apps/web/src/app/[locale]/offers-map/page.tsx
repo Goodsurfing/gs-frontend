@@ -8,6 +8,7 @@ import { getTranslator } from "@/i18n/dictionary";
 import { getCatalogPage } from "@/lib/offersCatalog";
 import { filterLanguages, getFilterCategories } from "@/lib/offersFilterOptions";
 import { parseOffersFilters } from "@/lib/offersFilters";
+import { TARIFF } from "@/lib/membershipPrices";
 import { routes } from "@/lib/routes";
 import { parseSubscribeSource } from "@/lib/savedSearch";
 import { pageMetadata } from "@/lib/seo";
@@ -59,7 +60,9 @@ export default async function OffersMapPage({ params, searchParams }: Props) {
                     manageHref: routes.profileSubscriptions(locale),
                     labels: Object.fromEntries(SUBSCRIBE_KEYS.map((key) => [key, tMap(`subscribe.${key}`)])) as Record<(typeof SUBSCRIBE_KEYS)[number], string>,
                 }}
+                paymentHref={`${routes.payment(locale)}?tariff=${TARIFF.volunteer}`}
                 labels={{
+                    quota: { left: t("freeApplicationsCounter.Откликов осталось"), more: t("freeApplicationsCounter.Нужно больше? Оформите членство!") },
                     count: `${total} ${tMap(`variants_${new Intl.PluralRules(locale).select(total)}`)}`,
                     showPassed: tMap("Показать прошедние"),
                     sortLabel: tMap("По новизне"),
