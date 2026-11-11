@@ -179,7 +179,8 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
         profileRole: routes.profileRole(locale),
         messenger: routes.messenger(locale),
         edit: routes.offerEdit(locale, offer.id),
-        membership: routes.membership(locale),
+        // «Отклики закончились» — сразу к оплате членства волонтёра, а не на общую страницу (11.11.2026)
+        membership: `${routes.payment(locale)}?tariff=${TARIFF.volunteer}`,
     };
     const labels = actionsLabels(tOffer, volunteerPrice);
     const volunteerHref = routes.volunteerPublicTemplate(locale);
