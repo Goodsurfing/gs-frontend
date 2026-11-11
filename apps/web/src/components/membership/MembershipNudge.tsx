@@ -38,16 +38,16 @@ export function MembershipNudge({ locale, labels }: {
     useEffect(() => {
         latest.current = session;
     }, [session]);
-    const scheduled = useRef(false);
 
     useEffect(() => {
-        if (scheduled.current || session.status !== "user" || !nudgeAllowedOn(pathname)) return;
+        // Без защиты от повторного запуска: адрес меняется при гидратации (/ru/… → /…), эффект
+        // перезапускается и снимает таймер — ставим заново, остаток считается от начала визита
+        if (session.status !== "user" || !nudgeAllowedOn(pathname)) return;
         const storage = window.sessionStorage;
         if (storage.getItem(SHOWN_KEY)) return;
         // Отсчёт — от начала визита, а не от загрузки страницы: иначе каждый переход сбрасывал бы 2 минуты
         const startedAt = Number(storage.getItem(STARTED_KEY)) || Date.now();
         storage.setItem(STARTED_KEY, String(startedAt));
-        scheduled.current = true;
         const timer = window.setTimeout(() => {
             // Членство подгружается после профиля — проверяем на момент показа
             const now = latest.current;
