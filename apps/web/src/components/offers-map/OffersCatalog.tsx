@@ -11,6 +11,7 @@ import { type OffersFilters, offersFiltersQuery, OFFERS_PER_PAGE } from "@/lib/o
 
 import { type FilterBarLabels, OffersFilterBar } from "./OffersFilterBar";
 import { OfferListCard, type OfferListCardLabels } from "./OfferListCard";
+import { FreeApplicationsHint } from "./FreeApplicationsHint";
 import { OffersMap, type OffersMapLabels } from "./OffersMap";
 import { SavedSearchButton, type SubscribeLabels } from "./SavedSearchButton";
 import type { SavedSearchSource } from "@/lib/savedSearch";
@@ -36,6 +37,8 @@ export interface CatalogLabels {
     map: OffersMapLabels;
     filters: FilterBarLabels;
     tabs: { list: string; map: string; filter: string };
+    /** Счётчик бесплатных откликов (только вошедшим без членства) */
+    quota: { left: string; more: string };
 }
 
 type MobileTab = "list" | "map" | "filter";
@@ -47,8 +50,10 @@ type MobileTab = "list" | "map" | "filter";
  * без перезагрузки — «назад» со страницы вакансии возвращает к ней же.
  * Фильтры, поиск, сортировка и страница — в адресе, список рендерит сервер.
  */
-export function OffersCatalog({ locale, basePath, filters, page, offerHref, categories, languages, subscribe, labels }: {
+export function OffersCatalog({ locale, basePath, filters, page, offerHref, paymentHref, categories, languages, subscribe, labels }: {
     locale: string;
+    /** Оплата членства волонтёра — из счётчика бесплатных откликов */
+    paymentHref: string;
     basePath: string;
     filters: OffersFilters;
     categories: { id: number; name: string; color: string }[];
@@ -206,6 +211,7 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, cate
                 )}
                 <div className="relative flex min-h-[52px] items-center gap-5 bg-field px-[30px] py-2 down-lg:min-h-0 down-lg:px-5 down-lg:py-3">
                     <span className="text-[1.125rem] font-medium text-ink-secondary">{labels.count}</span>
+                    <FreeApplicationsHint paymentHref={paymentHref} labels={labels.quota} />
                     <div className="contents down-lg:hidden">
                         {passedSwitch}
                         {sortSelect("h-[30px] w-[200px]")}
