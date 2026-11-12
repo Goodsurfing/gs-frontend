@@ -8,12 +8,12 @@ name: E2E staging
 
 on:
   workflow_run:
-    workflows: ['Deploy to staging']
+    # Старое SPA и его «Deploy to staging» удалены 05.11.2026 (GS-222)
+    workflows: ['Deploy web (новый фронт) to staging']
     types: [completed]
+  # Без расписания (решение владельца 12.11.2026): GitHub запускал его с опозданием на 6–9 часов,
+  # посреди дневных выкаток, и тратил минуты Actions. Только после выкатки и вручную.
   workflow_dispatch:
-  schedule:
-    # 04:30 UTC = 07:30 МСК: после ночного restore (06:00) и включения VM (06:55)
-    - cron: '30 4 * * *'
 
 concurrency:
   group: e2e-staging
@@ -23,8 +23,27 @@ jobs:
   e2e:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # 20 мин на тесты (сейчас ~9–17) + до 10 мин ожидания выкатки нового фронта
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
     steps:
+      - name: Wait for staging deploys to finish
+        # Пока были два фронта, запуск шёл по окончании выкатки старого SPA, а новый
+        # ещё выкатывался — 502 посреди тестов (04.11.2026). Теперь выкатка одна, но
+        # запуск по расписанию или вручную может совпасть с ней — ждём.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in $(seq 1 60); do
+            busy=$(gh run list -R "$GITHUB_REPOSITORY" -b develop -L 20 --json workflowName,status \
+              -q '[.[] | select(.workflowName == "Deploy web (новый фронт) to staging" and .status != "completed")] | length')
+            [ "$busy" = "0" ] && exit 0
+            echo "Идёт выкатка на стейдж ($busy), ждём…"; sleep 10
+          done
+          echo "Выкатка не закончилась за 10 минут — запускаем тесты как есть"
+
       - uses: actions/checkout@v7
         with:
           ref: develop
