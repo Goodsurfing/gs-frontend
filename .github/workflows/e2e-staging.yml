@@ -11,10 +11,9 @@ on:
     # Старое SPA и его «Deploy to staging» удалены 05.11.2026 (GS-222)
     workflows: ['Deploy web (новый фронт) to staging']
     types: [completed]
+  # Без расписания (решение владельца 12.11.2026): GitHub запускал его с опозданием на 6–9 часов,
+  # посреди дневных выкаток, и тратил минуты Actions. Только после выкатки и вручную.
   workflow_dispatch:
-  schedule:
-    # 04:30 UTC = 07:30 МСК: после ночного restore (06:00) и включения VM (06:55)
-    - cron: '30 4 * * *'
 
 concurrency:
   group: e2e-staging
