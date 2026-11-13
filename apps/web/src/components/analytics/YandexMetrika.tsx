@@ -71,10 +71,12 @@ export function reachGoal(goal: MetrikaGoal, params?: Record<string, unknown>) {
 /**
  * Цель, затем переход со страницы: без ожидания запрос Метрики обрывается
  * при уходе. Ждём ответа счётчика, но не дольше секунды; без счётчика —
- * сразу дальше.
+ * сразу дальше. Если скрипт счётчика ещё грузится (вход сразу после
+ * возврата из VK — цель «регистрация» раньше терялась), ждём его до
+ * 2,5 с всего, затем переход в любом случае.
  */
 export function reachGoalThen(goal: MetrikaGoal, params: Record<string, unknown> | undefined, next: () => void) {
-    if (!COUNTER_ID || !window.ym) {
+    if (!COUNTER_ID) {
         next();
         return;
     }
@@ -84,12 +86,26 @@ export function reachGoalThen(goal: MetrikaGoal, params: Record<string, unknown>
         done = true;
         next();
     };
-    window.setTimeout(leave, 1000);
-    try {
-        window.ym(COUNTER_ID, "reachGoal", goal, params, leave);
-    } catch {
-        leave();
+    const fire = () => {
+        try {
+            window.ym?.(COUNTER_ID, "reachGoal", goal, params, leave);
+        } catch {
+            leave();
+        }
+    };
+    if (window.ym) {
+        window.setTimeout(leave, 1000);
+        fire();
+        return;
     }
+    window.setTimeout(leave, 2500);
+    const timer = window.setInterval(() => {
+        if (done) window.clearInterval(timer);
+        else if (window.ym) {
+            window.clearInterval(timer);
+            fire();
+        }
+    }, 50);
 }
 
 /**
