@@ -24,6 +24,34 @@ const timeOf = (chat: Chat) => (chat.lastMessage?.createdAt ? new Date(chat.last
 /** Сначала чаты с самым свежим сообщением; без сообщений — по номеру чата */
 export const sortChats = (chats: Chat[]): Chat[] => [...chats].sort((a, b) => timeOf(b) - timeOf(a));
 
+/** Размер страницы списка чатов и предел страниц (50 × 100 — с большим запасом над самым большим списком) */
+export const CHATS_PER_PAGE = 100;
+const MAX_CHAT_PAGES = 50;
+
+/**
+ * Все чаты, постранично. API отдаёт список страницами (по умолчанию 30), а
+ * сайт брал только первую — у организатора с 30+ чатами новые заявки в
+ * списке не появлялись (обращение 09.11.2026). Без ответа на первой странице
+ * — null (ошибка сети), на следующих — то, что успели загрузить.
+ */
+export async function fetchAllChats(fetchPage: (page: number) => Promise<Chat[] | null>): Promise<Chat[] | null> {
+    const all: Chat[] = [];
+    const seen = new Set<number>();
+    for (let page = 1; page <= MAX_CHAT_PAGES; page++) {
+        const items = await fetchPage(page);
+        if (!items) return page === 1 ? null : all;
+        for (const chat of items) {
+            if (chat.id !== undefined) {
+                if (seen.has(chat.id)) continue;
+                seen.add(chat.id);
+            }
+            all.push(chat);
+        }
+        if (items.length < CHATS_PER_PAGE) break;
+    }
+    return all;
+}
+
 /**
  * Новое сообщение из Mercure в списке чатов: точечно меняем последнее
  * сообщение и счётчик непрочитанных, без перезапроса всего списка (иначе
