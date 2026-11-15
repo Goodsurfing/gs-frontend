@@ -47,6 +47,18 @@ export function proxy(request: NextRequest) {
 
     const locale = localeFromPath(pathname);
 
+    // Шаблон ссылки вместо id (/offers/{id}): страницы передают такие шаблоны в разметку,
+    // поисковики находят их и ходят по ним. Раньше — 200 с пустой страницей и запрос
+    // в API с «{id}» (ошибка в Bugsink, 15.11.2026). Теперь — сразу 404
+    if (isTemplatePath(pathname)) {
+        const notFound = request.nextUrl.clone();
+        notFound.pathname = `/${locale}/__not-found`;
+        const notFoundHeaders = new Headers(request.headers);
+        notFoundHeaders.set(LOCALE_HEADER, locale);
+        notFoundHeaders.set(REWRITTEN, "1");
+        return NextResponse.rewrite(notFound, { request: { headers: notFoundHeaders } });
+    }
+
     if (/^(\/(en|es))?\/offers\/\d+\/?$/.test(pathname)) {
         const target = legacyOffersListTarget(Object.fromEntries(request.nextUrl.searchParams), routes.offersMap(locale));
         if (target) return NextResponse.redirect(new URL(target, request.url), 301);
@@ -62,6 +74,11 @@ export function proxy(request: NextRequest) {
         return NextResponse.rewrite(internal, { request: { headers } });
     }
     return NextResponse.next({ request: { headers } });
+}
+
+/** В пути остался шаблон: {id}, %7Bid%7D */
+export function isTemplatePath(pathname: string): boolean {
+    return /[{}]|%7B|%7D/i.test(pathname);
 }
 
 export const config = {
