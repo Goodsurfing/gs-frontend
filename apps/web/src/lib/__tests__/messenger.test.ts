@@ -1,7 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import {
-    applyIncomingMessage, type Chat, companionTarget, formatMessageDate, idFromIri, isImageAttachment, linkify, mergeMessages, setArrival, setDeparture, sortChats,
+    applyIncomingMessage, type Chat, companionTarget, fetchAllChats, formatMessageDate, idFromIri, isImageAttachment, linkify, mergeMessages, setArrival, setDeparture, sortChats,
 } from "../messenger";
 
 const chat = (id: number, createdAt?: string, unread = 0): Chat => ({
@@ -81,5 +81,38 @@ describe("даты заявки", () => {
         expect(setArrival({ start: "2026-12-01", end: "2026-12-10" }, "2026-12-20")).toEqual({ start: "2026-12-20", end: "2026-12-20" });
         expect(setDeparture({ start: "2026-12-05", end: "2026-12-10" }, "2026-12-01", "2026-11-02")).toEqual({ start: "2026-12-05", end: "2026-12-10" });
         expect(setDeparture({ start: null, end: null }, "2026-12-01", "2026-11-02")).toEqual({ start: "2026-11-02", end: "2026-12-01" });
+    });
+});
+
+describe("fetchAllChats — все страницы списка чатов", () => {
+    const chats = (from: number, count: number) => Array.from({ length: count }, (_, i) => ({ id: from + i }) as Chat);
+
+    it("догружает страницы, пока не придёт неполная", async () => {
+        const pages: Record<number, Chat[]> = { 1: chats(1, 100), 2: chats(101, 100), 3: chats(201, 64) };
+        const requested: number[] = [];
+        const all = await fetchAllChats(async (page) => {
+            requested.push(page);
+            return pages[page] ?? [];
+        });
+        expect(requested).toEqual([1, 2, 3]);
+        expect(all?.length).toBe(264);
+    });
+
+    it("одна неполная страница — один запрос", async () => {
+        const fetchPage = vi.fn(async () => chats(1, 35));
+        expect((await fetchAllChats(fetchPage))?.length).toBe(35);
+        expect(fetchPage).toHaveBeenCalledTimes(1);
+    });
+
+    it("ошибка на первой странице — null, на следующих — что успели", async () => {
+        expect(await fetchAllChats(async () => null)).toBeNull();
+        const partial = await fetchAllChats(async (page) => (page === 1 ? chats(1, 100) : null));
+        expect(partial?.length).toBe(100);
+    });
+
+    it("чат, переехавший между страницами, не дублируется", async () => {
+        const all = await fetchAllChats(async (page) => (page === 1 ? chats(1, 100) : [...chats(100, 1), ...chats(101, 5)]));
+        expect(all?.map((chat) => chat.id).filter((id) => id === 100)).toHaveLength(1);
+        expect(all?.length).toBe(105);
     });
 });

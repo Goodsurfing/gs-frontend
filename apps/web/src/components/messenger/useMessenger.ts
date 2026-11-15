@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { API_URL, browserApi } from "@/lib/browserApi";
-import { type ApplicationStatus, applyIncomingMessage, type Chat, type ChatMessage, idFromIri, mergeMessages, sortChats } from "@/lib/messenger";
+import { type ApplicationStatus, applyIncomingMessage, type Chat, type ChatMessage, CHATS_PER_PAGE, fetchAllChats, idFromIri, mergeMessages, sortChats } from "@/lib/messenger";
 
 /** Токен Mercure старого SPA (localStorage, JSON-строкой); без него — опрос сервера */
 const mercureToken = (): string | null => {
@@ -62,13 +62,16 @@ export function useChatList(token: string | undefined, enabled: boolean) {
 
     const reload = useCallback(async () => {
         if (!enabled) return;
-        const query: Record<string, string> = {};
+        const query: Record<string, string | number> = { itemsPerPage: CHATS_PER_PAGE };
         if (search) query.search = search;
         if (status) query.status = status;
-        const result = await browserApi(token)
-            .GET("/api/v1/personal/chats", { params: { query: query as never } })
-            .catch(() => null);
-        if (Array.isArray(result?.data)) setChats(sortChats(result.data));
+        const all = await fetchAllChats(async (page) => {
+            const result = await browserApi(token)
+                .GET("/api/v1/personal/chats", { params: { query: { ...query, page } as never } })
+                .catch(() => null);
+            return Array.isArray(result?.data) ? (result.data as Chat[]) : null;
+        });
+        if (all) setChats(sortChats(all));
         setLoaded(true);
     }, [enabled, search, status, token]);
 
