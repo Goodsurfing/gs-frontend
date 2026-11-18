@@ -4,7 +4,6 @@ import { DEFAULT_LOCALE, isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { serverApi } from "@/lib/api";
 import { categoryName } from "@/lib/categories";
-import { compressedJson } from "@/lib/compressedJson";
 import type { MapOffer } from "@/lib/mapOffers";
 import { mediaUrl } from "@/lib/media";
 import { offersApiQuery, parseOffersFilters } from "@/lib/offersFilters";
@@ -48,7 +47,9 @@ export async function GET(request: NextRequest) {
                     category: category ? { name: categoryName(category.name, t) ?? category.name, color: category.color } : undefined,
                 };
             });
-        return compressedJson(request.headers.get("accept-encoding"), offers, { "Cache-Control": "private, max-age=60" });
+        // Сжимает сам Next (gzip): с 16.4.6 он вырезает Content-Encoding из ответов
+        // обработчиков, и ручное сжатие приходило браузеру нераспаковываемым (18.11)
+        return NextResponse.json(offers, { headers: { "Cache-Control": "private, max-age=60" } });
     } catch {
         return NextResponse.json({ error: "upstream" }, { status: 502 });
     }
