@@ -44,9 +44,10 @@ jobs:
       - name: Build
         working-directory: apps/web
         run: npm run build
-      # Известные уязвимости в зависимостях нового фронта — блокирует на moderate и выше
+      # Известные уязвимости в зависимостях нового фронта — блокирует на moderate и выше;
+      # сознательные исключения с причиной и сроком — apps/web/audit-allowlist.json
       - name: Dependency audit
         working-directory: apps/web
-        run: npm audit --omit=dev --audit-level=moderate
+        run: node scripts/audit-check.mjs
       - name: Docker image builds
         run: docker build -f apps/web/Dockerfile -t gs-web:check .
