@@ -30,6 +30,17 @@ export function proxy(request: NextRequest) {
         return NextResponse.next();
     }
 
+    // Испорченная кодировка в адресе (%C0%AF — попытки выйти из каталога, оборванное %A):
+    // страница падала с 500 на разборе параметра. Это ошибка запроса — 400 (18.11.2026)
+    if (isMalformedPath(pathname)) {
+        return new NextResponse("Bad Request", { status: 400, headers: { "Content-Type": "text/plain; charset=utf-8" } });
+    }
+
+    // Сюда попадают и файлы с «%» в адресе (второе правило matcher) — их отдаём как есть
+    if (/^\/(_next|web)\//.test(pathname) || /\.[a-z0-9]+$/i.test(pathname)) {
+        return NextResponse.next();
+    }
+
     if (/^\/ru(?=\/|$)/.test(pathname)) {
         const target = request.nextUrl.clone();
         target.pathname = stripLocale(pathname);
@@ -76,6 +87,16 @@ export function proxy(request: NextRequest) {
     return NextResponse.next({ request: { headers } });
 }
 
+/** Путь не раскодируется: неверные %-последовательности или не UTF-8 */
+export function isMalformedPath(pathname: string): boolean {
+    try {
+        decodeURIComponent(pathname);
+        return false;
+    } catch {
+        return true;
+    }
+}
+
 /** В пути остался шаблон: {id}, %7Bid%7D */
 export function isTemplatePath(pathname: string): boolean {
     return /[{}]|%7B|%7D/i.test(pathname);
@@ -83,5 +104,7 @@ export function isTemplatePath(pathname: string): boolean {
 
 export const config = {
     // Только страницы: ассеты Next, статика нового фронта и /healthz идут мимо
-    matcher: ["/((?!_next/|web/|healthz|.*\\.[a-z0-9]+$).*)"],
+    // Второе правило — любые адреса с «%»: испорченная кодировка в адресе «файла»
+    // (/..%C0%AF.env) иначе шла мимо proxy и роняла страницу с 500
+    matcher: ["/((?!_next/|web/|healthz|.*\\.[a-z0-9]+$).*)", "/(.*%.*)"],
 };
