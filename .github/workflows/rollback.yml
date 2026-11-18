@@ -41,9 +41,9 @@ jobs:
           REG="${{ steps.reg.outputs.registry }}"
           TAG="${{ steps.reg.outputs.env_tag }}"
           SHA="${{ inputs.sha }}"
-          docker pull "$REG/gs-frontend:sha-$SHA"
-          docker tag  "$REG/gs-frontend:sha-$SHA" "$REG/gs-frontend:$TAG"
-          docker push "$REG/gs-frontend:$TAG"
+          docker pull "$REG/gs-web:sha-$SHA"
+          docker tag  "$REG/gs-web:sha-$SHA" "$REG/gs-web:$TAG"
+          docker push "$REG/gs-web:$TAG"
 
       - name: SSH pull+up on VM
         uses: appleboy/ssh-action@v1.2.5
@@ -54,5 +54,5 @@ jobs:
           script: |
             set -e
             cd /opt/gs
-            sudo docker compose pull frontend
-            sudo docker compose up -d frontend
+            sudo docker compose pull web
+            sudo docker compose up -d web
