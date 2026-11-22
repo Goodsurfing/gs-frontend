@@ -3,11 +3,13 @@
  * страницы и вернулись — правки на месте, над кнопками предупреждение.
  * Ключи свои, не старого SPA: форматы данных у фронтов разные.
  */
+import { storageGet, storageRemove, storageSet } from "@/lib/safeStorage";
+
 const key = (step: string, id: string) => `gs-web-offer-${step}-${id}`;
 
 export function readDraft<T>(step: string, id: string, valid: (value: unknown) => value is T): T | null {
     try {
-        const raw = window.sessionStorage.getItem(key(step, id));
+        const raw = storageGet(key(step, id), "session");
         const value: unknown = raw ? JSON.parse(raw) : null;
         return valid(value) ? value : null;
     } catch {
@@ -17,7 +19,7 @@ export function readDraft<T>(step: string, id: string, valid: (value: unknown) =
 
 export function writeDraft(step: string, id: string, value: unknown) {
     try {
-        window.sessionStorage.setItem(key(step, id), JSON.stringify(value));
+        storageSet(key(step, id), JSON.stringify(value), "session");
     } catch {
         // Хранилище недоступно (приватный режим) — правки живут до ухода со страницы
     }
@@ -25,7 +27,7 @@ export function writeDraft(step: string, id: string, value: unknown) {
 
 export function clearDraft(step: string, id: string) {
     try {
-        window.sessionStorage.removeItem(key(step, id));
+        storageRemove(key(step, id), "session");
     } catch {
         // см. writeDraft
     }

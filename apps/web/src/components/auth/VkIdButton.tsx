@@ -8,6 +8,7 @@ import { saveSession, type TokenResponse } from "@/lib/authSession";
 import { muteVkStatsErrors } from "@/lib/vkStatsGuard";
 
 import { reachGoalThen } from "../analytics/YandexMetrika";
+import { storageGet, storageRemove, storageSet } from "@/lib/safeStorage";
 
 const CLIENT_ID = Number(process.env.NEXT_PUBLIC_VKID_CLIENT_ID || "54505769");
 
@@ -41,10 +42,10 @@ export function VkIdButton({ locale, page, onSuccess, onError, deletedText }: {
         void (async () => {
             muteVkStatsErrors();
             const VKID = await import("@vkid/sdk");
-            let verifier = window.localStorage.getItem("vk_code_verifier");
+            let verifier = storageGet("vk_code_verifier");
             if (!verifier) {
                 verifier = randomString(64);
-                window.localStorage.setItem("vk_code_verifier", verifier);
+                storageSet("vk_code_verifier", verifier);
             }
             VKID.Config.init({ app: CLIENT_ID, redirectUrl, scope: "email", codeVerifier: verifier, state: randomString(32) });
             const render = () => {
@@ -56,7 +57,7 @@ export function VkIdButton({ locale, page, onSuccess, onError, deletedText }: {
             const params = new URLSearchParams(window.location.search);
             const code = params.get("code");
             const deviceId = params.get("device_id");
-            if (!code || !deviceId || params.get("type") !== "code_v2" || !window.localStorage.getItem("vk_code_verifier")) {
+            if (!code || !deviceId || params.get("type") !== "code_v2" || !storageGet("vk_code_verifier")) {
                 render();
                 return;
             }
@@ -71,7 +72,7 @@ export function VkIdButton({ locale, page, onSuccess, onError, deletedText }: {
                     headers: { Authorization: `Bearer ${vk.accessToken}` },
                 });
                 if (response.status === 401) {
-                    window.localStorage.removeItem("vk_code_verifier");
+                    storageRemove("vk_code_verifier");
                     onError(deletedText);
                     render();
                     return;
@@ -82,7 +83,7 @@ export function VkIdButton({ locale, page, onSuccess, onError, deletedText }: {
                     return;
                 }
                 saveSession({ ...data, roles: data.user?.roles ?? data.roles }, data.user?.email ?? "");
-                window.localStorage.removeItem("vk_code_verifier");
+                storageRemove("vk_code_verifier");
                 // Аккаунт создан этим входом — регистрация, как у формы с почтой (раньше VK, ~40 % регистраций, в Метрике не считался).
                 // Цель успевает уйти до перехода: reachGoalThen ждёт ответа счётчика (не дольше секунды)
                 if (data.isNew) reachGoalThen("signup", { method: "vk" }, onSuccess);

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { browserApi } from "@/lib/browserApi";
 import { currentPushSupport, OFFER_DISMISSED_KEY, type PushSupport, shouldOffer, subscribePush } from "@/lib/webPush";
+import { storageGet, storageSet } from "@/lib/safeStorage";
 
 export interface PushOfferLabels {
     text: string;
@@ -20,7 +21,7 @@ export interface PushOfferLabels {
 }
 
 const dismissedAt = (): number | null => {
-    const value = Number(window.localStorage.getItem(OFFER_DISMISSED_KEY));
+    const value = Number(storageGet(OFFER_DISMISSED_KEY));
     return Number.isFinite(value) && value > 0 ? value : null;
 };
 
@@ -65,7 +66,7 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
     }, [enabled, token]);
 
     const later = useCallback(() => {
-        window.localStorage.setItem(OFFER_DISMISSED_KEY, String(Date.now()));
+        storageSet(OFFER_DISMISSED_KEY, String(Date.now()));
         setVisible(false);
     }, []);
 
@@ -81,7 +82,7 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
         // Разрешил, но подписка не создалась — браузер без службы уведомлений (Comodo Dragon и т. п.):
         // честно сказать и посоветовать другой браузер, а не «браузер не разрешил»
         setResult(ok ? "enabled" : permission === "granted" ? "unsupported" : "blocked");
-        if (!ok && permission !== "denied") window.localStorage.setItem(OFFER_DISMISSED_KEY, String(Date.now()));
+        if (!ok && permission !== "denied") storageSet(OFFER_DISMISSED_KEY, String(Date.now()));
         window.setTimeout(() => setVisible(false), 4000);
     };
 

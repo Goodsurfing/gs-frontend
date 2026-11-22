@@ -18,6 +18,7 @@ import type { CatalogOffer } from "@/lib/offersCatalog";
 import { whyText, type WhyLabels } from "@/lib/recommendations";
 
 import { Doughnut } from "./Doughnut";
+import { storageGet, storageSet } from "@/lib/safeStorage";
 
 type Occupancy = components["schemas"]["OccupancyResult"];
 
@@ -130,12 +131,12 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
 
     useEffect(() => {
         try {
-            const saved = window.localStorage.getItem(NOTIFICATION_DATE_KEY);
+            const saved = storageGet(NOTIFICATION_DATE_KEY);
             // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorage есть только в браузере
             if (saved) setDate(saved);
             else {
                 const now = new Date().toDateString();
-                window.localStorage.setItem(NOTIFICATION_DATE_KEY, now);
+                storageSet(NOTIFICATION_DATE_KEY, now);
                 setDate(now);
             }
         } catch {

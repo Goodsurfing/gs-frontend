@@ -16,6 +16,7 @@ import { type Application, ApplicationCard, type ApplicationCardLabels } from ".
 import { HostReviewDialog, type HostReviewDialogLabels } from "./HostReviewDialog";
 import { useApplicationStatus } from "./useApplicationStatus";
 import { useMyOrganization } from "./useMyOrganization";
+import { storageGet, storageSet } from "@/lib/safeStorage";
 
 /** Без членства можно опубликовать одну вакансию (FREE_VACANCIES_LIMIT, VacancyConstant::FREE_VACANCY_LIMIT на бэкенде) */
 const FREE_VACANCIES_LIMIT = 1;
@@ -90,10 +91,10 @@ export function HostDashboard({ locale, routes, labels }: {
         // Дата первого уведомления — общая со старым SPA запись в localStorage (формат toDateString)
         let date = "";
         try {
-            date = window.localStorage.getItem(NOTIFICATION_DATE_KEY) ?? "";
+            date = storageGet(NOTIFICATION_DATE_KEY) ?? "";
             if (!date) {
                 date = new Date().toDateString();
-                window.localStorage.setItem(NOTIFICATION_DATE_KEY, date);
+                storageSet(NOTIFICATION_DATE_KEY, date);
             }
         } catch {
             date = new Date().toDateString();

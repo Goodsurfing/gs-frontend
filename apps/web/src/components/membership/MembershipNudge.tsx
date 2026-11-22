@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { MemberBanner } from "@/components/content/MemberBanner";
 import { activeMembership, useSession } from "@/components/session/SessionProvider";
 import type { Locale } from "@/i18n/config";
+import { storageGet, storageSet } from "@/lib/safeStorage";
 
 /** Через сколько после входа на сайт показать предложение (как в старом SPA, GS-174) */
 export const NUDGE_DELAY_MS = 2 * 60 * 1000;
@@ -45,18 +46,17 @@ export function MembershipNudge({ locale, labels }: {
         if (session.status !== "user" || !nudgeAllowedOn(pathname)) return;
         // Автоматическим браузерам (сквозные тесты, боты) не показываем: окно перекрыло бы кнопки посреди теста
         if (window.navigator.webdriver) return;
-        const storage = window.sessionStorage;
-        if (storage.getItem(SHOWN_KEY)) return;
+        if (storageGet(SHOWN_KEY, "session")) return;
         // Отсчёт — от начала визита, а не от загрузки страницы: иначе каждый переход сбрасывал бы 2 минуты
-        const startedAt = Number(storage.getItem(STARTED_KEY)) || Date.now();
-        storage.setItem(STARTED_KEY, String(startedAt));
+        const startedAt = Number(storageGet(STARTED_KEY, "session")) || Date.now();
+        storageSet(STARTED_KEY, String(startedAt), "session");
         const timer = window.setTimeout(() => {
             // Членство подгружается после профиля — проверяем на момент показа
             const now = latest.current;
-            if (now.status !== "user" || storage.getItem(SHOWN_KEY)) return;
+            if (now.status !== "user" || storageGet(SHOWN_KEY, "session")) return;
             if (activeMembership(now.memberships, "REGULAR") || activeMembership(now.memberships, "INTERNATIONAL")) return;
             if (!nudgeAllowedOn(window.location.pathname)) return;
-            storage.setItem(SHOWN_KEY, "1");
+            storageSet(SHOWN_KEY, "1", "session");
             setOpen(true);
         }, nudgeWaitMs(startedAt, Date.now()));
         return () => window.clearTimeout(timer);

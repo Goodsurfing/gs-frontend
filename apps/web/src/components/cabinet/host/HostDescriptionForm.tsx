@@ -11,6 +11,7 @@ import { browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
 import { EMPTY_ORGANIZATION_FORM as EMPTY, ORGANIZATION_TYPES, type OrganizationForm as Form, OTHER_TYPE as OTHER, toBody, toForm } from "@/lib/hostOrganization";
 import { uploadMedia } from "@/lib/uploadMedia";
+import { storageGet, storageRemove, storageSet } from "@/lib/safeStorage";
 
 export interface HostDescriptionLabels {
     name: string;
@@ -43,7 +44,7 @@ export interface HostDescriptionLabels {
 const DRAFT_KEY = "gs-web-host-description";
 const readDraft = (): Form | null => {
     try {
-        const raw = window.sessionStorage.getItem(DRAFT_KEY);
+        const raw = storageGet(DRAFT_KEY, "session");
         return raw ? { ...EMPTY, ...JSON.parse(raw) as Partial<Form> } : null;
     } catch {
         return null;
@@ -51,8 +52,8 @@ const readDraft = (): Form | null => {
 };
 const writeDraft = (form: Form | null) => {
     try {
-        if (form) window.sessionStorage.setItem(DRAFT_KEY, JSON.stringify(form));
-        else window.sessionStorage.removeItem(DRAFT_KEY);
+        if (form) storageSet(DRAFT_KEY, JSON.stringify(form), "session");
+        else storageRemove(DRAFT_KEY, "session");
     } catch {
         // хранилище недоступно — черновик просто не сохраняется
     }
