@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { forgetReferral, rememberReferral, storedReferral } from "@/lib/referral";
 
@@ -17,7 +17,11 @@ function memoryStorage(): Storage {
 
 describe("код приглашения", () => {
     beforeEach(() => {
-        globalThis.localStorage = memoryStorage();
+        vi.stubGlobal("window", { localStorage: memoryStorage() });
+    });
+
+    afterEach(() => {
+        vi.unstubAllGlobals();
     });
 
     it("запоминает код из адреса и отдаёт его", () => {
@@ -36,6 +40,6 @@ describe("код приглашения", () => {
     it("старше 30 дней — забывает", () => {
         rememberReferral("?ref=abcd2345", 0);
         expect(storedReferral(31 * 24 * 60 * 60 * 1000)).toBeNull();
-        expect(localStorage.getItem("gs.ref")).toBeNull();
+        expect(window.localStorage.getItem("gs.ref")).toBeNull();
     });
 });

@@ -7,6 +7,7 @@ import { API_URL } from "@/lib/browserApi";
 import { saveSession, type TokenResponse } from "@/lib/authSession";
 
 import { AuthMessage, outlinedLink } from "./AuthMessage";
+import { storageGet } from "@/lib/safeStorage";
 
 /**
  * Ссылка из письма «Подтвердите почту» (/verify-email-hash/:hash,
@@ -24,7 +25,7 @@ export function VerifyEmailHash({ hash, profileHref, labels }: {
     useEffect(() => {
         if (started.current) return;
         started.current = true;
-        const token = JSON.parse(window.localStorage.getItem("token") ?? "null") as string | null;
+        const token = JSON.parse(storageGet("token") ?? "null") as string | null;
         fetch(`${API_URL}/api/v1/verify/email/${encodeURIComponent(hash)}`, {
             credentials: "include",
             headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },

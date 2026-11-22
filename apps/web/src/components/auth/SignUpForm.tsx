@@ -10,6 +10,7 @@ import { API_URL } from "@/lib/browserApi";
 import { AuthInput } from "./AuthInput";
 import { AuthToast } from "./AuthToast";
 import { VkIdButton } from "./VkIdButton";
+import { storageGet, storageRemove, storageSet } from "@/lib/safeStorage";
 
 export interface SignUpLabels {
     password: string;
@@ -33,15 +34,15 @@ export interface SignUpLabels {
 const CONSENT_KEY = "gs.marketingConsentIntent";
 const readConsent = () => {
     try {
-        return window.sessionStorage.getItem(CONSENT_KEY) !== "0";
+        return storageGet(CONSENT_KEY, "session") !== "0";
     } catch {
         return true;
     }
 };
 const writeConsent = (value: boolean | null) => {
     try {
-        if (value === null) window.sessionStorage.removeItem(CONSENT_KEY);
-        else window.sessionStorage.setItem(CONSENT_KEY, value ? "1" : "0");
+        if (value === null) storageRemove(CONSENT_KEY, "session");
+        else storageSet(CONSENT_KEY, value ? "1" : "0", "session");
     } catch {
         // приватный режим без sessionStorage — останется значение по умолчанию
     }
@@ -87,7 +88,7 @@ export function SignUpForm({ locale, signInHref, resetHref, privacyHref, confirm
         const agreed = readConsent();
         writeConsent(null);
         if (agreed) {
-            const token = JSON.parse(window.localStorage.getItem("token") ?? "null") as string | null;
+            const token = JSON.parse(storageGet("token") ?? "null") as string | null;
             await fetch(`${API_URL}/api/v1/profile/marketing-consent`, {
                 method: "PATCH",
                 credentials: "include",
@@ -128,7 +129,7 @@ export function SignUpForm({ locale, signInHref, resetHref, privacyHref, confirm
                 }),
             });
             if (response.ok) {
-                window.sessionStorage.setItem(REGISTER_EMAIL_KEY, email);
+                storageSet(REGISTER_EMAIL_KEY, email, "session");
                 reachGoalThen("signup", undefined, () => {
                     window.location.href = confirmHref;
                 });

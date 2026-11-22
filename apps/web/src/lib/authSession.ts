@@ -5,6 +5,8 @@
  * в новом фронте старое SPA считало бы пользователя гостем. Cookie входа
  * (GS-218) бэкенд ставит сам, если она включена.
  */
+import { storageGet, storageRemove, storageSet } from "@/lib/safeStorage";
+
 export interface TokenResponse {
     accessToken: string;
     mercureToken?: string;
@@ -13,7 +15,7 @@ export interface TokenResponse {
 }
 
 export function saveSession(data: TokenResponse, username: string) {
-    const set = (key: string, value: unknown) => window.localStorage.setItem(key, JSON.stringify(value));
+    const set = (key: string, value: unknown) => storageSet(key, JSON.stringify(value));
     set("user", { username });
     set("token", data.accessToken);
     set("mercureToken", data.mercureToken ?? "");
@@ -58,8 +60,8 @@ export function returnAfterAuth(prefix: string): string | null {
     const params = new URLSearchParams(window.location.search);
     const fromUrl = nextRoute(prefix, params.get("next"), params.get("nextId"));
     try {
-        if (fromUrl) window.sessionStorage.setItem(PENDING_NEXT, fromUrl);
-        return fromUrl ?? safeSitePath(window.sessionStorage.getItem(PENDING_NEXT));
+        if (fromUrl) storageSet(PENDING_NEXT, fromUrl, "session");
+        return fromUrl ?? safeSitePath(storageGet(PENDING_NEXT, "session"));
     } catch {
         return fromUrl;
     }
@@ -67,7 +69,7 @@ export function returnAfterAuth(prefix: string): string | null {
 
 export function forgetReturnAfterAuth() {
     try {
-        window.sessionStorage.removeItem(PENDING_NEXT);
+        storageRemove(PENDING_NEXT, "session");
     } catch {
         // без sessionStorage — нечего забывать
     }

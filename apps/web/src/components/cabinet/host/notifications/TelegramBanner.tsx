@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { useSession } from "@/components/session/SessionProvider";
 import { browserApi } from "@/lib/browserApi";
+import { storageGet, storageSet } from "@/lib/safeStorage";
 
 const HIDDEN_KEY = "gs.telegramBannerHidden";
 
@@ -18,7 +19,7 @@ export function TelegramBanner({ href, labels }: { href: string; labels: { text:
     useEffect(() => {
         if (session.status !== "user") return;
         try {
-            if (localStorage.getItem(HIDDEN_KEY)) return;
+            if (storageGet(HIDDEN_KEY)) return;
         } catch {
             return;
         }
@@ -43,7 +44,7 @@ export function TelegramBanner({ href, labels }: { href: string; labels: { text:
                 type="button"
                 onClick={() => {
                     try {
-                        localStorage.setItem(HIDDEN_KEY, "1");
+                        storageSet(HIDDEN_KEY, "1");
                     } catch {
                         // нет хранилища — просто скрыть
                     }

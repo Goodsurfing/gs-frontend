@@ -6,6 +6,7 @@ import { useSession } from "@/components/session/SessionProvider";
 import { browserApi } from "@/lib/browserApi";
 
 import { CheckoutFeedbackForm, type CheckoutFeedbackLabels } from "./CheckoutFeedbackForm";
+import { storageGet, storageSet } from "@/lib/safeStorage";
 
 const HIDDEN_KEY = "gs.checkoutFeedbackHidden";
 
@@ -26,7 +27,7 @@ export function CheckoutFeedbackPrompt({ labels, intro, hide }: { labels: Checko
                 const id = data?.paymentId ?? null;
                 let hidden = false;
                 try {
-                    hidden = id !== null && localStorage.getItem(HIDDEN_KEY) === id;
+                    hidden = id !== null && storageGet(HIDDEN_KEY) === id;
                 } catch {
                     // без хранилища — показываем
                 }
@@ -48,7 +49,7 @@ export function CheckoutFeedbackPrompt({ labels, intro, hide }: { labels: Checko
                         type="button"
                         onClick={() => {
                             try {
-                                localStorage.setItem(HIDDEN_KEY, paymentId);
+                                storageSet(HIDDEN_KEY, paymentId);
                             } catch {
                                 // нет хранилища — просто скрыть
                             }
