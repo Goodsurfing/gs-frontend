@@ -5,6 +5,8 @@
  * в новом фронте старое SPA считало бы пользователя гостем. Cookie входа
  * (GS-218) бэкенд ставит сам, если она включена.
  */
+import { storageSet } from "@/lib/safeStorage";
+
 export interface TokenResponse {
     accessToken: string;
     mercureToken?: string;
@@ -13,7 +15,7 @@ export interface TokenResponse {
 }
 
 export function saveSession(data: TokenResponse, username: string) {
-    const set = (key: string, value: unknown) => window.localStorage.setItem(key, JSON.stringify(value));
+    const set = (key: string, value: unknown) => storageSet(key, JSON.stringify(value));
     set("user", { username });
     set("token", data.accessToken);
     set("mercureToken", data.mercureToken ?? "");

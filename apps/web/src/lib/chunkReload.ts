@@ -9,6 +9,7 @@ type ReloadStorage = Pick<Storage, "getItem" | "setItem">;
  * Не догрузился чанк страницы: вкладка открыта до выкатки (старых файлов
  * уже нет) или сбой сети. Тексты различаются по браузерам и сборщикам.
  */
+import { browserStorage } from "@/lib/safeStorage";
 export function isChunkLoadError(error: unknown): boolean {
     const message = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
     return /ChunkLoadError|Loading chunk \S+ failed|Loading CSS chunk|Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module/i
@@ -17,10 +18,12 @@ export function isChunkLoadError(error: unknown): boolean {
 
 /** Перезагружает страницу, если за последнюю минуту этого ещё не делали. true — перезагрузка запущена. */
 export function reloadOnceForChunkError(
-    storage: ReloadStorage = sessionStorage,
+    storage: ReloadStorage | null = browserStorage("session"),
     reload: () => void = () => window.location.reload(),
     now: number = Date.now(),
 ): boolean {
+    // Без хранилища не запомнить, что уже перезагружали, — не рискуем циклом
+    if (!storage) return false;
     const last = Number(storage.getItem(RELOAD_KEY) || 0);
     if (now - last < RELOAD_COOLDOWN_MS) return false;
     storage.setItem(RELOAD_KEY, String(now));

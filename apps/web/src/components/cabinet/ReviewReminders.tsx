@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "@/components/session/SessionProvider";
 import { browserApi } from "@/lib/browserApi";
 import { isReminderHidden, reviewLinkHref } from "@/lib/reviewLink";
+import { storageGet, storageSet } from "@/lib/safeStorage";
 
 type Reminder = components["schemas"]["ReviewReminderResult"];
 
@@ -39,7 +40,7 @@ export function ReviewReminders({ side, reviewHref, labels, className = "" }: {
 
     useEffect(() => {
         if (session.status !== "user") return;
-        if (isReminderHidden(window.localStorage.getItem(hiddenKey(side)), Date.now())) return;
+        if (isReminderHidden(storageGet(hiddenKey(side)), Date.now())) return;
         let cancelled = false;
         void browserApi(session.token).GET("/api/v1/review-reminder")
             .then(({ data }) => !cancelled && setItems(Array.isArray(data) ? data.filter((item) => item.side === side) : []))
@@ -52,7 +53,7 @@ export function ReviewReminders({ side, reviewHref, labels, className = "" }: {
     if (items.length === 0) return null;
 
     const hide = () => {
-        window.localStorage.setItem(hiddenKey(side), String(Date.now()));
+        storageSet(hiddenKey(side), String(Date.now()));
         setItems([]);
     };
 
