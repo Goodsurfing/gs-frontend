@@ -7,12 +7,13 @@ import { API_URL } from "@/lib/browserApi";
 
 import { AuthToast } from "./AuthToast";
 import { REGISTER_EMAIL_KEY } from "./SignUpForm";
+import { storageGet } from "@/lib/safeStorage";
 
 /** Почта, на которую ушло письмо после регистрации (в старом фронте — redux register) */
 /** Цель «почта подтверждена» — один раз на адрес за сессию (ConfirmEmailSuccessPage старого фронта) */
 export function EmailConfirmedGoal() {
     useEffect(() => {
-        reachGoalOnce("email_confirmed", window.sessionStorage.getItem(REGISTER_EMAIL_KEY) || "anon");
+        reachGoalOnce("email_confirmed", storageGet(REGISTER_EMAIL_KEY, "session") || "anon");
     }, []);
     return null;
 }
@@ -22,7 +23,7 @@ export function RegisteredEmail() {
     useEffect(() => {
         // Почта из sessionStorage известна только в браузере
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        setEmail(window.sessionStorage.getItem(REGISTER_EMAIL_KEY) ?? "");
+        setEmail(storageGet(REGISTER_EMAIL_KEY, "session") ?? "");
     }, []);
     return <span>{email}</span>;
 }
@@ -43,7 +44,7 @@ export function ConfirmEmailResend({ labels }: { labels: { resend: string; wait:
     }, [cooldown]);
 
     const resend = async () => {
-        const email = window.sessionStorage.getItem(REGISTER_EMAIL_KEY);
+        const email = storageGet(REGISTER_EMAIL_KEY, "session");
         if (!email) return;
         const response = await fetch(`${API_URL}/api/v1/email-verifications/resend`, {
             method: "POST",

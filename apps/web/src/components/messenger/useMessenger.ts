@@ -4,11 +4,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { API_URL, browserApi } from "@/lib/browserApi";
 import { type ApplicationStatus, applyIncomingMessage, type Chat, type ChatMessage, CHATS_PER_PAGE, fetchAllChats, idFromIri, mergeMessages, sortChats } from "@/lib/messenger";
+import { storageGet } from "@/lib/safeStorage";
 
 /** Токен Mercure старого SPA (localStorage, JSON-строкой); без него — опрос сервера */
 const mercureToken = (): string | null => {
     try {
-        const value: unknown = JSON.parse(window.localStorage.getItem("mercureToken") ?? "null");
+        const value: unknown = JSON.parse(storageGet("mercureToken") ?? "null");
         return typeof value === "string" && value ? value : null;
     } catch {
         return null;

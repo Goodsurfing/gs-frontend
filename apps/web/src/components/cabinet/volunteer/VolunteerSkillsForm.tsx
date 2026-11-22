@@ -10,6 +10,7 @@ import { Toast } from "@/components/ui/Toast";
 import { browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
 import { MAX_SKILL_ITEMS as MAX_ITEMS, normalizeOwnSkills, parseSkillsDraft, type SkillsDraft as Draft, skillsDraftKey, type SkillsLanguage as Language } from "@/lib/volunteerSkills";
+import { storageGet, storageRemove, storageSet } from "@/lib/safeStorage";
 
 type Skill = components["schemas"]["ListResult17"];
 type LanguageCommand = components["schemas"]["LanguageCommand"];
@@ -161,7 +162,7 @@ export function VolunteerSkillsForm({ locale, languages, levels, labels }: {
         };
         let draft: Draft | null = null;
         try {
-            draft = profileId ? parseSkillsDraft(window.sessionStorage.getItem(skillsDraftKey(profileId))) : null;
+            draft = profileId ? parseSkillsDraft(storageGet(skillsDraftKey(profileId), "session")) : null;
         } catch {
             draft = null;
         }
@@ -175,7 +176,7 @@ export function VolunteerSkillsForm({ locale, languages, levels, labels }: {
         const next = { ...form, ...patch };
         setForm(next);
         try {
-            if (profileId) window.sessionStorage.setItem(skillsDraftKey(profileId), JSON.stringify(next));
+            if (profileId) storageSet(skillsDraftKey(profileId), JSON.stringify(next), "session");
         } catch {
             // хранилище недоступно — черновик не сохраняется
         }
@@ -208,7 +209,7 @@ export function VolunteerSkillsForm({ locale, languages, levels, labels }: {
         }
         setSaved(form);
         try {
-            if (profileId) window.sessionStorage.removeItem(skillsDraftKey(profileId));
+            if (profileId) storageRemove(skillsDraftKey(profileId), "session");
         } catch {
             // хранилище недоступно
         }

@@ -3,6 +3,7 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { Suspense, useEffect, useRef } from "react";
+import { storageGet, storageSet } from "@/lib/safeStorage";
 
 declare global {
     interface Window {
@@ -99,8 +100,8 @@ export function reachGoalThen(goal: MetrikaGoal, params: Record<string, unknown>
 export function reachGoalOnce(goal: MetrikaGoal, key: string, params?: Record<string, unknown>) {
     const storageKey = `gs_goal_${goal}_${key}`;
     try {
-        if (window.sessionStorage.getItem(storageKey)) return;
-        window.sessionStorage.setItem(storageKey, "1");
+        if (storageGet(storageKey, "session")) return;
+        storageSet(storageKey, "1", "session");
     } catch {
         // Без sessionStorage — просто отправляем
     }
