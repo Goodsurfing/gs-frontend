@@ -3,12 +3,14 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { RequireUser } from "@/components/cabinet/RequireUser";
+import { VkEmailPrompt } from "@/components/email-change/VkEmailPrompt";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { Messenger } from "@/components/messenger/Messenger";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { categoryLabels } from "@/lib/categories";
 import { LANGUAGES, LEVELS, skillNames } from "@/lib/offerText";
+import { vkEmailPromptLabels } from "@/lib/emailChangeLabels";
 import { routes } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
 
@@ -41,6 +43,8 @@ export default async function MessengerPage({ params }: Props) {
     return (
         <PublicShell locale={locale} headerVariant="static" footer={false}>
             <RequireUser locale={locale} />
+            {/* Вошёл через VK без почты — не узнает по почте, что организатор ответил */}
+            <VkEmailPrompt signInHref={routes.signIn(locale)} labels={vkEmailPromptLabels(t)} className="mx-auto mt-5 max-w-[1400px] down-md:mx-4 down-md:w-auto" />
             {/* useSearchParams — получатель первого сообщения в адресе */}
             <Suspense fallback={null}>
                 <Messenger
