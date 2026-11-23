@@ -129,6 +129,8 @@ function FinishEditor({ id, locale, myOffersHref, labels, vacancy }: { id: strin
         }
         clearDraft("finishing-touches", id);
         setUnsaved(false);
+        // После публикации «Мои вакансии» сразу предложат поделиться вакансией
+        const target = publish ? `${myOffersHref}?published=${encodeURIComponent(id)}` : myOffersHref;
         if (publish) {
             const toggled = await api
                 .PATCH("/api/v1/vacancy/{id}/toggle-status", { params: { path: { id: Number(id) } }, body: { status: "active" } })
@@ -141,7 +143,7 @@ function FinishEditor({ id, locale, myOffersHref, labels, vacancy }: { id: strin
             }
             if (METRIKA_ID && window.ym) {
                 // Уйти со страницы после отправки цели, иначе запрос Метрики может оборваться; не дольше секунды
-                const leave = () => window.location.assign(myOffersHref);
+                const leave = () => window.location.assign(target);
                 const timer = window.setTimeout(leave, 1000);
                 window.ym(METRIKA_ID, "reachGoal", "vacancy_published", { from: "wizard" }, () => {
                     window.clearTimeout(timer);
@@ -150,7 +152,7 @@ function FinishEditor({ id, locale, myOffersHref, labels, vacancy }: { id: strin
                 return;
             }
         }
-        window.location.assign(myOffersHref);
+        window.location.assign(target);
     };
 
     const submit = (event: FormEvent) => {

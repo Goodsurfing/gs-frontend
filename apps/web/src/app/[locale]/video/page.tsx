@@ -69,7 +69,7 @@ export default async function VideoPage({ params, searchParams }: Props) {
                 <h1 className="text-center text-[2.5rem] font-semibold text-white">{tCommon("Видео")}</h1>
             </section>
             <div className="mx-auto max-w-[1180px] pb-[100px] [@media(max-width:1000px)]:px-[30px]">
-                <div className="mt-[60px] flex items-center justify-between gap-x-[30px] gap-y-2.5">
+                <div className="mt-[60px] flex items-center justify-between gap-x-[30px] gap-y-2.5 down-md:flex-col down-md:items-stretch">
                     <div className="flex w-full justify-between gap-2.5">
                         <SortToggle
                             value={filters.sort}

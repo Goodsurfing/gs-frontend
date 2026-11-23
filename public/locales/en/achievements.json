@@ -1,0 +1,16 @@
+{
+    "seo": {
+        "title": "GoodSurfers' achievements — GoodSurfing",
+        "description": "GoodSurfing badges for volunteering trips, reviews and community help, and badges for responsive, trusted hosts."
+    },
+    "title": "Achievements",
+    "intro": "Badges mark real milestones on GoodSurfing: trips, reviews, helping the community. They are shown on profiles, and hosts see a volunteer's badges right in the application.",
+    "volunteers": "For volunteers",
+    "organizations": "For hosts",
+    "auto": "Earned automatically",
+    "team": "Given by the GoodSurfing team",
+    "holders": "Earned by: {{count}}",
+    "none": "Nobody yet — be the first",
+    "error": "Could not load badges. Please refresh a bit later.",
+    "organizationsHint": "Volunteers see these badges on vacancies and the organization page."
+}

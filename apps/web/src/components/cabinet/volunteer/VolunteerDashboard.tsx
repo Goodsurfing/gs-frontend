@@ -10,9 +10,12 @@ import { useFavoriteOffers } from "@/components/offers/useFavoriteOffers";
 import { useSession } from "@/components/session/SessionProvider";
 import { Spinner } from "@/components/ui/Spinner";
 import type { Locale } from "@/i18n/config";
+import { localizeCard, vacancyLang } from "@/lib/offerLocale";
 import { browserApi } from "@/lib/browserApi";
+import { formatLongDate } from "@/lib/formatDate";
 import { mediaUrl } from "@/lib/media";
 import type { CatalogOffer } from "@/lib/offersCatalog";
+import { whyText, type WhyLabels } from "@/lib/recommendations";
 
 import { Doughnut } from "./Doughnut";
 import { storageGet, storageSet } from "@/lib/safeStorage";
@@ -24,12 +27,16 @@ const FREE_APPLICATIONS_LIMIT = 3;
 /** Дата первого визита на дашборд — тот же ключ localStorage, что у старого фронта */
 const NOTIFICATION_DATE_KEY = "firstNotificationDate";
 
+type NextStepKey = "about" | "skills" | "photo" | "membership";
+
 export interface VolunteerDashboardLabels {
     reviewReminders: ReviewRemindersLabels;
     fill: string;
     viewProfile: string;
     edit: string;
     points: { about: string; skills: string; photo: string; video: string; blog: string; membership: string };
+    /** Что сделать дальше — вместо голого «40 %» (06.11.2026) */
+    nextStep: { title: string } & Record<NextStepKey, { action: string; why: string }>;
     quota: { unlimited: string; left: string; renew: string; more: string };
     offers: string;
     settings: string;
@@ -40,7 +47,11 @@ export interface VolunteerDashboardLabels {
     welcomeText: string;
     card: OfferListCardLabels;
     favorite: { add: string; remove: string };
+    /** «Почему подходит» под рекомендацией (GS-256); {value} — что совпало */
+    why: WhyLabels;
 }
+
+interface Reason { type: string; value: string }
 
 const card = "bg-white shadow-[0_5px_20px_rgba(14,29,39,0.05)]";
 const cardTop = "flex justify-between border-b border-caption px-5 py-[13px]";
@@ -53,7 +64,7 @@ const h3 = "text-[1.17em] font-bold";
  */
 export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
     locale: Locale;
-    hrefs: { volunteer: string; skills: string; preferences: string; membership: string; offer: string; review: string };
+    hrefs: { volunteer: string; skills: string; about: string; gallery: string; preferences: string; membership: string; offer: string; review: string };
     categories: Record<string, string>;
     labels: VolunteerDashboardLabels;
 }) {
@@ -62,6 +73,8 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
     const profile = session.status === "user" ? session.profile : null;
     const [occupancy, setOccupancy] = useState<Occupancy | null>(null);
     const [offers, setOffers] = useState<CatalogOffer[] | null>(null);
+    // Подбор под волонтёра (направления, навыки, языки, прошлые поездки); пусто — подборка по любимым направлениям
+    const [picked, setPicked] = useState<{ offers: CatalogOffer[]; reasons: Record<number, Reason[]> } | null>(null);
     const [date, setDate] = useState("");
     const favorite = (profile?.favoriteCategories ?? []).join(",");
 
@@ -77,35 +90,44 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
     }, [session.status, session.token]);
 
     useEffect(() => {
+        if (session.status !== "user") return;
+        let cancelled = false;
+        const api = browserApi(session.token);
+        void api.GET("/api/v1/assistant/recommendations", { params: { query: { lang: locale } } })
+            .then(async ({ data }) => {
+                const list = (Array.isArray(data) ? data : []) as { id: number; reasons: Reason[] }[];
+                if (list.length === 0) {
+                    if (!cancelled) setPicked({ offers: [], reasons: {} });
+                    return;
+                }
+                const cards = await api.GET("/api/v1/vacancy", { params: { query: { "ids[]": list.map((item) => item.id), fields: "card", limit: list.length, ...vacancyLang(locale) } } });
+                if (cancelled) return;
+                const byId = new Map((cards.data?.data ?? []).map(localizeCard).map((offer) => [offer.id, offer]));
+                setPicked({
+                    offers: list.map((item) => byId.get(item.id)).filter((offer) => offer !== undefined).map((offer) => toCard(offer, categories)),
+                    reasons: Object.fromEntries(list.map((item) => [item.id, item.reasons])),
+                });
+            })
+            .catch(() => !cancelled && setPicked({ offers: [], reasons: {} }));
+        return () => {
+            cancelled = true;
+        };
+    }, [session.status, session.token, locale, categories]);
+
+    useEffect(() => {
         if (session.status !== "user" || !favorite) return;
         let cancelled = false;
         void browserApi(session.token)
-            .GET("/api/v1/vacancy", { params: { query: { "categoryIds[]": favorite.split(",").map(Number), sort: "recommendation", fields: "card", limit: 10 } } })
+            .GET("/api/v1/vacancy", { params: { query: { "categoryIds[]": favorite.split(",").map(Number), sort: "recommendation", fields: "card", limit: 10, ...vacancyLang(locale) } } })
             .then(({ data }) => {
                 if (cancelled) return;
-                setOffers((data?.data ?? []).slice(0, 10).map((offer) => {
-                    const name = offer.categories[0]?.name?.trim();
-                    return {
-                        id: offer.id,
-                        title: offer.title,
-                        description: offer.shortDescription,
-                        image: mediaUrl(offer.image, "medium"),
-                        address: offer.address,
-                        category: name ? categories[name] ?? name : undefined,
-                        rating: Number(offer.averageRating) || 0,
-                        reviews: offer.reviewsCount,
-                        went: offer.acceptedApplicationsCount,
-                        active: String(offer.status) === "active",
-                        // Отметки «нет на карте» на дашборде старого фронта не было
-                        onMap: true,
-                    };
-                }));
+                setOffers((data?.data ?? []).slice(0, 10).map(localizeCard).map((offer) => toCard(offer, categories)));
             })
             .catch(() => !cancelled && setOffers([]));
         return () => {
             cancelled = true;
         };
-    }, [session.status, session.token, favorite, categories]);
+    }, [session.status, session.token, favorite, categories, locale]);
 
     useEffect(() => {
         try {
@@ -131,9 +153,20 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
         { text: labels.points.blog, done: !!occupancy?.isBlogPost },
         { text: labels.points.membership, done: !!occupancy?.isMembership },
     ];
-    // Без любимых направлений подборки нет
-    const shownOffers = profile && !favorite ? [] : offers;
+    // Подбор под волонтёра, если нашёлся; иначе — по любимым направлениям (без них подборки нет)
+    const fallback = profile && !favorite ? [] : offers;
+    const shownOffers = picked === null ? null : picked.offers.length > 0 ? picked.offers : fallback;
+    const reasonsOf = (id: number) => (picked?.offers.length ? picked.reasons[id] ?? [] : []);
     const share = points.filter((point) => point.done).length / points.length;
+    // Следующий шаг — первое несделанное по пользе для отклика; видео и статьи — необязательные, их не предлагаем
+    const steps: { key: NextStepKey; done: boolean; href: string }[] = [
+        { key: "about", done: points[0]?.done ?? true, href: hrefs.about },
+        { key: "skills", done: points[1]?.done ?? true, href: hrefs.skills },
+        { key: "photo", done: points[2]?.done ?? true, href: hrefs.gallery },
+        { key: "membership", done: points[5]?.done ?? true, href: hrefs.membership },
+    ];
+    // Пока занятость не загружена, пункты выглядят несделанными — шаг не угадываем
+    const next = occupancy ? steps.find((step) => !step.done) : undefined;
 
     return (
         <div className="w-full max-w-[1400px]">
@@ -153,9 +186,10 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
                                     </li>
                                 ))}
                             </ul>
-                            <div>
-                                <a href={hrefs.skills} className="inline-flex items-center justify-center rounded-[10px] border border-cta bg-cta px-[50px] py-2.5 text-center text-label text-white no-underline transition-all duration-300 hover:bg-white hover:text-cta max-[567px]:flex max-[567px]:w-full max-[567px]:p-2.5">
-                                    {labels.edit}
+                            <div className="flex flex-col gap-2">
+                                {next && <p className="max-w-[420px] text-[14px] leading-[140%] text-ink-tertiary"><b className="text-ink-secondary">{labels.nextStep.title}:</b> {labels.nextStep[next.key].why}</p>}
+                                <a href={next?.href ?? hrefs.skills} className="inline-flex w-fit items-center justify-center rounded-[10px] border border-cta bg-cta px-[50px] py-2.5 text-center text-label text-white no-underline transition-all duration-300 hover:bg-white hover:text-cta max-[567px]:flex max-[567px]:w-full max-[567px]:p-2.5">
+                                    {next ? labels.nextStep[next.key].action : labels.edit}
                                 </a>
                             </div>
                         </div>
@@ -175,14 +209,20 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
                     </div>
                     <div>
                         {shownOffers === null ? <Spinner /> : shownOffers.map((offer) => (
-                            <OfferListCard
-                                key={offer.id}
-                                offer={offer}
-                                href={hrefs.offer.replace("{id}", String(offer.id))}
-                                wide={false}
-                                labels={labels.card}
-                                favorite={favorites.enabled ? { active: favorites.isFavorite(offer.id), busy: favorites.isBusy(offer.id), labels: labels.favorite, onToggle: () => void favorites.toggleFavorite(offer.id) } : undefined}
-                            />
+                            <div key={offer.id}>
+                                <OfferListCard
+                                    offer={offer}
+                                    href={hrefs.offer.replace("{id}", String(offer.id))}
+                                    wide={false}
+                                    labels={labels.card}
+                                    favorite={favorites.enabled ? { active: favorites.isFavorite(offer.id), busy: favorites.isBusy(offer.id), labels: labels.favorite, onToggle: () => void favorites.toggleFavorite(offer.id) } : undefined}
+                                />
+                                {reasonsOf(offer.id).length > 0 && (
+                                    <p className="mx-5 mt-2.5 mb-4 text-[12px] leading-[140%] text-cta-hover">
+                                        <b>{labels.why.title}</b> {reasonsOf(offer.id).map((reason) => whyText(reason, labels.why, locale)).filter(Boolean).join(" · ")}
+                                    </p>
+                                )}
+                            </div>
                         ))}
                     </div>
                 </section>
@@ -198,7 +238,7 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
                         <div className="flex min-h-[450px] flex-col gap-3.5 bg-white p-[30px]">
                             <div className="flex cursor-pointer flex-col">
                                 <p className="text-[14px] font-bold text-primary">{labels.welcome}</p>
-                                <p className="mt-[3px] text-[12px] font-medium text-[#82949F]">{date}</p>
+                                <p className="mt-[3px] text-[12px] font-medium text-[#82949F]">{formatLongDate(date, locale)}</p>
                                 <p className="mt-[3px] text-[12px] leading-4 text-ink-secondary">{labels.welcomeText}</p>
                             </div>
                         </div>
@@ -250,4 +290,37 @@ function Quota({ occupancy, href, labels }: { occupancy: Occupancy; href: string
             </div>
         </div>
     );
+}
+
+/** Поля карточки вакансии из списка API (fields=card), которые нужны дашборду */
+interface CardOffer {
+    id: number;
+    title: string;
+    shortDescription: string;
+    image?: Parameters<typeof mediaUrl>[0];
+    address: string;
+    categories: { name?: string | null }[];
+    averageRating?: unknown;
+    reviewsCount: number;
+    acceptedApplicationsCount: number;
+    status?: unknown;
+}
+
+/** Карточка вакансии из списка API (fields=card) */
+function toCard(offer: CardOffer, categories: Record<string, string>): CatalogOffer {
+    const name = offer.categories[0]?.name?.trim();
+    return {
+        id: offer.id,
+        title: offer.title,
+        description: offer.shortDescription,
+        image: mediaUrl(offer.image, "medium"),
+        address: offer.address,
+        category: name ? categories[name] ?? name : undefined,
+        rating: Number(offer.averageRating) || 0,
+        reviews: offer.reviewsCount,
+        went: offer.acceptedApplicationsCount,
+        active: String(offer.status) === "active",
+        // Отметки «нет на карте» на дашборде старого фронта не было
+        onMap: true,
+    };
 }

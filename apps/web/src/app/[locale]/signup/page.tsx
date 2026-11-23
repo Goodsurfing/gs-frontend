@@ -33,7 +33,7 @@ export default async function SignUpPage({ params }: Props) {
                     resetHref={routes.resetPassword(locale)}
                     privacyHref={routes.privacyPolicy(locale)}
                     confirmHref={routes.confirmEmail(locale)}
-                    profileHref={routes.profileInfo(locale)}
+                    profileHref={routes.start(locale)}
                     labels={{
                         password: t("login.Пароль"),
                         submit: t("login.Зарегистрироваться"),

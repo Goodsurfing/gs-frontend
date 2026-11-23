@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { PublicShell } from "@/components/layout/PublicShell";
+import { duoLabels } from "@/components/membership/duo";
 import { PaymentSuccessView } from "@/components/membership/PaymentSuccessView";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
@@ -32,15 +33,16 @@ export default async function PaymentSuccessPage({ params, searchParams }: Props
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
     const { payment_id: paymentId } = await searchParams;
-    const t = await getTranslator(locale, "donation");
+    const [t, tMembership] = await Promise.all([getTranslator(locale, "donation"), getTranslator(locale, "membership")]);
     const thanks = { title: t("Спасибо,"), subtitle: t("вы успешно оплатили членство в сообществе Гудсёрфинга") };
     return (
         <PublicShell locale={locale} topGap>
             <PaymentSuccessView
                 paymentId={typeof paymentId === "string" ? paymentId : null}
                 signInHref={routes.signIn(locale)}
-                failHref={`${routes.paymentFail(locale)}?reason=cancelled`}
+                failHref={`${routes.paymentFail(locale)}?reason=cancelled${typeof paymentId === "string" ? `&payment_id=${encodeURIComponent(paymentId)}` : ""}`}
                 membershipHref={routes.membership(locale)}
+                duo={{ inviteBase: routes.membershipDuo(locale, ""), labels: duoLabels(tMembership) }}
                 labels={{
                     kinds: {
                         volunteer: { ...thanks, benefits: BENEFITS.volunteer.map((key) => t(key)), cta: t("Искать путешествия"), ctaHref: routes.offersMap(locale), callToAction: t("Самое время подобрать для себя идеальное путешествие со смыслом в этом году") },

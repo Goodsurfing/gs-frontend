@@ -32,6 +32,8 @@ export default async function VolunteerDashboardPage({ params }: Props) {
                     hrefs={{
                         volunteer: routes.volunteerPublicTemplate(locale),
                         skills: routes.volunteerSkills(locale),
+                        about: routes.profileInfo(locale),
+                        gallery: routes.volunteerGallery(locale),
                         preferences: routes.profilePreferences(locale),
                         membership: routes.membership(locale),
                         offer: routes.offerTemplate(locale),
@@ -43,6 +45,13 @@ export default async function VolunteerDashboardPage({ params }: Props) {
                         fill: d("Заполненность профиля"),
                         viewProfile: d("Посмотреть свой профиль"),
                         edit: d("Редактировать профиль"),
+                        nextStep: {
+                            title: d("nextStep.title"),
+                            about: { action: d("nextStep.about.action"), why: d("nextStep.about.why") },
+                            skills: { action: d("nextStep.skills.action"), why: d("nextStep.skills.why") },
+                            photo: { action: d("nextStep.photo.action"), why: d("nextStep.photo.why") },
+                            membership: { action: d("nextStep.membership.action"), why: d("nextStep.membership.why") },
+                        },
                         points: {
                             about: t("stats-points.О себе"),
                             skills: t("stats-points.Навыки"),
@@ -65,6 +74,14 @@ export default async function VolunteerDashboardPage({ params }: Props) {
                         welcome: tv("Добро пожаловать!"),
                         welcomeText: tv("Рады приветствовать вас на нашем сайте Для вашего удобства предлагаем максимально подробно заполнить свой профиль"),
                         favorite: { add: t("Добавить в избранное"), remove: t("Убрать из избранного") },
+                        why: {
+                            title: tv("why.title"),
+                            category: tv("why.category"),
+                            skill: tv("why.skill"),
+                            language: tv("why.language"),
+                            rating: tv("why.rating"),
+                            top: tv("why.top"),
+                        },
                         card: {
                             more: t("Подробнее"),
                             notOnMap: t("нет на карте"),

@@ -57,6 +57,7 @@ export function Header({ locale, t, tProfile, banner, variant = "floating" }: He
     const navigation = buildNavigation(locale, t);
     const membershipLabel = t("main.welcome.header.membership");
     const signIn = { label: t("main.welcome.header.sign-in"), href: routes.signIn(locale) };
+    const signUp = { label: t("main.welcome.header.sign-up"), href: routes.signUp(locale) };
     const offerText = (key: string, price: number) => tProfile(`info.${key}`, { price });
     const h = (key: string) => t(`main.welcome.header.${key}`);
     // {{date}} остаётся в тексте — подставляется в браузере по данным членства
@@ -129,7 +130,7 @@ export function Header({ locale, t, tProfile, banner, variant = "floating" }: He
                             }}
                         />
                         <LanguageSwitcher locale={locale} label={t("Язык")} />
-                        <AccountArea signIn={signIn} links={account} />
+                        <AccountArea signIn={signIn} signUp={signUp} links={account} />
                     </div>
                 </header>
                 <MobileHeader

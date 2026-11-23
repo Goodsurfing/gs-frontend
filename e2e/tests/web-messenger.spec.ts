@@ -25,6 +25,11 @@ test.describe('Новый фронт: сообщения', () => {
         await expect(page.getByText('Выберите, кому хотели бы написать')).toBeVisible();
         const chats = page.locator('a[href^="/messenger/"]');
         await expect(chats.first()).toBeVisible({ timeout: 15_000 });
+        // Вкладки как во входящих: «Все» выбрана, «Принятые» оставляет только принятые заявки
+        await expect(page.getByRole('tab', { name: 'Все' })).toHaveAttribute('aria-selected', 'true');
+        await page.getByRole('tab', { name: 'Принятые' }).click();
+        await expect(page.getByRole('tab', { name: 'Принятые' })).toHaveAttribute('aria-selected', 'true');
+        await page.getByRole('tab', { name: 'Все' }).click();
 
         await chats.first().click();
         await expect(page).toHaveURL(/\/messenger\/\d+$/);

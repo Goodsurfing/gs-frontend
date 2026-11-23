@@ -83,6 +83,7 @@ test.describe('Новый фронт: страница вакансии', () => 
         const upsell = page.getByRole('note', { name: 'Бесплатные отклики на этот год закончились' }).first();
         await expect(upsell).toBeVisible({ timeout: 15_000 });
         await expect(upsell).toContainText(/Членство — \d[\d\s]* ₽ на год: отклики без ограничений/);
-        await expect(upsell.getByRole('link', { name: 'Оформить членство' })).toHaveAttribute('href', '/membership');
+        // С 11.11.2026 (GS-289) — сразу к оплате членства волонтёра, а не на общую страницу членства
+        await expect(upsell.getByRole('link', { name: 'Оформить членство' })).toHaveAttribute('href', '/payment?tariff=volunteer_990');
     });
 });

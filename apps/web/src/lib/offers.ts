@@ -5,8 +5,13 @@ import type { components } from "@goodsurfing/api";
 import type { Locale } from "@/i18n/config";
 
 import { OPTIONAL_BLOCK_TIMEOUT_MS, serverApi } from "./api";
+import { ApiUnavailableError } from "./apiUnavailable";
 
 export type OfferCardData = components["schemas"]["ListResult6"];
+
+import { localizeCard, vacancyLang } from "./offerLocale";
+
+export { localizeCard, vacancyLang };
 
 /** Сколько вакансий в слайдере «Интересные вакансии» (как SLIDER_OFFERS_LIMIT старого фронта) */
 export const SLIDER_OFFERS_LIMIT = 10;
@@ -18,11 +23,53 @@ export const SLIDER_OFFERS_LIMIT = 10;
 export async function getOffersByCategories(locale: Locale, categoryIds: number[]): Promise<OfferCardData[]> {
     try {
         const { data } = await serverApi(locale).GET("/api/v1/vacancy", {
-            params: { query: { "categoryIds[]": categoryIds, sort: "recommendation", fields: "card", limit: SLIDER_OFFERS_LIMIT } },
+            params: { query: { "categoryIds[]": categoryIds, sort: "recommendation", fields: "card", limit: SLIDER_OFFERS_LIMIT, ...vacancyLang(locale) } },
             signal: AbortSignal.timeout(OPTIONAL_BLOCK_TIMEOUT_MS),
         });
-        return (data?.data ?? []).slice(0, SLIDER_OFFERS_LIMIT);
+        return (data?.data ?? []).slice(0, SLIDER_OFFERS_LIMIT).map(localizeCard);
     } catch {
         return [];
     }
 }
+
+/**
+ * Открытые вакансии направления для посадочной страницы (`/volunteering/<slug>`):
+ * только с будущими датами или «круглый год» (hidePassed), до 24, сначала
+ * рекомендованные. Сколько всего — для строки «N открытых вакансий».
+ * Список — главное содержимое страницы: ждём дольше необязательных блоков, а при
+ * сбое API бросаем ApiUnavailableError, чтобы пустая страница не попала в кэш.
+ */
+export async function getOpenOffersOfCategory(locale: Locale, categoryId: number): Promise<{ offers: OfferCardData[]; total: number }> {
+    return getOpenOffers(locale, { categoryIds: [categoryId], limit: 24, what: `вакансии направления ${categoryId}` });
+}
+
+/** То же для любой посадочной страницы: без categoryIds — все направления (страница «Как Workaway, но в России») */
+export async function getOpenOffers(
+    locale: Locale,
+    { categoryIds, limit, what, overlap }: {
+        categoryIds?: number[];
+        limit: number;
+        what: string;
+        /** Период заезда пересекается с окном (Y-m-d); fullYear — добавить «круглый год» без периодов */
+        overlap?: { start: string; end: string; fullYear: boolean };
+    },
+): Promise<{ offers: OfferCardData[]; total: number }> {
+    let result;
+    try {
+        result = await serverApi(locale).GET("/api/v1/vacancy", {
+            params: { query: {
+                ...(categoryIds ? { "categoryIds[]": categoryIds } : {}),
+                ...(overlap ? { overlapStart: overlap.start, overlapEnd: overlap.end, overlapFullYear: overlap.fullYear } : {}),
+                hidePassed: true, sort: "recommendation", fields: "card", limit, ...vacancyLang(locale),
+            } as never },
+            signal: AbortSignal.timeout(LANDING_TIMEOUT_MS),
+        });
+    } catch {
+        throw new ApiUnavailableError(what);
+    }
+    if (!result.data) throw new ApiUnavailableError(what);
+    const offers = ((result.data.data ?? []) as OfferCardData[]).map(localizeCard);
+    return { offers, total: (result.data as { pagination?: { total?: number } }).pagination?.total ?? offers.length };
+}
+
+const LANDING_TIMEOUT_MS = 8000;

@@ -43,7 +43,7 @@ test.describe('Публикация вакансии — хост', () => {
         // Адрес принимается только из подсказок геокодера (/api/v1/geocode)
         await page.getByLabel('Введите адрес').pressSequentially('Казань, Баумана', { delay: 60 });
         await page.getByRole('option').first().click();
-        await page.getByRole('button', { name: 'Сохранить' }).click();
+        await page.getByRole('button', { name: 'Сохранить', exact: true }).first().click();
         await expect.poll(async () => {
             const v = await (await api.get(`/api/v1/vacancies/${id}`, { headers })).json();
             return v?.where?.address ?? null;
@@ -51,9 +51,9 @@ test.describe('Публикация вакансии — хост', () => {
 
         // Шаг «Описание»
         await page.goto(`/offers/description/${id}`);
-        await page.getByLabel('Название мероприятия').fill(title);
-        await page.getByLabel('Краткое описание').fill('Короткое описание вакансии для проверки публикации.');
-        await page.getByLabel('Полное описание').fill('Полное описание вакансии: что делать, условия, расписание. Создано e2e-тестом и удаляется после проверки.');
+        await page.getByLabel('Название мероприятия').first().fill(title);
+        await page.getByLabel('Краткое описание').first().fill('Короткое описание вакансии для проверки публикации.');
+        await page.getByLabel('Полное описание').first().fill('Полное описание вакансии: что делать, условия, расписание. Создано e2e-тестом и удаляется после проверки.');
         await page.getByRole('button', { name: 'Заповедники и нац. парки' }).click();
         // Обложка обязательна, ширина не меньше 1280 px: снимок окна 1280×720 и есть такой PNG
         const cover = await page.screenshot();
@@ -62,7 +62,7 @@ test.describe('Публикация вакансии — хост', () => {
             name: 'cover-e2e.png', mimeType: 'image/png', buffer: cover,
         });
         expect((await uploaded).status()).toBe(201);
-        await page.getByRole('button', { name: 'Сохранить' }).click();
+        await page.getByRole('button', { name: 'Сохранить', exact: true }).first().click();
         await expect.poll(async () => {
             const v = await (await api.get(`/api/v1/vacancies/${id}`, { headers })).json();
             return v?.description?.title ?? null;

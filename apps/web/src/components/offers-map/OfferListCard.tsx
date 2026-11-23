@@ -12,6 +12,10 @@ export interface OfferListCardLabels {
     went: string;
     noTitle: string;
     noDescription: string;
+    /** «Организатор давно не заходил» — значок у вакансий «спящих» организаторов (каталог) */
+    sleeping?: string;
+    /** «Актуальность не подтверждена» (GS-248) */
+    stale?: string;
 }
 
 /**
@@ -22,13 +26,15 @@ export interface OfferListCardLabels {
  * слева, закрытая — бледнее. Сердечко — не внутри карточки-ссылки (кнопка
  * в ссылке недоступна читалкам), а поверх неё, в углу картинки.
  */
-export function OfferListCard({ offer, href, selected = false, onSelect, wide, labels, favorite, showImage = true }: {
+export function OfferListCard({ offer, href, selected = false, onSelect, wide, compact = false, labels, favorite, showImage = true }: {
     offer: CatalogOffer;
     href: string;
     selected?: boolean;
     onSelect?: (id: number) => void;
     /** Карта свёрнута — карточки в две колонки */
     wide: boolean;
+    /** Каталог с картой на десктопе: фото меньше, без описания — на экране больше вакансий */
+    compact?: boolean;
     labels: OfferListCardLabels;
     /** Сердечко «в избранное» на картинке — только вошедшим (gs-backend #407) */
     favorite?: { active: boolean; busy?: boolean; onToggle: () => void; labels: { add: string; remove: string } };
@@ -45,7 +51,7 @@ export function OfferListCard({ offer, href, selected = false, onSelect, wide, l
     }, []);
 
     return (
-        <div className={`relative border-b border-accent-bg ${offer.active ? "" : "opacity-45"} ${wide ? "w-1/2 border-l down-2xl:w-full" : `w-full ${onSelect ? "min-w-[520px]" : ""}`}`}>
+        <div className={`relative border-b border-accent-bg ${offer.active ? "" : "opacity-45"} ${wide ? "w-1/2 border-l down-2xl:w-full" : `w-full ${onSelect ? "min-w-[520px] down-lg:min-w-0" : ""}`}`}>
             {/* В каталоге отступы 10 px (OffersList старого фронта), в остальных списках — базовые 14/20 */}
             <div
                 role={onSelect ? "button" : "link"}
@@ -62,7 +68,7 @@ export function OfferListCard({ offer, href, selected = false, onSelect, wide, l
                 className={`flex h-full cursor-pointer items-start gap-3.5 border-l-[3px] ${onSelect ? "p-2.5" : "px-5 py-3.5"} shadow-[0_5px_20px_0_#2121210d] transition-colors duration-200 down-xs:flex-wrap down-xs:p-4 ${selected ? "border-l-primary bg-accent-bg" : "border-l-transparent bg-white"}`}
             >
                 {showImage && (
-                    <div className="relative h-[110px] w-40 shrink-0 bg-accent-bg down-xs:h-[180px] down-xs:w-full">
+                    <div className={`relative shrink-0 overflow-hidden bg-accent-bg down-xs:h-[180px] down-xs:w-full ${compact ? "h-[110px] w-40 min-[993px]:h-[84px] min-[993px]:w-28 min-[993px]:rounded-[6px]" : "h-[110px] w-40"}`}>
                         {offer.image && !imageFailed && (
                             // eslint-disable-next-line @next/next/no-img-element -- превью из хранилища
                             <img ref={imageRef} src={offer.image} alt="" loading="lazy" onError={() => setImageFailed(true)} className="block h-full w-full object-cover" />
@@ -71,11 +77,23 @@ export function OfferListCard({ offer, href, selected = false, onSelect, wide, l
                 )}
                 <div className="min-w-0 flex-1">
                     <p className="line-clamp-2 text-[1rem] leading-5 font-medium text-ink-secondary">{textSlice(offer.title, 50, labels.noTitle)}</p>
+                    {!offer.sleeping && offer.stale && labels.stale && (
+                        <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-field px-2 py-0.5 text-[12px] font-medium text-ink-tertiary">
+                            <svg aria-hidden viewBox="0 0 24 24" className="h-3.5 w-3.5 text-caption" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 9v4" /><path d="M12 17h.01" /><circle cx="12" cy="12" r="10" /></svg>
+                            {labels.stale}
+                        </span>
+                    )}
+                    {offer.sleeping && labels.sleeping && (
+                        <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-notice-bg px-2 py-0.5 text-[12px] font-medium text-ink-secondary">
+                            <svg aria-hidden viewBox="0 0 24 24" className="h-3.5 w-3.5 text-notice" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 7v5l3 2" /></svg>
+                            {labels.sleeping}
+                        </span>
+                    )}
                     <div className="mt-1.5 text-[14px] leading-[18px] font-medium text-caption down-xs:flex down-xs:flex-col">
                         <span className="block max-w-full truncate">{offer.address}</span>
                         {!offer.onMap && <span className="mt-0.5 inline-block text-[0.75rem] opacity-70">{labels.notOnMap}</span>}
-                        <br />
-                        <span>{offer.category}</span>
+                        <br className={compact ? "min-[993px]:hidden" : undefined} />
+                        <span className={compact ? "min-[993px]:block" : undefined}>{offer.category}</span>
                     </div>
                     <div className="mt-2 flex flex-wrap gap-6 down-xs:gap-2">
                         {offer.rating > 0 && (
@@ -90,7 +108,7 @@ export function OfferListCard({ offer, href, selected = false, onSelect, wide, l
                             {offer.went > 0 && <span>{labels.went}: {offer.went}</span>}
                         </div>
                     </div>
-                    <p className="mt-1.5 line-clamp-2 max-w-full text-[14px] leading-[17px] font-medium text-caption">
+                    <p className={`mt-1.5 line-clamp-2 max-w-full text-[14px] leading-[17px] font-medium text-caption ${compact ? "min-[993px]:hidden" : ""}`}>
                         {textSlice(offer.description, 110, labels.noDescription)}
                     </p>
                     <a

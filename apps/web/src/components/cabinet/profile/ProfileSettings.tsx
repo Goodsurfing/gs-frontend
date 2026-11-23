@@ -10,7 +10,7 @@ import { Switch, Toast } from "@/components/ui/Toast";
 import { browserApi } from "@/lib/browserApi";
 
 type Message = { text: string; ok: boolean } | null;
-type Profile = Record<string, unknown> & { volunteer?: unknown; hostId?: string | null; isActive?: boolean; marketingConsent?: boolean; favoriteCategories?: number[] };
+type Profile = Record<string, unknown> & { volunteer?: unknown; hostId?: string | null; isActive?: boolean; marketingConsent?: boolean; showInEventFeed?: boolean; showInPeopleSearch?: boolean; favoriteCategories?: number[] };
 
 /**
  * «Куда бы вы хотели поехать» (ProfilePreferencesForm старого фронта):
@@ -18,7 +18,7 @@ type Profile = Record<string, unknown> & { volunteer?: unknown; hostId?: string 
  */
 export function PreferencesForm({ categories, labels }: {
     categories: { id: number; name: string; image?: string }[];
-    labels: { title: string; save: string; saved: string; error: string };
+    labels: { title: string; hint: string; selected: string; save: string; saved: string; error: string };
 }) {
     const session = useSession();
     const profile = session.profile as Profile | null;
@@ -45,9 +45,12 @@ export function PreferencesForm({ categories, labels }: {
     return (
         <form onSubmit={save} className="flex max-w-[950px] flex-col gap-5">
             <Toast text={message?.text ?? null} ok={message?.ok} onClose={() => setMessage(null)} />
+            {/* Один заголовок и пояснение (раньше было два заголовка подряд). Плитки — ровная сетка, подпись внизу
+                на затемнении, перенос по слогам вместо разрыва слова посередине; выбранная — в зелёной рамке. */}
             <div className="mt-[30px]">
                 <h2 className="text-[26px] font-normal down-lg:text-center">{labels.title}</h2>
-                <div className="mt-[30px] mt-5 flex flex-wrap gap-x-5 gap-y-[30px] down-lg:justify-center">
+                <p className="mt-2 text-[15px] leading-[140%] text-ink-tertiary down-lg:text-center">{labels.hint}</p>
+                <div className="mt-6 grid grid-cols-[repeat(auto-fill,minmax(130px,1fr))] gap-4 down-sm:grid-cols-3 down-sm:gap-2.5">
                     {categories.map((category) => {
                         const on = selected.includes(category.id);
                         return (
@@ -57,17 +60,24 @@ export function PreferencesForm({ categories, labels }: {
                                 aria-pressed={on}
                                 onClick={() => toggle(category.id)}
                                 style={category.image ? { backgroundImage: `url(${JSON.stringify(category.image)})` } : undefined}
-                                className="relative flex h-[174px] w-[130px] shrink-0 cursor-pointer items-center justify-center bg-accent-bg bg-cover bg-no-repeat"
+                                className={`group relative aspect-[3/4] cursor-pointer overflow-hidden rounded-[10px] bg-accent-bg bg-cover bg-center bg-no-repeat -outline-offset-3 transition-[outline-color] ${on ? "outline-3 outline-cta" : "outline-3 outline-transparent hover:outline-accent-bg"}`}
                             >
-                                <span className={`box-border max-w-full min-w-0 px-2 text-center text-[18px] leading-[23.4px] font-medium break-words text-white transition-transform duration-300 ${on ? "translate-y-10" : ""}`}>{category.name}</span>
-                                {/* eslint-disable-next-line @next/next/no-img-element -- галочка выбора */}
-                                <img src="/web/icons/offer/select-check.svg" alt="" className={`absolute top-2.5 right-2.5 ${on ? "visible" : "invisible"}`} />
+                                <span aria-hidden className="absolute inset-0 bg-linear-to-t from-black/75 via-black/20 to-transparent" />
+                                <span className="absolute inset-x-0 bottom-0 p-2.5 text-left text-[15px] leading-[120%] font-semibold text-white hyphens-auto down-sm:p-2 down-sm:text-[13px]">{category.name}</span>
+                                {on && (
+                                    <span aria-hidden className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-cta text-white shadow">
+                                        <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8.5l3.2 3L13 4.5" /></svg>
+                                    </span>
+                                )}
                             </button>
                         );
                     })}
                 </div>
             </div>
-            <button type="submit" disabled={busy} className={`${blueButton} w-fit !px-[55px]`}>{labels.save}</button>
+            <div className="flex items-center gap-5 down-lg:justify-center">
+                <button type="submit" disabled={busy} className={`${blueButton} w-fit !px-[55px]`}>{labels.save}</button>
+                <span className="text-[15px] whitespace-nowrap text-ink-tertiary">{labels.selected}: {selected.length}</span>
+            </div>
         </form>
     );
 }
@@ -84,6 +94,9 @@ export function RoleCards({ hrefs, labels }: {
     labels: {
         volunteer: { title: string; text: string; become: string; already: string; confirm: string };
         host: { title: string; text: string; become: string; already: string; confirm: string };
+        /** Пометка выбранной роли и ссылка на её рабочий стол */
+        current: string;
+        toDashboard: string;
         yes: string;
         no: string;
         becameVolunteer: string;
@@ -91,46 +104,50 @@ export function RoleCards({ hrefs, labels }: {
 }) {
     const session = useSession();
     const profile = session.profile as Profile | null;
-    const [asking, setAsking] = useState<"volunteer" | "host" | null>(null);
     const [busy, setBusy] = useState(false);
     const [message, setMessage] = useState<Message>(null);
     if (!profile) return <Loading className="min-h-[300px]" />;
 
-    const confirm = async () => {
-        if (asking === "host") {
-            window.location.href = hrefs.hostRegister;
+    // Сразу, без «Вы уверены?» и трёх секунд паузы (06.11.2026): роль можно добавить в любой момент,
+    // а лишний шаг терял новичков — роль волонтёра выбирали 43 % зарегистрировавшихся
+    const become = async (role: "volunteer" | "host") => {
+        if (role === "host") {
+            window.location.assign(hrefs.hostRegister);
             return;
         }
         setBusy(true);
         const { error } = await browserApi(session.token).POST("/api/v1/personal/volunteer", { body: { externalInfo: "", skills: [], additionalSkills: [] } as never }).catch(() => ({ error: true }));
-        setBusy(false);
-        setAsking(null);
         if (error) {
+            setBusy(false);
             setMessage({ text: String((error as { detail?: string })?.detail ?? "Ошибка"), ok: false });
             return;
         }
-        setMessage({ text: labels.becameVolunteer, ok: true });
         const params = new URLSearchParams(window.location.search);
         const next = params.get("next");
         const donation = params.get("nextDonation");
-        // Как в старом фронте: сообщение видно три секунды, потом переход
-        setTimeout(() => {
-            window.location.href = next ? hrefs.offer.replace("{id}", next) : donation ? hrefs.fundraise.replace("{id}", donation) : hrefs.volunteerDashboard;
-        }, 3000);
+        window.location.assign(next ? hrefs.offer.replace("{id}", next) : donation ? hrefs.fundraise.replace("{id}", donation) : hrefs.volunteerDashboard);
     };
 
     const card = (role: "volunteer" | "host", image: string) => {
         const has = role === "volunteer" ? !!profile.volunteer : !!profile.hostId;
         const text = labels[role];
         return (
-            <div className="flex w-full max-w-[485px] flex-col items-center justify-center gap-y-[60px] self-stretch bg-white px-[30px] pt-[50px] pb-[60px] shadow-[0_5px_20px_0_rgba(14,29,39,0.05)]">
+            // Выбранная роль — зелёная рамка и «✓ Ваша роль», а вместо кнопки-призыва ссылка на рабочий стол:
+            // одинаковые синие кнопки «Вы уже стали…» и «Стать…» читались как «роль можно выбрать снова»
+            <div className={`relative flex w-full max-w-[485px] flex-col items-center justify-center gap-y-[60px] self-stretch bg-white px-[30px] pt-[50px] pb-[60px] shadow-[0_5px_20px_0_rgba(14,29,39,0.05)] ${has ? "outline-2 -outline-offset-2 outline-cta" : ""}`}>
+                {has && (
+                    <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-cta px-3 py-1 text-[14px] font-semibold text-white">
+                        <svg aria-hidden viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8.5l3.2 3L13 4.5" /></svg>
+                        {labels.current}
+                    </span>
+                )}
                 {/* eslint-disable-next-line @next/next/no-img-element -- иллюстрация роли */}
                 <img src={`/web/icons/navbar/${image}.svg`} alt="" />
                 <span className="text-[26px] leading-[120%]">{text.title}</span>
                 <span className="text-center text-[18px] font-medium text-primary">{text.text}</span>
                 {has
-                    ? <a href={role === "volunteer" ? hrefs.volunteerDashboard : hrefs.hostDashboard} className="rounded-[10px] bg-primary px-[60px] py-2.5 text-center text-[16px] leading-[1.75] tracking-[0.02857em] text-white uppercase hover:bg-[#60bdff] down-lg:w-[90%] down-lg:px-10">{text.already}</a>
-                    : <button type="button" onClick={() => setAsking(role)} className="cursor-pointer rounded-[10px] bg-primary px-[60px] py-2.5 text-[16px] leading-[1.75] tracking-[0.02857em] text-white uppercase hover:bg-[#60bdff] down-lg:w-[90%] down-lg:px-10">{text.become}</button>}
+                    ? <a href={role === "volunteer" ? hrefs.volunteerDashboard : hrefs.hostDashboard} aria-label={`${text.already}. ${labels.toDashboard}`} className="rounded-[10px] border border-primary bg-white px-8 py-2.5 text-center text-[16px] leading-[1.75] tracking-[0.02857em] text-primary uppercase no-underline hover:bg-primary hover:text-white down-lg:w-[90%] down-lg:px-10">{`${labels.toDashboard}\u00a0→`}</a>
+                    : <button type="button" disabled={busy} onClick={() => void become(role)} className="cursor-pointer rounded-[10px] bg-primary disabled:cursor-wait disabled:opacity-70 px-[60px] py-2.5 text-[16px] leading-[1.75] tracking-[0.02857em] text-white uppercase hover:bg-[#60bdff] down-lg:w-[90%] down-lg:px-10">{text.become}</button>}
             </div>
         );
     };
@@ -140,15 +157,6 @@ export function RoleCards({ hrefs, labels }: {
             <Toast text={message?.text ?? null} ok={message?.ok} onClose={() => setMessage(null)} />
             {card("volunteer", "profile-goodsurfer")}
             {card("host", "profile-host")}
-            <ConfirmDialog
-                open={asking !== null}
-                text={asking ? labels[asking].confirm : ""}
-                confirm={labels.yes}
-                cancel={labels.no}
-                busy={busy}
-                onConfirm={() => void confirm()}
-                onClose={() => setAsking(null)}
-            />
         </div>
     );
 }
@@ -233,12 +241,16 @@ export function PrivacySettings({ mainHref, labels }: {
         hide: string; hideText: string; newsletter: string; newsletterText: string; newsletterWording: string;
         delete: string; deleteText: string; deleteConfirm: string; yes: string; no: string;
         deleteError: string; hideError: string; blocked: string; newsletterError: string;
+        feed: string; feedText: string; feedError: string;
+        search: string; searchText: string; searchError: string;
     };
 }) {
     const session = useSession();
     const profile = session.profile as Profile | null;
     const [hidden, setHidden] = useState<boolean | null>(null);
     const [consent, setConsent] = useState(false);
+    const [inFeed, setInFeed] = useState(true);
+    const [inSearch, setInSearch] = useState(true);
     const [asking, setAsking] = useState(false);
     const [busy, setBusy] = useState(false);
     const [message, setMessage] = useState<Message>(null);
@@ -250,6 +262,8 @@ export function PrivacySettings({ mainHref, labels }: {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setHidden(!profile.isActive);
         setConsent(!!profile.marketingConsent);
+        setInFeed(profile.showInEventFeed !== false);
+        setInSearch(profile.showInPeopleSearch !== false);
     }, [profile, hidden]);
     useEffect(() => () => clearTimeout(timer.current), []);
     if (hidden === null) return <Loading className="min-h-[200px]" />;
@@ -272,6 +286,24 @@ export function PrivacySettings({ mainHref, labels }: {
         if (error) {
             setConsent(!value);
             setMessage({ text: labels.newsletterError, ok: false });
+        }
+    };
+    // Лента событий на главной (GS-241): имя, город и аватар в карточках «получен значок», «едет в проект»
+    const toggleFeed = async (value: boolean) => {
+        setInFeed(value);
+        const { error } = await api().PATCH("/api/v1/profile/event-feed", { body: { show: value } }).catch(() => ({ error: true }));
+        if (error) {
+            setInFeed(!value);
+            setMessage({ text: labels.feedError, ok: false });
+        }
+    };
+    // Поиск участников по имени (08.11.2026): находят только тех, кто не выключил
+    const toggleSearch = async (value: boolean) => {
+        setInSearch(value);
+        const { error } = await api().PATCH("/api/v1/profile/people-search", { body: { show: value } }).catch(() => ({ error: true }));
+        if (error) {
+            setInSearch(!value);
+            setMessage({ text: labels.searchError, ok: false });
         }
     };
     const remove = async () => {
@@ -298,6 +330,14 @@ export function PrivacySettings({ mainHref, labels }: {
             <div className={block}>
                 <div className="flex items-center gap-1"><Switch checked={consent} onChange={(value) => void toggleConsent(value)} labelledBy="privacy-newsletter" /><span id="privacy-newsletter" className="text-ink-secondary">{labels.newsletter}</span></div>
                 <p className="max-w-[415px] text-[12px]">{labels.newsletterText}</p>
+            </div>
+            <div className={block}>
+                <div className="flex items-center gap-1"><Switch checked={inFeed} onChange={(value) => void toggleFeed(value)} labelledBy="privacy-feed" /><span id="privacy-feed" className="text-ink-secondary">{labels.feed}</span></div>
+                <p className="max-w-[415px] text-[12px]">{labels.feedText}</p>
+            </div>
+            <div className={block}>
+                <div className="flex items-center gap-1"><Switch checked={inSearch} onChange={(value) => void toggleSearch(value)} labelledBy="privacy-search" /><span id="privacy-search" className="text-ink-secondary">{labels.search}</span></div>
+                <p className="max-w-[415px] text-[12px]">{labels.searchText}</p>
             </div>
             <div className={block}>
                 <button type="button" onClick={() => setAsking(true)} className="cursor-pointer rounded-[10px] border border-primary bg-primary px-[50px] py-2.5 text-[16px] leading-[120%] text-white transition-all hover:bg-white hover:text-primary">{labels.delete}</button>

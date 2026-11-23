@@ -7,7 +7,7 @@
         "Запомнить меня": "Recuérdame",
         "Отменить": "Cancelar",
         "Не зарегистрированы на Гудсёрфинге?": "¿No estás registrado en Goodsurfing?",
-        "Зарегистрироваться": "Registrarse",
+        "Зарегистрироваться": "Unirse",
         "Регистрация пользователя": "Registro de usuario",
         "Мы не постим ничего без вашего ведома": "No publicamos nada sin tu consentimiento",
         "Ошибка авторизации": "Error de autorización",
@@ -17,7 +17,7 @@
         "Возможно, вы уже регистрировались.": "Es posible que ya te hayas registrado.",
         "Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту.": "Para iniciar sesión, necesitas confirmar tu dirección de correo electrónico. Por favor, revisa tu bandeja de entrada.",
         "Некорректно введены данные": "Datos introducidos incorrectamente",
-        "Нажимая кнопку «Зарегистрироваться», я принимаю": "Al hacer clic en el botón 'Registrarse', acepto",
+        "Нажимая кнопку «Зарегистрироваться», я принимаю": "Al hacer clic en el botón 'Unirse', acepto",
         "Политику конфеденциальности ГудСёрфинга": "Política de privacidad de GoodSurfing",
         "ПолеОбязательно": "Este campo es obligatorio",
         "НедостаточноСложныйПароль": "La contraseña debe tener al menos 6 caracteres y contener al menos un número",
@@ -55,7 +55,11 @@
         "Подтвердить": "Confirmar",
         "Пользователь был удален или не создавался": "El usuario fue eliminado o nunca fue creado",
         "Хочу получать письма о новых проектах, акциях и новостях Гудсёрфинга": "Enviarme selecciones de nuevos proyectos y noticias de Goodsurfing",
-        "marketingConsentHint": "Puedes darte de baja en cualquier momento desde tu perfil o con el enlace del correo."
+        "marketingConsentHint": "Puedes darte de baja en cualquier momento desde tu perfil o con el enlace del correo.",
+        "Войти и вернуться к вакансии": "Iniciar sesión y volver a la vacante",
+        "Вернуться к вакансии": "Volver a la vacante",
+        "Перейти к вакансиям": "Ver vacantes",
+        "Назад": "Volver"
     },
     "main": {
         "welcome": {
@@ -69,7 +73,9 @@
                     "ambassadors": "Embajadores",
                     "courses": "Academia",
                     "clubs": "Clubes",
-                    "journal": "Revista"
+                    "journal": "Revista",
+                    "achievements": "Logros",
+                    "people": "Miembros"
                 },
                 "offers": {
                     "title": "Vacantes",
@@ -123,7 +129,7 @@
                 "host-dashboard": "Panel de host",
                 "volunteer-dashboard": "Panel de control voluntario",
                 "sign-in": "Iniciar sesión",
-                "sign-up": "Inscribirse",
+                "sign-up": "Unirse",
                 "exit": "Salida",
                 "membership": "Membresía",
                 "expeditions": "Expediciones",
@@ -173,7 +179,11 @@
             "Фото и видео": "Foto y vídeos",
             "Написать в блог": "Escribe un blog",
             "Мои статьи": "Mis artículos",
-            "Создать организацию": "Create an organization"
+            "Создать организацию": "Create an organization",
+            "Подписки на поиск": "Suscripciones de búsqueda",
+            "Пригласить друга": "Invitar a un amigo",
+            "Уведомления": "Notificaciones",
+            "Значок для сайта": "Insignia para tu web"
         }
     },
     "stats-points": {
@@ -396,5 +406,151 @@
         "Без названия": "Sin título",
         "Волонтёр": "Voluntario",
         "Отъезд": "Salida"
+    },
+    "Отзывов:": "Reseñas:",
+    "Отправилось:": "Participaron:",
+    "Без заголовка": "Sin título",
+    "Без адреса": "Sin dirección",
+    "Организатор давно не заходил": "El anfitrión no entra hace tiempo",
+    "relevance": {
+        "title": "¿Tus oportunidades siguen abiertas?",
+        "text": "Marca las oportunidades para las que aún buscas voluntarios y pulsa «Confirmar». No hace falta iniciar sesión.",
+        "asked": "preguntado en el correo",
+        "confirm": "Confirmar",
+        "all": "Marcar todas",
+        "done": "¡Gracias! Oportunidades confirmadas: {{count}}. Los voluntarios verán que los esperas.",
+        "none": "Marca al menos una oportunidad",
+        "manage": "Despublicar o editar en «Mis oportunidades»",
+        "invalid": "El enlace caducó o no es válido. Inicia sesión y abre «Mis oportunidades».",
+        "empty": "No hay oportunidades activas.",
+        "error": "No se pudo guardar. Inténtalo de nuevo.",
+        "stale": "Vigencia no confirmada",
+        "staleNote": "El anfitrión no confirma desde hace tiempo que la oportunidad sigue abierta: consúltalo por mensaje antes de viajar."
+    },
+    "emailChange": {
+        "change": "Cambiar correo",
+        "title": "Cambiar correo",
+        "text": "Ahora inicias sesión con {{email}}. Escribe una nueva dirección: te enviaremos un enlace. El correo cambiará solo cuando lo abras.",
+        "newEmail": "Nuevo correo",
+        "password": "Contraseña actual",
+        "passwordHint": "Para confirmar que eres tú",
+        "vkHint": "Inicias sesión con VK, así que no hace falta contraseña: basta con un inicio de sesión reciente.",
+        "submit": "Enviar correo",
+        "cancel": "Cancelar",
+        "sent": "Enviamos un correo a {{email}}. Abre el enlace en 24 horas; después inicia sesión con el nuevo correo. ¿No llega? Revisa la carpeta de spam.",
+        "pending": "Pendiente de confirmación: {{email}}; el enlace es válido hasta {{date}}",
+        "close": "Entendido",
+        "signInAgain": "Iniciar sesión de nuevo",
+        "errors": {
+            "invalid_email": "Revisa la dirección de correo",
+            "same_email": "Es tu dirección actual",
+            "wrong_password": "Contraseña incorrecta",
+            "reauth_required": "Para cambiar el correo, vuelve a iniciar sesión; así sabremos que eres tú.",
+            "email_taken": "Esta dirección ya la usa otra cuenta",
+            "too_many_requests": "Demasiados intentos, inténtalo mañana",
+            "invalid_token": "El enlace no es válido o ha caducado. Solicita el cambio de nuevo en tu perfil.",
+            "old_email_taken": "Tu dirección anterior ya la usa otra cuenta; escribe a soporte.",
+            "unknown": "Algo salió mal, inténtalo de nuevo",
+            "network": "Sin conexión con el servidor, inténtalo de nuevo"
+        },
+        "missing": "El enlace no tiene código. Abre el enlace completo del correo.",
+        "confirm": {
+            "title": "Confirma tu nuevo correo",
+            "text": "Pulsa el botón para cambiar el correo de tu cuenta. Después tendrás que iniciar sesión de nuevo en todos los dispositivos, con el nuevo correo y tu contraseña actual.",
+            "button": "Confirmar nuevo correo",
+            "doneTitle": "Correo cambiado",
+            "doneText": "Ahora inicias sesión con {{email}} y tu contraseña actual.",
+            "doneButton": "Iniciar sesión"
+        },
+        "revert": {
+            "title": "Recuperar el correo anterior",
+            "text": "Si otra persona cambió el correo de tu cuenta, pulsa el botón: restauraremos tu dirección anterior y cerraremos todas las sesiones. También se restablecerá la contraseña: crea una nueva.",
+            "button": "Recuperar correo anterior",
+            "doneTitle": "Correo recuperado",
+            "doneText": "Vuelves a iniciar sesión con {{email}}. Todas las sesiones están cerradas y la contraseña se restableció: crea una nueva con «¿Olvidaste tu contraseña?».",
+            "doneButton": "Crear nueva contraseña"
+        }
+    },
+    "referral": {
+        "title": "Invitar a un amigo",
+        "intro": "Comparte tu enlace con tus amigos. Cuando un amigo se registre con él y confirme su correo, recibirás la insignia «Asistente de recomendaciones».",
+        "linkLabel": "Tu enlace",
+        "copy": "Copiar",
+        "copied": "Copiado",
+        "share": "Compartir",
+        "shareText": "Viajes de voluntariado por Rusia y el mundo: únete a Goodsurfing",
+        "invited": "Amigos que se registraron con tu enlace: {{count}}",
+        "none": "Aún nadie se ha registrado con tu enlace",
+        "badge": "Por tu primer amigo recibes la insignia «Asistente de recomendaciones».",
+        "badgeDone": "La insignia «Asistente de recomendaciones» aparecerá en tu perfil en un día.",
+        "error": "No se pudo cargar tu enlace.",
+        "retry": "Reintentar"
+    },
+    "notifications": {
+        "title": "Notificaciones",
+        "intro": "Elige de qué y dónde quieres que te avisemos. Las nuevas solicitudes y los mensajes de voluntarios es mejor recibirlos en un mensajero: responderás antes, y los voluntarios eligen a quien responde rápido.",
+        "connectTitle": "Mensajeros",
+        "telegram": "Telegram",
+        "max": "MAX",
+        "connect": "Conectar Telegram",
+        "connecting": "Esperando «Iniciar» en Telegram…",
+        "connectHint": "Se abrirá el bot de Goodsurfing: pulsa «Iniciar». Esta página se actualizará sola.",
+        "connected": "Conectado",
+        "disconnect": "Desconectar",
+        "soon": "Próximamente",
+        "unavailable": "Aún no disponible",
+        "tableTitle": "Qué enviar y dónde",
+        "channels": {
+            "email": "Correo",
+            "telegram": "Telegram",
+            "max": "MAX",
+            "push": "Push en la app"
+        },
+        "types": {
+            "new_application": "Nueva solicitud",
+            "new_message": "Nuevo mensaje de un voluntario",
+            "unanswered_reminder": "Recordatorio de solicitudes sin respuesta",
+            "news": "Noticias y selecciones de Goodsurfing",
+            "host_reply": "Respuesta del anfitrión",
+            "application_status": "Decisión sobre la solicitud"
+        },
+        "hints": {
+            "new_application": "Al momento: quién, a qué oportunidad, fechas y el inicio del mensaje",
+            "new_message": "A los 10 minutos si no lo has leído; como mucho una vez por hora por conversación",
+            "unanswered_reminder": "A los 3 y 7 días de la solicitud",
+            "news": "Correos con noticias del proyecto",
+            "host_reply": "A los 10 minutos si no lo has leído; como mucho una vez por hora por conversación",
+            "application_status": "Al momento, cuando aceptan o rechazan tu solicitud"
+        },
+        "needConnect": "Primero conecta el mensajero",
+        "service": "Los mensajes de servicio — confirmación de correo, cambio de contraseña, pago, fin de la membresía, vigencia de oportunidades — llegan siempre, y a Telegram si está conectado.",
+        "quiet": "De noche, de 23:00 a 08:00 hora de Moscú, las notificaciones llegan sin sonido.",
+        "saveError": "No se pudo guardar, inténtalo de nuevo",
+        "loadError": "No se pudieron cargar los ajustes.",
+        "retry": "Reintentar",
+        "banner": "Recibe solicitudes en Telegram: responderás antes",
+        "bannerButton": "Conectar",
+        "bannerClose": "Ocultar",
+        "introVolunteer": "Elige de qué y dónde quieres que te avisemos. En Telegram verás al momento la respuesta del anfitrión y podrás acordar el viaje rápido."
+    },
+    "checkoutFeedback": {
+        "title": "¿Qué te impidió pagar?",
+        "hint": "Te llevará un par de segundos y nos ayuda a mejorar. No se cobró nada.",
+        "intro": "El pago de la membresía no se completó: no se cobró nada.",
+        "hide": "Ocultar",
+        "reasons": {
+            "expensive": "Es caro",
+            "later": "Lo pensaré y pagaré más tarde",
+            "payment_method": "No hay un método de pago cómodo",
+            "unclear": "No entendí qué obtengo",
+            "technical": "No funcionó: un error o la tarjeta fue rechazada",
+            "other": "Otra cosa"
+        },
+        "comment": "Comentario (opcional)",
+        "submit": "Enviar",
+        "thanks": "¡Gracias! Recibimos tu respuesta. Si algo no funcionó, escribe a support@goodsurfing.org y te ayudaremos.",
+        "error": "No se pudo enviar, inténtalo de nuevo",
+        "invalid": "El enlace está incompleto: ábrelo completo desde el correo.",
+        "back": "← A la página de membresía"
     }
 }

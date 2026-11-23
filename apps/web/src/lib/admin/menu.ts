@@ -12,6 +12,7 @@ export const ADMIN_MENU: AdminMenuGroup[] = [
             { href: "/admin/users", label: "Все пользователи" },
             { href: "/admin/organizations", label: "Все организации" },
             { href: "/admin/membership-log", label: "Журнал членства" },
+            { href: "/admin/tariffs", label: "Тарифы членства" },
             { href: "/admin/skills-achievements", label: "Навыки и достижения" },
             { href: "/admin/vacancies", label: "Все вакансии" },
             { href: "/admin/categories-vacancies", label: "Категории вакансий" },

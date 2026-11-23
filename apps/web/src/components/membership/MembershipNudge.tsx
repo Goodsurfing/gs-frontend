@@ -44,6 +44,8 @@ export function MembershipNudge({ locale, labels }: {
         // Без защиты от повторного запуска: адрес меняется при гидратации (/ru/… → /…), эффект
         // перезапускается и снимает таймер — ставим заново, остаток считается от начала визита
         if (session.status !== "user" || !nudgeAllowedOn(pathname)) return;
+        // Автоматическим браузерам (сквозные тесты, боты) не показываем: окно перекрыло бы кнопки посреди теста
+        if (window.navigator.webdriver) return;
         if (storageGet(SHOWN_KEY, "session")) return;
         // Отсчёт — от начала визита, а не от загрузки страницы: иначе каждый переход сбрасывал бы 2 минуты
         const startedAt = Number(storageGet(STARTED_KEY, "session")) || Date.now();

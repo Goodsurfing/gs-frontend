@@ -1,3 +1,4 @@
+import { capturePageLang, pageTampering, parseUserAgent } from "@/lib/browserContext";
 import { DENY_URLS, errorTrackingOptions } from "@/lib/errorTracking";
 
 /**
@@ -7,6 +8,8 @@ import { DENY_URLS, errorTrackingOptions } from "@/lib/errorTracking";
  * копятся и отправляются сразу после инициализации.
  */
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
+    // Язык страницы до того, как его поменяет переводчик браузера (GS-272)
+    const pageLang = capturePageLang(document);
     const early: unknown[] = [];
     const onError = (event: ErrorEvent) => early.push(event.error ?? event.message);
     const onRejection = (event: PromiseRejectionEvent) => early.push(event.reason);
@@ -18,6 +21,16 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
         Sentry.init({
             ...errorTrackingOptions(),
             denyUrls: DENY_URLS,
+            // Браузер, ОС и следы переводчика/расширений — чтобы отличать наши
+            // ошибки гидрации (#418) от чужих правок страницы (GS-272). Без ПДн.
+            beforeSend(event) {
+                const { browser, os } = parseUserAgent(navigator.userAgent);
+                const { translated, foreignAttributes } = pageTampering(document, pageLang);
+                event.tags = { ...event.tags, browser, os, translated: String(translated) };
+                event.contexts = { ...event.contexts, browser: { name: browser }, os: { name: os } };
+                if (foreignAttributes.length) event.extra = { ...event.extra, foreignAttributes };
+                return event;
+            },
             defaultIntegrations: false,
             integrations: [
                 Sentry.eventFiltersIntegration(),

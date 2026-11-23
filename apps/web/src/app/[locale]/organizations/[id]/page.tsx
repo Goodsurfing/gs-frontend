@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 
 import { GalleryCarousel } from "@/components/gallery/GalleryCarousel";
 import { PublicShell } from "@/components/layout/PublicShell";
+import { BadgeChips } from "@/components/achievements/BadgeChips";
+import { SlowReplyChip } from "@/components/achievements/SlowReplyChip";
 import { MembershipBadges } from "@/components/membership/MembershipBadges";
 import { SectionTitle } from "@/components/offer/parts";
 import { OrganizationOffers } from "@/components/organization/OrganizationOffers";
@@ -17,6 +19,7 @@ import { getTranslator } from "@/i18n/dictionary";
 import { categoryLabels } from "@/lib/categories";
 import { mediaUrl } from "@/lib/media";
 import { organizationType } from "@/lib/offerText";
+import { getOrganizationBadges, getOrganizationSlowReply } from "@/lib/achievements";
 import { getOrganization, getOrganizationOffers, getOrganizationReviews } from "@/lib/organization";
 import { routes } from "@/lib/routes";
 import { pageMetadata, seoDescription } from "@/lib/seo";
@@ -62,11 +65,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function OrganizationPage({ params }: Props) {
     const { locale, id } = await params;
     if (!isLocale(locale)) notFound();
-    const [result, t, tHost, tProfile, tOffer] = await Promise.all([
+    const [result, t, tHost, tOffer] = await Promise.all([
         getOrganization(locale, id),
         getTranslator(locale),
         getTranslator(locale, "host"),
-        getTranslator(locale, "profile"),
         getTranslator(locale, "offer"),
     ]);
     const h = (key: string) => tHost(`personalHost.${key}`);
@@ -82,9 +84,11 @@ export default async function OrganizationPage({ params }: Props) {
         );
     }
     const organization = result.organization;
-    const [offers, reviews] = await Promise.all([
+    const [offers, reviews, badges, slowReply] = await Promise.all([
         getOrganizationOffers(locale, id, t),
         getOrganizationReviews(locale, id),
+        getOrganizationBadges(locale, id),
+        getOrganizationSlowReply(locale, id),
     ]);
     const owner = organization.owner as { id?: string; isMember?: boolean } | undefined;
     const gallery = (organization.galleryImages ?? [])
@@ -105,28 +109,35 @@ export default async function OrganizationPage({ params }: Props) {
     return (
         <PublicShell locale={locale} headerVariant="static">
             <div className="mx-auto min-h-[80vh] w-full max-w-[1920px] px-[50px] pt-[92px] pb-[50px] down-lg:p-5">
-                <div className="box-border flex min-h-[230px] w-full flex-wrap gap-[60px] rounded-[10px] bg-field px-[60px] py-10 down-sm:p-5">
+                <div className="box-border flex min-h-[230px] w-full flex-wrap gap-[60px] rounded-[10px] bg-field px-[60px] py-10 down-sm:gap-6 down-sm:p-5">
                     <Avatar src={mediaUrl(organization.avatar, "medium")} name={organization.name} size={150} />
-                    <div className="w-full max-w-[510px]">
-                        <span className="text-[14px] font-medium text-ink-secondary">
+                    {/* Тип, название и адрес — с воздухом между строками, чтобы не слипались */}
+                    <div className="flex w-full max-w-[510px] flex-col items-start gap-2">
+                        <span className="text-[14px] leading-[140%] font-medium text-ink-secondary">
                             {h("Организация/")}
                             {organizationType(organization.type ?? "", tHost)}
                         </span>
                         <div className="flex items-center">
-                            <h1 className="text-[26px] font-normal text-ink-secondary">{organization.name}</h1>
+                            <h1 className="text-[26px] leading-[125%] font-normal text-ink-secondary">{organization.name}</h1>
                             {owner?.isMember && (
                                 <MembershipBadges
                                     badge={t("membershipBadge.Партнёр Гудсёрфинга")}
                                     membershipHref={routes.membership(locale)}
                                     labels={{
-                                        verified: tProfile("personal.Верифицированный пользователь. Хочешь, чтобы тебе тоже больше доверяли? Оформи членство!"),
-                                        howTo: tProfile("personal.Как это сделать?"),
+                                        verified: tHost("verifiedHost.hint"),
+                                        howTo: tHost("verifiedHost.howTo"),
                                     }}
                                 />
                             )}
                         </div>
-                        <span>{organization.address}</span>
-                        <div className="mt-5 grid max-w-[250px] grid-cols-2 gap-2 down-sm:grid-cols-1">
+                        <span className="leading-[140%]">{organization.address}</span>
+                        {(slowReply || badges.length > 0) && (
+                            <div className="mt-1 flex flex-wrap items-center gap-2">
+                                {slowReply && <SlowReplyChip label={tHost("slowReply.label")} hint={tHost("slowReply.hint")} />}
+                                <BadgeChips badges={badges} href={routes.achievements(locale)} />
+                            </div>
+                        )}
+                        <div className="mt-3 grid w-full max-w-[250px] grid-cols-2 gap-2 down-sm:grid-cols-1">
                             {vk && (
                                 <a href={vk} target="_blank" rel="noreferrer" className="flex items-center gap-1">
                                     {/* Строчная иконка в блоке, как в старом фронте: строка 21 px */}
@@ -154,22 +165,26 @@ export default async function OrganizationPage({ params }: Props) {
 
                 <SectionSubmenu
                     className="z-[8]"
+                    // Пустые разделы не показываются — и в меню их нет (решение владельца 05.11.2026)
                     items={[
-                        { id: "1", text: h("Об организации") },
+                        organization.description ? { id: "1", text: h("Об организации") } : null,
                         { id: "2", text: h("Вакансии") },
-                        { id: "3", text: h("Фото") },
-                        { id: "4", text: h("Видео") },
-                        { id: "6", text: h("Отзывы") },
-                    ]}
+                        gallery.length > 0 ? { id: "3", text: h("Фото") } : null,
+                        videos.length > 0 ? { id: "4", text: h("Видео") } : null,
+                        reviews && reviews.total > 0 ? { id: "6", text: h("Отзывы") } : null,
+                    ].filter((item) => item !== null)}
                 >
                     {actions}
                 </SectionSubmenu>
 
                 <div className="mx-auto flex max-w-[980px] flex-col items-center justify-center">
-                    <div id="1" className="mt-[60px] w-full">
-                        <SectionTitle>{h("Об организации")}</SectionTitle>
-                        <p className="mt-5 whitespace-pre-line break-words">{organization.description || h("Организатор не указал данную информацию")}</p>
-                    </div>
+                    {organization.description && (
+                        <div id="1" className="mt-[60px] w-full">
+                            <SectionTitle>{h("Об организации")}</SectionTitle>
+                            <p className="mt-5 whitespace-pre-line break-words">{organization.description}</p>
+                        </div>
+                    )}
+                    {/* Вакансии — всегда: «У организации пока нет вакансий» тоже ответ для волонтёра */}
                     <div id="2" className="mt-[60px] w-full">
                         <SectionTitle>{h("Вакансии")}</SectionTitle>
                         <OrganizationOffers
@@ -190,26 +205,26 @@ export default async function OrganizationPage({ params }: Props) {
                             }}
                         />
                     </div>
-                    <div id="3" className="mt-[60px] w-full">
-                        <SectionTitle>{h("Фото")}</SectionTitle>
-                        {gallery.length > 0 ? (
+                    {gallery.length > 0 && (
+                        <div id="3" className="mt-[60px] w-full">
+                            <SectionTitle>{h("Фото")}</SectionTitle>
                             <GalleryCarousel
                                 images={gallery}
                                 className="mt-[30px]"
                                 labels={{ open: t("gallery.open"), photo: t("gallery.photo"), close: t("Закрыть"), ...sliderLabels }}
                             />
-                        ) : <p className="mt-[30px]">{h("Галерея не заполнена")}</p>}
-                    </div>
-                    <div id="4" className="mt-[60px] w-full">
-                        <SectionTitle>{h("Видео")}</SectionTitle>
-                        {videos.length > 0 ? (
+                        </div>
+                    )}
+                    {videos.length > 0 && (
+                        <div id="4" className="mt-[60px] w-full">
+                            <SectionTitle>{h("Видео")}</SectionTitle>
                             <VideoCarousel
                                 videos={videos}
                                 className="mt-[30px]"
                                 labels={{ ...sliderLabels, video: h("Видео"), unsupported: t("Неподдерживаемая ссылка на видео") }}
                             />
-                        ) : <p className="mt-[30px]">{h("Видеогалерея не заполнена")}</p>}
-                    </div>
+                        </div>
+                    )}
                     {reviews && reviews.total > 0 && (
                         <div id="6" className="mt-[60px] w-full">
                             <SectionTitle>{h("Отзывы")}</SectionTitle>

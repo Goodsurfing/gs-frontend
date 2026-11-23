@@ -5,8 +5,10 @@ import { PublicShell } from "@/components/layout/PublicShell";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { OPTIONAL_BLOCK_TIMEOUT_MS, serverApi } from "@/lib/api";
+import { specialLandingLinks } from "@/lib/specialLandings";
 import { routes } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
+import { VOLUNTEERING_LANDINGS } from "@/lib/volunteeringLandings";
 
 export const revalidate = 300;
 
@@ -40,7 +42,7 @@ async function getCategories(locale: Locale) {
 export default async function CategoriesPage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
-    const [t, categories] = await Promise.all([getTranslator(locale), getCategories(locale)]);
+    const [t, tMain, categories] = await Promise.all([getTranslator(locale), getTranslator(locale, "main"), getCategories(locale)]);
     const plural = new Intl.PluralRules(locale);
     const count = (value: number) => `${value} ${t(`category-offer.vacancyCount_${plural.select(value)}`)}`;
 
@@ -75,6 +77,19 @@ export default async function CategoriesPage({ params }: Props) {
                         </div>
                     )))}
                 </div>
+                {/* Посадочные страницы направлений для поиска — ссылки, чтобы поисковики их нашли */}
+                <nav aria-labelledby="categories-more" className="mt-16">
+                    <h2 id="categories-more" className="text-[1.125rem] font-semibold text-ink-secondary">{tMain("landing.more")}</h2>
+                    <ul className="m-0 mt-3 flex list-none flex-wrap gap-x-5 gap-y-2 p-0">
+                        {VOLUNTEERING_LANDINGS.map((item) => {
+                            const name = locale === "ru" ? item.ru.h1 : categories.find((category) => category.id === item.categoryId)?.name;
+                            return name ? <li key={item.slug}><a href={routes.volunteering(locale, item.slug)} className="text-[14px] text-primary no-underline hover:underline">{name}</a></li> : null;
+                        })}
+                        {specialLandingLinks(locale).map((item) => (
+                            <li key={item.href}><a href={item.href} className="text-[14px] text-primary no-underline hover:underline">{item.title}</a></li>
+                        ))}
+                    </ul>
+                </nav>
             </div>
         </PublicShell>
     );

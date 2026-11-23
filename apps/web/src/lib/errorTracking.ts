@@ -29,6 +29,14 @@ export const errorTrackingOptions = () => ({
         "ResizeObserver loop limit exceeded",
         "ResizeObserver loop completed with undelivered notifications",
         "Non-Error promise rejection captured",
+        // Сканеры шлют POST на / и /api с мусорными заголовками Next (Next-Router-State-Tree,
+        // RSC) — Next отвечает ошибкой, пользователей это не касается (05.11.2026)
+        "The router state header was sent but could not be parsed",
+        "Expected RSC response, got text/plain",
+        // API недоступен (перезапуск бэкенда при выкатке, ~1 мин): страница уже отдана
+        // из кэша или с экраном ошибки, сбой видит бот статуса. В Bugsink это давало
+        // по 150 событий на каждую выкатку бэкенда (ApiUnavailableError, lib/apiUnavailable.ts)
+        "API недоступен",
     ],
 });
 

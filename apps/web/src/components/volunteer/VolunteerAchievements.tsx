@@ -7,7 +7,7 @@ export interface Achievement { id: number | string; name: string; image?: string
 
 function Medal({ achievement }: { achievement: Achievement }) {
     return (
-        <div className="flex w-full max-w-[70px] flex-col items-center text-center text-[10px] text-caption">
+        <div className="flex w-full max-w-[70px] flex-col items-center px-0.5 text-center text-[10px] leading-[1.25] text-caption [overflow-wrap:break-word] hyphens-auto">
             {/* eslint-disable-next-line @next/next/no-img-element -- значок из справочника */}
             <img loading="eager" src={achievement.image} alt={achievement.name} className="w-8" />
             <span className="mt-[5px]">{achievement.name}</span>

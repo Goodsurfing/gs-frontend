@@ -6,7 +6,7 @@ import type { Locale } from "@/i18n/config";
 
 import { OPTIONAL_BLOCK_TIMEOUT_MS, serverApi } from "./api";
 
-import { type OfferCardData, SLIDER_OFFERS_LIMIT } from "./offers";
+import { localizeCard, type OfferCardData, SLIDER_OFFERS_LIMIT, vacancyLang } from "./offers";
 
 // Направления, вакансии и статьи — основное содержимое главной: ждём дольше необязательных блоков,
 // иначе на сборке (девять запросов разом) страница кэшировалась пустой
@@ -39,10 +39,10 @@ export async function getHomeCategories(locale: Locale): Promise<HomeCategory[]>
 export async function getFeaturedOffers(locale: Locale): Promise<OfferCardData[]> {
     const load = async (query: { isFeatured?: boolean; sort?: "recommendation" }) => {
         const { data } = await serverApi(locale).GET("/api/v1/vacancy", {
-            params: { query: { ...query, fields: "card", limit: SLIDER_OFFERS_LIMIT } },
+            params: { query: { ...query, fields: "card", limit: SLIDER_OFFERS_LIMIT, ...vacancyLang(locale) } },
             signal: AbortSignal.timeout(MAIN_BLOCK_TIMEOUT_MS),
         });
-        return (data?.data ?? []).slice(0, SLIDER_OFFERS_LIMIT);
+        return (data?.data ?? []).slice(0, SLIDER_OFFERS_LIMIT).map(localizeCard);
     };
     try {
         const featured = await load({ isFeatured: true });
@@ -60,7 +60,8 @@ export async function getFeaturedReviews(locale: Locale): Promise<FeaturedReview
         const { data } = await serverApi(locale).GET("/api/v1/review-vacancy/featured", {
             signal: AbortSignal.timeout(MAIN_BLOCK_TIMEOUT_MS),
         });
-        return (data ?? []).filter((review) => (review.images ?? []).length > 0);
+        // Нужна картинка: своё фото отзыва или обложка вакансии
+        return (data ?? []).filter((review) => (review.images ?? []).length > 0 || !!review.vacancyImage);
     } catch {
         return [];
     }
@@ -90,5 +91,20 @@ export async function getMainBanner(locale: Locale): Promise<{ url: string; desc
         return { url: data.url, description: data.description, image: (data as { image?: { contentUrl?: string } | null }).image?.contentUrl };
     } catch {
         return null;
+    }
+}
+
+export type FeedEvent = components["schemas"]["FeedEvent"];
+
+/** Лента событий Гудсёрфинга (GS-241); необязательный блок — при сбое API его просто нет */
+export async function getEventFeed(locale: Locale): Promise<FeedEvent[]> {
+    try {
+        const { data } = await serverApi(locale).GET("/api/v1/event-feed", {
+            params: { query: { lang: locale } },
+            signal: AbortSignal.timeout(OPTIONAL_BLOCK_TIMEOUT_MS),
+        });
+        return Array.isArray(data) ? data : [];
+    } catch {
+        return [];
     }
 }

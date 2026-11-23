@@ -4,10 +4,12 @@ import { notFound } from "next/navigation";
 import { CabinetShell } from "@/components/cabinet/CabinetShell";
 import { MembershipBanner } from "@/components/cabinet/profile/MembershipBanner";
 import { ProfileInfoForm } from "@/components/cabinet/profile/ProfileInfoForm";
+import { EmailChangeButton } from "@/components/email-change/EmailChangeButton";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { authMetadata } from "@/lib/authPages";
 import { profileMenu } from "@/lib/cabinetMenus";
+import { emailChangeLabels } from "@/lib/emailChangeLabels";
 import { routes } from "@/lib/routes";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -35,6 +37,7 @@ export default async function ProfileInfoPage({ params }: Props) {
                     volunteerHref={routes.volunteerPublicTemplate(locale)}
                     preferencesHref={routes.profilePreferences(locale)}
                     verifyHref={routes.verifyEmail(locale)}
+                    emailChange={<EmailChangeButton signInHref={routes.signIn(locale)} labels={emailChangeLabels(t)} />}
                     aside={(
                         <MembershipBanner
                             locale={locale}
@@ -59,21 +62,36 @@ export default async function ProfileInfoPage({ params }: Props) {
                         months: MONTHS.map((month) => i(month)),
                         gender: i("Пол"),
                         genders: { male: i("Мужчина"), female: i("Женщина"), other: i("Другой") },
+                        genderNone: i("Не указан"),
+                        datePlaceholders: { day: i("День"), month: i("Месяц"), year: i("Год") },
                         country: i("Страна"),
                         city: i("Город"),
                         language: i("Язык интерфейса"),
                         phone: i("Телефон"),
                         aboutMe: i("Расскажите о себе"),
                         aboutHint: i("Не более 1000 знаков"),
+                        socialHint: i("ссылка или @имя"),
                         save: i("Сохранить"),
-                        edit: i("Редактировать"),
-                        cancel: i("Отмена"),
-                        next: i("Дальше"),
+                        discard: i("Отменить изменения"),
+                        unsaved: i("Есть несохранённые изменения"),
+                        next: i("Дальше: предпочтения"),
                         saved: i("Данные успешно изменены"),
+                        saveError: i("Не удалось сохранить — проверьте интернет и попробуйте ещё раз"),
                         viewProfile: i("Посмотреть профиль"),
                         maxSize: tp("info.Максимальный_размер", { size: 5 }),
-                        deleteImage: tp("Удалить изображение"),
-                        uploadError: tp("Произошла ошибка при загрузке изображения"),
+                        photo: {
+                            upload: i("Загрузить фото"),
+                            change: i("Изменить фото"),
+                            uploading: i("Загружаем фото…"),
+                            saved: i("Фото обновлено"),
+                            deleted: i("Фото удалено"),
+                            deleteConfirm: i("Удалить фото профиля?"),
+                            delete: i("Удалить фото"),
+                            keep: i("Оставить"),
+                            tooLarge: i("Фото слишком большое — выберите другое"),
+                            notImage: i("Это не фото — выберите JPG, PNG или WebP"),
+                            error: i("Не получилось загрузить фото — попробуйте ещё раз"),
+                        },
                         verifyText: i("Вам нужно подтвердить вашу электронную почту."),
                         verify: i("Подтвердить"),
                         errors: {

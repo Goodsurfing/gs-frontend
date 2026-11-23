@@ -6,6 +6,8 @@ import type { Locale } from "@/i18n/config";
 import { API_URL } from "@/lib/browserApi";
 import { saveSession, type TokenResponse } from "@/lib/authSession";
 import { muteVkStatsErrors } from "@/lib/vkStatsGuard";
+
+import { reachGoalThen } from "../analytics/YandexMetrika";
 import { storageGet, storageRemove, storageSet } from "@/lib/safeStorage";
 
 const CLIENT_ID = Number(process.env.NEXT_PUBLIC_VKID_CLIENT_ID || "54505769");
@@ -75,14 +77,17 @@ export function VkIdButton({ locale, page, onSuccess, onError, deletedText }: {
                     render();
                     return;
                 }
-                const data = await response.json() as TokenResponse & { user?: { email?: string; roles?: string[] } };
+                const data = await response.json() as TokenResponse & { user?: { email?: string; roles?: string[] }; isNew?: boolean };
                 if (!data?.accessToken) {
                     render();
                     return;
                 }
                 saveSession({ ...data, roles: data.user?.roles ?? data.roles }, data.user?.email ?? "");
                 storageRemove("vk_code_verifier");
-                onSuccess();
+                // Аккаунт создан этим входом — регистрация, как у формы с почтой (раньше VK, ~40 % регистраций, в Метрике не считался).
+                // Цель успевает уйти до перехода: reachGoalThen ждёт ответа счётчика (не дольше секунды)
+                if (data.isNew) reachGoalThen("signup", { method: "vk" }, onSuccess);
+                else onSuccess();
             } catch {
                 render();
             }

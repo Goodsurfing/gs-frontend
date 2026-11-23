@@ -13,7 +13,7 @@ concurrency:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
 
@@ -26,22 +26,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: ESLint
-        run: npm run lint
+      # Корень — только сквозные E2E (e2e/): старое SPA удалено 05.11.2026 (GS-222),
+      # новый фронт проверяет web.yml. Здесь — что тесты собираются и уязвимости корня.
+      - name: E2E type-check
+        run: npm run e2e:typecheck
 
-      - name: Type-check
-        run: npm run type-check
-
-      # Раньше тесты в CI не запускались совсем, и 23 файла незаметно сломались
-      # из-за пропавшей зависимости @testing-library/dom.
-      - name: Unit tests
-        run: npm run test:run
-
-      # Известные уязвимости в зависимостях, которые попадают в сборку.
-      # Блокирует на moderate и выше. Сейчас остаётся одна low (deepmerge через
-      # react-player и babel-plugin-i18next-extract, исправления нет) — её пропускаем.
       - name: Dependency audit
-        run: npm audit --omit=dev --audit-level=moderate
+        run: npm audit --audit-level=moderate
 
   secrets:
     # Действующие токены и ключи, случайно попавшие в коммит.

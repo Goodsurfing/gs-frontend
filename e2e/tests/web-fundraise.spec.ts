@@ -27,7 +27,8 @@ test.describe('Новый фронт: страница сбора', () => {
             expect(response?.status()).toBe(200);
             await expect(page.locator('script[src*="/_next/"]').first()).toBeAttached();
             await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-            await expect(page.getByText('Дата старта')).toBeVisible();
+            // Пустые разделы не рисуются: заглушек «не было добавлено» на странице нет
+            await expect(page.getByText(/не было заполнено|не было указано|не были добавлены|Не имеет даты старта/)).toHaveCount(0);
             await expect(page.getByRole('heading', { name: 'Участники сбора' })).toBeVisible();
             await expect(page.getByText('Поделиться сбором')).toBeVisible();
             await expect(page.getByRole('link', { name: 'Поддержать' }).first()).toHaveAttribute('href', `/signin?next=donation&nextId=${id}`);

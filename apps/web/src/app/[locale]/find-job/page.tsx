@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { HowItWork } from "@/components/home/HowItWork";
 import { PublicShell } from "@/components/layout/PublicShell";
-import { OfferCard } from "@/components/offers/OfferCard";
+import { OfferCard, offerCardLabels } from "@/components/offers/OfferCard";
 import { OffersCarousel } from "@/components/offers/OffersCarousel";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
@@ -65,7 +65,7 @@ export default async function FindJobPage({ params }: Props) {
                     <HowItWork locale={locale} className="mb-[120px] max-w-[1014px]" />
                     <h2 className={sectionTitle}>{t("Интересные вакансии")}</h2>
                     <OffersCarousel className="mb-[120px]" prevLabel={tCommon("slider.previous")} nextLabel={tCommon("slider.next")}>
-                        {offers.map((offer) => <OfferCard key={offer.id} offer={offer} href={routes.offer(locale, offer.id)} category={categoryName(offer.categories[0]?.name, tCommon)} />)}
+                        {offers.map((offer) => <OfferCard key={offer.id} offer={offer} href={routes.offer(locale, offer.id)} category={categoryName(offer.categories[0]?.name, tCommon)} labels={offerCardLabels(tCommon)} />)}
                     </OffersCarousel>
                 </div>
 

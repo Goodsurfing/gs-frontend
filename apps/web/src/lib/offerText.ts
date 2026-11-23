@@ -75,6 +75,15 @@ export function languagesText(
     }));
 }
 
+/**
+ * Единица часов работы с поправкой на перенос со старого сайта: там часы были в
+ * неделю, а при переносе у 1 461 из 1 677 вакансий встала единица «в день»
+ * (35 ч «в день»). Больше 12 часов в день не бывает — показываем как «в неделю».
+ */
+export function workTimeType(hour: number | null | undefined, timeType: string | null | undefined): string {
+    return (timeType ?? "day") === "day" && (hour ?? 0) > 12 ? "week" : timeType ?? "day";
+}
+
 export function timeTypeText(timeType: string, t: Translate): string {
     return ["week", "day", "month"].includes(timeType) ? t(`whatToDo.${timeType}`) : timeType;
 }
@@ -182,7 +191,9 @@ export function participateText(
     labels: ParticipateLabels,
 ): string {
     if (closed) return labels.closed;
-    if (needVolunteerRole) return labels.becomeVolunteer;
+    // Без роли волонтёра — тоже «Участвовать»: роль создаётся сама по нажатию (OfferActions, 06.11.2026);
+    // «Чтобы участвовать, станьте гудсёрфером» уводило новичка на лишний экран выбора роли
+    void needVolunteerRole;
     return (textParticipate && labels.states[textParticipate]) || labels.participate;
 }
 

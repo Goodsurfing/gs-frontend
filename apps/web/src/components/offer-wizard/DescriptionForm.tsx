@@ -17,6 +17,7 @@ import { type GalleryLabels, GalleryUpload } from "./GalleryUpload";
 import { toUploadedImage, type UploadedImage } from "./media";
 import { apiErrorText, type VacancyElement, useVacancyElement } from "./useVacancy";
 import { WizardActions } from "./WizardActions";
+import { type VacancyAssistantLabels, VacancyAssistant } from "./VacancyAssistant";
 import { WizardTextarea } from "./WizardTextarea";
 
 export interface DescriptionLabels {
@@ -40,6 +41,8 @@ export interface DescriptionLabels {
     unsaved: string;
     loading: string;
     missing: string;
+    /** Помощник вакансии (GS-256); у сбора его нет */
+    assistant?: VacancyAssistantLabels;
 }
 
 export interface CategoryOption { id: number; name: string; color: string }
@@ -233,6 +236,14 @@ export function DescriptionEditor({ id, nextHref, categories, labels, saved, sav
                     </div>
                     {show("categoryIds") && <ErrorText text={labels.required} />}
                 </div>
+                {labels.assistant && (
+                    <VacancyAssistant
+                        token={session.token}
+                        title={form.title}
+                        onApply={(texts) => set(texts)}
+                        labels={labels.assistant}
+                    />
+                )}
                 <div>
                     <WizardTextarea label={labels.short} hint={labels.shortHint} maxLength={SHORT_DESCRIPTION_MAX} invalid={!!show("shortDescription")} value={form.shortDescription} onChange={(event) => set({ shortDescription: event.target.value })} />
                     {show("shortDescription") && <ErrorText text={labels.required} />}

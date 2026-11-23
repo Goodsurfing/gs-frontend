@@ -7,6 +7,7 @@ import { ImagesUploader, type ImagesUploaderLabels } from "@/components/cabinet/
 import { TextAreaField } from "@/components/form/fields";
 import type { UploadedMedia } from "@/lib/mediaUpload";
 
+import { type ReviewAssistantLabels, ReviewAssistant } from "./ReviewAssistant";
 import { STAR, STAR_BORDER } from "./StarRating";
 
 export interface OfferReviewDialogLabels {
@@ -17,6 +18,8 @@ export interface OfferReviewDialogLabels {
     send: string;
     sent: string;
     close: string;
+    /** Помощник отзыва (GS-256) */
+    assistant?: ReviewAssistantLabels;
 }
 
 /**
@@ -27,8 +30,10 @@ export interface OfferReviewDialogLabels {
  * странице «Отзывы»: пока фото загружаются, отправить нельзя; при закрытии окна
  * загрузки отменяются и в следующее окно не попадают.
  */
-export function OfferReviewDialog({ open, offer, initialRating = null, labels, photos, onSend, onClose }: {
+export function OfferReviewDialog({ open, offer, initialRating = null, labels, photos, onSend, onClose, assistant }: {
     open: boolean;
+    /** Помощник отзыва: для какой вакансии и с каким входом */
+    assistant?: { token: string | undefined; vacancyId: number };
     /** Оценка, уже выбранная в письме «Как всё прошло?» */
     initialRating?: number | null;
     /** Карточка вакансии над оценкой */
@@ -117,6 +122,9 @@ export function OfferReviewDialog({ open, offer, initialRating = null, labels, p
                                         ))}
                                     </div>
                                     {/* Отступ 5 px снизу — как у строчной textarea с <br> в старом Textarea */}
+                                    {assistant && labels.assistant && (
+                                        <ReviewAssistant token={assistant.token} vacancyId={assistant.vacancyId} rating={rating} onText={(value) => setText(value.slice(0, 500))} labels={labels.assistant} />
+                                    )}
                                     <TextAreaField className="pb-[5px]" label={labels.text} value={text} maxLength={500} onChange={(event) => setText(event.target.value)} />
                                     {photos && (
                                         <ImagesUploader

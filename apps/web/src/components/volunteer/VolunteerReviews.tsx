@@ -20,7 +20,7 @@ const PER_PAGE = 5;
  */
 export function VolunteerReviews({ volunteerId, labels }: {
     volunteerId: string;
-    labels: { title: string; empty: string; error: string; showNext: string; gallery: { close: string; prev: string; next: string; photo: string } };
+    labels: { title: string; error: string; showNext: string; gallery: { close: string; prev: string; next: string; photo: string } };
 }) {
     const session = useSession();
     const [reviews, setReviews] = useState<VolunteerReview[] | null>(null);
@@ -46,14 +46,15 @@ export function VolunteerReviews({ volunteerId, labels }: {
         };
     }, [session.status, session.token, volunteerId, page]);
 
+    // Пока грузится и когда отзывов нет — раздела нет (пустые разделы не показываем, решение владельца 05.11.2026)
     if (reviews === null && !error) return null;
     const list = reviews ?? [];
+    if (!error && list.length === 0) return null;
     return (
         <div id="3" className="mt-10">
             <SectionTitle>{labels.title}</SectionTitle>
             <div className="mt-[30px] mb-5 flex flex-col gap-[30px]">
                 {error && <div>{labels.error}</div>}
-                {!error && list.length === 0 && labels.empty}
                 {!error && list.map((review) => {
                     const images = (review.images ?? []).map((image) => mediaUrl(image, "large")).filter((url): url is string => !!url);
                     return (

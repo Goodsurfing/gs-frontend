@@ -33,7 +33,11 @@ test.describe('Новый фронт: кабинет волонтёра', () => 
         await expect(fill.getByText(/^\d+%$/)).toBeVisible();
         await expect(page.getByTestId('quota-value')).toHaveText(/^(∞|\d\/3)$/);
         await expect(page.getByRole('link', { name: 'Посмотреть свой профиль' })).toHaveAttribute('href', /\/volunteers\/[\w-]+$/);
-        await expect(page.getByRole('link', { name: 'Редактировать профиль' })).toHaveAttribute('href', '/volunteer/skills');
+        // «Редактировать профиль» заменён подсказкой «Следующий шаг» (#860): ссылка ведёт в кабинет или профиль
+        const nextStep = page.getByText(/^Следующий шаг:/);
+        if (await nextStep.count()) {
+            await expect(nextStep.locator('xpath=following::a[1]')).toHaveAttribute('href', /^\/(profile|volunteer|membership)/);
+        }
         await expect(page.getByRole('heading', { name: 'Вакансии, которые вам понравятся' })).toBeVisible();
         await expect(page.getByRole('link', { name: 'Настроить' })).toHaveAttribute('href', '/profile/preferences');
         await expect(page.getByRole('heading', { name: 'Уведомления' })).toBeVisible();

@@ -49,13 +49,13 @@ test.describe('Новый фронт: вход и регистрация', () =>
         await expect(page.getByLabel('Присылать подборки новых проектов и новости Гудсёрфинга')).toBeChecked();
         await page.getByLabel('E-mail').fill(`e2e-web-signup-${Date.now()}@test.local`);
         await page.getByLabel('Пароль', { exact: true }).fill('short');
-        await page.getByRole('button', { name: 'Зарегистрироваться' }).click();
+        await page.getByRole('button', { name: 'Присоединиться' }).click();
         await expect(page.getByText('Пароль должен содержать минимум 6 символов', { exact: false })).toBeVisible();
         await expect(page).toHaveURL(/\/signup/);
 
         await page.goto('/signin');
         await expect(page.getByRole('link', { name: 'Забыли пароль?' })).toHaveAttribute('href', '/reset-password');
-        await expect(page.getByRole('link', { name: 'Зарегистрироваться' })).toHaveAttribute('href', '/signup');
+        await expect(page.getByRole('link', { name: 'Присоединиться' })).toHaveAttribute('href', '/signup');
     });
 
     test('страницы из писем: ошибка ссылки, почта уже подтверждена, отписка', async ({ page }) => {

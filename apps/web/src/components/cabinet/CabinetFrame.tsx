@@ -138,7 +138,8 @@ export function CabinetFrame({ items, labels, fitContent = false, children }: {
             </nav>
             {/* Содержимое сдвигается вслед за шириной меню (PageLayout старого фронта) */}
             <div className={`flex min-h-full justify-between pt-9 pr-[3.125rem] transition-all duration-300 ease-in-out down-lg:pr-5 ${open ? "pl-[21.875rem] down-lg:pl-5" : "pl-40 down-lg:pl-9"}`}>
-                <div className={`w-full pb-9 ${fitContent ? "" : "min-h-screen"}`}>{children}</div>
+                {/* Отступ снизу: у кабинета нет подвала, последняя кнопка не должна прилипать к краю (07.11) */}
+                <div className={`w-full pb-20 down-lg:pb-12 ${fitContent ? "" : "min-h-screen"}`}>{children}</div>
             </div>
         </>
     );

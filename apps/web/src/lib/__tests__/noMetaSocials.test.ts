@@ -12,7 +12,7 @@ const ROOT = path.resolve(__dirname, "../../..");
 const ALLOWED = [
     "src/components/admin/",
     "/__tests__/",
-    "src/components/cabinet/profile/ProfileInfoForm.tsx", // прежние значения не стираем при сохранении профиля (поля не показываются)
+    "src/lib/profileForm.ts", // прежние значения не стираем при сохранении профиля
     "src/components/cabinet/host/HostDescriptionForm.tsx", // API требует поля при создании организации
 ];
 

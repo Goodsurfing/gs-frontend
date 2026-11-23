@@ -16,7 +16,9 @@
         "desc2": "Membership is a way not just to use the project, but to help it live and grow.",
         "cta-main": "Get membership",
         "cta-secondary": "Support without membership",
-        "title": "Become part of the GoodSurfing community, travel with meaning, and support the project that makes it possible."
+        "title": "Become part of the GoodSurfing community, travel with meaning, and support the project that makes it possible.",
+        "cta-pay": "Join for {{price}} ₽",
+        "cta-note": "Unlimited applications for a year. Membership starts right after payment."
     },
     "how-it-works": {
         "Как это работает": "How It Works",
@@ -60,7 +62,7 @@
         "Участие в онлайн-мероприятиях «Гудсёрфинг»": "Participation in online events of GoodSurfing",
         "Доступ к Академии «Гудсёрфинг»": "Access to the GoodSurfing Academy",
         "Доступ к блогу «Гудсёрфинг»": "Access to the GoodSurfing blog",
-        "Зарегистрироваться": "Register",
+        "Зарегистрироваться": "Join",
         "Членство": "Membership",
         "не ограничено": "unlimited",
         "Доступ к уникальным волонтёрским вакансиям и чатам платформы «Гудсёрфинг»": "Access to unique volunteer vacancies and chats of the GoodSurfing platform",
@@ -91,7 +93,7 @@
         "Участие в онлайн-мероприятиях «Гудсёрфинг»": "Participation in online events of GoodSurfing",
         "Доступ к Академии «Гудсёрфинг»": "Access to the GoodSurfing Academy",
         "Доступ к блогу «Гудсёрфинг»": "Access to the GoodSurfing blog",
-        "Зарегистрироваться": "Register",
+        "Зарегистрироваться": "Join",
         "не ограничено": "unlimited",
         "Доступ к уникальным чатам платформы «Гудсёрфинг»": "Access to unique chats of the GoodSurfing platform",
         "Получение статуса амбассадора (при выполнении условий)": "Obtaining ambassador status (subject to conditions)",
@@ -158,7 +160,8 @@
         "title": "Why membership matters",
         "p1": "GoodSurfing was born from the idea that travel can be not only exciting but also useful. Inspired by the idea of mutual aid, we created a platform that makes outbound volunteering accessible, clear, and safe. Today we're an international community bringing together thousands of people ready to help others and make themselves and the world around them better.",
         "p2": "For GoodSurfing to remain a living project, it needs support — and that support comes from the community members themselves.",
-        "p3": "Your membership is a contribution toward making sure meaningful travel and volunteer projects continue to exist."
+        "p3": "Your membership is a contribution toward making sure meaningful travel and volunteer projects continue to exist.",
+        "more": "Read more"
     },
     "donation": {
         "title": "Support GoodSurfing",
@@ -182,5 +185,48 @@
         "help-3-title": "Become a volunteer",
         "help-3-text": "We're always glad to welcome people ready to support us with their actions. Joining the team is simple — just message us on social media."
     },
-    "Волонтёры Гудсёрфинга": "Goodsurfing volunteers"
+    "Волонтёры Гудсёрфинга": "Goodsurfing volunteers",
+    "duo": {
+        "offer-title": "Travelling together?",
+        "offer-text": "Membership for two: one person pays, the other joins via an invitation link. Both get all membership benefits for a year.",
+        "offer-price": "{{price}} ₽ for two",
+        "offer-per-person": "{{price}} ₽ per person",
+        "offer-button": "Get it for two",
+        "panel-title": "Membership for two",
+        "panel-invite": "Send the link to your companion — they just need to sign in or sign up. The link works while your membership is active.",
+        "panel-copy": "Copy link",
+        "panel-copied": "Link copied",
+        "panel-share": "Share",
+        "panel-share-text": "Join my GoodSurfing membership",
+        "panel-email-label": "Or we can email the invitation",
+        "panel-email-placeholder": "Your companion's email",
+        "panel-email-send": "Send",
+        "panel-email-sent": "Invitation sent to {{email}}",
+        "panel-email-left": "Emails left: {{count}}",
+        "panel-regenerate": "Create a new link",
+        "panel-regenerate-hint": "The old link will stop working",
+        "panel-joined": "{{name}} is with you — membership is active for both until {{date}}.",
+        "panel-partner": "You were invited by {{name}}. Membership is active until {{date}}.",
+        "panel-error": "Failed to load. Please refresh the page",
+        "invite-title": "{{name}} invites you to GoodSurfing",
+        "invite-text": "A membership for two is already paid. Join and get unlimited applications to volunteer projects, educational resources and events until {{date}}.",
+        "invite-extend": "If you already have a membership, the remaining period will be added to its end.",
+        "invite-accept": "Join",
+        "invite-sign-in": "Sign in and join",
+        "invite-sign-up": "No account? Sign up, then open the invitation link again.",
+        "invite-done": "Done! Membership is active until {{date}}.",
+        "invite-to-offers": "Find a project",
+        "invite-not-found": "Invitation not found. The link may have been replaced — ask for a new one.",
+        "invite-expired": "The inviter's membership has ended — the invitation is no longer valid.",
+        "invite-taken": "A second member has already joined this membership.",
+        "invite-own": "This is your own invitation — send the link to your companion.",
+        "invite-host": "You have a host membership — the second place is for volunteers only.",
+        "invite-lifetime": "You already have a lifetime membership.",
+        "invite-error": "Something went wrong. Please try again",
+        "seo-title": "Invitation to GoodSurfing"
+    },
+    "sticky": {
+        "title": "Membership for a year — {{price}} ₽",
+        "button": "Join"
+    }
 }

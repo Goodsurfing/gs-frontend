@@ -9,6 +9,8 @@ const load = async (counter: string, ym?: Ym) => {
     vi.stubGlobal("window", {
         ym,
         setTimeout: (fn: () => void, ms: number) => setTimeout(fn, ms),
+        setInterval: (fn: () => void, ms: number) => setInterval(fn, ms),
+        clearInterval: (id: ReturnType<typeof setInterval>) => clearInterval(id),
         sessionStorage: { getItem: (k: string) => store.get(k) ?? null, setItem: (k: string, v: string) => store.set(k, v) },
     });
     return import("@/components/analytics/YandexMetrika");
@@ -81,5 +83,33 @@ describe("цели до загрузки счётчика", () => {
         const { reachGoal } = await load("47422282", ym);
         reachGoal("donation_paid");
         expect(ym).toHaveBeenCalledWith(47422282, "reachGoal", "donation_paid", undefined);
+    });
+
+    it("переход с целью ждёт скрипт счётчика (вход сразу после VK)", async () => {
+        vi.useFakeTimers();
+        const mod = await load("47422282", undefined);
+        const next = vi.fn();
+        mod.reachGoalThen("signup", { method: "vk" }, next);
+        vi.advanceTimersByTime(300);
+        expect(next).not.toHaveBeenCalled();
+
+        const ym = vi.fn<Ym>((_id, _m, _g, _p, callback) => callback?.());
+        (window as unknown as { ym: Ym }).ym = ym;
+        vi.advanceTimersByTime(50);
+        expect(ym).toHaveBeenCalledWith(47422282, "reachGoal", "signup", { method: "vk" }, expect.any(Function));
+        expect(next).toHaveBeenCalledTimes(1);
+        vi.advanceTimersByTime(5000);
+        expect(next).toHaveBeenCalledTimes(1);
+    });
+
+    it("счётчик так и не загрузился (блокировщик) — переход через 2,5 с", async () => {
+        vi.useFakeTimers();
+        const { reachGoalThen } = await load("47422282", undefined);
+        const next = vi.fn();
+        reachGoalThen("checkout_start", undefined, next);
+        vi.advanceTimersByTime(2499);
+        expect(next).not.toHaveBeenCalled();
+        vi.advanceTimersByTime(1);
+        expect(next).toHaveBeenCalledTimes(1);
     });
 });

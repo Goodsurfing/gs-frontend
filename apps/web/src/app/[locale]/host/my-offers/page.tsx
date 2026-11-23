@@ -11,6 +11,7 @@ import { hostMenu } from "@/lib/cabinetMenus";
 import { categoryLabels } from "@/lib/categories";
 import { hostUpsellLabels } from "@/lib/hostCabinet";
 import { routes } from "@/lib/routes";
+import { offerShareLabels } from "@/lib/shareLabels";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function HostMyOffersPage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
-    const [t, th, tv, upsell] = await Promise.all([getTranslator(locale), getTranslator(locale, "host"), getTranslator(locale, "volunteer"), hostUpsellLabels(locale, "mediaSupport")]);
+    const [t, th, tv, upsell, tOffer] = await Promise.all([getTranslator(locale), getTranslator(locale, "host"), getTranslator(locale, "volunteer"), hostUpsellLabels(locale, "mediaSupport"), getTranslator(locale, "offer")]);
     const o = (key: string) => th(`hostOffers.${key}`);
     return (
         <CabinetShell locale={locale} items={hostMenu(locale, t)} need="host" fitContent>
@@ -54,6 +55,9 @@ export default async function HostMyOffersPage({ params }: Props) {
                         closeWindow: t("Закрыть"),
                         pages: { prev: t("pagination.prev"), next: t("pagination.next"), page: t("pagination.label") },
                         categories: categoryLabels(t),
+                        share: tOffer("share.button"),
+                        shareDialog: offerShareLabels(tOffer),
+                        sharePublished: tOffer("share.intro-published"),
                     }}
                 />
             </main>

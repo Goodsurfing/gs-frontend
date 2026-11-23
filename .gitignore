@@ -24,3 +24,4 @@ e2e/visual/__snapshots__/
 
 # Временные скрипты отладки e2e
 *.tmp.mjs
+e2e/demos/output/

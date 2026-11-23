@@ -59,6 +59,15 @@ export function ApplicationCard({ application, routes, onStatus, onReview, label
                             {volunteer.isInternationalMember && <Badge text={labels.international} international />}
                         </span>
                         <span className="mt-2 text-[12px] text-caption">{place}</span>
+                        {(volunteer.achievements ?? []).length > 0 && (
+                            <span className="mt-2 flex flex-wrap gap-1" aria-label={(volunteer.achievements ?? []).map((a) => a.name).join(", ")}>
+                                {(volunteer.achievements ?? []).slice(0, 6).map((achievement) => (
+                                    // eslint-disable-next-line @next/next/no-img-element -- значок из справочника, 20 px
+                                    <img key={achievement.id} src={achievement.image} alt="" title={achievement.name} width={20} height={20} loading="lazy" className="h-5 w-5" />
+                                ))}
+                                {(volunteer.achievements ?? []).length > 6 && <span className="text-[11px] text-caption">+{(volunteer.achievements ?? []).length - 6}</span>}
+                            </span>
+                        )}
                         <span className="mt-2 text-[12px] text-ink-secondary">{application.startDate} - {application.endDate}</span>
                     </div>
                 </a>

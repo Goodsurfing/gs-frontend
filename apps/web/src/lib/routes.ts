@@ -11,6 +11,9 @@ export const routes = {
     main: (l: Locale) => path(l),
     offersMap: (l: Locale) => path(l, "/offers-map"),
     offersMapCategory: (l: Locale, categoryId: number) => path(l, `/offers-map?category=${categoryId}`),
+    volunteering: (l: Locale, slug: string) => path(l, `/volunteering/${slug}`),
+    workawayRussia: (l: Locale) => path(l, "/workaway-russia"),
+    winterVolunteering: (l: Locale) => path(l, "/winter-volunteering"),
     blog: (l: Locale) => path(l, "/blog"),
     blogArticle: (l: Locale, slug: string) => path(l, `/blog/${slug}`),
     categories: (l: Locale) => path(l, "/categories"),
@@ -23,6 +26,10 @@ export const routes = {
     npo: (l: Locale) => path(l, "/npo"),
     ourTeam: (l: Locale) => path(l, "/our-team"),
     membership: (l: Locale) => path(l, "/membership"),
+    achievements: (l: Locale) => path(l, "/achievements"),
+    people: (l: Locale) => path(l, "/people"),
+    /** Приглашение в членство «на двоих» */
+    membershipDuo: (l: Locale, token: string) => path(l, `/membership/duo/${token}`),
     rules: (l: Locale) => path(l, "/rules"),
     privacyPolicy: (l: Locale) => path(l, "/privacy-policy"),
     news: (l: Locale) => path(l, "/news"),
@@ -45,7 +52,9 @@ export const routes = {
     hostVideo: (l: Locale) => path(l, "/host/video"),
     hostTeam: (l: Locale) => path(l, "/host/team"),
     hostReview: (l: Locale) => path(l, "/host/review"),
+    hostBadge: (l: Locale) => path(l, "/host/badge"),
     hostNotes: (l: Locale) => path(l, "/host/notes"),
+    hostNotifications: (l: Locale) => path(l, "/host/notifications"),
     /** Сборы организатора */
     hostDonations: (l: Locale) => path(l, "/host/donations"),
     /** Пожертвования, полученные организатором (не путать с публичным рейтингом /donation-rating) */
@@ -80,21 +89,32 @@ export const routes = {
     verifyEmail: (l: Locale) => path(l, "/verify-email"),
     verifyEmailHash: (l: Locale, hash: string) => path(l, `/verify-email-hash/${hash}`),
     profilePrivacy: (l: Locale) => path(l, "/profile/privacy"),
+    /** Подписки на подборку вакансий */
+    profileSubscriptions: (l: Locale) => path(l, "/profile/subscriptions"),
+    savedSearchUnsubscribe: (l: Locale, token: string) => path(l, `/saved-searches/unsubscribe/${token}`),
     /** Оплата членства; тариф — в ?tariff= */
     payment: (l: Locale) => path(l, "/payment"),
     /** Сюда возвращает ЮKassa после оплаты членства (бэкенд: YookassaProvider, ?payment_id=) */
     paymentSuccess: (l: Locale) => path(l, "/payment/success"),
     paymentFail: (l: Locale) => path(l, "/payment/fail"),
+    paymentFeedback: (l: Locale) => path(l, "/payment/feedback"),
     myOffers: (l: Locale) => path(l, "/host/my-offers"),
+    hostRelevance: (l: Locale) => path(l, "/host/relevance"),
+    emailChangeConfirm: (l: Locale) => path(l, "/email-change/confirm"),
+    emailChangeRevert: (l: Locale) => path(l, "/email-change/revert"),
     messenger: (l: Locale) => path(l, "/messenger"),
     /** Чат по заявке (мессенджер — в старом SPA) */
     messengerChat: (l: Locale, id: string | number) => path(l, `/messenger/${id}`),
     profileInfo: (l: Locale) => path(l, "/profile/info"),
+    profileInvite: (l: Locale) => path(l, "/profile/invite"),
+    profileNotifications: (l: Locale) => path(l, "/profile/notifications"),
     profileRole: (l: Locale) => path(l, "/profile/role"),
     profilePreferences: (l: Locale) => path(l, "/profile/preferences"),
     profileResetPassword: (l: Locale) => path(l, "/profile/reset-password"),
     hostDashboard: (l: Locale) => path(l, "/host/host-dashboard"),
     volunteerDashboard: (l: Locale) => path(l, "/volunteer/volunteer-dashboard"),
+    /** «С чего начать» — после входа без адреса возврата (06.11.2026) */
+    start: (l: Locale) => path(l, "/start"),
     volunteerSkills: (l: Locale) => path(l, "/volunteer/skills"),
     volunteerReview: (l: Locale) => path(l, "/volunteer/review"),
     volunteerNotes: (l: Locale) => path(l, "/volunteer/notes"),

@@ -84,6 +84,14 @@ const ymd = (days: number) => {
  * Тело PATCH /admin/v1/user/{id}: API перезаписывает пользователя целиком, поэтому
  * отправляем все поля, а не только изменённые (как adminUpdateUserAdapter старой админки).
  */
+/** Откуда членство (MembershipSource бэкенда) */
+const MEMBERSHIP_SOURCES: Record<string, string> = {
+    PURCHASE: "оплата",
+    ADMIN: "выдано админом",
+    LEGACY_IMPORT: "перенос со старого сайта",
+    DUO_INVITE: "второй участник «на двоих»",
+};
+
 export function userUpdateBody(user: AdminUser, changes: Partial<AdminUser> & { skillIds?: number[]; achievementIds?: number[] } = {}) {
     const u = { ...user, ...changes };
     return {
@@ -297,7 +305,7 @@ function MembershipPanel({ userId, isVolunteer, isOrganization, notify, onChange
                                 <tr key={m.id} className="border-t border-accent-bg/60">
                                     <td className="py-1.5 pr-3">{m.tariffName}{m.privileged && <span className="ml-1 text-[12px] text-muted">(привилегированное)</span>}</td>
                                     <td className="pr-3">{m.active ? "действует" : m.status.toLowerCase()}</td>
-                                    <td className="pr-3">{m.source === "ADMIN" ? "выдано админом" : m.source === "PAYMENT" ? "оплата" : m.source.toLowerCase()}</td>
+                                    <td className="pr-3">{MEMBERSHIP_SOURCES[m.source] ?? m.source.toLowerCase()}</td>
                                     <td className="pr-3">{isoDate(m.startDate)}</td>
                                     <td className="pr-3">{isoDate(m.endDate)}</td>
                                     <td className="text-right">{m.active && <button type="button" className={adminButtonDanger} disabled={busy} onClick={() => setRevoke(m)}>Снять</button>}</td>

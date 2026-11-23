@@ -37,7 +37,8 @@ export default async function SignInPage({ params }: Props) {
                         locale={locale}
                         resetHref={routes.resetPassword(locale)}
                         signUpHref={routes.signUp(locale)}
-                        profileHref={routes.profileInfo(locale)}
+                        // Некуда вернуться — «С чего начать»; организатора и того, у кого всё сделано, она сама отправит на рабочий стол
+                        profileHref={routes.start(locale)}
                         labels={{
                             password: t("login.Пароль"),
                             submit: t("login.Войти"),

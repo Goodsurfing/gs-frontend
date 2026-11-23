@@ -3,19 +3,20 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { CommunityNews } from "@/components/home/CommunityNews";
+import { EventFeed } from "@/components/home/EventFeed";
 import { HeroSlider } from "@/components/home/HeroSlider";
 import { HomeSearch } from "@/components/home/HomeSearch";
 import { HowItWork } from "@/components/home/HowItWork";
 import { PersonalOffers } from "@/components/home/PersonalOffers";
 import { ReviewsShowcase } from "@/components/home/ReviewsShowcase";
 import { PublicShell } from "@/components/layout/PublicShell";
-import { OfferCard } from "@/components/offers/OfferCard";
+import { OfferCard, offerCardLabels } from "@/components/offers/OfferCard";
 import { Reveal } from "@/components/ui/Reveal";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { getAboutProject } from "@/lib/aboutProject";
 import { categoryLabels, categoryName } from "@/lib/categories";
-import { getFeaturedOffers, getFeaturedReviews, getHomeCategories, getLatestArticles, getMainBanner } from "@/lib/home";
+import { getEventFeed, getFeaturedOffers, getFeaturedReviews, getHomeCategories, getLatestArticles, getMainBanner } from "@/lib/home";
 import { mediaUrl } from "@/lib/media";
 import { formatStatNumber, roundStat } from "@/lib/formatStat";
 import { routes } from "@/lib/routes";
@@ -60,7 +61,7 @@ const BENEFIT_WIDTHS = [197, 208, 197];
 export default async function HomePage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
-    const [t, tMain, categories, offers, reviews, articles, banner, about] = await Promise.all([
+    const [t, tMain, categories, offers, reviews, articles, banner, about, feed] = await Promise.all([
         getTranslator(locale),
         getTranslator(locale, "main"),
         getHomeCategories(locale),
@@ -69,6 +70,7 @@ export default async function HomePage({ params }: Props) {
         getLatestArticles(locale),
         getMainBanner(locale),
         getAboutProject(locale),
+        getEventFeed(locale),
     ]);
     const labels = categoryLabels(t);
     const today = (about as { today?: { volunteerCount?: number; vacancyCount?: number; tripCount?: number } } | null)?.today;
@@ -189,12 +191,30 @@ export default async function HomePage({ params }: Props) {
             )}
 
             <Section title={tMain("Интересные вакансии")} className="down-md:w-full down-xs:w-full">
-                <PersonalOffers offerHref={routes.offer(locale, "{id}")} categories={labels} labels={{ prev: t("slider.previous"), next: t("slider.next") }}>
+                <PersonalOffers offerHref={routes.offer(locale, "{id}")} categories={labels} cardLabels={offerCardLabels(t)} labels={{ prev: t("slider.previous"), next: t("slider.next") }}>
                         {offers.map((offer) => (
-                            <OfferCard key={offer.id} offer={offer} href={routes.offer(locale, offer.id)} category={categoryName(offer.categories[0]?.name, t)} />
+                            <OfferCard key={offer.id} offer={offer} href={routes.offer(locale, offer.id)} category={categoryName(offer.categories[0]?.name, t)} labels={offerCardLabels(t)} />
                         ))}
                 </PersonalOffers>
             </Section>
+
+            <EventFeed
+                locale={locale}
+                events={feed}
+                title={tMain("eventFeed.title")}
+                prevLabel={t("slider.previous")}
+                nextLabel={t("slider.next")}
+                labels={{
+                    badge: tMain("eventFeed.badge"),
+                    trip: tMain("eventFeed.trip"),
+                    member: tMain("eventFeed.member"),
+                    memberInternational: tMain("eventFeed.memberInternational"),
+                    vacancy: tMain("eventFeed.vacancy"),
+                    review: tMain("eventFeed.review"),
+                    article: tMain("eventFeed.article"),
+                    holders: tMain("eventFeed.holders"),
+                }}
+            />
 
             <Section title={tMain("Наши преимущества")}>
                 <div className="mt-5 flex w-full items-center justify-between down-md:flex-col">
@@ -238,7 +258,8 @@ export default async function HomePage({ params }: Props) {
                         id: String(review.id),
                         title: review.title,
                         text: review.description,
-                        image: mediaUrl(review.images[0], "large") ?? "",
+                        // Своих фото почти ни у кого нет (8 из 641 на 06.11.2026) — тогда обложка вакансии
+                        image: mediaUrl(review.images[0], "large") ?? mediaUrl(review.vacancyImage, "large") ?? "",
                         author: review.authorName,
                         avatar: mediaUrl(review.authorAvatar, "small"),
                         href: routes.offer(locale, review.vacancyId),

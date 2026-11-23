@@ -1,6 +1,16 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { type InputHTMLAttributes, useId, useState } from "react";
+
+import { localeFromPath } from "@/i18n/config";
+
+/** «Показать / скрыть пароль» — короткие подписи «глаза» прямо здесь, без словаря на каждой форме входа */
+const EYE: Record<"ru" | "en" | "es", { show: string; hide: string }> = {
+    ru: { show: "Показать пароль", hide: "Скрыть пароль" },
+    en: { show: "Show password", hide: "Hide password" },
+    es: { show: "Mostrar contraseña", hide: "Ocultar contraseña" },
+};
 
 /**
  * Поле на страницах входа (AuthInputField старого фронта): линия снизу,
@@ -14,6 +24,7 @@ export function AuthInput({ label, type, error, value, className = "", ...rest }
 }) {
     const id = useId();
     const [shown, setShown] = useState(false);
+    const eye = EYE[localeFromPath(usePathname() ?? "")];
     const isPassword = type === "password";
     return (
         <div className={`relative mb-[25px] box-border w-full ${className}`}>
@@ -28,7 +39,7 @@ export function AuthInput({ label, type, error, value, className = "", ...rest }
                     {...rest}
                 />
                 {isPassword && (
-                    <button type="button" onClick={() => setShown(!shown)} aria-label={shown ? "Скрыть пароль" : "Показать пароль"} className="shrink-0 cursor-pointer border-0 bg-transparent px-1.5">
+                    <button type="button" onClick={() => setShown(!shown)} aria-label={shown ? eye.hide : eye.show} className="shrink-0 cursor-pointer border-0 bg-transparent px-1.5">
                         {/* eslint-disable-next-line @next/next/no-img-element -- иконка */}
                         <img src={shown ? "/web/icons/auth/eye-hide.svg" : "/web/icons/auth/eye.svg"} alt="" className="w-[18px]" />
                     </button>

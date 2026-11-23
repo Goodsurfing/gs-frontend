@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { DEFAULT_LOCALE, localeFromPath, stripLocale } from "@/i18n/config";
 import { LOCALE_HEADER } from "@/i18n/request";
 import { legacyOffersListTarget } from "@/lib/legacyOffersLink";
-import { legacyRedirect } from "@/lib/legacyRedirects";
+import { legacyBackendPath, legacyRedirect } from "@/lib/legacyRedirects";
 import { routes } from "@/lib/routes";
 
 /**
@@ -13,7 +13,8 @@ import { routes } from "@/lib/routes";
  * - старые адреса (lib/legacyRedirects.ts) — 301 на новые;
  * - ссылки старого каталога из рекламы `/offers/2?host_categories=…` — на карту
  *   вакансий (lib/legacyOffersLink.ts). Здесь, а не на странице вакансии:
- *   чтение searchParams там делает кэшируемую (ISR) страницу динамической;
+ *   чтение searchParams там делает кэшируемую (ISR) страницу динамической; те, что переводит только
+ *   бэкенд по базе (/offers/host/:id, /blog/article/:id), — проксируются на API;
  * - остальное — русский: внутри переписывается на маршрут [locale]=ru, так что
  *   страницы остаются статическими (ISR).
  * Язык передаётся в заголовке для app/global-not-found.tsx — параметров
@@ -46,6 +47,13 @@ export function proxy(request: NextRequest) {
         target.pathname = stripLocale(pathname);
         target.search = search;
         return NextResponse.redirect(target, 301);
+    }
+
+    const backendPath = legacyBackendPath(pathname);
+    if (backendPath) {
+        // Адрес на стороне сервера (внутри Docker), иначе публичный API
+        const api = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL || "https://api-staging.goodsurfing.org";
+        return NextResponse.rewrite(new URL(`${backendPath}${search}`, api));
     }
 
     const legacy = legacyRedirect(pathname);

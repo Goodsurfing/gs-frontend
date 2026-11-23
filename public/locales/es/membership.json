@@ -16,7 +16,9 @@
         "desc2": "La membresía no es solo una forma de usar el proyecto, sino de ayudarlo a vivir y crecer.",
         "cta-main": "Obtener membresía",
         "cta-secondary": "Apoyar sin membresía",
-        "title": "Forma parte de la comunidad GoodSurfing, viaja con sentido y apoya el proyecto que lo hace posible."
+        "title": "Forma parte de la comunidad GoodSurfing, viaja con sentido y apoya el proyecto que lo hace posible.",
+        "cta-pay": "Únete por {{price}} ₽",
+        "cta-note": "Solicitudes ilimitadas durante un año. La membresía se activa justo después del pago."
     },
     "how-it-works": {
         "Как это работает": "Cómo funciona",
@@ -60,7 +62,7 @@
         "Участие в онлайн-мероприятиях «Гудсёрфинг»": "Participación en eventos en línea de GoodSurfing",
         "Доступ к Академии «Гудсёрфинг»": "Acceso a la Academia GoodSurfing",
         "Доступ к блогу «Гудсёрфинг»": "Acceso al blog de GoodSurfing",
-        "Зарегистрироваться": "Registrarse",
+        "Зарегистрироваться": "Unirse",
         "Членство": "Membresía",
         "не ограничено": "sin restricciones",
         "Доступ к уникальным волонтёрским вакансиям и чатам платформы «Гудсёрфинг»": "Acceso a oportunidades de voluntariado y chats exclusivos de la plataforma GoodSurfing",
@@ -91,7 +93,7 @@
         "Участие в онлайн-мероприятиях «Гудсёрфинг»": "Participación en eventos en línea de GoodSurfing",
         "Доступ к Академии «Гудсёрфинг»": "Acceso a la Academia GoodSurfing",
         "Доступ к блогу «Гудсёрфинг»": "Acceso al blog de GoodSurfing",
-        "Зарегистрироваться": "Registrarse",
+        "Зарегистрироваться": "Unirse",
         "не ограничено": "sin restricciones",
         "Доступ к уникальным чатам платформы «Гудсёрфинг»": "Acceso a chats exclusivos de la plataforma GoodSurfing",
         "Получение статуса амбассадора (при выполнении условий)": "Obtención del estatus de embajador (cumpliendo con condiciones)",
@@ -158,7 +160,8 @@
         "title": "Por qué es importante la membresía",
         "p1": "GoodSurfing nació de la idea de que viajar puede ser no solo emocionante, sino también útil. Inspirados por la idea de la ayuda mutua, creamos una plataforma que hace que el voluntariado itinerante sea accesible, claro y seguro. Hoy somos una comunidad internacional que reúne a miles de personas dispuestas a ayudar a otros y hacer de sí mismas y del mundo que las rodea un lugar mejor.",
         "p2": "Para que GoodSurfing siga siendo un proyecto vivo, necesita un apoyo: ese apoyo son los propios miembros de la comunidad.",
-        "p3": "Tu membresía es una contribución para que los viajes solidarios y los proyectos de voluntariado sigan existiendo."
+        "p3": "Tu membresía es una contribución para que los viajes solidarios y los proyectos de voluntariado sigan existiendo.",
+        "more": "Leer más"
     },
     "donation": {
         "title": "Apoya a GoodSurfing",
@@ -182,5 +185,48 @@
         "help-3-title": "Conviértete en voluntario",
         "help-3-text": "Siempre nos alegra recibir a personas dispuestas a apoyarnos con sus acciones. Unirte al equipo es muy sencillo: escríbenos sobre tu interés en nuestras redes sociales."
     },
-    "Волонтёры Гудсёрфинга": "Voluntarios de Goodsurfing"
+    "Волонтёры Гудсёрфинга": "Voluntarios de Goodsurfing",
+    "duo": {
+        "offer-title": "¿Viajan juntos?",
+        "offer-text": "Membresía para dos: una persona paga y la otra se une con un enlace de invitación. Ambos tienen todas las ventajas de la membresía durante un año.",
+        "offer-price": "{{price}} ₽ para dos",
+        "offer-per-person": "{{price}} ₽ por persona",
+        "offer-button": "Obtener para dos",
+        "panel-title": "Membresía para dos",
+        "panel-invite": "Envía el enlace a tu acompañante: solo tiene que iniciar sesión o registrarse. El enlace funciona mientras tu membresía esté activa.",
+        "panel-copy": "Copiar enlace",
+        "panel-copied": "Enlace copiado",
+        "panel-share": "Compartir",
+        "panel-share-text": "Únete a mi membresía de GoodSurfing",
+        "panel-email-label": "O enviamos la invitación por correo",
+        "panel-email-placeholder": "Correo de tu acompañante",
+        "panel-email-send": "Enviar",
+        "panel-email-sent": "Invitación enviada a {{email}}",
+        "panel-email-left": "Correos restantes: {{count}}",
+        "panel-regenerate": "Crear un enlace nuevo",
+        "panel-regenerate-hint": "El enlace anterior dejará de funcionar",
+        "panel-joined": "{{name}} está contigo: la membresía está activa para ambos hasta el {{date}}.",
+        "panel-partner": "Te invitó {{name}}. La membresía está activa hasta el {{date}}.",
+        "panel-error": "No se pudo cargar. Actualiza la página",
+        "invite-title": "{{name}} te invita a GoodSurfing",
+        "invite-text": "La membresía para dos ya está pagada. Únete y tendrás postulaciones ilimitadas a proyectos de voluntariado, materiales educativos y eventos hasta el {{date}}.",
+        "invite-extend": "Si ya tienes membresía, el periodo restante se añadirá al final.",
+        "invite-accept": "Unirme",
+        "invite-sign-in": "Iniciar sesión y unirme",
+        "invite-sign-up": "¿No tienes cuenta? Regístrate y vuelve a abrir el enlace de la invitación.",
+        "invite-done": "¡Listo! La membresía está activa hasta el {{date}}.",
+        "invite-to-offers": "Buscar un proyecto",
+        "invite-not-found": "Invitación no encontrada. Quizá se reemplazó el enlace: pide uno nuevo.",
+        "invite-expired": "La membresía de quien te invitó terminó: la invitación ya no es válida.",
+        "invite-taken": "Ya se unió un segundo miembro a esta membresía.",
+        "invite-own": "Es tu propia invitación: envía el enlace a tu acompañante.",
+        "invite-host": "Tienes membresía de anfitrión: el segundo lugar es solo para voluntarios.",
+        "invite-lifetime": "Ya tienes una membresía permanente.",
+        "invite-error": "Algo salió mal. Inténtalo de nuevo",
+        "seo-title": "Invitación a GoodSurfing"
+    },
+    "sticky": {
+        "title": "Membresía por un año — {{price}} ₽",
+        "button": "Unirme"
+    }
 }

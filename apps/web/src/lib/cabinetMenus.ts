@@ -12,6 +12,9 @@ export function profileMenu(locale: Locale, t: Translate): CabinetMenuItem[] {
         { text: t("main.sidebar.Роль"), href: `${p}/profile/role`, icon: "role-icon" },
         { text: t("main.sidebar.Пароль"), href: `${p}/profile/reset-password`, icon: "lock-icon" },
         { text: t("main.sidebar.Приватность"), href: `${p}/profile/privacy`, icon: "shield-icon" },
+        { text: t("main.sidebar.Подписки на поиск"), href: `${p}/profile/subscriptions`, icon: "mail" },
+        { text: t("main.sidebar.Уведомления"), href: `${p}/profile/notifications`, icon: "bell" },
+        { text: t("main.sidebar.Пригласить друга"), href: `${p}/profile/invite`, icon: "support" },
     ];
 }
 
@@ -21,6 +24,7 @@ export function hostMenu(locale: Locale, t: Translate): CabinetMenuItem[] {
         { text: t("main.sidebar.Рабочий стол"), href: routes.hostDashboard(locale), icon: "home" },
         { text: t("main.sidebar.Предложения"), href: routes.myOffers(locale), icon: "globe" },
         { text: t("main.sidebar.Заявки"), href: routes.hostNotes(locale), icon: "mail" },
+        { text: t("main.sidebar.Уведомления"), href: routes.hostNotifications(locale), icon: "bell" },
         { text: t("main.sidebar.Сборы"), href: routes.hostDonations(locale), icon: "check" },
         { text: t("main.sidebar.Пожертвования"), href: routes.hostDonationRating(locale), icon: "support" },
         {
@@ -34,6 +38,7 @@ export function hostMenu(locale: Locale, t: Translate): CabinetMenuItem[] {
                 { text: t("main.sidebar.Видеогалерея"), href: routes.hostVideo(locale) },
                 { text: t("main.sidebar.Команда"), href: routes.hostTeam(locale) },
                 { text: t("main.sidebar.Отзывы"), href: routes.hostReview(locale) },
+                { text: t("main.sidebar.Значок для сайта"), href: routes.hostBadge(locale) },
             ],
         },
     ];

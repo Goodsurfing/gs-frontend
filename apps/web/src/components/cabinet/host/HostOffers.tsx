@@ -6,6 +6,7 @@ import { type ReactNode, useCallback, useEffect, useState } from "react";
 
 import { reachGoal } from "@/components/analytics/YandexMetrika";
 import { MemberBanner } from "@/components/content/MemberBanner";
+import { OfferShareDialog, type OfferShareLabels } from "@/components/share/OfferShareDialog";
 import { Pagination } from "@/components/list/Pagination";
 import { useSession } from "@/components/session/SessionProvider";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
@@ -46,6 +47,10 @@ export interface HostOffersLabels {
     closeWindow: string;
     pages: { prev: string; next: string; page: string };
     categories: Record<string, string>;
+    share: string;
+    shareDialog: OfferShareLabels;
+    /** Подзаголовок окна сразу после публикации */
+    sharePublished: string;
 }
 
 /**
@@ -71,6 +76,19 @@ export function HostOffers({ locale, routes, aside, labels }: {
     const [limit, setLimit] = useState(false);
     const [toast, setToast] = useState<string | null>(null);
     const closeToast = useCallback(() => setToast(null), []);
+    // «Поделиться»: id вакансии и откуда открыли (после публикации — свой подзаголовок)
+    const [share, setShare] = useState<{ id: string; published: boolean } | null>(null);
+    useEffect(() => {
+        const published = new URLSearchParams(window.location.search).get("published");
+        if (!published || !/^\d+$/.test(published)) return;
+        // Адрес известен только в браузере — окно открывается после гидратации
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setShare({ id: published, published: true });
+        // Убрать параметр, чтобы окно не открывалось снова при обновлении страницы
+        const url = new URL(window.location.href);
+        url.searchParams.delete("published");
+        window.history.replaceState(null, "", url.toString());
+    }, []);
 
     const load = useCallback(async (statuses: Status[], page: number): Promise<ListState> => {
         if (!hostId) return { items: [], total: 0, page };
@@ -149,6 +167,7 @@ export function HostOffers({ locale, routes, aside, labels }: {
                     onEdit={() => window.location.assign((status(offer) === "draft" ? routes.welcome : routes.edit).replace("{id}", String(offer.id)))}
                     onToggle={() => setConfirm({ offer, action: "toggle" })}
                     onDelete={() => setConfirm({ offer, action: "delete" })}
+                    onShare={status(offer) === "active" ? () => setShare({ id: String(offer.id), published: false }) : undefined}
                     labels={labels}
                 />
             ))}
@@ -198,6 +217,18 @@ export function HostOffers({ locale, routes, aside, labels }: {
                 onConfirm={() => void act()}
                 onClose={() => setConfirm(null)}
             />
+            {share && (
+                <OfferShareDialog
+                    open
+                    onOpenChange={(next) => !next && setShare(null)}
+                    offerId={share.id}
+                    offerUrl={`${window.location.origin}${routes.offer.replace("{id}", share.id)}`}
+                    cardUrl={`${routes.offer.replace("{id}", share.id)}/card`}
+                    source="host"
+                    locale={locale}
+                    labels={{ ...labels.shareDialog, intro: share.published ? labels.sharePublished : labels.shareDialog.intro }}
+                />
+            )}
             <Dialog.Root open={limit} onOpenChange={setLimit}>
                 <Dialog.Portal>
                     <Dialog.Overlay className="fixed inset-0 z-[999] flex animate-fade-in justify-center overflow-y-auto bg-black/50 py-10">
@@ -220,12 +251,14 @@ export function HostOffers({ locale, routes, aside, labels }: {
 const button = "cursor-pointer rounded-[10px] border text-[1rem] transition-all duration-300";
 
 /** Карточка вакансии в кабинете (HostOffersPageCard старого фронта) */
-function HostOfferCard({ offer, href, onEdit, onToggle, onDelete, labels }: {
+function HostOfferCard({ offer, href, onEdit, onToggle, onDelete, onShare, labels }: {
     offer: Offer;
     href: string;
     onEdit: () => void;
     onToggle: () => void;
     onDelete: () => void;
+    /** Только у открытых вакансий */
+    onShare?: () => void;
     labels: HostOffersLabels;
 }) {
     const status = String(offer.status);
@@ -271,6 +304,7 @@ function HostOfferCard({ offer, href, onEdit, onToggle, onDelete, labels }: {
                 >
                     {status === "disabled" ? labels.open : labels.close}
                 </button>
+                {onShare && <button type="button" onClick={onShare} className={`${button} border-primary bg-primary px-5 py-2.5 leading-4 text-white hover:bg-white hover:text-primary`}>{labels.share}</button>}
                 <button type="button" onClick={onDelete} className={`${button} border-error bg-error px-[50px] py-2.5 leading-[120%] text-white hover:bg-white hover:text-error`}>{labels.remove}</button>
             </div>
         </div>

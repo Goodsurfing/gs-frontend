@@ -21,6 +21,7 @@ ARG NEXT_PUBLIC_SENTRY_RELEASE
 ARG NEXT_PUBLIC_YANDEX_METRIKA_ID
 ARG NEXT_PUBLIC_YANDEX_MAPS_KEY
 ARG NEXT_PUBLIC_VKID_CLIENT_ID
+ARG NEXT_PUBLIC_TEST_BOT
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL \
     NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
     NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN \
@@ -29,6 +30,7 @@ ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL \
     NEXT_PUBLIC_YANDEX_METRIKA_ID=$NEXT_PUBLIC_YANDEX_METRIKA_ID \
     NEXT_PUBLIC_YANDEX_MAPS_KEY=$NEXT_PUBLIC_YANDEX_MAPS_KEY \
     NEXT_PUBLIC_VKID_CLIENT_ID=$NEXT_PUBLIC_VKID_CLIENT_ID \
+    NEXT_PUBLIC_TEST_BOT=$NEXT_PUBLIC_TEST_BOT \
     NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /repo/packages/api/node_modules packages/api/node_modules
 COPY --from=deps /repo/apps/web/node_modules apps/web/node_modules
@@ -48,8 +50,10 @@ COPY --from=build --chown=web:web /repo/apps/web/.next/standalone ./
 COPY --from=build --chown=web:web /repo/apps/web/.next/static ./apps/web/.next/static
 COPY --from=build --chown=web:web /repo/apps/web/public ./apps/web/public
 COPY --from=build --chown=web:web /repo/apps/web/locales ./apps/web/locales
+# Шрифты для картинок-карточек и значка (lib/shareCard.tsx читает их с диска)
+COPY --from=build --chown=web:web /repo/apps/web/assets ./apps/web/assets
 USER web
 EXPOSE 3100
-HEALTHCHECK --interval=30s --timeout=3s --start-period=10s CMD wget -qO- http://127.0.0.1:3100/healthz || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --start-interval=2s CMD wget -qO- http://127.0.0.1:3100/healthz || exit 1
 WORKDIR /app/apps/web
 CMD ["node", "server.js"]

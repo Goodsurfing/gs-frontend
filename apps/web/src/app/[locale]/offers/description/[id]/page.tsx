@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { DescriptionForm } from "@/components/offer-wizard/DescriptionForm";
+import { TranslationsEditor } from "@/components/offer-wizard/TranslationsEditor";
 import { OfferWizardShell, offerWizardMetadata } from "@/components/offer-wizard/OfferWizardShell";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
@@ -74,6 +75,40 @@ export default async function OfferDescriptionPage({ params }: Props) {
                     unsaved: tOffer("У вас есть несохраненные изменения"),
                     loading: t("Загрузка"),
                     missing: tMain("Вакансия не найдена или произошла ошибка"),
+                    assistant: {
+                        title: tOffer("assistant.title"),
+                        hint: tOffer("assistant.hint"),
+                        placeholder: tOffer("assistant.placeholder"),
+                        write: tOffer("assistant.write"),
+                        writing: tOffer("assistant.writing"),
+                        applied: tOffer("assistant.applied"),
+                        whatToDo: tOffer("assistant.whatToDo"),
+                        hello: tOffer("assistant.hello"),
+                        missing: tOffer("assistant.missing"),
+                        copy: tOffer("assistant.copy"),
+                        copied: tOffer("assistant.copied"),
+                        nextSteps: tOffer("assistant.nextSteps"),
+                        limit: tOffer("assistant.limit"),
+                        failed: tOffer("assistant.failed"),
+                    },
+                }}
+            />
+            <TranslationsEditor
+                id={offerId}
+                labels={{
+                    heading: tOffer("translations.heading"),
+                    intro: tOffer("translations.intro"),
+                    tabs: { en: "English", es: "Español" },
+                    auto: tOffer("translations.auto"),
+                    host: tOffer("translations.host"),
+                    outdated: tOffer("translations.outdated"),
+                    pending: tOffer("translations.pending"),
+                    title: d("Название мероприятия"),
+                    short: d("Краткое описание"),
+                    full: d("Полное описание"),
+                    save: tOffer("translations.save"),
+                    saved: tOffer("translations.saved"),
+                    error: tOffer("translations.error"),
                 }}
             />
         </OfferWizardShell>

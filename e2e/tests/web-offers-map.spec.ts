@@ -35,14 +35,20 @@ test.describe('Новый фронт: каталог вакансий', () => {
 
         await page.getByRole('button', { name: 'Доп. фильтры' }).first().click();
         await page.getByLabel('Можно с детьми').first().check();
-        await page.getByRole('button', { name: 'Применить' }).first().click();
+        // На десктопе «Применить» нет: фильтр срабатывает сам, когда список закрыли
+        await page.keyboard.press('Escape');
         await expect(page).toHaveURL(/kids=1/);
         const after = Number((await page.getByText(/^\d+ вариант/).textContent())?.match(/\d+/)?.[0]);
         expect(after).toBeLessThan(before);
 
-        await page.getByRole('switch', { name: 'Показать прошедшие' }).first().click();
-        await expect(page).toHaveURL(/past=0/);
+        // Прошедшие по умолчанию скрыты, переключатель их показывает
         await expect(page.getByRole('switch', { name: 'Показать прошедшие' }).first()).toHaveAttribute('aria-checked', 'false');
+        await page.getByRole('switch', { name: 'Показать прошедшие' }).first().click();
+        await expect(page).toHaveURL(/past=1/);
+        await expect(page.getByRole('switch', { name: 'Показать прошедшие' }).first()).toHaveAttribute('aria-checked', 'true');
+        // Дождаться, пока список обновится после переключателя: иначе на медленной машине CI
+        // выбор сортировки попадает в незавершённый переход и теряется
+        await page.waitForLoadState('networkidle');
 
         await page.getByRole('combobox', { name: 'По новизне' }).first().selectOption('popularity');
         await expect(page).toHaveURL(/sort=popularity/);

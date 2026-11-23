@@ -9,6 +9,7 @@ import { Ring } from "@/components/ui/Ring";
 import { Toast } from "@/components/ui/Toast";
 import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
+import { formatLongDate } from "@/lib/formatDate";
 import { hasHostMembership } from "@/lib/occupancy";
 
 import { type Application, ApplicationCard, type ApplicationCardLabels } from "./ApplicationCard";
@@ -122,7 +123,7 @@ export function HostDashboard({ locale, routes, labels }: {
                     {/* В старом стиль заголовка не применялся (опечатка в классе) — браузерный h3 */}
                     <h3 className="text-[1.17em] font-bold">{organization?.name || labels.fillTitle}</h3>
                 </div>
-                <div className="flex items-center justify-between px-6 py-4 down-md:flex-col-reverse">
+                <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-[30px] px-6 py-4 down-md:flex-col-reverse down-md:gap-y-0">
                     <div className="mt-[18px] flex flex-col gap-[38px]">
                         <ul className="flex flex-wrap gap-[30px]">
                             {points.map((point) => (
@@ -138,12 +139,13 @@ export function HostDashboard({ locale, routes, labels }: {
                             </a>
                         </div>
                     </div>
-                    <div className="mr-auto ml-[130px] flex items-start gap-8 down-md:mx-0 down-sm:flex-col down-sm:items-center down-sm:gap-5">
+                    {/* Круги — по центру свободного места; не влезают рядом с пунктами — переносятся под них, а не вылезают за карточку */}
+                    <div className="mx-auto flex items-start gap-8 down-md:mx-0 down-sm:flex-col down-sm:items-center down-sm:gap-5">
                         <Ring share={percent / 100} thickness={27.5} gap>
                             <span className="text-[14px] font-bold">{percent}%</span>
                         </Ring>
                         {occupancy && (
-                            <div className="flex max-w-[220px] shrink-0 flex-col items-center gap-3 text-center">
+                            <div className="flex max-w-[220px] min-w-0 flex-col items-center gap-3 text-center">
                                 <Ring share={occupancy.member ? 1 : remaining / FREE_VACANCIES_LIMIT}>
                                     {occupancy.member
                                         ? <span className="text-[26px] font-medium text-ink-secondary">∞</span>
@@ -196,7 +198,7 @@ export function HostDashboard({ locale, routes, labels }: {
                         <div className="flex min-h-[450px] flex-col gap-3.5 bg-white p-[30px]">
                             <div className="flex cursor-pointer flex-col">
                                 <p className="text-[14px] font-bold text-primary">{labels.welcome}</p>
-                                <p className="mt-[3px] text-[12px] font-medium text-muted">{notificationDate}</p>
+                                <p className="mt-[3px] text-[12px] font-medium text-muted">{formatLongDate(notificationDate, locale)}</p>
                                 <p className="mt-[3px] text-[12px] leading-4 text-ink-secondary">{labels.welcomeText}</p>
                             </div>
                         </div>

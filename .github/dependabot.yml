@@ -4,7 +4,8 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: /
+    # Новый фронт и клиент API; корень — только Playwright для E2E
+    directories: [/apps/web, /packages/api, /]
     target-branch: develop
     schedule:
       interval: weekly
@@ -15,8 +16,7 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
-    # Мажорные обновления (react-router 7, swiper 12+, tiptap 3) — вручную,
-    # с визуальной проверкой: они ломают API библиотек.
+    # Мажорные обновления — вручную, с визуальной проверкой: они ломают API библиотек.
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]

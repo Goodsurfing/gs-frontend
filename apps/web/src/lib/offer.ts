@@ -27,7 +27,8 @@ export async function getOffer(locale: Locale, id: string): Promise<OfferResult>
     if (!/^\d+$/.test(id)) return { kind: "notFound" };
     try {
         const { data, response } = await serverApi(locale).GET("/api/v1/vacancy/{id}", {
-            params: { path: { id: Number(id) } },
+            // en/es — с переводом текстов (GS-227); русский — без лишнего
+            params: { path: { id: Number(id) }, query: locale === "ru" ? {} : { lang: locale } },
             signal: AbortSignal.timeout(8000),
         });
         if (isClientError(response.status)) return { kind: "notFound" };
@@ -36,6 +37,23 @@ export async function getOffer(locale: Locale, id: string): Promise<OfferResult>
     } catch {
         return { kind: "error" };
     }
+}
+
+/**
+ * Тексты вакансии на языке страницы: перевод, если он есть (на /en и /es), иначе оригинал.
+ * original — русский текст для «Показать оригинал»; null — перевода нет.
+ */
+export function localizedDescription(offer: OfferDetail): {
+    description: OfferDetail["description"];
+    original: { title: string; shortDescription: string; description: string } | null;
+} {
+    const description = offer.description;
+    const translation = offer.translation;
+    if (!description || !translation) return { description, original: null };
+    return {
+        description: { ...description, title: translation.title, shortDescription: translation.shortDescription, description: translation.description },
+        original: { title: description.title, shortDescription: description.shortDescription, description: description.description },
+    };
 }
 
 export const PARTICIPANTS_PER_PAGE = 6;
@@ -83,6 +101,24 @@ export async function getOfferBanner(locale: Locale): Promise<{ url: string; des
         return { url, description: data.description, image };
     } catch {
         return null;
+    }
+}
+
+export type SimilarOffer = components["schemas"]["SimilarResult"];
+
+/**
+ * Похожие актуальные вакансии для страницы, у которой даты прошли (GS-277): та же категория,
+ * другие организации, даты не прошли. Необязательный блок: ошибка или долгий ответ — пусто.
+ */
+export async function getSimilarOffers(locale: Locale, id: number): Promise<SimilarOffer[]> {
+    try {
+        const { data } = await serverApi(locale).GET("/api/v1/vacancy/{id}/similar", {
+            params: { path: { id } },
+            signal: AbortSignal.timeout(OPTIONAL_BLOCK_TIMEOUT_MS),
+        });
+        return Array.isArray(data) ? data.filter((item) => item.title) : [];
+    } catch {
+        return [];
     }
 }
 

@@ -5,6 +5,8 @@ import { createContext, type ReactNode, useCallback, useContext, useEffect, useM
 
 import type { Locale } from "@/i18n/config";
 import { API_URL, browserApi } from "@/lib/browserApi";
+import { forgetReferral, storedReferral } from "@/lib/referral";
+import { forgetPush } from "@/lib/webPush";
 
 import { clearLegacySession, legacyAccessToken, legacyRefreshToken } from "./legacySession";
 
@@ -21,9 +23,11 @@ export interface Session {
     token?: string;
     logout: () => Promise<void>;
     saveLocale: (locale: Locale) => void;
+    /** Профиль после сохранения (фото, имя) — чтобы шапка обновилась без перезагрузки */
+    updateProfile: (profile: Profile) => void;
 }
 
-const GUEST: Omit<Session, "logout" | "saveLocale"> = { status: "guest", profile: null, unreadMessages: 0, memberships: [] };
+const GUEST: Omit<Session, "logout" | "saveLocale" | "updateProfile"> = { status: "guest", profile: null, unreadMessages: 0, memberships: [] };
 
 const SessionContext = createContext<Session | null>(null);
 
@@ -35,8 +39,11 @@ const timeout = () => ({ signal: AbortSignal.timeout(10_000) });
  * остаются статическими (ISR) и одинаковыми для всех, а блок пользователя в
  * шапке дорисовывается после загрузки. Так же было в старом SPA.
  */
+/** Как часто обновлять счётчик непрочитанных в шапке, пока вкладка открыта */
+const UNREAD_REFRESH_MS = 60_000;
+
 export function SessionProvider({ children }: { children: ReactNode }) {
-    const [state, setState] = useState<Omit<Session, "logout" | "saveLocale">>({ ...GUEST, status: "unknown" });
+    const [state, setState] = useState<Omit<Session, "logout" | "saveLocale" | "updateProfile">>({ ...GUEST, status: "unknown" });
     const [token, setToken] = useState<string | undefined>();
 
     useEffect(() => {
@@ -59,6 +66,14 @@ export function SessionProvider({ children }: { children: ReactNode }) {
             setState({ status: "user", profile, unreadMessages: 0, memberships: [] });
 
             const api = browserApi(auth);
+            // Пришёл по ссылке «Пригласи друга» и вошёл — засчитать один раз (сервер сам
+            // отсеет старые аккаунты и своё приглашение)
+            const referral = storedReferral();
+            if (referral) {
+                void api.POST("/api/v1/referral/claim", { body: { code: referral }, ...timeout() })
+                    .then(({ response }) => { if (response.status < 500) forgetReferral(); })
+                    .catch(() => undefined);
+            }
             const [unread, memberships] = await Promise.all([
                 api.GET("/api/v1/personal/unread-messages", timeout()).catch(() => null),
                 api.GET("/api/v1/membership/current-all", timeout()).catch(() => null),
@@ -77,7 +92,35 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         };
     }, []);
 
+    // Счётчик непрочитанных в шапке: раньше брался один раз при входе, и новое сообщение
+    // было видно только после перезагрузки (тестировщик, 07.11.2026). Теперь — раз в минуту,
+    // пока вкладка на экране, и сразу при возвращении на вкладку. Ответ — одно число.
+    const userSignedIn = state.status === "user";
+    useEffect(() => {
+        if (!userSignedIn) return;
+        let stopped = false;
+        const refresh = () => {
+            if (document.visibilityState !== "visible") return;
+            void browserApi(token).GET("/api/v1/personal/unread-messages", timeout())
+                .then(({ data }) => {
+                    const count = (data as { unreadMessagesCount?: unknown } | undefined)?.unreadMessagesCount;
+                    if (stopped || typeof count !== "number") return;
+                    setState((prev) => (prev.status === "user" && prev.unreadMessages !== count ? { ...prev, unreadMessages: count } : prev));
+                })
+                .catch(() => undefined);
+        };
+        const timer = window.setInterval(refresh, UNREAD_REFRESH_MS);
+        document.addEventListener("visibilitychange", refresh);
+        return () => {
+            stopped = true;
+            window.clearInterval(timer);
+            document.removeEventListener("visibilitychange", refresh);
+        };
+    }, [userSignedIn, token]);
+
     const logout = useCallback(async () => {
+        // Пока вход ещё действует: этот браузер перестаёт получать пуши вышедшего
+        await forgetPush(token);
         const refresh = legacyRefreshToken();
         await fetch(`${API_URL}/api/v1/token/logout`, {
             method: "POST",
@@ -88,7 +131,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         }).catch(() => undefined);
         clearLegacySession();
         setState(GUEST);
-    }, []);
+    }, [token]);
 
     // Язык писем и интерфейса — в профиль; переход на другой язык не ждёт ответа
     const saveLocale = useCallback((locale: Locale) => {
@@ -96,7 +139,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         void browserApi(token).PATCH("/api/v1/profile/locale", { body: { locale }, keepalive: true }).catch(() => undefined);
     }, [state.status, token]);
 
-    const value = useMemo(() => ({ ...state, token, logout, saveLocale }), [state, token, logout, saveLocale]);
+    const updateProfile = useCallback((profile: Profile) => setState((prev) => (prev.status === "user" ? { ...prev, profile } : prev)), []);
+
+    const value = useMemo(() => ({ ...state, token, logout, saveLocale, updateProfile }), [state, token, logout, saveLocale, updateProfile]);
     return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 }
 

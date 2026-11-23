@@ -72,10 +72,12 @@ export function reachGoal(goal: MetrikaGoal, params?: Record<string, unknown>) {
 /**
  * Цель, затем переход со страницы: без ожидания запрос Метрики обрывается
  * при уходе. Ждём ответа счётчика, но не дольше секунды; без счётчика —
- * сразу дальше.
+ * сразу дальше. Если скрипт счётчика ещё грузится (вход сразу после
+ * возврата из VK — цель «регистрация» раньше терялась), ждём его до
+ * 2,5 с всего, затем переход в любом случае.
  */
 export function reachGoalThen(goal: MetrikaGoal, params: Record<string, unknown> | undefined, next: () => void) {
-    if (!COUNTER_ID || !window.ym) {
+    if (!COUNTER_ID) {
         next();
         return;
     }
@@ -85,12 +87,26 @@ export function reachGoalThen(goal: MetrikaGoal, params: Record<string, unknown>
         done = true;
         next();
     };
-    window.setTimeout(leave, 1000);
-    try {
-        window.ym(COUNTER_ID, "reachGoal", goal, params, leave);
-    } catch {
-        leave();
+    const fire = () => {
+        try {
+            window.ym?.(COUNTER_ID, "reachGoal", goal, params, leave);
+        } catch {
+            leave();
+        }
+    };
+    if (window.ym) {
+        window.setTimeout(leave, 1000);
+        fire();
+        return;
     }
+    window.setTimeout(leave, 2500);
+    const timer = window.setInterval(() => {
+        if (done) window.clearInterval(timer);
+        else if (window.ym) {
+            window.clearInterval(timer);
+            fire();
+        }
+    }, 50);
 }
 
 /**
@@ -129,18 +145,34 @@ function FlushPendingGoals() {
     return null;
 }
 
+/**
+ * Параметры адреса, которые не делают новую страницу: выбор вакансии на карте
+ * (offerId) только подсвечивает карточку. Без этого каждый клик по карте был
+ * «просмотром» — ~800 лишних в день, глубина просмотра выросла втрое (04.11.2026).
+ */
+const NOT_A_PAGE = ["offerId"];
+
+/** Адрес для сравнения «та же страница или нет» — без NOT_A_PAGE */
+export function pageKey(href: string): string {
+    const url = new URL(href);
+    for (const name of NOT_A_PAGE) url.searchParams.delete(name);
+    url.hash = "";
+    return url.toString();
+}
+
 /** Просмотр при переходах внутри приложения (первый засчитывает init). */
 function PageHits() {
     const pathname = usePathname();
     const search = useSearchParams().toString();
-    const previous = useRef<string | null>(null);
+    const previous = useRef<{ key: string; url: string } | null>(null);
 
     useEffect(() => {
         const url = window.location.href;
-        if (previous.current !== null && previous.current !== url) {
-            window.ym?.(COUNTER_ID, "hit", url, { referer: previous.current });
+        const key = pageKey(url);
+        if (previous.current !== null && previous.current.key !== key) {
+            window.ym?.(COUNTER_ID, "hit", url, { referer: previous.current.url });
         }
-        previous.current = url;
+        if (previous.current === null || previous.current.key !== key) previous.current = { key, url };
     }, [pathname, search]);
 
     return null;

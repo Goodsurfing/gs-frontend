@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { OfferActions, type OfferActionsHrefs, type OfferActionsLabels } from "@/components/offer/OfferActions";
 import { OfferAddressMap } from "@/components/offer/OfferAddressMap";
+import { OfferDatesPassed } from "@/components/offer/OfferDatesPassed";
 import { OfferHero } from "@/components/offer/OfferHero";
 import { OfferOrganization } from "@/components/offer/OfferOrganization";
 import { OfferParticipants } from "@/components/offer/OfferParticipants";
@@ -22,12 +23,15 @@ import { SectionSubmenu } from "@/components/ui/SectionSubmenu";
 import { failOnApiError } from "@/lib/apiUnavailable";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getTranslator, type Translate } from "@/i18n/dictionary";
+import { offerSeoDescription, offerSeoTitle } from "@/lib/offerSeo";
 import { categoryName } from "@/lib/categories";
 import { mediaUrl } from "@/lib/media";
 import { getPrices, TARIFF } from "@/lib/membershipPrices";
-import { getOffer, getOfferBanner, getOfferParticipants, getOfferReviews, inlineSvg, type OfferDetail } from "@/lib/offer";
+import { getOffer, getOfferBanner, getOfferParticipants, getOfferReviews, getSimilarOffers, inlineSvg, localizedDescription, type OfferDetail, type SimilarOffer } from "@/lib/offer";
+import { type Badge, getOrganizationBadges } from "@/lib/achievements";
 import { organizationType, PARTICIPATE_STATES, responseStatsText } from "@/lib/offerText";
 import { routes } from "@/lib/routes";
+import { offerDatesChip, offerHighlights, shortAddress } from "@/lib/offerHighlights";
 import { pageMetadata, siteUrl } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string; id: string }> };
@@ -49,19 +53,28 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale, id } = await params;
     if (!isLocale(locale)) return {};
-    const [result, tMain] = await Promise.all([getOffer(locale, id), getTranslator(locale, "main")]);
+    const [result, tMain, tOffer] = await Promise.all([getOffer(locale, id), getTranslator(locale, "main"), getTranslator(locale, "offer")]);
     const path = routes.offer(locale, id);
     if (result.kind !== "ok") {
         return pageMetadata({ locale, path, title: tMain("seo.title"), description: tMain("seo.description"), noindex: true });
     }
-    const { description } = result.offer;
+    const { description } = localizedDescription(result.offer);
+    const offer = result.offer;
+    // Название — как написал организатор; для поиска к нему добавляются «волонтёрство», регион и условия
+    const seo = description?.title ? {
+        title: description.title,
+        address: offer.where?.address,
+        category: description.categories?.[0]?.name,
+        highlights: offerHighlights({ condition: offer.condition, whatToDo: offer.whatToDo, when: offer.when }, tOffer),
+        shortDescription: description.shortDescription || description.description,
+    } : null;
     return pageMetadata({
         locale,
         path,
-        title: description?.title || tMain("seo.title"),
-        description: description?.shortDescription || description?.description || tMain("seo.description"),
-        // Краулерам нужен оригинал обложки
-        image: mediaUrl(description?.image),
+        title: seo ? offerSeoTitle(seo, locale) : tMain("seo.title"),
+        description: seo ? offerSeoDescription(seo) : tMain("seo.description"),
+        // Карточка для соцсетей: обложка + название, регион, условия (/offers/:id/card)
+        image: description?.title ? `${siteUrl()}${path}/card` : mediaUrl(description?.image),
         noindex: result.offer.status === "draft",
     });
 }
@@ -105,6 +118,11 @@ function actionsLabels(t: Translate, price: number): OfferActionsLabels {
 }
 
 /** Страница вакансии (OfferPersonalPage старого фронта, GS-219) */
+/** Сегодня по Москве в формате API (d.m.Y) — для пометки «когда» в обложке */
+function moscowToday(): string {
+    return new Intl.DateTimeFormat("ru-RU", { timeZone: "Europe/Moscow", day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date());
+}
+
 export default async function OfferPage({ params }: Props) {
     const { locale, id } = await params;
     if (!isLocale(locale)) notFound();
@@ -133,32 +151,39 @@ export default async function OfferPage({ params }: Props) {
         );
     }
 
-    const [participants, reviews, banner, svgs, prices] = await Promise.all([
+    const [participants, reviews, banner, svgs, prices, badges, similar] = await Promise.all([
         getOfferParticipants(locale, id),
         getOfferReviews(locale, id),
         getOfferBanner(locale),
         referenceIcons(offer),
         // Цена членства — в предложении, когда кончились бесплатные отклики
         getPrices(locale),
+        getOrganizationBadges(locale, offer.organization.id),
+        // Даты прошли (GS-277) — похожие актуальные; иначе запрос не нужен
+        offer.datesPassed ? getSimilarOffers(locale, offer.id) : Promise.resolve([]),
     ]);
     return (
         <PublicShell locale={locale}>
             <OfferViewerProvider offerId={offer.id}>
                 <div className="mx-auto flex min-h-[500px] w-full max-w-[1920px] flex-col items-center justify-center px-[50px] pt-[100px] pb-[50px] down-lg:p-5">
-                    <OfferBody locale={locale} offer={offer} participants={participants} reviews={reviews} banner={banner} svgs={svgs} volunteerPrice={prices[TARIFF.volunteer] ?? 990} t={t} tOffer={tOffer} tHost={tHost} />
+                    <OfferBody locale={locale} offer={offer} participants={participants} reviews={reviews} banner={banner} svgs={svgs} badges={badges} similar={similar} volunteerPrice={prices[TARIFF.volunteer] ?? 990} t={t} tOffer={tOffer} tHost={tHost} />
                 </div>
             </OfferViewerProvider>
         </PublicShell>
     );
 }
 
-function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunteerPrice, t, tOffer, tHost }: {
+function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges, similar, volunteerPrice, t, tOffer, tHost }: {
     locale: Locale;
     offer: OfferDetail;
     participants: Awaited<ReturnType<typeof getOfferParticipants>>;
     reviews: Awaited<ReturnType<typeof getOfferReviews>>;
     banner: Awaited<ReturnType<typeof getOfferBanner>>;
     svgs: SvgMap;
+    /** Значки организации — в блоке «Организация» */
+    badges: Badge[];
+    /** Похожие актуальные — только когда даты вакансии прошли (GS-277) */
+    similar: SimilarOffer[];
     /** Цена годового членства волонтёра — для предложения, когда кончились бесплатные отклики */
     volunteerPrice: number;
     t: Translate;
@@ -166,7 +191,9 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
     tHost: Translate;
 }) {
     const p = (key: string) => tOffer(`personalOffer.${key}`);
-    const { description, condition, organization } = offer;
+    const { condition, organization } = offer;
+    // На /en и /es — перевод текстов (GS-227), оригинал — по кнопке
+    const { description, original } = localizedDescription(offer);
     // Как galleryUrls старого фронта: large, иначе medium, иначе оригинал
     const gallery = (offer.galleryImages ?? [])
         .map((image) => mediaUrl(image, "large") === mediaUrl(image) ? mediaUrl(image, "medium") : mediaUrl(image, "large"))
@@ -189,6 +216,8 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
         name: categoryName(category.name, t) ?? "",
         color: category.color,
     }));
+    // Пустой блок «Участники (0)» — только место на странице (10.11.2026); не загрузились — показываем, там своя ошибка
+    const hasParticipants = participants === null || participants.total > 0;
     const statusLabel = ["active", "disabled", "draft"].includes(offer.status) ? p(offer.status) : "";
 
     return (
@@ -198,12 +227,14 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
                 image={mediaUrl(description?.image, "large")}
                 status={offer.status}
                 categories={categories}
-                address={offer.where?.address}
+                address={shortAddress(offer.where?.address)}
                 reviews={offer.reviewsCount}
                 rating={Number(offer.averageRating) || 0}
+                dates={offerDatesChip(offer.when, offer.datesPassed, tOffer, moscowToday())}
+                highlights={offerHighlights({ condition, whatToDo: offer.whatToDo, when: offer.when }, tOffer)}
                 gallery={<OfferPhotoStack images={gallery} thumbs={galleryThumbs} labels={{ photos: p("Фотографии"), ...galleryLabels }} />}
                 actions={<OfferActions offerId={offer.id} status={offer.status} variant="hero" hrefs={hrefs} labels={labels} />}
-                labels={{ status: statusLabel, reviewsCount: tOffer("Кол-во отзывов:"), noReviews: tOffer("Пока нет отзывов") }}
+                labels={{ status: statusLabel, reviewsCount: t("Отзывов:") }}
             />
             <SectionSubmenu
                 items={[
@@ -212,7 +243,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
                     { id: "terms", text: p("Условия") },
                     { id: "gallery", text: p("Фото") },
                     { id: "organization", text: p("Организация") },
-                    { id: "participants", text: p("Участники") },
+                    ...(hasParticipants ? [{ id: "participants", text: p("Участники") }] : []),
                     { id: "review", text: p("Отзывы") },
                 ]}
             >
@@ -220,6 +251,32 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
             </SectionSubmenu>
 
             <div className="w-full max-w-[980px] pt-10">
+                {offer.datesPassed && (
+                    <OfferDatesPassed
+                        similar={similar}
+                        offerHref={(similarId) => routes.offer(locale, similarId)}
+                        catalogHref={routes.offersMap(locale)}
+                        labels={{
+                            title: tOffer("Даты этой вакансии прошли"),
+                            text: tOffer("Организатор ещё не указал новые даты — откликнуться можно, но ответа может не быть."),
+                            similar: tOffer("Похожие проекты с актуальными датами"),
+                            all: tOffer("Все актуальные вакансии"),
+                            noAddress: t("Без адреса"),
+                        }}
+                    />
+                )}
+                {offer.organizationSleeping && (
+                    <p role="note" className="mb-8 flex items-start gap-3 rounded-[10px] bg-notice-bg px-5 py-4 text-[15px] leading-[140%] text-ink-secondary">
+                        <svg aria-hidden viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 shrink-0 text-notice" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 7v5l3 2" /></svg>
+                        <span>{tOffer("Организатор давно не заходил на Гудсёрфинг — ответа на заявку может не быть.")} <a href={routes.offersMap(locale)} className="text-primary underline">{tOffer("Посмотреть другие вакансии")}</a></span>
+                    </p>
+                )}
+                {!offer.organizationSleeping && offer.relevanceStale && (
+                    <p role="note" className="mb-8 flex items-start gap-3 rounded-[10px] bg-field px-5 py-4 text-[15px] leading-[140%] text-ink-secondary">
+                        <svg aria-hidden viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 shrink-0 text-caption" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 9v4" /><path d="M12 17h.01" /><circle cx="12" cy="12" r="10" /></svg>
+                        <span>{t("relevance.staleNote")}</span>
+                    </p>
+                )}
                 {banner && (
                     <section
                         className="relative mb-10 flex items-center overflow-hidden rounded-[10px] bg-cover bg-center bg-no-repeat p-5 before:absolute before:inset-0 before:bg-black/40 down-md:min-h-[200px] down-md:rounded-2xl down-md:px-5 down-md:py-6"
@@ -236,7 +293,14 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
                 {offer.when && <OfferWhen when={offer.when} t={tOffer} />}
                 {offer.howNeed && <OfferWhoNeeds need={offer.howNeed} t={tOffer} />}
                 {offer.whatToDo && <OfferWhatToDo todo={offer.whatToDo} svgs={svgs} t={tOffer} tCommon={t} />}
-                {description && <OfferDescription description={description} t={tOffer} />}
+                {description && (
+                    <OfferDescription
+                        description={description}
+                        original={original}
+                        t={tOffer}
+                        translatedLabels={{ note: tOffer("Переведено автоматически"), showOriginal: tOffer("Показать оригинал"), showTranslation: tOffer("Показать перевод") }}
+                    />
+                )}
                 {condition && (
                     <>
                         <OfferTerms condition={condition} svgs={svgs} t={tOffer} />
@@ -245,7 +309,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
                 )}
                 {offer.finishingTouche && <OfferFinishing finishing={offer.finishingTouche} t={tOffer} />}
                 {condition && <OfferPayment condition={condition} t={tOffer} />}
-                {offer.howNeed && <OfferLanguages languages={offer.howNeed.languages ?? []} t={tOffer} />}
+                {offer.howNeed && (offer.howNeed.languages ?? []).length > 0 && <OfferLanguages languages={offer.howNeed.languages ?? []} t={tOffer} />}
                 {offer.where && (
                     <div className="mt-10 flex flex-col gap-5">
                         <SectionTitle>{p("Местоположение")}</SectionTitle>
@@ -266,8 +330,17 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
                     image={mediaUrl(organization.image, "small")}
                     href={routes.organization(locale, organization.id)}
                     labels={{ title: p("Организация"), more: p("Подробнее") }}
+                    badges={badges}
+                    badgesHref={routes.achievements(locale)}
+                    slowReply={organization.responseStats?.slow ? { label: tHost("slowReply.label"), hint: tHost("slowReply.hint") } : null}
+                    verified={organization.isVerified ? {
+                        badge: t("membershipBadge.Партнёр Гудсёрфинга"),
+                        hint: tHost("verifiedHost.hint"),
+                        howTo: tHost("verifiedHost.howTo"),
+                        membershipHref: routes.membership(locale),
+                    } : null}
                 />
-                <OfferParticipants
+                {hasParticipants && <OfferParticipants
                     offerId={offer.id}
                     initial={participants}
                     volunteerHref={volunteerHref}
@@ -279,19 +352,18 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
                         showNext: p("Посмотреть следующие"),
                         anonymous: t("Анонимный пользователь"),
                     }}
-                />
+                />}
                 <OfferReviews
                     offerId={offer.id}
                     initial={reviews}
                     volunteerHref={volunteerHref}
                     labels={{
                         title: p("Отзывы"),
-                        // Тексты ниже в старом фронте не переводились — оставлены как были
-                        empty: "На данный момент отзывов нет",
-                        loadError: "Произошла ошибка загрузки отзывов",
-                        sendError: "Не удалось отправить отзыв. Попробуйте позже.",
-                        deleteError: "Не удалось удалить отзыв. Попробуйте позже.",
-                        deleteConfirm: "Удалить отзыв? Это действие нельзя отменить.",
+                        empty: tOffer("На данный момент отзывов нет"),
+                        loadError: tOffer("Произошла ошибка загрузки отзывов"),
+                        sendError: tOffer("Не удалось отправить отзыв. Попробуйте позже."),
+                        deleteError: tOffer("Не удалось удалить отзыв. Попробуйте позже."),
+                        deleteConfirm: tOffer("Удалить отзыв? Это действие нельзя отменить."),
                         delete: t("Удалить отзыв"),
                         showNext: p("Посмотреть следующие"),
                         anonymous: t("Анонимный пользователь"),
@@ -308,6 +380,9 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, volunte
                     <OfferShare url={`${siteUrl()}${routes.offer(locale, offer.id)}`} title={description.title} label={p("Поделиться вакансией")} />
                 )}
             </div>
+            {/* Кнопка внизу экрана на телефоне; отступ — чтобы она не закрывала конец страницы */}
+            <OfferActions offerId={offer.id} status={offer.status} variant="sticky" hrefs={hrefs} labels={labels} />
+            <div aria-hidden className="hidden h-20 down-md:block" />
         </>
     );
 }

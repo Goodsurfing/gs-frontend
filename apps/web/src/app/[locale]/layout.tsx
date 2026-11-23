@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
+import { preload } from "react-dom";
 
 import { YandexMetrika } from "@/components/analytics/YandexMetrika";
+import { ReferralCapture } from "@/components/referral/ReferralCapture";
 import { isLocale, LOCALES } from "@/i18n/config";
 
 import "../globals.css";
 
 export const metadata: Metadata = {
     title: "GoodSurfing",
-    icons: { icon: "/favicon.png" },
+    icons: { icon: "/favicon.png", apple: "/web/icons/app/icon-180.png" },
+    // Установка на экран «Домой»: на iPhone веб-пуши работают только у установленного сайта
+    manifest: "/web/manifest.webmanifest",
+    appleWebApp: { capable: true, title: "GoodSurfing", statusBarStyle: "default" },
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://goodsurfing.org"),
 };
 
@@ -43,6 +48,12 @@ export default async function LocaleLayout({
 }) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
+    // Обычный Lato — основной текст страницы, средний — меню шапки (оно на каждой странице, и подмена
+    // шрифта там заметна): просим их сразу, а не после разбора CSS, чтобы успевали до первой отрисовки.
+    // Остальные начертания не предзагружаем: на медленном телефоне они отняли бы канал у самой
+    // страницы; пока грузятся — подогнанный запасной шрифт (globals.css).
+    preload("/web/fonts/Lato-Regular.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
+    preload("/web/fonts/Lato-Medium.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
 
     return (
         <html lang={locale}>
@@ -50,6 +61,7 @@ export default async function LocaleLayout({
                 <script dangerouslySetInnerHTML={{ __html: BROKEN_IMAGE_FALLBACK }} />
                 {children}
                 <YandexMetrika />
+                <ReferralCapture />
             </body>
         </html>
     );

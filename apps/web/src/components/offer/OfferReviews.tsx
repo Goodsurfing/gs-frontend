@@ -1,11 +1,24 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
+
+import { localeFromPath } from "@/i18n/config";
 
 import { GalleryLightbox } from "@/components/gallery/GalleryLightbox";
 import { Avatar } from "@/components/ui/Avatar";
 import { API_URL, browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
+
+const DATE_LOCALE = { ru: "ru-RU", en: "en-US", es: "es-ES" } as const;
+
+/** Дата отзыва «4 марта 2026»: берём день из ISO-строки как есть — одинаково на сервере и в браузере (без сдвига часового пояса) */
+export function reviewDate(iso: string | null | undefined, locale: keyof typeof DATE_LOCALE): string {
+    const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso ?? "");
+    if (!match) return "";
+    const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+    return date.toLocaleDateString(DATE_LOCALE[locale], { day: "numeric", month: "long", year: "numeric" }).replace(/\s?г\.$/, "");
+}
 import { type OfferReview, type Page, toReviewClient } from "@/lib/offerReview";
 
 import { personName } from "./OfferParticipants";
@@ -51,6 +64,7 @@ export function OfferReviews({ offerId, initial, volunteerHref, labels }: {
     volunteerHref: string;
     labels: ReviewsLabels;
 }) {
+    const locale = localeFromPath(usePathname() ?? "");
     const viewer = useOfferViewer();
     const [reviews, setReviews] = useState(initial?.items ?? []);
     const [total, setTotal] = useState(initial?.total);
@@ -276,6 +290,7 @@ export function OfferReviews({ offerId, initial, volunteerHref, labels }: {
                                     <Avatar src={mediaUrl(review.author.image, "small")} name={name} size={22} />
                                 </a>
                                 <a href={href} className="ml-2 text-primary">{name}</a>
+                                {review.createdAt && <time dateTime={review.createdAt} className="ml-3 text-[13px] text-caption">{reviewDate(review.createdAt, locale)}</time>}
                             </div>
                         </div>
                     );

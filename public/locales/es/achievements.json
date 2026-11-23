@@ -1,0 +1,16 @@
+{
+    "seo": {
+        "title": "Logros de los GoodSurfers — GoodSurfing",
+        "description": "Insignias de GoodSurfing por viajes de voluntariado, reseñas y ayuda a la comunidad, e insignias para anfitriones atentos y de confianza."
+    },
+    "title": "Logros",
+    "intro": "Las insignias marcan pasos reales en GoodSurfing: viajes, reseñas, ayuda a la comunidad. Se muestran en el perfil y los anfitriones las ven en la solicitud.",
+    "volunteers": "Para voluntarios",
+    "organizations": "Para anfitriones",
+    "auto": "Se obtienen automáticamente",
+    "team": "Las otorga el equipo de GoodSurfing",
+    "holders": "Obtenida por: {{count}}",
+    "none": "Nadie aún — sé el primero",
+    "error": "No se pudieron cargar las insignias. Actualiza la página más tarde.",
+    "organizationsHint": "Los voluntarios ven estas insignias en las vacantes y en la página de la organización."
+}

@@ -331,6 +331,7 @@ export function VolunteerReviews({ hrefs, categories, labels }: {
                 open={!!selected}
                 labels={labels.dialog}
                 photos={{ token: session.token, labels: labels.photos, error: labels.sendError }}
+                assistant={selected ? { token: session.token, vacancyId: selected.id } : undefined}
                 initialRating={linkRating}
                 onClose={() => {
                     setSelected(null);

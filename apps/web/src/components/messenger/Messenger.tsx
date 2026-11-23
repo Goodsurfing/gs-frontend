@@ -11,23 +11,33 @@ import type { Locale } from "@/i18n/config";
 import { API_URL, browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
 import {
-    type ApplicationStatus, type ChatMessage, companionTarget, formatDay, formatMessageDate, idFromIri, type Terms,
+    type ApplicationStatus, type Chat, type ChatApplication, type ChatMessage, companionTarget, formatDayLabel, formatTime, idFromIri, readByOthers, sameGroup, type Terms,
 } from "@/lib/messenger";
 import type { CatalogOffer } from "@/lib/offersCatalog";
 import { dayFromApi } from "@/lib/offerWizard";
 
-import { type ApplicationLabels, ApplicationBlock } from "./ApplicationBlock";
+import { type ApplicationLabels, ApplicationBlock, ApplicationEvent } from "./ApplicationBlock";
+import { needsIntro, QuickIntro, type QuickIntroLabels } from "./QuickIntro";
+import { ResponseHintNote, type ResponseHintLabels } from "./ResponseHintNote";
+import { ChatHeader } from "./ChatHeader";
 import { type ChatInputLabels, ChatInput, type OutgoingMessage } from "./ChatInput";
 import { type ChatListLabels, ChatList } from "./ChatList";
 import { type CompanionLabels, type CompanionProfile, CompanionInfo } from "./CompanionInfo";
 import { MessageBubble } from "./MessageBubble";
+import { type PushOfferLabels, PushOffer } from "./PushOffer";
+import { type ReplyDraftLabels, ReplyDraft } from "./ReplyDraft";
 import { useChatList, useChatMessages, useLiveMessages } from "./useMessenger";
 
 export interface MessengerLabels {
+    /** Над откликом новичка без имени или фото */
+    intro: QuickIntroLabels;
+    hint: ResponseHintLabels;
     title: string;
     choose: string;
     back: string;
     info: string;
+    /** Полоса под шапкой у новой заявки (организатору) */
+    decisionPrompt: string;
     offerNotFound: string;
     applicationSent: string;
     sendError: string;
@@ -37,6 +47,8 @@ export interface MessengerLabels {
     input: ChatInputLabels;
     application: ApplicationLabels;
     companion: CompanionLabels;
+    push: PushOfferLabels;
+    draft: ReplyDraftLabels;
 }
 
 export interface MessengerHrefs {
@@ -106,11 +118,17 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     const me = session.profile;
     const ready = session.status === "user";
     const isCreate = chatId === "create";
+    // Решаем один раз: после сохранения имени блок не должен пропасть посреди ввода
+    const [introShown, setIntroShown] = useState(false);
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        if (isCreate && ready && needsIntro(me as Record<string, unknown> | null)) setIntroShown(true);
+    }, [isCreate, ready]); // eslint-disable-line react-hooks/exhaustive-deps
     const realChatId = chatId && !isCreate ? chatId : undefined;
     const recipientVolunteer = params.get("recipientVolunteer") ?? undefined;
     const recipientOrganization = params.get("recipientOrganization") ?? undefined;
 
-    const list = useChatList(token, ready);
+    const list = useChatList(token, ready, locale);
     const chat = useChatMessages(token, ready ? realChatId : undefined);
     const [toast, setToast] = useState<{ text: string; ok: boolean } | null>(null);
     const fail = useCallback((text: string) => setToast({ text, ok: false }), []);
@@ -133,6 +151,8 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     // Собеседник: из чата или из адреса создания
     const [companion, setCompanion] = useState<CompanionProfile | null>(null);
     const [participant, setParticipant] = useState<{ id?: string | null; firstName?: string | null; lastName?: string | null; image?: unknown } | null>(null);
+    // Заявка открытого чата из GET /chats/{id}: если чата нет в загруженном списке (поиск, список ещё грузится)
+    const [chatApplication, setChatApplication] = useState<ChatApplication | null>(null);
     useEffect(() => {
         if (!ready) return;
         let cancelled = false;
@@ -145,12 +165,14 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         /* eslint-disable react-hooks/set-state-in-effect */
         setCompanion(null);
         setParticipant(null);
+        setChatApplication(null);
         /* eslint-enable react-hooks/set-state-in-effect */
         if (realChatId) {
             void browserApi(token).GET("/api/v1/chats/{id}", { params: { path: { id: realChatId } } }).then(({ data }) => {
                 const other = data?.otherParticipants?.[0] ?? null;
                 if (cancelled) return;
                 setParticipant(other);
+                setChatApplication(data?.application ?? null);
                 void loadProfile(other?.id);
             }).catch(() => undefined);
         } else if (isCreate && recipientVolunteer) {
@@ -252,7 +274,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         }
     }, [chat.messages, applications, token, dict.categories]);
 
-    const decide = async (applicationId: string, status: "accepted" | "canceled") => {
+    const decide = async (applicationId: string, status: "accepted" | "canceled"): Promise<boolean> => {
         const result = await browserApi(token)
             .PATCH("/api/v1/application_forms/{id}/status", {
                 params: { path: { id: applicationId } },
@@ -262,10 +284,16 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
             .catch(() => null);
         if (!result?.response.ok) {
             fail(labels.error);
-            return;
+            return false;
         }
         reachGoal(status === "accepted" ? "application_accepted" : "application_rejected", { from: "chat" });
-        void list.reload();
+        if (realChatId) list.setApplicationStatus(Number(realChatId), status);
+        setChatApplication((current) => (current && String(current.id) === applicationId ? { ...current, status } : current));
+        setApplications((current) => {
+            const item = current[applicationId];
+            return item ? { ...current, [applicationId]: { ...item, status } } : current;
+        });
+        return true;
     };
 
     const send = async (message: OutgoingMessage) => {
@@ -294,6 +322,8 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     };
 
     const [infoOpen, setInfoOpen] = useState(false);
+    // Черновик ответа хоста от помощника — подставляется в поле ввода
+    const [draft, setDraft] = useState<{ text: string; key: number } | null>(null);
     const [image, setImage] = useState<string | null>(null);
 
     const headerPerson = companion ?? participant;
@@ -302,114 +332,144 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     const target = companionTarget(companion ?? (participant?.id ? { id: participant.id } : null), !!me?.hostId);
     const companionHref = target ? href(target.kind === "organization" ? hrefs.organization : hrefs.volunteer, target.id) : undefined;
     const myName = fullName(me, labels.list.noName);
-    const myAvatar = mediaUrl(me?.image as never, "small");
 
-    // Переписка снизу вверх (column-reverse): свежие сообщения внизу. Дата-разделитель — как в старом
-    // фронте: у первого встреченного (самого свежего) сообщения каждого дня, кроме сегодняшнего
+    // Кто вошёл в этой переписке: организатор, если заявка на вакансию его организации
+    const viewerIsVolunteer = useCallback((item: Pick<Chat, "application">) => (item.application ? item.application.organizationId !== me?.hostId : !me?.hostId), [me?.hostId]);
+    const listChat = realChatId ? list.chats.find((item) => String(item.id) === realChatId) : undefined;
+    const application = listChat?.application ?? chatApplication;
+    const volunteerHere = viewerIsVolunteer({ application });
+
+    // Переписка снизу вверх (column-reverse): свежие сообщения внизу, в массиве — первыми. Разделитель
+    // дня — над первым сообщением дня («Сегодня», «Вчера», «5 ноября»); подряд идущие сообщения одного
+    // автора — группа: аватар собеседника и «хвостик» только у последнего в группе
     const rendered = useMemo(() => {
         const items: React.ReactNode[] = [];
-        const todayKey = new Date().toDateString();
-        let day = "";
-        chat.messages.forEach((message) => {
+        const messages = chat.messages;
+        messages.forEach((message, index) => {
+            const newer = messages[index - 1];
+            const older = messages[index + 1];
             const authorId = idFromIri(message.author);
             const own = authorId === me?.id;
             const applicationId = idFromIri(message.applicationForm);
             const messageDay = new Date(message.createdAt ?? 0).toDateString();
-            const dateLine = messageDay !== day && messageDay !== todayKey;
-            if (dateLine) day = messageDay;
+            const dayStart = !older || new Date(older.createdAt ?? 0).toDateString() !== messageDay;
+            const groupEnd = !newer || !!idFromIri(newer.applicationForm) || !sameGroup(message, newer) || new Date(newer.createdAt ?? 0).toDateString() !== messageDay;
+            const groupStart = dayStart || !!(older && idFromIri(older.applicationForm)) || !sameGroup(message, older);
+            let node: React.ReactNode = null;
             if (applicationId) {
-                const application = applications[applicationId];
-                if (application) {
-                    const host = application.volunteerId !== me?.id;
-                    items.push(
-                        <ApplicationBlock
-                            key={message.id}
+                const item = applications[applicationId];
+                node = item
+                    ? (
+                        <ApplicationEvent
                             locale={locale}
-                            offer={application.offer}
-                            offerHref={href(hrefs.offer, application.offer.id)}
-                            terms={application.terms}
-                            sent
+                            title={item.offer.title}
+                            offerHref={href(hrefs.offer, item.offer.id)}
+                            terms={item.terms}
                             username={own ? myName : companionName}
-                            onDecision={host && application.status === "new" ? (status) => void decide(application.id, status) : undefined}
                             labels={labels.application}
-                        />,
-                    );
-                }
-            } else {
-                items.push(
-                    <Fragment key={message.id}>
-                        <MessageBubble
-                            own={own}
-                            name={own ? myName : companionName}
-                            avatar={own ? myAvatar : companionAvatar}
-                            profileHref={authorId ? href(hrefs.volunteer, authorId) : undefined}
-                            text={message.text ?? ""}
-                            attachment={message.attachments?.[0]}
-                            date={formatMessageDate(locale, message.createdAt, labels.list.noDate)}
-                            token={token}
-                            onImage={setImage}
                         />
-                        {/* column-reverse: разделитель идёт после сообщения в разметке, на экране — над ним */}
-                        {dateLine && <div className="my-1.5 text-center text-[0.75rem] font-medium text-caption">{formatDay(locale, message.createdAt ?? "")}</div>}
-                    </Fragment>,
+                    )
+                    // Место под карточку заявки, пока она грузится
+                    : <div aria-hidden className="mx-auto my-3 h-[76px] w-full max-w-[420px] animate-pulse rounded-[14px] bg-white/70" />;
+            } else {
+                node = (
+                    <MessageBubble
+                        own={own}
+                        name={companionName}
+                        avatar={companionAvatar}
+                        showAvatar={!own && groupEnd}
+                        profileHref={companionHref}
+                        text={message.text ?? ""}
+                        attachment={message.attachments?.[0]}
+                        time={formatTime(locale, message.createdAt)}
+                        read={own && readByOthers(message, me?.id)}
+                        readLabel={labels.list.read}
+                        groupEnd={groupStart}
+                        token={token}
+                        onImage={setImage}
+                    />
                 );
             }
+            // Заметка «как отвечает организатор» — волонтёру, под его новой заявкой (column-reverse: в разметке раньше)
+            const hintHere = applicationId !== undefined && volunteerHere && application?.status === "new" && String(application.id) === applicationId;
+            items.push(
+                <Fragment key={message.id}>
+                    {hintHere && <ResponseHintNote applicationId={applicationId} token={token} offerHref={hrefs.offer} labels={labels.hint} />}
+                    {node}
+                    {/* column-reverse: разделитель идёт после сообщения в разметке, на экране — над ним */}
+                    {dayStart && (
+                        <div className="sticky top-0 z-[1] my-3 flex justify-center">
+                            <span className="rounded-full bg-white/90 px-3 py-1 text-[12px] font-medium text-caption shadow-[0_1px_2px_rgba(14,29,39,0.06)]">{formatDayLabel(locale, message.createdAt ?? "")}</span>
+                        </div>
+                    )}
+                </Fragment>,
+            );
         });
         return items;
-        // decide и href — без состояния, пересоздаются при каждом рендере
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [chat.messages, applications, me?.id, myName, myAvatar, companionName, companionAvatar, locale, token, labels, hrefs]);
+        // href — без состояния, пересоздаётся при каждом рендере
+         
+    }, [chat.messages, applications, me?.id, myName, companionName, companionAvatar, companionHref, locale, token, labels, hrefs, volunteerHere, application?.status, application?.id]);
 
     const hasChat = !!chatId;
     const scroller = useRef<HTMLDivElement>(null);
+    const applicationId = application?.id ? String(application.id) : undefined;
 
     return (
-        <div className="mx-[50px] mt-5 mb-[18px] flex h-[calc(100vh-200px)] min-h-[400px] flex-1 flex-col down-lg:mx-5 down-lg:mt-0 down-lg:h-[calc(100vh-110px)] down-xs:mx-0">
+        <div className="mx-[50px] mt-5 mb-[18px] flex h-[calc(100vh-200px)] min-h-[480px] flex-1 flex-col down-lg:mx-5 down-lg:mt-0 down-lg:h-[calc(100dvh-110px)] down-xs:mx-0">
             <Toast text={toast?.text ?? null} ok={toast?.ok} onClose={() => setToast(null)} />
             <h2 className="text-[1.5em] font-normal down-lg:hidden">{labels.title}</h2>
-            <div className="mt-5 flex h-full min-h-0 flex-1 border border-accent-bg down-lg:mt-0">
+            <div className="mt-5 flex h-full min-h-0 flex-1 overflow-hidden rounded-[14px] border border-accent-bg bg-white down-lg:mt-0 down-xs:rounded-none down-xs:border-x-0">
                 <ChatList
                     locale={locale}
                     chats={list.chats}
+                    loaded={list.loaded}
+                    failed={list.failed}
+                    onRetry={() => void list.reload()}
+                    myId={me?.id}
+                    viewerIsVolunteer={viewerIsVolunteer}
                     selectedId={realChatId}
                     chatHref={(id) => href(hrefs.chat, id)}
                     onOpen={open}
                     search={list.search}
                     onSearch={list.setSearch}
-                    status={list.status}
-                    onStatus={list.setStatus}
                     labels={labels.list}
+                    top={<PushOffer token={token} enabled={ready && list.chats.length > 0} labels={labels.push} />}
                     className={hasChat ? "down-lg:hidden" : "down-lg:flex down-lg:max-w-none"}
                 />
                 {!hasChat ? (
-                    <div className="flex h-full w-full flex-col items-center justify-center bg-field text-caption down-lg:hidden">
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-field text-[15px] text-caption down-lg:hidden">
                         {/* eslint-disable-next-line @next/next/no-img-element -- значок пустого чата */}
-                        <img src="/web/icons/messenger/chat.svg" alt="" className="h-12 w-12" />
+                        <img src="/web/icons/messenger/chat.svg" alt="" className="h-12 w-12 opacity-60" />
                         <span>{labels.choose}</span>
                     </div>
                 ) : (
-                    <div className="relative flex h-full w-full bg-field">
+                    // На телефоне открытая переписка — на весь экран, как в приложениях: шапка сайта не отнимает место у сообщений
+                    <div className="relative flex h-full min-w-0 flex-1 bg-field down-lg:fixed down-lg:inset-0 down-lg:z-[60] down-lg:h-[100dvh]">
                         <div className="flex h-full min-w-0 flex-1 flex-col">
-                            <div className="grid grid-cols-[1fr_auto] items-center gap-2.5 bg-white p-4">
-                                <div className="flex w-full items-center gap-2.5 overflow-hidden">
-                                    <button type="button" aria-label={labels.back} onClick={() => open()} className="hidden cursor-pointer border-0 bg-transparent p-0 down-lg:flex">
-                                        {/* eslint-disable-next-line @next/next/no-img-element -- стрелка назад */}
-                                        <img src="/web/icons/messenger/arrow.svg" alt="" className="h-5 w-5" />
-                                    </button>
-                                    {companionHref
-                                        ? <a href={companionHref} className="overflow-hidden text-[1.125rem] font-medium text-ellipsis whitespace-nowrap text-inherit no-underline">{companionName}</a>
-                                        : <span className="overflow-hidden text-[1.125rem] font-medium text-ellipsis whitespace-nowrap">{isCreate && !recipientVolunteer ? "" : companionName}</span>}
-                                </div>
-                                {companion && (
-                                    <button type="button" aria-label={labels.info} aria-expanded={infoOpen} onClick={() => setInfoOpen((value) => !value)} className="cursor-pointer border-0 bg-transparent p-[5px]">
-                                        {/* eslint-disable-next-line @next/next/no-img-element -- стрелка панели */}
-                                        <img src="/web/icons/messenger/accordion-arrow.svg" alt="" className={`h-5 w-5 transition-transform ${infoOpen ? "rotate-90" : "-rotate-90"}`} />
-                                    </button>
-                                )}
-                            </div>
+                            <ChatHeader
+                                locale={locale}
+                                name={isCreate && !recipientVolunteer && !participant ? "" : companionName}
+                                avatar={companionAvatar}
+                                profileHref={companionHref}
+                                application={application}
+                                viewerIsVolunteer={volunteerHere}
+                                offerHref={application?.vacancyId ? href(hrefs.offer, application.vacancyId) : undefined}
+                                infoOpen={infoOpen}
+                                onInfo={companion ? () => setInfoOpen((value) => !value) : undefined}
+                                onBack={() => open()}
+                                onDecision={applicationId ? (status) => decide(applicationId, status) : undefined}
+                                labels={{
+                                    back: labels.back,
+                                    info: labels.info,
+                                    statuses: labels.list.statuses,
+                                    decisionPrompt: labels.decisionPrompt,
+                                    accept: labels.application.accept,
+                                    decline: labels.application.decline,
+                                }}
+                            />
                             <div
                                 ref={scroller}
-                                className="flex h-full w-full flex-1 flex-col-reverse gap-1.5 overflow-auto px-4 py-5"
+                                className="flex min-h-0 w-full flex-1 flex-col-reverse overflow-auto px-4 pt-2 pb-4 down-xs:px-2.5"
                                 onScroll={(event) => {
                                     const box = event.currentTarget;
                                     // column-reverse: scrollTop отрицательный, верх — у -(scrollHeight - clientHeight)
@@ -418,6 +478,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                             >
                                 {isCreate && offerId && offer
                                     ? (
+                                        <>
                                         <ApplicationBlock
                                             locale={locale}
                                             offer={toCatalogOffer(offer, dict.categories)}
@@ -431,8 +492,13 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                                             busy={applying}
                                             labels={labels.application}
                                         />
+                                        {/* Лента сообщений идёт снизу вверх (column-reverse) — этот блок окажется над откликом.
+                                            Показываем, если при открытии не было имени или фото; после сохранения — с «Сохранено» */}
+                                        {introShown && <QuickIntro labels={labels.intro} />}
+                                        </>
                                     )
                                     : rendered}
+                                {realChatId && chat.loading && chat.messages.length === 0 && <MessagesSkeleton />}
                             </div>
                             <ChatInput
                                 token={token}
@@ -440,6 +506,17 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                                 labels={labels.input}
                                 onSend={(message) => void send(message)}
                                 onError={fail}
+                                prefill={draft}
+                                extra={application?.id && !volunteerHere && realChatId ? (
+                                    <ReplyDraft
+                                        key={realChatId}
+                                        token={token}
+                                        applicationId={application.id}
+                                        onDraft={(text) => setDraft({ text, key: Date.now() })}
+                                        onError={fail}
+                                        labels={labels.draft}
+                                    />
+                                ) : null}
                             />
                         </div>
                         {companion && (
@@ -469,6 +546,17 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                     </Dialog.Overlay>
                 </Dialog.Portal>
             </Dialog.Root>
+        </div>
+    );
+}
+
+/** Заглушка переписки, пока грузится первая страница */
+function MessagesSkeleton() {
+    return (
+        <div aria-hidden className="flex flex-col gap-3 py-4">
+            <span className="h-10 w-[55%] animate-pulse rounded-[18px] bg-white" />
+            <span className="ml-auto h-10 w-[45%] animate-pulse rounded-[18px] bg-primary/20" />
+            <span className="h-16 w-[60%] animate-pulse rounded-[18px] bg-white" />
         </div>
     );
 }

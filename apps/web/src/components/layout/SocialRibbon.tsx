@@ -1,4 +1,7 @@
 import type { Translate } from "@/i18n/dictionary";
+import { TEST_BOT } from "@/lib/testBanner";
+
+import { TestRibbonNote } from "./TestRibbonNote";
 
 /** Соцсети Гудсёрфинга — общий список для ленты над шапкой и подвала. */
 export const SOCIAL_RIBBON_LINKS = [
@@ -7,18 +10,30 @@ export const SOCIAL_RIBBON_LINKS = [
     { name: "VK", href: "https://vk.com/goodsurfing", icon: "/web/icons/social/vk.png", round: true },
 ] as const;
 
+const RIBBON = "flex min-h-11 flex-wrap items-center justify-center gap-x-4 gap-y-2 bg-primary px-4 py-2";
+
+/** Лента «Тестовая версия» (только стейдж). Сама по себе — на страницах без ленты соцсетей (вход, регистрация). */
+export function TestRibbon() {
+    if (!TEST_BOT) return null;
+    return (
+        <aside aria-label="Тестовая версия" className={RIBBON}>
+            <TestRibbonNote bot={TEST_BOT} />
+        </aside>
+    );
+}
+
 /**
  * Лента «Подписывайтесь на наши соцсети» над шапкой (GS-187). Внешне как в
  * старом фронте: голубая плашка, белая подпись, иконки с белой обводкой.
+ * На стейдже вместо призыва и иконок — «Тестовая версия» (TestRibbonNote); высота ленты
+ * в обоих случаях 44 px (иконки 28 px + отступы), чтобы стенд выглядел как прод.
  */
 export function SocialRibbon({ t }: { t: Translate }) {
     const caption = t("main.welcome.header.socials-cta");
+    if (TEST_BOT) return <TestRibbon />;
 
     return (
-        <aside
-            aria-label={caption}
-            className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 bg-primary px-4 py-2"
-        >
+        <aside aria-label={caption} className={RIBBON}>
             <span className="text-center text-[15px] leading-[1.3] font-semibold text-white down-sm:text-[14px]">
                 {caption}
             </span>
