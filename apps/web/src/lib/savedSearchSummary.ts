@@ -34,7 +34,6 @@ export function savedSearchSummary(siteQuery: string, categoryNames: Record<numb
     if (f.verifiedHost) chips.push(labels.verified);
     for (const item of f.provided) chips.push(labels[item]);
     if (f.languages.length) chips.push(f.languages.map((code) => code.toUpperCase()).join(", "));
-    // «и прошедшие» не показываем: с 23.11 прошедшие в каталоге по умолчанию, а в подборку
-    // попадают только новые вакансии — метка ничего не добавляла бы
+    if (f.showPassed) chips.push(labels.passed);
     return chips.length ? chips : [labels.all];
 }
