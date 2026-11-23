@@ -97,7 +97,15 @@ jobs:
             # Пара секунд, чтобы Traefik подхватил новый; дольше не ждём — пока работают оба,
             # страница от новой версии может запросить свои файлы у старой
             sleep 2
-            if [ -n "$OLD" ]; then sudo docker stop -t 30 $OLD; sudo docker rm -v $OLD; fi
+            if [ -n "$OLD" ]; then
+              # Сначала вывести старый из сети: Traefik сразу перестаёт слать в него запросы.
+              # Иначе после остановки ещё пару секунд шли 502 и зависшие на 30 с 504 (23.11.2026)
+              for net in $(sudo docker inspect -f '{{range $k, $v := .NetworkSettings.Networks}}{{$k}} {{end}}' $OLD); do
+                sudo docker network disconnect $net $OLD || true
+              done
+              sleep 3
+              sudo docker stop -t 30 $OLD; sudo docker rm -v $OLD
+            fi
             sudo docker compose up -d --no-deps --no-recreate --scale $S=1 $S
             # Старый образ после обновления остаётся «висящим» (1+ ГБ у бэкенда) — без
             # очистки диск стейджа 29.10 заполнился на 90% (142 таких образа)
