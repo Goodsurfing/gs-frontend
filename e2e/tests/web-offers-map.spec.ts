@@ -41,11 +41,11 @@ test.describe('Новый фронт: каталог вакансий', () => {
         const after = Number((await page.getByText(/^\d+ вариант/).textContent())?.match(/\d+/)?.[0]);
         expect(after).toBeLessThan(before);
 
-        // Прошедшие по умолчанию скрыты, переключатель их показывает
-        await expect(page.getByRole('switch', { name: 'Показать прошедшие' }).first()).toHaveAttribute('aria-checked', 'false');
-        await page.getByRole('switch', { name: 'Показать прошедшие' }).first().click();
-        await expect(page).toHaveURL(/past=1/);
+        // Прошедшие по умолчанию показаны (решение команды 18.11), переключатель их скрывает
         await expect(page.getByRole('switch', { name: 'Показать прошедшие' }).first()).toHaveAttribute('aria-checked', 'true');
+        await page.getByRole('switch', { name: 'Показать прошедшие' }).first().click();
+        await expect(page).toHaveURL(/past=0/);
+        await expect(page.getByRole('switch', { name: 'Показать прошедшие' }).first()).toHaveAttribute('aria-checked', 'false');
         // Дождаться, пока список обновится после переключателя: иначе на медленной машине CI
         // выбор сортировки попадает в незавершённый переход и теряется
         await page.waitForLoadState('networkidle');
