@@ -134,7 +134,7 @@ export function OffersFilterBar({ basePath, filters, categories, languages, labe
         }, 600);
         return () => clearTimeout(timer);
     }, [stacked, panel, pending, draft, basePath, router]);
-    const active = offersFiltersQuery({ ...filters, page: 1, offerId: undefined, sort: "novelty", showPassed: false }) !== "";
+    const active = offersFiltersQuery({ ...filters, page: 1, offerId: undefined, sort: "novelty", showPassed: true }) !== "";
     // Раскрывающиеся части: на десктопе — поверх списка, на телефоне — в потоке
     const floating = stacked ? "static" : "absolute top-full";
 
