@@ -29,7 +29,8 @@ export type MetrikaGoal =
     | "membership_paid"
     | "donation_start"
     | "donation_paid"
-    | "vacancy_published";
+    | "vacancy_published"
+    | "vk_email_requested";
 
 /**
  * Вызовы до того, как выполнился скрипт счётчика. Он подключается после

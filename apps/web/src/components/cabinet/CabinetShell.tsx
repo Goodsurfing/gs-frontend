@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { VkEmailPrompt } from "@/components/email-change/VkEmailPrompt";
 import { Header } from "@/components/layout/header/Header";
 import { nudgeLabels } from "@/components/layout/PublicShell";
 import { SocialRibbon } from "@/components/layout/SocialRibbon";
@@ -7,7 +8,9 @@ import { MembershipNudge } from "@/components/membership/MembershipNudge";
 import { SessionProvider } from "@/components/session/SessionProvider";
 import type { Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
+import { vkEmailPromptLabels } from "@/lib/emailChangeLabels";
 import { getHeaderBanner } from "@/lib/marketingBanner";
+import { routes } from "@/lib/routes";
 
 import { type CabinetMenuItem, CabinetFrame } from "./CabinetFrame";
 import { RequireUser } from "./RequireUser";
@@ -34,7 +37,11 @@ export async function CabinetShell({ locale, items, need, fitContent, children }
             <div id="page-layout" className="min-h-screen bg-[#FBFDFE]">
                 <SocialRibbon t={t} />
                 <Header locale={locale} t={t} tProfile={tProfile} banner={banner} variant="static" />
-                <CabinetFrame items={items} labels={{ toggle: t("main.welcome.header.menu") }} fitContent={fitContent}>{children}</CabinetFrame>
+                <CabinetFrame items={items} labels={{ toggle: t("main.welcome.header.menu") }} fitContent={fitContent}>
+                    {/* Вошёл через VK без почты — просим указать (письма об ответах до него не доходят) */}
+                    <VkEmailPrompt signInHref={routes.signIn(locale)} labels={vkEmailPromptLabels(t)} />
+                    {children}
+                </CabinetFrame>
             </div>
             <MembershipNudge locale={locale} labels={nudgeLabels(t, tVolunteer, tHost)} />
         </SessionProvider>

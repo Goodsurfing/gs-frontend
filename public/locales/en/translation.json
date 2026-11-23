@@ -468,6 +468,15 @@
             "doneTitle": "Email restored",
             "doneText": "You sign in with {{email}} again. All sessions are closed and your password is reset — set a new one via “Forgot password”.",
             "doneButton": "Set a new password"
+        },
+        "vkPrompt": {
+            "title": "Add your email",
+            "text": "You signed in with VK, and we don't have your email — so you don't get emails when a host replies to your application or new matching opportunities appear. Add your email and we'll send a confirmation link.",
+            "email": "Your email",
+            "submit": "Save email",
+            "later": "Later",
+            "sent": "We sent an email to {{email}}. Follow the link in it to save your email, then sign in with VK again. If there's no email, check your spam folder.",
+            "pending": "Waiting for confirmation of {{email}} — the link in the email is valid until {{date}}."
         }
     },
     "referral": {

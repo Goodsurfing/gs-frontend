@@ -469,6 +469,15 @@
             "doneTitle": "Correo recuperado",
             "doneText": "Vuelves a iniciar sesión con {{email}}. Todas las sesiones están cerradas y la contraseña se restableció: crea una nueva con «¿Olvidaste tu contraseña?».",
             "doneButton": "Crear nueva contraseña"
+        },
+        "vkPrompt": {
+            "title": "Indica tu correo",
+            "text": "Entraste con VK y no tenemos tu correo, así que no recibes avisos cuando un anfitrión responde a tu solicitud ni nuevas oportunidades. Indica tu correo y te enviaremos un enlace de confirmación.",
+            "email": "Tu correo",
+            "submit": "Guardar correo",
+            "later": "Más tarde",
+            "sent": "Enviamos un correo a {{email}}. Sigue el enlace para guardar tu correo y luego vuelve a entrar con VK. Si no lo ves, revisa la carpeta de spam.",
+            "pending": "Esperamos la confirmación de {{email}}: el enlace del correo es válido hasta {{date}}."
         }
     },
     "referral": {
