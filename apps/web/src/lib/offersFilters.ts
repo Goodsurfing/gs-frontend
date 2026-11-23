@@ -61,9 +61,7 @@ export function parseOffersFilters(params: RawParams): OffersFilters {
         sort: get("sort") === "popularity" ? "popularity" : "novelty",
         // Прошедшие по умолчанию скрыты (решение владельца 06.11.2026: на них уже не откликнуться);
         // показать — ?past=1. Старые ссылки с past=0 означают то же, что и умолчание
-        // Прошедшие по умолчанию показаны (решение команды 18.11.2026: много точек на карте
-        // показывает востребованность; на самой вакансии — плашка «Даты прошли»). Скрыть — ?past=0
-        showPassed: get("past") !== "0",
+        showPassed: get("past") === "1",
         from: DATE.test(get("from") ?? "") ? get("from") : undefined,
         to: DATE.test(get("to") ?? "") ? get("to") : undefined,
         minDays: minDays && minDays > DURATION_MIN ? minDays : undefined,
@@ -82,7 +80,7 @@ export function offersFiltersQuery(filters: Partial<OffersFilters>): string {
     if (filters.categories?.length) query.set("category", filters.categories.join(","));
     if (filters.search) query.set("search", filters.search);
     if (filters.sort === "popularity") query.set("sort", "popularity");
-    if (filters.showPassed === false) query.set("past", "0");
+    if (filters.showPassed) query.set("past", "1");
     if (filters.from) query.set("from", filters.from);
     if (filters.to) query.set("to", filters.to);
     if (filters.minDays) query.set("minDays", String(filters.minDays));
