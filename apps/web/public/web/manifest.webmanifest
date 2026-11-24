@@ -1,15 +1,21 @@
 {
-    "name": "GoodSurfing",
+    "id": "/",
+    "name": "GoodSurfing — волонтёрские поездки",
     "short_name": "GoodSurfing",
     "description": "Волонтёрские поездки по России и миру",
-    "start_url": "/",
+    "start_url": "/?utm_source=pwa",
     "scope": "/",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#3dabf7",
     "lang": "ru",
+    "dir": "ltr",
+    "categories": ["travel", "social"],
     "icons": [
         { "src": "/web/icons/app/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-        { "src": "/web/icons/app/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+        { "src": "/web/icons/app/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+        { "src": "/web/icons/app/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+        { "src": "/web/icons/app/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+        { "src": "/web/icons/app/icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
     ]
 }

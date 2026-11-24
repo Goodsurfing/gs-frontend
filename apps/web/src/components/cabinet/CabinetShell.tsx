@@ -5,11 +5,13 @@ import { Header } from "@/components/layout/header/Header";
 import { nudgeLabels } from "@/components/layout/PublicShell";
 import { SocialRibbon } from "@/components/layout/SocialRibbon";
 import { MembershipNudge } from "@/components/membership/MembershipNudge";
+import { IosInstallHint } from "@/components/pwa/IosInstallHint";
 import { SessionProvider } from "@/components/session/SessionProvider";
 import type { Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { vkEmailPromptLabels } from "@/lib/emailChangeLabels";
 import { getHeaderBanner } from "@/lib/marketingBanner";
+import { iosInstallHintLabels } from "@/lib/pwaLabels";
 import { routes } from "@/lib/routes";
 
 import { type CabinetMenuItem, CabinetFrame } from "./CabinetFrame";
@@ -28,8 +30,8 @@ export async function CabinetShell({ locale, items, need, fitContent, children }
     fitContent?: boolean;
     children: ReactNode;
 }) {
-    const [t, tProfile, tVolunteer, tHost, banner] = await Promise.all([
-        getTranslator(locale), getTranslator(locale, "profile"), getTranslator(locale, "volunteer"), getTranslator(locale, "host"), getHeaderBanner(locale),
+    const [t, tProfile, tVolunteer, tHost, tPwa, banner] = await Promise.all([
+        getTranslator(locale), getTranslator(locale, "profile"), getTranslator(locale, "volunteer"), getTranslator(locale, "host"), getTranslator(locale, "pwa"), getHeaderBanner(locale),
     ]);
     return (
         <SessionProvider>
@@ -40,6 +42,8 @@ export async function CabinetShell({ locale, items, need, fitContent, children }
                 <CabinetFrame items={items} labels={{ toggle: t("main.welcome.header.menu") }} fitContent={fitContent}>
                     {/* Вошёл через VK без почты — просим указать (письма об ответах до него не доходят) */}
                     <VkEmailPrompt signInHref={routes.signIn(locale)} labels={vkEmailPromptLabels(t)} />
+                    {/* Safari на iPhone: установить сайт на экран «Домой» — иначе нет уведомлений */}
+                    <IosInstallHint appHref={routes.app(locale)} labels={iosInstallHintLabels(tPwa)} className="mb-5" />
                     {children}
                 </CabinetFrame>
             </div>
