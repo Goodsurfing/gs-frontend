@@ -5,6 +5,7 @@ import type { components } from "@goodsurfing/api";
 import type { Locale } from "@/i18n/config";
 import type { Translate } from "@/i18n/dictionary";
 
+import { isUuid } from "./entityId";
 import { serverApi } from "./api";
 import { categoryName } from "./categories";
 import type { CatalogOffer } from "./offersCatalog";
@@ -15,11 +16,10 @@ export type VolunteerProfile = components["schemas"]["ElementByIdResult"];
 
 export type VolunteerResult = { kind: "ok"; profile: VolunteerProfile } | { kind: "notFound" } | { kind: "error" };
 
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /** Публичный профиль пользователя (VolunteerPersonalPage старого фронта) */
 export async function getVolunteer(locale: Locale, id: string): Promise<VolunteerResult> {
-    if (!UUID.test(id)) return { kind: "notFound" };
+    if (!isUuid(id)) return { kind: "notFound" };
     try {
         const { data, response } = await serverApi(locale).GET("/api/v1/profile/{id}", {
             // Названия значков — на языке страницы

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { GalleryCarousel } from "@/components/gallery/GalleryCarousel";
+import { NotFoundStatus } from "@/components/errors/NotFoundStatus";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { InternationalBadge, MembershipBadges } from "@/components/membership/MembershipBadges";
 import { OfferOrganization } from "@/components/offer/OfferOrganization";
@@ -72,15 +73,16 @@ export default async function VolunteerPage({ params }: Props) {
         getTranslator(locale, "offer"),
     ]);
     const p = (key: string) => tProfile(`personal.${key}`);
-    const message = (text: string) => (
+    const message = (text: string, missing = false) => (
         <PublicShell locale={locale} headerVariant="static">
             <div className="mx-auto flex min-h-[80vh] w-full max-w-[1920px] flex-col px-[50px] pt-[92px] down-lg:px-5">
                 <p className="flex h-[80vh] items-center justify-center text-[14px] leading-[120%] font-medium down-lg:text-center">{text}</p>
             </div>
+            {missing && <NotFoundStatus />}
         </PublicShell>
     );
     failOnApiError(result, `волонтёр ${id}`);
-    if (result.kind === "notFound") return message(p("Произошла ошибка или пользователь не зарегистрирован как волонтёр"));
+    if (result.kind === "notFound") return message(p("Произошла ошибка или пользователь не зарегистрирован как волонтёр"), true);
     const profile = result.profile;
     // Заблокированный профиль: старый фронт показывал его только самому владельцу; страница общая — не показываем
     if (profile.isActive === false) return message(p("Профиль недоступен"));

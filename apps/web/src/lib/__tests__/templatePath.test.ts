@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { isMalformedPath, isTemplatePath } from "@/proxy";
+import { isMalformedPath, isMissingDynamicPath, isTemplatePath } from "@/proxy";
 
 describe("isTemplatePath — шаблон ссылки вместо id отдаётся 404", () => {
     it("шаблоны, в том числе закодированные", () => {
@@ -28,5 +28,23 @@ describe("isMalformedPath — испорченная кодировка в ад�
         expect(isMalformedPath("/offers/4706")).toBe(false);
         expect(isMalformedPath("/blog/%D0%B7%D0%B8%D0%BC%D0%B0")).toBe(false);
         expect(isMalformedPath("/")).toBe(false);
+    });
+});
+
+describe("isMissingDynamicPath — сбор и курс с id не того вида отдаются 404 (GS-302)", () => {
+    it("id не UUID", () => {
+        expect(isMissingDynamicPath("/fundraise/99999999")).toBe(true);
+        expect(isMissingDynamicPath("/en/fundraise/abc")).toBe(true);
+        expect(isMissingDynamicPath("/academy-course/99999999")).toBe(true);
+        expect(isMissingDynamicPath("/es/academy-course/99999999/")).toBe(true);
+    });
+
+    it("настоящие id и другие страницы не трогает", () => {
+        expect(isMissingDynamicPath("/fundraise/019fe737-96c4-77ef-9b2a-1154eff06fea")).toBe(false);
+        expect(isMissingDynamicPath("/academy-course/1f1076da-44be-61ee-91b8-67c068d01c6c")).toBe(false);
+        expect(isMissingDynamicPath("/fundraise")).toBe(false);
+        expect(isMissingDynamicPath("/fundraise/welcome/019fe737-96c4-77ef-9b2a-1154eff06fea")).toBe(false);
+        expect(isMissingDynamicPath("/offers/99999999")).toBe(false);
+        expect(isMissingDynamicPath("/academy-main")).toBe(false);
     });
 });
