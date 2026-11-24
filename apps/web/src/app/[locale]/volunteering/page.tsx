@@ -111,7 +111,7 @@ export default async function VolunteeringHubPage({ params }: { params: Promise<
 
                 {[{ id: "hub-regions", title: copy.regions, items: regions }].map((group) => group.items.length > 0 && (
                     <section key={group.id} className="mt-12" aria-labelledby={group.id}>
-                        <h2 id={group.id} className="text-[1.5rem] font-bold text-ink">{group.title}</h2>
+                        <h2 id={group.id} className="scroll-mt-28 text-[1.5rem] font-bold text-ink">{group.title}</h2>
                         <ul className="m-0 mt-4 grid list-none grid-cols-3 gap-4 p-0 down-lg:grid-cols-2 down-sm:grid-cols-1">
                             {group.items.map((item) => (
                                 <li key={item.slug}>
