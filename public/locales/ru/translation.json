@@ -64,6 +64,7 @@
     "main": {
         "welcome": {
             "header": {
+                "where-to-go": "Куда поехать",
                 "how-it-work": "Как это работает?",
                 "community": {
                     "title": "Сообщество",

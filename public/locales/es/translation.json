@@ -64,6 +64,7 @@
     "main": {
         "welcome": {
             "header": {
+                "where-to-go": "Adónde ir",
                 "how-it-work": "O elija un tipo de actividad?",
                 "community": {
                     "title": "Comunidad",
