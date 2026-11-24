@@ -49,9 +49,10 @@ jobs:
             if gh api "repos/$REPO/git/ref/tags/$ver" >/dev/null 2>&1; then
               echo "#$num: тег $ver уже есть — пропуск"; continue
             fi
-            # Прогоны коммита от pull_request и push (workflow_run — E2E и этот же workflow — не в счёт)
+            # Прогоны коммита от pull_request и push; workflow_run (E2E) и сам «Release on green»
+            # (он тоже запускается по pull_request и всегда «in_progress») — не в счёт
             runs=$(gh run list -R "$REPO" --commit "$sha" -L 100 --json name,event,status,conclusion \
-              -q '.[] | select(.event == "pull_request" or .event == "push") | "\(.name)\t\(.status)\t\(.conclusion)"')
+              -q '.[] | select((.event == "pull_request" or .event == "push") and .name != "Release on green") | "\(.name)\t\(.status)\t\(.conclusion)"')
             echo "#$num $ver $sha"; echo "$runs"
             if grep -qvP '\tcompleted\t' <<<"$runs"; then echo "#$num: проверки ещё идут — ждём"; continue; fi
             if grep -P '\tcompleted\t' <<<"$runs" | grep -qvP '\t(success|skipped|neutral)$'; then
