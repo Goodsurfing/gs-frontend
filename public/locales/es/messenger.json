@@ -96,5 +96,9 @@
         "network": "No se pudo enviar: sin conexión. Revisa internet y pulsa de nuevo; todo lo que escribiste se ha guardado.",
         "loadError": "No se pudo cargar la vacante. Revisa internet e inténtalo de nuevo.",
         "retry": "Reintentar"
-    }
+    },
+    "Отклонить заявку? Волонтёр получит уведомление": "¿Rechazar la solicitud? El voluntario recibirá una notificación",
+    "Отмена": "Cancelar",
+    "Изменить решение": "Cambiar decisión",
+    "Измените решение по заявке — волонтёр получит уведомление": "Cambia tu decisión sobre la solicitud: el voluntario recibirá una notificación"
 }

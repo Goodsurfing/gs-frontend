@@ -96,5 +96,9 @@
         "network": "Could not send: no connection. Check your internet and tap again — everything you entered is saved.",
         "loadError": "Could not load the opportunity. Check your internet and try again.",
         "retry": "Try again"
-    }
+    },
+    "Отклонить заявку? Волонтёр получит уведомление": "Decline the application? The volunteer will be notified",
+    "Отмена": "Cancel",
+    "Изменить решение": "Change decision",
+    "Измените решение по заявке — волонтёр получит уведомление": "Change your decision on the application — the volunteer will be notified"
 }
