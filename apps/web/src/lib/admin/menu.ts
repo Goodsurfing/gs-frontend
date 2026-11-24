@@ -36,11 +36,24 @@ export const ADMIN_MENU: AdminMenuGroup[] = [
     { title: "Лидер", items: [{ href: "/admin/ambassadors", label: "Амбассадоры" }] },
     { title: "О Гудсёрфинге", items: [{ href: "/admin/about-project", label: "О проекте" }, { href: "/admin/our-team", label: "Наша команда" }] },
     { title: "Обратная связь", items: [{ href: "/admin/feedback", label: "Обращения" }] },
+    {
+        title: "Клуб тестировщиков",
+        items: [
+            { href: "/admin/club", label: "Сводка клуба" },
+            { href: "/admin/club/participants", label: "Участники" },
+            { href: "/admin/club/completions", label: "Сдачи заданий" },
+            { href: "/admin/club/reports", label: "Сообщения о проблемах" },
+            { href: "/admin/club/tasks", label: "Задания" },
+        ],
+    },
     { title: "Система", items: [{ href: "/admin/system-admin", label: "Администраторы" }, { href: "/admin/banner-marketing", label: "Реклама" }] },
 ];
 
-/** Пункт меню активен на своей странице и на вложенных (/admin/users/:id); «Главная» — только на /admin */
+/** Пункты, у которых вложенные адреса — свои пункты меню: активны только на своей странице */
+const EXACT_ONLY = new Set(["/admin", "/admin/club"]);
+
+/** Пункт меню активен на своей странице и на вложенных (/admin/users/:id); «Главная» и «Сводка клуба» — только на своей */
 export const isMenuItemActive = (href: string, pathname: string) => {
     const path = pathname.replace(/^\/(ru|en|es)(?=\/|$)/, "") || "/";
-    return href === "/admin" ? path === "/admin" : path === href || path.startsWith(`${href}/`);
+    return EXACT_ONLY.has(href) ? path === href : path === href || path.startsWith(`${href}/`);
 };
