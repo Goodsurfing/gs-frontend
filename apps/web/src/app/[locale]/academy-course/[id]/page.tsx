@@ -24,9 +24,10 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale, id } = await params;
     if (!isLocale(locale)) return {};
-    const [t, course] = await Promise.all([getTranslator(locale, "academy"), getCourse(locale, id)]);
+    const [t, result] = await Promise.all([getTranslator(locale, "academy"), getCourse(locale, id)]);
     const path = routes.academyCourse(locale, id);
-    if (!course) return pageMetadata({ locale, path, title: t("seo.course.title"), description: t("seo.course.description"), noindex: true });
+    if (result.kind !== "ok") return pageMetadata({ locale, path, title: t("seo.course.title"), description: t("seo.course.description"), noindex: true });
+    const { course } = result;
     return {
         ...pageMetadata({
             locale,
@@ -54,20 +55,22 @@ export default async function AcademyCoursePage({ params, searchParams }: Props)
     const { locale, id } = await params;
     if (!isLocale(locale)) notFound();
     const { page } = listParams(await searchParams);
-    const [t, tCommon, course, lessons] = await Promise.all([
+    const [t, tCommon, result, lessons] = await Promise.all([
         getTranslator(locale, "academy"),
         getTranslator(locale),
         getCourse(locale, id),
         getLessons(locale, id, page),
     ]);
 
-    if (!course) {
+    if (result.kind !== "ok") {
+        // Код 404 при id не того вида ставит proxy.ts (isMissingDynamicPath): страница динамическая, NotFoundStatus здесь не сработает
         return (
             <PublicShell locale={locale} headerVariant="static">
                 <p>{t("Курс не был найден")}</p>
             </PublicShell>
         );
     }
+    const { course } = result;
 
     const pages = Math.ceil((lessons?.total ?? 0) / ACADEMY_PAGE_SIZE);
     const base = routes.academyCourse(locale, id);

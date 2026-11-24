@@ -2,12 +2,14 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 type Ym = (id: number, method: string, goal: string, params?: unknown, callback?: () => void) => void;
 
-const load = async (counter: string, ym?: Ym) => {
+const load = async (counter: string, ym?: Ym, counterLoaded = true) => {
     vi.resetModules();
     vi.stubEnv("NEXT_PUBLIC_YANDEX_METRIKA_ID", counter);
     const store = new Map<string, string>();
     vi.stubGlobal("window", {
         ym,
+        // tag.js создаёт yaCounter… после загрузки; до неё window.ym — заглушка-очередь
+        ...(ym && counterLoaded ? { [`yaCounter${counter}`]: {} } : {}),
         setTimeout: (fn: () => void, ms: number) => setTimeout(fn, ms),
         setInterval: (fn: () => void, ms: number) => setInterval(fn, ms),
         clearInterval: (id: ReturnType<typeof setInterval>) => clearInterval(id),
@@ -99,6 +101,37 @@ describe("цели до загрузки счётчика", () => {
         expect(ym).toHaveBeenCalledWith(47422282, "reachGoal", "signup", { method: "vk" }, expect.any(Function));
         expect(next).toHaveBeenCalledTimes(1);
         vi.advanceTimersByTime(5000);
+        expect(next).toHaveBeenCalledTimes(1);
+    });
+
+    it("заглушка ym есть, счётчик ещё грузится — ждёт его, а не секунду (VK, GS-301)", async () => {
+        vi.useFakeTimers();
+        const queued: Array<() => void> = [];
+        const stub = vi.fn<Ym>((_id, _m, _g, _p, callback) => {
+            if (callback) queued.push(callback);
+        });
+        const mod = await load("47422282", stub, false);
+        const next = vi.fn();
+        mod.reachGoalThen("signup", { method: "vk" }, next);
+        expect(stub).toHaveBeenCalledWith(47422282, "reachGoal", "signup", { method: "vk" }, expect.any(Function));
+        vi.advanceTimersByTime(1500);
+        expect(next).not.toHaveBeenCalled();
+
+        // скрипт загрузился и отправил цель из очереди
+        queued.forEach((callback) => callback());
+        expect(next).toHaveBeenCalledTimes(1);
+        vi.advanceTimersByTime(5000);
+        expect(next).toHaveBeenCalledTimes(1);
+    });
+
+    it("заглушка ym есть, скрипт заблокирован — переход через 2,5 с", async () => {
+        vi.useFakeTimers();
+        const { reachGoalThen } = await load("47422282", vi.fn(), false);
+        const next = vi.fn();
+        reachGoalThen("signup", { method: "vk" }, next);
+        vi.advanceTimersByTime(2499);
+        expect(next).not.toHaveBeenCalled();
+        vi.advanceTimersByTime(1);
         expect(next).toHaveBeenCalledTimes(1);
     });
 
