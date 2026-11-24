@@ -1,0 +1,73 @@
+name: Release on green
+# Релиз без ожидания в сессии (24.11.2026). Релизный PR develop → master с меткой «релиз»
+# и версией в заголовке («Релиз vX.Y.Z: …») мёржится сам, когда все проверки коммита
+# зелёные; затем ставится тег vX.Y.Z и запускается выкатка на прод. Метку ставят только
+# с согласия владельца — прод по-прежнему = master по его «да».
+#
+# Тег, созданный GITHUB_TOKEN, не запускает «push: tags» — поэтому выкатка запускается
+# через workflow_dispatch на тег (это GITHUB_TOKEN может). workflow_run берёт этот файл
+# из master — правки держать одинаковыми в master и develop.
+on:
+  pull_request:
+    types: [labeled]
+    branches: [master]
+  workflow_run:
+    workflows: ['Lint', 'Web (новый фронт)', 'Deploy web (новый фронт) to staging']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: release-on-green
+  cancel-in-progress: false
+
+env:
+  # Проверки, без успешного прогона которых релиз не мёржится (защита от мёржа до старта CI)
+  REQUIRED: 'Lint'
+  DEPLOY_WORKFLOW: 'Deploy web (новый фронт) to prod'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Смёржить зелёный релизный PR, поставить тег, выкатить
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          prs=$(gh pr list -R "$REPO" --base master --head develop --label 'релиз' --state open \
+            --json number,headRefOid,title -q '.[] | "\(.number)\t\(.headRefOid)\t\(.title)"')
+          if [ -z "$prs" ]; then echo "Релизных PR с меткой «релиз» нет"; exit 0; fi
+          while IFS=$'\t' read -r num sha title; do
+            ver=$(grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' <<<"$title" | head -1 || true)
+            if [ -z "$ver" ]; then echo "#$num: в заголовке нет версии vX.Y.Z — пропуск"; continue; fi
+            if gh api "repos/$REPO/git/ref/tags/$ver" >/dev/null 2>&1; then
+              echo "#$num: тег $ver уже есть — пропуск"; continue
+            fi
+            # Прогоны коммита от pull_request и push (workflow_run — E2E и этот же workflow — не в счёт)
+            runs=$(gh run list -R "$REPO" --commit "$sha" -L 100 --json name,event,status,conclusion \
+              -q '.[] | select(.event == "pull_request" or .event == "push") | "\(.name)\t\(.status)\t\(.conclusion)"')
+            echo "#$num $ver $sha"; echo "$runs"
+            if grep -qvP '\tcompleted\t' <<<"$runs"; then echo "#$num: проверки ещё идут — ждём"; continue; fi
+            if grep -P '\tcompleted\t' <<<"$runs" | grep -qvP '\t(success|skipped|neutral)$'; then
+              echo "#$num: есть упавшие проверки — релиз не мёржим"; continue
+            fi
+            missing=""
+            IFS=',' read -ra req <<<"$REQUIRED"
+            for r in "${req[@]}"; do
+              grep -qP "^\Q$r\E\tcompleted\tsuccess$" <<<"$runs" || missing="$missing $r"
+            done
+            if [ -n "$missing" ]; then echo "#$num: нет успешного прогона:$missing — ждём"; continue; fi
+            gh pr merge "$num" -R "$REPO" --merge
+            master_sha=$(gh api "repos/$REPO/commits/master" -q .sha)
+            gh api "repos/$REPO/git/refs" -f ref="refs/tags/$ver" -f sha="$master_sha" >/dev/null
+            gh workflow run "$DEPLOY_WORKFLOW" -R "$REPO" --ref "$ver" -f confirm=deploy
+            gh pr comment "$num" -R "$REPO" --body "Все проверки зелёные: смёржено, тег \`$ver\` на \`${master_sha:0:7}\`, запущена выкатка «$DEPLOY_WORKFLOW»."
+            echo "#$num: релиз $ver запущен"
+          done <<<"$prs"
+
