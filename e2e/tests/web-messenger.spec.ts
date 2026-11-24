@@ -117,6 +117,79 @@ test.describe('Новый фронт: сообщения', () => {
         }
     });
 
+    /**
+     * Кнопки решения по заявке (обращение 24.11.2026: нажали «Отклонить» вместо «Принять»).
+     * Первая переписка с заявкой подменяется новой заявкой, смена статуса перехватывается —
+     * на стейдже ничего не меняется.
+     */
+    const decisionChat = async (page: Page, width: number) => {
+        await page.setViewportSize({ width, height: 844 });
+        let chatId: number | undefined;
+        // Статус подменённой заявки: при перезапросе списка — уже «решённый» перехваченным PATCH
+        let status = 'new';
+        await page.route('**/api/v1/personal/chats**', async (route) => {
+            const response = await route.fetch();
+            const chats = await response.json();
+            if (Array.isArray(chats)) {
+                const chat = chats.find((item: { id?: number; application?: unknown }) => chatId === undefined ? !!item.application : item.id === chatId);
+                if (chat) {
+                    chatId = chat.id;
+                    chat.applicationStatus = status;
+                    chat.application = { ...chat.application, status };
+                }
+            }
+            await route.fulfill({ response, json: chats });
+        });
+        const patches: unknown[] = [];
+        await page.route('**/api/v1/application_forms/*/status', async (route) => {
+            if (route.request().method() !== 'PATCH') return route.continue();
+            patches.push(route.request().postDataJSON());
+            status = route.request().postDataJSON().status;
+            await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(route.request().postDataJSON()) });
+        });
+        await page.goto('/messenger');
+        await isNewFrontend(page);
+        await expect.poll(() => chatId, { timeout: 15_000 }).toBeDefined();
+        await page.locator(`a[href="/messenger/${chatId}"]`).first().click();
+        await expect(page).toHaveURL(new RegExp(`/messenger/${chatId}$`));
+        return patches;
+    };
+
+    for (const width of [390, 1280]) {
+        test(`организатор (${width}): «Принять» первой, отказ с подтверждением, «Изменить решение»`, async ({ page }, testInfo) => {
+            test.skip(testInfo.project.name !== 'host', 'у host@test.com есть заявки');
+            const patches = await decisionChat(page, width);
+            const bar = page.getByTestId('decision-buttons');
+            const accept = bar.getByRole('button', { name: 'Принять' });
+            const decline = bar.getByRole('button', { name: 'Отклонить' });
+            await expect(accept).toBeVisible();
+            await expect(accept).toHaveAttribute('translate', 'no');
+            // «Принять» — первой: левее или выше «Отклонить»
+            const [a, d] = [await accept.boundingBox(), await decline.boundingBox()];
+            expect(a!.x < d!.x || a!.y < d!.y).toBe(true);
+
+            // Отказ — только после подтверждения; «Отмена» ничего не меняет
+            await decline.click();
+            const dialog = page.getByRole('dialog', { name: 'Отклонить заявку? Волонтёр получит уведомление' });
+            await expect(dialog).toBeVisible();
+            await dialog.getByRole('button', { name: 'Отмена' }).click();
+            await expect(dialog).toBeHidden();
+            expect(patches).toEqual([]);
+            await decline.click();
+            await dialog.getByRole('button', { name: 'Отклонить' }).click();
+            await expect.poll(() => patches).toEqual([{ status: 'canceled' }]);
+            await expect(bar).toBeHidden();
+
+            // Решение можно изменить: «Изменить решение» → «Принять» (сразу, без подтверждения)
+            await page.getByRole('button', { name: 'Изменить решение' }).click();
+            await expect(bar.getByRole('button', { name: 'Отклонить' })).toBeDisabled();
+            await bar.getByRole('button', { name: 'Принять' }).click();
+            await expect.poll(() => patches).toEqual([{ status: 'canceled' }, { status: 'accepted' }]);
+            await expect(bar).toBeHidden();
+            await expect(page.getByRole('button', { name: 'Изменить решение' })).toBeVisible();
+        });
+    }
+
     test('гостя уводит на вход', async ({ browser }) => {
         const context = await browser.newContext({ storageState: { cookies: [], origins: [] } });
         await enableNewFrontend(context);

@@ -7,16 +7,20 @@ import * as Dialog from "@radix-ui/react-dialog";
  * size="medium" — вариант кабинета организатора (кнопки MEDIUM, «Отмена» серой рамкой, текст 16px;
  * уже 992 px кнопки во всю ширину).
  */
-export function ConfirmDialog({ open, text, confirm, cancel, busy = false, size, onConfirm, onClose }: {
+export function ConfirmDialog({ open, text, confirm, cancel, busy = false, size, noTranslate = false, onConfirm, onClose }: {
     open: boolean;
     text: string;
     confirm: string;
     cancel: string;
     busy?: boolean;
     size?: "medium";
+    /** Подписи кнопок не отдавать переводчику браузера (кнопки решения по заявке) */
+    noTranslate?: boolean;
     onConfirm: () => void;
     onClose: () => void;
 }) {
+    const translate = noTranslate ? "no" : undefined;
+    const notranslate = noTranslate ? " notranslate" : "";
     if (size === "medium") {
         const button = "cursor-pointer rounded-[10px] border px-[100px] py-3 text-label transition-all duration-300 disabled:opacity-70 down-lg:w-full down-lg:px-[15px]";
         return (
@@ -26,8 +30,8 @@ export function ConfirmDialog({ open, text, confirm, cancel, busy = false, size,
                         <Dialog.Content aria-describedby={undefined} className="flex max-w-[600px] flex-col justify-center gap-[30px] self-center rounded-[10px] bg-white px-4 py-[25px]">
                             <Dialog.Title className="text-center text-[16px] font-normal">{text}</Dialog.Title>
                             <div className="flex flex-wrap justify-center gap-2.5">
-                                <button type="button" disabled={busy} onClick={onConfirm} className={`${button} border-primary bg-primary text-white hover:bg-white hover:text-primary`}>{confirm}</button>
-                                <button type="button" disabled={busy} onClick={onClose} className={`${button} border-caption text-caption hover:bg-caption hover:text-white`}>{cancel}</button>
+                                <button type="button" translate={translate} disabled={busy} onClick={onConfirm} className={`${button}${notranslate} border-primary bg-primary text-white hover:bg-white hover:text-primary`}>{confirm}</button>
+                                <button type="button" translate={translate} disabled={busy} onClick={onClose} className={`${button}${notranslate} border-caption text-caption hover:bg-caption hover:text-white`}>{cancel}</button>
                             </div>
                         </Dialog.Content>
                     </Dialog.Overlay>
@@ -42,8 +46,8 @@ export function ConfirmDialog({ open, text, confirm, cancel, busy = false, size,
                     <Dialog.Content aria-describedby={undefined} className="flex max-w-[600px] flex-col justify-center gap-[30px] rounded-[10px] bg-white px-4 py-[25px]">
                         <Dialog.Title className="text-center text-[18px] font-medium">{text}</Dialog.Title>
                         <div className="flex justify-center gap-4">
-                            <button type="button" disabled={busy} onClick={onConfirm} className="cursor-pointer rounded-[10px] border border-primary bg-primary px-[50px] py-2.5 text-[16px] text-white transition-all hover:bg-white hover:text-primary disabled:opacity-70">{confirm}</button>
-                            <button type="button" disabled={busy} onClick={onClose} className="cursor-pointer rounded-[10px] border border-primary px-[50px] py-2.5 text-[16px] text-primary transition-all hover:bg-primary hover:text-white disabled:opacity-70">{cancel}</button>
+                            <button type="button" translate={translate} disabled={busy} onClick={onConfirm} className={`cursor-pointer rounded-[10px] border border-primary bg-primary px-[50px] py-2.5 text-[16px] text-white transition-all hover:bg-white hover:text-primary disabled:opacity-70${notranslate}`}>{confirm}</button>
+                            <button type="button" translate={translate} disabled={busy} onClick={onClose} className={`cursor-pointer rounded-[10px] border border-primary px-[50px] py-2.5 text-[16px] text-primary transition-all hover:bg-primary hover:text-white disabled:opacity-70${notranslate}`}>{cancel}</button>
                         </div>
                     </Dialog.Content>
                 </Dialog.Overlay>

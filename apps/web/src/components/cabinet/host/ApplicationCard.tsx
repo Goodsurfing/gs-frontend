@@ -87,10 +87,10 @@ export function ApplicationCard({ application, routes, onStatus, onReview, label
             </div>
             <div className="mt-2.5 flex gap-2.5 max-[500px]:flex-col">
                 {(status === "new" || status === "canceled") && (
-                    <button type="button" onClick={() => onStatus("accepted")} className={`${button} border-cta bg-cta text-white hover:bg-white hover:text-cta`}>{labels.accept}</button>
+                    <button type="button" translate="no" onClick={() => onStatus("accepted")} className={`${button} notranslate border-cta bg-cta text-white hover:bg-white hover:text-cta`}>{labels.accept}</button>
                 )}
                 {(status === "new" || status === "accepted") && (
-                    <button type="button" onClick={() => onStatus("canceled")} className={`${button} border-error bg-error text-white hover:bg-white hover:text-error`}>{labels.reject}</button>
+                    <button type="button" translate="no" onClick={() => onStatus("canceled")} className={`${button} notranslate border-error bg-error text-white hover:bg-white hover:text-error`}>{labels.reject}</button>
                 )}
             </div>
         </div>

@@ -79,5 +79,9 @@
         "new": "El anfitrión es nuevo en Goodsurfing. La respuesta suele llegar en una semana.",
         "close": "Si no hay respuesta en tres semanas, la solicitud se cerrará sola y te enviaremos oportunidades similares."
     },
-    "Этот браузер не умеет получать уведомления. Откройте сайт в Chrome, Яндекс Браузере, Safari или Firefox — на iPhone добавьте сайт на экран «Домой»": "Este navegador no puede recibir notificaciones. Abre el sitio en Chrome, Yandex Browser, Safari o Firefox; en iPhone, añade el sitio a la pantalla de inicio"
+    "Этот браузер не умеет получать уведомления. Откройте сайт в Chrome, Яндекс Браузере, Safari или Firefox — на iPhone добавьте сайт на экран «Домой»": "Este navegador no puede recibir notificaciones. Abre el sitio en Chrome, Yandex Browser, Safari o Firefox; en iPhone, añade el sitio a la pantalla de inicio",
+    "Отклонить заявку? Волонтёр получит уведомление": "¿Rechazar la solicitud? El voluntario recibirá una notificación",
+    "Отмена": "Cancelar",
+    "Изменить решение": "Cambiar decisión",
+    "Измените решение по заявке — волонтёр получит уведомление": "Cambia tu decisión sobre la solicitud: el voluntario recibirá una notificación"
 }
