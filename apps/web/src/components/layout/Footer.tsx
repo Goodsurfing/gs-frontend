@@ -25,8 +25,8 @@ const copyrightLinkClass = "text-[14px] leading-[171%] font-medium text-[#82949F
 export function Footer({ locale, t }: { locale: Locale; t: Translate }) {
     const h = "main.welcome.header";
     type FooterSection = { title: string; links: FooterLink[] };
-    // Колонка может состоять из нескольких разделов: у «Для организаторов» одна ссылка,
-    // под ней — «Куда поехать» (посадочные страницы, решение владельца 24.11.2026: в подвале, не в шапке)
+    // Колонка может состоять из нескольких разделов. «Куда поехать» — все посадочные страницы своей
+    // колонкой, «Для организаторов» — под «Поддержать» (решение владельца 24.11.2026; в шапку не выносим)
     const columns: FooterSection[][] = [
         [
             {
@@ -58,13 +58,7 @@ export function Footer({ locale, t }: { locale: Locale; t: Translate }) {
                 ],
             },
         ],
-        [
-            {
-                title: t(`${h}.for-organizers.title`),
-                links: [{ label: t(`${h}.for-organizers.become-a-host`), href: routes.becomeHost(locale) }],
-            },
-            { title: t(`${h}.where-to-go`), links: landingMenuLinks(locale) },
-        ],
+        [{ title: t(`${h}.where-to-go`), links: landingMenuLinks(locale) }],
         [
             {
                 title: t(`${h}.donation.title`),
@@ -74,6 +68,10 @@ export function Footer({ locale, t }: { locale: Locale; t: Translate }) {
                     { label: t(`${h}.donation.public-offer`), href: PUBLIC_OFFER_PDF, external: true },
                     { label: t(`${h}.donation.payment-security-policy`), href: routes.paymentSecurityPolicy(locale) },
                 ],
+            },
+            {
+                title: t(`${h}.for-organizers.title`),
+                links: [{ label: t(`${h}.for-organizers.become-a-host`), href: routes.becomeHost(locale) }],
             },
         ],
     ];
