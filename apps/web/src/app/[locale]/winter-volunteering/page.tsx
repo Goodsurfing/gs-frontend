@@ -11,6 +11,7 @@ import { routes } from "@/lib/routes";
 import { pageMetadata, siteUrl } from "@/lib/seo";
 import { jsonLdGraph } from "@/lib/structuredData";
 import { WINTER, winterSeason } from "@/lib/winterLanding";
+import { OfferGrid } from "@/components/landing/OfferGrid";
 
 // Как посадочные направлений: список обновляется раз в час
 export const revalidate = 3600;
@@ -56,13 +57,13 @@ export default async function WinterVolunteeringPage({ params }: { params: Promi
         },
     ]);
     const grid = (offers: OfferCardData[]) => (
-        <ul className="m-0 mt-6 grid list-none grid-cols-3 gap-5 p-0 down-lg:grid-cols-2 down-sm:grid-cols-1">
+        <OfferGrid count={offers.length} moreLabel="Показать ещё ({n})" className="mt-6">
             {offers.map((offer) => (
                 <li key={offer.id} className="flex [&>a]:w-full">
                     <OfferCard offer={offer} href={routes.offer(locale, offer.id)} category={categoryName(offer.categories[0]?.name, t)} labels={offerCardLabels(t)} />
                 </li>
             ))}
-        </ul>
+        </OfferGrid>
     );
 
     return (

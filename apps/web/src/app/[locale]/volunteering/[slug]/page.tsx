@@ -6,12 +6,15 @@ import { OfferCard, offerCardLabels } from "@/components/offers/OfferCard";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { categoryName } from "@/lib/categories";
-import { getOpenOffersOfCategory } from "@/lib/offers";
+import { getOpenOffers, getOpenOffersOfCategory } from "@/lib/offers";
+import { offersFiltersQuery } from "@/lib/offersFilters";
 import { specialLandingLinks } from "@/lib/specialLandings";
 import { routes } from "@/lib/routes";
 import { pageMetadata, siteUrl } from "@/lib/seo";
 import { jsonLdGraph } from "@/lib/structuredData";
+import { TOPIC_LANDINGS, topicBySlug } from "@/lib/topicLandings";
 import { genericLanding, landingBySlug, VOLUNTEERING_LANDINGS } from "@/lib/volunteeringLandings";
+import { OfferGrid } from "@/components/landing/OfferGrid";
 
 // Список вакансий обновляется раз в час: страница — для поиска, не для живого каталога
 export const revalidate = 3600;
@@ -24,13 +27,32 @@ export function generateStaticParams() {
     return [];
 }
 
-async function texts(locale: Locale, slug: string) {
+type Resolved = {
+    /** Тема или регион (только ru) — подписи без слова «направление» */
+    topic?: boolean;
+    copy: { title: string; h1: string; description: string; intro: string[]; faq: { q: string; a: string }[] };
+    /** Выборка вакансий и ссылка «Все на карте» */
+    query: { categoryIds?: number[]; search?: string };
+};
+
+async function texts(locale: Locale, slug: string): Promise<Resolved | null> {
+    // Темы и регионы (экспедиции, Байкал…) — только по-русски
+    const topic = topicBySlug(slug);
+    if (topic) return locale === "ru" ? { copy: topic, query: topic.query, topic: true } : null;
     const landing = landingBySlug(slug);
     if (!landing) return null;
-    if (locale === "ru") return { landing, copy: landing.ru };
+    const query = { categoryIds: [landing.categoryId] };
+    if (locale === "ru") return { copy: landing.ru, query };
     const [t, tCommon] = await Promise.all([getTranslator(locale, "main"), getTranslator(locale)]);
     const name = categoryName(categoryRuName(landing.categoryId), tCommon) ?? landing.ru.h1;
-    return { landing, copy: genericLanding(name, t) };
+    return { copy: genericLanding(name, t), query };
+}
+
+/** Карта с той же выборкой, что на странице */
+function mapHref(locale: Locale, query: Resolved["query"]): string {
+    if (query.categoryIds?.length === 1 && !query.search) return routes.offersMapCategory(locale, query.categoryIds[0]!);
+    const filters = offersFiltersQuery({ categories: query.categoryIds ?? [], search: query.search ?? "" });
+    return filters ? `${routes.offersMap(locale)}?${filters}` : routes.offersMap(locale);
 }
 
 /** Название категории по-русски — ключ словаря категорий (как в API) */
@@ -57,13 +79,16 @@ export default async function VolunteeringLandingPage({ params }: Props) {
     if (!isLocale(locale)) notFound();
     const result = await texts(locale, slug);
     if (!result) notFound();
-    const { landing, copy } = result;
+    const { copy, query } = result;
     const [tCommon, tMain, { offers, total }] = await Promise.all([
         getTranslator(locale),
         getTranslator(locale, "main"),
-        getOpenOffersOfCategory(locale, landing.categoryId),
+        query.categoryIds?.length === 1 && !query.search
+            ? getOpenOffersOfCategory(locale, query.categoryIds[0]!)
+            : getOpenOffers(locale, { ...query, limit: 24, what: `вакансии посадочной страницы ${slug}` }),
     ]);
     const others = VOLUNTEERING_LANDINGS.filter((item) => item.slug !== slug);
+    const topics = locale === "ru" ? TOPIC_LANDINGS.filter((item) => item.slug !== slug) : [];
     const structuredData = jsonLdGraph([
         {
             "@context": "https://schema.org",
@@ -89,20 +114,20 @@ export default async function VolunteeringLandingPage({ params }: Props) {
                     {copy.intro.map((text) => <p key={text}>{text}</p>)}
                 </div>
                 <div className="mt-6 flex flex-wrap items-center gap-4">
-                    <a href={routes.offersMapCategory(locale, landing.categoryId)} className="rounded-[10px] bg-cta px-8 py-3 text-[16px] text-white no-underline transition-colors hover:bg-cta-hover">
-                        {tMain("landing.allOnMap")}
+                    <a href={mapHref(locale, query)} className="rounded-[10px] bg-cta px-8 py-3 text-[16px] text-white no-underline transition-colors hover:bg-cta-hover">
+                        {result.topic ? "Все эти вакансии на карте" : tMain("landing.allOnMap")}
                     </a>
                     {total > 0 && <span className="text-[14px] text-caption">{tMain("landing.openCount").replace("{n}", String(total))}</span>}
                 </div>
 
                 {offers.length > 0 ? (
-                    <ul className="m-0 mt-10 grid list-none grid-cols-3 gap-5 p-0 down-lg:grid-cols-2 down-sm:grid-cols-1">
+                    <OfferGrid count={offers.length} moreLabel={tMain("landing.showMore")} className="mt-10">
                         {offers.map((offer) => (
                             <li key={offer.id} className="flex [&>a]:w-full">
                                 <OfferCard offer={offer} href={routes.offer(locale, offer.id)} category={categoryName(offer.categories[0]?.name, tCommon)} labels={offerCardLabels(tCommon)} />
                             </li>
                         ))}
-                    </ul>
+                    </OfferGrid>
                 ) : (
                     <p className="mt-10 text-[16px] text-caption">{tMain("landing.empty")}</p>
                 )}
@@ -126,6 +151,13 @@ export default async function VolunteeringLandingPage({ params }: Props) {
                             <li key={item.slug}>
                                 <a href={routes.volunteering(locale, item.slug)} className="block rounded-full border border-accent-bg px-4 py-2 text-[14px] text-ink-secondary no-underline transition-colors hover:border-primary hover:text-primary">
                                     {locale === "ru" ? item.ru.h1 : categoryName(categoryRuName(item.categoryId), tCommon) ?? item.ru.h1}
+                                </a>
+                            </li>
+                        ))}
+                        {topics.map((item) => (
+                            <li key={item.slug}>
+                                <a href={routes.volunteering(locale, item.slug)} className="block rounded-full border border-accent-bg px-4 py-2 text-[14px] text-ink-secondary no-underline transition-colors hover:border-primary hover:text-primary">
+                                    {item.h1}
                                 </a>
                             </li>
                         ))}

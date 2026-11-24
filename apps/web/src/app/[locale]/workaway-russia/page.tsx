@@ -11,6 +11,7 @@ import { routes } from "@/lib/routes";
 import { pageMetadata, siteUrl } from "@/lib/seo";
 import { jsonLdGraph } from "@/lib/structuredData";
 import { WORKAWAY } from "@/lib/workawayLanding";
+import { OfferGrid } from "@/components/landing/OfferGrid";
 
 /** Направление «Международные» — проекты за рубежом; на странице про Россию их не показываем */
 const INTERNATIONAL_CATEGORY = 14;
@@ -99,13 +100,13 @@ export default async function WorkawayRussiaPage({ params }: { params: Promise<{
                 <section className="mt-12" aria-labelledby="workaway-offers">
                     <h2 id="workaway-offers" className="text-[1.5rem] font-bold text-ink">Куда можно поехать сейчас</h2>
                     {offers.length > 0 ? (
-                        <ul className="m-0 mt-6 grid list-none grid-cols-3 gap-5 p-0 down-lg:grid-cols-2 down-sm:grid-cols-1">
+                        <OfferGrid count={offers.length} moreLabel="Показать ещё ({n})" className="mt-6">
                             {offers.map((offer) => (
                                 <li key={offer.id} className="flex [&>a]:w-full">
                                     <OfferCard offer={offer} href={routes.offer(locale, offer.id)} category={categoryName(offer.categories[0]?.name, t)} labels={offerCardLabels(t)} />
                                 </li>
                             ))}
-                        </ul>
+                        </OfferGrid>
                     ) : (
                         <p className="mt-6 text-[16px] text-caption">Сейчас открытых вакансий нет — загляните чуть позже.</p>
                     )}

@@ -1,6 +1,7 @@
 import { NavAnchor } from "@/components/ui/NavAnchor";
 import type { Locale } from "@/i18n/config";
 import type { Translate } from "@/i18n/dictionary";
+import { landingMenuLinks } from "@/lib/landingMenu";
 import { EXPEDITIONS_URL, PUBLIC_OFFER_PDF, routes } from "@/lib/routes";
 
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -23,48 +24,58 @@ const copyrightLinkClass = "text-[14px] leading-[171%] font-medium text-[#82949F
  */
 export function Footer({ locale, t }: { locale: Locale; t: Translate }) {
     const h = "main.welcome.header";
-    const columns: { title: string; links: FooterLink[] }[] = [
-        {
-            title: t(`${h}.community.title`),
-            links: [
-                { label: t(`${h}.community.blog`), href: routes.blog(locale) },
-                { label: t(`${h}.community.video`), href: routes.video(locale) },
-                { label: t(`${h}.community.ambassadors`), href: routes.ambassadors(locale) },
-                { label: t(`${h}.community.achievements`), href: routes.achievements(locale) },
-                { label: t(`${h}.community.people`), href: routes.people(locale) },
-                { label: t(`${h}.community.courses`), href: routes.academy(locale) },
-                { label: t(`${h}.expeditions`), href: EXPEDITIONS_URL, external: true },
-            ],
-        },
-        {
-            title: t(`${h}.about-project.title`),
-            links: [
-                { label: t(`${h}.about-project.about-npo`), href: routes.npo(locale) },
-                { label: t(`${h}.about-project.our-team`), href: routes.ourTeam(locale) },
-                { label: t(`${h}.about-project.how-it-works`), href: routes.membership(locale) },
-                { label: t(`${h}.about-project.rules`), href: routes.rules(locale) },
-                { label: t(`${h}.about-project.privacy-policy`), href: routes.privacyPolicy(locale) },
-                { label: t(`${h}.about-project.news`), href: routes.news(locale) },
-                { label: t(`${h}.about-project.about-goodsurfing`), href: routes.aboutProject(locale) },
-                { label: t(`${h}.about-project.find-job`), href: routes.findJob(locale) },
-                { label: t(`${h}.about-project.feedback`), href: routes.feedback(locale) },
-            ],
-        },
-        {
-            title: t(`${h}.for-organizers.title`),
-            links: [
-                { label: t(`${h}.for-organizers.become-a-host`), href: routes.becomeHost(locale) },
-            ],
-        },
-        {
-            title: t(`${h}.donation.title`),
-            links: [
-                { label: t(`${h}.donation.support-goodsurfing`), href: routes.membership(locale) },
-                { label: t(`${h}.donation.public-reports`), href: routes.npo(locale) },
-                { label: t(`${h}.donation.public-offer`), href: PUBLIC_OFFER_PDF, external: true },
-                { label: t(`${h}.donation.payment-security-policy`), href: routes.paymentSecurityPolicy(locale) },
-            ],
-        },
+    type FooterSection = { title: string; links: FooterLink[] };
+    // Колонка может состоять из нескольких разделов: у «Для организаторов» одна ссылка,
+    // под ней — «Куда поехать» (посадочные страницы, решение владельца 24.11.2026: в подвале, не в шапке)
+    const columns: FooterSection[][] = [
+        [
+            {
+                title: t(`${h}.community.title`),
+                links: [
+                    { label: t(`${h}.community.blog`), href: routes.blog(locale) },
+                    { label: t(`${h}.community.video`), href: routes.video(locale) },
+                    { label: t(`${h}.community.ambassadors`), href: routes.ambassadors(locale) },
+                    { label: t(`${h}.community.achievements`), href: routes.achievements(locale) },
+                    { label: t(`${h}.community.people`), href: routes.people(locale) },
+                    { label: t(`${h}.community.courses`), href: routes.academy(locale) },
+                    { label: t(`${h}.expeditions`), href: EXPEDITIONS_URL, external: true },
+                ],
+            },
+        ],
+        [
+            {
+                title: t(`${h}.about-project.title`),
+                links: [
+                    { label: t(`${h}.about-project.about-npo`), href: routes.npo(locale) },
+                    { label: t(`${h}.about-project.our-team`), href: routes.ourTeam(locale) },
+                    { label: t(`${h}.about-project.how-it-works`), href: routes.membership(locale) },
+                    { label: t(`${h}.about-project.rules`), href: routes.rules(locale) },
+                    { label: t(`${h}.about-project.privacy-policy`), href: routes.privacyPolicy(locale) },
+                    { label: t(`${h}.about-project.news`), href: routes.news(locale) },
+                    { label: t(`${h}.about-project.about-goodsurfing`), href: routes.aboutProject(locale) },
+                    { label: t(`${h}.about-project.find-job`), href: routes.findJob(locale) },
+                    { label: t(`${h}.about-project.feedback`), href: routes.feedback(locale) },
+                ],
+            },
+        ],
+        [
+            {
+                title: t(`${h}.for-organizers.title`),
+                links: [{ label: t(`${h}.for-organizers.become-a-host`), href: routes.becomeHost(locale) }],
+            },
+            { title: t(`${h}.where-to-go`), links: landingMenuLinks(locale) },
+        ],
+        [
+            {
+                title: t(`${h}.donation.title`),
+                links: [
+                    { label: t(`${h}.donation.support-goodsurfing`), href: routes.membership(locale) },
+                    { label: t(`${h}.donation.public-reports`), href: routes.npo(locale) },
+                    { label: t(`${h}.donation.public-offer`), href: PUBLIC_OFFER_PDF, external: true },
+                    { label: t(`${h}.donation.payment-security-policy`), href: routes.paymentSecurityPolicy(locale) },
+                ],
+            },
+        ],
     ];
 
     return (
@@ -96,22 +107,26 @@ export function Footer({ locale, t }: { locale: Locale; t: Translate }) {
                             ))}
                         </div>
                     </div>
-                    <nav className="flex flex-[2] justify-between down-md:w-full down-md:text-center down-xs:flex-col">
-                        {columns.map(({ title, links }) => (
-                            <div key={title} className="flex flex-col down-xs:mb-[30px]">
-                                <h4 className="mb-[25px] text-[18px] leading-[122%] font-medium text-white">{title}</h4>
-                                <div className="flex flex-col">
-                                    {links.map(({ label, href, external }) => (
-                                        <NavAnchor
-                                            key={href + label}
-                                            href={href}
-                                            className={linkClass}
-                                            {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
-                                        >
-                                            {label}
-                                        </NavAnchor>
-                                    ))}
-                                </div>
+                    <nav className="flex flex-[2] justify-between down-md:w-full down-md:text-center down-xs:grid down-xs:grid-cols-2 down-xs:gap-x-4">
+                        {columns.map((sections) => (
+                            <div key={sections[0]?.title} className="flex flex-col gap-y-[30px] down-xs:mb-[30px]">
+                                {sections.map(({ title, links }) => (
+                                    <div key={title} className="flex flex-col">
+                                        <h4 className="mb-[25px] text-[18px] leading-[122%] font-medium text-white">{title}</h4>
+                                        <div className="flex flex-col">
+                                            {links.map(({ label, href, external }) => (
+                                                <NavAnchor
+                                                    key={href + label}
+                                                    href={href}
+                                                    className={linkClass}
+                                                    {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+                                                >
+                                                    {label}
+                                                </NavAnchor>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         ))}
                     </nav>
