@@ -7251,6 +7251,8 @@ export interface components {
         "Application-application-form.create": {
             /** Format: date-time */
             endDate: string;
+            /** @description «Пару слов о себе» (GS-290): необязательный текст волонтёра к отклику. */
+            message?: string | null;
             /** Format: date-time */
             startDate: string;
             /**

@@ -79,5 +79,22 @@
         "new": "El anfitrión es nuevo en Goodsurfing. La respuesta suele llegar en una semana.",
         "close": "Si no hay respuesta en tres semanas, la solicitud se cerrará sola y te enviaremos oportunidades similares."
     },
-    "Этот браузер не умеет получать уведомления. Откройте сайт в Chrome, Яндекс Браузере, Safari или Firefox — на iPhone добавьте сайт на экран «Домой»": "Este navegador no puede recibir notificaciones. Abre el sitio en Chrome, Yandex Browser, Safari o Firefox; en iPhone, añade el sitio a la pantalla de inicio"
+    "Этот браузер не умеет получать уведомления. Откройте сайт в Chrome, Яндекс Браузере, Safari или Firefox — на iPhone добавьте сайт на экран «Домой»": "Este navegador no puede recibir notificaciones. Abre el sitio en Chrome, Yandex Browser, Safari o Firefox; en iPhone, añade el sitio a la pantalla de inicio",
+    "apply": {
+        "title": "Postularse a la vacante",
+        "when": "¿Cuándo quieres venir?",
+        "choosePeriod": "El anfitrión recibe voluntarios en estas fechas: elige la que te convenga",
+        "windowHint": "Puedes venir durante parte de este periodo: indica tus fechas",
+        "freeHint": "Hemos puesto fechas de ejemplo; cámbialas si lo necesitas. Las fechas exactas se pueden acordar con el anfitrión en el chat.",
+        "about": "Unas palabras sobre ti",
+        "optional": "opcional",
+        "aboutPlaceholder": "Por ejemplo: cómo puedes ayudar, si tienes experiencia similar, por qué quieres venir aquí",
+        "aboutHint": "El anfitrión lo verá junto con tu solicitud",
+        "submit": "Enviar solicitud",
+        "sending": "Enviando…",
+        "needPeriod": "Elige las fechas para enviar la solicitud",
+        "network": "No se pudo enviar: sin conexión. Revisa internet y pulsa de nuevo; todo lo que escribiste se ha guardado.",
+        "loadError": "No se pudo cargar la vacante. Revisa internet e inténtalo de nuevo.",
+        "retry": "Reintentar"
+    }
 }

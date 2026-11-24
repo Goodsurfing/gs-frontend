@@ -14,9 +14,11 @@ import {
     type ApplicationStatus, type Chat, type ChatApplication, type ChatMessage, companionTarget, formatDayLabel, formatTime, idFromIri, readByOthers, sameGroup, type Terms,
 } from "@/lib/messenger";
 import type { CatalogOffer } from "@/lib/offersCatalog";
-import { dayFromApi } from "@/lib/offerWizard";
+import { applyDates, initialTerms } from "@/lib/applyDates";
+import { dayFromApi, today } from "@/lib/offerWizard";
 
-import { type ApplicationLabels, ApplicationBlock, ApplicationEvent } from "./ApplicationBlock";
+import { type ApplicationLabels, ApplicationEvent } from "./ApplicationBlock";
+import { type ApplyFormLabels, ApplyForm, ApplyFormError, ApplyFormSkeleton } from "./ApplyForm";
 import { needsIntro, QuickIntro, type QuickIntroLabels } from "./QuickIntro";
 import { ResponseHintNote, type ResponseHintLabels } from "./ResponseHintNote";
 import { ChatHeader } from "./ChatHeader";
@@ -46,6 +48,9 @@ export interface MessengerLabels {
     list: ChatListLabels;
     input: ChatInputLabels;
     application: ApplicationLabels;
+    apply: ApplyFormLabels;
+    /** Отклик не ушёл из-за сети */
+    applyNetworkError: string;
     companion: CompanionLabels;
     push: PushOfferLabels;
     draft: ReplyDraftLabels;
@@ -69,7 +74,8 @@ interface OfferFields {
     reviewsCount?: number | null;
     description?: { title?: string | null; shortDescription?: string | null; categories?: { name?: string }[] | null } | null;
     where?: { address?: string | null } | null;
-    when?: { isFullYearAcceptable?: boolean; periods?: { start?: string | null; end?: string | null }[] | null } | null;
+    // У периода конец — ending (раньше форма читала end, и единственный период не подставлялся)
+    when?: { isFullYearAcceptable?: boolean; durationMinDays?: number | null; durationMaxDays?: number | null; periods?: { start?: string | null; ending?: string | null }[] | null } | null;
 }
 
 const toCatalogOffer = (offer: OfferFields, categories: Record<string, string>): CatalogOffer => ({
@@ -183,55 +189,68 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         };
     }, [ready, token, realChatId, isCreate, recipientVolunteer]);
 
-    // Отклик на вакансию: вакансия и даты
+    // Отклик на вакансию: вакансия, даты, «Пару слов о себе» (GS-290)
     const [offer, setOffer] = useState<OfferFields | null>(null);
+    const [offerState, setOfferState] = useState<"loading" | "ready" | "failed">("loading");
+    const [offerAttempt, setOfferAttempt] = useState(0);
     const [terms, setTerms] = useState<Terms>({ start: null, end: null });
+    const [applyMessage, setApplyMessage] = useState("");
     const [applying, setApplying] = useState(false);
+    const [applyError, setApplyError] = useState<string | null>(null);
+    const dates = useMemo(() => applyDates(offer?.when, today()), [offer]);
     useEffect(() => {
         if (!ready || !isCreate || !offerId) return;
         let cancelled = false;
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- повтор после ошибки: снова заглушка
+        setOfferState("loading");
         void browserApi(token)
             .GET("/api/v1/vacancies/{id}", { params: { path: { id: offerId } }, headers: { Accept: "application/json" } })
-            .then(({ data }) => {
+            .then(({ data, response }) => {
                 if (cancelled) return;
                 if (!data) {
+                    // 4xx — вакансии нет; 5xx — сбой, можно повторить
+                    setOfferState(response.status >= 500 ? "failed" : "ready");
                     fail(labels.offerNotFound);
                     return;
                 }
                 const loaded = data as OfferFields;
                 setOffer(loaded);
-                // Один период у вакансии — даты уже заданы организатором
-                const periods = loaded.when && !loaded.when.isFullYearAcceptable ? loaded.when.periods ?? [] : [];
-                const only = periods.length === 1 ? periods[0] : undefined;
-                const start = dayFromApi(only?.start);
-                const end = dayFromApi(only?.end);
-                if (start && end) setTerms({ start, end });
+                setTerms(initialTerms(applyDates(loaded.when, today())));
+                setOfferState("ready");
             })
-            .catch(() => fail(labels.offerNotFound));
+            .catch(() => {
+                if (!cancelled) setOfferState("failed");
+            });
         return () => {
             cancelled = true;
         };
-    }, [ready, token, isCreate, offerId, fail, labels.offerNotFound]);
-    const fixedDates = !!offer?.when && !offer.when.isFullYearAcceptable && offer.when.periods?.length === 1;
+    }, [ready, token, isCreate, offerId, fail, labels.offerNotFound, offerAttempt]);
 
     const apply = async () => {
-        if (!offerId || !terms.start || !terms.end) return;
+        if (!offerId || !terms.start || !terms.end || applying) return;
         setApplying(true);
+        setApplyError(null);
         setToast(null);
+        const text = applyMessage.trim();
         const result = await browserApi(token)
             .POST("/api/v1/applications", {
-                body: { vacancy: `/api/v1/vacancies/${offerId}`, startDate: terms.start, endDate: terms.end },
+                body: { vacancy: `/api/v1/vacancies/${offerId}`, startDate: terms.start, endDate: terms.end, ...(text ? { message: text } : {}) },
                 headers: { Accept: "application/json" },
             })
             .catch(() => null);
         setApplying(false);
         const created = result?.data as { chat?: string | null } | undefined;
-        if (!result?.response.ok || !created) {
-            const error = (result?.error ?? null) as { detail?: string; title?: string } | null;
-            fail(error?.detail || error?.title || labels.error);
+        if (!result) {
+            // Сеть: введённое остаётся в форме, можно нажать ещё раз
+            setApplyError(labels.applyNetworkError);
             return;
         }
-        reachGoal("application_sent");
+        if (!result.response.ok || !created) {
+            const error = (result.error ?? null) as { detail?: string; title?: string } | null;
+            setApplyError(error?.detail || error?.title || labels.error);
+            return;
+        }
+        reachGoal("application_sent", text ? { message: "yes" } : undefined);
         setToast({ text: labels.applicationSent, ok: true });
         const newChat = idFromIri(created.chat);
         if (newChat) router.push(href(hrefs.chat, newChat));
@@ -467,57 +486,64 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                                     decline: labels.application.decline,
                                 }}
                             />
-                            <div
-                                ref={scroller}
-                                className="flex min-h-0 w-full flex-1 flex-col-reverse overflow-auto px-4 pt-2 pb-4 down-xs:px-2.5"
-                                onScroll={(event) => {
-                                    const box = event.currentTarget;
-                                    // column-reverse: scrollTop отрицательный, верх — у -(scrollHeight - clientHeight)
-                                    if (box.scrollHeight - box.clientHeight + box.scrollTop < 80) chat.loadMore();
-                                }}
-                            >
-                                {isCreate && offerId && offer
-                                    ? (
-                                        <>
-                                        <ApplicationBlock
+                            {isCreate && offerId ? (
+                                // Отклик — обычная форма сверху вниз, не лента сообщений
+                                <div className="flex min-h-0 w-full flex-1 flex-col overflow-auto px-4 pt-4 down-xs:px-3">
+                                    {/* Нет имени или фото при открытии — блок над формой; после сохранения — с «Сохранено» */}
+                                    {introShown && <div className="mx-auto w-full max-w-[560px]"><QuickIntro labels={labels.intro} /></div>}
+                                    {offer ? (
+                                        <ApplyForm
                                             locale={locale}
                                             offer={toCatalogOffer(offer, dict.categories)}
                                             offerHref={href(hrefs.offer, offer.id ?? offerId)}
+                                            dates={dates}
                                             terms={terms}
                                             onTerms={setTerms}
-                                            sent={false}
-                                            username={companionName}
-                                            fixedDates={fixedDates}
+                                            message={applyMessage}
+                                            onMessage={setApplyMessage}
                                             onSubmit={() => void apply()}
                                             busy={applying}
-                                            labels={labels.application}
+                                            error={applyError}
+                                            labels={labels.apply}
                                         />
-                                        {/* Лента сообщений идёт снизу вверх (column-reverse) — этот блок окажется над откликом.
-                                            Показываем, если при открытии не было имени или фото; после сохранения — с «Сохранено» */}
-                                        {introShown && <QuickIntro labels={labels.intro} />}
-                                        </>
-                                    )
-                                    : rendered}
-                                {realChatId && chat.loading && chat.messages.length === 0 && <MessagesSkeleton />}
-                            </div>
-                            <ChatInput
-                                token={token}
-                                disabled={!ready || (isCreate && !!offerId) || (isCreate && !recipientVolunteer && !recipientOrganization)}
-                                labels={labels.input}
-                                onSend={(message) => void send(message)}
-                                onError={fail}
-                                prefill={draft}
-                                extra={application?.id && !volunteerHere && realChatId ? (
-                                    <ReplyDraft
-                                        key={realChatId}
-                                        token={token}
-                                        applicationId={application.id}
-                                        onDraft={(text) => setDraft({ text, key: Date.now() })}
-                                        onError={fail}
-                                        labels={labels.draft}
-                                    />
-                                ) : null}
-                            />
+                                    ) : offerState === "failed" ? (
+                                        <ApplyFormError text={labels.apply.loadError} retry={labels.apply.retry} onRetry={() => setOfferAttempt((value) => value + 1)} />
+                                    ) : offerState === "loading" ? <ApplyFormSkeleton /> : null}
+                                </div>
+                            ) : (
+                                <div
+                                    ref={scroller}
+                                    className="flex min-h-0 w-full flex-1 flex-col-reverse overflow-auto px-4 pt-2 pb-4 down-xs:px-2.5"
+                                    onScroll={(event) => {
+                                        const box = event.currentTarget;
+                                        // column-reverse: scrollTop отрицательный, верх — у -(scrollHeight - clientHeight)
+                                        if (box.scrollHeight - box.clientHeight + box.scrollTop < 80) chat.loadMore();
+                                    }}
+                                >
+                                    {rendered}
+                                    {realChatId && chat.loading && chat.messages.length === 0 && <MessagesSkeleton />}
+                                </div>
+                            )}
+                            {!(isCreate && offerId) && (
+                                <ChatInput
+                                    token={token}
+                                    disabled={!ready || (isCreate && !recipientVolunteer && !recipientOrganization)}
+                                    labels={labels.input}
+                                    onSend={(message) => void send(message)}
+                                    onError={fail}
+                                    prefill={draft}
+                                    extra={application?.id && !volunteerHere && realChatId ? (
+                                        <ReplyDraft
+                                            key={realChatId}
+                                            token={token}
+                                            applicationId={application.id}
+                                            onDraft={(text) => setDraft({ text, key: Date.now() })}
+                                            onError={fail}
+                                            labels={labels.draft}
+                                        />
+                                    ) : null}
+                                />
+                            )}
                         </div>
                         {companion && (
                             <CompanionInfo
