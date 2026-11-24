@@ -107,7 +107,7 @@ export function Footer({ locale, t }: { locale: Locale; t: Translate }) {
                             ))}
                         </div>
                     </div>
-                    <nav className="flex flex-[2] justify-between down-md:w-full down-md:text-center down-xs:flex-col">
+                    <nav className="flex flex-[2] justify-between down-md:w-full down-md:text-center down-xs:grid down-xs:grid-cols-2 down-xs:gap-x-4">
                         {columns.map((sections) => (
                             <div key={sections[0]?.title} className="flex flex-col gap-y-[30px] down-xs:mb-[30px]">
                                 {sections.map(({ title, links }) => (
