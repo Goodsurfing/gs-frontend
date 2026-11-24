@@ -98,6 +98,7 @@
         "faqCostQ": "How much does it cost?",
         "faqCostA": "Applying and messaging hosts is free; your first applications each year don't need a membership. Travel is usually at your own expense — see each opportunity for details.",
         "faqExpQ": "Do I need experience?",
-        "faqExpA": "Usually not — hosts explain the tasks on site. Required skills are listed under “Who is needed”."
+        "faqExpA": "Usually not — hosts explain the tasks on site. Required skills are listed under “Who is needed”.",
+        "showMore": "Show more ({n})"
     }
 }

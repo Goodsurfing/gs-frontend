@@ -14,6 +14,7 @@ import { pageMetadata, siteUrl } from "@/lib/seo";
 import { jsonLdGraph } from "@/lib/structuredData";
 import { TOPIC_LANDINGS, topicBySlug } from "@/lib/topicLandings";
 import { genericLanding, landingBySlug, VOLUNTEERING_LANDINGS } from "@/lib/volunteeringLandings";
+import { OfferGrid } from "@/components/landing/OfferGrid";
 
 // Список вакансий обновляется раз в час: страница — для поиска, не для живого каталога
 export const revalidate = 3600;
@@ -120,13 +121,13 @@ export default async function VolunteeringLandingPage({ params }: Props) {
                 </div>
 
                 {offers.length > 0 ? (
-                    <ul className="m-0 mt-10 grid list-none grid-cols-3 gap-5 p-0 down-lg:grid-cols-2 down-sm:grid-cols-1">
+                    <OfferGrid count={offers.length} moreLabel={tMain("landing.showMore")} className="mt-10">
                         {offers.map((offer) => (
                             <li key={offer.id} className="flex [&>a]:w-full">
                                 <OfferCard offer={offer} href={routes.offer(locale, offer.id)} category={categoryName(offer.categories[0]?.name, tCommon)} labels={offerCardLabels(tCommon)} />
                             </li>
                         ))}
-                    </ul>
+                    </OfferGrid>
                 ) : (
                     <p className="mt-10 text-[16px] text-caption">{tMain("landing.empty")}</p>
                 )}
