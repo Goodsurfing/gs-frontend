@@ -96,7 +96,7 @@ export function Footer({ locale, t }: { locale: Locale; t: Translate }) {
                                 </a>
                             ))}
                         </div>
-                        {/* Посадочные страницы (24.11.2026): пятой колонкой подвал не помещается — строкой под соцсетями */}
+                        {/* Посадочные страницы (24.11.2026) — только в подвале, не в шапке (решение владельца); пятой колонкой подвал не помещается — строкой под соцсетями */}
                         <nav aria-label={t(`${h}.where-to-go`)} className="mt-[25px] max-w-[360px] down-md:mb-0 down-md:text-center">
                             <h4 className="mb-[15px] text-[18px] leading-[122%] font-medium text-white">{t(`${h}.where-to-go`)}</h4>
                             <div className="flex flex-wrap gap-x-3 down-md:justify-center">
