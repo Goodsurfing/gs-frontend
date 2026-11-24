@@ -1,6 +1,5 @@
 import type { Locale } from "@/i18n/config";
 import type { Translate } from "@/i18n/dictionary";
-import { landingMenuLinks } from "@/lib/landingMenu";
 import { EXPEDITIONS_URL, INTERNATIONAL_URL, routes } from "@/lib/routes";
 
 export interface NavLink {
@@ -29,13 +28,6 @@ export function buildNavigation(locale: Locale, t: Translate): Navigation {
     return {
         offers: link(h("offers.title"), routes.offersMap(locale)),
         entries: [
-            // Посадочные страницы направлений и регионов (24.11.2026) — сразу после «Всех вакансий».
-            // «Международное» — последним пунктом здесь, а не отдельным: иначе шапка не помещается на 1281–1420px
-            {
-                kind: "group",
-                label: h("where-to-go"),
-                items: [...landingMenuLinks(locale), link(h("international-volunteering"), INTERNATIONAL_URL)],
-            },
             {
                 kind: "group",
                 label: h("community.title"),
@@ -74,6 +66,7 @@ export function buildNavigation(locale: Locale, t: Translate): Navigation {
                 ],
             },
             { kind: "link", ...link(h("for-organizers.become-a-host"), routes.becomeHost(locale)) },
+            { kind: "link", ...link(h("international-volunteering"), INTERNATIONAL_URL) },
         ],
     };
 }
