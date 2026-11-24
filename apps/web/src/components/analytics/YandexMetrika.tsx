@@ -71,12 +71,27 @@ export function reachGoal(goal: MetrikaGoal, params?: Record<string, unknown>) {
 }
 
 /**
+ * Счётчик загружен (tag.js выполнился и создал yaCounter…). Сам window.ym
+ * появляется раньше — это заглушка-очередь из кода вставки: вызовы в ней
+ * ждут скрипт и при уходе со страницы пропадают.
+ */
+function counterReady(): boolean {
+    return Boolean((window as unknown as Record<string, unknown>)[`yaCounter${COUNTER_ID}`]);
+}
+
+/**
  * Цель, затем переход со страницы: без ожидания запрос Метрики обрывается
  * при уходе. Ждём ответа счётчика, но не дольше секунды; без счётчика —
  * сразу дальше. Если скрипт счётчика ещё грузится (вход сразу после
- * возврата из VK — цель «регистрация» раньше терялась), ждём его до
- * 2,5 с всего, затем переход в любом случае.
+ * возврата из VK), ждём его до 2,5 с всего, затем переход в любом случае.
+ * Признак загрузки — yaCounter…, а не window.ym: заглушка ym есть сразу, и
+ * с ней цель уходила в очередь, а переход через секунду её терял
+ * (GS-301: на проде за неделю 11 целей «регистрация» через VK на ~50 новых
+ * аккаунтов VK, у регистрации по почте — без потерь).
  */
+/** Сколько ждать незагруженный счётчик перед переходом */
+const WAIT_FOR_SCRIPT_MS = 2500;
+
 export function reachGoalThen(goal: MetrikaGoal, params: Record<string, unknown> | undefined, next: () => void) {
     if (!COUNTER_ID) {
         next();
@@ -96,11 +111,12 @@ export function reachGoalThen(goal: MetrikaGoal, params: Record<string, unknown>
         }
     };
     if (window.ym) {
-        window.setTimeout(leave, 1000);
+        // Заглушка сама передаст цель (и вызовет leave) скрипту, когда он загрузится
+        window.setTimeout(leave, counterReady() ? 1000 : WAIT_FOR_SCRIPT_MS);
         fire();
         return;
     }
-    window.setTimeout(leave, 2500);
+    window.setTimeout(leave, WAIT_FOR_SCRIPT_MS);
     const timer = window.setInterval(() => {
         if (done) window.clearInterval(timer);
         else if (window.ym) {
