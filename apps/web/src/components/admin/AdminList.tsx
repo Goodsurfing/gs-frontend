@@ -21,6 +21,8 @@ export interface AdminFilter {
     key: string;
     label: string;
     options?: { value: string; label: string }[];
+    /** Значение, когда в адресе фильтра нет (вместо «Все»); «все» тогда — отдельной опцией */
+    defaultValue?: string;
 }
 
 export interface AdminListConfig<T> {
@@ -43,6 +45,8 @@ export interface AdminListConfig<T> {
     plain?: boolean;
     /** Над таблицей (сводка, пояснение) */
     header?: ReactNode;
+    /** Перечитывать список раз в 15 секунд, пока условие верно (ждём подтверждения от бота и т. п.) */
+    autoReload?: (rows: T[]) => boolean;
 }
 
 export interface AdminRowContext {
@@ -83,11 +87,13 @@ export function AdminList<T>({ config }: { config: AdminListConfig<T> }) {
     // Ответ помнит, на какой запрос он пришёл: пока ключ не совпал — идёт загрузка
     const requestKey = `${config.path}?${search.toString()}#${version}`;
     const [result, setResult] = useState<{ key: string; status: "ok" | "error"; rows: T[]; total: number; error?: string } | null>(null);
-    const state = result && result.key === requestKey ? result : { status: "loading" as const, rows: [] as T[], total: result?.total ?? 0, error: undefined };
+    // Перечитывание того же списка (после действия, автообновление) — без мигания: старые строки видны до ответа
+    const sameList = result?.status === "ok" && result.key.split("#")[0] === requestKey.split("#")[0];
+    const state = result && (result.key === requestKey || sameList) ? result : { status: "loading" as const, rows: [] as T[], total: result?.total ?? 0, error: undefined };
     const [toast, setToast] = useState<{ text: string; ok: boolean } | null>(null);
     const [toRemove, setToRemove] = useState<T | null>(null);
     const [busy, setBusy] = useState(false);
-    const filterValues = useMemo(() => Object.fromEntries((config.filters ?? []).map((f) => [f.key, search.get(f.key) ?? ""])), [config.filters, search]);
+    const filterValues = useMemo(() => Object.fromEntries((config.filters ?? []).map((f) => [f.key, search.get(f.key) ?? f.defaultValue ?? ""])), [config.filters, search]);
     // Черновик фильтров сбрасывается к значениям из адреса, когда адрес меняется
     const [draftState, setDraftState] = useState<{ for: string; values: Record<string, string> } | null>(null);
     const draft = draftState && draftState.for === search.toString() ? draftState.values : filterValues;
@@ -98,7 +104,8 @@ export function AdminList<T>({ config }: { config: AdminListConfig<T> }) {
 
     useEffect(() => {
         let cancelled = false;
-        const query = { ...toQuery(search), page, limit, sort };
+        const defaults = Object.fromEntries((config.filters ?? []).filter((f) => f.defaultValue && !search.get(f.key)).map((f) => [f.key, f.defaultValue]));
+        const query = { ...defaults, ...toQuery(search), page, limit, sort };
         api.get<AdminPage<T> | T[]>(config.path, config.plain ? undefined : query)
             .then((res) => {
                 if (cancelled) return;
@@ -109,7 +116,16 @@ export function AdminList<T>({ config }: { config: AdminListConfig<T> }) {
         return () => {
             cancelled = true;
         };
-    }, [api, config.path, config.plain, search, page, limit, sort, requestKey]);
+    }, [api, config.path, config.plain, config.filters, search, page, limit, sort, requestKey]);
+
+    // Таймер — от каждого полученного ответа: пришёл новый список, а условие всё ещё верно — ждём снова
+    const autoReload = state.status === "ok" && config.autoReload ? config.autoReload(state.rows) : false;
+    const answeredKey = result?.key;
+    useEffect(() => {
+        if (!autoReload) return;
+        const timer = setTimeout(reload, 15_000);
+        return () => clearTimeout(timer);
+    }, [autoReload, reload, answeredKey]);
 
     const setParams = (changes: Record<string, string | undefined>) => {
         const next = new URLSearchParams(search);
@@ -159,7 +175,7 @@ export function AdminList<T>({ config }: { config: AdminListConfig<T> }) {
                             {f.label}
                             {f.options ? (
                                 <select className={adminInput} value={draft[f.key] ?? ""} onChange={(e) => setDraft((d) => ({ ...d, [f.key]: e.target.value }))}>
-                                    <option value="">Все</option>
+                                    {!f.defaultValue && <option value="">Все</option>}
                                     {f.options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                                 </select>
                             ) : (
