@@ -51,7 +51,9 @@ test.describe('Новый фронт: страница вакансии', () => 
 
         test('несуществующая вакансия — сообщение и «Назад»', async ({ page }, testInfo) => {
             test.skip(testInfo.project.name !== 'vol', 'один раз за прогон');
-            await page.goto('/offers/999999999');
+            const response = await page.goto('/offers/999999999');
+            // GS-302: настоящий 404 для поисковиков, сообщение и каркас — как были
+            expect(response?.status()).toBe(404);
             await expect(page.getByText('Вакансия не найдена или произошла ошибка')).toBeVisible();
             await expect(page.getByRole('button', { name: 'Назад' })).toBeVisible();
             await expect(page.locator('head meta[name="robots"]')).toHaveAttribute('content', /noindex/);

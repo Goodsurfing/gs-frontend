@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { DEFAULT_LOCALE, localeFromPath, stripLocale } from "@/i18n/config";
 import { LOCALE_HEADER } from "@/i18n/request";
+import { isUuid } from "@/lib/entityId";
 import { legacyOffersListTarget } from "@/lib/legacyOffersLink";
 import { legacyBackendPath, legacyRedirect } from "@/lib/legacyRedirects";
 import { routes } from "@/lib/routes";
@@ -85,12 +86,19 @@ export function proxy(request: NextRequest) {
 
     const headers = new Headers(request.headers);
     headers.set(LOCALE_HEADER, locale);
+    // Страница сама рисует «не найдено» в каркасе, а код 404 ставим здесь (GS-302): у динамических
+    // страниц NotFoundStatus не меняет код — заголовки уже отправлены
+    const status = isMissingDynamicPath(pathname) ? 404 : undefined;
 
     if (locale === DEFAULT_LOCALE) {
         const internal = request.nextUrl.clone();
         internal.pathname = `/${DEFAULT_LOCALE}${pathname === "/" ? "" : pathname}`;
         headers.set(REWRITTEN, "1");
-        return NextResponse.rewrite(internal, { request: { headers } });
+        return NextResponse.rewrite(internal, { request: { headers }, status });
+    }
+    if (status) {
+        headers.set(REWRITTEN, "1");
+        return NextResponse.rewrite(request.nextUrl, { request: { headers }, status });
     }
     return NextResponse.next({ request: { headers } });
 }
@@ -103,6 +111,24 @@ export function isMalformedPath(pathname: string): boolean {
     } catch {
         return true;
     }
+}
+
+/**
+ * Динамическая страница (без кэша) с id не того вида — сбора или курса заведомо нет (GS-302).
+ * У страниц с кэшем (вакансия, организация, статьи) код 404 ставит сама страница
+ * (components/errors/NotFoundStatus.tsx) — по ответу API, а у этих двух сбор и курс с UUID,
+ * которых нет, остаются 200 с noindex: проверка по базе здесь стоила бы лишнего запроса к API.
+ */
+export function isMissingDynamicPath(pathname: string): boolean {
+    const match = /^(?:\/(?:en|es))?\/(?:fundraise|academy-course)\/([^/]+)\/?$/.exec(pathname);
+    if (!match?.[1]) return false;
+    let id: string;
+    try {
+        id = decodeURIComponent(match[1]);
+    } catch {
+        return true;
+    }
+    return !isUuid(id);
 }
 
 /** В пути остался шаблон: {id}, %7Bid%7D */
