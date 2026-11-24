@@ -79,5 +79,22 @@
         "new": "This host is new on Goodsurfing. A reply usually comes within a week.",
         "close": "If there’s no reply within three weeks, the application closes automatically and we’ll send you similar opportunities."
     },
-    "Этот браузер не умеет получать уведомления. Откройте сайт в Chrome, Яндекс Браузере, Safari или Firefox — на iPhone добавьте сайт на экран «Домой»": "This browser can't receive notifications. Open the site in Chrome, Yandex Browser, Safari or Firefox — on iPhone, add the site to your Home Screen"
+    "Этот браузер не умеет получать уведомления. Откройте сайт в Chrome, Яндекс Браузере, Safari или Firefox — на iPhone добавьте сайт на экран «Домой»": "This browser can't receive notifications. Open the site in Chrome, Yandex Browser, Safari or Firefox — on iPhone, add the site to your Home Screen",
+    "apply": {
+        "title": "Apply for this opportunity",
+        "when": "When would you like to come",
+        "choosePeriod": "The host accepts volunteers on these dates — choose the one that suits you",
+        "windowHint": "You can come for part of this period — specify your dates",
+        "freeHint": "We have filled in sample dates — change them if needed. You can agree on exact dates with the host in the chat.",
+        "about": "A few words about yourself",
+        "optional": "optional",
+        "aboutPlaceholder": "For example: how you can help, any similar experience, why you want to come here",
+        "aboutHint": "The host will see this together with your application",
+        "submit": "Send application",
+        "sending": "Sending…",
+        "needPeriod": "Choose dates to send your application",
+        "network": "Could not send: no connection. Check your internet and tap again — everything you entered is saved.",
+        "loadError": "Could not load the opportunity. Check your internet and try again.",
+        "retry": "Try again"
+    }
 }
