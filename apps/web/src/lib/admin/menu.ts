@@ -4,6 +4,19 @@ export interface AdminMenuGroup {
     items: { href: string; label: string }[];
 }
 
+/**
+ * «Клуб тестировщиков» — только на стейдже (решение владельца 24.11.2026: на проде тестовые
+ * записи не нужны). Включается при сборке с NEXT_PUBLIC_CLUB_ADMIN=1 (deploy-web-staging.yml);
+ * на проде переменной нет — пункта меню нет, страницы /admin/club/* отвечают 404,
+ * бэкенд без CLUB_SYNC_SECRET тоже отвечает 404.
+ */
+export const CLUB_ADMIN_ENABLED = process.env.NEXT_PUBLIC_CLUB_ADMIN === "1";
+
+/** Страницы раздела клуба (/admin/club, /admin/club/…, и с /en, /es) — proxy.ts отвечает на них 404, когда раздел выключен */
+export const isClubAdminPath = (pathname: string) => /^(\/(ru|en|es))?\/admin\/club(\/|$)/.test(pathname);
+
+const CLUB_GROUP_TITLE = "Клуб тестировщиков";
+
 export const ADMIN_MENU: AdminMenuGroup[] = [
     { title: "Сводка", items: [{ href: "/admin", label: "Главная" }] },
     {
@@ -37,7 +50,7 @@ export const ADMIN_MENU: AdminMenuGroup[] = [
     { title: "О Гудсёрфинге", items: [{ href: "/admin/about-project", label: "О проекте" }, { href: "/admin/our-team", label: "Наша команда" }] },
     { title: "Обратная связь", items: [{ href: "/admin/feedback", label: "Обращения" }] },
     {
-        title: "Клуб тестировщиков",
+        title: CLUB_GROUP_TITLE,
         items: [
             { href: "/admin/club", label: "Сводка клуба" },
             { href: "/admin/club/participants", label: "Участники" },
@@ -48,6 +61,10 @@ export const ADMIN_MENU: AdminMenuGroup[] = [
     },
     { title: "Система", items: [{ href: "/admin/system-admin", label: "Администраторы" }, { href: "/admin/banner-marketing", label: "Реклама" }] },
 ];
+
+/** Меню админки с учётом включённых разделов */
+export const adminMenu = (clubEnabled = CLUB_ADMIN_ENABLED): AdminMenuGroup[] =>
+    clubEnabled ? ADMIN_MENU : ADMIN_MENU.filter((group) => group.title !== CLUB_GROUP_TITLE);
 
 /** Пункты, у которых вложенные адреса — свои пункты меню: активны только на своей странице */
 const EXACT_ONLY = new Set(["/admin", "/admin/club"]);
