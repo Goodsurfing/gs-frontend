@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { GalleryCarousel } from "@/components/gallery/GalleryCarousel";
+import { NotFoundStatus } from "@/components/errors/NotFoundStatus";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { BadgeChips } from "@/components/achievements/BadgeChips";
 import { SlowReplyChip } from "@/components/achievements/SlowReplyChip";
@@ -80,6 +81,7 @@ export default async function OrganizationPage({ params }: Props) {
                 <div className="mx-auto min-h-[80vh] w-full max-w-[1920px] px-[50px] pt-[92px] pb-[50px] down-lg:p-5">
                     <p className="text-[14px] leading-[120%] font-medium down-lg:text-center">{h("Произошла ошибка")}</p>
                 </div>
+                <NotFoundStatus />
             </PublicShell>
         );
     }

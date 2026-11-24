@@ -17,6 +17,7 @@ import {
 import { OfferShare } from "@/components/offer/OfferShare";
 import { OfferViewerProvider } from "@/components/offer/OfferViewer";
 import { SectionTitle } from "@/components/offer/parts";
+import { NotFoundStatus } from "@/components/errors/NotFoundStatus";
 import { GalleryCarousel } from "@/components/gallery/GalleryCarousel";
 import { HistoryBack } from "@/components/ui/HistoryBack";
 import { SectionSubmenu } from "@/components/ui/SectionSubmenu";
@@ -139,6 +140,7 @@ export default async function OfferPage({ params }: Props) {
         return (
             <PublicShell locale={locale} headerVariant="static">
                 <OfferMessage text={tMain("Вакансия не найдена или произошла ошибка")} back={tMain("Назад")} />
+                <NotFoundStatus />
             </PublicShell>
         );
     }

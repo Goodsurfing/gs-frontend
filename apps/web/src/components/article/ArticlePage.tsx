@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { NotFound } from "@/components/NotFound";
+import { NotFoundStatus } from "@/components/errors/NotFoundStatus";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { VideoEmbed } from "@/components/video/VideoEmbed";
 import type { Locale } from "@/i18n/config";
@@ -67,7 +68,7 @@ export async function ArticlePage({ kind, locale, idOrSlug }: { kind: ArticleKin
     // Журнал в старом фронте — с плавающей шапкой, остальные — со статичной
     const header = kind === "journal" ? "floating" : "static";
     if (!data) {
-        return <PublicShell locale={locale} headerVariant={header}><NotFound locale={locale} t={t} /></PublicShell>;
+        return <PublicShell locale={locale} headerVariant={header}><NotFound locale={locale} t={t} /><NotFoundStatus /></PublicShell>;
     }
     const tNs = await getTranslator(locale, config.ns);
     const tags = data.blogCategoryResults?.length ? data.blogCategoryResults

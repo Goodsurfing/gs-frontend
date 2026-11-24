@@ -39,4 +39,33 @@ test.describe('SEO — гость', () => {
         expect(vacancies.ok()).toBeTruthy();
         expect(await vacancies.text()).toMatch(new RegExp(`<loc>${BASE_URL}/offers/\\d+</loc>`));
     });
+
+    // GS-302: страницы с данными, которых нет, отвечают 404 (сообщение и каркас остаются),
+    // иначе поисковики считают их страницами. Сбой API — не 404, это проверяют юнит-тесты.
+    test('несуществующие вакансия, организация, статьи, курс — код 404', async () => {
+        const api = await request.newContext({ maxRedirects: 0 });
+        const missing = [
+            '/offers/999999999',
+            '/en/offers/999999999',
+            '/organizations/999999999',
+            '/organizations/00000000-0000-0000-0000-000000000000',
+            '/volunteers/00000000-0000-0000-0000-000000000000',
+            '/blog/net-takoy-stati-gs302',
+            '/news/net-takoy-novosti-gs302',
+            '/journals/net-takogo-zhurnala-gs302',
+            '/video/999999999',
+            '/fundraise/999999999',
+            '/academy-course/999999999',
+            '/academy-lesson/999999999',
+        ];
+        for (const path of missing) {
+            const res = await api.get(`${BASE_URL}${path}`);
+            expect(res.status(), path).toBe(404);
+            expect(await res.text(), path).toContain('noindex');
+        }
+
+        const vacancies = await api.get(`${API_URL}/api/v1/vacancy?page=1&limit=1`);
+        const id = (await vacancies.json())?.data?.[0]?.id;
+        if (id) expect((await api.get(`${BASE_URL}/offers/${id}`)).status()).toBe(200);
+    });
 });

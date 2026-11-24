@@ -3,6 +3,8 @@ import "server-only";
 import type { Locale } from "@/i18n/config";
 
 import { serverApi } from "./api";
+import { isUuid } from "./entityId";
+import { isClientError } from "@/lib/apiUnavailable";
 
 /** Курсов и уроков на странице — как в старом фронте */
 export const ACADEMY_PAGE_SIZE = 10;
@@ -28,17 +30,31 @@ export async function getCourses(locale: Locale, page: number) {
     }
 }
 
-/** Курс без данных о прогрессе (страница общая для всех; прогресс дозапрашивает браузер). Нет — null. */
-export async function getCourse(locale: Locale, id: string) {
+async function fetchCourse(locale: Locale, id: string) {
+    const { data, response } = await serverApi(locale).GET("/api/v1/course/{id}", {
+        params: { path: { id } },
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+    });
+    return { data, status: response.status };
+}
+
+export type CourseResult =
+    | { kind: "ok"; course: NonNullable<Awaited<ReturnType<typeof fetchCourse>>["data"]> & { authorName: string } }
+    | { kind: "notFound" }
+    | { kind: "error" };
+
+/**
+ * Курс без данных о прогрессе (страница общая для всех; прогресс дозапрашивает браузер).
+ * Нет курса (id не UUID или ответ 4xx) — notFound, сбой API — error.
+ */
+export async function getCourse(locale: Locale, id: string): Promise<CourseResult> {
+    if (!isUuid(id)) return { kind: "notFound" };
     try {
-        const { data } = await serverApi(locale).GET("/api/v1/course/{id}", {
-            params: { path: { id } },
-            signal: AbortSignal.timeout(TIMEOUT_MS),
-        });
-        if (!data) return null;
-        return { ...data, authorName: fullName(data.author) };
+        const { data, status } = await fetchCourse(locale, id);
+        if (data) return { kind: "ok", course: { ...data, authorName: fullName(data.author) } };
+        return { kind: isClientError(status) ? "notFound" : "error" };
     } catch {
-        return null;
+        return { kind: "error" };
     }
 }
 

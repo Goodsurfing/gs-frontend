@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { LessonView } from "@/components/academy/LessonView";
+import { NotFoundStatus } from "@/components/errors/NotFoundStatus";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { getLessonReviews } from "@/lib/academy";
+import { isUuid } from "@/lib/entityId";
 import { routes } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
 
@@ -31,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!isLocale(locale)) return {};
     const t = await getTranslator(locale, "academy");
     return {
-        ...pageMetadata({ locale, path: routes.academyLesson(locale, id), title: t("seo.lesson.title"), description: t("seo.lesson.description") }),
+        ...pageMetadata({ locale, path: routes.academyLesson(locale, id), title: t("seo.lesson.title"), description: t("seo.lesson.description"), noindex: !isUuid(id) }),
         keywords: t("seo.lesson.keywords"),
     };
 }
@@ -79,6 +81,8 @@ export default async function AcademyLessonPage({ params }: Props) {
                     anonymous: tCommon("Анонимный пользователь"),
                 }}
             />
+            {/* Урок отдаётся только вошедшим — с сервера проверяем лишь вид id: не UUID — урока точно нет */}
+            {!isUuid(id) && <NotFoundStatus />}
         </PublicShell>
     );
 }
