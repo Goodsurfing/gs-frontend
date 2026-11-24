@@ -1,5 +1,6 @@
 import type { EmailChangeLabels } from "@/components/email-change/EmailChangeButton";
 import type { EmailChangeLinkLabels } from "@/components/email-change/EmailChangeLink";
+import type { VkEmailPromptLabels } from "@/components/email-change/VkEmailPrompt";
 import type { Translate } from "@/i18n/dictionary";
 import { EMAIL_CHANGE_ERRORS } from "@/lib/emailChange";
 
@@ -39,6 +40,22 @@ export function emailChangeLinkLabels(t: Translate, mode: "confirm" | "revert"):
         doneText: k("doneText"),
         doneButton: k("doneButton"),
         missing: t("emailChange.missing"),
+        errors: errors(t),
+    };
+}
+
+/** Плашка «Укажите почту» для вошедших через VK без почты; {{email}} и {{date}} подставляет компонент */
+export function vkEmailPromptLabels(t: Translate): VkEmailPromptLabels {
+    const k = (key: string) => t(`emailChange.vkPrompt.${key}`, { email: "{{email}}", date: "{{date}}" });
+    return {
+        title: k("title"),
+        text: k("text"),
+        email: k("email"),
+        submit: k("submit"),
+        later: k("later"),
+        sent: k("sent"),
+        pending: k("pending"),
+        signInAgain: t("emailChange.signInAgain"),
         errors: errors(t),
     };
 }
