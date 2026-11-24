@@ -6,21 +6,24 @@ import { Avatar } from "@/components/ui/Avatar";
 import type { Locale } from "@/i18n/config";
 import { type ChatApplication, formatDateRange, statusChip } from "@/lib/messenger";
 
+import { type Decision, DecisionButtons, type DecisionLabels } from "./Decision";
 import { type StatusLabels, StatusBadge } from "./StatusBadge";
 
-export interface ChatHeaderLabels {
+export interface ChatHeaderLabels extends DecisionLabels {
     back: string;
     info: string;
     statuses: StatusLabels;
     decisionPrompt: string;
-    accept: string;
-    decline: string;
+    /** «Изменить решение» у принятой или отклонённой заявки */
+    change: string;
+    changePrompt: string;
 }
 
 /**
  * Шапка переписки (как в Worldpackers): собеседник, вакансия с датами и
  * статус заявки — видно, о чём разговор, не листая вверх. Организатору у
- * новой заявки — полоса «Принять / Отклонить» под шапкой.
+ * новой заявки — полоса «Принять / Отклонить» под шапкой; у принятой или
+ * отклонённой — «Изменить решение» рядом со статусом, открывает ту же полосу.
  */
 export function ChatHeader({ locale, name, avatar, profileHref, application, viewerIsVolunteer, offerHref, infoOpen, onInfo, onBack, onDecision, labels }: {
     locale: Locale;
@@ -33,19 +36,32 @@ export function ChatHeader({ locale, name, avatar, profileHref, application, vie
     infoOpen: boolean;
     onInfo?: () => void;
     onBack: () => void;
-    onDecision?: (status: "accepted" | "canceled") => Promise<boolean>;
+    onDecision?: (status: Decision) => Promise<boolean>;
     labels: ChatHeaderLabels;
 }) {
     const [busy, setBusy] = useState(false);
+    const [changing, setChanging] = useState(false);
+    // Другая переписка — выбор «Изменить решение» закрыт
+    const [shownFor, setShownFor] = useState(application?.id);
+    if (shownFor !== application?.id) {
+        setShownFor(application?.id);
+        setChanging(false);
+    }
     const chip = statusChip(application?.status, viewerIsVolunteer);
     const dates = formatDateRange(locale, application?.startDate, application?.endDate);
-    const canDecide = !!onDecision && !viewerIsVolunteer && application?.status === "new";
+    const host = !!onDecision && !viewerIsVolunteer;
+    const status = application?.status;
+    const decided: Decision | undefined = status === "accepted" || status === "canceled" ? status : undefined;
+    const canDecide = host && status === "new";
+    const canChange = host && !!decided;
+    const showBar = canDecide || (canChange && changing);
 
-    const decide = async (status: "accepted" | "canceled") => {
+    const decide = async (next: Decision) => {
         if (!onDecision) return;
         setBusy(true);
-        await onDecision(status);
+        const ok = await onDecision(next);
         setBusy(false);
+        if (ok) setChanging(false);
     };
 
     const nameNode = <span className="truncate text-[16px] font-semibold text-ink">{name}</span>;
@@ -62,6 +78,17 @@ export function ChatHeader({ locale, name, avatar, profileHref, application, vie
                     {(chip || application?.vacancyTitle) && (
                         <div className="flex min-w-0 items-center gap-2 text-[12px] text-caption">
                             {chip && <StatusBadge chip={chip} labels={labels.statuses} />}
+                            {canChange && (
+                                <button
+                                    type="button"
+                                    translate="no"
+                                    aria-expanded={changing}
+                                    onClick={() => setChanging((value) => !value)}
+                                    className="notranslate shrink-0 cursor-pointer border-0 bg-transparent p-0 text-[12px] whitespace-nowrap text-primary underline decoration-dotted underline-offset-2 hover:text-primary-hover"
+                                >
+                                    {labels.change}
+                                </button>
+                            )}
                             {application?.vacancyTitle && (offerHref
                                 ? <a href={offerHref} className="min-w-0 truncate text-caption no-underline hover:text-primary hover:underline">{application.vacancyTitle}</a>
                                 : <span className="min-w-0 truncate">{application.vacancyTitle}</span>)}
@@ -81,16 +108,13 @@ export function ChatHeader({ locale, name, avatar, profileHref, application, vie
                     </button>
                 )}
             </div>
-            {canDecide && (
-                <div className="flex items-center gap-3 border-t border-field bg-status-new/10 px-4 py-2.5 down-sm:flex-col down-sm:items-stretch">
+            {showBar && (
+                <div className={`flex items-center gap-3 border-t border-field px-4 py-2.5 down-sm:flex-col down-sm:items-stretch ${canDecide ? "bg-status-new/10" : "bg-field"}`}>
                     <span className="min-w-0 flex-1 text-[13px] text-ink-secondary">
-                        {labels.decisionPrompt}
+                        {canDecide ? labels.decisionPrompt : labels.changePrompt}
                         {dates && <span className="hidden text-caption down-sm:inline"> · {dates}</span>}
                     </span>
-                    <div className="flex gap-2">
-                        <button type="button" disabled={busy} onClick={() => void decide("canceled")} className="h-9 flex-1 cursor-pointer rounded-full border border-accent-bg bg-white px-4 text-[14px] font-medium text-ink-tertiary transition-colors hover:border-error hover:text-error disabled:opacity-60">{labels.decline}</button>
-                        <button type="button" disabled={busy} onClick={() => void decide("accepted")} className="h-9 flex-1 cursor-pointer rounded-full border-0 bg-cta px-5 text-[14px] font-semibold text-white transition-colors hover:bg-cta-hover disabled:opacity-60">{labels.accept}</button>
-                    </div>
+                    <DecisionButtons current={decided} busy={busy} onDecision={(next) => void decide(next)} labels={labels} />
                 </div>
             )}
         </div>

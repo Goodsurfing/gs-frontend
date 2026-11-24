@@ -40,6 +40,11 @@ export interface MessengerLabels {
     info: string;
     /** Полоса под шапкой у новой заявки (организатору) */
     decisionPrompt: string;
+    /** Подтверждение отказа и «Изменить решение» у принятой или отклонённой заявки */
+    declineConfirm: string;
+    cancel: string;
+    changeDecision: string;
+    changePrompt: string;
     offerNotFound: string;
     applicationSent: string;
     sendError: string;
@@ -484,6 +489,10 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                                     decisionPrompt: labels.decisionPrompt,
                                     accept: labels.application.accept,
                                     decline: labels.application.decline,
+                                    declineConfirm: labels.declineConfirm,
+                                    cancel: labels.cancel,
+                                    change: labels.changeDecision,
+                                    changePrompt: labels.changePrompt,
                                 }}
                             />
                             {isCreate && offerId ? (
