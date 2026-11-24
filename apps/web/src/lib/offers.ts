@@ -46,8 +46,10 @@ export async function getOpenOffersOfCategory(locale: Locale, categoryId: number
 /** То же для любой посадочной страницы: без categoryIds — все направления (страница «Как Workaway, но в России») */
 export async function getOpenOffers(
     locale: Locale,
-    { categoryIds, limit, what, overlap }: {
+    { categoryIds, search, limit, what, overlap }: {
         categoryIds?: number[];
+        /** Поиск сайта (название, описание, адрес) — для страниц регионов */
+        search?: string;
         limit: number;
         what: string;
         /** Период заезда пересекается с окном (Y-m-d); fullYear — добавить «круглый год» без периодов */
@@ -59,6 +61,7 @@ export async function getOpenOffers(
         result = await serverApi(locale).GET("/api/v1/vacancy", {
             params: { query: {
                 ...(categoryIds ? { "categoryIds[]": categoryIds } : {}),
+                ...(search ? { search } : {}),
                 ...(overlap ? { overlapStart: overlap.start, overlapEnd: overlap.end, overlapFullYear: overlap.fullYear } : {}),
                 hidePassed: true, sort: "recommendation", fields: "card", limit, ...vacancyLang(locale),
             } as never },
