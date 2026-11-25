@@ -10,6 +10,7 @@ import { OfferOrganization } from "@/components/offer/OfferOrganization";
 import { OfferParticipants } from "@/components/offer/OfferParticipants";
 import { OfferPhotoStack } from "@/components/offer/OfferPhotoStack";
 import { OfferReviews } from "@/components/offer/OfferReviews";
+import { ReportProvider } from "@/components/report/ReportContext";
 import {
     OfferDescription, OfferExtraConditions, OfferFinishing, OfferLanguages, OfferPayment, OfferTerms,
     OfferWhatToDo, OfferWhen, OfferWhoNeeds, type SvgMap,
@@ -24,6 +25,7 @@ import { SectionSubmenu } from "@/components/ui/SectionSubmenu";
 import { failOnApiError } from "@/lib/apiUnavailable";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getTranslator, type Translate } from "@/i18n/dictionary";
+import { reportLabels } from "@/lib/report";
 import { offerSeoDescription, offerSeoTitle } from "@/lib/offerSeo";
 import { categoryName } from "@/lib/categories";
 import { mediaUrl } from "@/lib/media";
@@ -127,12 +129,13 @@ function moscowToday(): string {
 export default async function OfferPage({ params }: Props) {
     const { locale, id } = await params;
     if (!isLocale(locale)) notFound();
-    const [result, t, tOffer, tMain, tHost] = await Promise.all([
+    const [result, t, tOffer, tMain, tHost, tReport] = await Promise.all([
         getOffer(locale, id),
         getTranslator(locale),
         getTranslator(locale, "offer"),
         getTranslator(locale, "main"),
         getTranslator(locale, "host"),
+        getTranslator(locale, "report"),
     ]);
 
     failOnApiError(result, `вакансия ${id}`);
@@ -167,9 +170,11 @@ export default async function OfferPage({ params }: Props) {
     return (
         <PublicShell locale={locale}>
             <OfferViewerProvider offerId={offer.id}>
-                <div className="mx-auto flex min-h-[500px] w-full max-w-[1920px] flex-col items-center justify-center px-[50px] pt-[100px] pb-[50px] down-lg:p-5">
-                    <OfferBody locale={locale} offer={offer} participants={participants} reviews={reviews} banner={banner} svgs={svgs} badges={badges} similar={similar} volunteerPrice={prices[TARIFF.volunteer] ?? 990} t={t} tOffer={tOffer} tHost={tHost} />
-                </div>
+                <ReportProvider labels={reportLabels(tReport)}>
+                    <div className="mx-auto flex min-h-[500px] w-full max-w-[1920px] flex-col items-center justify-center px-[50px] pt-[100px] pb-[50px] down-lg:p-5">
+                        <OfferBody locale={locale} offer={offer} participants={participants} reviews={reviews} banner={banner} svgs={svgs} badges={badges} similar={similar} volunteerPrice={prices[TARIFF.volunteer] ?? 990} t={t} tOffer={tOffer} tHost={tHost} />
+                    </div>
+                </ReportProvider>
             </OfferViewerProvider>
         </PublicShell>
     );

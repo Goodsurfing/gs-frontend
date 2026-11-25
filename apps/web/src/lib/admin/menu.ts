@@ -48,7 +48,7 @@ export const ADMIN_MENU: AdminMenuGroup[] = [
     { title: "Поддержка", items: [{ href: "/admin/donations", label: "Все сборы" }, { href: "/admin/donation-reports", label: "Публичная отчётность" }] },
     { title: "Лидер", items: [{ href: "/admin/ambassadors", label: "Амбассадоры" }] },
     { title: "О Гудсёрфинге", items: [{ href: "/admin/about-project", label: "О проекте" }, { href: "/admin/our-team", label: "Наша команда" }] },
-    { title: "Обратная связь", items: [{ href: "/admin/feedback", label: "Обращения" }] },
+    { title: "Обратная связь", items: [{ href: "/admin/feedback", label: "Обращения" }, { href: "/admin/complaints", label: "Жалобы" }] },
     {
         title: CLUB_GROUP_TITLE,
         items: [

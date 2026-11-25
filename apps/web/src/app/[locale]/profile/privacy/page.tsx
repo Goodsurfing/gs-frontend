@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { CabinetShell } from "@/components/cabinet/CabinetShell";
+import { BlockedUsers } from "@/components/cabinet/profile/BlockedUsers";
 import { PrivacySettings } from "@/components/cabinet/profile/ProfileSettings";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { authMetadata } from "@/lib/authPages";
 import { profileMenu } from "@/lib/cabinetMenus";
+import { reportLabels } from "@/lib/report";
 import { routes } from "@/lib/routes";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -20,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProfilePrivacyPage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
-    const [t, tp] = await Promise.all([getTranslator(locale), getTranslator(locale, "profile")]);
+    const [t, tp, tReport] = await Promise.all([getTranslator(locale), getTranslator(locale, "profile"), getTranslator(locale, "report")]);
     const p = (key: string) => tp(`privacy.${key}`);
     return (
         <CabinetShell locale={locale} items={profileMenu(locale, t)}>
@@ -51,6 +53,8 @@ export default async function ProfilePrivacyPage({ params }: Props) {
                         searchError: p("Не удалось сохранить настройку поиска"),
                     }}
                 />
+                {/* Кого заблокировал в переписке (GS-282) */}
+                <BlockedUsers volunteerHref={routes.volunteerPublicTemplate(locale)} labels={reportLabels(tReport)} />
             </main>
         </CabinetShell>
     );

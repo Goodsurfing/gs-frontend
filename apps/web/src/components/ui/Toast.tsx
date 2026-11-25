@@ -11,7 +11,7 @@ export function Toast({ text, ok = false, onClose }: { text: string | null; ok?:
     }, [text, onClose]);
     if (!text) return null;
     return (
-        <div className="fixed top-[10%] left-1/2 z-[51] min-w-[20vh] -translate-x-1/2 font-medium tracking-[.6px] text-white">
+        <div className="fixed top-[10%] left-1/2 z-[1000] min-w-[20vh] -translate-x-1/2 font-medium tracking-[.6px] text-white">
             <div role={ok ? "status" : "alert"} onClick={onClose} className={`flex cursor-pointer items-center justify-center rounded-[30px] px-8 py-4 shadow-[6px_8px_16px_0_rgba(34,60,80,0.2)] ${ok ? "bg-[#62eb50]" : "bg-[#F4444E]"}`}>
                 {text}
             </div>

@@ -110,7 +110,10 @@ export function AdminList<T>({ config }: { config: AdminListConfig<T> }) {
             .then((res) => {
                 if (cancelled) return;
                 if (Array.isArray(res)) setResult({ key: requestKey, status: "ok", rows: res, total: res.length });
-                else setResult({ key: requestKey, status: "ok", rows: res.data ?? [], total: res.pagination?.total ?? res.data?.length ?? 0 });
+                else {
+                    const rows = res.data ?? res.items ?? [];
+                    setResult({ key: requestKey, status: "ok", rows, total: res.pagination?.total ?? res.total ?? rows.length });
+                }
             })
             .catch((e: unknown) => !cancelled && setResult({ key: requestKey, status: "error", rows: [], total: 0, error: e instanceof Error ? e.message : "Ошибка" }));
         return () => {

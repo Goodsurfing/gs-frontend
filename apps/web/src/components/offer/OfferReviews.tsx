@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import { localeFromPath } from "@/i18n/config";
 
 import { GalleryLightbox } from "@/components/gallery/GalleryLightbox";
+import { ReportButton } from "@/components/report/ReportButton";
 import { Avatar } from "@/components/ui/Avatar";
 import { API_URL, browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
@@ -291,6 +292,7 @@ export function OfferReviews({ offerId, initial, volunteerHref, labels }: {
                                 </a>
                                 <a href={href} className="ml-2 text-primary">{name}</a>
                                 {review.createdAt && <time dateTime={review.createdAt} className="ml-3 text-[13px] text-caption">{reviewDate(review.createdAt, locale)}</time>}
+                                <ReportButton target={{ type: "review", id: review.id }} authorId={review.author.id} className="ml-auto pl-3" />
                             </div>
                         </div>
                     );
