@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { ShowNext } from "@/components/offer/ShowNext";
+import { ReportButton } from "@/components/report/ReportButton";
 import { Avatar } from "@/components/ui/Avatar";
 import { browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
@@ -57,6 +58,7 @@ export function OrganizationReviews({ organizationId, initial, labels }: {
                                 </div>
                                 <span className="ml-3 flex"><Avatar src={mediaUrl(review.image, "small")} name={name} size={22} /></span>
                                 <span className="ml-2 text-primary">{name}</span>
+                                <ReportButton target={{ type: "review", id: String(review.id) }} className="ml-auto pl-3" />
                             </div>
                         </div>
                     );

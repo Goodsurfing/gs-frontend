@@ -45,7 +45,7 @@ function useAttachment(token: string | undefined, attachment: Attachment | undef
  * Подряд идущие сообщения одного автора — группа: аватар собеседника только
  * у последнего в группе, между сообщениями группы отступ меньше.
  */
-export const MessageBubble = memo(function MessageBubble({ own, name, avatar, showAvatar, profileHref, text, attachment, time, read, readLabel, groupEnd, token, onImage }: {
+export const MessageBubble = memo(function MessageBubble({ own, name, avatar, showAvatar, profileHref, text, attachment, time, read, readLabel, groupEnd, token, onImage, onReport, reportLabel }: {
     own: boolean;
     name: string;
     avatar?: string;
@@ -63,6 +63,9 @@ export const MessageBubble = memo(function MessageBubble({ own, name, avatar, sh
     groupEnd: boolean;
     token: string | undefined;
     onImage: (src: string) => void;
+    /** Пожаловаться на сообщение собеседника (GS-282) */
+    onReport?: () => void;
+    reportLabel?: string;
 }) {
     const media = useAttachment(token, attachment);
     const contentUrl = media?.contentUrl ?? "";
@@ -78,7 +81,7 @@ export const MessageBubble = memo(function MessageBubble({ own, name, avatar, sh
         </span>
     );
     return (
-        <div className={`flex w-full items-end gap-2 ${own ? "justify-end" : "justify-start"} ${groupEnd ? "mt-3" : "mt-0.5"}`}>
+        <div className={`group/msg flex w-full items-end gap-2 ${own ? "justify-end" : "justify-start"} ${groupEnd ? "mt-3" : "mt-0.5"}`}>
             {!own && (
                 <div className="w-8 shrink-0">
                     {showAvatar && (profileHref ? <a href={profileHref} aria-label={name}>{avatarNode}</a> : avatarNode)}
@@ -114,6 +117,18 @@ export const MessageBubble = memo(function MessageBubble({ own, name, avatar, sh
                     {meta}
                 </div>
             </div>
+            {onReport && (
+                // Флажок у сообщения: на компьютере — при наведении, на телефоне (нет наведения) — виден всегда, бледно
+                <button
+                    type="button"
+                    onClick={onReport}
+                    aria-label={reportLabel}
+                    title={reportLabel}
+                    className="flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center self-center rounded-full border-0 bg-transparent p-0 text-caption opacity-0 transition-opacity group-hover/msg:opacity-100 hover:bg-white focus-visible:opacity-100 [@media(hover:none)]:opacity-50"
+                >
+                    <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5" /></svg>
+                </button>
+            )}
         </div>
     );
 });

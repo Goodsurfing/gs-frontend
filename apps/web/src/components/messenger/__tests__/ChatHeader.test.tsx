@@ -83,3 +83,18 @@ describe("кнопки решения по заявке", () => {
         expect(decline?.tag).not.toContain("disabled=\"\"");
     });
 });
+
+describe("пожаловаться на сообщение (GS-282)", () => {
+    it("флажок — только у сообщения собеседника с обработчиком", async () => {
+        const { MessageBubble } = await import("../MessageBubble");
+        const props = { name: "Пётр", showAvatar: true, text: "Привет", time: "12:00", read: false, readLabel: "Прочитано", groupEnd: true, token: undefined, onImage: () => undefined };
+        expect(renderToString(<MessageBubble {...props} own={false} onReport={() => undefined} reportLabel="Пожаловаться на сообщение" />)).toContain("aria-label=\"Пожаловаться на сообщение\"");
+        expect(renderToString(<MessageBubble {...props} own={false} />)).not.toContain("Пожаловаться");
+    });
+
+    it("меню «Ещё» в шапке", async () => {
+        const { ChatActions } = await import("../ChatActions");
+        const html = renderToString(<ChatActions blocked={false} onReport={() => undefined} onBlock={() => undefined} labels={{ menu: "Ещё", report: "Пожаловаться", block: "Заблокировать", unblock: "Разблокировать" }} />);
+        expect(html).toContain("aria-label=\"Ещё\"");
+    });
+});

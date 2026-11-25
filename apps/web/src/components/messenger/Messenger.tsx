@@ -5,7 +5,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { reachGoal } from "@/components/analytics/YandexMetrika";
+import { useReportLabels } from "@/components/report/ReportContext";
+import { ReportDialog } from "@/components/report/ReportDialog";
+import { useBlocks } from "@/components/report/useBlocks";
 import { useSession } from "@/components/session/SessionProvider";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { Toast } from "@/components/ui/Toast";
 import type { Locale } from "@/i18n/config";
 import { API_URL, browserApi } from "@/lib/browserApi";
@@ -16,11 +20,13 @@ import {
 import type { CatalogOffer } from "@/lib/offersCatalog";
 import { applyDates, initialTerms } from "@/lib/applyDates";
 import { dayFromApi, today } from "@/lib/offerWizard";
+import { blockedSendText, type ReportTarget } from "@/lib/report";
 
 import { type ApplicationLabels, ApplicationEvent } from "./ApplicationBlock";
 import { type ApplyFormLabels, ApplyForm, ApplyFormError, ApplyFormSkeleton } from "./ApplyForm";
 import { needsIntro, QuickIntro, type QuickIntroLabels } from "./QuickIntro";
 import { ResponseHintNote, type ResponseHintLabels } from "./ResponseHintNote";
+import { ChatActions } from "./ChatActions";
 import { ChatHeader } from "./ChatHeader";
 import { type ChatInputLabels, ChatInput, type OutgoingMessage } from "./ChatInput";
 import { type ChatListLabels, ChatList } from "./ChatList";
@@ -148,6 +154,13 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     const [toast, setToast] = useState<{ text: string; ok: boolean } | null>(null);
     const fail = useCallback((text: string) => setToast({ text, ok: false }), []);
 
+    // Пожаловаться и заблокировать (GS-282): подписи кладёт страница; без них — ни меню, ни флажков
+    const report = useReportLabels();
+    const blocks = useBlocks(ready && !!report);
+    const [reportTarget, setReportTarget] = useState<ReportTarget | null>(null);
+    const [blockConfirm, setBlockConfirm] = useState(false);
+    const [blocking, setBlocking] = useState(false);
+
     // Значок в шапке обновляется вместе со списком, а не раз в минуту (тестировщик, 07.11)
     const { refreshUnread } = session;
     const onLive = useCallback((message: ChatMessage) => {
@@ -260,7 +273,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         }
         if (!result.response.ok || !created) {
             const error = (result.error ?? null) as { detail?: string; title?: string } | null;
-            setApplyError(error?.detail || error?.title || labels.error);
+            setApplyError((report && blockedSendText(error, report)) || error?.detail || error?.title || labels.error);
             return;
         }
         reachGoal("application_sent", text ? { message: "yes" } : undefined);
@@ -343,7 +356,8 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         const result = await browserApi(token).POST("/api/v1/messages", { body, headers: { Accept: "application/json" } }).catch(() => null);
         const sent = result?.data as ChatMessage | undefined;
         if (!result?.response.ok || !sent) {
-            fail(labels.sendError);
+            // Собеседник заблокировал (или вы его) — понятный текст вместо общей ошибки
+            fail((report && blockedSendText(result?.error, report)) || labels.sendError);
             return;
         }
         if (isCreate) {
@@ -367,6 +381,25 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     const target = companionTarget(companion ?? (participant?.id ? { id: participant.id } : null), !!me?.hostId);
     const companionHref = target ? href(target.kind === "organization" ? hrefs.organization : hrefs.volunteer, target.id) : undefined;
     const myName = fullName(me, labels.list.noName);
+    // Собеседник открытой переписки — для жалобы и блокировки
+    const companionId = participant?.id ?? companion?.id ?? undefined;
+    const companionBlocked = blocks.items === null || !companionId ? null : blocks.isBlocked(companionId);
+    const toggleBlock = async () => {
+        if (!report || !companionId) return;
+        setBlocking(true);
+        const wasBlocked = !!companionBlocked;
+        const ok = wasBlocked ? await blocks.unblock(companionId) : await blocks.block(companionId);
+        setBlocking(false);
+        setBlockConfirm(false);
+        if (!ok) {
+            fail(report.blockError);
+            return;
+        }
+        setToast({ text: wasBlocked ? report.unblocked : report.blocked, ok: true });
+        // Заблокированная переписка пропадает из списка — возвращаемся к нему
+        void list.reload();
+        if (!wasBlocked) open();
+    };
 
     // Кто вошёл в этой переписке: организатор, если заявка на вакансию его организации
     const viewerIsVolunteer = useCallback((item: Pick<Chat, "application">) => (item.application ? item.application.organizationId !== me?.hostId : !me?.hostId), [me?.hostId]);
@@ -422,6 +455,8 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                         groupEnd={groupStart}
                         token={token}
                         onImage={setImage}
+                        onReport={!own && report && message.id !== undefined ? () => setReportTarget({ type: "message", id: String(message.id) }) : undefined}
+                        reportLabel={report?.reportMessage}
                     />
                 );
             }
@@ -443,7 +478,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         return items;
         // href — без состояния, пересоздаётся при каждом рендере
          
-    }, [chat.messages, applications, me?.id, myName, companionName, companionAvatar, companionHref, locale, token, labels, hrefs, volunteerHere, application?.status, application?.id]);
+    }, [chat.messages, applications, me?.id, myName, companionName, companionAvatar, companionHref, locale, token, labels, hrefs, volunteerHere, application?.status, application?.id, report]);
 
     const hasChat = !!chatId;
     const scroller = useRef<HTMLDivElement>(null);
@@ -452,6 +487,29 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     return (
         <div className="mx-[50px] mt-5 mb-[18px] flex h-[calc(100vh-200px)] min-h-[480px] flex-1 flex-col down-lg:mx-5 down-lg:mt-0 down-lg:h-[calc(100dvh-110px)] down-xs:mx-0">
             <Toast text={toast?.text ?? null} ok={toast?.ok} onClose={() => setToast(null)} />
+            {report && (
+                <>
+                    <ReportDialog
+                        target={reportTarget}
+                        title={reportTarget?.type === "message" ? report.reportMessage : report.reportUser}
+                        labels={report}
+                        onClose={() => setReportTarget(null)}
+                        onSent={() => {
+                            setReportTarget(null);
+                            setToast({ text: report.sent, ok: true });
+                        }}
+                    />
+                    <ConfirmDialog
+                        open={blockConfirm}
+                        text={companionBlocked ? report.unblockConfirm : report.blockConfirm}
+                        confirm={companionBlocked ? report.unblock : report.block}
+                        cancel={report.cancel}
+                        busy={blocking}
+                        onConfirm={() => void toggleBlock()}
+                        onClose={() => setBlockConfirm(false)}
+                    />
+                </>
+            )}
             <h2 className="text-[1.5em] font-normal down-lg:hidden">{labels.title}</h2>
             <div className="mt-5 flex h-full min-h-0 flex-1 overflow-hidden rounded-[14px] border border-accent-bg bg-white down-lg:mt-0 down-xs:rounded-none down-xs:border-x-0">
                 <ChatList
@@ -494,6 +552,14 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                                 onInfo={companion ? () => setInfoOpen((value) => !value) : undefined}
                                 onBack={() => open()}
                                 onDecision={applicationId ? (status) => decide(applicationId, status) : undefined}
+                                actions={report && realChatId && companionId ? (
+                                    <ChatActions
+                                        blocked={companionBlocked}
+                                        onReport={() => setReportTarget({ type: "user", id: companionId })}
+                                        onBlock={() => setBlockConfirm(true)}
+                                        labels={{ menu: report.menu, report: report.reportUser, block: report.block, unblock: report.unblock }}
+                                    />
+                                ) : undefined}
                                 labels={{
                                     back: labels.back,
                                     info: labels.info,
