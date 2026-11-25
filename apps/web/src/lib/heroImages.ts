@@ -4,6 +4,9 @@
  * только середину, а файл в разы меньше), и размытое превью 24 px в data URL
  * (меньше 200 байт) — оно в HTML и видно сразу, пока на медленном интернете
  * грузится фото. Вырезки и превью сделаны Pillow из исходных slide-*.webp.
+ *
+ * phone — облегчённая вырезка для первого экрана главной на телефоне (GS-292, PhoneHero):
+ * slide-1-mobile, уменьшенная до 600 px, качество 45 — ~30 КБ против 60 (под затемнением не видно).
  */
 export interface HeroImage {
     src: string;
@@ -21,3 +24,5 @@ export const HERO_IMAGES = {
     volunteers: image("slide-1", "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAABQBQCdASoYABkAPu1mq0+ppSOiMBgIATAdiWcAxNgQOZLIRqfH02oLISyU30NDDX/qrAAA/M78RvSMhvoXzzbnuZ08vKqJyoelQY0BEZWQ4LIhYqmnBbIHBzvhLzlXJcKGhVHLGN7SQFAA"),
     hosts: image("slide-2", "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAwCdASoYAA0APu1mq04ppaQiMAgBMB2JYwCdIMgDApHB34WQKlQAAPx9qr+42qibt2LUNXChtRIzGnDctHEW0qJeJx7b9WvLJagA"),
 } satisfies Record<string, HeroImage>;
+
+export const PHONE_HERO_IMAGE = { ...HERO_IMAGES.volunteers, phone: "/web/images/home/slide-1-phone.webp" };

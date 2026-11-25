@@ -100,5 +100,13 @@
         "faqExpQ": "¿Necesito experiencia?",
         "faqExpA": "Normalmente no: los anfitriones explican las tareas en el lugar.",
         "showMore": "Mostrar más ({n})"
+    },
+    "phoneHero": {
+        "lead": "Viajes de voluntariado y expediciones por Rusia y el mundo: alojamiento a cambio de ayuda",
+        "searchLabel": "Buscar vacantes",
+        "placeholder": "¿Adónde quieres ir?",
+        "find": "Buscar",
+        "picks": "Colecciones",
+        "socials": "Síguenos"
     }
 }
