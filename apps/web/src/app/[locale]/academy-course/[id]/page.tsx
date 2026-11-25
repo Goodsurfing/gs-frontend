@@ -12,6 +12,7 @@ import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { ACADEMY_PAGE_SIZE, getCourse, getLessons } from "@/lib/academy";
 import { listHref, listParams } from "@/lib/listParams";
+import { isUuid } from "@/lib/entityId";
 import { mediaUrl } from "@/lib/media";
 import { routes } from "@/lib/routes";
 import { pageMetadata, seoDescription } from "@/lib/seo";
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!isLocale(locale)) return {};
     const [t, result] = await Promise.all([getTranslator(locale, "academy"), getCourse(locale, id)]);
     const path = routes.academyCourse(locale, id);
-    if (result.kind !== "ok") return pageMetadata({ locale, path, title: t("seo.course.title"), description: t("seo.course.description"), noindex: true });
+    if (result.kind !== "ok") return pageMetadata({ locale, path, title: t("seo.course.title"), description: t("seo.course.description"), noindex: true, notFound: !isUuid(id) });
     const { course } = result;
     return {
         ...pageMetadata({
