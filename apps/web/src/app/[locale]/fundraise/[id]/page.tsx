@@ -15,6 +15,7 @@ import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { categoryName } from "@/lib/categories";
 import { type FundraiseDetail, getDonors, getFundraise } from "@/lib/fundraise";
+import { isUuid } from "@/lib/entityId";
 import { mediaUrl } from "@/lib/media";
 import { routes } from "@/lib/routes";
 import { pageMetadata, seoDescription, siteUrl } from "@/lib/seo";
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!isLocale(locale)) return {};
     const [result, t] = await Promise.all([getFundraise(locale, id), getTranslator(locale, "donation")]);
     const path = routes.fundraise(locale, id);
-    if (result.kind !== "ok") return pageMetadata({ locale, path, title: t("personalSeo.title"), description: t("personalSeo.description"), noindex: true });
+    if (result.kind !== "ok") return pageMetadata({ locale, path, title: t("personalSeo.title"), description: t("personalSeo.description"), noindex: true, notFound: !isUuid(id) });
     const { fundraise } = result;
     return {
         ...pageMetadata({

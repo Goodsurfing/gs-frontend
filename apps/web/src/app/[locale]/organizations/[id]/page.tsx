@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const [result, tSeo] = await Promise.all([getOrganization(locale, id), getTranslator(locale, "seo")]);
     const path = routes.organization(locale, id);
     if (result.kind !== "ok") {
-        return pageMetadata({ locale, path, title: tSeo("host.title"), description: tSeo("host.description"), noindex: true });
+        return pageMetadata({ locale, path, title: tSeo("host.title"), description: tSeo("host.description"), noindex: true, notFound: result.kind === "notFound" });
     }
     const { organization } = result;
     const description = organization.shortDescription || organization.description;
