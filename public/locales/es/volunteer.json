@@ -27,6 +27,39 @@
                 "action": "Hazte miembro",
                 "why": "Postula sin límites: 990 ₽ al año"
             }
+        },
+        "mobile": {
+            "applications": "Mis solicitudes",
+            "all": "Todas las solicitudes ({{count}})",
+            "status": {
+                "new": "En revisión",
+                "accepted": "Aceptada",
+                "canceled": "Rechazada"
+            },
+            "next": {
+                "new": "Esperando al anfitrión: te avisaremos cuando responda",
+                "accepted": "Acordad las fechas y el viaje en el chat",
+                "canceled": "No te desanimes: mira vacantes parecidas"
+            },
+            "emptyTitle": "Aún no has enviado solicitudes",
+            "emptyHint": "Elige una vacante y escribe al anfitrión: la respuesta llegará a Mensajes",
+            "find": "Buscar vacante",
+            "loadError": "No se pudo cargar",
+            "retry": "Reintentar",
+            "offers": "Vacantes para ti",
+            "offersAll": "Todas las vacantes",
+            "offersFresh": "Son las vacantes más recientes. Indica tus intereses para afinar la selección",
+            "interests": "Intereses",
+            "offersEmpty": "Aún no hay vacantes adecuadas: echa un vistazo al catálogo",
+            "profileFilled": "Perfil completado al {{percent}} %",
+            "profileDone": "Perfil completo",
+            "profileHint": "Los perfiles completos se aceptan más a menudo",
+            "complete": "Completar",
+            "open": "Abrir",
+            "quota": "Solicitudes gratuitas: {{left}} de {{total}}",
+            "quotaMember": "Membresía: solicitudes ilimitadas",
+            "membership": "Membresía",
+            "noTitle": "Sin título"
         }
     },
     "volunteer-skills": {

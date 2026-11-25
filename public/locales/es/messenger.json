@@ -103,5 +103,10 @@
     "Отклонить заявку? Волонтёр получит уведомление": "¿Rechazar la solicitud? El voluntario recibirá una notificación",
     "Отмена": "Cancelar",
     "Изменить решение": "Cambiar decisión",
-    "Измените решение по заявке — волонтёр получит уведомление": "Cambia tu decisión sobre la solicitud: el voluntario recibirá una notificación"
+    "Измените решение по заявке — волонтёр получит уведомление": "Cambia tu decisión sobre la solicitud: el voluntario recibirá una notificación",
+    "empty": {
+        "volunteer": "Aquí aparecerán tus conversaciones con los anfitriones",
+        "volunteerHint": "Envía una solicitud: el anfitrión responderá aquí",
+        "find": "Buscar vacante"
+    }
 }

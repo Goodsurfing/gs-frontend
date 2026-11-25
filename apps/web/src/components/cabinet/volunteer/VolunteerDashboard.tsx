@@ -9,6 +9,7 @@ import { ReviewReminders, type ReviewRemindersLabels } from "@/components/cabine
 import { useFavoriteOffers } from "@/components/offers/useFavoriteOffers";
 import { useSession } from "@/components/session/SessionProvider";
 import { Spinner } from "@/components/ui/Spinner";
+import { usePhoneScreen } from "@/components/ui/usePhoneScreen";
 import type { Locale } from "@/i18n/config";
 import { localizeCard, vacancyLang } from "@/lib/offerLocale";
 import { browserApi } from "@/lib/browserApi";
@@ -18,10 +19,13 @@ import type { CatalogOffer } from "@/lib/offersCatalog";
 import { whyText, type WhyLabels } from "@/lib/recommendations";
 
 import { Doughnut } from "./Doughnut";
+import { VolunteerDashboardPhone, type VolunteerDashboardPhoneLabels } from "./VolunteerDashboardPhone";
 import { storageGet, storageSet } from "@/lib/safeStorage";
 
 type Occupancy = components["schemas"]["OccupancyResult"];
 
+/** Сколько вакансий «для вас» на телефоне (GS-291) */
+const PHONE_OFFERS = 5;
 /** Сколько бесплатных откликов в год без членства (shared/constants/membership старого фронта) */
 const FREE_APPLICATIONS_LIMIT = 3;
 /** Дата первого визита на дашборд — тот же ключ localStorage, что у старого фронта */
@@ -49,6 +53,8 @@ export interface VolunteerDashboardLabels {
     favorite: { add: string; remove: string };
     /** «Почему подходит» под рекомендацией (GS-256); {value} — что совпало */
     why: WhyLabels;
+    /** Телефонная версия (GS-291) */
+    phone: VolunteerDashboardPhoneLabels;
 }
 
 interface Reason { type: string; value: string }
@@ -64,7 +70,7 @@ const h3 = "text-[1.17em] font-bold";
  */
 export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
     locale: Locale;
-    hrefs: { volunteer: string; skills: string; about: string; gallery: string; preferences: string; membership: string; offer: string; review: string };
+    hrefs: { volunteer: string; skills: string; about: string; gallery: string; preferences: string; membership: string; offer: string; review: string; chat: string; notes: string; catalog: string };
     categories: Record<string, string>;
     labels: VolunteerDashboardLabels;
 }) {
@@ -77,6 +83,9 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
     const [picked, setPicked] = useState<{ offers: CatalogOffer[]; reasons: Record<number, Reason[]> } | null>(null);
     const [date, setDate] = useState("");
     const favorite = (profile?.favoriteCategories ?? []).join(",");
+    const phone = usePhoneScreen() === true;
+    // Свежие вакансии — только на телефоне и только если подборки нет (GS-291)
+    const [fresh, setFresh] = useState<CatalogOffer[] | "error" | null>(null);
 
     useEffect(() => {
         if (session.status !== "user") return;
@@ -129,6 +138,23 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
         };
     }, [session.status, session.token, favorite, categories, locale]);
 
+    // Подборки нет (ни подбора, ни любимых направлений) — на телефоне показываем свежие вакансии
+    const needFresh = phone && picked !== null && picked.offers.length === 0 && (!favorite || (offers !== null && offers.length === 0));
+    useEffect(() => {
+        if (!needFresh || session.status !== "user") return;
+        let cancelled = false;
+        void browserApi(session.token)
+            .GET("/api/v1/vacancy", { params: { query: { sort: "updated:desc", hidePassed: true, fields: "card", limit: PHONE_OFFERS, ...vacancyLang(locale) } } })
+            .then(({ data }) => {
+                if (cancelled) return;
+                setFresh(data ? (data.data ?? []).slice(0, PHONE_OFFERS).map(localizeCard).map((offer) => toCard(offer, categories)) : "error");
+            })
+            .catch(() => !cancelled && setFresh("error"));
+        return () => {
+            cancelled = true;
+        };
+    }, [needFresh, session.status, session.token, locale, categories]);
+
     useEffect(() => {
         try {
             const saved = storageGet(NOTIFICATION_DATE_KEY);
@@ -168,10 +194,31 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
     // Пока занятость не загружена, пункты выглядят несделанными — шаг не угадываем
     const next = occupancy ? steps.find((step) => !step.done) : undefined;
 
+    // Телефон: подбор → любимые направления → свежие; null — ещё грузится
+    const phoneOffers = (() => {
+        if (picked === null) return null;
+        if (picked.offers.length > 0) {
+            return { fresh: false, failed: false, items: picked.offers.slice(0, PHONE_OFFERS).map((offer) => {
+                const why = reasonsOf(offer.id).map((reason) => whyText(reason, labels.why, locale)).filter(Boolean).join(" · ");
+                return { offer, why: why ? `${labels.why.title} ${why}` : undefined };
+            }) };
+        }
+        if (favorite && offers === null) return null;
+        if (favorite && offers && offers.length > 0) return { fresh: false, failed: false, items: offers.slice(0, PHONE_OFFERS).map((offer) => ({ offer })) };
+        if (fresh === null) return null;
+        return { fresh: true, failed: fresh === "error", items: fresh === "error" ? [] : fresh.map((offer) => ({ offer })) };
+    })();
+    const name = [profile?.firstName?.trim(), profile?.lastName?.trim()].filter(Boolean).join(" ");
+    // Телефон: заполненность — по трём пунктам, от которых зависит ответ организатора (о себе, навыки, фото);
+    // видео, статьи и членство в строку профиля не входят
+    const essential = steps.filter((step) => step.key !== "membership");
+    const phoneShare = essential.filter((step) => step.done).length / essential.length;
+    const phoneNext = occupancy ? essential.find((step) => !step.done) : undefined;
+
     return (
         <div className="w-full max-w-[1400px]">
             {profile && (
-                <section className={`flex w-full flex-col ${card}`}>
+                <section className={`flex w-full flex-col ${card} down-md:hidden`}>
                     <div className={`${cardTop} flex-wrap max-[567px]:gap-y-2.5`}>
                         <h3 className={h3}>{labels.fill}</h3>
                         <a href={hrefs.volunteer.replace("{id}", profile.id)} className="text-primary no-underline">{labels.viewProfile}</a>
@@ -200,8 +247,28 @@ export function VolunteerDashboard({ locale, hrefs, categories, labels }: {
                     </div>
                 </section>
             )}
-            <ReviewReminders side="volunteer" reviewHref={hrefs.review} labels={labels.reviewReminders} className="mt-[1.875rem]" />
-            <div className="grid grid-cols-[2fr_1fr] gap-[1.875rem] pt-[1.875rem] pb-14 down-lg:grid-cols-1">
+            <ReviewReminders side="volunteer" reviewHref={hrefs.review} labels={labels.reviewReminders} className="mt-[1.875rem] down-md:mt-0 down-md:mb-4" />
+            {/* Телефон (до 768 px): отклики, вакансии для вас, профиль одной строкой — GS-291 */}
+            <VolunteerDashboardPhone
+                enabled={phone}
+                hrefs={{ chat: hrefs.chat, offer: hrefs.offer, notes: hrefs.notes, catalog: hrefs.catalog, preferences: hrefs.preferences, membership: hrefs.membership }}
+                profile={profile && {
+                    name: name || profile.email,
+                    image: mediaUrl(profile.image, "small"),
+                    share: occupancy ? phoneShare : null,
+                    completeHref: phoneNext?.href,
+                    publicHref: hrefs.volunteer.replace("{id}", profile.id),
+                    quota: occupancy && {
+                        member: occupancy.isMembership,
+                        left: Math.max(0, Math.min(occupancy.remainingFreeApplications ?? 0, FREE_APPLICATIONS_LIMIT)),
+                        total: FREE_APPLICATIONS_LIMIT,
+                    },
+                }}
+                offers={phoneOffers}
+                favorites={{ enabled: favorites.enabled, isFavorite: favorites.isFavorite, isBusy: favorites.isBusy, toggle: (id) => void favorites.toggleFavorite(id) }}
+                labels={labels.phone}
+            />
+            <div className="grid grid-cols-[2fr_1fr] gap-[1.875rem] pt-[1.875rem] pb-14 down-lg:grid-cols-1 down-md:hidden">
                 <section className={`w-full max-w-[1000px] ${card}`}>
                     <div className={`${cardTop} down-sm:flex-wrap down-sm:gap-y-2.5`}>
                         <h3 className={h3}>{labels.offers}</h3>

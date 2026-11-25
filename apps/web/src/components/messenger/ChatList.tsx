@@ -3,6 +3,7 @@
 import { type ReactNode, useMemo, useState } from "react";
 
 import { Avatar } from "@/components/ui/Avatar";
+import { EmptyHint } from "@/components/ui/EmptyHint";
 import type { Locale } from "@/i18n/config";
 import { mediaUrl } from "@/lib/media";
 import { type Chat, CHAT_TABS, chatInTab, type ChatTab, formatDateRange, formatListTime, readByOthers, statusChip } from "@/lib/messenger";
@@ -37,7 +38,7 @@ const STEP = 30;
  * значком прочтения) и число непрочитанных. Строки дорисовываются при
  * прокрутке по 30, чтобы длинный список не тормозил слабые телефоны.
  */
-export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerIsVolunteer, selectedId, chatHref, onOpen, search, onSearch, labels, top, className = "" }: {
+export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerIsVolunteer, selectedId, chatHref, onOpen, search, onSearch, labels, top, emptyPhone, className = "" }: {
     locale: Locale;
     chats: Chat[];
     loaded: boolean;
@@ -53,6 +54,8 @@ export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerI
     labels: ChatListLabels;
     /** Над поиском: предложение включить уведомления */
     top?: ReactNode;
+    /** Нет ни одной переписки, телефон (до 768 px): подсказка и кнопка «что делать» (GS-291); на компьютере — прежняя строка */
+    emptyPhone?: { title: string; hint: string; action: { href: string; label: string } };
     className?: string;
 }) {
     const [tab, setTab] = useState<ChatTab>("all");
@@ -111,7 +114,12 @@ export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerI
                     </div>
                 )}
                 {loaded && !failed && filtered.length === 0 && (
-                    <p className="px-6 py-10 text-center text-[14px] text-caption">{chats.length === 0 && !search ? labels.empty : search || tab === "all" ? labels.emptyTab : labels.emptyTabs[tab]}</p>
+                    <p className={`px-6 py-10 text-center text-[14px] text-caption ${emptyPhone && chats.length === 0 && !search ? "down-md:hidden" : ""}`}>
+                        {chats.length === 0 && !search ? labels.empty : search || tab === "all" ? labels.emptyTab : labels.emptyTabs[tab]}
+                    </p>
+                )}
+                {loaded && !failed && emptyPhone && chats.length === 0 && !search && (
+                    <EmptyHint icon="chat" title={emptyPhone.title} hint={emptyPhone.hint} action={emptyPhone.action} className="hidden py-10 down-md:flex" />
                 )}
                 {shown.map((chat) => (
                     <ChatRow

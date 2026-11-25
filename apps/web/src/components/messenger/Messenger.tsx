@@ -36,6 +36,8 @@ export interface MessengerLabels {
     hint: ResponseHintLabels;
     title: string;
     choose: string;
+    /** Пустые «Сообщения» волонтёра на телефоне (GS-291) */
+    emptyVolunteer: { title: string; hint: string; find: string };
     back: string;
     info: string;
     /** Полоса под шапкой у новой заявки (организатору) */
@@ -68,6 +70,8 @@ export interface MessengerHrefs {
     offer: string;
     volunteer: string;
     organization: string;
+    /** «Найти вакансию» из пустых «Сообщений» */
+    catalog: string;
 }
 
 /** Поля вакансии, нужные карточке заявки (GET /api/v1/vacancies/{id} и вакансия в заявке) */
@@ -465,6 +469,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                     onSearch={list.setSearch}
                     labels={labels.list}
                     top={<PushOffer token={token} enabled={ready && list.chats.length > 0} labels={labels.push} />}
+                    emptyPhone={ready && !me?.hostId ? { title: labels.emptyVolunteer.title, hint: labels.emptyVolunteer.hint, action: { href: hrefs.catalog, label: labels.emptyVolunteer.find } } : undefined}
                     className={hasChat ? "down-lg:hidden" : "down-lg:flex down-lg:max-w-none"}
                 />
                 {!hasChat ? (
