@@ -10,7 +10,9 @@ import type { HeroImage } from "@/lib/heroImages";
  * Медленный интернет: поиск — обычная форма GET в каталог, работает сразу с HTML, до загрузки
  * скриптов. Фото облегчённое (~30 КБ) и `loading="lazy"`: начинает грузиться после CSS, не
  * отнимает у него канал (иначе страница рисуется позже), а на компьютере блок скрыт и фото не
- * грузится совсем. Пока фото нет — размытое превью из data URL под тем же затемнением.
+ * грузится совсем. Пока фото нет — размытое превью из data URL под тем же затемнением. Значки
+ * соцсетей тоже ленивые: на медленной сети каждая параллельная загрузка до CSS откладывает
+ * отрисовку страницы, а с ней и поиск.
  */
 export function PhoneHero({ title, lead, image, catalogHref, picks, labels }: {
     title: string;
@@ -37,7 +39,7 @@ export function PhoneHero({ title, lead, image, catalogHref, picks, labels }: {
                             <li key={name}>
                                 <a href={href} target="_blank" rel="noreferrer" aria-label={name} title={name} className={`flex shadow-[0_0_0_1.5px_#fff] ${round ? "rounded-full" : "rounded-[22%]"}`}>
                                     {/* eslint-disable-next-line @next/next/no-img-element -- иконки 24×24 */}
-                                    <img src={icon} alt="" aria-hidden width={24} height={24} className="block rounded-[inherit]" />
+                                    <img src={icon} alt="" aria-hidden width={24} height={24} loading="lazy" className="block rounded-[inherit]" />
                                 </a>
                             </li>
                         ))}
