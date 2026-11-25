@@ -1,5 +1,6 @@
 import { capturePageLang, pageTampering, parseUserAgent } from "@/lib/browserContext";
 import { DENY_URLS, errorTrackingOptions } from "@/lib/errorTracking";
+import { filterBrowserEvent } from "@/lib/robotFilter";
 
 /**
  * Ошибки в браузере — в Bugsink. SDK (@sentry/browser с нужными интеграциями)
@@ -23,7 +24,10 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
             denyUrls: DENY_URLS,
             // Браузер, ОС и следы переводчика/расширений — чтобы отличать наши
             // ошибки гидрации (#418) от чужих правок страницы (GS-272). Без ПДн.
-            beforeSend(event) {
+            beforeSend(rawEvent) {
+                // Роботы (поисковики, автоматизация) — не отправляем; ChunkLoadError — одной задачей
+                const event = filterBrowserEvent(rawEvent, navigator.userAgent, navigator.webdriver === true);
+                if (!event) return null;
                 const { browser, os } = parseUserAgent(navigator.userAgent);
                 const { translated, foreignAttributes } = pageTampering(document, pageLang);
                 event.tags = { ...event.tags, browser, os, translated: String(translated) };
