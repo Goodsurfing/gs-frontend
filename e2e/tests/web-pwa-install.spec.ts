@@ -9,6 +9,8 @@ import { BASE_URL } from '../config';
  */
 const IPHONE_SAFARI = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1 Mobile/15E148 Safari/604.1';
 const HINT = 'Как установить на iPhone';
+// Кабинет волонтёра на телефоне (GS-291) начинается с откликов — признак, что страница загрузилась
+const PHONE_DASHBOARD = 'Мои отклики';
 
 const iphone = async (browser: Browser, testInfo: TestInfo, standalone = false) => {
     const context = await browser.newContext({
@@ -65,9 +67,9 @@ test.describe('Новый фронт: сайт на экране «Домой» 
 
         await hint.getByRole('button', { name: 'Позже' }).click();
         await expect(page.getByRole('region', { name: HINT })).toHaveCount(0);
-        // После «Позже» плашки нет и в кабинете (заголовок — признак, что страница загрузилась)
+        // После «Позже» плашки нет и в кабинете (заголовок откликов — признак, что страница загрузилась)
         await page.goto('/volunteer/volunteer-dashboard');
-        await expect(page.getByRole('heading', { name: 'Заполненность профиля' })).toBeVisible();
+        await expect(page.getByRole('heading', { name: PHONE_DASHBOARD })).toBeVisible();
         await expect(page.getByRole('region', { name: HINT })).toHaveCount(0);
         await context.close();
     });
@@ -82,7 +84,7 @@ test.describe('Новый фронт: сайт на экране «Домой» 
             sessionStorage.removeItem('gs-install-hint-session');
         });
         await page.reload();
-        await expect(page.getByRole('heading', { name: 'Заполненность профиля' })).toBeVisible();
+        await expect(page.getByRole('heading', { name: PHONE_DASHBOARD })).toBeVisible();
         await expect(page.getByRole('region', { name: HINT })).toHaveCount(0);
         await page.evaluate(() => localStorage.removeItem('gs-install-hint-shown'));
         await context.close();
@@ -92,7 +94,7 @@ test.describe('Новый фронт: сайт на экране «Домой» 
         const context = await iphone(browser, testInfo, true);
         const page = await context.newPage();
         await page.goto('/volunteer/volunteer-dashboard');
-        await expect(page.getByRole('heading', { name: 'Заполненность профиля' })).toBeVisible();
+        await expect(page.getByRole('heading', { name: PHONE_DASHBOARD })).toBeVisible();
         await expect(page.getByRole('region', { name: HINT })).toHaveCount(0);
         await context.close();
     });
