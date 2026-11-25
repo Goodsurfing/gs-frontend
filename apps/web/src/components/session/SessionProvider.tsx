@@ -25,9 +25,13 @@ export interface Session {
     saveLocale: (locale: Locale) => void;
     /** Профиль после сохранения (фото, имя) — чтобы шапка обновилась без перезагрузки */
     updateProfile: (profile: Profile) => void;
+    /** Перезапросить счётчик непрочитанных в шапке (пришло сообщение, чат прочитан) */
+    refreshUnread: () => void;
 }
 
-const GUEST: Omit<Session, "logout" | "saveLocale" | "updateProfile"> = { status: "guest", profile: null, unreadMessages: 0, memberships: [] };
+type SessionState = Omit<Session, "logout" | "saveLocale" | "updateProfile" | "refreshUnread">;
+
+const GUEST: SessionState = { status: "guest", profile: null, unreadMessages: 0, memberships: [] };
 
 const SessionContext = createContext<Session | null>(null);
 
@@ -43,7 +47,7 @@ const timeout = () => ({ signal: AbortSignal.timeout(10_000) });
 const UNREAD_REFRESH_MS = 60_000;
 
 export function SessionProvider({ children }: { children: ReactNode }) {
-    const [state, setState] = useState<Omit<Session, "logout" | "saveLocale" | "updateProfile">>({ ...GUEST, status: "unknown" });
+    const [state, setState] = useState<SessionState>({ ...GUEST, status: "unknown" });
     const [token, setToken] = useState<string | undefined>();
 
     useEffect(() => {
@@ -94,29 +98,28 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
     // Счётчик непрочитанных в шапке: раньше брался один раз при входе, и новое сообщение
     // было видно только после перезагрузки (тестировщик, 07.11.2026). Теперь — раз в минуту,
-    // пока вкладка на экране, и сразу при возвращении на вкладку. Ответ — одно число.
+    // пока вкладка на экране, сразу при возвращении на вкладку и по сигналу страницы
+    // сообщений (пришло сообщение, чат прочитан). Ответ — одно число.
     const userSignedIn = state.status === "user";
+    const refreshUnread = useCallback(() => {
+        if (!userSignedIn || document.visibilityState !== "visible") return;
+        void browserApi(token).GET("/api/v1/personal/unread-messages", timeout())
+            .then(({ data }) => {
+                const count = (data as { unreadMessagesCount?: unknown } | undefined)?.unreadMessagesCount;
+                if (typeof count !== "number") return;
+                setState((prev) => (prev.status === "user" && prev.unreadMessages !== count ? { ...prev, unreadMessages: count } : prev));
+            })
+            .catch(() => undefined);
+    }, [userSignedIn, token]);
     useEffect(() => {
         if (!userSignedIn) return;
-        let stopped = false;
-        const refresh = () => {
-            if (document.visibilityState !== "visible") return;
-            void browserApi(token).GET("/api/v1/personal/unread-messages", timeout())
-                .then(({ data }) => {
-                    const count = (data as { unreadMessagesCount?: unknown } | undefined)?.unreadMessagesCount;
-                    if (stopped || typeof count !== "number") return;
-                    setState((prev) => (prev.status === "user" && prev.unreadMessages !== count ? { ...prev, unreadMessages: count } : prev));
-                })
-                .catch(() => undefined);
-        };
-        const timer = window.setInterval(refresh, UNREAD_REFRESH_MS);
-        document.addEventListener("visibilitychange", refresh);
+        const timer = window.setInterval(refreshUnread, UNREAD_REFRESH_MS);
+        document.addEventListener("visibilitychange", refreshUnread);
         return () => {
-            stopped = true;
             window.clearInterval(timer);
-            document.removeEventListener("visibilitychange", refresh);
+            document.removeEventListener("visibilitychange", refreshUnread);
         };
-    }, [userSignedIn, token]);
+    }, [userSignedIn, refreshUnread]);
 
     const logout = useCallback(async () => {
         // Пока вход ещё действует: этот браузер перестаёт получать пуши вышедшего
@@ -141,7 +144,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
     const updateProfile = useCallback((profile: Profile) => setState((prev) => (prev.status === "user" ? { ...prev, profile } : prev)), []);
 
-    const value = useMemo(() => ({ ...state, token, logout, saveLocale, updateProfile }), [state, token, logout, saveLocale, updateProfile]);
+    const value = useMemo(() => ({ ...state, token, logout, saveLocale, updateProfile, refreshUnread }), [state, token, logout, saveLocale, updateProfile, refreshUnread]);
     return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 }
 

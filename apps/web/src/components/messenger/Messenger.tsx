@@ -144,14 +144,18 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     const [toast, setToast] = useState<{ text: string; ok: boolean } | null>(null);
     const fail = useCallback((text: string) => setToast({ text, ok: false }), []);
 
+    // Значок в шапке обновляется вместе со списком, а не раз в минуту (тестировщик, 07.11)
+    const { refreshUnread } = session;
     const onLive = useCallback((message: ChatMessage) => {
         list.applyMessage(message);
         chat.addMessage(message);
-    }, [chat, list]);
+        refreshUnread();
+    }, [chat, list, refreshUnread]);
     const onPoll = useCallback(() => {
         void list.reload();
         void chat.refresh();
-    }, [chat, list]);
+        refreshUnread();
+    }, [chat, list, refreshUnread]);
     useLiveMessages(ready ? me?.id : undefined, onLive, onPoll);
 
     const href = (template: string, id: string | number) => template.replace("{id}", String(id));
@@ -269,9 +273,12 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         lastRead.current[realChatId] = latest.id;
         void browserApi(token)
             .POST("/api/v1/chats/read", { body: { message: `${API_URL}/api/v1/messages/${latest.id}` } })
-            .then(() => list.markRead(Number(realChatId)))
+            .then(() => {
+                list.markRead(Number(realChatId));
+                refreshUnread();
+            })
             .catch(() => undefined);
-    }, [chat.messages, realChatId, token, list]);
+    }, [chat.messages, realChatId, token, list, refreshUnread]);
 
     // Заявки внутри переписки
     const [applications, setApplications] = useState<Record<string, ApplicationData | null>>({});
@@ -422,7 +429,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                     {node}
                     {/* column-reverse: разделитель идёт после сообщения в разметке, на экране — над ним */}
                     {dayStart && (
-                        <div className="sticky top-0 z-[1] my-3 flex justify-center">
+                        <div className="my-3 flex justify-center">
                             <span className="rounded-full bg-white/90 px-3 py-1 text-[12px] font-medium text-caption shadow-[0_1px_2px_rgba(14,29,39,0.06)]">{formatDayLabel(locale, message.createdAt ?? "")}</span>
                         </div>
                     )}

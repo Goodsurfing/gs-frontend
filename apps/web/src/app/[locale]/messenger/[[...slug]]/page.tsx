@@ -87,6 +87,11 @@ export default async function MessengerPage({ params }: Props) {
                             noName: "",
                             empty: m("Переписок пока нет"),
                             emptyTab: m("Здесь пока пусто"),
+                            emptyTabs: {
+                                unread: m("Здесь будут переписки с сообщениями, которые вы ещё не прочитали"),
+                                awaiting: m("Здесь будут переписки, где последнее сообщение — от собеседника"),
+                                accepted: m("Здесь будут переписки с подтверждёнными заявками"),
+                            },
                             loadError: m("Не удалось загрузить переписки"),
                             retry: m("Повторить"),
                         },
@@ -101,6 +106,7 @@ export default async function MessengerPage({ params }: Props) {
                             emojiSmileys: m("Смайлы"),
                             emojiAnimals: m("Животные"),
                             emojiFood: m("Еда"),
+                            emojiSearch: t("Поиск"),
                         },
                         application: {
                             applied: m("подал заявку на вакансию"),

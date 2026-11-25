@@ -21,6 +21,8 @@ export interface ChatListLabels {
     noName: string;
     empty: string;
     emptyTab: string;
+    /** Пустая вкладка — что в неё попадает (тестировщик 07.11 ждал своё непрочитанное собеседником сообщение в «Непрочитанных») */
+    emptyTabs: Record<Exclude<ChatTab, "all">, string>;
     loadError: string;
     retry: string;
     read: string;
@@ -30,7 +32,7 @@ const STEP = 30;
 
 /**
  * Список переписок (как входящие в Worldpackers): поиск, вкладки «Все»,
- * «Непрочитанные», «Ждут ответа», «Принятые»; в строке — собеседник, время,
+ * «Непрочитанные», «Ждут ответа», «Подтверждённые»; в строке — собеседник, время,
  * вакансия с датами и статусом заявки, последнее сообщение («Вы: …» со
  * значком прочтения) и число непрочитанных. Строки дорисовываются при
  * прокрутке по 30, чтобы длинный список не тормозил слабые телефоны.
@@ -109,7 +111,7 @@ export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerI
                     </div>
                 )}
                 {loaded && !failed && filtered.length === 0 && (
-                    <p className="px-6 py-10 text-center text-[14px] text-caption">{chats.length === 0 && !search ? labels.empty : labels.emptyTab}</p>
+                    <p className="px-6 py-10 text-center text-[14px] text-caption">{chats.length === 0 && !search ? labels.empty : search || tab === "all" ? labels.emptyTab : labels.emptyTabs[tab]}</p>
                 )}
                 {shown.map((chat) => (
                     <ChatRow
