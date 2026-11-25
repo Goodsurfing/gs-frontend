@@ -65,7 +65,8 @@ test.describe('Новый фронт: сайт на экране «Домой» 
 
         await hint.getByRole('button', { name: 'Позже' }).click();
         await expect(page.getByRole('region', { name: HINT })).toHaveCount(0);
-        await page.reload();
+        // После «Позже» плашки нет и в кабинете (заголовок — признак, что страница загрузилась)
+        await page.goto('/volunteer/volunteer-dashboard');
         await expect(page.getByRole('heading', { name: 'Заполненность профиля' })).toBeVisible();
         await expect(page.getByRole('region', { name: HINT })).toHaveCount(0);
         await context.close();
