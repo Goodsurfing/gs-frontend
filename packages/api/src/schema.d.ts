@@ -4674,6 +4674,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/notification-settings/unanswered-digest/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Прислать недельную сводку о заявках без ответа сейчас — только на тестовой версии
+         * @description Для проверки тестировщиками: сводка по своим заявкам без ответа любой давности, по тем же настройкам почты и Telegram. Неделю не отмечает. На проде — 404.
+         */
+        post: operations["post_app_api_v1_notificationsettings_digesttest"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/only_verified_volunteers_allowed_exceptions": {
         parameters: {
             query?: never;
@@ -31496,6 +31516,8 @@ export interface operations {
                                 username?: string | null;
                             };
                         };
+                        /** @description Доступна кнопка «Прислать сводку сейчас» (только на тестовой версии) */
+                        digestTest: boolean;
                         /**
                          * @example {
                          *       "new_application": {
@@ -31593,6 +31615,38 @@ export interface operations {
             };
             /** @description Бот на этом стенде не настроен */
             409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_notificationsettings_digesttest: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description count — сколько заявок без ответа; 0 — ничего не отправлено */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        channels: string[];
+                        count: number;
+                        /** @description Письмо отправлено */
+                        email: boolean;
+                    };
+                };
+            };
+            /** @description Не тестовая версия */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };

@@ -526,7 +526,7 @@
         "hints": {
             "new_application": "Right away: who, which opportunity, dates and the start of the message",
             "new_message": "After 10 minutes if you haven't read it; at most once an hour per conversation",
-            "unanswered_reminder": "3 and 7 days after the application",
+            "unanswered_reminder": "3 and 7 days after the application, plus a Monday summary of all unanswered applications",
             "news": "Emails about project news",
             "host_reply": "After 10 minutes if you haven't read it; at most once an hour per conversation",
             "application_status": "Right away when your application is accepted or declined"
@@ -540,7 +540,18 @@
         "banner": "Get applications in Telegram — reply faster",
         "bannerButton": "Connect",
         "bannerClose": "Hide",
-        "introVolunteer": "Choose what to be notified about and where. In Telegram you'll see the host's reply right away and can agree on the trip quickly."
+        "introVolunteer": "Choose what to be notified about and where. In Telegram you'll see the host's reply right away and can agree on the trip quickly.",
+        "digestTest": {
+            "title": "Applications summary (test version)",
+            "hint": "Every Monday at 10:00 you get a summary of unanswered applications. Here you can get it right away — it will include your unanswered applications of any age.",
+            "button": "Send the summary now",
+            "sending": "Sending…",
+            "none": "No unanswered applications — no summary is sent. The same will happen on Monday.",
+            "sent": "Email sent: {count} applications in the summary.",
+            "telegram": "A short version went to Telegram.",
+            "off": "Email and Telegram for application reminders are turned off in the table above — the summary wasn’t sent.",
+            "error": "Couldn’t send, please try again"
+        }
     },
     "checkoutFeedback": {
         "title": "What stopped you from paying?",
