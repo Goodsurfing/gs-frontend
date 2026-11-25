@@ -71,7 +71,7 @@ export function EventFeed({ locale, events, title, labels, prevLabel, nextLabel 
                             <a href={href(locale, event)} className="flex h-full flex-col gap-3 rounded-[14px] border border-accent-bg bg-white p-4 text-inherit no-underline shadow-[0_2px_10px_rgba(14,29,39,0.06)] transition-shadow hover:shadow-[0_6px_18px_rgba(14,29,39,0.12)]">
                                 {event.personName ? (
                                     <div className="flex min-h-[44px] items-center gap-3">
-                                        <Avatar src={event.personAvatar ?? undefined} name={event.personName} size={44} />
+                                        <Avatar src={event.personAvatar ?? undefined} name={event.personName} size={44} loading="lazy" />
                                         <div className="flex min-w-0 flex-col">
                                             <span className="line-clamp-2 text-[14px] leading-[130%] font-semibold text-ink">{event.personName}</span>
                                             {event.personPlace && !PLACEHOLDER_PLACES.has(event.personPlace) && <span className="truncate text-[12px] text-caption">{event.personPlace}</span>}
