@@ -95,8 +95,12 @@ export function Header({ locale, t, tProfile, banner, variant = "floating" }: He
                 <header className={`pointer-events-auto flex items-center justify-between gap-4 px-5 down-3xl:gap-3 down-3xl:px-3 down-2xl:hidden ${layout.header}`}>
                     <div className="flex shrink-0 items-center gap-3">
                         <a href={routes.main(locale)} className="flex items-center">
-                            {/* eslint-disable-next-line @next/next/no-img-element -- svg-логотип */}
-                            <img src="/web/icons/header/logo.svg" alt="GoodSurfing" width={152} height={36} className="block h-9 w-auto" />
+                            {/* До 1280 px эта шапка скрыта (там MobileHeader): пустая картинка, чтобы скрытый логотип не качался на телефоне */}
+                            <picture>
+                                <source media="(max-width: 1280px)" srcSet="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+                                {/* eslint-disable-next-line @next/next/no-img-element -- svg-логотип */}
+                                <img src="/web/icons/header/logo.svg" alt="GoodSurfing" width={152} height={36} className="block h-9 w-auto" />
+                            </picture>
                         </a>
                     </div>
                     <nav aria-label={t("main.welcome.header.menu")} className="flex min-w-0 flex-1 justify-center">
