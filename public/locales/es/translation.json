@@ -527,7 +527,7 @@
         "hints": {
             "new_application": "Al momento: quién, a qué oportunidad, fechas y el inicio del mensaje",
             "new_message": "A los 10 minutos si no lo has leído; como mucho una vez por hora por conversación",
-            "unanswered_reminder": "A los 3 y 7 días de la solicitud",
+            "unanswered_reminder": "3 y 7 días después de la solicitud, y los lunes un resumen de todas las solicitudes sin respuesta",
             "news": "Correos con noticias del proyecto",
             "host_reply": "A los 10 minutos si no lo has leído; como mucho una vez por hora por conversación",
             "application_status": "Al momento, cuando aceptan o rechazan tu solicitud"
@@ -541,7 +541,18 @@
         "banner": "Recibe solicitudes en Telegram: responderás antes",
         "bannerButton": "Conectar",
         "bannerClose": "Ocultar",
-        "introVolunteer": "Elige de qué y dónde quieres que te avisemos. En Telegram verás al momento la respuesta del anfitrión y podrás acordar el viaje rápido."
+        "introVolunteer": "Elige de qué y dónde quieres que te avisemos. En Telegram verás al momento la respuesta del anfitrión y podrás acordar el viaje rápido.",
+        "digestTest": {
+            "title": "Resumen de solicitudes (versión de prueba)",
+            "hint": "Cada lunes a las 10:00 llega un resumen de las solicitudes sin respuesta. Aquí puedes recibirlo ahora mismo: incluirá tus solicitudes sin respuesta de cualquier antigüedad.",
+            "button": "Enviar el resumen ahora",
+            "sending": "Enviando…",
+            "none": "No hay solicitudes sin respuesta: no se envía el resumen. Lo mismo pasará el lunes.",
+            "sent": "Correo enviado: {count} solicitudes en el resumen.",
+            "telegram": "Una versión corta se envió a Telegram.",
+            "off": "El correo y Telegram para los recordatorios de solicitudes están desactivados en la tabla de arriba: el resumen no se envió.",
+            "error": "No se pudo enviar, inténtalo de nuevo"
+        }
     },
     "checkoutFeedback": {
         "title": "¿Qué te impidió pagar?",

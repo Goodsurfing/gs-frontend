@@ -8,7 +8,7 @@ import { getTranslator } from "@/i18n/dictionary";
 import { authMetadata } from "@/lib/authPages";
 import { hostMenu } from "@/lib/cabinetMenus";
 import { HOST_TYPES } from "@/lib/notificationSettings";
-import { notificationLabels } from "@/lib/notificationLabels";
+import { digestTestLabels, notificationLabels } from "@/lib/notificationLabels";
 import { routes } from "@/lib/routes";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -29,7 +29,7 @@ export default async function HostNotificationsPage({ params }: Props) {
         <CabinetShell locale={locale} items={hostMenu(locale, t)} need="host" fitContent>
             <main className="w-full">
                 <h2 className="text-[1.625rem] font-normal">{n("title")}</h2>
-                <NotificationSettings types={HOST_TYPES} labels={labels} />
+                <NotificationSettings types={HOST_TYPES} labels={labels} digestTest={digestTestLabels(t)} />
             </main>
         </CabinetShell>
     );
