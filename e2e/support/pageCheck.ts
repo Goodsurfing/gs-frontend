@@ -53,3 +53,21 @@ export async function expectSectionLinksResolve(page: Page): Promise<string[]> {
     }
     return unique;
 }
+
+/**
+ * Страница закрыта от индексации: в <head> есть хотя бы один тег robots,
+ * и каждый из них содержит noindex (ни один не разрешает индексацию).
+ *
+ * Тегов может быть два одинаковых: Next 16.4.6 после фоновой перерисовки ISR
+ * отдаёт на 404 и свой NonIndex (статус 404 берётся из кэша), и errorMetaTags
+ * от notFound(). При первом рендере тег один. Подробности — PR #973.
+ */
+export async function expectNoindex(page: Page): Promise<void> {
+    const robots = page.locator('head meta[name="robots"]');
+    await expect.poll(() => robots.count()).toBeGreaterThan(0);
+    const contents = await robots.evaluateAll((tags) => tags.map((tag) => tag.getAttribute('content') ?? ''));
+    for (const content of contents) {
+        expect(content, `meta robots: «${content}»`).toMatch(/noindex/i);
+        expect(content, `meta robots: «${content}»`).not.toMatch(/(^|[\s,])(index|all)($|[\s,])/i);
+    }
+}
