@@ -15,6 +15,9 @@ import { FreeApplicationsHint } from "./FreeApplicationsHint";
 import { OffersMap, type OffersMapLabels } from "./OffersMap";
 import { SavedSearchButton, type SubscribeLabels } from "./SavedSearchButton";
 import type { SavedSearchSource } from "@/lib/savedSearch";
+import { type CatalogView, parseCatalogView, withCatalogView } from "@/lib/catalogView";
+
+import { useNarrowScreen } from "./useNarrowScreen";
 
 export interface CatalogLabels {
     count: string;
@@ -49,9 +52,15 @@ type MobileTab = "list" | "map" | "filter";
  * подсвечивается и открывается на карте; выбор пишется в адрес (?offerId=)
  * без перезагрузки — «назад» со страницы вакансии возвращает к ней же.
  * Фильтры, поиск, сортировка и страница — в адресе, список рендерит сервер.
+ *
+ * Телефон (до 992 px): список, карта и фильтр — вкладками; вкладка «Карта» — в адресе
+ * (?view=map). Яндекс.Карты (≈700 КБ по сети) на телефоне грузятся только после
+ * нажатия «Карта» — на медленном интернете список открывается в разы быстрее.
  */
-export function OffersCatalog({ locale, basePath, filters, page, offerHref, paymentHref, categories, languages, subscribe, labels }: {
+export function OffersCatalog({ locale, basePath, filters, page, offerHref, paymentHref, categories, languages, subscribe, labels, initialView = "list" }: {
     locale: string;
+    /** Вкладка на телефоне из адреса (?view=map) */
+    initialView?: CatalogView;
     /** Оплата членства волонтёра — из счётчика бесплатных откликов */
     paymentHref: string;
     basePath: string;
@@ -73,7 +82,18 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, paym
     // GS-280: «зима…» или «workaway» в поиске — ссылка на страницу-подборку (только по-русски)
     const searchHint = searchLandingHint(filters.search, locale);
     // Телефон (до 992 px): список, карта и фильтр — вкладками, как в старом фронте
-    const [tab, setTab] = useState<MobileTab>("list");
+    const [tab, setTab] = useState<MobileTab>(initialView);
+    // Карту, раз открытую на телефоне, не размонтируем: при возврате на вкладку не грузить точки заново
+    const [mapVisited, setMapVisited] = useState(initialView === "map");
+    const narrow = useNarrowScreen();
+    // Пока ширина неизвестна (сервер, гидратация) — карту не монтируем; на компьютере она появится сразу после
+    const mountMap = narrow === false || (narrow === true && (tab === "map" || mapVisited));
+    const changeTab = useCallback((name: MobileTab) => {
+        setTab(name);
+        if (name === "map") setMapVisited(true);
+        // Без перезагрузки и без новой записи в истории — как выбор вакансии (?offerId=)
+        window.history.replaceState(null, "", `${window.location.pathname}${withCatalogView(window.location.search, name === "map" ? "map" : "list")}`);
+    }, []);
 
     const href = useCallback((change: Partial<OffersFilters>) => {
         const query = offersFiltersQuery({ ...filters, offerId: undefined, ...change });
@@ -83,7 +103,8 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, paym
     const select = useCallback((id: number) => {
         setSelected(id);
         const query = offersFiltersQuery({ ...filters, offerId: id });
-        window.history.replaceState(null, "", `${basePath}?${query}`);
+        // Вкладку «Карта» (?view=map) сохраняем: «назад» со страницы вакансии вернёт на карту
+        window.history.replaceState(null, "", `${basePath}${withCatalogView(query, parseCatalogView(new URLSearchParams(window.location.search).get("view") ?? undefined))}`);
     }, [basePath, filters]);
 
     // Карта показывает все вакансии по фильтрам, без учёта страницы списка
@@ -129,7 +150,7 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, paym
             languages={languages}
             labels={labels.filters}
             stacked={stacked}
-            onApplied={stacked ? () => setTab("list") : undefined}
+            onApplied={stacked ? () => changeTab("list") : undefined}
             search={stacked ? undefined : searchForm("min-w-[180px] flex-1")}
         />
     );
@@ -137,7 +158,7 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, paym
         <button
             type="button"
             aria-pressed={tab === name}
-            onClick={() => setTab(name)}
+            onClick={() => changeTab(name)}
             className={`flex w-full cursor-pointer items-center justify-center gap-2 border border-field px-[35px] py-2.5 ${tab === name ? "bg-primary text-white" : "bg-white text-ink-secondary"}`}
         >
             {text}
@@ -290,7 +311,7 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, paym
             {(mapOpen || tab === "map") && (
                 // 65px — высота прилипающей шапки сайта (Header, вариант «плоская»)
                 <div className={`relative flex min-w-0 flex-1 self-start min-[993px]:sticky min-[993px]:top-[65px] min-[993px]:h-[calc(100vh-65px)] down-lg:h-[calc(100vh-14rem)] down-lg:self-auto ${tab === "map" ? "" : "down-lg:hidden"} ${mapOpen ? "" : "min-[993px]:hidden"}`}>
-                    <OffersMap locale={locale} filtersQuery={mapQuery} selectedOfferId={selected} offerHref={offerHref} labels={labels.map} />
+                    {mountMap && <OffersMap locale={locale} filtersQuery={mapQuery} selectedOfferId={selected} offerHref={offerHref} labels={labels.map} />}
                 </div>
             )}
         </div>

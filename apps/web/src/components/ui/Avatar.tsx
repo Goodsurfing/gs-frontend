@@ -3,11 +3,18 @@ import { firstChar } from "@/lib/textSlice";
  * Аватар как в старом фронте (shared/ui/Avatar): фото, иначе первая буква
  * имени на голубом круге, иначе серый круг.
  */
-export function Avatar({ src, name, size = 30, className = "" }: { src?: string; name?: string | null; size?: number; className?: string }) {
+export function Avatar({ src, name, size = 30, className = "", loading = "eager" }: {
+    src?: string;
+    name?: string | null;
+    size?: number;
+    className?: string;
+    /** Ниже первого экрана — "lazy": иначе React вставляет в HTML preload и фото грузится раньше нужного */
+    loading?: "eager" | "lazy";
+}) {
     const box = { width: size, height: size };
     if (src) {
         // eslint-disable-next-line @next/next/no-img-element -- аватар с API, размер мал
-        return <img loading="eager" src={src} alt="" style={box} className={`shrink-0 rounded-full object-cover ${className}`} />;
+        return <img loading={loading} decoding={loading === "lazy" ? "async" : undefined} width={size} height={size} src={src} alt="" style={box} className={`shrink-0 rounded-full object-cover ${className}`} />;
     }
     // Первый символ, а не первая половинка UTF-16: имя с эмодзи давало «�» на сервере и ошибку гидратации #418
     const letter = firstChar(name?.trim() ?? "").toUpperCase();

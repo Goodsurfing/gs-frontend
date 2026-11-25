@@ -8,6 +8,7 @@ import { getTranslator } from "@/i18n/dictionary";
 import { getCatalogPage } from "@/lib/offersCatalog";
 import { filterLanguages, getFilterCategories } from "@/lib/offersFilterOptions";
 import { parseOffersFilters } from "@/lib/offersFilters";
+import { parseCatalogView } from "@/lib/catalogView";
 import { TARIFF } from "@/lib/membershipPrices";
 import { routes } from "@/lib/routes";
 import { parseSubscribeSource } from "@/lib/savedSearch";
@@ -50,6 +51,7 @@ export default async function OffersMapPage({ params, searchParams }: Props) {
                 locale={locale}
                 basePath={routes.offersMap(locale)}
                 filters={filters}
+                initialView={parseCatalogView(query.view)}
                 page={page}
                 categories={categories}
                 languages={filterLanguages(tOffer)}

@@ -85,7 +85,7 @@ export function Footer({ locale, t }: { locale: Locale; t: Translate }) {
                     <div className="flex flex-1 flex-col down-md:mb-10 down-md:items-center">
                         <div className="flex items-center down-md:justify-center">
                             {/* eslint-disable-next-line @next/next/no-img-element -- svg-логотип */}
-                            <img src="/web/icons/footer/logo.svg" alt="GoodSurfing" className="mr-10 down-md:mr-0" />
+                            <img src="/web/icons/footer/logo.svg" alt="GoodSurfing" width={130} height={42} loading="lazy" className="mr-10 down-md:mr-0" />
                             <div className="down-md:hidden">
                                 <LanguageSwitcher locale={locale} label={t("Язык")} />
                             </div>
@@ -100,7 +100,7 @@ export function Footer({ locale, t }: { locale: Locale; t: Translate }) {
                                     className="mr-4 down-md:last:mr-0"
                                 >
                                     {/* eslint-disable-next-line @next/next/no-img-element -- svg-иконка */}
-                                    <img src={icon} alt={name} />
+                                    <img src={icon} alt={name} width={20} height={20} loading="lazy" />
                                 </a>
                             ))}
                         </div>
