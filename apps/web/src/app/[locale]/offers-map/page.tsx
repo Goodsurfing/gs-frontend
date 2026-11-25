@@ -70,6 +70,7 @@ export default async function OffersMapPage({ params, searchParams }: Props) {
                     sortLabel: tMap("По новизне"),
                     sortNovelty: tMap("По новизне"),
                     sortPopularity: tMap("По популярности"),
+                    sortNearestDate: tMap("Ближайшие даты"),
                     backToMap: t("Вернуться к карте"),
                     hideMap: t("Свернуть карту"),
                     search: tMap("Поиск"),

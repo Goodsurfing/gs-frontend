@@ -4,7 +4,8 @@
  * терялись при перезагрузке и ими нельзя было поделиться. Здесь всё в адресе;
  * старые ссылки (?category=1,2&search=…&page=…&offerId=…) работают как раньше.
  */
-export type OffersSort = "novelty" | "popularity";
+export type OffersSort = "novelty" | "popularity" | "nearestDate";
+const SORTS: readonly OffersSort[] = ["novelty", "popularity", "nearestDate"];
 export type Provided = "food" | "housing" | "paidTravel";
 
 export interface OffersFilters {
@@ -58,7 +59,7 @@ export function parseOffersFilters(params: RawParams): OffersFilters {
         categories: list(get("category")).map(Number).filter((id) => Number.isInteger(id) && id > 0),
         search: (get("search") ?? "").trim(),
         page: positiveInt(get("page")) ?? 1,
-        sort: get("sort") === "popularity" ? "popularity" : "novelty",
+        sort: SORTS.find((sort) => sort === get("sort")) ?? "novelty",
         // Прошедшие по умолчанию скрыты (решение владельца 06.11.2026: на них уже не откликнуться);
         // показать — ?past=1. Старые ссылки с past=0 означают то же, что и умолчание
         showPassed: get("past") === "1",
@@ -79,7 +80,7 @@ export function offersFiltersQuery(filters: Partial<OffersFilters>): string {
     const query = new URLSearchParams();
     if (filters.categories?.length) query.set("category", filters.categories.join(","));
     if (filters.search) query.set("search", filters.search);
-    if (filters.sort === "popularity") query.set("sort", "popularity");
+    if (filters.sort && filters.sort !== "novelty") query.set("sort", filters.sort);
     if (filters.showPassed) query.set("past", "1");
     if (filters.from) query.set("from", filters.from);
     if (filters.to) query.set("to", filters.to);

@@ -35571,8 +35571,8 @@ export interface operations {
                 search?: string;
                 /** @description Ids навыков */
                 "skillIds[]"?: number[];
-                /** @description Сортировка по полям. Формат: поле:направление (asc или desc) */
-                sort?: "updated:asc" | "updated:desc" | "reviewCount:asc" | "reviewCount:desc" | "averageRating:asc" | "averageRating:desc" | "popularity:asc" | "popularity:desc" | "recommendation";
+                /** @description Сортировка по полям. Формат: поле:направление (asc или desc). nearestDate — «ближайшие даты»: сначала ближайший день заезда по незакончившимся периодам (идущий период — сегодня), прошедшие и без дат — в конце, далее по новизне */
+                sort?: "updated:asc" | "updated:desc" | "reviewCount:asc" | "reviewCount:desc" | "averageRating:asc" | "averageRating:desc" | "popularity:asc" | "popularity:desc" | "recommendation" | "nearestDate";
                 /** @description Фильтр по дате начала периода (включительно). Формат: YYYY-MM-DD */
                 startDate?: string;
                 /** @description Ids трансферов */
