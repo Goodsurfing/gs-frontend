@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const [result, tMain, tOffer] = await Promise.all([getOffer(locale, id), getTranslator(locale, "main"), getTranslator(locale, "offer")]);
     const path = routes.offer(locale, id);
     if (result.kind !== "ok") {
-        return pageMetadata({ locale, path, title: tMain("seo.title"), description: tMain("seo.description"), noindex: true });
+        return pageMetadata({ locale, path, title: tMain("seo.title"), description: tMain("seo.description"), noindex: true, notFound: result.kind === "notFound" });
     }
     const { description } = localizedDescription(result.offer);
     const offer = result.offer;

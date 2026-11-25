@@ -53,7 +53,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale, id } = await params;
     if (!isLocale(locale)) return {};
-    const tSeo = await getTranslator(locale, "seo");
+    const [tSeo, result] = await Promise.all([getTranslator(locale, "seo"), getVolunteer(locale, id)]);
     // Профиль человека: не индексируем и имя в заголовок не выносим (как в старом фронте)
     return pageMetadata({
         locale,
@@ -62,6 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         description: tSeo("volunteer.description"),
         type: "profile",
         noindex: true,
+        notFound: result.kind === "notFound",
     });
 }
 

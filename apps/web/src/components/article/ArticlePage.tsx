@@ -42,7 +42,7 @@ type Loaded = {
 export async function articleMetadata(kind: ArticleKind, locale: Locale, idOrSlug: string): Promise<Metadata> {
     const config = KIND[kind];
     const [data, t] = await Promise.all([getArticle(kind, locale, idOrSlug) as Promise<Loaded | null>, getTranslator(locale, config.ns)]);
-    if (!data) return pageMetadata({ locale, path: config.path(locale, idOrSlug), title: t("seo.title"), description: t("seo.description"), noindex: true });
+    if (!data) return pageMetadata({ locale, path: config.path(locale, idOrSlug), title: t("seo.title"), description: t("seo.description"), noindex: true, notFound: true });
     const meta = pageMetadata({
         locale,
         // Канонический адрес — по slug, даже если пришли по старой ссылке с id
