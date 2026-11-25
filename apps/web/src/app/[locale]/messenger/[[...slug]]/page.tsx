@@ -59,10 +59,12 @@ export default async function MessengerPage({ params }: Props) {
                         offer: routes.offerTemplate(locale),
                         volunteer: routes.volunteerPublicTemplate(locale),
                         organization: routes.organizationTemplate(locale),
+                        catalog: routes.offersMap(locale),
                     }}
                     labels={{
                         title: m("Сообщения"),
                         choose: m("Выберите, кому хотели бы написать"),
+                        emptyVolunteer: { title: m("empty.volunteer"), hint: m("empty.volunteerHint"), find: m("empty.find") },
                         back: t("Назад"),
                         info: m("Информация"),
                         decisionPrompt: m("Новая заявка — примите или отклоните её, волонтёр ждёт ответа"),

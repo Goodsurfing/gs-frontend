@@ -103,5 +103,10 @@
     "Отклонить заявку? Волонтёр получит уведомление": "Decline the application? The volunteer will be notified",
     "Отмена": "Cancel",
     "Изменить решение": "Change decision",
-    "Измените решение по заявке — волонтёр получит уведомление": "Change your decision on the application — the volunteer will be notified"
+    "Измените решение по заявке — волонтёр получит уведомление": "Change your decision on the application — the volunteer will be notified",
+    "empty": {
+        "volunteer": "Your conversations with hosts will appear here",
+        "volunteerHint": "Apply for an opportunity — the host will reply here",
+        "find": "Find an opportunity"
+    }
 }
