@@ -25,6 +25,7 @@ export interface CatalogLabels {
     sortLabel: string;
     sortNovelty: string;
     sortPopularity: string;
+    sortNearestDate: string;
     backToMap: string;
     hideMap: string;
     search: string;
@@ -178,6 +179,7 @@ export function OffersCatalog({ locale, basePath, filters, page, offerHref, paym
         >
             <option value="popularity">{labels.sortPopularity}</option>
             <option value="novelty">{labels.sortNovelty}</option>
+            <option value="nearestDate">{labels.sortNearestDate}</option>
         </select>
     );
     const passedSwitch = (

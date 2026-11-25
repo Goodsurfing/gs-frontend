@@ -39,6 +39,14 @@ describe("фильтры каталога вакансий", () => {
         expect(offersFiltersQuery(parseOffersFilters(new URLSearchParams(query)))).toBe(query);
     });
 
+    it("GS-334: сортировка «Ближайшие даты» — sort=nearestDate в адресе, неизвестная — «по новизне»", () => {
+        expect(parseOffersFilters({ sort: "nearestDate" }).sort).toBe("nearestDate");
+        expect(offersFiltersQuery(parseOffersFilters({ sort: "nearestDate", page: "2" }))).toBe("sort=nearestDate&page=2");
+        expect(parseOffersFilters({ sort: "popularity" }).sort).toBe("popularity");
+        expect(parseOffersFilters({ sort: "averageRating:desc" }).sort).toBe("novelty");
+        expect(offersFiltersQuery({ sort: "novelty" })).toBe("");
+    });
+
     it("параметры API — как offersFilterApiAdapter старого фронта", () => {
         const api = offersApiQuery(parseOffersFilters({ category: "3", past: "0", kids: "1", provided: "food,paidTravel", maxDays: "30" }));
         expect(api).toEqual({
