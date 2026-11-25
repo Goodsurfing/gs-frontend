@@ -6,6 +6,7 @@ import { useCallback, useState } from "react";
 import { Pagination } from "@/components/list/Pagination";
 import { Chip, DropdownButton } from "@/components/offers-map/OffersFilterBar";
 import { OffersMap, type OffersMapLabels } from "@/components/offers-map/OffersMap";
+import { useNarrowScreen } from "@/components/offers-map/useNarrowScreen";
 import type { DonationListItem } from "@/lib/donationsCatalog";
 import { type DonationsFilters, donationsFiltersQuery, DONATIONS_PER_PAGE } from "@/lib/donationsFilters";
 import { textSlice } from "@/lib/textSlice";
@@ -114,6 +115,10 @@ export function DonationsCatalog({ locale, basePath, filters, page, categories, 
     const router = useRouter();
     const [mapOpen, setMapOpen] = useState(true);
     const [tab, setTab] = useState<MobileTab>("list");
+    // Телефон: Яндекс.Карты грузятся только после нажатия «Карта» (как в каталоге вакансий)
+    const narrow = useNarrowScreen();
+    const [mapVisited, setMapVisited] = useState(false);
+    const mountMap = narrow === false || (narrow === true && (tab === "map" || mapVisited));
     const [search, setSearch] = useState(filters.search);
     const [draft, setDraft] = useState({ category: filters.category, closed: filters.closed, success: filters.success });
     const [categoriesOpen, setCategoriesOpen] = useState(false);
@@ -170,7 +175,10 @@ export function DonationsCatalog({ locale, basePath, filters, page, categories, 
         <button
             type="button"
             aria-pressed={tab === name}
-            onClick={() => setTab(name)}
+            onClick={() => {
+                setTab(name);
+                if (name === "map") setMapVisited(true);
+            }}
             className={`flex w-full cursor-pointer items-center justify-center gap-2 border border-field px-[35px] py-2.5 ${tab === name ? "bg-primary text-white" : "bg-white text-ink-secondary"}`}
         >
             {text}
@@ -269,7 +277,7 @@ export function DonationsCatalog({ locale, basePath, filters, page, categories, 
 
                 {(mapOpen || tab === "map") && (
                     <div className={`relative mr-2.5 flex h-[calc(100vh-258px)] min-w-0 flex-1 down-lg:mr-0 down-lg:h-[calc(100vh-14rem)] ${tab === "map" ? "" : "down-lg:hidden"} ${mapOpen ? "" : "min-[993px]:hidden"}`}>
-                        <OffersMap locale={locale} filtersQuery={mapQuery} offerHref={fundraiseHref} pointsUrl="/web/api/map-fundraises" labels={labels.map} />
+                        {mountMap && <OffersMap locale={locale} filtersQuery={mapQuery} offerHref={fundraiseHref} pointsUrl="/web/api/map-fundraises" labels={labels.map} />}
                     </div>
                 )}
             </div>
