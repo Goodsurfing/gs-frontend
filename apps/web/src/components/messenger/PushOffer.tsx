@@ -57,8 +57,16 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
             const key = (data as { publicKey?: string | null } | undefined)?.publicKey ?? null;
             if (cancelled || !key) return;
             setPublicKey(key);
-            if (Notification.permission === "granted") void subscribePush(token, key);
-            else setVisible(shouldOffer(Notification.permission, dismissedAt(), Date.now()));
+            if (Notification.permission === "granted") {
+                // Уведомления разрешены раньше, а этот браузер не умеет их получать — сказать
+                // об этом (раз в 30 дней), а не молчать: человек ждёт уведомлений, а их не будет
+                void subscribePush(token, key).then((outcome) => {
+                    if (cancelled || outcome !== "unsupported" || !shouldOffer("default", dismissedAt(), Date.now())) return;
+                    storageSet(OFFER_DISMISSED_KEY, String(Date.now()));
+                    setResult("unsupported");
+                    setVisible(true);
+                });
+            } else setVisible(shouldOffer(Notification.permission, dismissedAt(), Date.now()));
         }).catch(() => undefined);
         return () => {
             cancelled = true;
@@ -75,7 +83,8 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
         setBusy(true);
         const slowTimer = window.setTimeout(() => setSlow(true), 4000);
         const permission = await Notification.requestPermission().catch(() => "denied" as const);
-        const ok = permission === "granted" && await subscribePush(token, publicKey);
+        const outcome = permission === "granted" ? await subscribePush(token, publicKey) : "failed";
+        const ok = outcome === "ok";
         window.clearTimeout(slowTimer);
         setSlow(false);
         setBusy(false);
@@ -83,14 +92,23 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
         // честно сказать и посоветовать другой браузер, а не «браузер не разрешил»
         setResult(ok ? "enabled" : permission === "granted" ? "unsupported" : "blocked");
         if (!ok && permission !== "denied") storageSet(OFFER_DISMISSED_KEY, String(Date.now()));
-        window.setTimeout(() => setVisible(false), 4000);
+        window.setTimeout(() => setVisible(false), ok ? 4000 : 10000);
     };
 
     if (!visible) return null;
     const ios = support === "ios-install";
     return (
         <div role="status" className="flex flex-col gap-2 border-b border-accent-bg bg-status-new/10 px-4 py-3 text-[13px] text-ink-secondary">
-            {result ? <span>{result === "enabled" ? labels.enabled : result === "unsupported" ? labels.unsupported : labels.blocked}</span> : (
+            {result ? (
+                <>
+                    <span>{result === "enabled" ? labels.enabled : result === "unsupported" ? labels.unsupported : labels.blocked}</span>
+                    {result === "unsupported" && (
+                        <div className="flex justify-end">
+                            <button type="button" onClick={() => setVisible(false)} className="h-8 cursor-pointer rounded-full border border-accent-bg bg-white px-3 text-[13px] text-ink-tertiary hover:border-primary">{labels.ok}</button>
+                        </div>
+                    )}
+                </>
+            ) : (
                 <>
                     <span className="flex gap-2">
                         <svg aria-hidden viewBox="0 0 24 24" className="mt-0.5 h-4 w-4 shrink-0 text-primary" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8" /><path d="M10.3 20a1.9 1.9 0 0 0 3.4 0" /></svg>
