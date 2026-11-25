@@ -100,5 +100,13 @@
         "faqExpQ": "Do I need experience?",
         "faqExpA": "Usually not — hosts explain the tasks on site. Required skills are listed under “Who is needed”.",
         "showMore": "Show more ({n})"
+    },
+    "phoneHero": {
+        "lead": "Volunteer trips and expeditions in Russia and worldwide: accommodation in exchange for help",
+        "searchLabel": "Search vacancies",
+        "placeholder": "Where do you want to go?",
+        "find": "Search",
+        "picks": "Collections",
+        "socials": "Follow us"
     }
 }

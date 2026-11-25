@@ -8,6 +8,8 @@ import { EventFeed } from "@/components/home/EventFeed";
 import { HeroSlider } from "@/components/home/HeroSlider";
 import { HomeSearch } from "@/components/home/HomeSearch";
 import { HowItWork } from "@/components/home/HowItWork";
+import { JoinLink } from "@/components/home/JoinLink";
+import { PhoneHero } from "@/components/home/PhoneHero";
 import { PersonalOffers } from "@/components/home/PersonalOffers";
 import { ReviewsShowcase } from "@/components/home/ReviewsShowcase";
 import { PublicShell } from "@/components/layout/PublicShell";
@@ -24,7 +26,8 @@ import { routes } from "@/lib/routes";
 import { takeChars } from "@/lib/textSlice";
 import { pageMetadata, siteUrl } from "@/lib/seo";
 import { jsonLdGraph } from "@/lib/structuredData";
-import { HERO_IMAGES } from "@/lib/heroImages";
+import { HERO_IMAGES, PHONE_HERO_IMAGE } from "@/lib/heroImages";
+import { homeQuickPicks } from "@/lib/landingMenu";
 
 // Подборки и баннер меняются в админке — страница пересобирается раз в 5 минут
 export const revalidate = 300;
@@ -108,14 +111,39 @@ export default async function HomePage({ params }: Props) {
     ];
 
     return (
-        <PublicShell locale={locale}>
+        <PublicShell locale={locale} socialsInHeroOnPhone>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph(structuredData)) }} />
-            {/* Первый экран: поиск и направления слева, слайдер справа; уже 1000 px — слайдер сверху */}
-            <div className="flex min-h-screen border-b border-accent-bg max-[1000px]:flex-col-reverse">
+            <PhoneHero
+                title={tMain("Путешествуй, помогай, меняй мир")}
+                lead={tMain("phoneHero.lead")}
+                image={PHONE_HERO_IMAGE}
+                catalogHref={routes.offersMap(locale)}
+                picks={homeQuickPicks(locale, categories.map((category) => ({ id: category.id, name: categoryName(category.name, t) ?? category.name })))}
+                labels={{
+                    search: tMain("phoneHero.searchLabel"),
+                    placeholder: tMain("phoneHero.placeholder"),
+                    find: tMain("phoneHero.find"),
+                    picks: tMain("phoneHero.picks"),
+                    socials: tMain("phoneHero.socials"),
+                }}
+            />
+            {/* Первый экран: поиск и направления слева, слайдер справа; уже 1000 px — слайдер сверху; на телефоне — PhoneHero, здесь только направления */}
+            <div className="flex min-h-screen border-b border-accent-bg max-[1000px]:flex-col-reverse down-md:min-h-0">
                 <div className="w-1/2 bg-white max-[1000px]:w-full">
                     <div className="flex h-full flex-col items-start overflow-visible px-12 py-7 max-[450px]:p-5">
-                        <div className="flex h-full w-full flex-col pt-[100px] max-[1000px]:items-center">
-                            <div className="mb-10 flex max-w-[713px] flex-col items-start max-[1000px]:items-center">
+                        <div className="flex h-full w-full flex-col pt-[100px] max-[1000px]:items-center down-md:pt-0">
+                            {/* Телефон: «Присоединиться» под поиском, вместо кнопки слайда */}
+                            <div className="mb-6 hidden w-full flex-col items-center gap-3 text-center down-md:flex">
+                                <p className="text-[16px] leading-[1.35] text-ink-secondary">
+                                    {today?.volunteerCount
+                                        ? tMain("slider.volunteerCount", { count: today.volunteerCount, displayCount: round(today.volunteerCount) })
+                                        : tMain("С нами уже 90 000 путешественников со смыслом со всего мира")}
+                                </p>
+                                <JoinLink href={routes.signIn(locale)} signedInHref={routes.offersMap(locale)} className="rounded-[10px] border border-host bg-host px-[50px] py-3.5 text-center text-[1rem] leading-[1.375rem] text-white">
+                                    {tMain("Присоединиться к сообществу")}
+                                </JoinLink>
+                            </div>
+                            <div className="mb-10 flex max-w-[713px] flex-col items-start max-[1000px]:items-center down-md:hidden">
                                 <h1 className="mb-10 text-left text-[4.5rem] leading-[100%] font-normal text-ink max-[1600px]:text-[48px] max-[1400px]:text-[32px] max-[1000px]:text-center max-[1000px]:text-[48px]! max-[450px]:text-[32px]!">
                                     {t("main.welcome.title")}
                                 </h1>
@@ -158,7 +186,7 @@ export default async function HomePage({ params }: Props) {
                         </div>
                     </div>
                 </div>
-                <div className="w-1/2 max-[1000px]:w-full">
+                <div className="w-1/2 max-[1000px]:w-full down-md:hidden">
                     <HeroSlider
                         bulletLabel="{{n}}"
                         slides={[

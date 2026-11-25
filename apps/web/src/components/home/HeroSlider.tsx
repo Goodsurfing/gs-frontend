@@ -6,6 +6,9 @@ import type { HeroImage } from "@/lib/heroImages";
 
 import { useOptionalSession } from "@/components/session/SessionProvider";
 
+/** Прозрачный GIF 1×1 */
+const EMPTY_IMAGE = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
 export interface HeroSlide {
     title: string;
     text: string;
@@ -54,7 +57,8 @@ export function HeroSlider({ slides, bulletLabel }: { slides: HeroSlide[]; /** �
                     style={{ backgroundImage: `url(${slide.image.placeholder})` }}
                 >
                     {(index === 0 || loaded[0]) && <picture>
-                        <source media="(max-width: 768px)" srcSet={slide.image.mobile} />
+                        {/* До 768 px слайдер скрыт (там PhoneHero, GS-292): пустая картинка вместо фото — скрытый <img> иначе всё равно скачивается */}
+                        <source media="(max-width: 768px)" srcSet={EMPTY_IMAGE} />
                         <img
                             data-hero
                             src={slide.image.src}
@@ -74,7 +78,7 @@ export function HeroSlider({ slides, bulletLabel }: { slides: HeroSlide[]; /** �
                         <p className="text-[18px] leading-[130%] font-medium text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.4)] down-md:text-[22px] down-md:leading-[1.3]">{slide.text}</p>
                         <a href={slide.descriptionHref} className="relative z-[1] flex items-center gap-[30px] max-[1400px]:flex-col max-[1400px]:items-start">
                             {/* eslint-disable-next-line @next/next/no-img-element -- картинка-коллаж */}
-                            <img src="/web/images/home/slider-volunteer.png" alt="" className="w-[100px]" />
+                            <img src="/web/images/home/slider-volunteer.png" alt="" loading="lazy" width={102} height={42} className="w-[100px]" />
                             <span className="text-[16px] text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.4)] down-md:text-[18px] down-md:leading-[1.3]">{slide.description}</span>
                         </a>
                         <a

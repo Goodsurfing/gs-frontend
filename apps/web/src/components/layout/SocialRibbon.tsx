@@ -28,12 +28,19 @@ export function TestRibbon() {
  * На стейдже вместо призыва и иконок — «Тестовая версия» (TestRibbonNote); высота ленты
  * в обоих случаях 44 px (иконки 28 px + отступы), чтобы стенд выглядел как прод.
  */
-export function SocialRibbon({ t }: { t: Translate }) {
+export function SocialRibbon({ t, hideOnPhone = false }: {
+    t: Translate;
+    /**
+     * Не показывать до 768 px (главная, GS-292): соцсети там тонкой строкой поверх фото первого
+     * экрана (PhoneHero). «Тестовая версия» стейджа остаётся — по ней сообщают о проблемах.
+     */
+    hideOnPhone?: boolean;
+}) {
     const caption = t("main.welcome.header.socials-cta");
     if (TEST_BOT) return <TestRibbon />;
 
     return (
-        <aside aria-label={caption} className={RIBBON}>
+        <aside aria-label={caption} className={`${RIBBON} ${hideOnPhone ? "down-md:hidden" : ""}`}>
             <span className="text-center text-[15px] leading-[1.3] font-semibold text-white down-sm:text-[14px]">
                 {caption}
             </span>

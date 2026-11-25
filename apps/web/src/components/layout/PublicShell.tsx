@@ -23,7 +23,7 @@ export const nudgeLabels = (t: (key: string) => string, tVolunteer: (key: string
  * Каркас публичной страницы (как MainPageLayout старого фронта): лента
  * соцсетей, шапка, содержимое на всю оставшуюся высоту, подвал.
  */
-export async function PublicShell({ locale, headerVariant = "floating", topGap = false, footer = true, children }: {
+export async function PublicShell({ locale, headerVariant = "floating", topGap = false, footer = true, socialsInHeroOnPhone = false, children }: {
     locale: Locale;
     headerVariant?: HeaderVariant;
     /**
@@ -34,6 +34,8 @@ export async function PublicShell({ locale, headerVariant = "floating", topGap =
     topGap?: boolean;
     /** Без подвала — страницы во весь экран (каталог вакансий с картой) */
     footer?: boolean;
+    /** Лента соцсетей на телефоне — поверх фото первого экрана, а не над шапкой (главная, GS-292) */
+    socialsInHeroOnPhone?: boolean;
     children: ReactNode;
 }) {
     const [t, tProfile, tVolunteer, tHost, banner] = await Promise.all([
@@ -47,7 +49,7 @@ export async function PublicShell({ locale, headerVariant = "floating", topGap =
     return (
         <SessionProvider>
             <div className="flex min-h-screen flex-col">
-                <SocialRibbon t={t} />
+                <SocialRibbon t={t} hideOnPhone={socialsInHeroOnPhone} />
                 <Header locale={locale} t={t} tProfile={tProfile} banner={banner} variant={headerVariant} />
                 <main className={`flex-1 ${topGap ? "pt-[92px] down-2xl:pt-0" : ""}`}>{children}</main>
                 {footer && <Footer locale={locale} t={t} />}
