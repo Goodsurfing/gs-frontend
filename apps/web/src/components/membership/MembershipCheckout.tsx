@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { reachGoalThen } from "@/components/analytics/YandexMetrika";
 import { useSession } from "@/components/session/SessionProvider";
 import { Loading } from "@/components/ui/Loading";
+import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
 
 export interface CheckoutLabels {
@@ -30,7 +31,9 @@ const blueButton = "flex items-center justify-center rounded-[10px] border borde
  * «Оплатить». Гость — на вход с возвратом сюда же. Уже есть членство (409)
  * — понятное сообщение, а не молчаливый возврат.
  */
-export function MembershipCheckout({ tariffCode, signInHref, membershipHref, labels }: {
+export function MembershipCheckout({ locale, tariffCode, signInHref, membershipHref, labels }: {
+    /** Язык сайта: на нём описание платежа на странице ЮKassa и адрес возврата */
+    locale: Locale;
     tariffCode: string;
     signInHref: string;
     membershipHref: string;
@@ -48,7 +51,7 @@ export function MembershipCheckout({ tariffCode, signInHref, membershipHref, lab
         }
         if (session.status !== "user" || started.current) return;
         started.current = true;
-        browserApi(session.token).POST("/api/v1/membership/checkout", { body: { tariffCode } })
+        browserApi(session.token).POST("/api/v1/membership/checkout", { body: { tariffCode, locale } })
             .then(({ data, error: apiError, response }) => {
                 if (data?.paymentUrl) {
                     setPaymentUrl(data.paymentUrl);
@@ -72,7 +75,7 @@ export function MembershipCheckout({ tariffCode, signInHref, membershipHref, lab
                 setError(detail?.detail || detail?.title || fallback);
             })
             .catch(() => setError(labels.unavailable));
-    }, [session.status, session.token, tariffCode, signInHref, labels]);
+    }, [session.status, session.token, tariffCode, locale, signInHref, labels]);
 
     if (error) {
         return (
