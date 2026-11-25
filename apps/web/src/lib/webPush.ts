@@ -92,30 +92,51 @@ export function workerActivated(
 }
 
 /**
+ * Чем кончилась подписка: ok — браузер подписан; unsupported — у браузера нет
+ * рабочей службы пушей (сборки Chromium без службы Google — Comodo Dragon и т. п.:
+ * подписка не создаётся или сервер не принимает её адрес); failed — временный
+ * сбой (сеть, service worker не запустился), стоит попробовать позже.
+ */
+export type SubscribeResult = "ok" | "unsupported" | "failed";
+
+/** Сервер отвечает 400, если адрес подписки — не известная служба пушей браузера */
+export function saveResult(status: number): SubscribeResult {
+    if (status >= 200 && status < 300) return "ok";
+    return status === 400 ? "unsupported" : "failed";
+}
+
+/**
  * Подписать браузер вошедшего: service worker, подписка в браузере, запись на
  * сервере. Разрешение уже дано (granted). Подписка с другим ключом (ключи на
- * сервере сменились) пересоздаётся. Возвращает, получилось ли.
+ * сервере сменились) пересоздаётся.
  */
-export async function subscribePush(token: string | undefined, publicKey: string): Promise<boolean> {
+export async function subscribePush(token: string | undefined, publicKey: string): Promise<SubscribeResult> {
     try {
         const registration = await navigator.serviceWorker.register(PUSH_SW_URL, { scope: PUSH_SW_SCOPE });
         // Не navigator.serviceWorker.ready: он ждёт обработчик для адреса текущей страницы,
         // а у нашего область /web/push/ — на /messenger он не дождётся никогда (кнопка «Включить» зависала)
-        if (!await workerActivated(registration)) return false;
+        if (!await workerActivated(registration)) return "failed";
         const key = keyBytes(publicKey);
         let subscription = await registration.pushManager.getSubscription();
         if (subscription && !sameKey(subscription, key)) {
             await subscription.unsubscribe().catch(() => undefined);
             subscription = null;
         }
-        subscription ??= await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key });
+        if (!subscription) {
+            try {
+                subscription = await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key });
+            } catch {
+                // Разрешение есть, а подписаться нельзя — у браузера нет службы пушей
+                return "unsupported";
+            }
+        }
         const json = subscription.toJSON();
         const result = await browserApi(token).POST("/api/v1/web-push/subscriptions", {
             body: { endpoint: json.endpoint ?? "", keys: { p256dh: json.keys?.p256dh ?? "", auth: json.keys?.auth ?? "" } },
         });
-        return !!result.response.ok;
+        return saveResult(result.response.status);
     } catch {
-        return false;
+        return "failed";
     }
 }
 
