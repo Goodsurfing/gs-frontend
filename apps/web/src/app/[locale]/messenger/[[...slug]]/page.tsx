@@ -12,6 +12,7 @@ import { categoryLabels } from "@/lib/categories";
 import { LANGUAGES, LEVELS, skillNames } from "@/lib/offerText";
 import { vkEmailPromptLabels } from "@/lib/emailChangeLabels";
 import { routes } from "@/lib/routes";
+import { iosInstallHintLabels } from "@/lib/pwaLabels";
 import { pageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string; slug?: string[] }> };
@@ -32,7 +33,7 @@ export default async function MessengerPage({ params }: Props) {
     const { locale, slug = [] } = await params;
     if (!isLocale(locale) || slug.length > 2) notFound();
     const [chatId, offerId] = slug;
-    const [t, tm, tOffer] = await Promise.all([getTranslator(locale), getTranslator(locale, "messenger"), getTranslator(locale, "offer")]);
+    const [t, tm, tOffer, tPwa] = await Promise.all([getTranslator(locale), getTranslator(locale, "messenger"), getTranslator(locale, "offer"), getTranslator(locale, "pwa")]);
     const m = (key: string) => tm(key);
     const dict = {
         skills: skillNames(t),
@@ -181,6 +182,8 @@ export default async function MessengerPage({ params }: Props) {
                             blocked: m("Браузер не разрешил уведомления — их можно включить в настройках сайта"),
                             unsupported: m("Этот браузер не умеет получать уведомления. Откройте сайт в Chrome, Яндекс Браузере, Safari или Firefox — на iPhone добавьте сайт на экран «Домой»"),
                             noPrompt: m("Окно браузера не появилось? Нажмите на значок слева от адреса сайта (замок или перечёркнутый колокольчик) и разрешите уведомления"),
+                            install: iosInstallHintLabels(tPwa),
+                            appHref: routes.app(locale),
                         },
                         companion: {
                             title: m("Информация"),

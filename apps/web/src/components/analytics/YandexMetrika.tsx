@@ -30,7 +30,9 @@ export type MetrikaGoal =
     | "donation_start"
     | "donation_paid"
     | "vacancy_published"
-    | "vk_email_requested";
+    | "vk_email_requested"
+    /** Первое открытие сайта с экрана «Домой» (components/pwa/PwaInstalledGoal.tsx) */
+    | "pwa_installed";
 
 /**
  * Вызовы до того, как выполнился скрипт счётчика. Он подключается после

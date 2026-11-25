@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { preload } from "react-dom";
 
 import { YandexMetrika } from "@/components/analytics/YandexMetrika";
+import { PwaInstalledGoal } from "@/components/pwa/PwaInstalledGoal";
 import { ReferralCapture } from "@/components/referral/ReferralCapture";
 import { isLocale, LOCALES } from "@/i18n/config";
 
@@ -12,9 +13,13 @@ import "../globals.css";
 export const metadata: Metadata = {
     title: "GoodSurfing",
     icons: { icon: "/favicon.png", apple: "/web/icons/app/icon-180.png" },
-    // Установка на экран «Домой»: на iPhone веб-пуши работают только у установленного сайта
+    // Установка на экран «Домой»: на iPhone веб-пуши работают только у установленного сайта.
+    // В манифесте: start_url с меткой utm_source=pwa (видно в Метрике), theme_color — токен primary,
+    // фон — белый, как у страниц. meta theme-color не ставим: Safari перекрасил бы панель у всех посетителей
     manifest: "/web/manifest.webmanifest",
     appleWebApp: { capable: true, title: "GoodSurfing", statusBarStyle: "default" },
+    // Next пишет только mobile-web-app-capable; старые iOS (до 16.4) понимают лишь apple-…
+    other: { "apple-mobile-web-app-capable": "yes" },
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://goodsurfing.org"),
 };
 
@@ -62,6 +67,7 @@ export default async function LocaleLayout({
                 {children}
                 <YandexMetrika />
                 <ReferralCapture />
+                <PwaInstalledGoal />
             </body>
         </html>
     );

@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { IosInstallHint, type IosInstallHintLabels } from "@/components/pwa/IosInstallHint";
 import { browserApi } from "@/lib/browserApi";
+import { isIphoneSafari } from "@/lib/pwa";
 import { currentPushSupport, OFFER_DISMISSED_KEY, type PushSupport, shouldOffer, subscribePush } from "@/lib/webPush";
 import { storageGet, storageSet } from "@/lib/safeStorage";
 
@@ -18,6 +20,9 @@ export interface PushOfferLabels {
     unsupported: string;
     /** Разрешение спрошено, а ответа нет: Chrome мог спрятать запрос в значок у адреса */
     noPrompt: string;
+    /** Safari на iPhone: плашка «Установите на iPhone» с инструкцией вместо одной строки */
+    install: IosInstallHintLabels;
+    appHref: string;
 }
 
 const dismissedAt = (): number | null => {
@@ -31,7 +36,9 @@ const dismissedAt = (): number | null => {
  * отказываются, и второй раз браузер уже не спросит. «Не сейчас» прячет на
  * 30 дней. Разрешение уже дано — тихо подписывает этот браузер на вошедшего
  * (новый вход, сменились ключи). На iPhone в Safari — подсказка добавить сайт
- * на экран «Домой»: иначе Apple не даёт пуши.
+ * на экран «Домой»: иначе Apple не даёт пуши. В самом Safari — плашка с
+ * пошаговой инструкцией (IosInstallHint, свой срок «Позже»), в других браузерах
+ * iPhone — одна строка.
  */
 export function PushOffer({ token, enabled, labels }: { token: string | undefined; enabled: boolean; labels: PushOfferLabels }) {
     const [support, setSupport] = useState<PushSupport>("unsupported");
@@ -86,8 +93,11 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
         window.setTimeout(() => setVisible(false), 4000);
     };
 
-    if (!visible) return null;
     const ios = support === "ios-install";
+    if (ios && enabled && isIphoneSafari(navigator.userAgent)) {
+        return <IosInstallHint appHref={labels.appHref} labels={labels.install} className="rounded-none border-x-0 border-t-0" />;
+    }
+    if (!visible) return null;
     return (
         <div role="status" className="flex flex-col gap-2 border-b border-accent-bg bg-status-new/10 px-4 py-3 text-[13px] text-ink-secondary">
             {result ? <span>{result === "enabled" ? labels.enabled : result === "unsupported" ? labels.unsupported : labels.blocked}</span> : (
