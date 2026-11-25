@@ -9,6 +9,12 @@
 /** «Позже» прячет подсказку на 14 дней */
 export const INSTALL_HINT_PAUSE_MS = 14 * 24 * 3600 * 1000;
 export const INSTALL_HINT_DISMISSED_KEY = "gs-install-hint-dismissed";
+/** Без «Позже» плашка показывается не чаще раза в 7 дней (в пределах одного визита — на всех страницах) */
+export const INSTALL_HINT_REPEAT_MS = 7 * 24 * 3600 * 1000;
+/** Когда плашку показали в последний раз (localStorage) */
+export const INSTALL_HINT_SHOWN_KEY = "gs-install-hint-shown";
+/** Плашку уже показали в этом визите (sessionStorage) — не прятать при переходе между страницами */
+export const INSTALL_HINT_SESSION_KEY = "gs-install-hint-session";
 /** Цель Метрики pwa_installed уже отправлена с этого установленного сайта */
 export const PWA_INSTALLED_KEY = "gs-pwa-installed";
 
@@ -39,10 +45,25 @@ export function isStandalone(env: DisplayEnv): boolean {
     return env.navigatorStandalone === true || env.displayModeStandalone;
 }
 
-/** Показать подсказку: Safari на iPhone, сайт открыт не с экрана «Домой», «Позже» не нажимали 14 дней */
-export function shouldShowInstallHint(env: DisplayEnv & { userAgent: string }, dismissedAt: number | null, now: number): boolean {
+export interface InstallHintMarks {
+    /** Когда нажали «Позже» */
+    dismissedAt: number | null;
+    /** Когда плашку показали в последний раз */
+    shownAt: number | null;
+    /** Плашку уже показали в этом визите */
+    shownThisSession: boolean;
+}
+
+/**
+ * Показать подсказку: Safari на iPhone, сайт открыт не с экрана «Домой»,
+ * «Позже» не нажимали 14 дней, и плашку не показывали 7 дней (или показывают
+ * в этом же визите — тогда она не исчезает при переходе на другую страницу).
+ */
+export function shouldShowInstallHint(env: DisplayEnv & { userAgent: string }, marks: InstallHintMarks, now: number): boolean {
     if (!isIphoneSafari(env.userAgent) || isStandalone(env)) return false;
-    return dismissedAt === null || now - dismissedAt > INSTALL_HINT_PAUSE_MS;
+    if (marks.dismissedAt !== null && now - marks.dismissedAt <= INSTALL_HINT_PAUSE_MS) return false;
+    if (marks.shownThisSession) return true;
+    return marks.shownAt === null || now - marks.shownAt > INSTALL_HINT_REPEAT_MS;
 }
 
 /** Окружение текущего браузера (только в браузере) */

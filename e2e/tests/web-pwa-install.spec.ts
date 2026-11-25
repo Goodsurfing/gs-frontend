@@ -41,10 +41,17 @@ test.describe('Новый фронт: сайт на экране «Домой» 
         const context = await iphone(browser, testInfo);
         const page = await context.newPage();
         await page.goto('/volunteer/volunteer-dashboard');
-        await page.evaluate(() => localStorage.removeItem('gs-install-hint-dismissed'));
+        await page.evaluate(() => {
+            localStorage.removeItem('gs-install-hint-dismissed');
+            localStorage.removeItem('gs-install-hint-shown');
+            sessionStorage.removeItem('gs-install-hint-session');
+        });
         await page.reload();
 
         const hint = page.getByRole('region', { name: HINT });
+        await expect(hint).toBeVisible();
+        // В том же визите плашка остаётся и на других страницах кабинета
+        await page.goto('/profile/info');
         await expect(hint).toBeVisible();
         await hint.getByRole('button', { name: 'Как установить' }).click();
         const dialog = page.getByRole('dialog', { name: HINT });
@@ -61,7 +68,22 @@ test.describe('Новый фронт: сайт на экране «Домой» 
         await page.reload();
         await expect(page.getByRole('heading', { name: 'Заполненность профиля' })).toBeVisible();
         await expect(page.getByRole('region', { name: HINT })).toHaveCount(0);
-        await page.evaluate(() => localStorage.removeItem('gs-install-hint-dismissed'));
+        await context.close();
+    });
+
+    test('без «Позже»: в новом визите в течение 7 дней плашки нет', async ({ browser }, testInfo) => {
+        const context = await iphone(browser, testInfo);
+        const page = await context.newPage();
+        await page.goto('/volunteer/volunteer-dashboard');
+        await page.evaluate(() => {
+            localStorage.removeItem('gs-install-hint-dismissed');
+            localStorage.setItem('gs-install-hint-shown', String(Date.now() - 3600_000));
+            sessionStorage.removeItem('gs-install-hint-session');
+        });
+        await page.reload();
+        await expect(page.getByRole('heading', { name: 'Заполненность профиля' })).toBeVisible();
+        await expect(page.getByRole('region', { name: HINT })).toHaveCount(0);
+        await page.evaluate(() => localStorage.removeItem('gs-install-hint-shown'));
         await context.close();
     });
 

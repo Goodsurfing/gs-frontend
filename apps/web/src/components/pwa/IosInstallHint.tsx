@@ -3,7 +3,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useEffect, useState } from "react";
 
-import { currentDisplayEnv, INSTALL_HINT_DISMISSED_KEY, parseTimestamp, shouldShowInstallHint } from "@/lib/pwa";
+import { currentDisplayEnv, INSTALL_HINT_DISMISSED_KEY, INSTALL_HINT_SESSION_KEY, INSTALL_HINT_SHOWN_KEY, parseTimestamp, shouldShowInstallHint } from "@/lib/pwa";
 import { storageGet, storageSet } from "@/lib/safeStorage";
 
 import { AddToHomeIcon, InstallSteps, type InstallStepsLabels } from "./InstallSteps";
@@ -23,7 +23,8 @@ export interface IosInstallHintLabels {
  * Ненавязчивая плашка «Установите Гудсёрфинг на iPhone» — в кабинете и в
  * сообщениях, где нужны уведомления: на iPhone веб-пуши приходят только сайту,
  * добавленному на экран «Домой». Только Safari на iPhone и только если сайт
- * открыт не с экрана «Домой»; «Позже» прячет на 14 дней. «Как установить» —
+ * открыт не с экрана «Домой»; не чаще раза в 7 дней (в одном визите — на всех
+ * страницах), «Позже» прячет на 14 дней. «Как установить» —
  * окно с пошаговой инструкцией. Пока браузер не проверил условия — ничего
  * (на сервере и у остальных посетителей плашки нет, вёрстка не прыгает).
  */
@@ -32,9 +33,19 @@ export function IosInstallHint({ appHref, labels, className = "" }: { appHref: s
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
+        const now = Date.now();
+        const show = shouldShowInstallHint(currentDisplayEnv(), {
+            dismissedAt: parseTimestamp(storageGet(INSTALL_HINT_DISMISSED_KEY)),
+            shownAt: parseTimestamp(storageGet(INSTALL_HINT_SHOWN_KEY)),
+            shownThisSession: storageGet(INSTALL_HINT_SESSION_KEY, "session") !== null,
+        }, now);
+        if (show && storageGet(INSTALL_HINT_SESSION_KEY, "session") === null) {
+            storageSet(INSTALL_HINT_SHOWN_KEY, String(now));
+            storageSet(INSTALL_HINT_SESSION_KEY, "1", "session");
+        }
         // Определяется только в браузере, после загрузки
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        setVisible(shouldShowInstallHint(currentDisplayEnv(), parseTimestamp(storageGet(INSTALL_HINT_DISMISSED_KEY)), Date.now()));
+        setVisible(show);
     }, []);
 
     if (!visible) return null;
