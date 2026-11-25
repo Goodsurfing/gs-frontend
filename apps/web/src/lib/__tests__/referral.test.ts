@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { forgetReferral, rememberReferral, storedReferral } from "@/lib/referral";
+import { forgetReferral, referralLink, rememberReferral, storedReferral } from "@/lib/referral";
 
 /** Хранилище браузера в памяти — тесты идут в node */
 function memoryStorage(): Storage {
@@ -41,5 +41,13 @@ describe("код приглашения", () => {
         rememberReferral("?ref=abcd2345", 0);
         expect(storedReferral(31 * 24 * 60 * 60 * 1000)).toBeNull();
         expect(window.localStorage.getItem("gs.ref")).toBeNull();
+    });
+});
+
+describe("ссылка-приглашение", () => {
+    it("на языке сайта, а не профиля", () => {
+        expect(referralLink("https://goodsurfing.org", "ru", "k7m2xq9p")).toBe("https://goodsurfing.org/?ref=k7m2xq9p");
+        expect(referralLink("https://goodsurfing.org/", "en", "k7m2xq9p")).toBe("https://goodsurfing.org/en?ref=k7m2xq9p");
+        expect(referralLink("https://staging.goodsurfing.org", "es", "k7m2xq9p")).toBe("https://staging.goodsurfing.org/es?ref=k7m2xq9p");
     });
 });

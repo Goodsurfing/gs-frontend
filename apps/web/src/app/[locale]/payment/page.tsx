@@ -30,6 +30,7 @@ export default async function PaymentPage({ params, searchParams }: Props) {
     return (
         <PublicShell locale={locale} topGap>
             <MembershipCheckout
+                locale={locale}
                 tariffCode={tariffCode}
                 signInHref={`${routes.signIn(locale)}?next=payment&nextId=${encodeURIComponent(tariffCode)}`}
                 membershipHref={routes.membership(locale)}

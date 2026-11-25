@@ -28,7 +28,7 @@ export default async function ProfileInvitePage({ params }: Props) {
         <CabinetShell locale={locale} items={profileMenu(locale, t)}>
             <main className="w-full">
                 <h2 className="text-[1.625rem] font-normal">{t("referral.title")}</h2>
-                <InviteFriend achievementsHref={routes.achievements(locale)} labels={labels} />
+                <InviteFriend locale={locale} achievementsHref={routes.achievements(locale)} labels={labels} />
             </main>
         </CabinetShell>
     );
