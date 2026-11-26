@@ -76,7 +76,8 @@
         "Повторить": "Try again",
         "Пока нет заявок": "No applications yet — they will appear here when volunteers apply to your opportunities",
         "Ничего не найдено": "No applications match these filters",
-        "Сбросить фильтры": "Clear search and opportunity"
+        "Сбросить фильтры": "Clear search and opportunity",
+        "Статус заявки": "Application status"
     },
     "hostFundraises": {
         "Мои сборы": "My Fundraises",
