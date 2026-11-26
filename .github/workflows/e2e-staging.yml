@@ -23,8 +23,8 @@ jobs:
   e2e:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    # 20 мин на тесты (сейчас ~9–17) + до 10 мин ожидания выкатки нового фронта
-    timeout-minutes: 30
+    # 20 мин на тесты (сейчас ~9–17) + до 10 мин ожидания выкатки + до 15 мин ожидания restore базы
+    timeout-minutes: 45
     permissions:
       contents: read
       actions: read
@@ -43,6 +43,29 @@ jobs:
             echo "Идёт выкатка на стейдж ($busy), ждём…"; sleep 10
           done
           echo "Выкатка не закончилась за 10 минут — запускаем тесты как есть"
+
+      - name: Wait for nightly DB restore and mark E2E running
+        # Restore стейджа (gs-backend staging-db-restore.yml) заменяет базу копией прода и
+        # останавливает бэкенд — 26.11.2026 он совпал с E2E: 20 падений («no available
+        # server», «черновик не создан: 404»). Concurrency group между репозиториями не
+        # работает, поэтому замок — файлами на VM: restore держит /opt/gs/.db-restore-running,
+        # E2E на время прогона — /opt/gs/.e2e-running (restore его ждёт до 30 мин). Файл
+        # старше 40 мин считается забытым. VM недоступна по SSH — не блокируем, дальше
+        # всё равно проверка «Wait for staging to answer».
+        continue-on-error: true
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ubuntu
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          command_timeout: 20m
+          script: |
+            fresh() { [ -f "$1" ] && [ $(( $(date +%s) - $(stat -c %Y "$1") )) -le 2400 ]; }
+            for i in $(seq 1 60); do
+              fresh /opt/gs/.db-restore-running || break
+              echo "Идёт restore базы стейджа — ждём ($i)…"; sleep 15
+            done
+            sudo touch /opt/gs/.e2e-running
 
       - uses: actions/checkout@v7
         with:
@@ -87,6 +110,16 @@ jobs:
             playwright-report/
             test-results/
           retention-days: 7
+
+      - name: Release E2E mark on the VM
+        if: always()
+        continue-on-error: true
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ubuntu
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          script: sudo rm -f /opt/gs/.e2e-running
 
   # О результате в Telegram пишет бот статуса (gs-status-bot) по GitHub Actions API:
   # сам он держит в чате только последние события, а сообщения workflow копились без конца.
