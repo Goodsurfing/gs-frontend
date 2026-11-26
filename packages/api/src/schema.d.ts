@@ -2901,6 +2901,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/application/list-of-organization/counts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Число заявок организации авторизованного пользователя по статусам
+         * @description GS-331: числа для вкладок «Новые / Приняты / Отклонены / Все». Фильтры vacancyId и search — как у списка.
+         */
+        get: operations["get_app_api_v1_application_countsoforganization"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/application/list-of-volunteer": {
         parameters: {
             query?: never;
@@ -4688,6 +4708,92 @@ export interface paths {
          * @description Для проверки тестировщиками: сводка по своим заявкам без ответа любой давности, по тем же настройкам почты и Telegram. Неделю не отмечает. На проде — 404.
          */
         post: operations["post_app_api_v1_notificationsettings_digesttest"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/oauth/{provider}/app-callback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Redirect URI для приложения: передаёт code/state/error в приложение по его схеме */
+        get: operations["get_app_api_v1_oauth_appcallback"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/oauth/{provider}/link": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Привязать аккаунт провайдера к текущему пользователю */
+        post: operations["post_app_api_v1_oauth_link"];
+        /** Отвязать аккаунт провайдера */
+        delete: operations["delete_app_api_v1_oauth_unlink"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/oauth/{provider}/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Вход по коду провайдера: найти, привязать по почте или зарегистрировать */
+        post: operations["post_app_api_v1_oauth_login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/oauth/accounts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Привязанные провайдеры текущего пользователя (только включённые) */
+        get: operations["get_app_api_v1_oauth_accounts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/oauth/providers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Включённые провайдеры входа (пустой список — кнопок нет) */
+        get: operations["get_app_api_v1_oauth_providers"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -9179,6 +9285,32 @@ export interface components {
                 /** @description The property path of the violation */
                 propertyPath: string;
             }[];
+        };
+        /**
+         * ApplicationCountsResult
+         * @description GS-331: число заявок организации по статусам — для вкладок «Новые / Приняты / Отклонены / Все»
+         */
+        CountsOfOrganizationResult: {
+            /**
+             * @description Приняты
+             * @example 5
+             */
+            accepted: number;
+            /**
+             * @description Все
+             * @example 10
+             */
+            all: number;
+            /**
+             * @description Отклонены
+             * @example 2
+             */
+            canceled: number;
+            /**
+             * @description Новые — ждут ответа
+             * @example 3
+             */
+            new: number;
         };
         Course: {
             aboutAuthor?: string;
@@ -13767,6 +13899,12 @@ export interface components {
              * @example true
              */
             isHasReview: Record<string, never>;
+            /**
+             * @description GS-331: начало текста волонтёра к заявке (до 240 символов) — для превью в карточке. Null, если волонтёр ничего не написал.
+             * @default null
+             * @example Здравствуйте! Два сезона работала на ферме…
+             */
+            messagePreview: string | null;
             /** @example 01.01.2020 */
             startDate: string;
             /** @example  */
@@ -28118,6 +28256,8 @@ export interface operations {
                 limit?: string;
                 /** @description Номер страницы */
                 page?: string;
+                /** @description GS-331: поиск по имени и фамилии волонтёра (часть слова, без учёта регистра) */
+                search?: string;
                 /** @description Фильтр по статусу заявки — для отдельной пагинации каждой колонки CRM */
                 status?: "new" | "accepted" | "canceled";
                 /** @description Фильтр по вакансии */
@@ -28138,6 +28278,30 @@ export interface operations {
                         data?: components["schemas"]["ListOfOrganizationResult"][];
                         pagination?: components["schemas"]["PaginationResult"];
                     };
+                };
+            };
+        };
+    };
+    get_app_api_v1_application_countsoforganization: {
+        parameters: {
+            query?: {
+                /** @description Поиск по имени и фамилии волонтёра */
+                search?: string;
+                /** @description Фильтр по вакансии */
+                vacancyId?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CountsOfOrganizationResult"];
                 };
             };
         };
@@ -31651,6 +31815,293 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    get_app_api_v1_oauth_appcallback: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description goodsurfing://oauth/{provider}?code=…&state=… */
+            302: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_oauth_link: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Код авторизации от провайдера */
+                    code: string;
+                    /** @description PKCE code_verifier (code_challenge = S256) */
+                    codeVerifier: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        linked: boolean;
+                        provider: string;
+                    };
+                };
+            };
+            /** @description Нет code или codeVerifier */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description oauth_failed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+            /** @description provider_disabled */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+            /** @description linked_to_other — уже привязан к другому аккаунту */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+        };
+    };
+    delete_app_api_v1_oauth_unlink: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Отвязан (или не был привязан) */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description provider_disabled */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+            /** @description last_login_method — сначала задайте пароль */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+        };
+    };
+    post_app_api_v1_oauth_login: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Код авторизации от провайдера */
+                    code: string;
+                    /** @description PKCE code_verifier (code_challenge = S256) */
+                    codeVerifier: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Как у /api/v1/vk/jwt-token; ставит cookie входа */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        accessToken: string;
+                        /** @description Аккаунт создан этим входом */
+                        isNew: boolean;
+                        mercureToken: string;
+                        refresh_token: string;
+                        user: {
+                            email: string;
+                            firstName: string | null;
+                            id: string;
+                            isVerified: boolean;
+                            lastName: string | null;
+                            roles: string[];
+                        };
+                    };
+                };
+            };
+            /** @description Нет code или codeVerifier */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description oauth_failed — провайдер не принял код */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+            /** @description account_deleted */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+            /** @description provider_disabled */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+            /** @description no_email — у аккаунта провайдера нет почты */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+        };
+    };
+    get_app_api_v1_oauth_accounts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        accounts: {
+                            /** @description false — нет пароля и других способов входа */
+                            canUnlink: boolean;
+                            linked: boolean;
+                            /** @example yandex */
+                            provider: string;
+                        }[];
+                    };
+                };
+            };
+        };
+    };
+    get_app_api_v1_oauth_providers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        providers: {
+                            /** @example https://oauth.yandex.ru/authorize */
+                            authorizeUrl: string;
+                            clientId: string;
+                            /** @example yandex */
+                            name: string;
+                            /** @example login:email login:info login:avatar */
+                            scope: string;
+                        }[];
+                    };
+                };
             };
         };
     };
