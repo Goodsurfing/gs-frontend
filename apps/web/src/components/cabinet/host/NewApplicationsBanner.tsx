@@ -1,6 +1,6 @@
 "use client";
 
-import { type PluralText, pluralText } from "@/lib/hostApplicationsView";
+import { type PluralText, pluralText } from "@/lib/applicationsView";
 
 /**
  * «3 новые заявки ждут ответа → Ответить» (GS-331): наверху рабочего стола

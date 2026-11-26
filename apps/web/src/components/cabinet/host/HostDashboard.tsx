@@ -10,7 +10,7 @@ import { Toast } from "@/components/ui/Toast";
 import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
 import { formatLongDate } from "@/lib/formatDate";
-import type { PluralText } from "@/lib/hostApplicationsView";
+import type { PluralText } from "@/lib/applicationsView";
 import { hasHostMembership } from "@/lib/occupancy";
 
 import { type Application, ApplicationCard, type ApplicationCardLabels } from "./ApplicationCard";

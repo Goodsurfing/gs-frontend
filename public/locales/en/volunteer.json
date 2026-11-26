@@ -91,7 +91,24 @@
         "Добавить отзыв": "Add Review"
     },
     "volunteer-notes": {
-        "Мои заявки": "My notes"
+        "Мои заявки": "My notes",
+        "search": "Search by opportunity or host",
+        "searchPlaceholder": "Opportunity or host",
+        "clearSearch": "Clear search",
+        "tabsLabel": "Application status",
+        "tab.all": "All",
+        "tab.new": "Under review",
+        "tab.accepted": "Accepted",
+        "tab.canceled": "Declined",
+        "openOffer": "Open opportunity",
+        "loadError": "Couldn't load applications. Check your connection and try again",
+        "retry": "Retry",
+        "empty": "No applications yet",
+        "emptyHint": "Pick a trip and write to the host — the reply will arrive in Messages",
+        "find": "Find a trip",
+        "emptySearch": "No applications match this search. Try another opportunity or host name",
+        "emptyTab": "No applications in this tab yet",
+        "resetSearch": "Clear search"
     },
     "volunteer-subscribers": {
         "Подписки": "Subscriptions"

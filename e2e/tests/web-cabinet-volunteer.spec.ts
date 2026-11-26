@@ -6,9 +6,9 @@ const MENU = ['Панель управления', 'Навыки', 'Отзывы
 /** Заявки волонтёра для проверки карточек и отзыва: стейдж у vol@test.com заявок не держит */
 const APPLICATIONS = {
     data: [
-        { id: 9001, chatId: 77, startDate: '', endDate: '', isHasReview: false, status: 'new', volunteer: {}, vacancy: { id: 101, title: 'E2E: новая заявка', address: 'Москва', status: 'active', categories: [], image: null } },
-        { id: 9002, chatId: 78, startDate: '', endDate: '', isHasReview: false, status: 'accepted', volunteer: {}, vacancy: { id: 102, title: 'E2E: принятая заявка', address: 'Казань', status: 'active', categories: [], image: null } },
-        { id: 9003, chatId: 0, startDate: '', endDate: '', isHasReview: true, status: 'canceled', volunteer: {}, vacancy: { id: 103, title: 'E2E: отклонённая заявка', address: '', status: 'active', categories: [], image: null } },
+        { id: 9001, chatId: 77, startDate: '01.12.2026', endDate: '15.12.2026', isHasReview: false, status: 'new', volunteer: {}, vacancy: { id: 101, title: 'E2E: новая заявка', address: 'Москва', status: 'active', categories: [], image: null, organization: { id: 'o1', name: 'E2E: Хутор Озёрный' } } },
+        { id: 9002, chatId: 78, startDate: '', endDate: '', isHasReview: false, status: 'accepted', volunteer: {}, vacancy: { id: 102, title: 'E2E: принятая заявка', address: 'Казань', status: 'active', categories: [], image: null, organization: { id: 'o2', name: 'E2E: Школа Волна' } } },
+        { id: 9003, chatId: 0, startDate: '', endDate: '', isHasReview: true, status: 'canceled', volunteer: {}, vacancy: { id: 103, title: 'E2E: отклонённая заявка', address: '', status: 'active', categories: [], image: null, organization: { id: 'o3', name: 'E2E: Музей' } } },
     ],
     pagination: { total: 3, page: 1, limit: 10 },
 };
@@ -64,19 +64,32 @@ test.describe('Новый фронт: кабинет волонтёра', () => 
         await page.evaluate(() => localStorage.removeItem('gs_review_reminder_hidden_volunteer'));
     });
 
-    test('мои заявки: три колонки и пагинация', async ({ page }) => {
+    test('мои заявки: поиск и вкладки с числами (GS-332)', async ({ page }) => {
         const response = await page.goto('/volunteer/notes');
         expect(response?.status()).toBe(200);
         await expect(page.getByRole('heading', { name: 'Мои заявки' })).toBeVisible();
         await expect(page.getByRole('link', { name: 'Заявки' }).first()).toBeVisible();
-        for (const column of ['Новые', 'Принято', 'Отклонено']) {
-            await expect(page.getByRole('region', { name: column })).toBeVisible();
+        // GS-332: поиск и вкладки «Все / На рассмотрении / Приняты / Отклонены» с числами с сервера
+        await expect(page.getByLabel('Поиск по вакансии и организатору')).toBeVisible();
+        const tabs = page.getByRole('tablist', { name: 'Статус заявки' });
+        for (const name of ['Все', 'На рассмотрении', 'Приняты', 'Отклонены']) {
+            await expect(tabs.getByRole('tab', { name: new RegExp(`^${name}\\s*\\d+$`) })).toBeVisible();
         }
-        await expect(page.getByRole('navigation', { name: 'Страницы' })).toBeVisible();
+        await expect(tabs.getByRole('tab', { name: /^Все/ })).toHaveAttribute('aria-selected', 'true');
+        await expect(page.getByTestId('application-card').first().or(page.getByText('Пока нет заявок'))).toBeVisible();
     });
 
-    test('мои заявки: карточки по статусам, отзыв о принятой', async ({ page }) => {
-        await page.route('**/api/v1/application/list-of-volunteer**', (route) => route.fulfill({ json: APPLICATIONS }));
+    test('мои заявки: карточка, поиск, вкладки, отзыв о принятой (GS-332)', async ({ page }) => {
+        const searches: string[] = [];
+        await page.route('**/api/v1/application/list-of-volunteer/counts**', (route) => route.fulfill({ json: { new: 1, accepted: 1, canceled: 1, all: 3 } }));
+        await page.route(/\/api\/v1\/application\/list-of-volunteer(\?|$)/, (route) => {
+            const url = new URL(route.request().url());
+            const search = url.searchParams.get('search') ?? '';
+            if (search) searches.push(search);
+            const status = url.searchParams.get('status');
+            const data = APPLICATIONS.data.filter((item) => (!status || item.status === status) && (!search || item.vacancy.organization.name.toLowerCase().includes(search.toLowerCase())));
+            return route.fulfill({ json: { data, pagination: { total: data.length, page: 1, limit: 10 } } });
+        });
         let review: unknown = null;
         // Настоящий отзыв не отправляем: запрос перехватывается
         await page.route('**/api/v1/review-vacancy', (route) => {
@@ -85,15 +98,41 @@ test.describe('Новый фронт: кабинет волонтёра', () => 
         });
         await page.goto('/volunteer/notes');
 
-        const fresh = page.getByRole('region', { name: 'Новые' });
-        await expect(fresh.getByText('E2E: новая заявка')).toBeVisible();
-        await expect(fresh.getByRole('link', { name: 'Сообщение' })).toHaveAttribute('href', '/messenger/77');
-        await expect(fresh.getByRole('button', { name: 'Написать отзыв' })).toHaveCount(0);
-        const canceled = page.getByRole('region', { name: 'Отклонено' });
-        await expect(canceled.getByText('E2E: отклонённая заявка')).toBeVisible();
-        await expect(canceled.getByRole('link', { name: 'Сообщение' })).toHaveCount(0);
+        const tabs = page.getByRole('tablist', { name: 'Статус заявки' });
+        await expect(tabs.getByRole('tab', { name: /^Все\s*3$/ })).toBeVisible();
+        const cards = page.getByTestId('application-card');
+        await expect(cards).toHaveCount(3);
 
-        await page.getByRole('region', { name: 'Принято' }).getByRole('button', { name: 'Написать отзыв' }).click();
+        // Карточка: организатор, даты, статус и что дальше; нажатие — в переписку
+        const fresh = cards.filter({ hasText: 'E2E: новая заявка' });
+        await expect(fresh.getByText('E2E: Хутор Озёрный')).toBeVisible();
+        await expect(fresh.getByText('01.12.2026 — 15.12.2026')).toBeVisible();
+        await expect(fresh.getByText('На рассмотрении')).toBeVisible();
+        await expect(fresh.getByRole('link', { name: /E2E: новая заявка/ })).toHaveAttribute('href', '/messenger/77');
+        await expect(fresh.getByRole('button', { name: 'Написать отзыв' })).toHaveCount(0);
+        // Без переписки карточка ведёт на вакансию
+        await expect(cards.filter({ hasText: 'E2E: отклонённая заявка' }).getByRole('link', { name: /E2E: отклонённая заявка/ })).toHaveAttribute('href', '/offers/103');
+
+        // Вкладка — в адрес и в запрос
+        await tabs.getByRole('tab', { name: /^Отклонены/ }).click();
+        await expect(page).toHaveURL(/[?&]status=canceled/);
+        await expect(cards).toHaveCount(1);
+        await tabs.getByRole('tab', { name: /^Все/ }).click();
+
+        // Поиск по организатору
+        await page.getByLabel('Поиск по вакансии и организатору').fill('волна');
+        await expect(page).toHaveURL(/[?&]q=/);
+        await expect(cards).toHaveCount(1);
+        await expect(cards.first()).toContainText('E2E: принятая заявка');
+        expect(searches).toContain('волна');
+
+        // Ничего не нашлось — свой текст и «Сбросить поиск»
+        await page.getByLabel('Поиск по вакансии и организатору').fill('яяяя');
+        await expect(page.getByText('По этому запросу заявок нет', { exact: false })).toBeVisible();
+        await page.getByRole('button', { name: 'Сбросить поиск' }).click();
+        await expect(cards).toHaveCount(3);
+
+        await cards.filter({ hasText: 'E2E: принятая заявка' }).getByRole('button', { name: 'Написать отзыв' }).click();
         const dialog = page.getByRole('dialog');
         await expect(dialog.getByRole('heading', { name: 'Оставьте отзыв' })).toBeVisible();
         await expect(dialog.getByText('E2E: принятая заявка')).toBeVisible();

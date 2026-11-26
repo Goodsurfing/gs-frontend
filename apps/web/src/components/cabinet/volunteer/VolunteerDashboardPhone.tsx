@@ -5,19 +5,18 @@ import { useEffect, useState } from "react";
 import { useSession } from "@/components/session/SessionProvider";
 import { Avatar } from "@/components/ui/Avatar";
 import { EmptyHint } from "@/components/ui/EmptyHint";
+import { Thumb } from "@/components/ui/Thumb";
 import { browserApi } from "@/lib/browserApi";
-import { mediaUrl } from "@/lib/media";
 import type { CatalogOffer } from "@/lib/offersCatalog";
 import {
-    applicationDates,
     applicationHref,
-    applicationStatus,
     type ApplicationStatus,
     fillTemplate,
     sortApplications,
-    STATUS_TONE,
     type VolunteerApplication,
 } from "@/lib/volunteerApplications";
+
+import { ApplicationSummary } from "./ApplicationSummary";
 
 /** Сколько откликов показываем на телефоне — остальные в «Все отклики» */
 const SHOWN_APPLICATIONS = 3;
@@ -156,24 +155,13 @@ function Applications({ enabled, hrefs, labels }: {
             )}
             {items.length > 0 && (
                 <ul className="flex flex-col gap-2 px-3 pb-3">
-                    {items.map((item) => {
-                        const status = applicationStatus(item.status);
-                        const dates = applicationDates(item);
-                        const image = mediaUrl(item.vacancy.image, "small");
-                        return (
-                            <li key={item.id}>
-                                <a href={applicationHref(item, hrefs)} className="flex gap-3 rounded-m-card bg-m-surface p-2.5 text-inherit no-underline">
-                                    <Thumb src={image} size={56} />
-                                    <span className="flex min-w-0 flex-1 flex-col gap-1">
-                                        <span className="line-clamp-2 text-[15px] leading-[130%] font-bold text-ink-secondary">{item.vacancy.title?.trim() || labels.noTitle}</span>
-                                        {dates && <span className="text-[13px] leading-[130%] text-caption">{dates}</span>}
-                                        <span className={`w-fit rounded-full px-2 py-[3px] text-[12px] leading-[130%] font-semibold ${STATUS_TONE[status]}`}>{labels.status[status]}</span>
-                                        <span className="text-[13px] leading-[130%] text-ink-secondary">{labels.next[status]}</span>
-                                    </span>
-                                </a>
-                            </li>
-                        );
-                    })}
+                    {items.map((item) => (
+                        <li key={item.id}>
+                            <a href={applicationHref(item, hrefs)} className="flex gap-3 rounded-m-card bg-m-surface p-2.5 text-inherit no-underline">
+                                <ApplicationSummary item={item} labels={{ status: labels.status, next: labels.next, noTitle: labels.noTitle }} />
+                            </a>
+                        </li>
+                    ))}
                 </ul>
             )}
         </section>
@@ -271,16 +259,6 @@ function ProfileLine({ profile, membershipHref, labels }: {
                 </p>
             )}
         </section>
-    );
-}
-
-/** Миниатюра с зарезервированным местом и подложкой, пока грузится (как Thumb приложения) */
-function Thumb({ src, size, lazy = false }: { src?: string; size: number; lazy?: boolean }) {
-    return (
-        <span className="shrink-0 overflow-hidden rounded-m-card bg-m-surface" style={{ width: size, height: size }}>
-            {/* eslint-disable-next-line @next/next/no-img-element -- превью small/medium с API, размер задан */}
-            {src && <img src={src} alt="" width={size} height={size} loading={lazy ? "lazy" : "eager"} decoding="async" className="block h-full w-full object-cover" />}
-        </span>
     );
 }
 

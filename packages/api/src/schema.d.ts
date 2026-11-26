@@ -2941,6 +2941,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/application/list-of-volunteer/counts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Число заявок волонтёра авторизованного пользователя по статусам
+         * @description GS-332: числа для вкладок «Все / На рассмотрении / Приняты / Отклонены». Поиск search — как у списка.
+         */
+        get: operations["get_app_api_v1_application_countsofvolunteer"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/applications": {
         parameters: {
             query?: never;
@@ -7947,6 +7967,32 @@ export interface components {
             vacancy: components["schemas"]["Vacancy.multipart-application-form.read_volunteer.read_volunteer.read-with-profile_user.short_media_object.read_vacancy.in-organization"] | null;
             volunteer?: components["schemas"]["Volunteer.multipart-application-form.read_volunteer.read_volunteer.read-with-profile_user.short_media_object.read_vacancy.in-organization"] | null;
         };
+        /**
+         * ApplicationCountsResult
+         * @description Число заявок по статусам — для вкладок с числами (организатор GS-331, волонтёр GS-332)
+         */
+        ApplicationCountsResult: {
+            /**
+             * @description Приняты
+             * @example 5
+             */
+            accepted: number;
+            /**
+             * @description Все
+             * @example 10
+             */
+            all: number;
+            /**
+             * @description Отклонены
+             * @example 2
+             */
+            canceled: number;
+            /**
+             * @description Новые — ждут ответа организатора
+             * @example 3
+             */
+            new: number;
+        };
         ApplicationFormAlreadyExistException: {
             /** @default 0 */
             readonly code: number;
@@ -8054,6 +8100,16 @@ export interface components {
             readonly trace?: unknown[];
             readonly traceAsString?: string;
             readonly type?: string;
+        };
+        /**
+         * ApplicationOrganizationResult
+         * @description GS-332: организатор вакансии — для карточки «Мои заявки»
+         */
+        ApplicationOrganizationResult: {
+            /** @example  */
+            id: string;
+            /** @example  */
+            name?: string | null;
         };
         ApplicationPeriodClosedException: {
             /** @default 0 */
@@ -9285,32 +9341,6 @@ export interface components {
                 /** @description The property path of the violation */
                 propertyPath: string;
             }[];
-        };
-        /**
-         * ApplicationCountsResult
-         * @description GS-331: число заявок организации по статусам — для вкладок «Новые / Приняты / Отклонены / Все»
-         */
-        CountsOfOrganizationResult: {
-            /**
-             * @description Приняты
-             * @example 5
-             */
-            accepted: number;
-            /**
-             * @description Все
-             * @example 10
-             */
-            all: number;
-            /**
-             * @description Отклонены
-             * @example 2
-             */
-            canceled: number;
-            /**
-             * @description Новые — ждут ответа
-             * @example 3
-             */
-            new: number;
         };
         Course: {
             aboutAuthor?: string;
@@ -21448,6 +21478,8 @@ export interface components {
             categories: Record<string, never>[];
             id: number;
             image: components["schemas"]["ImageResultDto"];
+            /** @description GS-332: организатор */
+            organization: components["schemas"]["ApplicationOrganizationResult"];
             /**
              * @example
              * @enum {string}
@@ -28301,7 +28333,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["CountsOfOrganizationResult"];
+                    "application/json": components["schemas"]["ApplicationCountsResult"];
                 };
             };
         };
@@ -28313,6 +28345,10 @@ export interface operations {
                 limit?: string;
                 /** @description Номер страницы */
                 page?: string;
+                /** @description GS-332: поиск по названию вакансии и организатору (часть слова, без учёта регистра) */
+                search?: string;
+                /** @description GS-332: фильтр по статусу заявки (вкладки «На рассмотрении / Приняты / Отклонены») */
+                status?: "new" | "accepted" | "canceled";
             };
             header?: never;
             path?: never;
@@ -28329,6 +28365,28 @@ export interface operations {
                         data?: components["schemas"]["ListOfVolunteerResult"][];
                         pagination?: components["schemas"]["PaginationResult"];
                     };
+                };
+            };
+        };
+    };
+    get_app_api_v1_application_countsofvolunteer: {
+        parameters: {
+            query?: {
+                /** @description Поиск по названию вакансии и организатору */
+                search?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApplicationCountsResult"];
                 };
             };
         };

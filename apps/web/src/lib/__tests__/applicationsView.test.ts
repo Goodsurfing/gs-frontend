@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { applicationsFilterQuery, applicationsListQuery, parseApplicationsFilter, pluralText } from "../hostApplicationsView";
+import { applicationsFilterQuery, applicationsListQuery, parseApplicationsFilter, pluralText } from "../applicationsView";
 
 const waiting = { one: "{count} новая заявка ждёт ответа", few: "{count} новые заявки ждут ответа", many: "{count} новых заявок ждут ответа", other: "{count} новой заявки ждут ответа" };
 
@@ -25,6 +25,20 @@ describe("заявки организатора: фильтры в адресе 
     it("запрос списка: «Все» — без статуса, пустой поиск не отправляется", () => {
         expect(applicationsListQuery({ tab: "all", search: " ", page: 1 })).toEqual({ limit: "10", page: "1" });
         expect(applicationsListQuery({ tab: "new", search: " анна ", vacancyId: 5, page: 2 })).toEqual({ limit: "10", page: "2", status: "new", vacancyId: 5, search: "анна" });
+    });
+});
+
+describe("«Мои заявки» волонтёра: по умолчанию «Все» (GS-332)", () => {
+    it("без вкладки в адресе — «Все», и в адрес она не пишется", () => {
+        expect(parseApplicationsFilter(new URLSearchParams(""), "all")).toEqual({ tab: "all", search: "", vacancyId: undefined, page: 1 });
+        expect(applicationsFilterQuery({ tab: "all", search: "", page: 1 }, "all")).toBe("");
+    });
+
+    it("«На рассмотрении» и поиск — в адрес и обратно", () => {
+        const filter = { tab: "new" as const, search: "хаски", page: 1 };
+        const query = applicationsFilterQuery(filter, "all");
+        expect(query).toBe("?status=new&q=%D1%85%D0%B0%D1%81%D0%BA%D0%B8");
+        expect(parseApplicationsFilter(new URLSearchParams(query.slice(1)), "all")).toEqual({ ...filter, vacancyId: undefined });
     });
 });
 

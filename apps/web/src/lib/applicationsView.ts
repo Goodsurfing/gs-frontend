@@ -1,17 +1,21 @@
 /**
- * Заявки организатора (GS-331): вкладки, состояние фильтров в адресе и
- * подписи с числом. Без React и без server-only — общее для страницы
- * «Заявки», рабочего стола и тестов.
+ * Списки заявок с вкладками по статусу: «Заявки» организатора (GS-331) и
+ * «Мои заявки» волонтёра (GS-332) — вкладки, состояние фильтров в адресе и
+ * подписи с числом. Без React и без server-only — общее для страниц,
+ * рабочего стола и тестов.
  */
 
 export type ApplicationTab = "new" | "accepted" | "canceled" | "all";
 
-/** Порядок вкладок: «Новые» первыми — это то, что ждёт ответа */
+/** Порядок вкладок организатора: «Новые» первыми — это то, что ждёт ответа */
 export const APPLICATION_TABS: readonly ApplicationTab[] = ["new", "accepted", "canceled", "all"];
+
+/** Порядок вкладок волонтёра (GS-332): «Все» первой — это его история поездок */
+export const VOLUNTEER_APPLICATION_TABS: readonly ApplicationTab[] = ["all", "new", "accepted", "canceled"];
 
 export const APPLICATIONS_PER_PAGE = 10;
 
-/** Числа во вкладках — ответ GET /application/list-of-organization/counts */
+/** Числа во вкладках — ответ GET /application/list-of-organization/counts и /list-of-volunteer/counts */
 export type ApplicationCounts = Record<ApplicationTab, number>;
 
 export interface ApplicationsFilter {
@@ -21,12 +25,13 @@ export interface ApplicationsFilter {
     page: number;
 }
 
-export const DEFAULT_FILTER: ApplicationsFilter = { tab: "new", search: "", page: 1 };
+/** Вкладка по умолчанию: у организатора — «Новые», у волонтёра — «Все» */
+export const defaultFilter = (tab: ApplicationTab = "new"): ApplicationsFilter => ({ tab, search: "", page: 1 });
 
 /** Фильтры из адреса (?status=new&q=анна&vacancy=12&page=2) — ссылка «Ответить» с рабочего стола и «Назад» из переписки */
-export function parseApplicationsFilter(params: URLSearchParams): ApplicationsFilter {
+export function parseApplicationsFilter(params: URLSearchParams, defaultTab: ApplicationTab = "new"): ApplicationsFilter {
     const status = params.get("status");
-    const tab = APPLICATION_TABS.find((item) => item === status) ?? DEFAULT_FILTER.tab;
+    const tab = APPLICATION_TABS.find((item) => item === status) ?? defaultTab;
     const vacancy = Number(params.get("vacancy"));
     const page = Number(params.get("page"));
     return {
@@ -38,9 +43,9 @@ export function parseApplicationsFilter(params: URLSearchParams): ApplicationsFi
 }
 
 /** Обратно в строку адреса: значения по умолчанию не пишем, чтобы адрес оставался коротким */
-export function applicationsFilterQuery(filter: ApplicationsFilter): string {
+export function applicationsFilterQuery(filter: ApplicationsFilter, defaultTab: ApplicationTab = "new"): string {
     const params = new URLSearchParams();
-    if (filter.tab !== DEFAULT_FILTER.tab) params.set("status", filter.tab);
+    if (filter.tab !== defaultTab) params.set("status", filter.tab);
     const search = filter.search.trim();
     if (search) params.set("q", search);
     if (filter.vacancyId) params.set("vacancy", String(filter.vacancyId));
