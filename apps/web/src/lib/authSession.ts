@@ -14,6 +14,16 @@ export interface TokenResponse {
     roles?: string[];
 }
 
+/** Заголовок с токеном входа старого формата (localStorage), если он есть — вместе с cookie входа */
+export function storedAuthHeaders(): Record<string, string> {
+    try {
+        const token = JSON.parse(storageGet("token") ?? "null") as string | null;
+        return token ? { Authorization: `Bearer ${token}` } : {};
+    } catch {
+        return {};
+    }
+}
+
 export function saveSession(data: TokenResponse, username: string) {
     const set = (key: string, value: unknown) => storageSet(key, JSON.stringify(value));
     set("user", { username });

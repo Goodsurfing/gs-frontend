@@ -572,5 +572,37 @@
         "error": "Couldn't send, please try again",
         "invalid": "The link is incomplete — open the full link from the email.",
         "back": "← Back to membership"
+    },
+    "yandexId": {
+        "signIn": "Sign in with Yandex ID",
+        "unavailable": "Couldn't open Yandex in this browser. Sign in with email or VK.",
+        "callback": {
+            "loading": "Signing in with Yandex ID…",
+            "linking": "Linking Yandex ID…",
+            "loginFailed": "Couldn't sign in with Yandex ID",
+            "linkFailed": "Couldn't link Yandex ID",
+            "backToSignIn": "Back to sign in",
+            "backToSettings": "Back to settings"
+        },
+        "errors": {
+            "oauthFailed": "Yandex didn't confirm the sign-in. Please try again.",
+            "disabled": "Sign-in with Yandex ID is unavailable right now. Sign in with email or VK.",
+            "noEmail": "Your Yandex account has no email. Add one in Yandex ID or sign in another way.",
+            "linkedToOther": "This Yandex ID is already linked to another GoodSurfing account.",
+            "lastMethod": "This is the only way to sign in to your account. Set a password first, then unlink Yandex ID.",
+            "expired": "The sign-in has expired or was started in another tab. Please try again.",
+            "denied": "Sign-in with Yandex ID was cancelled.",
+            "unknown": "Something went wrong. Please try again a bit later."
+        },
+        "settings": {
+            "title": "Sign in with Yandex ID",
+            "linked": "Linked: you can sign in to the site with Yandex ID.",
+            "notLinked": "Not linked. Link it to sign in with one click.",
+            "link": "Link",
+            "unlink": "Unlink",
+            "cannotUnlink": "You can't unlink yet: it's your only way to sign in. Set a password on this page first.",
+            "linkedOk": "Yandex ID linked",
+            "unlinkedOk": "Yandex ID unlinked"
+        }
     }
 }

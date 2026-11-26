@@ -3,11 +3,13 @@ import { notFound } from "next/navigation";
 
 import { CabinetShell } from "@/components/cabinet/CabinetShell";
 import { PasswordForm } from "@/components/cabinet/profile/ProfileSettings";
+import { YandexIdSettings } from "@/components/cabinet/profile/YandexIdSettings";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
 import { authMetadata } from "@/lib/authPages";
 import { profileMenu } from "@/lib/cabinetMenus";
 import { routes } from "@/lib/routes";
+import { yandexSettingsLabels } from "@/lib/yandexIdLabels";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -16,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return isLocale(locale) ? authMetadata(locale, routes.profileResetPassword(locale), "main.sidebar.Пароль") : {};
 }
 
-/** Кабинет: «Изменение пароля» (ProfileResetPasswordPage старого фронта, GS-219) */
+/** Кабинет: «Изменение пароля» (ProfileResetPasswordPage старого фронта, GS-219) и вход через Яндекс ID (GS-336) */
 export default async function ProfilePasswordPage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
@@ -40,6 +42,8 @@ export default async function ProfilePasswordPage({ params }: Props) {
                         repeatRequired: p("Повторите новый пароль"),
                     }}
                 />
+                {/* Способ входа рядом с паролем: отвязать Яндекс можно, только если есть пароль */}
+                <YandexIdSettings locale={locale} labels={yandexSettingsLabels(t)} />
             </main>
         </CabinetShell>
     );

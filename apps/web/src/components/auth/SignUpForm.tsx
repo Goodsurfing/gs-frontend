@@ -4,12 +4,15 @@ import { type FormEvent, useCallback, useEffect, useState } from "react";
 
 import { type Locale, localePrefix } from "@/i18n/config";
 import { reachGoalThen } from "@/components/analytics/YandexMetrika";
-import { forgetReturnAfterAuth, keepReturn, returnAfterAuth } from "@/lib/authSession";
+import { keepReturn, returnAfterAuth } from "@/lib/authSession";
 import { API_URL } from "@/lib/browserApi";
+import { afterAuthTarget, goAfterAuth, saveRegistrationConsent } from "@/lib/socialLogin";
+import type { OAuthProvider } from "@/lib/yandexId";
 
 import { AuthInput } from "./AuthInput";
 import { AuthToast } from "./AuthToast";
 import { VkIdButton } from "./VkIdButton";
+import { YandexIdButton } from "./YandexIdButton";
 import { storageGet, storageRemove, storageSet } from "@/lib/safeStorage";
 
 export interface SignUpLabels {
@@ -28,6 +31,8 @@ export interface SignUpLabels {
     privacyPolicy: string;
     noPosting: string;
     deleted: string;
+    /** Кнопка «Войти с Яндекс ID» */
+    yandex?: { label: string; unavailable: string };
 }
 
 // Отметка «Хочу получать письма» переживает уход на сайт VK (GS-203): "1"/"0", нет записи — отмечено
@@ -54,12 +59,16 @@ export const REGISTER_EMAIL_KEY = "gs.registerEmail";
 /**
  * Регистрация (SignUpContainer старого фронта): почта, пароль (не короче 6
  * символов и с цифрой), согласие на рассылку (по умолчанию стоит, решение
- * владельца 29.10.2026), вход через VK. После регистрации — страница
+ * владельца 29.10.2026), вход через VK и Яндекс ID. После регистрации — страница
  * «Подтвердите почту»; после VK — сохранить согласие и в профиль.
  */
-export function SignUpForm({ locale, signInHref, resetHref, privacyHref, confirmHref, profileHref, labels }: {
+export function SignUpForm({ locale, signInHref, signUpHref, resetHref, privacyHref, confirmHref, profileHref, labels, yandexHint }: {
     locale: Locale;
     signInHref: string;
+    /** Эта страница — сюда «Вернуться» после ошибки Яндекс ID */
+    signUpHref?: string;
+    /** Включён ли Яндекс ID (при рендере страницы, lib/oauthProvidersServer) */
+    yandexHint?: OAuthProvider | null;
     resetHref: string;
     privacyHref: string;
     confirmHref: string;
@@ -87,18 +96,8 @@ export function SignUpForm({ locale, signInHref, resetHref, privacyHref, confirm
     const afterVk = useCallback(async () => {
         const agreed = readConsent();
         writeConsent(null);
-        if (agreed) {
-            const token = JSON.parse(storageGet("token") ?? "null") as string | null;
-            await fetch(`${API_URL}/api/v1/profile/marketing-consent`, {
-                method: "PATCH",
-                credentials: "include",
-                headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-                body: JSON.stringify({ consent: true, source: "registration", wording }),
-            }).catch(() => undefined);
-        }
-        const target = returnAfterAuth(localePrefix(locale));
-        forgetReturnAfterAuth();
-        window.location.href = target ?? profileHref;
+        if (agreed) await saveRegistrationConsent(wording);
+        goAfterAuth(afterAuthTarget(locale, profileHref));
     }, [locale, profileHref, wording]);
 
     const submit = async (event: FormEvent<HTMLFormElement>) => {
@@ -181,6 +180,19 @@ export function SignUpForm({ locale, signInHref, resetHref, privacyHref, confirm
                 <a href={privacyHref} className="text-[0.875rem] leading-[157%] text-[#6F828E]">{labels.privacyPolicy}</a>.
             </div>
             <VkIdButton locale={locale} page="signup" onSuccess={afterVk} onError={setToast} deletedText={labels.deleted} />
+            {labels.yandex && signUpHref && (
+                <YandexIdButton
+                    hint={yandexHint}
+                    locale={locale}
+                    label={labels.yandex.label}
+                    unavailable={labels.yandex.unavailable}
+                    returnTo={() => afterAuthTarget(locale, profileHref)}
+                    backTo={signUpHref}
+                    // Согласие на рассылку с этой страницы сохранится после входа (как у VK, GS-203)
+                    consentWording={() => (consent ? wording : undefined)}
+                    onError={setToast}
+                />
+            )}
             <p className="mt-5 text-[0.875rem] font-medium text-ink-secondary opacity-50 max-[667px]:hidden">{labels.noPosting}</p>
         </div>
     );

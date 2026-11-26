@@ -5,11 +5,14 @@ import { type FormEvent, useCallback, useEffect, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { localePrefix } from "@/i18n/config";
 import { API_URL } from "@/lib/browserApi";
-import { forgetReturnAfterAuth, keepReturn, returnAfterAuth, saveSession, type TokenResponse } from "@/lib/authSession";
+import { keepReturn, returnAfterAuth, saveSession, type TokenResponse } from "@/lib/authSession";
+import { afterAuthTarget, goAfterAuth } from "@/lib/socialLogin";
+import type { OAuthProvider } from "@/lib/yandexId";
 
 import { AuthInput } from "./AuthInput";
 import { AuthToast } from "./AuthToast";
 import { VkIdButton } from "./VkIdButton";
+import { YandexIdButton } from "./YandexIdButton";
 
 export interface SignInLabels {
     password: string;
@@ -21,6 +24,8 @@ export interface SignInLabels {
     deleted: string;
     /** Ответы API → тексты для человека (как errorMessages старого фронта) */
     errors: Record<string, string>;
+    /** Кнопка «Войти с Яндекс ID» */
+    yandex?: { label: string; unavailable: string };
 }
 
 /** Текст ошибки из ответа API (getErrorText старого фронта) */
@@ -36,12 +41,16 @@ export const apiErrorText = (body: unknown): string => {
 };
 
 /**
- * Вход по почте и паролю (AuthByEmail старого фронта) и через VK ID.
+ * Вход по почте и паролю (AuthByEmail старого фронта), через VK ID и Яндекс ID.
  * После входа — туда, откуда пришли (?next=&nextId=), иначе в профиль.
  * Почта не подтверждена — письмо с подтверждением уходит ещё раз.
  */
-export function SignInForm({ locale, resetHref, signUpHref, profileHref, labels, admin = false }: {
+export function SignInForm({ locale, resetHref, signUpHref, signInHref, profileHref, labels, yandexHint, admin = false }: {
     locale: Locale;
+    /** Эта страница входа — сюда «Вернуться ко входу» после ошибки Яндекс ID */
+    signInHref?: string;
+    /** Включён ли Яндекс ID (при рендере страницы, lib/oauthProvidersServer) */
+    yandexHint?: OAuthProvider | null;
     resetHref: string;
     signUpHref: string;
     profileHref: string;
@@ -59,11 +68,7 @@ export function SignInForm({ locale, resetHref, signUpHref, profileHref, labels,
     useEffect(() => {
         returnAfterAuth(localePrefix(locale));
     }, [locale]);
-    const done = useCallback(() => {
-        const target = returnAfterAuth(localePrefix(locale));
-        forgetReturnAfterAuth();
-        window.location.href = target ?? profileHref;
-    }, [locale, profileHref]);
+    const done = useCallback(() => goAfterAuth(afterAuthTarget(locale, profileHref)), [locale, profileHref]);
     const showError = useCallback((text: string) => setError(labels.errors[text] ?? text), [labels.errors]);
 
     const submit = async (event: FormEvent<HTMLFormElement>) => {
@@ -127,6 +132,17 @@ export function SignInForm({ locale, resetHref, signUpHref, profileHref, labels,
             {!admin && (
                 <>
                     <VkIdButton locale={locale} page="signin" onSuccess={done} onError={showError} deletedText={labels.deleted} />
+                    {labels.yandex && signInHref && (
+                        <YandexIdButton
+                            hint={yandexHint}
+                            locale={locale}
+                            label={labels.yandex.label}
+                            unavailable={labels.yandex.unavailable}
+                            returnTo={() => afterAuthTarget(locale, profileHref)}
+                            backTo={signInHref}
+                            onError={setError}
+                        />
+                    )}
                     <div className="text-center leading-[138%] text-ink-secondary">
                         {labels.notRegistered}{" "}
                         <a href={signUpHref} onClick={(event) => keepReturn(event, signUpHref)} className="font-semibold text-primary">{labels.signUp}</a>
