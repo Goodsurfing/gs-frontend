@@ -1,6 +1,6 @@
 "use client";
 
-import { type FormEvent, useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 
 import type { Locale } from "@/i18n/config";
 import { localePrefix } from "@/i18n/config";
@@ -13,6 +13,7 @@ import { AuthInput } from "./AuthInput";
 import { AuthToast } from "./AuthToast";
 import { VkIdButton } from "./VkIdButton";
 import { YandexIdButton } from "./YandexIdButton";
+import { useHydrated } from "@/components/ui/useHydrated";
 
 export interface SignInLabels {
     password: string;
@@ -39,13 +40,6 @@ export const apiErrorText = (body: unknown): string => {
     if (typeof data.message === "string") return data.message;
     return "";
 };
-
-const noSubscribe = () => () => {};
-
-/** false на сервере и во время гидратации, true — когда обработчики формы уже работают */
-export function useHydrated(): boolean {
-    return useSyncExternalStore(noSubscribe, () => true, () => false);
-}
 
 /**
  * Вход по почте и паролю (AuthByEmail старого фронта), через VK ID и Яндекс ID.
