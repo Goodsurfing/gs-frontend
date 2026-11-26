@@ -1,8 +1,9 @@
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { describe, it } from "vitest";
 
 import { SignInForm } from "../SignInForm";
+import { expectSafeBeforeHydration } from "./beforeHydration";
 
 const labels = {
     password: "Пароль",
@@ -15,25 +16,12 @@ const labels = {
     errors: {},
 };
 
-/** Разметка с сервера — то, что видит человек до загрузки скриптов */
-const serverHtml = () => renderToString(createElement(SignInForm, {
-    locale: "ru", resetHref: "/reset-password", signUpHref: "/signup", signInHref: "/signin", profileHref: "/start", labels, admin: true,
-}));
-
 describe("SignInForm до гидратации", () => {
-    it("кнопка «Войти» выключена: браузер не отправит форму GET на /signin?", () => {
-        const html = serverHtml();
-        expect(html).toMatch(/<button type="submit" disabled=""/);
-        expect(html).toMatch(/<form[^>]*method="post"/);
-    });
-
-    it("поля неконтролируемые и без name: гидратация не перезапишет введённое, в адрес ничего не попадёт", () => {
-        const inputs = serverHtml().match(/<input[^>]*type="(email|password)"[^>]*>/g) ?? [];
-        expect(inputs).toHaveLength(2);
-        for (const input of inputs) {
-            expect(input).not.toMatch(/\svalue=/);
-            expect(input).not.toMatch(/\sname=/);
-            expect(input).toContain('placeholder=" "');
-        }
+    it("кнопка выключена, method=post, почта и пароль неконтролируемые и без name", () => {
+        // Разметка с сервера — то, что видит человек до загрузки скриптов
+        const html = renderToString(createElement(SignInForm, {
+            locale: "ru", resetHref: "/reset-password", signUpHref: "/signup", signInHref: "/signin", profileHref: "/start", labels, admin: true,
+        }));
+        expectSafeBeforeHydration(html, 2);
     });
 });
