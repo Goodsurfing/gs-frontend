@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { BASE_URL } from '../config';
 import { enableNewFrontend } from '../support/newFrontend';
 import { createSession } from '../support/session';
 import { hasE2eToken, NO_TOKEN_REASON } from '../support/testApi';
@@ -30,6 +31,33 @@ test.describe('Новый фронт: вход и регистрация', () =>
 
         await page.goto('/profile/info');
         await expect(page).not.toHaveURL(/\/signin/, { timeout: 15_000 });
+    });
+
+    test('ссылка из письма: гость открывает переписку → вход → снова в переписке', async ({ page }) => {
+        const session = await createSession('web-signin-return');
+        await page.setViewportSize({ width: 390, height: 844 });
+        for (const prefix of ['', '/en']) {
+            await page.context().clearCookies();
+            await page.goto('/');
+            await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); });
+            // Как ссылка «Ответить» в письме о заявке: переписка по номеру чата
+            await page.goto(`${prefix}/messenger/1`);
+            await expect(page).toHaveURL(new RegExp(`${prefix}/signin\\?next=${encodeURIComponent(`${prefix}/messenger/1`)}$`), { timeout: 20_000 });
+            await page.getByLabel('E-mail').fill(session.email);
+            await page.getByLabel(prefix ? 'Password' : 'Пароль', { exact: true }).fill(session.password);
+            await page.locator('form button[type="submit"]').click();
+            await expect(page).toHaveURL(new RegExp(`${prefix}/messenger/1$`), { timeout: 20_000 });
+        }
+    });
+
+    test('вход с чужим адресом возврата — в профиль, не на чужой сайт', async ({ page }) => {
+        const session = await createSession('web-signin-evil');
+        await page.goto(`/signin?next=${encodeURIComponent('//evil.example/x')}`);
+        await page.getByLabel('E-mail').fill(session.email);
+        await page.getByLabel('Пароль', { exact: true }).fill(session.password);
+        await page.getByRole('button', { name: 'Войти', exact: true }).click();
+        await expect(page).not.toHaveURL(/\/signin/, { timeout: 20_000 });
+        expect(new URL(page.url()).host).toBe(new URL(BASE_URL).host);
     });
 
     test('неверный пароль — сообщение, остаёмся на входе', async ({ page }) => {
