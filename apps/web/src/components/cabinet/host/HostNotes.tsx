@@ -171,7 +171,9 @@ export function HostNotes({ locale, routes, labels }: {
         update({ page });
         listTop.current?.scrollIntoView({ block: "start", behavior: "smooth" });
     };
-    const filtered = !!filter && (!!filter.search.trim() || !!filter.vacancyId || filter.tab !== "all");
+    // Пусто из-за поиска или вакансии — «по этим условиям заявок нет»; пустая вкладка при заявках в других — тоже
+    const narrowed = !!filter && (!!filter.search.trim() || !!filter.vacancyId);
+    const filtered = narrowed || (!!filter && filter.tab !== "all" && (counts?.all ?? 0) > 0);
     const pages = list.state === "ready" ? Math.ceil(list.total / APPLICATIONS_PER_PAGE) : 0;
     const tabsId = useId();
 
@@ -270,7 +272,7 @@ export function HostNotes({ locale, routes, labels }: {
                 )}
                 {list.state === "ready" && list.items.length === 0 && (
                     <div className="flex flex-col items-center gap-3 rounded-[12px] bg-white px-4 py-10 text-center">
-                        <p className="m-0 text-ink-secondary">{filtered && counts?.all !== 0 ? labels.emptyFiltered : labels.empty}</p>
+                        <p className="m-0 text-ink-secondary">{filtered ? labels.emptyFiltered : labels.empty}</p>
                         {(!!filter?.search.trim() || !!filter?.vacancyId) && (
                             <button
                                 type="button"
