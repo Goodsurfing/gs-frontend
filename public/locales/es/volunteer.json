@@ -91,7 +91,24 @@
         "Добавить отзыв": "Añadir Reseña"
     },
     "volunteer-notes": {
-        "Мои заявки": "Mis notas"
+        "Мои заявки": "Mis notas",
+        "search": "Buscar por vacante u organizador",
+        "searchPlaceholder": "Vacante u organizador",
+        "clearSearch": "Borrar búsqueda",
+        "tabsLabel": "Estado de la solicitud",
+        "tab.all": "Todas",
+        "tab.new": "En revisión",
+        "tab.accepted": "Aceptadas",
+        "tab.canceled": "Rechazadas",
+        "openOffer": "Abrir vacante",
+        "loadError": "No se pudieron cargar las solicitudes. Comprueba la conexión e inténtalo de nuevo",
+        "retry": "Reintentar",
+        "empty": "Aún no hay solicitudes",
+        "emptyHint": "Elige un viaje y escribe al anfitrión: la respuesta llegará a Mensajes",
+        "find": "Buscar viaje",
+        "emptySearch": "Ninguna solicitud coincide con la búsqueda. Prueba otro nombre de vacante u organizador",
+        "emptyTab": "Todavía no hay solicitudes en esta pestaña",
+        "resetSearch": "Borrar búsqueda"
     },
     "volunteer-subscribers": {
         "Подписки": "Suscripciones"

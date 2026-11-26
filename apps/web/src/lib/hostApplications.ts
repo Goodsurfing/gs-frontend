@@ -4,7 +4,7 @@ import type { ApplicationCardLabels } from "@/components/cabinet/host/Applicatio
 import type { HostReviewDialogLabels } from "@/components/cabinet/host/HostReviewDialog";
 import type { Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
-import type { PluralText } from "@/lib/hostApplicationsView";
+import type { PluralText } from "@/lib/applicationsView";
 
 /** Подписи карточки заявки и окна отзыва — общие для рабочего стола и «Заявок» */
 export async function applicationLabels(locale: Locale): Promise<{ card: ApplicationCardLabels; dialog: HostReviewDialogLabels; statusError: string; waiting: PluralText; reply: string }> {
