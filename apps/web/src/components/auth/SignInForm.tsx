@@ -1,6 +1,6 @@
 "use client";
 
-import { type FormEvent, useCallback, useEffect, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 import type { Locale } from "@/i18n/config";
 import { localePrefix } from "@/i18n/config";
@@ -35,6 +35,13 @@ export const apiErrorText = (body: unknown): string => {
     return "";
 };
 
+const noSubscribe = () => () => {};
+
+/** false на сервере и во время гидратации, true — когда обработчики формы уже работают */
+export function useHydrated(): boolean {
+    return useSyncExternalStore(noSubscribe, () => true, () => false);
+}
+
 /**
  * Вход по почте и паролю (AuthByEmail старого фронта) и через VK ID.
  * После входа — туда, откуда пришли (?next=&nextId=), иначе в профиль.
@@ -49,10 +56,15 @@ export function SignInForm({ locale, resetHref, signUpHref, profileHref, labels,
     /** Вход в админку: без VK ID и регистрации — администраторы входят по почте и паролю */
     admin?: boolean;
 }) {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    // Поля неконтролируемые, значения берутся из них при отправке: введённое до
+    // загрузки скриптов (медленная сеть) не стирается гидратацией, а нажатие во
+    // время гидратации не отправит пустые строки из состояния (GS-335, 26.11)
+    const emailRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
     const [remember, setRemember] = useState(false);
     const [busy, setBusy] = useState(false);
+    // До гидратации кнопка выключена: иначе браузер сам отправит форму GET на /signin? и всё введённое пропадёт
+    const ready = useHydrated();
     const [error, setError] = useState<string | null>(null);
 
     // Вакансия, с которой пришли, — и на регистрацию (ссылка ниже), и после входа через VK
@@ -68,6 +80,8 @@ export function SignInForm({ locale, resetHref, signUpHref, profileHref, labels,
 
     const submit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        const email = emailRef.current?.value ?? "";
+        const password = passwordRef.current?.value ?? "";
         setBusy(true);
         try {
             const response = await fetch(`${API_URL}/api/v1/token`, {
@@ -90,7 +104,7 @@ export function SignInForm({ locale, resetHref, signUpHref, profileHref, labels,
                 }).catch(() => undefined);
             }
             showError(apiErrorText(body) || "Ошибка авторизации");
-            setPassword("");
+            if (passwordRef.current) passwordRef.current.value = "";
         } catch {
             showError("Ошибка авторизации");
         } finally {
@@ -101,12 +115,12 @@ export function SignInForm({ locale, resetHref, signUpHref, profileHref, labels,
     return (
         <div className="flex w-full flex-col items-center">
             <AuthToast text={error} onClose={() => setError(null)} />
-            <form onSubmit={submit} className="relative flex w-full max-w-[400px] flex-col">
-                <AuthInput label="E-mail" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} />
-                <AuthInput label={labels.password} type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} />
+            <form onSubmit={submit} method="post" className="relative flex w-full max-w-[400px] flex-col">
+                <AuthInput label="E-mail" type="email" autoComplete="email" inputRef={emailRef} />
+                <AuthInput label={labels.password} type="password" autoComplete="current-password" inputRef={passwordRef} />
                 <button
                     type="submit"
-                    disabled={busy}
+                    disabled={busy || !ready}
                     className="flex cursor-pointer items-center justify-center rounded-[10px] border border-primary bg-primary px-[100px] py-3 text-center text-[16px] leading-[120%] text-white transition-all duration-300 hover:bg-white hover:text-primary disabled:cursor-default disabled:opacity-70 disabled:hover:bg-primary disabled:hover:text-white down-lg:w-full down-lg:px-[15px]"
                 >
                     {labels.submit}

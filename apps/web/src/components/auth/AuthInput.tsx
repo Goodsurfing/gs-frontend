@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { type InputHTMLAttributes, useId, useState } from "react";
+import { type InputHTMLAttributes, type Ref, useId, useState } from "react";
 
 import { localeFromPath } from "@/i18n/config";
 
@@ -15,25 +15,36 @@ const EYE: Record<"ru" | "en" | "es", { show: string; hide: string }> = {
 /**
  * Поле на страницах входа (AuthInputField старого фронта): линия снизу,
  * подпись внутри поля поднимается при вводе; у пароля — «глаз».
+ * Без value — неконтролируемое поле (форма входа): введённое до загрузки
+ * скриптов не теряется, подпись поднимается через CSS, значение — из inputRef.
  */
-export function AuthInput({ label, type, error, value, className = "", ...rest }: InputHTMLAttributes<HTMLInputElement> & {
+export function AuthInput({ label, type, error, value, inputRef, className = "", ...rest }: Omit<InputHTMLAttributes<HTMLInputElement>, "value"> & {
     label: string;
     type: string;
     error?: string;
-    value: string;
+    value?: string;
+    inputRef?: Ref<HTMLInputElement>;
 }) {
     const id = useId();
     const [shown, setShown] = useState(false);
     const eye = EYE[localeFromPath(usePathname() ?? "")];
     const isPassword = type === "password";
+    const controlled = value !== undefined;
+    // Подпись поднята: поле в фокусе или заполнено (у неконтролируемого — «плейсхолдер не виден»)
+    const raised = "-top-[5px] text-[0.875rem] opacity-80";
+    const lowered = "top-2.5 text-[1.125rem] opacity-50";
+    const position = controlled
+        ? (value ? raised : lowered)
+        : `${lowered} peer-[:not(:placeholder-shown)]:-top-[5px] peer-[:not(:placeholder-shown)]:text-[0.875rem] peer-[:not(:placeholder-shown)]:opacity-80`;
     return (
         <div className={`relative mb-[25px] box-border w-full ${className}`}>
             <div className="flex w-full gap-1.5 border-b border-[#82949f]">
                 <input
                     id={id}
                     type={isPassword && shown ? "text" : type}
+                    ref={inputRef}
                     required
-                    value={value}
+                    {...(controlled ? { value } : { placeholder: " " })}
                     aria-invalid={!!error}
                     className="peer w-full border-0 py-[15px] text-[1rem] leading-[138%] font-semibold text-ink-secondary outline-none"
                     {...rest}
@@ -46,7 +57,7 @@ export function AuthInput({ label, type, error, value, className = "", ...rest }
                 )}
                 <label
                     htmlFor={id}
-                    className={`pointer-events-none absolute left-0 leading-[138%] font-medium text-ink-secondary transition-all duration-200 peer-focus:-top-[5px] peer-focus:text-[0.875rem] peer-focus:opacity-80 ${value ? "-top-[5px] text-[0.875rem] opacity-80" : "top-2.5 text-[1.125rem] opacity-50"}`}
+                    className={`pointer-events-none absolute left-0 leading-[138%] font-medium text-ink-secondary transition-all duration-200 peer-focus:-top-[5px] peer-focus:text-[0.875rem] peer-focus:opacity-80 ${position}`}
                 >
                     {label}
                 </label>
