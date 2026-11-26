@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return isLocale(locale) ? authMetadata(locale, routes.hostNotes(locale), "main.sidebar.Заявки") : {};
 }
 
-/** Кабинет организатора: заявки по колонкам (HostNotesPage старого фронта) */
+/** Кабинет организатора: заявки — поиск, вакансия, вкладки с числами (GS-331) */
 export default async function HostNotesPage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
@@ -26,13 +26,25 @@ export default async function HostNotesPage({ params }: Props) {
     return (
         <CabinetShell locale={locale} items={hostMenu(locale, t)} need="host" fitContent>
             <main>
-                <h2 className="text-[1.625rem] leading-8 font-normal">{n("Мои заявки")}</h2>
+                <h2 className="mb-5 text-[1.625rem] leading-8 font-normal">{n("Мои заявки")}</h2>
                 <HostNotes
+                    locale={locale}
                     routes={{ volunteer: routes.volunteerPublicTemplate(locale), offer: routes.offer(locale, "{id}"), chat: routes.messengerChat(locale, "{id}") }}
                     labels={{
+                        search: n("Поиск по имени волонтёра"),
+                        searchPlaceholder: n("Имя волонтёра"),
+                        clearSearch: n("Очистить поиск"),
                         vacancy: n("Вакансия"),
                         allVacancies: n("Все вакансии"),
                         untitled: n("Без названия"),
+                        tabs: { new: n("tab.new"), accepted: n("tab.accepted"), canceled: n("tab.canceled"), all: n("tab.all") },
+                        waiting: common.waiting,
+                        reply: common.reply,
+                        loadError: n("Не удалось загрузить заявки"),
+                        retry: n("Повторить"),
+                        empty: n("Пока нет заявок"),
+                        emptyFiltered: n("Ничего не найдено"),
+                        resetFilters: n("Сбросить фильтры"),
                         statusError: common.statusError,
                         reviewTitle: n("Оставьте отзыв"),
                         pages: { prev: t("pagination.prev"), next: t("pagination.next"), page: t("pagination.label") },
