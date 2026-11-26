@@ -228,5 +228,26 @@
     "sticky": {
         "title": "Membership for a year — {{price}} ₽",
         "button": "Join"
+    },
+    "compact": {
+        "title": "GoodSurfing membership",
+        "price": "{{price}} ₽",
+        "per-year": "per year",
+        "duo": "For two — {{price}} ₽ per year",
+        "benefit-1": "Unlimited applications to volunteer projects for a whole year",
+        "benefit-2": "A badge on your profile — hosts choose members more often",
+        "benefit-3": "Support for the community: this is what keeps GoodSurfing alive and growing",
+        "host-benefit-1": "More than one opportunity and fundraisers for your projects",
+        "host-benefit-2": "A badge on your profile — volunteers trust hosts with membership more",
+        "host-benefit-3": "Support for the community: this is what keeps GoodSurfing alive and growing",
+        "member": "You already have a membership — you can renew it in advance.",
+        "more": "More details",
+        "details-tariffs": "What membership includes",
+        "details-international": "International Club",
+        "details-host": "Membership for hosts",
+        "details-support": "Support without membership",
+        "details-about": "What GoodSurfing does",
+        "details-faq": "Questions and answers",
+        "note": "Membership starts right after payment. You'll pay on the YooKassa page, then we'll bring you back here."
     }
 }

@@ -50,6 +50,7 @@ export default async function DonationPayPage({ params }: Props) {
                 )}
                 <DonationPayForm
                     fundraiseId={id}
+                    locale={locale}
                     signInHref={`${routes.signIn(locale)}?next=donation&nextId=${id}`}
                     offerHref={PUBLIC_OFFER_PDF}
                     labels={{
