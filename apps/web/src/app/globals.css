@@ -79,6 +79,10 @@
     --color-m-error-soft: #fdecec;     /* errorSoft: плашка «Отклонена» */
     --color-m-error-text: #c24a4b;     /* errorText */
     --color-m-success: #58b893;        /* success: полоса заполненности профиля */
+    /* Кнопка «Войти с Яндекс ID» — основная версия по гайдлайну Яндекса (yandex.ru/dev/id/doc/ru/codes/buttons-design):
+       чёрная кнопка, белый текст, красный круг логотипа «Я»; цвета менять гайдлайн запрещает (GS-336) */
+    --color-yandex-id: #000000;
+    --color-yandex-id-hover: #262626;
     --shadow-m-card: 0 4px 12px rgba(14, 29, 39, 0.06); /* одна тень на всё: #0E1D27, 6 %, размытие 12 */
     --radius-m-card: 12px;             /* радиус карточек приложения */
     --radius-m-button: 6px;            /* радиус кнопок и полей приложения */

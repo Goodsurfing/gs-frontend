@@ -6,7 +6,9 @@ import { AuthTitle } from "@/components/auth/AuthTitle";
 import { SignUpForm } from "@/components/auth/SignUpForm";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
+import { yandexProviderHint } from "@/lib/oauthProvidersServer";
 import { routes } from "@/lib/routes";
+import { yandexButtonLabels } from "@/lib/yandexIdLabels";
 import { pageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -22,7 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function SignUpPage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
-    const t = await getTranslator(locale);
+    // Кнопка Яндекс ID — только если вход через Яндекс включён на сервере (кэш страницы 5 минут)
+    const [t, yandexHint] = await Promise.all([getTranslator(locale), yandexProviderHint()]);
     return (
         <AuthShell locale={locale} cancelHref={routes.main(locale)}>
             <div className="flex w-full flex-col items-center">
@@ -30,6 +33,8 @@ export default async function SignUpPage({ params }: Props) {
                 <SignUpForm
                     locale={locale}
                     signInHref={routes.signIn(locale)}
+                    signUpHref={routes.signUp(locale)}
+                    yandexHint={yandexHint}
                     resetHref={routes.resetPassword(locale)}
                     privacyHref={routes.privacyPolicy(locale)}
                     confirmHref={routes.confirmEmail(locale)}
@@ -50,6 +55,7 @@ export default async function SignUpPage({ params }: Props) {
                         privacyPolicy: t("login.Политику конфеденциальности ГудСёрфинга"),
                         noPosting: t("login.Мы не постим ничего без вашего ведома"),
                         deleted: t("login.Пользователь был удален или не создавался"),
+                        yandex: yandexButtonLabels(t),
                     }}
                 />
             </div>
