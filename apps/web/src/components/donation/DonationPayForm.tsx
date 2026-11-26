@@ -30,8 +30,10 @@ export interface DonationPayLabels {
  * готовых или своя (не меньше 100 ₽), анонимность; создаёт платёж и уводит
  * на страницу ЮKassa. Без входа — на вход с возвратом к сбору.
  */
-export function DonationPayForm({ fundraiseId, signInHref, offerHref, labels }: {
+export function DonationPayForm({ fundraiseId, locale, signInHref, offerHref, labels }: {
     fundraiseId: string;
+    /** Язык сайта: на нём описание платежа на странице ЮKassa и адрес возврата */
+    locale: string;
     signInHref: string;
     offerHref: string;
     labels: DonationPayLabels;
@@ -61,7 +63,7 @@ export function DonationPayForm({ fundraiseId, signInHref, offerHref, labels }: 
         setCreating(true);
         try {
             const { data, error, response } = await browserApi(session.token).POST("/api/v1/donation", {
-                body: { fundraiseId, amount, isAnonymous: anonymous } as never,
+                body: { fundraiseId, amount, isAnonymous: anonymous, locale } as never,
             });
             const paymentUrl = (data as { paymentUrl?: string } | undefined)?.paymentUrl;
             if (paymentUrl) {

@@ -80,7 +80,9 @@ export function PaymentSuccessView({ paymentId, signInHref, failHref, membership
             setTariffCode(paid?.tariffCode ?? membership?.tariff?.code ?? null);
             if (paid?.status) setStatus(paid.status);
             if (paid?.status && FAIL_STATUSES.has(paid.status)) {
-                window.location.replace(failHref);
+                // Тариф — чтобы «Попробовать ещё раз» на странице ошибки вёл сразу к оплате того же (GS-333)
+                const tariff = paid.tariffCode;
+                window.location.replace(tariff ? `${failHref}&tariff=${encodeURIComponent(tariff)}` : failHref);
                 return;
             }
             if (paymentId && paid?.status === "SUCCESS") reachGoalOnce("membership_paid", paymentId);

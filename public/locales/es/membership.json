@@ -228,5 +228,26 @@
     "sticky": {
         "title": "Membresía por un año — {{price}} ₽",
         "button": "Unirme"
+    },
+    "compact": {
+        "title": "Membresía de GoodSurfing",
+        "price": "{{price}} ₽",
+        "per-year": "al año",
+        "duo": "Para dos — {{price}} ₽ al año",
+        "benefit-1": "Solicitudes ilimitadas a proyectos de voluntariado durante todo el año",
+        "benefit-2": "Una insignia en tu perfil: los anfitriones eligen más a menudo a los miembros",
+        "benefit-3": "Apoyo a la comunidad: con esto GoodSurfing vive y crece",
+        "host-benefit-1": "Más de una vacante y recaudaciones para tus proyectos",
+        "host-benefit-2": "Una insignia en tu perfil: los voluntarios confían más en anfitriones con membresía",
+        "host-benefit-3": "Apoyo a la comunidad: con esto GoodSurfing vive y crece",
+        "member": "Ya tienes membresía: puedes renovarla por adelantado.",
+        "more": "Más detalles",
+        "details-tariffs": "Qué incluye la membresía",
+        "details-international": "Club Internacional",
+        "details-host": "Membresía para anfitriones",
+        "details-support": "Apoyar sin membresía",
+        "details-about": "Qué hace GoodSurfing",
+        "details-faq": "Preguntas y respuestas",
+        "note": "La membresía se activa justo después del pago. Pagarás en la página de YooKassa y luego te traeremos de vuelta."
     }
 }

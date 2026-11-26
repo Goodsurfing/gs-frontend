@@ -9,6 +9,8 @@ import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
 
 export interface CheckoutLabels {
+    /** «Сейчас откроется ЮKassa, после оплаты вернём вас сюда» (GS-333) */
+    notice: string;
     rubles: string;
     conversion: string;
     redirect: string;
@@ -88,10 +90,19 @@ export function MembershipCheckout({ locale, tariffCode, signInHref, membershipH
             </div>
         );
     }
-    if (!paymentUrl) return <Loading />;
+    if (!paymentUrl) {
+        // Пока создаётся платёж (на медленной сети — несколько секунд) — что будет дальше
+        return (
+            <div className="flex min-h-[60vh] flex-col items-center justify-center gap-2 p-8">
+                <Loading className="min-h-0" />
+                <p role="status" className="max-w-[420px] text-center text-[1.125rem] leading-7 text-[#333]">{labels.notice}</p>
+            </div>
+        );
+    }
     return (
         <div className="flex min-h-[60vh] items-center justify-center p-8">
             <div className="max-w-[600px] text-center">
+                <p className="mb-6 text-[1.125rem] leading-7 font-semibold text-[#333]">{labels.notice}</p>
                 <p className="mb-6 text-[1.125rem] leading-7 text-[#333]">{labels.rubles}</p>
                 <p className="mb-6 text-[1.125rem] leading-7 text-[#333]">{labels.conversion}</p>
                 <p className="mb-6 text-[1.125rem] leading-7 text-[#333]">{labels.redirect} {labels.notRedirected}</p>
