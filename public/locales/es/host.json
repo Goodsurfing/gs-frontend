@@ -76,7 +76,8 @@
         "Повторить": "Reintentar",
         "Пока нет заявок": "Aún no hay solicitudes: aparecerán aquí cuando los voluntarios se postulen a tus ofertas",
         "Ничего не найдено": "No hay solicitudes con estos filtros",
-        "Сбросить фильтры": "Borrar búsqueda y oferta"
+        "Сбросить фильтры": "Borrar búsqueda y oferta",
+        "Статус заявки": "Estado de la solicitud"
     },
     "hostFundraises": {
         "Мои сборы": "Mis recaudaciones",

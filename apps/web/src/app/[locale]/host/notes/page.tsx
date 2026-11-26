@@ -35,6 +35,7 @@ export default async function HostNotesPage({ params }: Props) {
                         searchPlaceholder: n("Имя волонтёра"),
                         clearSearch: n("Очистить поиск"),
                         vacancy: n("Вакансия"),
+                        tabsLabel: n("Статус заявки"),
                         allVacancies: n("Все вакансии"),
                         untitled: n("Без названия"),
                         tabs: { new: n("tab.new"), accepted: n("tab.accepted"), canceled: n("tab.canceled"), all: n("tab.all") },

@@ -22,6 +22,8 @@ export interface HostNotesLabels {
     searchPlaceholder: string;
     clearSearch: string;
     vacancy: string;
+    /** Подпись вкладок для экранного диктора */
+    tabsLabel: string;
     allVacancies: string;
     untitled: string;
     tabs: Record<ApplicationTab, string>;
@@ -120,7 +122,7 @@ export function HostNotes({ locale, routes, labels }: {
                     </svg>
                 </div>
             </div>
-            <CountTabs ref={listTop} id={tabsId} tabs={APPLICATION_TABS} selected={filter?.tab} counts={counts} labels={labels.tabs} label={labels.vacancy} onSelect={(tab: ApplicationTab) => update({ tab })} />
+            <CountTabs ref={listTop} id={tabsId} tabs={APPLICATION_TABS} selected={filter?.tab} counts={counts} labels={labels.tabs} label={labels.tabsLabel} onSelect={(tab: ApplicationTab) => update({ tab })} />
             <div id={`${tabsId}-panel`} role="tabpanel" aria-labelledby={filter ? `${tabsId}-${filter.tab}` : undefined} aria-busy={list.state === "loading"}>
                 {list.state === "loading" && <ApplicationsLoading />}
                 {list.state === "error" && <ApplicationsError text={labels.loadError} retry={labels.retry} onRetry={reload} />}
