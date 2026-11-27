@@ -24,11 +24,16 @@ export function pushSupport(env: { userAgent: string; standalone: boolean; hasSe
     return ios && !env.standalone ? "ios-install" : "unsupported";
 }
 
+/** Сайт открыт как приложение (с экрана «Домой»), только в браузере */
+export function isStandaloneDisplay(): boolean {
+    return window.matchMedia?.("(display-mode: standalone)").matches || (navigator as { standalone?: boolean }).standalone === true;
+}
+
 export function currentPushSupport(): PushSupport {
     if (typeof window === "undefined") return "unsupported";
     return pushSupport({
         userAgent: navigator.userAgent,
-        standalone: window.matchMedia?.("(display-mode: standalone)").matches || (navigator as { standalone?: boolean }).standalone === true,
+        standalone: isStandaloneDisplay(),
         hasServiceWorker: "serviceWorker" in navigator,
         hasPushManager: "PushManager" in window,
         hasNotification: "Notification" in window,

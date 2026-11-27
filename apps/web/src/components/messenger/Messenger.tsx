@@ -445,7 +445,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                     search={list.search}
                     onSearch={list.setSearch}
                     labels={labels.list}
-                    top={<PushOffer token={token} enabled={ready && list.chats.length > 0} labels={labels.push} />}
+                    top={<PushOffer token={token} enabled={ready && list.loaded} hasChats={list.chats.length > 0} labels={labels.push} />}
                     className={hasChat ? "down-lg:hidden" : "down-lg:flex down-lg:max-w-none"}
                 />
                 {!hasChat ? (
