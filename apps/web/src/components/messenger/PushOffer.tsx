@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { IosInstallHint, type IosInstallHintLabels } from "@/components/pwa/IosInstallHint";
 import { browserApi } from "@/lib/browserApi";
-import { isIphoneSafari } from "@/lib/pwa";
+import { currentDisplayEnv, isIphoneSafari, isStandalone } from "@/lib/pwa";
 import { currentPushSupport, OFFER_DISMISSED_KEY, type PushSupport, shouldOffer, subscribePush } from "@/lib/webPush";
 import { storageGet, storageSet } from "@/lib/safeStorage";
 
@@ -39,8 +39,13 @@ const dismissedAt = (): number | null => {
  * на экран «Домой»: иначе Apple не даёт пуши. В самом Safari — плашка с
  * пошаговой инструкцией (IosInstallHint, свой срок «Позже»), в других браузерах
  * iPhone — одна строка.
+ *
+ * Без переписок плашку не показываем — нечего ждать. Исключение — сайт,
+ * открытый с экрана «Домой»: его ставят ради уведомлений, а на iPhone
+ * разрешение можно спросить только по нажатию, так что кнопка «Включить»
+ * нужна сразу, даже если переписок ещё нет.
  */
-export function PushOffer({ token, enabled, labels }: { token: string | undefined; enabled: boolean; labels: PushOfferLabels }) {
+export function PushOffer({ token, enabled, hasChats, labels }: { token: string | undefined; enabled: boolean; hasChats: boolean; labels: PushOfferLabels }) {
     const [support, setSupport] = useState<PushSupport>("unsupported");
     const [publicKey, setPublicKey] = useState<string | null>(null);
     const [visible, setVisible] = useState(false);
@@ -49,7 +54,7 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
     const [result, setResult] = useState<"enabled" | "blocked" | "unsupported" | null>(null);
 
     useEffect(() => {
-        if (!enabled) return;
+        if (!enabled || (!hasChats && !isStandalone(currentDisplayEnv()))) return;
         const kind = currentPushSupport();
         // Определяется только в браузере, после загрузки
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -78,7 +83,7 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
         return () => {
             cancelled = true;
         };
-    }, [enabled, token]);
+    }, [enabled, hasChats, token]);
 
     const later = useCallback(() => {
         storageSet(OFFER_DISMISSED_KEY, String(Date.now()));

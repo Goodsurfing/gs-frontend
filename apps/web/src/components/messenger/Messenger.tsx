@@ -526,7 +526,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                     search={list.search}
                     onSearch={list.setSearch}
                     labels={labels.list}
-                    top={<PushOffer token={token} enabled={ready && list.chats.length > 0} labels={labels.push} />}
+                    top={<PushOffer token={token} enabled={ready && list.loaded} hasChats={list.chats.length > 0} labels={labels.push} />}
                     emptyPhone={ready && !me?.hostId ? { title: labels.emptyVolunteer.title, hint: labels.emptyVolunteer.hint, action: { href: hrefs.catalog, label: labels.emptyVolunteer.find } } : undefined}
                     className={hasChat ? "down-lg:hidden" : "down-lg:flex down-lg:max-w-none"}
                 />
