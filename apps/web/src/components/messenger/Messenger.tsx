@@ -18,7 +18,8 @@ import {
     type ApplicationStatus, type Chat, type ChatApplication, type ChatMessage, companionTarget, formatDayLabel, formatTime, idFromIri, readByOthers, sameGroup, type Terms,
 } from "@/lib/messenger";
 import type { CatalogOffer } from "@/lib/offersCatalog";
-import { applyDates, initialTerms } from "@/lib/applyDates";
+import { applyDates, initialTerms, offerTerms } from "@/lib/applyDates";
+import { canGoBackTo, previousPage } from "@/lib/backNavigation";
 import { dayFromApi, today } from "@/lib/offerWizard";
 import { blockedSendText, type ReportTarget } from "@/lib/report";
 
@@ -224,6 +225,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     const [applying, setApplying] = useState(false);
     const [applyError, setApplyError] = useState<string | null>(null);
     const dates = useMemo(() => applyDates(offer?.when, today()), [offer]);
+    const offerInfo = useMemo(() => offerTerms(offer?.when), [offer]);
     useEffect(() => {
         if (!ready || !isCreate || !offerId) return;
         let cancelled = false;
@@ -481,6 +483,12 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     }, [chat.messages, applications, me?.id, myName, companionName, companionAvatar, companionHref, locale, token, labels, hrefs, volunteerHere, application?.status, application?.id, report]);
 
     const hasChat = !!chatId;
+    // «Назад» с отклика: туда, откуда пришли по сайту (обычно карточка вакансии), а без этого — на карточку,
+    // а не в «Сообщения» (сдача тестировщицы 27.11.2026)
+    const backFromApply = () => {
+        if (canGoBackTo(previousPage(), window.history.length)) window.history.back();
+        else if (offerId) router.push(href(hrefs.offer, offerId));
+    };
     const scroller = useRef<HTMLDivElement>(null);
     const applicationId = application?.id ? String(application.id) : undefined;
 
@@ -550,7 +558,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                                 offerHref={application?.vacancyId ? href(hrefs.offer, application.vacancyId) : undefined}
                                 infoOpen={infoOpen}
                                 onInfo={companion ? () => setInfoOpen((value) => !value) : undefined}
-                                onBack={() => open()}
+                                onBack={isCreate && offerId ? backFromApply : () => open()}
                                 onDecision={applicationId ? (status) => decide(applicationId, status) : undefined}
                                 actions={report && realChatId && companionId ? (
                                     <ChatActions
@@ -583,6 +591,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                                             locale={locale}
                                             offer={toCatalogOffer(offer, dict.categories)}
                                             offerHref={href(hrefs.offer, offer.id ?? offerId)}
+                                            offerInfo={offerInfo}
                                             dates={dates}
                                             terms={terms}
                                             onTerms={setTerms}

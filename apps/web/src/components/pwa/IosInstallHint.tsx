@@ -69,7 +69,7 @@ export function IosInstallHint({ appHref, labels, className = "" }: { appHref: s
                         <button type="button" className="h-8 cursor-pointer rounded-full border-0 bg-primary px-4 text-[13px] font-semibold text-white hover:bg-primary-hover">{labels.how}</button>
                     </Dialog.Trigger>
                     <Dialog.Portal>
-                        <Dialog.Overlay className="fixed inset-0 z-[999] flex animate-fade-in items-end justify-center bg-black/50 p-4 sm:items-center">
+                        <Dialog.Overlay className="fixed inset-0 z-[999] flex animate-fade-in items-end justify-center bg-black/50 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:items-center">
                             <Dialog.Content aria-describedby={undefined} className="flex max-h-full w-full max-w-[440px] flex-col gap-4 overflow-y-auto rounded-[16px] bg-white px-5 py-5">
                                 <Dialog.Title className="text-[18px] font-semibold text-ink">{labels.title}</Dialog.Title>
                                 <InstallSteps labels={labels.steps} />

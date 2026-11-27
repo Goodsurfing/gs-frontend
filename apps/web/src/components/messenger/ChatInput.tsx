@@ -27,7 +27,11 @@ export interface ChatInputLabels {
 export interface OutgoingMessage { text: string; attachments: string[] }
 
 const iconButton = "flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center border-0 bg-transparent p-0 disabled:cursor-default";
-const mask = (name: string) => ({ maskImage: `url(/web/icons/messenger/${name}.svg)`, WebkitMaskImage: `url(/web/icons/messenger/${name}.svg)` });
+// Размер и повтор маски заданы явно: значок 24×24 в кнопке 20×20 без них обрезался, и в Safari стрелку отправки было почти не видно
+const mask = (name: string) => {
+    const url = `url(/web/icons/messenger/${name}.svg)`;
+    return { maskImage: url, WebkitMaskImage: url, maskSize: "contain", WebkitMaskSize: "contain", maskRepeat: "no-repeat", WebkitMaskRepeat: "no-repeat", maskPosition: "center", WebkitMaskPosition: "center" };
+};
 
 /**
  * Поле сообщения (ChatInput старого фронта): скрепка — одно вложение до
@@ -117,7 +121,9 @@ export function ChatInput({ token, disabled, labels, onSend, onError, prefill, e
     return (
         <div className="border-t border-accent-bg">
         {extra}
-        <div className="relative flex items-center gap-2 px-4 py-2">
+        {/* Поле — по центру с равными отступами, стрелка отправки внутри рамки (раньше стояла справа снаружи,
+            и на телефоне поле выглядело сдвинутым влево); снизу — отступ под полоску «Домой» iPhone */}
+        <div className="relative flex items-center px-4 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] down-xs:px-3">
             {attachment && (
                 <div className="absolute bottom-full left-0 flex w-full items-center gap-[15px] bg-white p-5 text-primary">
                     {attachment.name}
@@ -144,7 +150,7 @@ export function ChatInput({ token, disabled, labels, onSend, onError, prefill, e
                     onKeyDown={keyDown}
                     className="ml-2 max-h-[230px] flex-1 resize-none border-0 bg-transparent p-0 font-[Roboto,Helvetica,Arial,sans-serif] text-[16px] leading-[1.4375em] text-black outline-none"
                 />
-                <div ref={emojiRef} className="relative">
+                <div ref={emojiRef} className="relative ml-2">
                     <button type="button" aria-label={labels.emoji} aria-expanded={emoji} onClick={() => setEmoji((value) => !value)} className={iconButton}>
                         {/* eslint-disable-next-line @next/next/no-img-element -- значок без заливки, только контур */}
                         <img src="/web/icons/messenger/chat-smile.svg" alt="" className="h-5 w-5" />
@@ -174,10 +180,10 @@ export function ChatInput({ token, disabled, labels, onSend, onError, prefill, e
                         </div>
                     )}
                 </div>
+                <button type="button" aria-label={labels.send} disabled={!canSend} onClick={send} className={`${iconButton} ml-3`}>
+                    <span aria-hidden className={`h-5 w-5 ${canSend ? "bg-primary" : "bg-caption"}`} style={mask("send-arrow")} />
+                </button>
             </div>
-            <button type="button" aria-label={labels.send} disabled={!canSend} onClick={send} className={iconButton}>
-                <span aria-hidden className={`h-5 w-5 ${canSend ? "bg-primary" : "bg-caption"}`} style={mask("send-arrow")} />
-            </button>
         </div>
         </div>
     );

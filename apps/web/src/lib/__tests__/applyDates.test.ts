@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { addDays, applyDates, daysBetween, initialTerms, periodIndex, termsForPeriod } from "@/lib/applyDates";
+import { addDays, applyDates, daysBetween, initialTerms, offerTerms, periodIndex, termsForPeriod } from "@/lib/applyDates";
 
 const NOW = "2026-11-24";
 const period = (start: string, ending: string) => ({ start: `${start}T00:00:00+00:00`, ending: `${ending}T00:00:00+00:00` });
@@ -75,5 +75,25 @@ describe("даты отклика (GS-290)", () => {
 
     it("битые даты периода пропускаются", () => {
         expect(applyDates({ periods: [{ start: null, ending: "2027-01-01" }, { start: "2027-02-10", ending: "2027-02-01" }] }, NOW).kind).toBe("free");
+    });
+});
+
+describe("общие условия вакансии на отклике", () => {
+    it("сроки проекта — от самого раннего начала до самого позднего конца периодов, включая прошедшие", () => {
+        expect(offerTerms({ durationMinDays: 7, durationMaxDays: 30, periods: [period("2027-03-01", "2027-04-01"), period("2026-12-03", "2027-01-26")] })).toEqual({
+            project: { kind: "range", start: "2026-12-03", end: "2027-04-01" },
+            minDays: 7,
+            maxDays: 30,
+        });
+    });
+
+    it("«круглый год» важнее периодов", () => {
+        expect(offerTerms({ isFullYearAcceptable: true, periods: [period("2027-01-01", "2027-02-01")] }).project).toEqual({ kind: "fullYear" });
+    });
+
+    it("чего нет — null: строка не показывается", () => {
+        expect(offerTerms(null)).toEqual({ project: null, minDays: null, maxDays: null });
+        expect(offerTerms({ isFullYearAcceptable: false, durationMinDays: 0, durationMaxDays: null, periods: [{ start: null, ending: "2027-01-01" }] }))
+            .toEqual({ project: null, minDays: null, maxDays: null });
     });
 });
