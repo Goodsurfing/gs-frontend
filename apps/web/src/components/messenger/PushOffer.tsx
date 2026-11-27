@@ -113,7 +113,7 @@ export function PushOffer({ token, enabled, hasChats, labels }: { token: string 
     }
     if (!visible) return null;
     return (
-        <div role="status" className="flex flex-col gap-2 border-b border-accent-bg bg-status-new/10 px-4 py-3 text-[13px] text-ink-secondary">
+        <div role="status" data-nudge-blocker className="flex flex-col gap-2 border-b border-accent-bg bg-status-new/10 px-4 py-3 text-[13px] text-ink-secondary">
             {result ? (
                 <>
                     <span>{result === "enabled" ? labels.enabled : result === "unsupported" ? labels.unsupported : labels.blocked}</span>
