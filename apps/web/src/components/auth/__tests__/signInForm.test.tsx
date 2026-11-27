@@ -20,7 +20,7 @@ describe("SignInForm до гидратации", () => {
     it("кнопка выключена, method=post, почта и пароль неконтролируемые и без name", () => {
         // Разметка с сервера — то, что видит человек до загрузки скриптов
         const html = renderToString(createElement(SignInForm, {
-            locale: "ru", resetHref: "/reset-password", signUpHref: "/signup", signInHref: "/signin", profileHref: "/start", labels, admin: true,
+            locale: "ru", resetHref: "/reset-password", signUpHref: "/signup", profileHref: "/start", labels, admin: true,
         }));
         expectSafeBeforeHydration(html, 2);
     });
