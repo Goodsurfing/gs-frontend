@@ -50,6 +50,26 @@ test.describe('Новый фронт: страница вакансии', () => 
             await expect(page.locator('#organization')).toBeInViewport();
         });
 
+        test('телефон: при прокрутке «Участвовать» видна всегда — в обложке или полосой внизу', async ({ page }, testInfo) => {
+            test.skip(testInfo.project.name !== 'vol', 'один раз за прогон');
+            const id = await findOffer();
+            test.skip(!id, 'нет открытой вакансии');
+            await page.setViewportSize({ width: 390, height: 844 });
+            await page.goto(`/offers/${id}`);
+            await expect(page.locator('[data-offer-hero-actions]')).toBeAttached();
+            // Видимая кнопка «Участвовать» (обложка или полоса внизу) в точках прокрутки до конца описания
+            const visibleCta = () => page.evaluate(() => [...document.querySelectorAll('a,span')]
+                .filter((el) => /^(Участвовать|.*гудсёрфером)$/.test((el.textContent ?? '').trim()))
+                .some((el) => {
+                    const r = el.getBoundingClientRect();
+                    return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight;
+                }));
+            for (let y = 0; y <= 1600; y += 80) {
+                await page.evaluate((top) => window.scrollTo(0, top), y);
+                await expect.poll(visibleCta, { message: `прокрутка ${y}px` }).toBe(true);
+            }
+        });
+
         test('несуществующая вакансия — сообщение и «Назад»', async ({ page }, testInfo) => {
             test.skip(testInfo.project.name !== 'vol', 'один раз за прогон');
             const response = await page.goto('/offers/999999999');
