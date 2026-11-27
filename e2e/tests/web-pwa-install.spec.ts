@@ -99,6 +99,38 @@ test.describe('Новый фронт: сайт на экране «Домой» 
         await context.close();
     });
 
+    // Сообщение тестера 27.11: на iPhone с экрана «Домой» в «Сообщениях» не было кнопки «Включить» —
+    // у нового аккаунта нет переписок, а плашка показывалась только при них. iPhone спрашивает
+    // разрешение лишь по нажатию, поэтому в установленном сайте кнопка нужна сразу.
+    const PUSH_TEXT = 'Включите уведомления';
+    const noChats = async (context: Awaited<ReturnType<typeof iphone>>) => {
+        await context.route(/\/api\/v1\/personal\/chats/, (route) => route.fulfill({ status: 200, contentType: 'application/json', body: '[]' }));
+        await context.route(/\/api\/v1\/web-push\/key/, (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ publicKey: 'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U' }) }));
+    };
+
+    test('с экрана «Домой» без переписок — в «Сообщениях» есть «Включить» уведомления', async ({ browser }, testInfo) => {
+        const context = await iphone(browser, testInfo, true);
+        await noChats(context);
+        const page = await context.newPage();
+        await page.goto('/messenger');
+        await page.evaluate(() => localStorage.removeItem('gs-push-offer-dismissed'));
+        await page.reload();
+        const offer = page.getByRole('status').filter({ hasText: PUSH_TEXT });
+        await expect(offer).toBeVisible();
+        await expect(offer.getByRole('button', { name: 'Включить' })).toBeVisible();
+        await context.close();
+    });
+
+    test('в Safari без переписок плашки «Включите уведомления» нет', async ({ browser }, testInfo) => {
+        const context = await iphone(browser, testInfo);
+        await noChats(context);
+        const page = await context.newPage();
+        await page.goto('/messenger');
+        await expect(page.getByRole('searchbox')).toBeVisible();
+        await expect(page.getByRole('status').filter({ hasText: PUSH_TEXT })).toHaveCount(0);
+        await context.close();
+    });
+
     test('обычный компьютер — плашки нет', async ({ page, context }) => {
         await context.addCookies([{ name: 'gs_web', value: '1', url: BASE_URL }]);
         await page.goto('/volunteer/volunteer-dashboard');
