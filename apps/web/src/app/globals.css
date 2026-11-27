@@ -216,3 +216,8 @@ body {
         animation: none !important;
     }
 }
+
+/* Открыто мобильное меню (MobileHeader): страница под ним не прокручивается, листается только меню */
+html[data-mobile-menu-open] {
+    overflow: hidden;
+}

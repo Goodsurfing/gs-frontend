@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 
 import { quotaText } from "@/components/offers-map/FreeApplicationsHint";
 
-import { NUDGE_DELAY_MS, nudgeAllowedOn, nudgeWaitMs } from "../MembershipNudge";
+import { MENU_OPEN_ATTR } from "@/components/layout/header/menuState";
+
+import { NUDGE_DELAY_MS, NUDGE_QUIET_MS, nudgeAllowedOn, nudgeBlocker, nudgeWaitMs } from "../MembershipNudge";
 
 describe("предложение членства (GS-174, вернули 11.11.2026)", () => {
     it("не показываем на страницах членства, оплаты, входа и в админке", () => {
@@ -32,5 +34,31 @@ describe("счётчик бесплатных откликов в каталог
     it("остаток из трёх, перенос строки в подписи — пробел", () => {
         expect(quotaText(2, labels)).toEqual({ left: "Откликов осталось: 2 / 3", more: "Нужно больше? Оформите членство!" });
         expect(quotaText(-1, labels)?.left).toBe("Откликов осталось: 0 / 3");
+    });
+});
+
+describe("предложение членства не открывается поверх меню и других окон (клуб тестеров, 27.11.2026)", () => {
+    const fakeDoc = ({ visible = true, menu = false, other = false } = {}) => ({
+        visibilityState: visible ? "visible" : "hidden",
+        documentElement: { hasAttribute: (name: string) => menu && name === MENU_OPEN_ATTR },
+        querySelector: () => (other ? {} : null),
+    }) as unknown as Document;
+
+    it("показываем, когда меню закрыто, других окон нет и человек не листает", () => {
+        expect(nudgeBlocker(fakeDoc(), 0, 10_000)).toBeNull();
+    });
+
+    it("ждём, пока открыто мобильное меню: иначе окно оказалось бы под ним, а прокрутка уже заблокирована", () => {
+        expect(nudgeBlocker(fakeDoc({ menu: true }), 0, 10_000)).toBe("menu");
+    });
+
+    it("не поверх другого окна или плашек «Установить на iPhone» / «Включите уведомления»", () => {
+        expect(nudgeBlocker(fakeDoc({ other: true }), 0, 10_000)).toBe("other");
+    });
+
+    it("не посреди прокрутки или касания и не в свёрнутой вкладке", () => {
+        expect(nudgeBlocker(fakeDoc(), 10_000 - NUDGE_QUIET_MS + 1, 10_000)).toBe("gesture");
+        expect(nudgeBlocker(fakeDoc(), 10_000 - NUDGE_QUIET_MS, 10_000)).toBeNull();
+        expect(nudgeBlocker(fakeDoc({ visible: false }), 0, 10_000)).toBe("hidden");
     });
 });
