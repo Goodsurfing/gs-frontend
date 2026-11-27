@@ -238,6 +238,7 @@
         "Вы отправили заявку": "You have submitted an application",
         "Вы участвуете": "You are participating",
         "Ваша заявка отклонена": "Your application has been rejected",
+        "Приём заявок завершён": "Applications are closed",
         "Обычно отвечает в течение часа": "Usually replies within an hour",
         "Обычно отвечает в течение дня": "Usually replies within a day",
         "Обычно отвечает за N дней": "Usually replies within {{count}} days",

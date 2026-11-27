@@ -62,6 +62,32 @@ test.describe('Новый фронт: страница вакансии', () => 
         });
     });
 
+    test('волонтёр: приём заявок закончился — кнопка сразу неактивна с причиной, без «мигания» (27.11)', async ({ page }, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'нужен волонтёр');
+        // Фикстура «E2E Тестовая вакансия 5» — приём заявок нарочно закончился (applicationEndDate в прошлом)
+        const api = await request.newContext();
+        const found = await (await api.get(`${API_URL}/api/v1/vacancy?search=${encodeURIComponent('E2E Тестовая вакансия 5')}&limit=5&fields=card`)).json();
+        const offer = (found?.data ?? []).find((item: { title?: string }) => item.title?.startsWith('E2E Тестовая вакансия 5'));
+        test.skip(!offer, 'нет фикстуры «E2E Тестовая вакансия 5»');
+        const when = (await (await api.get(`${API_URL}/api/v1/vacancy/${offer.id}`)).json())?.when;
+        await api.dispose();
+        test.skip(!when?.applicationEndDate, 'у фикстуры нет даты окончания приёма');
+
+        // Уже в HTML с сервера, до входа и скриптов: неактивная кнопка с причиной
+        const html = await (await page.request.get(`/offers/${offer.id}`, { headers: { Cookie: '' } })).text();
+        expect(html).toContain('Приём заявок завершён');
+
+        await page.goto(`/offers/${offer.id}`);
+        const button = page.getByRole('main').getByText('Приём заявок завершён').first();
+        await expect(button).toBeVisible();
+        await expect(button).toHaveAttribute('aria-disabled', 'true');
+        await expect(page.getByRole('main').getByRole('link', { name: 'Участвовать' })).toHaveCount(0);
+        // Ответ API для вошедшего пришёл — кнопка всё та же
+        await page.waitForTimeout(2000);
+        await expect(button).toHaveAttribute('aria-disabled', 'true');
+        await expect(page.getByRole('main').getByRole('link', { name: 'Участвовать' })).toHaveCount(0);
+    });
+
     test('волонтёр: «Участвовать» ведёт к отклику, а не на вход', async ({ page }, testInfo) => {
         test.skip(testInfo.project.name !== 'vol', 'только волонтёр');
         const id = await findOffer();

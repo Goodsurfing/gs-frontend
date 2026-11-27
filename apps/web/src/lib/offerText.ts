@@ -179,18 +179,37 @@ export interface ParticipateLabels {
     states: Record<string, string>;
 }
 
-/** Состояния заявки, которые API присылает в textParticipate */
-export const PARTICIPATE_STATES = ["Вы отправили заявку", "Вы участвуете", "Ваша заявка отклонена"] as const;
+/** Состояния заявки, которые API присылает в textParticipate, и «Приём заявок завершён» */
+export const APPLICATIONS_CLOSED = "Приём заявок завершён";
+export const PARTICIPATE_STATES = ["Вы отправили заявку", "Вы участвуете", "Ваша заявка отклонена", APPLICATIONS_CLOSED] as const;
+
+/**
+ * Приём заявок закончился: дата applicationEndDate (d.m.Y) раньше сегодняшней (d.m.Y по Москве) —
+ * как VacancyWhen::isApplicationPeriodOpen бэкенда. Дата публичная, поэтому кнопка «Участвовать»
+ * сразу неактивна с причиной, а не гаснет через секунду после запроса от имени вошедшего (27.11.2026).
+ */
+export function applicationsClosed(applicationEndDate: string | null | undefined, today: string): boolean {
+    const key = (value: string | null | undefined) => {
+        const match = /^(\d{2})[.-](\d{2})[.-](\d{4})$/.exec(value ?? "");
+        return match ? Number(`${match[3]}${match[2]}${match[1]}`) : null;
+    };
+    const end = key(applicationEndDate);
+    const now = key(today);
+    return end !== null && now !== null && end < now;
+}
 
 /**
  * Надпись на кнопке «Участвовать» (PersonalCard старого фронта): закрытая
  * вакансия; вошёл, но не волонтёр; состояние заявки; иначе «Участвовать».
  */
 export function participateText(
-    { closed, needVolunteerRole, textParticipate }: { closed: boolean; needVolunteerRole: boolean; textParticipate?: string | null },
+    { closed, needVolunteerRole, textParticipate, applicationsEnded = false }: { closed: boolean; needVolunteerRole: boolean; textParticipate?: string | null; applicationsEnded?: boolean },
     labels: ParticipateLabels,
 ): string {
     if (closed) return labels.closed;
+    // Своя заявка важнее: «Вы отправили заявку» и после окончания приёма
+    if (textParticipate && labels.states[textParticipate]) return labels.states[textParticipate];
+    if (applicationsEnded) return labels.states[APPLICATIONS_CLOSED] ?? labels.participate;
     // Без роли волонтёра — тоже «Участвовать»: роль создаётся сама по нажатию (OfferActions, 06.11.2026);
     // «Чтобы участвовать, станьте гудсёрфером» уводило новичка на лишний экран выбора роли
     void needVolunteerRole;
