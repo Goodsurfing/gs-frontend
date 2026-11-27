@@ -67,7 +67,7 @@ export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerI
     return (
         <div className={`flex h-full w-full max-w-[400px] min-w-[300px] flex-col border-r border-accent-bg bg-white ${className}`}>
             {top}
-            <div className="flex flex-col gap-2 border-b border-accent-bg px-4 pt-4">
+            <div className="flex flex-col gap-2 px-4 pt-4">
                 <input
                     type="search"
                     value={search}
@@ -76,7 +76,7 @@ export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerI
                     onChange={(event) => onSearch(event.target.value)}
                     className="h-10 w-full rounded-full border border-accent-bg bg-field px-4 text-[14px] outline-none placeholder:text-caption focus:border-primary focus:bg-white"
                 />
-                <div role="tablist" aria-label={labels.search} className="-mx-4 flex overflow-x-auto px-2 [scrollbar-width:none]">
+                <div role="tablist" aria-label={labels.search} className="scroll-strip -mx-4 flex px-2 shadow-[inset_0_-1px_0_var(--color-accent-bg)] [scrollbar-width:none]">
                     {CHAT_TABS.map((value) => {
                         const active = tab === value;
                         const count = value === "unread" || value === "awaiting" ? counts[value] : 0;
@@ -90,7 +90,7 @@ export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerI
                                     setTab(value);
                                     setVisible(STEP);
                                 }}
-                                className={`-mb-px flex h-10 shrink-0 cursor-pointer items-center gap-1 border-0 border-b-2 bg-transparent px-2 text-[13px] font-medium whitespace-nowrap transition-colors ${active ? "border-primary text-primary" : "border-transparent text-caption hover:text-ink-secondary"}`}
+                                className={`flex h-10 shrink-0 cursor-pointer items-center gap-1 border-0 border-b-2 bg-transparent px-2 text-[13px] font-medium whitespace-nowrap transition-colors ${active ? "border-primary text-primary" : "border-transparent text-caption hover:text-ink-secondary"}`}
                             >
                                 {labels.tabs[value]}
                                 {count > 0 && <span className={`rounded-full px-1.5 text-[11px] leading-[18px] ${active ? "bg-primary text-white" : "bg-field text-caption"}`}>{count}</span>}

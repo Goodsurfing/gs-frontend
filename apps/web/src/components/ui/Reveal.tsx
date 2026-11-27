@@ -17,8 +17,19 @@ const SHIFT = {
     "zoom-out": "scale-[1.2]",
 } as const;
 
-export function Reveal({ from, className = "", children }: {
+/** Тот же сдвиг уже 992 px (столбиком все шаги появляются одинаково — снизу) */
+const SHIFT_PHONE = {
+    up: "down-lg:translate-y-[100px]",
+    down: "down-lg:-translate-y-[100px]",
+    "zoom-in": "down-lg:scale-[0.6]",
+    "zoom-out": "down-lg:scale-[1.2]",
+} as const;
+
+export function Reveal({ from, fromPhone, delay = "", className = "", children }: {
     from: keyof typeof SHIFT;
+    fromPhone?: keyof typeof SHIFT_PHONE;
+    /** Задержка появления (класс delay-*), чтобы элементы одного ряда появлялись по очереди */
+    delay?: string;
     className?: string;
     children: ReactNode;
 }) {
@@ -28,7 +39,14 @@ export function Reveal({ from, className = "", children }: {
     useEffect(() => {
         const node = ref.current;
         if (!node || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-        const reached = () => node.getBoundingClientRect().top <= window.innerHeight - OFFSET;
+        // Место элемента без сдвига появления: иначе сдвинутые вниз появлялись позже сдвинутых
+        // вверх, и ряд «Как это работает» оживал через один (сдача тестировщицы 27.11.2026)
+        const shiftY = () => {
+            // Tailwind 4 сдвигает свойством translate («0px 100px»), не transform
+            const [, y] = getComputedStyle(node).translate.split(" ");
+            return Number.parseFloat(y ?? "") || 0;
+        };
+        const reached = () => node.getBoundingClientRect().top - shiftY() <= window.innerHeight - OFFSET;
         if (reached()) return;
         setState("hidden");
         const onScroll = () => {
@@ -40,8 +58,8 @@ export function Reveal({ from, className = "", children }: {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
-    const motion = state === "hidden" ? `opacity-0 ${SHIFT[from]}` : "";
-    const transition = state === "idle" ? "" : "transition-[opacity,translate,scale] duration-1000 ease-in-out";
+    const motion = state === "hidden" ? `opacity-0 ${SHIFT[from]} ${fromPhone ? SHIFT_PHONE[fromPhone] : ""}` : "";
+    const transition = state === "idle" ? "" : `transition-[opacity,translate,scale] duration-1000 ease-in-out ${delay}`;
 
     return <div ref={ref} className={`${className} ${motion} ${transition}`}>{children}</div>;
 }

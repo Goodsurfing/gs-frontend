@@ -37,7 +37,7 @@ export function CommunityNews({ items, labels }: { items: NewsItem[]; labels: { 
     return (
         <div className="flex w-full items-center justify-between">
             {arrow(-1)}
-            <div ref={track} className="@container flex w-full max-w-[90%] min-w-0 snap-x snap-mandatory gap-2.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div ref={track} className="@container flex w-full max-w-[90%] min-w-0 snap-x snap-mandatory gap-2.5 scroll-strip [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {items.map((item) => (
                     // Слайд — доля ленты, карточка в нём — не шире 320 px (как у Swiper)
                     <div key={item.id} className="w-[100cqw] shrink-0 snap-start min-[992px]:w-[calc((100cqw-10px)/2)] min-[1100px]:w-[calc((100cqw-20px)/3)]">

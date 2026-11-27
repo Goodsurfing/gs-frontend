@@ -32,7 +32,7 @@ export function BlockedUsers({ volunteerHref, labels }: {
     };
 
     return (
-        <section aria-labelledby="blocked-users-title" className="mt-10 flex max-w-[640px] flex-col gap-3">
+        <section id="blocked" aria-labelledby="blocked-users-title" className="mt-10 scroll-mt-24 flex max-w-[640px] flex-col gap-3">
             <h3 id="blocked-users-title" className="text-[20px] font-normal">{labels.blockedTitle}</h3>
             <p className="text-[14px] text-caption">{labels.blockedHint}</p>
             {blocks.failed ? (

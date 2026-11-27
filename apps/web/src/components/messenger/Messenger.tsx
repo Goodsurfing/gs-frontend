@@ -79,6 +79,8 @@ export interface MessengerHrefs {
     organization: string;
     /** «Найти вакансию» из пустых «Сообщений» */
     catalog: string;
+    /** Список заблокированных (настройки приватности, #blocked) */
+    blocked?: string;
 }
 
 /** Поля вакансии, нужные карточке заявки (GET /api/v1/vacancies/{id} и вакансия в заявке) */
@@ -489,6 +491,13 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         if (canGoBackTo(previousPage(), window.history.length)) window.history.back();
         else if (offerId) router.push(href(hrefs.offer, offerId));
     };
+    // «Назад» из переписки — тоже на предыдущую страницу сайта (заявки в кабинете, карточка
+    // волонтёра…): с экрана «Домой» на iPhone другой кнопки «Назад» нет, а стрелка всегда вела
+    // в «Сообщения» (сдачи тестировщицы 27.11.2026). Пришли по ссылке извне — в список переписок
+    const backFromChat = () => {
+        if (canGoBackTo(previousPage(), window.history.length)) window.history.back();
+        else open();
+    };
     const scroller = useRef<HTMLDivElement>(null);
     const applicationId = application?.id ? String(application.id) : undefined;
 
@@ -534,7 +543,18 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                     search={list.search}
                     onSearch={list.setSearch}
                     labels={labels.list}
-                    top={<PushOffer token={token} enabled={ready && list.loaded} hasChats={list.chats.length > 0} labels={labels.push} />}
+                    top={(
+                        <>
+                            <PushOffer token={token} enabled={ready && list.loaded} hasChats={list.chats.length > 0} labels={labels.push} />
+                            {/* Заблокированные пропадают из списка — вход в их список прямо отсюда, а не только из настроек (27.11.2026) */}
+                            {report && hrefs.blocked && (
+                                <a href={hrefs.blocked} className="mx-4 mt-3 -mb-1 flex items-center gap-1.5 self-end text-[13px] text-caption no-underline hover:text-primary">
+                                    <svg aria-hidden viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M5.6 5.6l12.8 12.8" /></svg>
+                                    {report.blockedTitle}
+                                </a>
+                            )}
+                        </>
+                    )}
                     emptyPhone={ready && !me?.hostId ? { title: labels.emptyVolunteer.title, hint: labels.emptyVolunteer.hint, action: { href: hrefs.catalog, label: labels.emptyVolunteer.find } } : undefined}
                     className={hasChat ? "down-lg:hidden" : "down-lg:flex down-lg:max-w-none"}
                 />
@@ -558,7 +578,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                                 offerHref={application?.vacancyId ? href(hrefs.offer, application.vacancyId) : undefined}
                                 infoOpen={infoOpen}
                                 onInfo={companion ? () => setInfoOpen((value) => !value) : undefined}
-                                onBack={isCreate && offerId ? backFromApply : () => open()}
+                                onBack={isCreate && offerId ? backFromApply : backFromChat}
                                 onDecision={applicationId ? (status) => decide(applicationId, status) : undefined}
                                 actions={report && realChatId && companionId ? (
                                     <ChatActions

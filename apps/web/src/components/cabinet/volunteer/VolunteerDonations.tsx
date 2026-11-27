@@ -25,7 +25,8 @@ export interface VolunteerDonationsLabels {
     noDescription: string;
 }
 
-const supportButton = "mt-5 mr-5 flex items-center justify-center rounded-[10px] border border-cta bg-cta px-[50px] py-2.5 text-center text-label text-white no-underline transition-all duration-300";
+// На телефоне кнопка под карточкой во всю ширину: рядом с карточкой она вылезала за рамку (сдача 27.11.2026)
+const supportButton = "mt-5 mr-5 flex shrink-0 items-center justify-center rounded-[10px] border border-cta bg-cta px-[50px] py-2.5 text-center text-label text-white no-underline transition-all duration-300 down-md:mx-5 down-md:mt-0 down-md:mb-5 down-md:px-5 down-xs:mx-4 down-xs:mb-4";
 
 /**
  * «Поддержать другие проекты» (DonationsRecomendationsWidget старого
@@ -72,7 +73,7 @@ export function VolunteerDonations({ hrefs, labels }: {
                 </div>
                 <div className="flex flex-col gap-2 p-3.5">
                     {items === null ? <Spinner /> : items.length === 0 ? <span>{labels.empty}</span> : items.map((item) => (
-                        <article key={item.id} className="flex w-full items-start gap-3.5 border border-accent-bg bg-white">
+                        <article key={item.id} className="flex w-full min-w-0 items-start gap-3.5 border border-accent-bg bg-white down-md:flex-col down-md:items-stretch down-md:gap-0">
                             <DonationCard item={item} href={hrefs.fundraise.replace("{id}", item.id)} labels={labels} />
                             {item.isCanSupport ? (
                                 <a href={hrefs.pay.replace("{id}", item.id)} className={`${supportButton} hover:bg-white hover:text-cta`}>

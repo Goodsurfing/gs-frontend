@@ -74,6 +74,37 @@ test.describe('Новый фронт: сообщения', () => {
         await expect(chats.first()).toBeVisible();
     });
 
+    test('телефон: «Назад» из переписки — на предыдущую страницу сайта, а не в «Сообщения» (27.11)', async ({ page }, testInfo) => {
+        test.skip(testInfo.project.name !== 'host', 'нужна переписка');
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.goto('/messenger');
+        await isNewFrontend(page);
+        const chats = page.locator('a[href^="/messenger/"]');
+        await expect(chats.first()).toBeVisible({ timeout: 15_000 });
+        const chatHref = (await chats.first().getAttribute('href'))!;
+        // Вход в «Заблокированные» прямо из «Сообщений»
+        await expect(page.getByRole('link', { name: 'Заблокированные' })).toHaveAttribute('href', '/profile/privacy#blocked');
+        // Вкладки «Все / Непрочитанные / …» листаются только вбок
+        const strip = await page.getByRole('tablist').first().evaluate((node) => ({ overflowY: getComputedStyle(node).overflowY, fits: node.scrollHeight <= node.clientHeight }));
+        expect(strip).toEqual({ overflowY: 'hidden', fits: true });
+
+        // Из кабинета в переписку и обратно — в кабинет
+        await page.goto('/host/notes');
+        await page.goto(chatHref);
+        await expect(page.getByRole('textbox', { name: 'Написать сообщение' })).toBeVisible({ timeout: 15_000 });
+        await page.getByRole('button', { name: 'Назад' }).click();
+        await expect(page).toHaveURL(/\/host\/notes$/);
+
+        // Пришли по ссылке извне (истории на сайте нет) — в список переписок
+        const fresh = await page.context().newPage();
+        await fresh.setViewportSize({ width: 390, height: 844 });
+        await fresh.goto(chatHref);
+        await expect(fresh.getByRole('textbox', { name: 'Написать сообщение' })).toBeVisible({ timeout: 15_000 });
+        await fresh.getByRole('button', { name: 'Назад' }).click();
+        await expect(fresh).toHaveURL(/\/messenger$/);
+        await fresh.close();
+    });
+
     /** Первая открытая вакансия каталога стейджа */
     /**
      * Первая вакансия каталога, у которой приём заявок не закончился. Первой в каталоге бывает фикстура

@@ -37,4 +37,39 @@ test.describe('Новый фронт: главная', () => {
         await expect(page.getByRole('link', { name: 'Начать сейчас' })).toHaveAttribute('href', '/profile/role');
         await expect(page.getByRole('link', { name: 'Стать организатором' }).last()).toHaveAttribute('href', '/become-host');
     });
+
+    test('«Как это работает»: на телефоне шаги появляются по порядку, без «через один» (27.11)', async ({ page }) => {
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.goto('/');
+        await expect(page.locator('script[src*="/_next/"]').first()).toBeAttached();
+        const steps = page.locator('img[src^="/web/images/how-it-work/img"]').locator('xpath=..');
+        await expect(steps).toHaveCount(5);
+        // Место шага без сдвига появления (offsetTop не учитывает translate)
+        const tops = await steps.evaluateAll((nodes) => nodes.map((node) => {
+            let top = 0;
+            for (let el: HTMLElement | null = node as HTMLElement; el; el = el.offsetParent as HTMLElement | null) top += el.offsetTop;
+            return top;
+        }));
+        expect(tops).toEqual([...tops].sort((a, b) => a - b));
+        // После гидратации шаги ниже экрана спрятаны до прокрутки
+        await expect(steps.nth(4)).toHaveClass(/opacity-0/);
+        // Докручиваем так, что второй шаг уже на экране (верх на 140 px выше низа окна), а третий ещё нет
+        const second = tops[1]!;
+        await page.evaluate((y) => window.scrollTo(0, y), second - 844 + 140);
+        await page.waitForTimeout(300);
+        const hidden = await steps.evaluateAll((nodes) => nodes.map((node) => node.className.includes('opacity-0')));
+        expect(hidden.slice(0, 2)).toEqual([false, false]);
+        if (tops[2]! - second > 40) expect(hidden[2]).toBe(true);
+    });
+
+    test('«Как это работает»: при «уменьшении движения» шаги видны сразу', async ({ page }) => {
+        await page.emulateMedia({ reducedMotion: 'reduce' });
+        await page.setViewportSize({ width: 1280, height: 900 });
+        await page.goto('/');
+        const steps = page.locator('img[src^="/web/images/how-it-work/img"]').locator('xpath=..');
+        await expect(steps).toHaveCount(5);
+        for (const className of await steps.evaluateAll((nodes) => nodes.map((node) => node.className))) {
+            expect(className).not.toContain('opacity-0');
+        }
+    });
 });
