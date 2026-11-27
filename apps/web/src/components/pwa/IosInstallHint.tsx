@@ -57,7 +57,7 @@ export function IosInstallHint({ appHref, labels, className = "" }: { appHref: s
     };
 
     return (
-        <div role="region" aria-label={labels.title} data-testid="ios-install-hint" className={`flex flex-col gap-2 rounded-[10px] border border-accent-bg bg-status-new/10 px-4 py-3 text-[13px] text-ink-secondary ${className}`}>
+        <div role="region" aria-label={labels.title} data-testid="ios-install-hint" data-nudge-blocker className={`flex flex-col gap-2 rounded-[10px] border border-accent-bg bg-status-new/10 px-4 py-3 text-[13px] text-ink-secondary ${className}`}>
             <span className="flex gap-2">
                 <AddToHomeIcon className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                 {labels.text}
