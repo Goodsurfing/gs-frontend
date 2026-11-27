@@ -6,6 +6,8 @@ import { type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from 
 import { Spinner } from "@/components/ui/Spinner";
 import { MAX_UPLOAD_SIZE, uploadMedia } from "@/lib/uploadMedia";
 
+import { CloseIcon, SendArrowIcon } from "./MessengerIcons";
+
 // Окно смайлов тяжёлое — грузится только по кнопке
 const EmojiPicker = dynamic(() => import("emoji-picker-react"), { ssr: false });
 
@@ -27,11 +29,6 @@ export interface ChatInputLabels {
 export interface OutgoingMessage { text: string; attachments: string[] }
 
 const iconButton = "flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center border-0 bg-transparent p-0 disabled:cursor-default";
-// Размер и повтор маски заданы явно: значок 24×24 в кнопке 20×20 без них обрезался, и в Safari стрелку отправки было почти не видно
-const mask = (name: string) => {
-    const url = `url(/web/icons/messenger/${name}.svg)`;
-    return { maskImage: url, WebkitMaskImage: url, maskSize: "contain", WebkitMaskSize: "contain", maskRepeat: "no-repeat", WebkitMaskRepeat: "no-repeat", maskPosition: "center", WebkitMaskPosition: "center" };
-};
 
 /**
  * Поле сообщения (ChatInput старого фронта): скрепка — одно вложение до
@@ -128,7 +125,7 @@ export function ChatInput({ token, disabled, labels, onSend, onError, prefill, e
                 <div className="absolute bottom-full left-0 flex w-full items-center gap-[15px] bg-white p-5 text-primary">
                     {attachment.name}
                     <button type="button" aria-label={labels.removeAttachment} onClick={() => setAttachment(null)} className={iconButton}>
-                        <span aria-hidden className="h-5 w-5 bg-caption" style={mask("delete")} />
+                        <CloseIcon className="h-3.5 w-3.5 text-caption" />
                     </button>
                 </div>
             )}
@@ -181,7 +178,7 @@ export function ChatInput({ token, disabled, labels, onSend, onError, prefill, e
                     )}
                 </div>
                 <button type="button" aria-label={labels.send} disabled={!canSend} onClick={send} className={`${iconButton} ml-3`}>
-                    <span aria-hidden className={`h-5 w-5 ${canSend ? "bg-primary" : "bg-caption"}`} style={mask("send-arrow")} />
+                    <SendArrowIcon className={`h-5 w-5 ${canSend ? "text-primary" : "text-caption"}`} />
                 </button>
             </div>
         </div>
