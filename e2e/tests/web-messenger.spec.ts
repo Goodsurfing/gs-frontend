@@ -75,11 +75,26 @@ test.describe('Новый фронт: сообщения', () => {
     });
 
     /** Первая открытая вакансия каталога стейджа */
+    /**
+     * Первая вакансия каталога, у которой приём заявок не закончился. Первой в каталоге бывает фикстура
+     * «E2E Тестовая вакансия 5» с applicationEndDate в прошлом (нарочно, для application-flow) — у неё
+     * «Участвовать» не ссылка.
+     */
     const firstOfferId = async () => {
         const api = await request.newContext({ baseURL: API_URL, ignoreHTTPSErrors: true });
         try {
-            const catalog = await (await api.get('/api/v1/vacancy?limit=1&fields=card', { headers: { Accept: 'application/json' } })).json();
-            return (Array.isArray(catalog) ? catalog : catalog.data ?? catalog['hydra:member'] ?? [])[0]?.id as number | undefined;
+            const catalog = await (await api.get('/api/v1/vacancy?limit=20&fields=card', { headers: { Accept: 'application/json' } })).json();
+            const offers: { id: number; applicationEndDate?: string | null }[] = Array.isArray(catalog)
+                ? catalog
+                : catalog.data ?? catalog['hydra:member'] ?? [];
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const open = (end?: string | null) => {
+                if (!end) return true;
+                const [d, m, y] = end.split(/[.-]/).map(Number);
+                return new Date(y, m - 1, d) >= today;
+            };
+            return offers.find((offer) => open(offer.applicationEndDate))?.id;
         } finally {
             await api.dispose();
         }
