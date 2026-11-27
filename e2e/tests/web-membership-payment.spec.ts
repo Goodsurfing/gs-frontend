@@ -24,7 +24,19 @@ test.describe('Новый фронт: оплата членства', () => {
             await page.goto('/payment/fail?reason=cancelled');
             await expect(page.getByRole('heading', { level: 1, name: 'Ошибка оплаты' })).toBeVisible();
             await expect(page.getByText('Оплата была отменена')).toBeVisible();
-            await expect(page.getByRole('link', { name: 'Вернуться на страницу членства' })).toHaveAttribute('href', '/membership');
+            // GS-333: тариф неизвестен — «Попробовать ещё раз» ведёт к членству; ниже ссылка на страницу членства
+            await expect(page.getByRole('link', { name: 'Попробовать ещё раз' })).toHaveAttribute('href', '/membership');
+            await expect(page.getByRole('link', { name: 'К странице членства' })).toHaveAttribute('href', '/membership');
+            // Опрос «Что помешало оплатить?» — только вошедшему и по своему платежу
+            await expect(page.getByRole('button', { name: 'Что помешало оплатить?' })).toHaveCount(0);
+        });
+
+        test('неудачная оплата тарифа: «Попробовать ещё раз» сразу к оплате того же тарифа', async ({ page }) => {
+            await page.goto('/payment/fail?reason=cancelled&tariff=host_4990');
+            await expect(page.getByRole('link', { name: 'Попробовать ещё раз' })).toHaveAttribute('href', '/payment?tariff=host_4990');
+            await page.goto('/payment/fail?tariff=%2F%2Fevil.example');
+            await expect(page.getByText('Произошла ошибка при обработке платежа', { exact: true })).toBeVisible();
+            await expect(page.getByRole('link', { name: 'Попробовать ещё раз' })).toHaveAttribute('href', '/membership');
         });
     });
 
