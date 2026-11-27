@@ -16,4 +16,3 @@ export function CloseIcon({ className }: { className?: string }) {
         </svg>
     );
 }
-};

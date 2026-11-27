@@ -29,6 +29,7 @@ export interface ChatInputLabels {
 export interface OutgoingMessage { text: string; attachments: string[] }
 
 const iconButton = "flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center border-0 bg-transparent p-0 disabled:cursor-default";
+
 /**
  * Поле сообщения (ChatInput старого фронта): скрепка — одно вложение до
  * 5 МБ, многострочный текст (Enter — отправить, Shift+Enter — новая строка),
