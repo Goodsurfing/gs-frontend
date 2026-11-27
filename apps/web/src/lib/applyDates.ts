@@ -100,3 +100,32 @@ export function initialTerms(dates: ApplyDates): { start: Day | null; end: Day |
 
 /** Предел текста «Пару слов о себе» — как у сообщения в переписке (бэкенд, GS-290) */
 export const APPLY_MESSAGE_MAX = 1000;
+
+/**
+ * Общие условия вакансии над выбором дат (сдача тестировщицы 27.11.2026): сроки
+ * проекта — «круглый год» или от самого раннего начала до самого позднего конца
+ * периодов, и минимальный/максимальный срок участия. Чего нет — null, строка
+ * не показывается.
+ */
+export interface OfferTerms {
+    project: { kind: "fullYear" } | { kind: "range"; start: Day; end: Day } | null;
+    minDays: number | null;
+    maxDays: number | null;
+}
+
+export function offerTerms(when: WhenFields | null | undefined): OfferTerms {
+    const positive = (value: number | null | undefined) => (value && value > 0 ? value : null);
+    let start: Day | null = null;
+    let end: Day | null = null;
+    for (const period of when?.periods ?? []) {
+        const from = dayFromApi(period.start);
+        const to = dayFromApi(period.ending);
+        if (!from || !to || to < from) continue;
+        if (!start || from < start) start = from;
+        if (!end || to > end) end = to;
+    }
+    const project: OfferTerms["project"] = when?.isFullYearAcceptable
+        ? { kind: "fullYear" }
+        : start && end ? { kind: "range", start, end } : null;
+    return { project, minDays: positive(when?.durationMinDays), maxDays: positive(when?.durationMaxDays) };
+}

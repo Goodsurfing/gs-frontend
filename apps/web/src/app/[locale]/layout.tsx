@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { preload } from "react-dom";
 
 import { YandexMetrika } from "@/components/analytics/YandexMetrika";
+import { NavigationTrail } from "@/components/layout/NavigationTrail";
 import { PwaInstalledGoal } from "@/components/pwa/PwaInstalledGoal";
 import { ReferralCapture } from "@/components/referral/ReferralCapture";
 import { isLocale, LOCALES } from "@/i18n/config";
@@ -22,6 +23,14 @@ export const metadata: Metadata = {
     other: { "apple-mobile-web-app-capable": "yes" },
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://goodsurfing.org"),
 };
+
+/**
+ * viewport-fit=cover: без него iPhone не сообщает отступы под скруглённые углы и полоску
+ * «Домой» (env(safe-area-inset-bottom) = 0), и прилипшие к низу кнопки и поле сообщения
+ * уходили под рамку экрана (сдача тестировщицы 27.11.2026). Отступы заданы у всех
+ * элементов, прижатых к низу экрана (pb-[max(…,env(safe-area-inset-bottom))]).
+ */
+export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 // Другие первые сегменты — не язык: такие адреса уходят в app/global-not-found.tsx
 // Неизвестный язык отсекает isLocale → notFound() ниже. dynamicParams = false здесь
@@ -67,6 +76,7 @@ export default async function LocaleLayout({
                 {children}
                 <YandexMetrika />
                 <ReferralCapture />
+                <NavigationTrail />
                 <PwaInstalledGoal />
             </body>
         </html>

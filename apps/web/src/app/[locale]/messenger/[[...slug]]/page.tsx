@@ -130,6 +130,11 @@ export default async function MessengerPage({ params }: Props) {
                             apply: {
                                 title: m("apply.title"),
                                 when: m("apply.when"),
+                                projectDates: m("apply.projectDates"),
+                                fullYear: m("apply.fullYear"),
+                                minStay: m("apply.minStay"),
+                                maxStay: m("apply.maxStay"),
+                                days: { one: m("apply.days_one"), few: m("apply.days_few"), many: m("apply.days_many"), other: m("apply.days_other") },
                                 choosePeriod: m("apply.choosePeriod"),
                                 windowHint: m("apply.windowHint"),
                                 freeHint: m("apply.freeHint"),

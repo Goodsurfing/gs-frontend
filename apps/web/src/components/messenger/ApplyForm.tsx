@@ -5,7 +5,8 @@ import { useId, useState } from "react";
 import { DateField } from "@/components/offer-wizard/DateField";
 import { type OfferListCardLabels, OfferListCard } from "@/components/offers-map/OfferListCard";
 import type { Locale } from "@/i18n/config";
-import { type ApplyDates, APPLY_MESSAGE_MAX, periodIndex, termsForPeriod } from "@/lib/applyDates";
+import { type ApplyDates, APPLY_MESSAGE_MAX, type OfferTerms, periodIndex, termsForPeriod } from "@/lib/applyDates";
+import { type PluralText, pluralText } from "@/lib/applicationsView";
 import { formatDateRange, setArrival, setDeparture, type Terms } from "@/lib/messenger";
 import type { CatalogOffer } from "@/lib/offersCatalog";
 import { today } from "@/lib/offerWizard";
@@ -13,6 +14,12 @@ import { today } from "@/lib/offerWizard";
 export interface ApplyFormLabels {
     title: string;
     when: string;
+    /** Общие условия вакансии над выбором дат: сроки проекта, минимальный и максимальный срок участия */
+    projectDates: string;
+    fullYear: string;
+    minStay: string;
+    maxStay: string;
+    days: PluralText;
     choosePeriod: string;
     windowHint: string;
     freeHint: string;
@@ -37,10 +44,11 @@ export interface ApplyFormLabels {
  * круглая «✓» без подписи, и из 20 открывших форму 12 не отправляли (неделя
  * 29.10–04.11.2026). Даты — из периодов организатора (lib/applyDates).
  */
-export function ApplyForm({ locale, offer, offerHref, dates, terms, onTerms, message, onMessage, onSubmit, busy, error, labels }: {
+export function ApplyForm({ locale, offer, offerHref, offerInfo, dates, terms, onTerms, message, onMessage, onSubmit, busy, error, labels }: {
     locale: Locale;
     offer: CatalogOffer;
     offerHref: string;
+    offerInfo: OfferTerms;
     dates: ApplyDates;
     terms: Terms;
     onTerms: (terms: Terms) => void;
@@ -60,6 +68,16 @@ export function ApplyForm({ locale, offer, offerHref, dates, terms, onTerms, mes
     // Окно выбранного периода — границы календаря; без периодов — от сегодня
     const bounds = dates.kind === "free" ? { min: now, max: undefined } : chosen?.window ? { min: chosen.start, max: chosen.end } : null;
     const [touched, setTouched] = useState(false);
+    const days = (count: number) => pluralText(locale, count, labels.days);
+    const project = offerInfo.project?.kind === "fullYear"
+        ? labels.fullYear
+        : offerInfo.project ? formatDateRange(locale, offerInfo.project.start, offerInfo.project.end) : "";
+    // Чего нет у вакансии — строку не показываем
+    const info = ([
+        [labels.projectDates, project],
+        [labels.minStay, offerInfo.minDays ? days(offerInfo.minDays) : ""],
+        [labels.maxStay, offerInfo.maxDays ? days(offerInfo.maxDays) : ""],
+    ] as const).filter(([, value]) => !!value);
 
     return (
         <form
@@ -73,8 +91,21 @@ export function ApplyForm({ locale, offer, offerHref, dates, terms, onTerms, mes
         >
             <OfferListCard offer={offer} href={offerHref} wide={false} labels={labels.card} showImage={false} />
 
-            <fieldset className="m-0 flex flex-col gap-3 rounded-[14px] border border-accent-bg bg-white p-4">
-                <legend className="float-left mb-1 w-full p-0 text-[16px] font-semibold text-ink">{labels.when}</legend>
+            {/* Подпись над блоком, как у «Пару слов о себе». Раньше была legend у fieldset — Safari на iPhone
+                рисовал её на рамке блока, и она налезала на выбор дат (сдача тестировщицы 27.11.2026) */}
+            <div className="flex flex-col gap-1.5">
+            <p id={`${id}-when`} className="text-[16px] font-semibold text-ink">{labels.when}</p>
+            <div role="group" aria-labelledby={`${id}-when`} className="flex flex-col gap-3 rounded-[14px] border border-accent-bg bg-white p-4">
+                {info.length > 0 && (
+                    <dl aria-label={labels.projectDates} className="m-0 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 border-b border-field pb-3 text-[14px] leading-[140%]">
+                        {info.map(([term, value]) => (
+                            <div key={term} className="contents">
+                                <dt className="text-caption">{term}</dt>
+                                <dd className="m-0 font-medium text-ink">{value}</dd>
+                            </div>
+                        ))}
+                    </dl>
+                )}
                 {dates.kind === "periods" ? (
                     <>
                         {dates.periods.length > 1 && <p className="text-[14px] text-caption">{labels.choosePeriod}</p>}
@@ -115,7 +146,8 @@ export function ApplyForm({ locale, offer, offerHref, dates, terms, onTerms, mes
                         </div>
                     </div>
                 )}
-            </fieldset>
+            </div>
+            </div>
 
             <div className="flex flex-col gap-1.5">
                 <label htmlFor={`${id}-about`} className="text-[16px] font-semibold text-ink">
