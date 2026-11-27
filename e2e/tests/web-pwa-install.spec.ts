@@ -105,6 +105,10 @@ test.describe('Новый фронт: сайт на экране «Домой» 
     const PUSH_TEXT = 'Включите уведомления';
     const noChats = async (context: Awaited<ReturnType<typeof iphone>>) => {
         await context.route(/\/api\/v1\/personal\/chats/, (route) => route.fulfill({ status: 200, contentType: 'application/json', body: '[]' }));
+        // Headless Chromium отвечает на разрешение «denied»; на iPhone до первого вопроса — «default»
+        await context.addInitScript(() => {
+            if ('Notification' in window) Object.defineProperty(Notification, 'permission', { get: () => 'default', configurable: true });
+        });
         await context.route(/\/api\/v1\/web-push\/key/, (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ publicKey: 'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U' }) }));
     };
 
