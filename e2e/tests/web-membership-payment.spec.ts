@@ -24,7 +24,11 @@ test.describe('Новый фронт: оплата членства', () => {
             await page.goto('/payment/fail?reason=cancelled');
             await expect(page.getByRole('heading', { level: 1, name: 'Ошибка оплаты' })).toBeVisible();
             await expect(page.getByText('Оплата была отменена')).toBeVisible();
-            await expect(page.getByRole('link', { name: 'Вернуться на страницу членства' })).toHaveAttribute('href', '/membership');
+            // GS-333: тариф неизвестен — «Попробовать ещё раз» ведёт к странице членства; с тарифом — сразу к оплате
+            await expect(page.getByRole('link', { name: 'Попробовать ещё раз' })).toHaveAttribute('href', '/membership');
+            await expect(page.getByRole('link', { name: 'К странице членства' })).toHaveAttribute('href', '/membership');
+            await page.goto('/payment/fail?reason=cancelled&tariff=volunteer_990');
+            await expect(page.getByRole('link', { name: 'Попробовать ещё раз' })).toHaveAttribute('href', '/payment?tariff=volunteer_990');
         });
     });
 

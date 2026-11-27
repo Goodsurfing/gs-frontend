@@ -15,7 +15,9 @@ test.describe('Новый фронт: членство', () => {
             const response = await page.goto('/membership');
             expect(response?.status()).toBe(200);
             await expect(page.locator('script[src*="/_next/"]').first()).toBeAttached();
-            await expect(page.locator('h1')).toContainText('Стань частью сообщества Гудсёрфинга');
+            // На компьютере видна прежняя шапка; первый экран телефона (GS-333) в разметке, но скрыт
+            await expect(page.getByRole('heading', { level: 1, name: /^Стань частью сообщества Гудсёрфинга/ })).toBeVisible();
+            await expect(page.locator('#membership-compact')).toBeHidden();
 
             const volunteer = page.locator('#tariffs');
             await expect(volunteer.getByRole('link', { name: 'Получить членство' })).toHaveAttribute('href', '/payment?tariff=volunteer_990');
@@ -29,19 +31,28 @@ test.describe('Новый фронт: членство', () => {
             await expect(question).toHaveAttribute('aria-expanded', 'true');
         });
 
-        test('телефон: кнопка с ценой в шапке ведёт к оплате, платная карточка первой, полоса после тарифов', async ({ page }) => {
+        test('телефон: первый экран с ценой и «Оформить», тарифы в «Подробнее», полоса после первого экрана (GS-333)', async ({ page }) => {
             await page.setViewportSize({ width: 390, height: 844 });
             await page.goto('/membership');
-            await expect(page.getByRole('link', { name: /^Оформить за [\d\s]+ ₽$/ })).toHaveAttribute('href', '/payment?tariff=volunteer_990');
-            await expect(page.getByText('Членство включается сразу после оплаты', { exact: false })).toBeVisible();
+            const hero = page.locator('#membership-compact');
+            await expect(hero.getByRole('heading', { level: 1, name: 'Членство Гудсёрфинга' })).toBeVisible();
+            await expect(hero).toContainText(/\d[\d\s]* ₽\s*в год/);
+            await expect(hero.getByRole('link', { name: 'Оформить', exact: true })).toHaveAttribute('href', '/payment?tariff=volunteer_990');
+            await expect(hero.getByText('Членство включается сразу после оплаты', { exact: false })).toBeVisible();
 
+            // Тарифы свёрнуты в «Подробнее»; раскрытые — платная карточка первой
             const tariffs = page.locator('#tariffs');
+            await expect(tariffs).toBeHidden();
+            const details = page.getByRole('button', { name: 'Что входит в членство' });
+            await details.click();
+            await expect(details).toHaveAttribute('aria-expanded', 'true');
             const paidY = (await tariffs.getByRole('heading', { name: 'Членство', exact: true }).boundingBox())?.y ?? 0;
             const freeY = (await tariffs.getByRole('heading', { name: 'Без членства' }).boundingBox())?.y ?? 0;
             expect(paidY).toBeLessThan(freeY);
 
-            const bar = page.getByRole('link', { name: 'Оформить', exact: true });
-            await page.evaluate(() => window.scrollTo(0, (document.getElementById('tariffs')?.getBoundingClientRect().bottom ?? 0) + window.scrollY + 50));
+            // Полоса «Членство на год — … · Оформить» — когда первый экран уехал вверх (до этого скрыта от чтения)
+            await page.evaluate(() => window.scrollTo(0, (document.getElementById('membership-compact')?.getBoundingClientRect().bottom ?? 0) + window.scrollY + 50));
+            const bar = page.getByRole('link', { name: 'Оформить', exact: true }).last();
             await expect(bar).toBeInViewport();
             await expect(bar).toHaveAttribute('href', '/payment?tariff=volunteer_990');
         });
