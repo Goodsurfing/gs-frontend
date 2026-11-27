@@ -42,6 +42,7 @@ export default async function PaymentSuccessPage({ params, searchParams }: Props
                 signInHref={routes.signIn(locale)}
                 failHref={`${routes.paymentFail(locale)}?reason=cancelled${typeof paymentId === "string" ? `&payment_id=${encodeURIComponent(paymentId)}` : ""}`}
                 membershipHref={routes.membership(locale)}
+                paymentHref={routes.payment(locale)}
                 duo={{ inviteBase: routes.membershipDuo(locale, ""), labels: duoLabels(tMembership) }}
                 labels={{
                     kinds: {
@@ -64,6 +65,10 @@ export default async function PaymentSuccessPage({ params, searchParams }: Props
                     processing: t("Платёж обрабатывается"),
                     processingText: t("Подтверждение занимает дольше обычного Проверьте статус на странице членства через несколько минут или обратитесь в службу поддержки"),
                     toMembership: t("На страницу членства"),
+                    checking: t("Проверяем оплату…"),
+                    checkingText: t("Обычно это занимает несколько секунд"),
+                    exited: t("Если вы вышли из оплаты, можно попробовать ещё раз"),
+                    retry: t("fail-retry"),
                 }}
             />
         </PublicShell>

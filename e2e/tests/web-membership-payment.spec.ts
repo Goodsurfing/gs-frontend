@@ -48,4 +48,28 @@ test.describe('Новый фронт: оплата членства', () => {
             expect(onCheckout || alreadyActive).toBe(true);
         }).toPass({ timeout: 30_000 });
     });
+
+    test('возврат с ЮKassa до подтверждения: сразу «Проверяем оплату…», потом «Попробовать ещё раз» (27.11)', async ({ page }) => {
+        // Платёж «в ожидании» — как после «Exit the payment process»: ответ подменяется, на стейдже ничего не меняется
+        await page.route('**/api/v1/payments/e2e-pending-payment', (route) => route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify({ id: 'e2e-pending-payment', status: 'PENDING', tariffCode: 'volunteer_990' }),
+        }));
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.goto('/payment/success?payment_id=e2e-pending-payment');
+        await expect(page.getByRole('heading', { name: 'Проверяем оплату…' })).toBeVisible({ timeout: 5_000 });
+        await expect(page.getByText('Обычно это занимает несколько секунд')).toBeVisible();
+        await expect(page.getByText('Если вы вышли из оплаты, можно попробовать ещё раз')).toBeVisible({ timeout: 15_000 });
+        await expect(page.getByRole('link', { name: 'Попробовать ещё раз' })).toHaveAttribute('href', '/payment?tariff=volunteer_990');
+        await expect(page.getByRole('link', { name: 'На страницу членства' })).toHaveAttribute('href', '/membership');
+        // Опрос продолжается: отменённый платёж уводит на страницу неудачи
+        await page.unroute('**/api/v1/payments/e2e-pending-payment');
+        await page.route('**/api/v1/payments/e2e-pending-payment', (route) => route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify({ id: 'e2e-pending-payment', status: 'CANCELLED', tariffCode: 'volunteer_990' }),
+        }));
+        await expect(page).toHaveURL(/\/payment\/fail\?reason=cancelled.*tariff=volunteer_990/, { timeout: 15_000 });
+    });
 });
