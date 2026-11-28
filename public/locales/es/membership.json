@@ -203,6 +203,7 @@
         "panel-email-send": "Enviar",
         "panel-email-sent": "Invitación enviada a {{email}}",
         "panel-email-left": "Correos restantes: {{count}}",
+        "panel-email-limit": "Ya no quedan correos de invitación: copia el enlace de arriba y envíalo tú.",
         "panel-regenerate": "Crear un enlace nuevo",
         "panel-regenerate-hint": "El enlace anterior dejará de funcionar",
         "panel-joined": "{{name}} está contigo: la membresía está activa para ambos hasta el {{date}}.",

@@ -23,7 +23,7 @@ export interface DuoState {
 export const DUO_KEYS = [
     "offer-title", "offer-text", "offer-price", "offer-per-person", "offer-button",
     "panel-title", "panel-invite", "panel-copy", "panel-copied", "panel-share", "panel-share-text",
-    "panel-email-label", "panel-email-placeholder", "panel-email-send", "panel-email-sent", "panel-email-left",
+    "panel-email-label", "panel-email-placeholder", "panel-email-send", "panel-email-sent", "panel-email-left", "panel-email-limit",
     "panel-regenerate", "panel-regenerate-hint", "panel-joined", "panel-partner", "panel-error",
     "invite-title", "invite-text", "invite-extend", "invite-accept", "invite-sign-in", "invite-sign-up",
     "invite-done", "invite-to-offers", "invite-not-found", "invite-expired", "invite-taken", "invite-own",

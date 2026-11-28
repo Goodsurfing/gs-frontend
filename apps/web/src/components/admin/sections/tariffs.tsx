@@ -15,6 +15,8 @@ interface TariffRow {
     forRole: string;
     category: string;
     seats: number;
+    /** Писем-приглашений второму участнику на одно членство «на двоих» (GS-294); на старом бэкенде поля нет */
+    inviteEmailLimit?: number;
     active: boolean;
     editable: boolean;
 }
@@ -31,6 +33,7 @@ export function TariffsAdmin() {
     const [rows, setRows] = useState<TariffRow[] | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [draft, setDraft] = useState<Record<string, string>>({});
+    const [limitDraft, setLimitDraft] = useState<Record<string, string>>({});
     const [busy, setBusy] = useState<string | null>(null);
     const [message, setMessage] = useState<{ text: string; ok: boolean } | null>(null);
 
@@ -40,18 +43,20 @@ export function TariffsAdmin() {
                 setError(null);
                 setRows(data);
                 setDraft(Object.fromEntries(data.map((r) => [r.code, String(r.priceRub)])));
+                setLimitDraft(Object.fromEntries(data.map((r) => [r.code, String(r.inviteEmailLimit ?? "")])));
             })
             .catch((e: unknown) => setError(e instanceof Error ? e.message : "Ошибка"));
     }, [api]);
     useEffect(load, [load]);
 
-    const save = (row: TariffRow, body: { priceRub?: number; active?: boolean }, done: string) => {
+    const save = (row: TariffRow, body: { priceRub?: number; active?: boolean; inviteEmailLimit?: number }, done: string) => {
         setBusy(row.code);
         setMessage(null);
         api.patch<TariffRow>(`membership/tariffs/${row.code}`, body)
             .then((updated) => {
                 setRows((list) => list?.map((r) => (r.code === updated.code ? updated : r)) ?? null);
                 setDraft((d) => ({ ...d, [updated.code]: String(updated.priceRub) }));
+                setLimitDraft((d) => ({ ...d, [updated.code]: String(updated.inviteEmailLimit ?? "") }));
                 setMessage({ text: done, ok: true });
             })
             .catch((e: unknown) => setMessage({ text: e instanceof Error ? e.message : "Ошибка", ok: false }))
@@ -77,6 +82,9 @@ export function TariffsAdmin() {
                     {rows.map((row) => {
                         const price = Number(draft[row.code]);
                         const priceValid = Number.isInteger(price) && price >= 1 && price <= 1_000_000;
+                        const limit = Number(limitDraft[row.code]);
+                        const limitValid = limitDraft[row.code] !== "" && Number.isInteger(limit) && limit >= 1 && limit <= 20;
+                        const showLimit = row.editable && row.seats > 1 && row.inviteEmailLimit !== undefined;
                         return (
                             <div key={row.code} className="flex flex-wrap items-end gap-4 rounded-[8px] bg-surface p-4">
                                 <div className="min-w-[220px] flex-1">
@@ -108,6 +116,23 @@ export function TariffsAdmin() {
                                         >
                                             {row.active ? "Скрыть с сайта" : "Показать на сайте"}
                                         </button>
+                                        {showLimit && (
+                                            <div className="flex w-full flex-wrap items-end gap-4">
+                                                <label className="flex w-[220px] flex-col gap-1 text-[12px] text-muted">
+                                                    Писем-приглашений на одно членство
+                                                    <input className={adminInput} inputMode="numeric" value={limitDraft[row.code] ?? ""} onChange={(e) => setLimitDraft((d) => ({ ...d, [row.code]: e.target.value.replace(/\D/g, "") }))} />
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    className={adminButtonPrimary}
+                                                    disabled={busy === row.code || !limitValid || limit === row.inviteEmailLimit}
+                                                    onClick={() => save(row, { inviteEmailLimit: limit }, `«${row.name}»: писем-приглашений — ${limit}`)}
+                                                >
+                                                    Сохранить лимит
+                                                </button>
+                                                <p className="max-w-[360px] text-[12px] text-muted">От 1 до 20. Защита от рассылки с нашего адреса; новый лимит сразу действует и для уже купленных членств.</p>
+                                            </div>
+                                        )}
                                     </>
                                 ) : (
                                     <p className="text-[13px] text-muted">Бессрочный — выдаётся вручную, не меняется</p>
