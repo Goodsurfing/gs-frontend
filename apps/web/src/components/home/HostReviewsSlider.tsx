@@ -23,7 +23,7 @@ export function HostReviewsSlider({ reviews, labels }: { reviews: SliderReview[]
     };
     return (
         <div className="relative w-full px-[60px] down-sm:px-0">
-            <div ref={track} className="flex snap-x snap-mandatory items-stretch gap-[40px] overflow-x-auto p-[15px] [scrollbar-width:none] max-[1024px]:gap-2.5 [&::-webkit-scrollbar]:hidden">
+            <div ref={track} className="flex snap-x snap-mandatory items-stretch gap-[40px] scroll-strip p-[15px] [scrollbar-width:none] max-[1024px]:gap-2.5 [&::-webkit-scrollbar]:hidden">
                 {reviews.map((review) => (
                     <div key={review.id} className="flex w-full shrink-0 snap-start gap-x-10 gap-y-5 bg-white shadow-[0_5px_20px_rgb(14_29_39/20%)]">
                         <div className="flex w-full flex-col gap-[18px] p-9">

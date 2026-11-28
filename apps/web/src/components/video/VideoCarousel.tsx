@@ -28,7 +28,7 @@ export function VideoCarousel({ videos, labels, className = "" }: {
     return (
         <div className={`relative px-[50px] down-sm:px-0 ${className}`}>
             <div className="relative">
-                <div ref={track} className="@container flex snap-x snap-mandatory gap-2.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <div ref={track} className="@container flex snap-x snap-mandatory gap-2.5 scroll-strip [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     {videos.map((url, index) => (
                          
                         <div key={`${index}-${url}`} className="w-[100cqw] shrink-0 cursor-pointer snap-start min-[768px]:w-[calc((100cqw-10px)/2)] min-[1024px]:w-[calc((100cqw-20px)/3)]">

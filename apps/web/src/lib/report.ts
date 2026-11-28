@@ -5,7 +5,8 @@ import type { Translate } from "@/i18n/dictionary";
  * Жалоба — POST /api/v1/complaints, блокировка — /api/v1/blocks.
  */
 
-export const REPORT_REASONS = ["spam", "abuse", "fraud", "other"] as const;
+/** violation — «нарушает правила сервиса или закон» (27.11.2026) */
+export const REPORT_REASONS = ["spam", "abuse", "fraud", "violation", "other"] as const;
 export type ReportReason = (typeof REPORT_REASONS)[number];
 
 /** На что жалоба: сообщение (id — число), пользователь, организация, отзыв (о вакансии или волонтёре) */

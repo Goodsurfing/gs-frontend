@@ -19,7 +19,7 @@ export const CountTabs = forwardRef<HTMLDivElement, {
     onSelect: (tab: ApplicationTab) => void;
 }>(function CountTabs({ id, tabs, selected, counts, labels, label, onSelect }, ref) {
     return (
-        <div ref={ref} role="tablist" aria-label={label} className="-mx-1 flex scroll-mt-24 gap-1 overflow-x-auto border-b border-accent-bg px-1 [scrollbar-width:none]">
+        <div ref={ref} role="tablist" aria-label={label} className="scroll-strip -mx-1 flex scroll-mt-24 gap-1 px-1 shadow-[inset_0_-1px_0_var(--color-accent-bg)] [scrollbar-width:none]">
             {tabs.map((tab) => {
                 const active = selected === tab;
                 return (
@@ -31,7 +31,7 @@ export const CountTabs = forwardRef<HTMLDivElement, {
                         aria-selected={active}
                         aria-controls={`${id}-panel`}
                         onClick={() => onSelect(tab)}
-                        className={`-mb-px flex min-h-11 shrink-0 cursor-pointer items-center gap-1.5 border-0 border-b-2 bg-transparent px-3 text-[15px] whitespace-nowrap transition-colors ${active ? "border-primary font-semibold text-primary" : "border-transparent text-ink-secondary hover:text-primary"}`}
+                        className={`flex min-h-11 shrink-0 cursor-pointer items-center gap-1.5 border-0 border-b-2 bg-transparent px-3 text-[15px] whitespace-nowrap transition-colors ${active ? "border-primary font-semibold text-primary" : "border-transparent text-ink-secondary hover:text-primary"}`}
                     >
                         {labels[tab]}
                         {counts && (

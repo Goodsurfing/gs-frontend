@@ -60,7 +60,7 @@ export function MembershipReviews({ title, reviews, labels }: {
         <section className="relative mx-auto mt-20 max-w-[1150px]">
             <h2 className="mx-auto text-center text-[1.5em] font-bold">{title}</h2>
             <div className="relative mt-10 down-lg:px-10 down-sm:px-2.5">
-                <div ref={track} className="flex snap-x snap-mandatory gap-[50px] overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <div ref={track} className="flex snap-x snap-mandatory gap-[50px] scroll-strip [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     {reviews.map((review) => (
                         <div key={review.id} className="w-full shrink-0 snap-center">
                             <Slide review={review} labels={{ prev: labels.textPrev, next: labels.textNext }} />

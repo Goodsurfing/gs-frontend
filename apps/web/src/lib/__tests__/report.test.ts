@@ -35,7 +35,7 @@ describe("подписи «Пожаловаться и заблокироват�
 
     it("русские тексты — как в задаче", () => {
         const labels = reportLabels(translator("ru"));
-        expect(labels.reasons).toEqual({ spam: "Спам", abuse: "Оскорбления", fraud: "Мошенничество", other: "Другое" });
+        expect(labels.reasons).toEqual({ spam: "Спам", abuse: "Оскорбления", fraud: "Мошенничество", violation: "Нарушает правила сервиса или закон", other: "Другое" });
         expect(labels.sent).toBe("Жалоба отправлена. Мы рассмотрим её в течение суток");
     });
 });

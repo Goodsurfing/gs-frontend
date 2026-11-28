@@ -6,6 +6,7 @@
         "spam": "Spam",
         "abuse": "Insultos",
         "fraud": "Fraude",
+        "violation": "Infringe las normas del servicio o la ley",
         "other": "Otro"
     },
     "comment": "Comentario (opcional)",

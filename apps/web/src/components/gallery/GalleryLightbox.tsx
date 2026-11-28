@@ -52,7 +52,7 @@ export function GalleryLightbox({ images, index, onClose, labels }: {
                             </svg>
                         </Dialog.Close>
                         <div className="relative mx-auto w-[80vw] max-w-[1600px] down-md:w-screen">
-                            <div ref={track} className="flex snap-x snap-mandatory items-center overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                            <div ref={track} className="flex snap-x snap-mandatory items-center scroll-strip [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                                 {images.map((src, i) => (
                                     <div key={`${i}-${src}`} className="w-full shrink-0 snap-start">
                                         {/* eslint-disable-next-line @next/next/no-img-element -- фото из хранилища */}

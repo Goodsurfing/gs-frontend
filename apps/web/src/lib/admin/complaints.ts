@@ -29,7 +29,7 @@ export interface Complaint {
     sameUserCount?: number;
 }
 
-export const REASON_TITLE: Record<string, string> = { spam: "Спам", abuse: "Оскорбления", fraud: "Мошенничество", other: "Другое" };
+export const REASON_TITLE: Record<string, string> = { spam: "Спам", abuse: "Оскорбления", fraud: "Мошенничество", violation: "Нарушает правила или закон", other: "Другое" };
 
 export const TARGET_TITLE: Record<ComplaintTargetType, string> = {
     message: "Сообщение",

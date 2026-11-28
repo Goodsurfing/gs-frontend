@@ -30,7 +30,7 @@ export function GalleryCarousel({ images, labels, className = "" }: {
         <div className={`relative px-[50px] down-sm:px-0 ${className}`}>
             <div className="relative">
                 {/* Ширина в cqw: calc с процентами Chrome округляет по слагаемым (см. OffersCarousel) */}
-                <div ref={track} className="@container flex snap-x snap-mandatory items-center gap-2.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <div ref={track} className="@container flex snap-x snap-mandatory items-center gap-2.5 scroll-strip [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     {images.map((src, index) => (
                         <button
                             // Фото в галерее бывают повторами (перенос со старого сайта) — ключ с позицией

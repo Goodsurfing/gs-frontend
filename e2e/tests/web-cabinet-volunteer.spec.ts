@@ -79,6 +79,39 @@ test.describe('Новый фронт: кабинет волонтёра', () => 
         await expect(page.getByTestId('application-card').first().or(page.getByText('Пока нет заявок'))).toBeVisible();
     });
 
+    test('телефон: отступ «таблеток» от шапки, вкладки листаются только вбок (27.11)', async ({ page }) => {
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.goto('/volunteer/notes');
+        const tabs = page.getByRole('tablist', { name: 'Статус заявки' });
+        await expect(tabs).toBeVisible({ timeout: 15_000 });
+        // Лента не «плавает» вверх-вниз: по вертикали прокрутки нет, пружины нет
+        const strip = await tabs.evaluate((node) => {
+            const style = getComputedStyle(node);
+            return { overflowY: style.overflowY, overscroll: style.overscrollBehaviorY, fits: node.scrollHeight <= node.clientHeight };
+        });
+        expect(strip).toEqual({ overflowY: 'hidden', overscroll: 'none', fits: true });
+        // «Таблетки» кабинета не прилипают к шапке с логотипом и меню
+        const header = (await page.locator('header').first().boundingBox())!;
+        const pill = (await page.getByRole('link', { name: 'Заявки', exact: true }).last().boundingBox())!;
+        expect(pill.y - (header.y + header.height)).toBeGreaterThanOrEqual(16);
+    });
+
+    test('телефон: «Поддержать» не выходит за рамку карточки проекта (27.11)', async ({ page }) => {
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.goto('/volunteer/donations');
+        const cards = page.locator('main article');
+        await expect(cards.first().or(page.getByText('На данный момент проектов нет'))).toBeVisible({ timeout: 15_000 });
+        const count = Math.min(await cards.count(), 5);
+        for (let index = 0; index < count; index++) {
+            const card = (await cards.nth(index).boundingBox())!;
+            const button = (await cards.nth(index).getByText('Поддержать', { exact: true }).boundingBox())!;
+            expect(button.x).toBeGreaterThanOrEqual(card.x);
+            expect(button.x + button.width).toBeLessThanOrEqual(card.x + card.width + 0.5);
+            expect(button.y + button.height).toBeLessThanOrEqual(card.y + card.height + 0.5);
+        }
+        expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+    });
+
     test('мои заявки: карточка, поиск, вкладки, отзыв о принятой (GS-332)', async ({ page }) => {
         const searches: string[] = [];
         await page.route('**/api/v1/application/list-of-volunteer/counts**', (route) => route.fulfill({ json: { new: 1, accepted: 1, canceled: 1, all: 3 } }));

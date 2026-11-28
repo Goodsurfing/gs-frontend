@@ -21,7 +21,7 @@ export function CertificatesCarousel({ files, labels }: { files: string[]; label
     };
     return (
         <div className="relative px-[50px] down-sm:px-0">
-            <div ref={track} className="@container flex snap-x snap-mandatory items-center gap-2.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div ref={track} className="@container flex snap-x snap-mandatory items-center gap-2.5 scroll-strip [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {files.map((url, index) => (
                     <a
                          

@@ -4,6 +4,9 @@ import { routes } from "@/lib/routes";
 
 import { Reveal } from "@/components/ui/Reveal";
 
+/** В ряду (шире 992 px) шаги появляются по очереди слева направо; столбиком — по мере прокрутки */
+const DELAYS = ["", "delay-150 down-lg:delay-0", "delay-300 down-lg:delay-0", "delay-[450ms] down-lg:delay-0", "delay-[600ms] down-lg:delay-0"];
+
 const STEPS = [
     { title: "Регистрация", text: "Зарегистрируйтесь и заполните свой профиль, оформите членство" },
     { title: "Выбор вакансии", text: "Выберите, куда вы хотите поехать и чем заняться" },
@@ -28,6 +31,8 @@ export async function HowItWork({ locale, className = "", showButton = true }: {
                     <Reveal
                         key={step.title}
                         from={index % 2 === 0 ? "down" : "up"}
+                        fromPhone="up"
+                        delay={DELAYS[index] ?? ""}
                         className={`relative flex items-center ${index % 2 === 0 ? "flex-col" : "flex-col-reverse"} down-lg:mb-5 down-lg:w-[450px] down-lg:flex-row-reverse down-lg:justify-between down-xs:w-[320px]`}
                     >
                         <div className="text-center down-lg:ml-5 down-lg:w-[350px] down-lg:text-left down-xs:ml-2.5 down-xs:w-[250px]">

@@ -6,6 +6,7 @@
         "spam": "Spam",
         "abuse": "Abuse",
         "fraud": "Fraud",
+        "violation": "Violates the site rules or the law",
         "other": "Other"
     },
     "comment": "Comment (optional)",

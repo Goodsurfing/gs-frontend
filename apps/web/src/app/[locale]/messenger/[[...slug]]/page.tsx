@@ -63,6 +63,7 @@ export default async function MessengerPage({ params }: Props) {
                             volunteer: routes.volunteerPublicTemplate(locale),
                             organization: routes.organizationTemplate(locale),
                             catalog: routes.offersMap(locale),
+                            blocked: `${routes.profilePrivacy(locale)}#blocked`,
                         }}
                         labels={{
                             title: m("Сообщения"),
