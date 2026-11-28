@@ -92,7 +92,8 @@ test.describe('Новый фронт: кабинет волонтёра', () => 
         expect(strip).toEqual({ overflowY: 'hidden', overscroll: 'none', fits: true });
         // «Таблетки» кабинета не прилипают к шапке с логотипом и меню
         const header = (await page.locator('header').first().boundingBox())!;
-        const pill = (await page.getByRole('link', { name: 'Заявки', exact: true }).last().boundingBox())!;
+        // Видимая «таблетка»: такие же ссылки есть в скрытом меню и боковой панели
+        const pill = (await page.getByRole('link', { name: 'Заявки', exact: true }).filter({ visible: true }).first().boundingBox())!;
         expect(pill.y - (header.y + header.height)).toBeGreaterThanOrEqual(16);
     });
 
