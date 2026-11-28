@@ -223,6 +223,7 @@
         "sumTo": "hasta {{date}}",
         "sumDays": "{{min}}–{{max}} días",
         "sumKids": "se admiten niños",
+        "sumFullYear": "todo el año",
         "sumVerified": "anfitriones verificados",
         "sumFood": "comida",
         "sumHousing": "alojamiento",

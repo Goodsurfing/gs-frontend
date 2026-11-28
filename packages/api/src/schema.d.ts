@@ -3240,7 +3240,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Бот клуба: команды из админки к выполнению */
+        /**
+         * Бот клуба: команды из админки к выполнению
+         * @description Выданные команды берутся в аренду на 2 мин и до её конца повторно не выдаются. Для ручной проверки очереди — ?peek=1: тот же список без аренды, бот получит команды как обычно.
+         */
         get: operations["get_app_api_v1_clubbot_commands"];
         put?: never;
         post?: never;
@@ -9533,6 +9536,12 @@ export interface components {
             fundraiseId: string;
             /** @default false */
             isAnonymous: boolean;
+            /**
+             * @description Язык сайта, с которого жертвуют: на нём описание платежа на странице оплаты и адрес возврата. Не передан или другой — язык профиля
+             * @example en
+             * @enum {string|null}
+             */
+            locale?: "ru" | "en" | "es" | null;
         };
         /**
          * CreateCommand
@@ -29037,7 +29046,9 @@ export interface operations {
     };
     get_app_api_v1_clubbot_commands: {
         parameters: {
-            query?: never;
+            query?: {
+                peek?: boolean;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -29613,7 +29624,7 @@ export interface operations {
                 "application/json": {
                     comment?: string | null;
                     /** @enum {string} */
-                    reason: "spam" | "abuse" | "fraud" | "other";
+                    reason: "spam" | "abuse" | "fraud" | "violation" | "other";
                     targetId: string;
                     /**
                      * @description message — сообщение в переписке (id число), user — пользователь (id профиля), organization — организация, review — отзыв о вакансии или о волонтёре
@@ -36050,6 +36061,8 @@ export interface operations {
                 fields?: "card";
                 /** @description Ids обедов */
                 "foodIds[]"?: number[];
+                /** @description Только «круглый год» (isFullYearAcceptable). Периоды не учитываются: startDate, endDate, overlapStart/overlapEnd и hidePassed с ним не применяются */
+                fullYear?: boolean;
                 /** @description Скрыть прошедшие: только вакансии, у которых есть период, ещё не закончившийся (periods.ending >= сегодня). Уже идущие не скрываются */
                 hidePassed?: boolean;
                 /** @description Ids жилья */
@@ -36080,7 +36093,7 @@ export interface operations {
                 search?: string;
                 /** @description Ids навыков */
                 "skillIds[]"?: number[];
-                /** @description Сортировка по полям. Формат: поле:направление (asc или desc). nearestDate — «ближайшие даты»: сначала ближайший день заезда по незакончившимся периодам (идущий период — сегодня), прошедшие и без дат — в конце, далее по новизне */
+                /** @description Сортировка по полям. Формат: поле:направление (asc или desc). nearestDate — «ближайшие даты»: сначала вакансии с датами по ближайшему дню заезда по незакончившимся периодам (идущий период — сегодня), затем «круглый год» (isFullYearAcceptable, периоды не учитываются), в конце прошедшие и без дат; внутри групп — по новизне */
                 sort?: "updated:asc" | "updated:desc" | "reviewCount:asc" | "reviewCount:desc" | "averageRating:asc" | "averageRating:desc" | "popularity:asc" | "popularity:desc" | "recommendation" | "nearestDate";
                 /** @description Фильтр по дате начала периода (включительно). Формат: YYYY-MM-DD */
                 startDate?: string;
@@ -36538,6 +36551,8 @@ export interface operations {
                 endDate?: string;
                 /** @description Ids обедов */
                 "foodIds[]"?: number[];
+                /** @description Только «круглый год» (isFullYearAcceptable). Периоды не учитываются: startDate, endDate, overlapStart/overlapEnd и hidePassed с ним не применяются */
+                fullYear?: boolean;
                 /** @description Скрыть прошедшие: только вакансии, у которых есть период, ещё не закончившийся (periods.ending >= сегодня). Уже идущие не скрываются */
                 hidePassed?: boolean;
                 /** @description Ids жилья */

@@ -13,7 +13,7 @@ import { routes } from "@/lib/routes";
 type Props = { params: Promise<{ locale: string }> };
 
 const KEYS = ["intro", "count", "empty", "toMap", "rename", "save", "email", "weekly", "daily", "off", "push", "open", "delete", "deleteConfirm", "cancel", "saved", "error", "loadError", "retry"] as const;
-const SUMMARY = { all: "sumAll", from: "sumFrom", to: "sumTo", days: "sumDays", kids: "sumKids", verified: "sumVerified", food: "sumFood", housing: "sumHousing", paidTravel: "sumPaidTravel", passed: "sumPassed" } as const;
+const SUMMARY = { all: "sumAll", from: "sumFrom", to: "sumTo", days: "sumDays", kids: "sumKids", fullYear: "sumFullYear", verified: "sumVerified", food: "sumFood", housing: "sumHousing", paidTravel: "sumPaidTravel", passed: "sumPassed" } as const;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale } = await params;

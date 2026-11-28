@@ -16,6 +16,8 @@ export interface FilterBarLabels {
     extra: string;
     withChildren: string;
     verifiedHost: string;
+    /** «Круглый год» — вместо дат */
+    fullYear: string;
     languages: string;
     provided: string;
     housing: string;
@@ -275,8 +277,9 @@ export function OffersFilterBar({ basePath, filters, categories, languages, labe
                             type="date"
                             value={draft.from ?? ""}
                             max={draft.to}
+                            disabled={draft.fullYear}
                             onChange={(event) => setDraft((current) => ({ ...current, from: event.target.value || undefined }))}
-                            className={`${stacked ? "w-[146px]" : "w-[124px]"} text-[14px] text-ink-tertiary outline-none`}
+                            className={`${stacked ? "w-[146px]" : "w-[124px]"} text-[14px] text-ink-tertiary outline-none disabled:opacity-40`}
                         />
                     </label>
                     <label className={`flex items-center border border-field bg-white px-2.5 ${stacked ? "flex-1 py-3" : "border-l-0 py-2"}`}>
@@ -285,11 +288,22 @@ export function OffersFilterBar({ basePath, filters, categories, languages, labe
                             type="date"
                             value={draft.to ?? ""}
                             min={draft.from}
+                            disabled={draft.fullYear}
                             onChange={(event) => setDraft((current) => ({ ...current, to: event.target.value || undefined }))}
-                            className={`${stacked ? "w-[146px]" : "w-[124px]"} text-[14px] text-ink-tertiary outline-none`}
+                            className={`${stacked ? "w-[146px]" : "w-[124px]"} text-[14px] text-ink-tertiary outline-none disabled:opacity-40`}
                         />
                     </label>
                 </div>
+                {/* «Круглый год» — вместо дат: такие вакансии принимают в любое время, даты им не нужны */}
+                <label className={`flex cursor-pointer items-center gap-2 text-[14px] whitespace-nowrap ${stacked ? "py-1" : ""}`}>
+                    <input
+                        type="checkbox"
+                        checked={draft.fullYear}
+                        onChange={(event) => setDraft((current) => ({ ...current, fullYear: event.target.checked, ...(event.target.checked ? { from: undefined, to: undefined } : {}) }))}
+                        className="h-[18px] w-[18px] cursor-pointer accent-primary"
+                    />
+                    {labels.fullYear}
+                </label>
 
                 <div className="relative flex flex-col">
                     <DropdownButton label={labels.categories} active={draft.categories.length > 0} open={panel === "categories"} onClick={() => toggle("categories")} minWidth={stacked ? "w-full" : "min-w-[210px] !py-2"} />

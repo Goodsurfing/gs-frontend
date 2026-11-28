@@ -57,6 +57,23 @@ test.describe('Новый фронт: каталог вакансий', () => {
         await expect(page).toHaveURL(/\/offers-map$/);
     });
 
+    test('«Круглый год» — галочка вместо дат, в адресе year=1 (27.11)', async ({ page }) => {
+        await page.setViewportSize({ width: 1440, height: 900 });
+        await page.goto('/offers-map');
+        const count = async () => Number((await page.getByText(/^\d+ вариант/).textContent())?.match(/\d+/)?.[0]);
+        const before = await count();
+        await page.getByLabel('Круглый год').first().check();
+        await expect(page).toHaveURL(/year=1/);
+        await expect(page.getByLabel('Дата начала').first()).toBeDisabled();
+        await expect.poll(count).toBeLessThan(before);
+        expect(await count()).toBeGreaterThan(0);
+        // Ссылкой тоже работает: галочка стоит после перезагрузки
+        await page.reload();
+        await expect(page.getByLabel('Круглый год').first()).toBeChecked();
+        await page.getByLabel('Круглый год').first().uncheck();
+        await expect(page).not.toHaveURL(/year=1/);
+    });
+
     test('телефон: вкладки «Список вакансий», «Карта», «Фильтр»', async ({ page }) => {
         await page.setViewportSize({ width: 390, height: 844 });
         await page.goto('/offers-map');
