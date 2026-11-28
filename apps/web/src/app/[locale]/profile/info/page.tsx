@@ -29,6 +29,7 @@ export default async function ProfileInfoPage({ params }: Props) {
     const i = (key: string) => tp(`info.${key}`);
     // {{date}} подставляет баннер в браузере: серверный t() без значения стёр бы его
     const keepDate = { date: "{{date}}" };
+    const keepDuo = { date: "{{date}}", name: "{{name}}" };
     return (
         <CabinetShell locale={locale} items={profileMenu(locale, t)}>
             <main className="w-full">
@@ -44,6 +45,10 @@ export default async function ProfileInfoPage({ params }: Props) {
                             membershipHref={routes.membership(locale)}
                             labels={{
                                 activeUntil: tp("info.Членство активно до {{date}}", keepDate),
+                                duoWith: tp("info.Членство на двоих с {{name}} до {{date}}", keepDuo),
+                                duoInviteSent: tp("info.Членство на двоих до {{date}}. Приглашение отправлено", keepDate),
+                                duoInvite: tp("info.Членство на двоих до {{date}}", keepDate),
+                                duoInviteLink: i("Пригласить второго участника"),
                                 renew: i("Продлить членство"),
                                 clubUntil: tp("info.Международный клуб — активно до {{date}}", keepDate),
                                 renewClub: i("Продлить участие"),

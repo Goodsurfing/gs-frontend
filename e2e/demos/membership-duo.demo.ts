@@ -8,7 +8,8 @@ import { pause, say, scrollTo, shot, startScene, titleCard } from './support/dem
 /**
  * Демо «Членство на двоих»: админ включает тариф, Анна оплачивает его тестовой
  * картой ЮKassa и приглашает Бориса письмом, Борис входит по ссылке и
- * присоединяется, у обоих членство. Только стейдж: оплата — тестовый магазин.
+ * присоединяется, у обоих членство и статус «на двоих» под аватаркой, Борису —
+ * письмо-подтверждение; лимит писем-приглашений. Только стейдж: оплата — тестовый магазин.
  */
 const FEATURE = 'membership-duo';
 
@@ -19,7 +20,7 @@ const setName = async (session: E2eSession, firstName: string, lastName: string)
     await api.dispose();
 };
 
-interface TariffRow { code: string; active: boolean; priceRub: number }
+interface TariffRow { code: string; active: boolean; priceRub: number; inviteEmailLimit?: number }
 
 const duoTariff = async (admin: E2eSession): Promise<TariffRow> => {
     const api = await request.newContext({ baseURL: API_URL });
@@ -40,6 +41,17 @@ const setDuoActive = async (admin: E2eSession, active: boolean) => {
     expect(res.ok(), await res.text()).toBeTruthy();
     await api.dispose();
 };
+
+/** Приглашение письмом через API — как кнопка «Отправить» (для проверки лимита) */
+const sendInvite = async (session: E2eSession, email: string) => {
+    const api = await request.newContext({ baseURL: API_URL });
+    const res = await api.post('/api/v1/membership/duo/send', { data: { email }, headers: authHeaders(session) });
+    await api.dispose();
+    return res.status();
+};
+
+/** Статус под аватаркой в кабинете «Обо мне» (GS-294) */
+const membershipStatus = (page: import('@playwright/test').Page) => page.getByTestId('membership-status');
 
 /** Страница «Членство» кешируется на 5 минут — ждём, пока на ней появится блок «на двоих» */
 const waitForOfferOnSite = async () => {
@@ -129,6 +141,27 @@ test('Демо: членство на двоих', async ({ browser }) => {
         await expect(page.getByText(`Приглашение отправлено на ${boris.email}`)).toBeVisible({ timeout: 20_000 });
         await say(page, 'Анна отправила приглашение Борису на почту.', 3500);
         await shot(page, FEATURE, '05-invite-sent');
+
+        // Лимит писем-приглашений — из админки (по умолчанию 3): «опечатки» добиваем через API, следующее — отказ
+        const limit = (await duoTariff(admin)).inviteEmailLimit ?? 3;
+        for (let i = 1; i < limit; i++) {
+            expect(await sendInvite(anna, `e2e-duo-typo-${stamp}-${i}@test.local`)).toBe(200);
+        }
+        const emailField = page.getByLabel('Или отправим приглашение на почту');
+        await emailField.fill('');
+        await emailField.pressSequentially(`e2e-duo-typo-${stamp}-x@test.local`, { delay: 20 });
+        await page.getByRole('button', { name: 'Отправить', exact: true }).click();
+        await expect(page.getByText('Письма-приглашения закончились').first()).toBeVisible({ timeout: 20_000 });
+        await say(page, `Писем-приглашений — не больше ${limit} на одно членство (число меняется в админке). Дальше — только ссылкой.`, 4500);
+        await shot(page, FEATURE, '05b-invite-limit');
+
+        // Кабинет «Обо мне»: под аватаркой — «на двоих», приглашение отправлено
+        await page.goto('/profile/info');
+        await expect(membershipStatus(page)).toContainText('Членство на двоих до', { timeout: 30_000 });
+        await expect(membershipStatus(page)).toContainText('Приглашение отправлено');
+        await membershipStatus(page).scrollIntoViewIfNeeded();
+        await say(page, 'В кабинете под фотографией: членство на двоих, приглашение отправлено — ждём второго участника.', 4000);
+        await shot(page, FEATURE, '05c-owner-status-pending');
         await finish();
     }
 
@@ -171,12 +204,41 @@ test('Демо: членство на двоих', async ({ browser }) => {
         await expect(page.getByText(/Готово! Членство активно до/)).toBeVisible({ timeout: 20_000 });
         await say(page, 'Готово: у Бориса членство до того же числа, что и у Анны.', 4000);
         await shot(page, FEATURE, '08-invite-done');
+
+        // Статус под аватаркой у второго участника — на телефоне (ширина 390)
+        await page.setViewportSize({ width: 390, height: 800 });
+        await page.goto('/profile/info');
+        await expect(membershipStatus(page)).toContainText('Членство на двоих с Анна до', { timeout: 30_000 });
+        await expect(membershipStatus(page)).not.toContainText('Смирнова');
+        await membershipStatus(page).scrollIntoViewIfNeeded();
+        await say(page, 'У Бориса в кабинете под фотографией: «Членство на двоих с Анна до …» — только имя, без почты.', 4500);
+        await shot(page, FEATURE, '08b-partner-status-390');
+        await finish();
+    }
+
+    // Письмо Борису — подтверждение, что он в членстве на двоих
+    const welcome = await waitForEmail(boris.email, 60_000, 'Вы в членстве на двоих');
+    expect(welcome.subject).toContain('Анна');
+    expect(welcome.html).not.toContain('₽');
+    expect(welcome.html).not.toContain(anna.email);
+    {
+        const { page, finish } = await startScene(browser, FEATURE, 5, {
+            httpCredentials: { username: process.env.MAILPIT_USER ?? '', password: process.env.MAILPIT_PASSWORD ?? '', origin: new URL(MAILPIT_URL).origin },
+        });
+        await page.setContent(welcome.html);
+        await say(page, `Борису приходит подтверждение: «${welcome.subject}» — с кем членство и до какого числа.`, 4500);
+        await shot(page, FEATURE, '08c-welcome-email');
         await finish();
     }
 
     // Сцена 5. Анна видит, что Борис присоединился
     {
-        const { page, finish } = await startScene(browser, FEATURE, 5, { session: anna });
+        const { page, finish } = await startScene(browser, FEATURE, 6, { session: anna });
+        await page.goto('/profile/info');
+        await expect(membershipStatus(page)).toContainText('Членство на двоих с Борис до', { timeout: 30_000 });
+        await expect(page.getByRole('link', { name: 'Пригласить второго участника' })).toHaveCount(0);
+        await say(page, 'У Анны в кабинете — «Членство на двоих с Борис до …», срок общий.', 4000);
+        await shot(page, FEATURE, '09a-owner-status');
         await page.goto('/membership');
         await scrollTo(page, 'text=с вами — членство активно у обоих');
         await expect(page.getByRole('link', { name: 'Оформить на двоих' })).toHaveCount(0);

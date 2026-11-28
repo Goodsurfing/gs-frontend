@@ -40,7 +40,10 @@ export function DuoOffer({ price, payHref, inviteBase, labels }: {
                         </div>
                     </div>
                 )}
-                <DuoPanel inviteBase={inviteBase} labels={labels} onRole={onRole} />
+                {/* Якорь #duo — ссылка «Пригласить второго участника» из кабинета (GS-294) */}
+                <div id="duo" className="scroll-mt-[100px]">
+                    <DuoPanel inviteBase={inviteBase} labels={labels} onRole={onRole} />
+                </div>
             </div>
         </section>
     );

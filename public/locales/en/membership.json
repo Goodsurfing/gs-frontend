@@ -203,6 +203,7 @@
         "panel-email-send": "Send",
         "panel-email-sent": "Invitation sent to {{email}}",
         "panel-email-left": "Emails left: {{count}}",
+        "panel-email-limit": "No invitation emails left — copy the link above and send it yourself.",
         "panel-regenerate": "Create a new link",
         "panel-regenerate-hint": "The old link will stop working",
         "panel-joined": "{{name}} is with you — membership is active for both until {{date}}.",

@@ -23,13 +23,13 @@ interface MailpitMessage {
     Subject: string;
 }
 
-/** Ждёт письмо на адрес и возвращает его HTML. */
-export const waitForEmail = async (to: string, timeoutMs = 60_000): Promise<{ subject: string; html: string }> => {
+/** Ждёт письмо на адрес (и с темой, если задана) и возвращает его HTML. */
+export const waitForEmail = async (to: string, timeoutMs = 60_000, subject?: string): Promise<{ subject: string; html: string }> => {
     const api = await client();
     try {
         const deadline = Date.now() + timeoutMs;
         while (Date.now() < deadline) {
-            const res = await api.get('api/v1/search', { params: { query: `to:"${to}"` } });
+            const res = await api.get('api/v1/search', { params: { query: subject ? `to:"${to}" subject:"${subject}"` : `to:"${to}"` } });
             if (res.ok()) {
                 const { messages } = (await res.json()) as { messages: MailpitMessage[] };
                 if (messages?.length) {

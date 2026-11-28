@@ -82,7 +82,13 @@ export function DuoPanel({ inviteBase, labels, className = "", onRole }: {
         run()
             .then(({ data, error }) => {
                 if (error || !data) {
-                    const detail = (error as { detail?: string; email?: string } | undefined);
+                    const detail = (error as { type?: string; detail?: string; email?: string } | undefined);
+                    // Лимит писем (из админки) — свой текст на языке сайта: что делать дальше
+                    if (detail?.type === "duo_email_limit") {
+                        setState((prev) => (prev ? { ...prev, emailsLeft: 0 } : prev));
+                        setNote({ text: labels["panel-email-limit"], ok: false });
+                        return;
+                    }
                     setNote({ text: detail?.email ?? detail?.detail ?? labels["invite-error"], ok: false });
                     return;
                 }
@@ -128,7 +134,8 @@ export function DuoPanel({ inviteBase, labels, className = "", onRole }: {
                     <input id="duo-invite-email" type="email" required autoComplete="off" placeholder={labels["panel-email-placeholder"]} value={email} onChange={(e) => setEmail(e.target.value)} className="min-w-0 flex-1 rounded-[10px] border border-[#e0e0e0] px-3 py-2.5 text-[14px]" />
                     <button type="submit" disabled={busy || (state.emailsLeft ?? 0) <= 0} className={`${button} border-primary bg-primary text-white hover:bg-white hover:text-primary`}>{labels["panel-email-send"]}</button>
                 </div>
-                {state.emailsLeft != null && <p className="mt-1 text-[12px] text-[#86909a]">{fill(labels["panel-email-left"], { count: state.emailsLeft })}</p>}
+                {state.emailsLeft != null && state.emailsLeft > 0 && <p className="mt-1 text-[12px] text-[#86909a]">{fill(labels["panel-email-left"], { count: state.emailsLeft })}</p>}
+                {state.emailsLeft === 0 && note?.text !== labels["panel-email-limit"] && <p className="mt-1 text-[13px] text-[#86909a]">{labels["panel-email-limit"]}</p>}
             </form>
             {note && <p role="status" className={`mb-3 text-[14px] ${note.ok ? "text-cta" : "text-error"}`}>{note.text}</p>}
             <button type="button" disabled={busy} className="cursor-pointer text-[13px] text-[#86909a] underline disabled:opacity-60" title={labels["panel-regenerate-hint"]} onClick={() => act(() => api.POST("/api/v1/membership/duo/regenerate"), () => labels["panel-regenerate-hint"])}>

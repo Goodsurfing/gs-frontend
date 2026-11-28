@@ -1164,8 +1164,8 @@ export interface paths {
         options?: never;
         head?: never;
         /**
-         * Цена и включение тарифа
-         * @description Поменять цену (рубли) и/или включить-выключить тариф. Новая цена действует для следующих оплат; уже начатые оплаты идут по старой. Бессрочные тарифы не меняются.
+         * Цена, включение и лимит приглашений тарифа
+         * @description Поменять цену (рубли), включить-выключить тариф и (у «на двоих») лимит писем-приглашений. Новая цена действует для следующих оплат; уже начатые оплаты идут по старой. Лимит писем действует сразу и для уже купленных членств. Бессрочные тарифы не меняются.
          */
         patch: operations["patch_app_admin_v1_membership_updatetariff"];
         trace?: never;
@@ -4516,7 +4516,7 @@ export interface paths {
         put?: never;
         /**
          * Приглашение письмом
-         * @description Отправить приглашение письмом на адрес второго участника. Не больше 3 писем на одно членство.
+         * @description Отправить приглашение письмом на адрес второго участника. Писем на одно членство — не больше лимита тарифа (inviteEmailLimit, меняется в админке; по умолчанию 3).
          */
         post: operations["post_app_api_v1_membershipduo_send"];
         delete?: never;
@@ -7687,6 +7687,8 @@ export interface components {
             editable: boolean;
             /** @enum {string} */
             forRole: "VOLUNTEER" | "HOST" | "BOTH";
+            /** @description Писем-приглашений второму участнику на одно членство (важно только при seats > 1) */
+            inviteEmailLimit: number;
             name: string;
             /** @description Цена в рублях */
             priceRub: number;
@@ -10077,7 +10079,26 @@ export interface components {
             /** @example  */
             userId: string;
         };
+        CurrentDuoResult: {
+            /**
+             * @description Покупателю: приглашение письмом уже отправлено, а второй ещё не присоединился
+             * @default false
+             */
+            invitationSent: boolean;
+            /** @description Имя второго участника (для покупателя) или покупателя (для второго участника); null — второй ещё не присоединился */
+            partnerFirstName?: string | null;
+            /**
+             * @description owner — пользователь оплатил «на двоих», partner — присоединился по приглашению
+             * @enum {string}
+             */
+            role: "owner" | "partner";
+        };
         CurrentMembershipResult: {
+            /**
+             * @description Членство «на двоих»: с кем и принято ли приглашение; null — обычное членство
+             * @default null
+             */
+            duo: components["schemas"]["CurrentDuoResult"] | null;
             endDate?: string | null;
             isActive: boolean;
             membershipId?: string | null;
@@ -25016,6 +25037,8 @@ export interface operations {
             content: {
                 "application/json": {
                     active?: boolean;
+                    /** @description Писем-приглашений на одно членство «на двоих» */
+                    inviteEmailLimit?: number;
                     priceRub?: number;
                 };
             };
@@ -25029,7 +25052,7 @@ export interface operations {
                     "application/json": components["schemas"]["AdminTariffSettingsResult"];
                 };
             };
-            /** @description Неверная цена */
+            /** @description Неверная цена или лимит */
             400: {
                 headers: {
                     [name: string]: unknown;
