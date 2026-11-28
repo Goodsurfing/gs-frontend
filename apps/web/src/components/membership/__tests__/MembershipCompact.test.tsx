@@ -27,12 +27,13 @@ const labels: CompactHeroLabels = {
     button: "Оформить",
     note: "Членство включается сразу после оплаты.",
     member: "Членство у вас уже есть",
+    memberUntil: "Членство активно до {{date}}",
     memberLink: "Получить членство",
     more: "Подробнее",
 };
 const option = (code: string) => ({ href: `/payment?tariff=${code}`, button: "", stickyTitle: "" });
 const hero = (override: Partial<CompactHeroLabels> = {}) => renderToString(
-    <MembershipCompactHero id="membership-compact" volunteer={option("volunteer_990")} host={option("host_4990")} duoHref="/payment?tariff=volunteer_duo" labels={{ ...labels, ...override }} />,
+    <MembershipCompactHero id="membership-compact" locale="ru" volunteer={option("volunteer_990")} host={option("host_4990")} duoHref="/payment?tariff=volunteer_duo" labels={{ ...labels, ...override }} />,
 );
 
 describe("страница членства на телефоне (GS-333)", () => {
@@ -69,6 +70,14 @@ describe("страница членства на телефоне (GS-333)", () 
         const html = hero();
         expect(html).toContain("Членство у вас уже есть");
         expect(html).not.toContain("/payment?tariff=volunteer_990");
+    });
+
+    it("с действующим членством — крупно «активно до», без цены и «на двоих» (сдача клуба 27.11)", () => {
+        session.value = { status: "user", token: "t", profile: null, memberships: [{ category: "REGULAR", endDate: "2027-11-27T12:00:00+03:00" }] };
+        const html = hero();
+        expect(html).toMatch(/role="status"[^>]*>.*Членство активно до 27\.11\.2027/);
+        expect(html).not.toContain("990 ₽");
+        expect(html).not.toContain("volunteer_duo");
     });
 
     it("«Подробнее»: на телефоне свёрнуто кнопкой, содержимое в разметке и раскрыто на компьютере", () => {
