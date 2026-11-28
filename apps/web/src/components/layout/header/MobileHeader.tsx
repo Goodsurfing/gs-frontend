@@ -9,6 +9,7 @@ import type { Locale } from "@/i18n/config";
 import { formatDayMonthYear } from "@/lib/formatDate";
 
 import { LanguageSwitcher } from "../LanguageSwitcher";
+import { MENU_OPEN_ATTR } from "./menuState";
 import type { NavLink, Navigation } from "./navigation";
 
 // Пункты меню выглядят как кнопки MUI старого фронта: те же отступы, интерлиньяж и разрядка
@@ -42,7 +43,13 @@ export function MobileHeader({ locale, homeHref, navigation, membership, signIn,
         if (!open) return undefined;
         const onKey = (event: KeyboardEvent) => event.key === "Escape" && setOpen(false);
         window.addEventListener("keydown", onKey);
-        return () => window.removeEventListener("keydown", onKey);
+        // Пока меню открыто: страница под ним не прокручивается, а окна вроде предложения членства ждут (MembershipNudge)
+        const root = document.documentElement;
+        root.setAttribute(MENU_OPEN_ATTR, "");
+        return () => {
+            window.removeEventListener("keydown", onKey);
+            root.removeAttribute(MENU_OPEN_ATTR);
+        };
     }, [open]);
 
     const toggle = (label: string) => setExpanded((prev) => {
@@ -55,7 +62,8 @@ export function MobileHeader({ locale, homeHref, navigation, membership, signIn,
 
     return (
         <div className="pointer-events-auto hidden px-5 py-4 down-2xl:block">
-            <header className="flex w-full items-center justify-between">
+            {/* При открытом меню строка с логотипом — непрозрачная и над меню: иначе пункты при прокрутке уезжают под логотип */}
+            <header className={`flex w-full items-center justify-between ${open ? "relative z-[1001] -mx-5 -my-4 box-content bg-white px-5 py-4" : ""}`}>
                 <a href={homeHref} className={above}>
                     {/* eslint-disable-next-line @next/next/no-img-element -- svg-логотип */}
                     <img src="/web/icons/header/logo-mobile.svg" alt="GoodSurfing" width={130} height={45} />
@@ -78,7 +86,7 @@ export function MobileHeader({ locale, homeHref, navigation, membership, signIn,
             <nav
                 id={menuId}
                 aria-label={labels.menu}
-                className={`absolute top-0 left-0 z-[1000] h-screen w-full flex-col items-center gap-1 overflow-auto bg-white px-[15px] pt-[92px] pb-6 ${open ? "flex" : "hidden"}`}
+                className={`absolute top-0 left-0 z-[1000] h-dvh w-full flex-col items-center gap-1 overflow-auto overscroll-contain bg-white px-[15px] pt-[92px] pb-6 ${open ? "flex" : "hidden"}`}
             >
                 <a href={navigation.offers.href} className={itemClass}>{navigation.offers.label}</a>
                 {navigation.entries.map((entry) => {

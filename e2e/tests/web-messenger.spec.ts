@@ -53,6 +53,10 @@ test.describe('Новый фронт: сообщения', () => {
         await input.fill('Проверка отправки');
         // Кнопка оживает после перерисовки с текстом — тогда Enter отправит
         await expect(page.getByRole('button', { name: 'Отправить' })).toBeEnabled();
+        // Стрелка нарисована: путь значка с заливкой цвета кнопки (27.11 маска из файла с fill="none" была пустой)
+        const arrow = page.getByRole('button', { name: 'Отправить' }).locator('svg path');
+        await expect(arrow).toBeVisible();
+        expect(await arrow.evaluate((el) => getComputedStyle(el).fill)).not.toBe('none');
         await input.press('Enter');
         await expect.poll(() => sent).toMatchObject({ chat: `/api/v1/chats/${chatId}`, text: 'Проверка отправки' });
         await expect(page.getByText('Проверка отправки')).toBeVisible();
