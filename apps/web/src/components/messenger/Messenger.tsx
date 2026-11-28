@@ -19,12 +19,14 @@ import {
 } from "@/lib/messenger";
 import type { CatalogOffer } from "@/lib/offersCatalog";
 import { applyDates, initialTerms, offerTerms } from "@/lib/applyDates";
+import { clearApplyDraft, clearApplyReturn, draftTerms, loadApplyDraft, markApplyReturn, membershipRequired, pruneApplyDrafts, saveApplyDraft } from "@/lib/applyDraft";
 import { canGoBackTo, previousPage } from "@/lib/backNavigation";
 import { dayFromApi, today } from "@/lib/offerWizard";
 import { blockedSendText, type ReportTarget } from "@/lib/report";
 
 import { type ApplicationLabels, ApplicationEvent } from "./ApplicationBlock";
 import { type ApplyFormLabels, ApplyForm, ApplyFormError, ApplyFormSkeleton } from "./ApplyForm";
+import { type ApplyMembershipLabels, ApplyMembershipPanel, ApplyRestoredNote } from "./ApplyMembershipPanel";
 import { needsIntro, QuickIntro, type QuickIntroLabels } from "./QuickIntro";
 import { ResponseHintNote, type ResponseHintLabels } from "./ResponseHintNote";
 import { ChatActions } from "./ChatActions";
@@ -65,6 +67,8 @@ export interface MessengerLabels {
     apply: ApplyFormLabels;
     /** Отклик не ушёл из-за сети */
     applyNetworkError: string;
+    /** Отклик не ушёл: нужно членство; черновик восстановлен (GS-341) */
+    applyMembership: ApplyMembershipLabels;
     companion: CompanionLabels;
     push: PushOfferLabels;
     draft: ReplyDraftLabels;
@@ -79,6 +83,8 @@ export interface MessengerHrefs {
     organization: string;
     /** «Найти вакансию» из пустых «Сообщений» */
     catalog: string;
+    /** Оформить членство — с отклика, который упёрся в лимит (GS-341) */
+    membership: string;
     /** Список заблокированных (настройки приватности, #blocked) */
     blocked?: string;
 }
@@ -226,6 +232,13 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     const [applyMessage, setApplyMessage] = useState("");
     const [applying, setApplying] = useState(false);
     const [applyError, setApplyError] = useState<string | null>(null);
+    // Отклик не ушёл, потому что нужно членство (GS-341)
+    const [membershipNeeded, setMembershipNeeded] = useState<"limit" | "verified" | null>(null);
+    // Форма заполнена из черновика — сказать об этом над датами
+    const [restored, setRestored] = useState(false);
+    // Черновик пишем только после того, как человек что-то поменял сам, а не на подставленных датах
+    const draftDirty = useRef(false);
+    const myId = me?.id ?? null;
     const dates = useMemo(() => applyDates(offer?.when, today()), [offer]);
     const offerInfo = useMemo(() => offerTerms(offer?.when), [offer]);
     useEffect(() => {
@@ -244,8 +257,18 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                     return;
                 }
                 const loaded = data as OfferFields;
+                const loadedDates = applyDates(loaded.when, today());
+                // Черновик этого пользователя для этой вакансии (ушёл оформлять членство и вернулся, GS-341):
+                // даты — если ещё подходят вакансии, текст — как был
+                pruneApplyDrafts();
+                const draft = myId ? loadApplyDraft(myId, offerId) : null;
+                const fromDraft = draft ? draftTerms(draft, loadedDates, today()) : null;
                 setOffer(loaded);
-                setTerms(initialTerms(applyDates(loaded.when, today())));
+                setTerms(fromDraft ?? initialTerms(loadedDates));
+                if (draft) {
+                    setApplyMessage(draft.message);
+                    setRestored(!!fromDraft || !!draft.message.trim());
+                }
                 setOfferState("ready");
             })
             .catch(() => {
@@ -254,12 +277,27 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         return () => {
             cancelled = true;
         };
-    }, [ready, token, isCreate, offerId, fail, labels.offerNotFound, offerAttempt]);
+    }, [ready, token, isCreate, offerId, fail, labels.offerNotFound, offerAttempt, myId]);
+
+    // Черновик отклика — при каждом изменении (GS-341): уйти на оплату членства можно и из шапки, и из окна-предложения
+    useEffect(() => {
+        if (!draftDirty.current || !myId || !offerId) return;
+        saveApplyDraft(myId, offerId, { start: terms.start, end: terms.end, message: applyMessage });
+    }, [terms, applyMessage, myId, offerId]);
+    const changeTerms = (next: Terms) => {
+        draftDirty.current = true;
+        setTerms(next);
+    };
+    const changeApplyMessage = (text: string) => {
+        draftDirty.current = true;
+        setApplyMessage(text);
+    };
 
     const apply = async () => {
         if (!offerId || !terms.start || !terms.end || applying) return;
         setApplying(true);
         setApplyError(null);
+        setMembershipNeeded(null);
         setToast(null);
         const text = applyMessage.trim();
         const result = await browserApi(token)
@@ -277,9 +315,21 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         }
         if (!result.response.ok || !created) {
             const error = (result.error ?? null) as { detail?: string; title?: string } | null;
+            const needed = membershipRequired(error);
+            if (needed) {
+                // Заполненное — в черновик, даже если человек ничего не менял (даты были подставлены сами)
+                if (myId) saveApplyDraft(myId, offerId, { start: terms.start, end: terms.end, message: applyMessage });
+                draftDirty.current = true;
+                setMembershipNeeded(needed);
+                return;
+            }
             setApplyError((report && blockedSendText(error, report)) || error?.detail || error?.title || labels.error);
             return;
         }
+        if (myId) clearApplyDraft(myId, offerId);
+        clearApplyReturn(offerId);
+        draftDirty.current = false;
+        setRestored(false);
         reachGoal("application_sent", text ? { message: "yes" } : undefined);
         setToast({ text: labels.applicationSent, ok: true });
         const newChat = idFromIri(created.chat);
@@ -614,12 +664,25 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                                             offerInfo={offerInfo}
                                             dates={dates}
                                             terms={terms}
-                                            onTerms={setTerms}
+                                            onTerms={changeTerms}
                                             message={applyMessage}
-                                            onMessage={setApplyMessage}
+                                            onMessage={changeApplyMessage}
                                             onSubmit={() => void apply()}
                                             busy={applying}
                                             error={applyError}
+                                            notice={restored && !membershipNeeded ? <ApplyRestoredNote text={labels.applyMembership.restored} /> : undefined}
+                                            membership={membershipNeeded ? (
+                                                <ApplyMembershipPanel
+                                                    reason={membershipNeeded}
+                                                    href={hrefs.membership}
+                                                    onGo={() => {
+                                                        if (!myId) return;
+                                                        saveApplyDraft(myId, offerId, { start: terms.start, end: terms.end, message: applyMessage });
+                                                        markApplyReturn({ userId: myId, offerId, title: offer.description?.title ?? "" });
+                                                    }}
+                                                    labels={labels.applyMembership}
+                                                />
+                                            ) : undefined}
                                             labels={labels.apply}
                                         />
                                     ) : offerState === "failed" ? (

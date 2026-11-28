@@ -63,6 +63,7 @@ export default async function MessengerPage({ params }: Props) {
                             volunteer: routes.volunteerPublicTemplate(locale),
                             organization: routes.organizationTemplate(locale),
                             catalog: routes.offersMap(locale),
+                            membership: routes.membership(locale),
                             blocked: `${routes.profilePrivacy(locale)}#blocked`,
                         }}
                         labels={{
@@ -161,6 +162,14 @@ export default async function MessengerPage({ params }: Props) {
                                 },
                             },
                             applyNetworkError: m("apply.network"),
+                            applyMembership: {
+                                title: m("apply.membership.title"),
+                                limit: m("apply.membership.limit"),
+                                verified: m("apply.membership.verified"),
+                                saved: m("apply.membership.saved"),
+                                cta: m("apply.membership.cta"),
+                                restored: m("apply.membership.restored"),
+                            },
                             draft: {
                                 suggest: m("Предложить ответ"),
                                 writing: m("Пишу черновик…"),

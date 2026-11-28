@@ -402,6 +402,81 @@ test.describe('Новый фронт: сообщения', () => {
         expect(box.y + box.height).toBeLessThanOrEqual(844 - 8);
     });
 
+    /**
+     * GS-341: отклик упёрся в лимит → понятный блок «нужно членство» → ушёл оформлять →
+     * после оплаты вернулся к той же форме уже заполненной и отправил одной кнопкой.
+     * Отклик перехвачен (первый раз — ответ лимита, второй — успех), оплата заменена
+     * страницей успеха без платежа — живой платёж проверяется руками на стейдже.
+     */
+    test('телефон: отклик без членства — заполненное не теряется после оформления членства', async ({ page }, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'отклик — у волонтёра');
+        const offerId = await firstOfferId();
+        test.skip(!offerId, 'нет активной вакансии на стейдже');
+        await page.setViewportSize({ width: 390, height: 844 });
+        await withWhen(page, offerId!, { isFullYearAcceptable: true, durationMinDays: null, durationMaxDays: null, periods: [] });
+        const applied: Record<string, unknown>[] = [];
+        let limited = true;
+        await page.route('**/api/v1/applications', async (route) => {
+            if (route.request().method() !== 'POST') return route.continue();
+            applied.push(route.request().postDataJSON());
+            if (limited) {
+                return route.fulfill({
+                    status: 403,
+                    contentType: 'application/problem+json',
+                    body: JSON.stringify({ type: 'application_limit_exceeded', errorCode: 'application_limit_exceeded', status: 403, title: 'Application limit exceeded', detail: 'Free account allows up to 3 applications. Get a membership to apply without limits.' }),
+                });
+            }
+            // Заявка «создана» без переписки — страница остаётся на месте, на стейдже ничего не создаётся
+            return route.fulfill({ status: 201, contentType: 'application/json', body: JSON.stringify({ id: 1, chat: null }) });
+        });
+
+        await page.goto(`/messenger/create/${offerId}`);
+        await isNewFrontend(page);
+        const form = page.getByRole('form', { name: 'Отклик на вакансию' });
+        await expect(form).toBeVisible({ timeout: 15_000 });
+        const about = form.getByRole('textbox', { name: /Пару слов о себе/ });
+        await about.fill('Работал на ферме, умею с лошадьми');
+        // Свои даты вместо подсказанных — они тоже должны вернуться
+        const arrival = await form.getByLabel('Прибытие').inputValue();
+        const departure = await form.getByLabel('Отъезд').inputValue();
+        await form.getByRole('button', { name: 'Отправить отклик' }).click();
+
+        // Вместо строки ошибки — блок с объяснением и кнопкой
+        const panel = form.getByRole('alert', { name: 'Чтобы откликнуться, нужно членство' });
+        await expect(panel).toBeVisible();
+        await expect(panel).toContainText('Бесплатные отклики в этом году закончились');
+        await expect(panel).not.toContainText('Free account');
+        await expect(panel).not.toContainText('₽');
+        const go = panel.getByRole('link', { name: 'Оформить членство' });
+        await expect(go).toBeInViewport();
+        expect(applied).toHaveLength(1);
+
+        await go.click();
+        await expect(page).toHaveURL(/\/membership(\?|$)/);
+
+        // Вернулись с оплаты (страница успеха без платежа — подтверждения ждать не нужно)
+        await page.goto('/payment/success');
+        const back = page.getByRole('region', { name: 'Ваш отклик сохранён' });
+        await expect(back).toBeVisible({ timeout: 15_000 });
+        await back.getByRole('link', { name: 'Вернуться к отклику' }).click();
+        await expect(page).toHaveURL(new RegExp(`/messenger/create/${offerId}$`));
+
+        // Форма заполнена из черновика, отправка — одной кнопкой и только по нажатию
+        await expect(form).toBeVisible({ timeout: 15_000 });
+        await expect(form.getByRole('status').filter({ hasText: 'Мы сохранили ваш отклик' })).toBeVisible();
+        await expect(about).toHaveValue('Работал на ферме, умею с лошадьми');
+        await expect(form.getByLabel('Прибытие')).toHaveValue(arrival);
+        await expect(form.getByLabel('Отъезд')).toHaveValue(departure);
+        expect(applied).toHaveLength(1);
+
+        limited = false;
+        await form.getByRole('button', { name: 'Отправить отклик' }).click();
+        await expect.poll(() => applied.length).toBe(2);
+        expect(applied[1]).toMatchObject({ vacancy: `/api/v1/vacancies/${offerId}`, message: 'Работал на ферме, умею с лошадьми', startDate: applied[0]!.startDate, endDate: applied[0]!.endDate });
+        // После отправки черновик и отметка возврата удалены
+        await expect.poll(() => page.evaluate(() => Object.keys(localStorage).filter((key) => key.startsWith('gs.applyDraft.') || key === 'gs.applyReturn'))).toEqual([]);
+    });
+
     test('гостя уводит на вход', async ({ browser }) => {
         const context = await browser.newContext({ storageState: { cookies: [], origins: [] } });
         await enableNewFrontend(context);

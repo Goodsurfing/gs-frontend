@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { reachGoalOnce } from "@/components/analytics/YandexMetrika";
 import { useSession } from "@/components/session/SessionProvider";
 import { Loading } from "@/components/ui/Loading";
+import { type ApplyReturn, readApplyReturn } from "@/lib/applyDraft";
 import { browserApi } from "@/lib/browserApi";
 
 import { DuoPanel } from "./DuoPanel";
@@ -25,6 +26,16 @@ export interface SuccessTexts {
     cta: string;
     ctaHref: string;
     callToAction: string;
+}
+
+/** «Вернуться к отклику» после оплаты, начатой с отклика (GS-341) */
+export interface ApplyReturnLabels {
+    title: string;
+    /** С подстановкой {title} — название вакансии */
+    text: string;
+    /** Без названия вакансии */
+    textNoTitle: string;
+    cta: string;
 }
 
 export interface SuccessLabels {
@@ -52,7 +63,7 @@ const blueButton = "flex items-center justify-center rounded-[10px] border borde
  * статус каждые 3 секунды; отменённый — на страницу неудачи. Какой тариф
  * куплен — по самому платежу: активных членств может быть несколько.
  */
-export function PaymentSuccessView({ paymentId, signInHref, failHref, membershipHref, paymentHref, duo, labels }: {
+export function PaymentSuccessView({ paymentId, signInHref, failHref, membershipHref, paymentHref, duo, applyReturn, labels }: {
     paymentId: string | null;
     signInHref: string;
     failHref: string;
@@ -61,6 +72,8 @@ export function PaymentSuccessView({ paymentId, signInHref, failHref, membership
     paymentHref: string;
     /** «На двоих»: после оплаты сразу показать ссылку для второго участника */
     duo: { inviteBase: string; labels: DuoLabels };
+    /** Отклик, с которого ушли оформлять членство: шаблон адреса с {id} и тексты (GS-341) */
+    applyReturn?: { template: string; labels: ApplyReturnLabels };
     labels: SuccessLabels;
 }) {
     const session = useSession();
@@ -68,6 +81,13 @@ export function PaymentSuccessView({ paymentId, signInHref, failHref, membership
     const [tariffCode, setTariffCode] = useState<string | null>(null);
     const [timedOut, setTimedOut] = useState(false);
     const [slow, setSlow] = useState(false);
+    // Ушёл оформлять членство с отклика — после оплаты первым делом вернуть к нему (GS-341)
+    const [pendingApply, setPendingApply] = useState<ApplyReturn | null>(null);
+    const userId = session.profile?.id ?? null;
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorage есть только в браузере
+        setPendingApply(applyReturn ? readApplyReturn(userId) : null);
+    }, [userId, applyReturn]);
 
     // Вернулись с ЮKassa по «Exit the payment process» — платёж ещё «в ожидании», ЮKassa отменит его
     // не сразу. Не держим человека перед пустым экраном (Drejk, 27.11.2026): сразу «Проверяем оплату…»,
@@ -164,6 +184,20 @@ export function PaymentSuccessView({ paymentId, signInHref, failHref, membership
                     {texts.title} <span className="text-[#1976d2]">{name}</span>{kind === "international" ? "!" : ","}
                 </h1>
                 <p className="mb-8 text-[1.5rem] text-[#333]">{texts.subtitle}</p>
+                {pendingApply && applyReturn && (
+                    <section aria-label={applyReturn.labels.title} className="mb-8 flex flex-col items-center gap-3 rounded-[14px] border border-cta/50 bg-m-cta-soft p-5 text-center">
+                        <h2 className="m-0 text-[1.25rem] font-semibold text-[#333]">{applyReturn.labels.title}</h2>
+                        <p className="m-0 text-[1rem] leading-[140%] text-[#333]">
+                            {pendingApply.title ? applyReturn.labels.text.replace("{title}", pendingApply.title) : applyReturn.labels.textNoTitle}
+                        </p>
+                        <a
+                            href={applyReturn.template.replace("{id}", encodeURIComponent(pendingApply.offerId))}
+                            className="flex min-h-[52px] items-center justify-center rounded-[10px] border border-cta bg-cta px-10 text-center text-[17px] font-semibold text-white no-underline transition-colors hover:border-cta-hover hover:bg-cta-hover down-xs:w-full"
+                        >
+                            {applyReturn.labels.cta}
+                        </a>
+                    </section>
+                )}
                 {tariffCode === "volunteer_duo" && <DuoPanel inviteBase={duo.inviteBase} labels={duo.labels} className="mb-8" />}
                 <div className="mb-8 [&_p]:mb-4 [&_p]:text-[1.125rem] [&_p]:leading-7 [&_p]:text-[#666]">
                     {kind === "international"

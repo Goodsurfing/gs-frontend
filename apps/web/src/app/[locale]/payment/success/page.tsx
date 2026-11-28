@@ -33,7 +33,7 @@ export default async function PaymentSuccessPage({ params, searchParams }: Props
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
     const { payment_id: paymentId } = await searchParams;
-    const [t, tMembership] = await Promise.all([getTranslator(locale, "donation"), getTranslator(locale, "membership")]);
+    const [t, tMembership, tMessenger] = await Promise.all([getTranslator(locale, "donation"), getTranslator(locale, "membership"), getTranslator(locale, "messenger")]);
     const thanks = { title: t("Спасибо,"), subtitle: t("вы успешно оплатили членство в сообществе Гудсёрфинга") };
     return (
         <PublicShell locale={locale} topGap>
@@ -44,6 +44,15 @@ export default async function PaymentSuccessPage({ params, searchParams }: Props
                 membershipHref={routes.membership(locale)}
                 paymentHref={routes.payment(locale)}
                 duo={{ inviteBase: routes.membershipDuo(locale, ""), labels: duoLabels(tMembership) }}
+                applyReturn={{
+                    template: routes.messengerApplyTemplate(locale),
+                    labels: {
+                        title: tMessenger("apply.return.title"),
+                        text: tMessenger("apply.return.text"),
+                        textNoTitle: tMessenger("apply.return.textNoTitle"),
+                        cta: tMessenger("apply.return.cta"),
+                    },
+                }}
                 labels={{
                     kinds: {
                         volunteer: { ...thanks, benefits: BENEFITS.volunteer.map((key) => t(key)), cta: t("Искать путешествия"), ctaHref: routes.offersMap(locale), callToAction: t("Самое время подобрать для себя идеальное путешествие со смыслом в этом году") },

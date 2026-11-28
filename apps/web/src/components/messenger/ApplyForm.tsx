@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { type ReactNode, useId, useState } from "react";
 
 import { DateField } from "@/components/offer-wizard/DateField";
 import { type OfferListCardLabels, OfferListCard } from "@/components/offers-map/OfferListCard";
@@ -44,7 +44,7 @@ export interface ApplyFormLabels {
  * круглая «✓» без подписи, и из 20 открывших форму 12 не отправляли (неделя
  * 29.10–04.11.2026). Даты — из периодов организатора (lib/applyDates).
  */
-export function ApplyForm({ locale, offer, offerHref, offerInfo, dates, terms, onTerms, message, onMessage, onSubmit, busy, error, labels }: {
+export function ApplyForm({ locale, offer, offerHref, offerInfo, dates, terms, onTerms, message, onMessage, onSubmit, busy, error, notice, membership, labels }: {
     locale: Locale;
     offer: CatalogOffer;
     offerHref: string;
@@ -58,6 +58,10 @@ export function ApplyForm({ locale, offer, offerHref, offerInfo, dates, terms, o
     busy: boolean;
     /** Ошибка отправки — под кнопкой, рядом с тем, на что нажали */
     error: string | null;
+    /** Над датами: «черновик восстановлен — проверьте и отправьте» (GS-341) */
+    notice?: ReactNode;
+    /** Над кнопкой: отклик не ушёл, нужно членство (GS-341) */
+    membership?: ReactNode;
     labels: ApplyFormLabels;
 }) {
     const id = useId();
@@ -90,6 +94,7 @@ export function ApplyForm({ locale, offer, offerHref, offerInfo, dates, terms, o
             }}
         >
             <OfferListCard offer={offer} href={offerHref} wide={false} labels={labels.card} showImage={false} />
+            {notice}
 
             {/* Подпись над блоком, как у «Пару слов о себе». Раньше была legend у fieldset — Safari на iPhone
                 рисовал её на рамке блока, и она налезала на выбор дат (сдача тестировщицы 27.11.2026) */}
@@ -168,6 +173,8 @@ export function ApplyForm({ locale, offer, offerHref, offerInfo, dates, terms, o
                     {message.length > APPLY_MESSAGE_MAX * 0.8 && <span aria-hidden>{message.length}/{APPLY_MESSAGE_MAX}</span>}
                 </p>
             </div>
+
+            {membership}
 
             {/* Кнопка прилипает к низу экрана: на телефоне с несколькими периодами форма длиннее экрана,
                 а кнопка отклика должна быть видна сразу */}

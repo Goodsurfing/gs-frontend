@@ -79,3 +79,38 @@ describe("форма отклика: блок дат", () => {
         expect(form({ project: null, minDays: null, maxDays: null })).not.toContain("<dl");
     });
 });
+
+describe("форма отклика: черновик и членство (GS-341)", () => {
+    const withSlots = () => renderToString(
+        <ApplyForm
+            locale="ru"
+            offer={offer}
+            offerHref="/offers/7274"
+            offerInfo={{ project: null, minDays: null, maxDays: null }}
+            dates={{ kind: "free", suggestion: { start: "2026-12-05", end: "2026-12-18" } }}
+            terms={{ start: "2026-12-05", end: "2026-12-18" }}
+            onTerms={() => undefined}
+            message="Восстановленный текст"
+            onMessage={() => undefined}
+            onSubmit={() => undefined}
+            busy={false}
+            error={null}
+            notice={<p>ЧЕРНОВИК-ВОССТАНОВЛЕН</p>}
+            membership={<section>НУЖНО-ЧЛЕНСТВО</section>}
+            labels={labels}
+        />,
+    );
+
+    it("подсказка о черновике — над датами, блок членства — над кнопкой «Отправить отклик»", () => {
+        const html = withSlots();
+        const notice = html.indexOf("ЧЕРНОВИК-ВОССТАНОВЛЕН");
+        const when = html.indexOf("Когда вы хотите приехать");
+        const membership = html.indexOf("НУЖНО-ЧЛЕНСТВО");
+        const submit = html.indexOf("Отправить отклик");
+        expect(notice).toBeGreaterThan(-1);
+        expect(notice).toBeLessThan(when);
+        expect(membership).toBeGreaterThan(when);
+        expect(membership).toBeLessThan(submit);
+        expect(html).toContain("Восстановленный текст");
+    });
+});
