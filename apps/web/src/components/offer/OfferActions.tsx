@@ -103,11 +103,18 @@ export function OfferActions({ offerId, status, variant, hrefs, labels }: {
     );
 }
 
-/** Полоса с кнопкой внизу экрана на телефоне (до 768 px): появляется, когда обложка вакансии уехала вверх */
+/**
+ * Полоса с кнопкой внизу экрана на телефоне (до 768 px): появляется, как только кнопка
+ * в обложке ушла за верх экрана. Раньше порог был «прокрутили 90 % экрана», и между
+ * ушедшей кнопкой обложки и полосой был участок без кнопки (клуб тестеров, 27.11.2026)
+ */
 function StickyBar({ href, text, onClick }: { href: string; text: string; onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void }) {
     const [shown, setShown] = useState(false);
     useEffect(() => {
-        const update = () => setShown(window.scrollY > window.innerHeight * 0.9);
+        const update = () => {
+            const hero = document.querySelector("[data-offer-hero-actions]");
+            setShown(hero ? hero.getBoundingClientRect().bottom <= 0 : window.scrollY > window.innerHeight * 0.9);
+        };
         update();
         window.addEventListener("scroll", update, { passive: true });
         return () => window.removeEventListener("scroll", update);

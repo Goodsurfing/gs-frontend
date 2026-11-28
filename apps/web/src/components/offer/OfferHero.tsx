@@ -93,7 +93,7 @@ export function OfferHero({ title, image, status, categories, address, reviews, 
                     </div>
                     <div className="flex h-full flex-col justify-end">{gallery}</div>
                 </div>
-                <div className="flex h-fit flex-wrap justify-between gap-[15px] self-end">{actions}</div>
+                <div data-offer-hero-actions className="flex h-fit flex-wrap justify-between gap-[15px] self-end">{actions}</div>
             </div>
         </div>
     );

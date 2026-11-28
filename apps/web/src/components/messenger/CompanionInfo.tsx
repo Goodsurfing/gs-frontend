@@ -10,6 +10,8 @@ import { formatDay } from "@/lib/messenger";
 import { textSlice } from "@/lib/textSlice";
 import type { Locale } from "@/i18n/config";
 
+import { CloseIcon } from "./MessengerIcons";
+
 export type CompanionProfile = components["schemas"]["ElementByIdResult"];
 
 export interface CompanionLabels {
@@ -75,8 +77,8 @@ export function CompanionInfo({ locale, user, name, hrefs, dict, open, onClose, 
         >
             <div className="sticky top-0 flex h-[60px] items-center justify-between gap-2.5 border-b border-primary bg-white px-4">
                 <span className="font-medium">{labels.title}</span>
-                <button type="button" aria-label={labels.close} onClick={onClose} className="flex cursor-pointer border-0 bg-transparent p-0">
-                    <span aria-hidden className="h-5 w-5 bg-caption" style={{ maskImage: "url(/web/icons/messenger/delete.svg)", WebkitMaskImage: "url(/web/icons/messenger/delete.svg)", maskSize: "contain", maskRepeat: "no-repeat" }} />
+                <button type="button" aria-label={labels.close} onClick={onClose} className="flex h-10 w-10 cursor-pointer items-center justify-center border-0 bg-transparent p-0 -mr-2.5">
+                    <CloseIcon className="h-3.5 w-3.5 text-caption" />
                 </button>
             </div>
             <div className="flex flex-col gap-[30px] px-4 py-5">
