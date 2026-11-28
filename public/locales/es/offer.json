@@ -238,6 +238,7 @@
         "Вы отправили заявку": "Has enviado una solicitud",
         "Вы участвуете": "Estás participando",
         "Ваша заявка отклонена": "Tu solicitud ha sido rechazada",
+        "Приём заявок завершён": "Las solicitudes están cerradas",
         "Обычно отвечает в течение часа": "Suele responder en una hora",
         "Обычно отвечает в течение дня": "Suele responder en un día",
         "Обычно отвечает за N дней": "Suele responder en {{count}} días",

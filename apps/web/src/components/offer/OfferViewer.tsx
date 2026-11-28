@@ -9,6 +9,8 @@ import { browserApi } from "@/lib/browserApi";
 /** Что вошедший может сделать с вакансией — API считает это для каждого своё. */
 export interface OfferViewerState {
     signedIn: boolean;
+    /** Вошёл (или вход ещё проверяется), а ответ API для него ещё не пришёл */
+    loading: boolean;
     /** Вошёл, но ещё не волонтёр — кнопка ведёт на выбор роли */
     needVolunteerRole: boolean;
     canEdit: boolean;
@@ -22,6 +24,7 @@ export interface OfferViewerState {
 
 const GUEST: OfferViewerState = {
     signedIn: false,
+    loading: false,
     needVolunteerRole: false,
     canEdit: false,
     canParticipate: false,
@@ -30,6 +33,8 @@ const GUEST: OfferViewerState = {
     requiresMembership: false,
     profileId: null,
 };
+
+const LOADING: OfferViewerState = { ...GUEST, loading: true };
 
 const OfferViewerContext = createContext<OfferViewerState>(GUEST);
 
@@ -56,6 +61,7 @@ export function OfferViewerProvider({ offerId, children }: { offerId: number; ch
                 if (cancelled || !data) return;
                 setState({
                     signedIn: true,
+                    loading: false,
                     needVolunteerRole: !session.profile?.volunteer,
                     canEdit: data.canEdit,
                     canParticipate: data.canParticipate,
@@ -66,14 +72,19 @@ export function OfferViewerProvider({ offerId, children }: { offerId: number; ch
                     token: session.token,
                 });
             })
-            .catch(() => undefined);
+            // Не ответил API — кнопка как у гостя, сервер всё равно проверит заявку
+            .catch(() => {
+                if (!cancelled) setState({ ...GUEST, signedIn: true, needVolunteerRole: !session.profile?.volunteer, profileId: session.profile?.id ?? null, token: session.token });
+            });
         return () => {
             cancelled = true;
         };
     }, [offerId, session.status, session.profile, session.token]);
 
-    // Гость (или ещё не знаем) — состояние гостя
-    const value = session.status === "user" ? state : GUEST;
+    // Гость и пока вход не проверен — состояние гостя (страница из кэша сразу с рабочей кнопкой, это
+    // важно на медленном интернете). Вошёл, но ответ API для него ещё не пришёл — «загрузка»: кнопка
+    // не показывается активной, чтобы потом не погаснуть (сообщение тестировщика 27.11.2026)
+    const value = session.status !== "user" ? GUEST : state.signedIn ? state : LOADING;
     return <OfferViewerContext.Provider value={value}>{children}</OfferViewerContext.Provider>;
 }
 
