@@ -15,6 +15,11 @@ export interface OffersFilters {
     sort: OffersSort;
     /** «Показать прошедшие» — по умолчанию включено */
     showPassed: boolean;
+    /**
+     * Только «круглый год» (?year=1, сдача тестировщика 27.11.2026: найти такие вакансии было нечем).
+     * Периоды тогда не учитываются — даты и «прошедшие» бэкенд с ним не применяет
+     */
+    fullYear: boolean;
     /** Период участия, YYYY-MM-DD */
     from?: string;
     to?: string;
@@ -63,6 +68,7 @@ export function parseOffersFilters(params: RawParams): OffersFilters {
         // Прошедшие по умолчанию скрыты (решение владельца 06.11.2026: на них уже не откликнуться);
         // показать — ?past=1. Старые ссылки с past=0 означают то же, что и умолчание
         showPassed: get("past") === "1",
+        fullYear: get("year") === "1",
         from: DATE.test(get("from") ?? "") ? get("from") : undefined,
         to: DATE.test(get("to") ?? "") ? get("to") : undefined,
         minDays: minDays && minDays > DURATION_MIN ? minDays : undefined,
@@ -82,6 +88,7 @@ export function offersFiltersQuery(filters: Partial<OffersFilters>): string {
     if (filters.search) query.set("search", filters.search);
     if (filters.sort && filters.sort !== "novelty") query.set("sort", filters.sort);
     if (filters.showPassed) query.set("past", "1");
+    if (filters.fullYear) query.set("year", "1");
     if (filters.from) query.set("from", filters.from);
     if (filters.to) query.set("to", filters.to);
     if (filters.minDays) query.set("minDays", String(filters.minDays));
@@ -115,6 +122,7 @@ export function offersApiQuery(filters: OffersFilters) {
         "transferIds[]"?: number[];
         hidePassed?: boolean;
         verifiedHost?: boolean;
+        fullYear?: boolean;
     } = {};
     if (filters.categories.length) query["categoryIds[]"] = filters.categories;
     if (filters.search) query.search = filters.search;
@@ -129,5 +137,6 @@ export function offersApiQuery(filters: OffersFilters) {
     if (filters.provided.includes("paidTravel")) query["transferIds[]"] = [1, 2, 3, 4];
     if (!filters.showPassed) query.hidePassed = true;
     if (filters.verifiedHost) query.verifiedHost = true;
+    if (filters.fullYear) query.fullYear = true;
     return query;
 }

@@ -67,4 +67,13 @@ describe("фильтры каталога вакансий", () => {
         expect(parseOffersFilters({}).verifiedHost).toBe(false);
         expect(offersApiQuery(parseOffersFilters({}))).toEqual({ hidePassed: true });
     });
+
+    it("«Круглый год» — в адресе year=1, в API fullYear (27.11.2026)", () => {
+        const filters = parseOffersFilters({ year: "1" });
+        expect(filters.fullYear).toBe(true);
+        expect(offersFiltersQuery(filters)).toBe("year=1");
+        expect(offersApiQuery(filters)).toEqual({ fullYear: true, hidePassed: true });
+        expect(parseOffersFilters({ year: "0" }).fullYear).toBe(false);
+        expect(offersApiQuery(parseOffersFilters({})).fullYear).toBeUndefined();
+    });
 });

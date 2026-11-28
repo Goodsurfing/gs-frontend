@@ -223,6 +223,7 @@
         "sumTo": "по {{date}}",
         "sumDays": "{{min}}–{{max}} дн.",
         "sumKids": "можно с детьми",
+        "sumFullYear": "круглый год",
         "sumVerified": "проверенные организаторы",
         "sumFood": "питание",
         "sumHousing": "жильё",

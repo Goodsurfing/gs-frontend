@@ -223,6 +223,7 @@
         "sumTo": "until {{date}}",
         "sumDays": "{{min}}–{{max}} days",
         "sumKids": "kids welcome",
+        "sumFullYear": "all year round",
         "sumVerified": "verified hosts",
         "sumFood": "food",
         "sumHousing": "housing",
