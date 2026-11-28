@@ -59,7 +59,7 @@ export const ADMIN_MENU: AdminMenuGroup[] = [
             { href: "/admin/club/tasks", label: "Задания" },
         ],
     },
-    { title: "Система", items: [{ href: "/admin/system-admin", label: "Администраторы" }, { href: "/admin/banner-marketing", label: "Реклама" }] },
+    { title: "Система", items: [{ href: "/admin/system-admin", label: "Администраторы" }, { href: "/admin/banner-marketing", label: "Реклама" }, { href: "/admin/push-log", label: "Пуши" }] },
 ];
 
 /** Меню админки с учётом включённых разделов */
