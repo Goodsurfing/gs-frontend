@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { enableNewFrontend } from '../support/newFrontend';
+import { API_URL } from '../config';
 
 /** Новый фронт: каталог вакансий — список, фильтры в адресе, карта. */
 test.describe('Новый фронт: каталог вакансий', () => {
@@ -57,16 +58,19 @@ test.describe('Новый фронт: каталог вакансий', () => {
         await expect(page).toHaveURL(/\/offers-map$/);
     });
 
-    test('«Круглый год» — галочка вместо дат, в адресе year=1 (27.11)', async ({ page }) => {
+    test('«Круглый год» — галочка вместо дат, в адресе year=1 (27.11)', async ({ page, request }) => {
         await page.setViewportSize({ width: 1440, height: 900 });
+        // Сколько «круглый год» по API: по умолчанию вакансии без незакончившихся периодов скрыты,
+        // а с галочкой периоды не учитываются — поэтому вариантов может стать и больше, и меньше
+        const api = await (await request.get(`${API_URL}/api/v1/vacancy?fullYear=true&page=1&limit=1&fields=card`)).json();
+        const expected = Number(api.pagination.total);
+        expect(expected).toBeGreaterThan(0);
         await page.goto('/offers-map');
         const count = async () => Number((await page.getByText(/^\d+ вариант/).textContent())?.match(/\d+/)?.[0]);
-        const before = await count();
         await page.getByLabel('Круглый год').first().check();
         await expect(page).toHaveURL(/year=1/);
         await expect(page.getByLabel('Дата начала').first()).toBeDisabled();
-        await expect.poll(count).toBeLessThan(before);
-        expect(await count()).toBeGreaterThan(0);
+        await expect.poll(count).toBe(expected);
         // Ссылкой тоже работает: галочка стоит после перезагрузки
         await page.reload();
         await expect(page.getByLabel('Круглый год').first()).toBeChecked();
