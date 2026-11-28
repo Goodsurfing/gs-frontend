@@ -1,17 +1,27 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-/** Всплывающее сообщение (HintPopup старого фронта): зелёное — успех, красное — ошибка; гаснет через 4 с */
+/** Сколько висит сообщение: 4 с казались тестировщикам слишком быстрыми (27.11.2026) */
+export const TOAST_MS = 5000;
+
+/**
+ * Всплывающее сообщение (HintPopup старого фронта): зелёное — успех, красное — ошибка;
+ * гаснет через 5 с после появления (перерисовки страницы срок не продлевают и не сбрасывают).
+ */
 export function Toast({ text, ok = false, onClose }: { text: string | null; ok?: boolean; onClose: () => void }) {
+    const close = useRef(onClose);
+    useEffect(() => {
+        close.current = onClose;
+    }, [onClose]);
     useEffect(() => {
         if (!text) return;
-        const timer = setTimeout(onClose, 4000);
+        const timer = setTimeout(() => close.current(), TOAST_MS);
         return () => clearTimeout(timer);
-    }, [text, onClose]);
+    }, [text]);
     if (!text) return null;
     return (
-        <div className="fixed top-[10%] left-1/2 z-[51] min-w-[20vh] -translate-x-1/2 font-medium tracking-[.6px] text-white">
+        <div className="fixed top-[10%] left-1/2 z-[1000] min-w-[20vh] -translate-x-1/2 font-medium tracking-[.6px] text-white">
             <div role={ok ? "status" : "alert"} onClick={onClose} className={`flex cursor-pointer items-center justify-center rounded-[30px] px-8 py-4 shadow-[6px_8px_16px_0_rgba(34,60,80,0.2)] ${ok ? "bg-[#62eb50]" : "bg-[#F4444E]"}`}>
                 {text}
             </div>

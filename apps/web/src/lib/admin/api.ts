@@ -7,8 +7,11 @@ import { API_URL } from "@/lib/browserApi";
 
 /** Ответ списка API админки (/admin/v1/…): данные и счётчики страниц */
 export interface AdminPage<T> {
-    data: T[];
+    data?: T[];
     pagination?: { page: number; limit: number; total: number };
+    /** Новые разделы (жалобы, GS-282) отдают список так: items + total */
+    items?: T[];
+    total?: number;
 }
 
 export class AdminApiError extends Error {

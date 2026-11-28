@@ -35,7 +35,8 @@ export interface CatalogPage {
     total: number;
 }
 
-const SORT = { novelty: "updated:desc", popularity: "popularity:desc" } as const;
+// nearestDate — ближайший день заезда, прошедшие и без дат в конце (gs-backend, GS-334)
+const SORT = { novelty: "updated:desc", popularity: "popularity:desc", nearestDate: "nearestDate" } as const;
 
 /** Страница списка каталога по фильтрам; null — API недоступен. */
 export async function getCatalogPage(locale: Locale, filters: OffersFilters, t: Translate): Promise<CatalogPage | null> {

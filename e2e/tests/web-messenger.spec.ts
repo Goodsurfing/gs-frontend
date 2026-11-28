@@ -25,10 +25,10 @@ test.describe('Новый фронт: сообщения', () => {
         await expect(page.getByText('Выберите, кому хотели бы написать')).toBeVisible();
         const chats = page.locator('a[href^="/messenger/"]');
         await expect(chats.first()).toBeVisible({ timeout: 15_000 });
-        // Вкладки как во входящих: «Все» выбрана, «Принятые» оставляет только принятые заявки
+        // Вкладки как во входящих: «Все» выбрана, «Подтверждённые» оставляет только принятые заявки
         await expect(page.getByRole('tab', { name: 'Все' })).toHaveAttribute('aria-selected', 'true');
-        await page.getByRole('tab', { name: 'Принятые' }).click();
-        await expect(page.getByRole('tab', { name: 'Принятые' })).toHaveAttribute('aria-selected', 'true');
+        await page.getByRole('tab', { name: 'Подтверждённые' }).click();
+        await expect(page.getByRole('tab', { name: 'Подтверждённые' })).toHaveAttribute('aria-selected', 'true');
         await page.getByRole('tab', { name: 'Все' }).click();
 
         await chats.first().click();
@@ -78,47 +78,171 @@ test.describe('Новый фронт: сообщения', () => {
         await expect(chats.first()).toBeVisible();
     });
 
-    test('волонтёр: отклик на вакансию — даты и заявка (перехвачена)', async ({ page }, testInfo) => {
-        test.skip(testInfo.project.name !== 'vol', 'отклик — у волонтёра');
+    test('телефон: «Назад» из переписки — на предыдущую страницу сайта, а не в «Сообщения» (27.11)', async ({ page }, testInfo) => {
+        test.skip(testInfo.project.name !== 'host', 'нужна переписка');
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.goto('/messenger');
+        await isNewFrontend(page);
+        const chats = page.locator('a[href^="/messenger/"]');
+        await expect(chats.first()).toBeVisible({ timeout: 15_000 });
+        const chatHref = (await chats.first().getAttribute('href'))!;
+        // Вход в «Заблокированные» прямо из «Сообщений»
+        await expect(page.getByRole('link', { name: 'Заблокированные' })).toHaveAttribute('href', '/profile/privacy#blocked');
+        // Вкладки «Все / Непрочитанные / …» листаются только вбок
+        const strip = await page.getByRole('tablist').first().evaluate((node) => ({ overflowY: getComputedStyle(node).overflowY, fits: node.scrollHeight <= node.clientHeight }));
+        expect(strip).toEqual({ overflowY: 'hidden', fits: true });
+
+        // Из кабинета в переписку и обратно — в кабинет
+        await page.goto('/host/notes');
+        await page.goto(chatHref);
+        await expect(page.getByRole('textbox', { name: 'Написать сообщение' })).toBeVisible({ timeout: 15_000 });
+        await page.getByRole('button', { name: 'Назад' }).click();
+        await expect(page).toHaveURL(/\/host\/notes$/);
+
+        // Пришли по ссылке извне (истории на сайте нет) — в список переписок
+        const fresh = await page.context().newPage();
+        await fresh.setViewportSize({ width: 390, height: 844 });
+        await fresh.goto(chatHref);
+        await expect(fresh.getByRole('textbox', { name: 'Написать сообщение' })).toBeVisible({ timeout: 15_000 });
+        await fresh.getByRole('button', { name: 'Назад' }).click();
+        await expect(fresh).toHaveURL(/\/messenger$/);
+        await fresh.close();
+    });
+
+    /** Первая открытая вакансия каталога стейджа */
+    /**
+     * Первая вакансия каталога, у которой приём заявок не закончился. Первой в каталоге бывает фикстура
+     * «E2E Тестовая вакансия 5» с applicationEndDate в прошлом (нарочно, для application-flow) — у неё
+     * «Участвовать» не ссылка.
+     */
+    const firstOfferId = async () => {
         const api = await request.newContext({ baseURL: API_URL, ignoreHTTPSErrors: true });
         try {
-            // Первая открытая вакансия каталога
-            const catalog = await (await api.get('/api/v1/vacancy?limit=1&fields=card', { headers: { Accept: 'application/json' } })).json();
-            const offerId = (Array.isArray(catalog) ? catalog : catalog.data ?? catalog['hydra:member'] ?? [])[0]?.id;
-            test.skip(!offerId, 'нет активной вакансии на стейдже');
-
-            let applied: unknown = null;
-            await page.route('**/api/v1/applications', async (route) => {
-                if (route.request().method() !== 'POST') return route.continue();
-                applied = route.request().postDataJSON();
-                await route.fulfill({ status: 422, contentType: 'application/json', body: JSON.stringify({ detail: 'Проверочный ответ: заявка не создана' }) });
-            });
-            await page.goto(`/messenger/create/${offerId}`);
-            await isNewFrontend(page);
-            await expect(page.getByText('Прибытие')).toBeVisible({ timeout: 15_000 });
-            await expect(page.getByText('Отъезд')).toBeVisible();
-            // Поле сообщения на отклике закрыто — сначала заявка
-            await expect(page.getByRole('textbox', { name: 'Написать сообщение' })).toBeVisible();
-            await expect(page.getByRole('button', { name: 'Отправить' })).toBeDisabled();
-
-            const submit = page.getByRole('button', { name: 'Заявка' });
-            if (await submit.isDisabled()) {
-                // Даты не подставлены (у вакансии не один период) — выбрать в календаре
-                // Даты — в следующем месяце: прошлые дни в календаре закрыты
-                await page.getByLabel('Прибытие').click();
-                await page.getByRole('button', { name: '›', exact: true }).click();
-                await page.getByRole('button', { name: '10', exact: true }).click();
-                await page.getByLabel('Отъезд').click();
-                await page.getByRole('button', { name: '›', exact: true }).click();
-                await page.getByRole('button', { name: '20', exact: true }).click();
-            }
-            await expect(submit).toBeEnabled();
-            await submit.click();
-            await expect.poll(() => applied).toMatchObject({ vacancy: `/api/v1/vacancies/${offerId}` });
-            await expect(page.getByText('Проверочный ответ: заявка не создана')).toBeVisible();
+            const catalog = await (await api.get('/api/v1/vacancy?limit=20&fields=card', { headers: { Accept: 'application/json' } })).json();
+            const offers: { id: number; applicationEndDate?: string | null }[] = Array.isArray(catalog)
+                ? catalog
+                : catalog.data ?? catalog['hydra:member'] ?? [];
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const open = (end?: string | null) => {
+                if (!end) return true;
+                const [d, m, y] = end.split(/[.-]/).map(Number);
+                return new Date(y, m - 1, d) >= today;
+            };
+            return offers.find((offer) => open(offer.applicationEndDate))?.id;
         } finally {
             await api.dispose();
         }
+    };
+
+    /** Даты d.m.Y через n дней — как отдаёт бэкенд */
+    const apiDay = (days: number) => {
+        const day = new Date();
+        day.setDate(day.getDate() + days);
+        return `${String(day.getDate()).padStart(2, '0')}.${String(day.getMonth() + 1).padStart(2, '0')}.${day.getFullYear()}`;
+    };
+    const isoDay = (days: number) => apiDay(days).split('.').reverse().join('-');
+
+    /** Подменить «Когда» у вакансии: настоящая вакансия, но периоды — свои */
+    const withWhen = async (page: Page, offerId: number, when: Record<string, unknown>) => {
+        await page.route(`**/api/v1/vacancies/${offerId}`, async (route) => {
+            if (route.request().method() !== 'GET') return route.continue();
+            const response = await route.fetch();
+            const body = await response.json();
+            await route.fulfill({ response, json: { ...body, when: { ...(body.when ?? {}), ...when } } });
+        });
+    };
+
+    test('волонтёр: отклик на телефоне — период организатора, «Пару слов о себе», большая кнопка (заявка перехвачена)', async ({ page }, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'отклик — у волонтёра');
+        const offerId = await firstOfferId();
+        test.skip(!offerId, 'нет активной вакансии на стейдже');
+        await page.setViewportSize({ width: 390, height: 844 });
+        // Два будущих периода и один прошедший — прошедший не показывается
+        await withWhen(page, offerId!, {
+            isFullYearAcceptable: false,
+            durationMinDays: null,
+            durationMaxDays: null,
+            periods: [
+                { start: apiDay(-30), ending: apiDay(-10) },
+                { start: apiDay(20), ending: apiDay(30) },
+                { start: apiDay(40), ending: apiDay(50) },
+            ],
+        });
+        let applied: Record<string, unknown> | null = null;
+        await page.route('**/api/v1/applications', async (route) => {
+            if (route.request().method() !== 'POST') return route.continue();
+            applied = route.request().postDataJSON();
+            await route.fulfill({ status: 422, contentType: 'application/json', body: JSON.stringify({ detail: 'Проверочный ответ: заявка не создана' }) });
+        });
+        await page.goto(`/messenger/create/${offerId}`);
+        await isNewFrontend(page);
+
+        const form = page.getByRole('form', { name: 'Отклик на вакансию' });
+        await expect(form).toBeVisible({ timeout: 15_000 });
+        // Поле переписки на отклике не показывается — вместо него «Пару слов о себе»
+        await expect(page.getByRole('textbox', { name: 'Написать сообщение' })).toHaveCount(0);
+        const periods = form.getByRole('radio');
+        await expect(periods).toHaveCount(2);
+        await expect(periods.first()).not.toBeChecked();
+
+        // Большая кнопка с подписью, видна без прокрутки (прилипает к низу экрана)
+        const submit = form.getByRole('button', { name: 'Отправить отклик' });
+        await expect(submit).toBeInViewport();
+        const box = await submit.boundingBox();
+        expect(box!.height).toBeGreaterThanOrEqual(48);
+        expect(box!.width).toBeGreaterThan(300);
+
+        // Без выбранного периода кнопка неактивна (aria-disabled), нажатие — подсказка, запрос не уходит
+        await expect(submit).toHaveAttribute('aria-disabled', 'true');
+        await submit.click({ force: true });
+        await expect(form.getByText('Выберите даты, чтобы отправить отклик')).toBeVisible();
+        expect(applied).toBeNull();
+
+        await periods.nth(1).check();
+        await form.getByRole('textbox', { name: /Пару слов о себе/ }).fill('Работал на ферме, умею с лошадьми');
+        await submit.click();
+        await expect.poll(() => applied).toMatchObject({
+            vacancy: `/api/v1/vacancies/${offerId}`,
+            startDate: isoDay(40),
+            endDate: isoDay(50),
+            message: 'Работал на ферме, умею с лошадьми',
+        });
+        // Ошибка — рядом с кнопкой, введённое не пропало
+        await expect(form.getByText('Проверочный ответ: заявка не создана')).toBeVisible();
+        await expect(form.getByRole('textbox', { name: /Пару слов о себе/ })).toHaveValue('Работал на ферме, умею с лошадьми');
+    });
+
+    test('волонтёр: отклик без периодов — даты подсказаны, текст необязателен, обрыв сети не теряет введённое', async ({ page }, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'отклик — у волонтёра');
+        const offerId = await firstOfferId();
+        test.skip(!offerId, 'нет активной вакансии на стейдже');
+        await withWhen(page, offerId!, { isFullYearAcceptable: true, durationMinDays: 10, periods: [] });
+        let applied: Record<string, unknown> | null = null;
+        let fail = true;
+        await page.route('**/api/v1/applications', async (route) => {
+            if (route.request().method() !== 'POST') return route.continue();
+            if (fail) return route.abort('internetdisconnected');
+            applied = route.request().postDataJSON();
+            await route.fulfill({ status: 422, contentType: 'application/json', body: JSON.stringify({ detail: 'Проверочный ответ: заявка не создана' }) });
+        });
+        await page.goto(`/messenger/create/${offerId}`);
+        await isNewFrontend(page);
+        const form = page.getByRole('form', { name: 'Отклик на вакансию' });
+        await expect(form).toBeVisible({ timeout: 15_000 });
+        await expect(form.getByRole('radio')).toHaveCount(0);
+        // Подсказка: через неделю, на минимальный срок организатора (10 дней)
+        await expect(form.getByLabel('Прибытие')).toHaveValue(apiDay(7).replaceAll('.', '-'));
+        await expect(form.getByLabel('Отъезд')).toHaveValue(apiDay(16).replaceAll('.', '-'));
+
+        const submit = form.getByRole('button', { name: 'Отправить отклик' });
+        await submit.click();
+        await expect(form.getByText(/нет связи/)).toBeVisible();
+        fail = false;
+        await submit.click();
+        await expect.poll(() => applied).toMatchObject({ startDate: isoDay(7), endDate: isoDay(16) });
+        // Пустое «Пару слов» не отправляется
+        expect(applied).not.toHaveProperty('message');
     });
 
     /**
@@ -193,6 +317,90 @@ test.describe('Новый фронт: сообщения', () => {
             await expect(page.getByRole('button', { name: 'Изменить решение' })).toBeVisible();
         });
     }
+
+    /**
+     * Сдача тестировщицы 27.11.2026 (iPhone, «Новый отклик на вакансию»): стрелка «Назад» вела в «Сообщения»,
+     * подпись «Когда вы хотите приехать» налезала на выбор дат, поле сообщения сдвигалось влево и уходило под
+     * рамку экрана. Заявка не отправляется — только открывается форма.
+     */
+    test('телефон: «Назад» с отклика — к карточке вакансии, а не в «Сообщения»', async ({ page, context }, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'отклик — у волонтёра');
+        const offerId = await firstOfferId();
+        test.skip(!offerId, 'нет активной вакансии на стейдже');
+        await page.setViewportSize({ width: 390, height: 844 });
+        // С карточки вакансии кнопкой «Участвовать» — «Назад» возвращает на карточку
+        await page.goto(`/offers/${offerId}`);
+        await isNewFrontend(page);
+        const participate = page.getByRole('main').locator(`a[href="/messenger/create/${offerId}"]`).filter({ visible: true }).first();
+        await expect(participate).toBeAttached({ timeout: 15_000 });
+        await participate.click();
+        await expect(page).toHaveURL(new RegExp(`/messenger/create/${offerId}$`));
+        await expect(page.getByRole('form', { name: 'Отклик на вакансию' })).toBeVisible({ timeout: 15_000 });
+        await page.getByRole('button', { name: 'Назад' }).click();
+        await expect(page).toHaveURL(new RegExp(`/offers/${offerId}$`));
+
+        // Отклик открыт сразу (ссылка из письма, новая вкладка) — шага назад нет, ведёт на карточку вакансии
+        const direct = await context.newPage();
+        await direct.setViewportSize({ width: 390, height: 844 });
+        await direct.goto(`/messenger/create/${offerId}`);
+        await expect(direct.getByRole('form', { name: 'Отклик на вакансию' })).toBeVisible({ timeout: 15_000 });
+        await direct.getByRole('button', { name: 'Назад' }).click();
+        await expect(direct).toHaveURL(new RegExp(`/offers/${offerId}$`));
+        await direct.close();
+    });
+
+    test('телефон: в отклике — сроки проекта и срок участия, подпись дат над блоком', async ({ page }, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'отклик — у волонтёра');
+        const offerId = await firstOfferId();
+        test.skip(!offerId, 'нет активной вакансии на стейдже');
+        await page.setViewportSize({ width: 390, height: 844 });
+        await withWhen(page, offerId!, {
+            isFullYearAcceptable: false,
+            durationMinDays: 7,
+            durationMaxDays: 21,
+            periods: [{ start: apiDay(20), ending: apiDay(30) }, { start: apiDay(40), ending: apiDay(50) }],
+        });
+        await page.goto(`/messenger/create/${offerId}`);
+        await isNewFrontend(page);
+        const form = page.getByRole('form', { name: 'Отклик на вакансию' });
+        await expect(form).toBeVisible({ timeout: 15_000 });
+
+        const group = form.getByRole('group', { name: 'Когда вы хотите приехать' });
+        await expect(group).toBeVisible();
+        const terms = group.getByRole('definition');
+        await expect(group.getByRole('term')).toHaveText(['Сроки проекта', 'Минимальный срок', 'Максимальный срок']);
+        await expect(terms.nth(0)).not.toBeEmpty();
+        await expect(terms.nth(1)).toHaveText('7 дней');
+        await expect(terms.nth(2)).toHaveText('21 день');
+
+        // Подпись — над блоком, не на его рамке (как «Пару слов о себе»)
+        const caption = await form.getByText('Когда вы хотите приехать', { exact: true }).boundingBox();
+        const box = await group.boundingBox();
+        expect(caption!.y + caption!.height).toBeLessThanOrEqual(box!.y + 1);
+    });
+
+    test('телефон: поле сообщения по центру, стрелка внутри, отступ под рамку iPhone', async ({ page }, testInfo) => {
+        test.skip(testInfo.project.name !== 'host', 'нужна переписка');
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.goto('/messenger');
+        await isNewFrontend(page);
+        // Без viewport-fit=cover iPhone не даёт отступ env(safe-area-inset-bottom) — поле уходит под рамку экрана
+        await expect(page.locator('meta[name="viewport"]')).toHaveAttribute('content', /viewport-fit=cover/);
+        const chats = page.locator('a[href^="/messenger/"]');
+        await expect(chats.first()).toBeVisible({ timeout: 15_000 });
+        await chats.first().click();
+        const input = page.getByRole('textbox', { name: 'Написать сообщение' });
+        await expect(input).toBeVisible();
+        // Рамка поля — родитель textarea; стрелка «Отправить» внутри неё, отступы слева и справа равны
+        const frame = input.locator('xpath=..');
+        await expect(frame.getByRole('button', { name: 'Отправить' })).toBeAttached();
+        const box = (await frame.boundingBox())!;
+        const left = box.x;
+        const right = 390 - (box.x + box.width);
+        expect(Math.abs(left - right)).toBeLessThanOrEqual(2);
+        expect(box.width).toBeGreaterThan(330);
+        expect(box.y + box.height).toBeLessThanOrEqual(844 - 8);
+    });
 
     test('гостя уводит на вход', async ({ browser }) => {
         const context = await browser.newContext({ storageState: { cookies: [], origins: [] } });

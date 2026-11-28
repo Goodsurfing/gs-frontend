@@ -44,6 +44,9 @@
     "Прочитано": "Read",
     "Переписок пока нет": "No conversations yet",
     "Здесь пока пусто": "Nothing here yet",
+    "Здесь будут переписки с сообщениями, которые вы ещё не прочитали": "Chats with messages you haven't read yet will appear here",
+    "Здесь будут переписки, где последнее сообщение — от собеседника": "Chats where the last message is from the other person will appear here",
+    "Здесь будут переписки с подтверждёнными заявками": "Chats with accepted applications will appear here",
     "Не удалось загрузить переписки": "Couldn't load conversations",
     "Повторить": "Try again",
     "Включите уведомления — узнаете о новых сообщениях и заявках сразу, даже когда сайт закрыт": "Turn on notifications to hear about new messages and applications right away, even when the site is closed",
@@ -80,8 +83,38 @@
         "close": "If there’s no reply within three weeks, the application closes automatically and we’ll send you similar opportunities."
     },
     "Этот браузер не умеет получать уведомления. Откройте сайт в Chrome, Яндекс Браузере, Safari или Firefox — на iPhone добавьте сайт на экран «Домой»": "This browser can't receive notifications. Open the site in Chrome, Yandex Browser, Safari or Firefox — on iPhone, add the site to your Home Screen",
+    "apply": {
+        "title": "Apply for this opportunity",
+        "when": "When would you like to come",
+        "projectDates": "Project dates",
+        "fullYear": "All year round",
+        "minStay": "Minimum stay",
+        "maxStay": "Maximum stay",
+        "days_one": "{count} day",
+        "days_few": "{count} days",
+        "days_many": "{count} days",
+        "days_other": "{count} days",
+        "choosePeriod": "The host accepts volunteers on these dates — choose the one that suits you",
+        "windowHint": "You can come for part of this period — specify your dates",
+        "freeHint": "We have filled in sample dates — change them if needed. You can agree on exact dates with the host in the chat.",
+        "about": "A few words about yourself",
+        "optional": "optional",
+        "aboutPlaceholder": "For example: how you can help, any similar experience, why you want to come here",
+        "aboutHint": "The host will see this together with your application",
+        "submit": "Send application",
+        "sending": "Sending…",
+        "needPeriod": "Choose dates to send your application",
+        "network": "Could not send: no connection. Check your internet and tap again — everything you entered is saved.",
+        "loadError": "Could not load the opportunity. Check your internet and try again.",
+        "retry": "Try again"
+    },
     "Отклонить заявку? Волонтёр получит уведомление": "Decline the application? The volunteer will be notified",
     "Отмена": "Cancel",
     "Изменить решение": "Change decision",
-    "Измените решение по заявке — волонтёр получит уведомление": "Change your decision on the application — the volunteer will be notified"
+    "Измените решение по заявке — волонтёр получит уведомление": "Change your decision on the application — the volunteer will be notified",
+    "empty": {
+        "volunteer": "Your conversations with hosts will appear here",
+        "volunteerHint": "Apply for an opportunity — the host will reply here",
+        "find": "Find an opportunity"
+    }
 }

@@ -1,0 +1,30 @@
+{
+    "hint": {
+        "text": "Instala Goodsurfing en tu iPhone: recibirás avisos de mensajes y solicitudes como de una aplicación",
+        "how": "Cómo instalar",
+        "later": "Más tarde",
+        "title": "Cómo instalar en iPhone",
+        "note": "Se necesita iOS 16.4 o posterior. El sitio instalado guarda la sesión aparte de Safari: inicia sesión allí otra vez. La membresía se paga en el sitio como siempre.",
+        "more": "Más información",
+        "close": "Entendido"
+    },
+    "steps": {
+        "share": "En Safari, toca «Compartir» en la parte inferior de la pantalla (si no lo ves, toca primero «⋯»)",
+        "addToHome": "Desplázate y elige «Añadir a pantalla de inicio»",
+        "add": "Deja activado «Abrir como app web», si aparece ese interruptor, y toca «Añadir»",
+        "open": "Abre Goodsurfing desde la pantalla de inicio, inicia sesión y activa las notificaciones en «Mensajes»"
+    },
+    "page": {
+        "title": "Goodsurfing en tu teléfono",
+        "description": "Cómo instalar Goodsurfing en iPhone y Android: avisos de mensajes y solicitudes, inicio de sesión y pago de la membresía, igual que en el sitio.",
+        "lead": "Mensajes de anfitriones y voluntarios, solicitudes y notificaciones, siempre a mano.",
+        "androidTitle": "Android",
+        "androidText": "La aplicación para Android llegará pronto. Mientras tanto, abre el sitio en el navegador: los avisos de mensajes también funcionan allí.",
+        "soon": "pronto",
+        "iphoneTitle": "iPhone",
+        "iphoneText": "Añade el sitio a la pantalla de inicio: se abrirá como una aplicación, sin barra de direcciones, y podrá enviarte notificaciones.",
+        "installed": "Has abierto Goodsurfing desde la pantalla de inicio: todo listo. Activa las notificaciones en «Mensajes».",
+        "notSafari": "Estas instrucciones son para Safari. Si el sitio está abierto en otro navegador o dentro de una aplicación, abre goodsurfing.org en Safari.",
+        "messenger": "Abrir mensajes"
+    }
+}

@@ -7,7 +7,9 @@ import { checkoutFeedbackLabels } from "@/lib/checkoutFeedback";
 import { duoLabels } from "@/components/membership/duo";
 import { DuoOffer } from "@/components/membership/DuoOffer";
 import { FaqAccordion } from "@/components/membership/FaqAccordion";
+import { MembershipCompactHero } from "@/components/membership/MembershipCompactHero";
 import { MembershipHeroCta, MembershipStickyBar, ReadMore } from "@/components/membership/MembershipCta";
+import { MobileDetails } from "@/components/membership/MobileDetails";
 import { MembershipReviews } from "@/components/membership/MembershipReviews";
 import { TariffCards } from "@/components/membership/TariffCards";
 import { isLocale } from "@/i18n/config";
@@ -55,9 +57,10 @@ const greenButton = "inline-flex items-center justify-center rounded-lg border b
 export default async function MembershipPage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
-    const [t, tCommon, prices, featured] = await Promise.all([
+    const [t, tCommon, tProfile, prices, featured] = await Promise.all([
         getTranslator(locale, "membership"),
         getTranslator(locale),
+        getTranslator(locale, "profile"),
         getPrices(locale),
         getFeaturedReviews(locale),
     ]);
@@ -94,6 +97,7 @@ export default async function MembershipPage({ params }: Props) {
         return { href: pay(code), button: t("header.cta-pay", { price }), stickyTitle: t("sticky.title", { price }) };
     };
     const cta = { volunteer: ctaOption(TARIFF.volunteer), host: ctaOption(TARIFF.host) };
+    const rub = (code: string) => (prices[code] ?? 0).toLocaleString("ru-RU");
     const list = (prefix: string, count: number) => Array.from({ length: count }, (_, index) => t(`${prefix}-${index + 1}`));
 
     return (
@@ -102,8 +106,33 @@ export default async function MembershipPage({ params }: Props) {
             {/* Вернулся «Назад» со страницы оплаты, не заплатив, — спросить, что помешало (GS-260) */}
             <CheckoutFeedbackPrompt labels={checkoutFeedbackLabels(tCommon)} intro={tCommon("checkoutFeedback.intro")} hide={tCommon("checkoutFeedback.hide")} />
             <div className="mx-auto max-w-[1920px]">
-                {/* Шапка: заголовок на оранжевых плашках, две кнопки-якоря */}
-                <section className="box-border flex min-h-[480px] w-full items-center bg-[url(/web/images/membership/membership-header.webp)] bg-cover bg-center px-40 py-24 down-lg:px-8 down-lg:py-12 down-sm:min-h-0 down-sm:px-5 down-sm:py-10">
+                {/* Телефон (GS-333): первый экран — цена, три выгоды и «Оформить», остальное — в «Подробнее» */}
+                <MembershipCompactHero
+                    id="membership-compact"
+                    locale={locale}
+                    volunteer={cta.volunteer}
+                    host={cta.host}
+                    duoHref={pay(TARIFF.duo)}
+                    labels={{
+                        title: t("compact.title"),
+                        volunteerPrice: t("compact.price", { price: rub(TARIFF.volunteer) }),
+                        hostPrice: t("compact.price", { price: rub(TARIFF.host) }),
+                        perYear: t("compact.per-year"),
+                        duo: prices[TARIFF.duo] === undefined ? null : t("compact.duo", { price: rub(TARIFF.duo) }),
+                        benefits: [t("compact.benefit-1"), t("compact.benefit-2"), t("compact.benefit-3")],
+                        hostBenefits: [t("compact.host-benefit-1"), t("compact.host-benefit-2"), t("compact.host-benefit-3")],
+                        button: t("sticky.button"),
+                        note: t("compact.note"),
+                        member: t("compact.member"),
+                        // {{date}} подставляет браузер: серверный t() без значения стёр бы его
+                        memberUntil: tProfile("info.Членство активно до {{date}}", { date: "{{date}}" }),
+                        memberLink: t("header.cta-main"),
+                        more: t("compact.more"),
+                    }}
+                />
+
+                {/* Шапка: заголовок на оранжевых плашках, две кнопки-якоря (на телефоне — компактный первый экран выше) */}
+                <section className="box-border flex min-h-[480px] w-full items-center bg-[url(/web/images/membership/membership-header.webp)] bg-cover bg-center px-40 py-24 down-lg:px-8 down-lg:py-12 down-md:hidden">
                     <div className="max-w-[760px]">
                         <h1 className="mb-6 text-[2rem] leading-[1.35] font-bold text-white down-lg:text-[1.625rem] down-sm:text-[1.375rem]">
                             {["header.title-line-1", "header.title-line-2", "header.title-line-3"].map((key, index) => (
@@ -121,6 +150,8 @@ export default async function MembershipPage({ params }: Props) {
                     </div>
                 </section>
 
+                <div id="membership-details">
+                <MobileDetails title={t("why-membership.title")}>
                 {/* Зачем нужно членство */}
                 <section className="bg-white">
                     <div className="mx-auto flex max-w-[1150px] items-center gap-12 px-5 py-[60px] down-md:flex-col-reverse down-md:gap-8 down-md:py-10">
@@ -139,7 +170,9 @@ export default async function MembershipPage({ params }: Props) {
                         </div>
                     </div>
                 </section>
+                </MobileDetails>
 
+                <MobileDetails title={t("compact.details-tariffs")}>
                 <TariffCards
                     id="tariffs"
                     background
@@ -152,6 +185,7 @@ export default async function MembershipPage({ params }: Props) {
                     hostNote={{ text: t("for-volunteer.host-note"), link: t("for-volunteer.host-note-link") }}
                     labels={tariffLabels("for-volunteer")}
                 />
+                </MobileDetails>
 
                 <DuoOffer
                     price={prices[TARIFF.duo] ?? null}
@@ -160,8 +194,9 @@ export default async function MembershipPage({ params }: Props) {
                     labels={duoLabels(t)}
                 />
 
+                <MobileDetails title={t("how-it-works.Как это работает")}>
                 {/* Как это работает */}
-                <section className="mt-20">
+                <section className="mt-20 down-md:mt-0">
                     <div className="mx-auto max-w-[1150px] px-5 py-[52px] text-center">
                         <h2 className="mb-3 text-[1.625rem] font-bold down-md:text-[1.375rem]">{t("how-it-works.Как это работает")}</h2>
                         <p className="mx-auto mb-10 max-w-[700px] text-[1rem] leading-[1.6]">
@@ -180,9 +215,11 @@ export default async function MembershipPage({ params }: Props) {
                         </div>
                     </div>
                 </section>
+                </MobileDetails>
 
+                <MobileDetails title={t("compact.details-international")}>
                 {/* Международный клуб — между личным членством и членством для организаторов (правка бизнеса) */}
-                <section id="international" aria-labelledby="international-club-title" className="mt-20 bg-[#edf3f6] text-[#242424]">
+                <section id="international" aria-labelledby="international-club-title" className="mt-20 bg-[#edf3f6] down-md:mt-0 text-[#242424]">
                     <div className="mx-auto max-w-[1150px] px-5 pt-[60px] pb-12 down-md:pt-12 down-md:pb-10 down-xs:px-4 down-xs:pt-10 down-xs:pb-9">
                         <header className="mx-auto mb-7 text-center">
                             <h2 id="international-club-title" className="mb-4 text-[1.75rem] leading-[1.3] font-bold text-balance down-md:text-[1.5rem]">{t("international-club.title")}</h2>
@@ -225,7 +262,9 @@ export default async function MembershipPage({ params }: Props) {
                         </div>
                     </div>
                 </section>
+                </MobileDetails>
 
+                <MobileDetails title={t("compact.details-host")}>
                 <TariffCards
                     id="host"
                     title={t("for-host.section-title")}
@@ -236,9 +275,11 @@ export default async function MembershipPage({ params }: Props) {
                     signUpHref={routes.signUp(locale)}
                     labels={tariffLabels("for-host")}
                 />
+                </MobileDetails>
 
+                <MobileDetails title={t("compact.details-support")}>
                 {/* Поддержать без членства и как ещё помочь */}
-                <div id="support" className="mt-20">
+                <div id="support" className="mt-20 down-md:mt-0">
                     <section className="bg-[#f5f7f5]">
                         <div className="mx-auto flex max-w-[1150px] items-start gap-12 px-5 py-[60px] max-[900px]:flex-col">
                             <div className="flex flex-[0_0_300px] flex-col gap-5 max-[900px]:w-full max-[900px]:flex-none">
@@ -280,9 +321,11 @@ export default async function MembershipPage({ params }: Props) {
                         </div>
                     </section>
                 </div>
+                </MobileDetails>
 
+                <MobileDetails title={t("compact.details-about")}>
                 {/* Что делает Гудсёрфинг: текст поверх затемнённой фотографии */}
-                <section className="relative mt-20 w-full">
+                <section className="relative mt-20 w-full down-md:mt-0">
                     <div className="absolute top-1/2 left-1/2 z-[2] flex w-full max-w-[980px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center down-lg:p-5">
                         <h2 className="text-center text-[1.625rem] font-normal text-white">
                             {t("what-is-goodsurfing.Что делает Гудсёрфинг и как он помогает развиваться сообществу")}
@@ -298,7 +341,9 @@ export default async function MembershipPage({ params }: Props) {
                     </div>
                     <div aria-hidden className="box-border min-h-[624px] w-full bg-[url(/web/images/membership/back.webp)] bg-cover bg-center bg-no-repeat brightness-[30%]" />
                 </section>
+                </MobileDetails>
 
+                <MobileDetails title={t("review.Отзывы")}>
                 <MembershipReviews
                     title={t("review.Отзывы")}
                     reviews={featured.map((review) => ({
@@ -312,7 +357,9 @@ export default async function MembershipPage({ params }: Props) {
                     labels={{ prev: tCommon("slider.previous"), next: tCommon("slider.next"), textPrev: tCommon("slider.previous"), textNext: tCommon("slider.next") }}
                 />
 
-                <div className="mx-auto mt-20 w-full max-w-[980px] down-lg:px-5">
+                </MobileDetails>
+                <MobileDetails title={t("compact.details-faq")}>
+                <div className="mx-auto mt-20 w-full max-w-[980px] down-lg:px-5 down-md:mt-4 down-md:pb-6">
                     <h2 className="mx-auto w-full text-center text-[1.5em] font-bold">
                         {t("questions.Остались вопросы?")}
                         <br />
@@ -320,8 +367,10 @@ export default async function MembershipPage({ params }: Props) {
                     </h2>
                     <FaqAccordion items={faq(t)} />
                 </div>
+                </MobileDetails>
+                </div>
             </div>
-            <MembershipStickyBar volunteer={cta.volunteer} host={cta.host} button={t("sticky.button")} afterId="tariffs" />
+            <MembershipStickyBar volunteer={cta.volunteer} host={cta.host} button={t("sticky.button")} afterId="membership-compact" />
             {/* Отступ под полосу внизу экрана — чтобы она не закрывала конец страницы */}
             <div aria-hidden className="hidden h-20 down-md:block" />
         </PublicShell>

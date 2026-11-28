@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 
 import { activeMembership, useSession } from "@/components/session/SessionProvider";
 import { Arrow } from "@/components/ui/Arrow";
@@ -37,6 +37,10 @@ export function MobileHeader({ locale, homeHref, navigation, membership, signIn,
     const regular = activeMembership(session.memberships, "REGULAR");
     const [expanded, setExpanded] = useState<ReadonlySet<string>>(new Set());
     const menuId = useId();
+    const navRef = useRef<HTMLElement>(null);
+    // Меню отсчитывается от шапки; если над ней что-то есть (полоса стейджа), h-dvh уводит низ меню
+    // за экран и последние пункты не долистать — вычитаем отступ шапки от верха экрана
+    const [menuTop, setMenuTop] = useState(0);
     const above = open ? "relative z-[1001]" : "";
 
     useEffect(() => {
@@ -50,6 +54,14 @@ export function MobileHeader({ locale, homeHref, navigation, membership, signIn,
             window.removeEventListener("keydown", onKey);
             root.removeAttribute(MENU_OPEN_ATTR);
         };
+    }, [open]);
+
+    useLayoutEffect(() => {
+        if (!open) return undefined;
+        const measure = () => setMenuTop(Math.max(0, navRef.current?.offsetParent?.getBoundingClientRect().top ?? 0));
+        measure();
+        window.addEventListener("resize", measure);
+        return () => window.removeEventListener("resize", measure);
     }, [open]);
 
     const toggle = (label: string) => setExpanded((prev) => {
@@ -85,8 +97,10 @@ export function MobileHeader({ locale, homeHref, navigation, membership, signIn,
 
             <nav
                 id={menuId}
+                ref={navRef}
+                style={menuTop ? { height: `calc(100dvh - ${menuTop}px)` } : undefined}
                 aria-label={labels.menu}
-                className={`absolute top-0 left-0 z-[1000] h-dvh w-full flex-col items-center gap-1 overflow-auto overscroll-contain bg-white px-[15px] pt-[92px] pb-6 ${open ? "flex" : "hidden"}`}
+                className={`absolute top-0 left-0 z-[1000] h-dvh w-full flex-col items-center gap-1 overflow-auto overscroll-contain bg-white px-[15px] pt-[92px] pb-[calc(1.5rem+env(safe-area-inset-bottom))] ${open ? "flex" : "hidden"}`}
             >
                 <a href={navigation.offers.href} className={itemClass}>{navigation.offers.label}</a>
                 {navigation.entries.map((entry) => {

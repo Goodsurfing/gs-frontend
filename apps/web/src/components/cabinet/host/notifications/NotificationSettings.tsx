@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useSession } from "@/components/session/SessionProvider";
 import { Loading } from "@/components/ui/Loading";
 import { browserApi } from "@/lib/browserApi";
-import { CHANNELS, type Channel, type NotificationState, type NotificationType, toggleCell } from "@/lib/notificationSettings";
+import { CHANNELS, type Channel, type DigestTestLabels, type DigestTestResult, digestTestMessage, type NotificationState, type NotificationType, toggleCell } from "@/lib/notificationSettings";
 
 export interface NotificationSettingsLabels {
     intro: string;
@@ -37,7 +37,7 @@ export interface NotificationSettingsLabels {
  * подключение Telegram (MAX — «скоро») и таблица «что и куда присылать». Галочки сохраняются
  * сразу; канал мессенджера включается только после подключения.
  */
-export function NotificationSettings({ types, labels }: { types: readonly NotificationType[]; labels: NotificationSettingsLabels }) {
+export function NotificationSettings({ types, labels, digestTest }: { types: readonly NotificationType[]; labels: NotificationSettingsLabels; digestTest?: DigestTestLabels }) {
     const session = useSession();
     const [state, setState] = useState<NotificationState | null>(null);
     const [failed, setFailed] = useState(false);
@@ -203,6 +203,38 @@ export function NotificationSettings({ types, labels }: { types: readonly Notifi
                 {error && <p role="alert" className="text-[14px] text-error">{error}</p>}
                 <p className="text-[13px] leading-[140%] text-caption">{labels.service} {labels.quiet}</p>
             </section>
+
+            {state.digestTest && digestTest && <DigestTestButton labels={digestTest} />}
         </div>
+    );
+}
+
+/** «Прислать сводку сейчас» — только на тестовой версии (бэкенд отдаёт digestTest), GS-298 */
+function DigestTestButton({ labels }: { labels: DigestTestLabels }) {
+    const session = useSession();
+    const [sending, setSending] = useState(false);
+    const [message, setMessage] = useState<{ text: string; error: boolean } | null>(null);
+
+    const send = async () => {
+        setSending(true);
+        setMessage(null);
+        const { data } = await browserApi(session.token)
+            .POST("/api/v1/notification-settings/unanswered-digest/test")
+            .catch(() => ({ data: undefined }));
+        setSending(false);
+        setMessage(data ? { text: digestTestMessage(data as DigestTestResult, labels), error: false } : { text: labels.error, error: true });
+    };
+
+    return (
+        <section aria-labelledby="digest-test-title" className="flex flex-col gap-3 rounded-[10px] border border-dashed border-accent-bg px-5 py-4">
+            <h3 id="digest-test-title" className="text-[18px] font-medium">{labels.title}</h3>
+            <p className="text-[15px] leading-[140%]">{labels.hint}</p>
+            <div>
+                <button type="button" disabled={sending} onClick={() => void send()} className="cursor-pointer rounded-[10px] border border-primary bg-white px-5 py-2.5 text-[15px] text-primary transition-colors hover:bg-primary hover:text-white disabled:cursor-default disabled:opacity-60">
+                    {sending ? labels.sending : labels.button}
+                </button>
+            </div>
+            {message && <p role={message.error ? "alert" : "status"} className={`text-[14px] ${message.error ? "text-error" : ""}`}>{message.text}</p>}
+        </section>
     );
 }

@@ -1,0 +1,30 @@
+{
+    "hint": {
+        "text": "Install Goodsurfing on your iPhone — get notified about messages and applications like from an app",
+        "how": "How to install",
+        "later": "Later",
+        "title": "How to install on iPhone",
+        "note": "Requires iOS 16.4 or later. The installed site keeps its sign-in separately from Safari — sign in there once more. Membership is paid on the website as usual.",
+        "more": "Learn more",
+        "close": "Got it"
+    },
+    "steps": {
+        "share": "In Safari, tap “Share” at the bottom of the screen (if you don't see it, tap “⋯” first)",
+        "addToHome": "Scroll down and choose “Add to Home Screen”",
+        "add": "Keep “Open as Web App” on, if there is such a switch, and tap “Add”",
+        "open": "Open Goodsurfing from the Home Screen, sign in and turn on notifications in “Messages”"
+    },
+    "page": {
+        "title": "Goodsurfing on your phone",
+        "description": "How to install Goodsurfing on iPhone and Android: notifications about messages and applications, sign-in and membership payment — just like on the website.",
+        "lead": "Messages from hosts and volunteers, applications and notifications — always at hand.",
+        "androidTitle": "Android",
+        "androidText": "The Android app is coming soon. For now, open the website in your browser — message notifications work there too.",
+        "soon": "soon",
+        "iphoneTitle": "iPhone",
+        "iphoneText": "Add the website to your Home Screen — it will open like an app, without the address bar, and can send you notifications.",
+        "installed": "You opened Goodsurfing from the Home Screen — you're all set. Turn on notifications in “Messages”.",
+        "notSafari": "These steps are for Safari. If the site is open in another browser or inside an app, open goodsurfing.org in Safari.",
+        "messenger": "Open messages"
+    }
+}

@@ -6,6 +6,7 @@ export interface SummaryLabels {
     to: string;
     days: string;
     kids: string;
+    fullYear: string;
     verified: string;
     food: string;
     housing: string;
@@ -27,6 +28,7 @@ export function savedSearchSummary(siteQuery: string, categoryNames: Record<numb
     const chips: string[] = [];
     if (f.search) chips.push(`«${f.search}»`);
     for (const id of f.categories) if (categoryNames[id]) chips.push(categoryNames[id]);
+    if (f.fullYear) chips.push(labels.fullYear);
     if (f.from) chips.push(labels.from.replace("{{date}}", date(f.from)));
     if (f.to) chips.push(labels.to.replace("{{date}}", date(f.to)));
     if (f.minDays || f.maxDays) chips.push(labels.days.replace("{{min}}", String(f.minDays ?? 1)).replace("{{max}}", String(f.maxDays ?? "∞")));

@@ -316,6 +316,14 @@ export const RULES_ES: LegalDocument = {
                     considera que algún contenido de la Plataforma Goodsurfing
                     infringe los derechos de autor sobre su propiedad, le rogamos
                     que nos lo comunique en: support@goodsurfing.org.
+                    <br />
+                    <br />
+                    5.7. Si un mensaje, el perfil de un usuario o una reseña
+                    infringe estas Condiciones, puede denunciarlo con el botón
+                    «Denunciar» que aparece a su lado. Las denuncias se revisan en
+                    un plazo de 24 horas. También puede bloquear a un usuario: no
+                    podrá escribirle y la conversación con él desaparecerá de su
+                    lista. Puede desbloquearlo en la configuración de su perfil.
                 </div>
             </div>
             <div className={SECTION} id="6">

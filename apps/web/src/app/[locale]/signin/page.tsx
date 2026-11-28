@@ -5,7 +5,9 @@ import { AuthShell } from "@/components/auth/AuthShell";
 import { SignInForm } from "@/components/auth/SignInForm";
 import { isLocale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/dictionary";
+import { yandexProviderHint } from "@/lib/oauthProvidersServer";
 import { routes } from "@/lib/routes";
+import { yandexButtonLabels } from "@/lib/yandexIdLabels";
 import { pageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -27,7 +29,8 @@ const ERRORS = [
 export default async function SignInPage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
-    const t = await getTranslator(locale);
+    // Кнопка Яндекс ID — только если вход через Яндекс включён на сервере (кэш страницы 5 минут)
+    const [t, yandexHint] = await Promise.all([getTranslator(locale), yandexProviderHint()]);
     return (
         <AuthShell locale={locale} cancelHref={routes.main(locale)}>
             <div className="flex w-full justify-center">
@@ -37,6 +40,8 @@ export default async function SignInPage({ params }: Props) {
                         locale={locale}
                         resetHref={routes.resetPassword(locale)}
                         signUpHref={routes.signUp(locale)}
+                        signInHref={routes.signIn(locale)}
+                        yandexHint={yandexHint}
                         // Некуда вернуться — «С чего начать»; организатора и того, у кого всё сделано, она сама отправит на рабочий стол
                         profileHref={routes.start(locale)}
                         labels={{
@@ -48,6 +53,7 @@ export default async function SignInPage({ params }: Props) {
                             signUp: t("login.Зарегистрироваться"),
                             deleted: t("login.Пользователь был удален или не создавался"),
                             errors: Object.fromEntries(ERRORS.map((key) => [key, t(`login.${key}`)])),
+                            yandex: yandexButtonLabels(t),
                         }}
                     />
                 </div>

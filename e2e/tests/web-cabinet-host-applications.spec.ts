@@ -1,10 +1,7 @@
-import { test, expect, type Page } from '@playwright/test';
-import { API_URL } from '../config';
+import { test, expect } from '@playwright/test';
 import { enableNewFrontend } from '../support/newFrontend';
 
-const accessToken = (page: Page) => page.evaluate(() => JSON.parse(localStorage.getItem('token') ?? 'null') as string | null);
-
-/** Новый фронт: рабочий стол организатора и заявки по колонкам. */
+/** Новый фронт: рабочий стол организатора и заявки (поиск, вкладки, карточки — GS-331). */
 test.describe('Новый фронт: рабочий стол и заявки организатора', () => {
     test.beforeEach(async ({ context }, testInfo) => {
         test.skip(testInfo.project.name !== 'host', 'кабинет организатора');
@@ -17,36 +14,54 @@ test.describe('Новый фронт: рабочий стол и заявки о
         await expect(page.getByRole('link', { name: 'Редактировать профиль' })).toHaveAttribute('href', '/host/info');
         await expect(page.getByRole('heading', { name: 'Заявки' })).toBeVisible();
         await expect(page.getByText(/Новых заявок: \d+/)).toBeVisible();
+        // Есть новые — наверху «N новых заявок ждут ответа → Ответить» на вкладку «Новые»
+        const banner = page.getByTestId('new-applications-banner');
+        if (await banner.count()) await expect(banner.getByRole('link', { name: /Ответить/ })).toHaveAttribute('href', '/host/notes?status=new');
         await expect(page.getByRole('heading', { name: 'Уведомления' })).toBeVisible();
         await expect(page.getByText('Добро пожаловать!')).toBeVisible();
     });
 
-    test('заявки: три колонки, «Принять» переносит заявку в «Принято»', async ({ page }) => {
-        await page.goto('/host/notes');
+    test('заявки: вкладки с числами, поиск по имени, карточка с вакансией и «Ответить» (GS-331)', async ({ page }) => {
+        await page.goto('/host/notes?status=all');
         await expect(page.getByRole('heading', { name: 'Мои заявки' })).toBeVisible();
         await expect(page.getByLabel('Вакансия')).toHaveValue('');
-        const fresh = page.getByRole('region', { name: 'Новые' });
-        const accepted = page.getByRole('region', { name: 'Принято' });
-        await expect(fresh).toBeVisible();
-        await expect(accepted).toBeVisible();
-        await expect(page.getByRole('region', { name: 'Отклонено' })).toBeVisible();
-
-        const accept = fresh.getByRole('button', { name: 'Принять' }).first();
-        test.skip(!(await accept.count()), 'нет новых заявок');
-        const href = await fresh.locator('a[href^="/offers/"]').first().getAttribute('href');
-        const before = Number(await accepted.locator('span').nth(1).textContent());
-        // Какую заявку принимаем — по ответу PATCH, чтобы вернуть её в «Новые»
-        const patched = page.waitForResponse((r) => r.url().includes('/application_forms/') && r.request().method() === 'PATCH');
-        await accept.click();
-        const id = (await patched).url().match(/application_forms\/(\d+)\/status/)?.[1];
-        try {
-            await expect(accepted.locator('span').nth(1)).toHaveText(String(before + 1));
-            expect(href).toBeTruthy();
-        } finally {
-            await page.request.patch(`${API_URL}/api/v1/application_forms/${id}/status`, {
-                headers: { Authorization: `Bearer ${await accessToken(page)}`, 'Content-Type': 'application/merge-patch+json' },
-                data: { status: 'new' },
-            });
+        const tabs = page.getByRole('tablist');
+        for (const name of ['Новые', 'Приняты', 'Отклонены', 'Все']) {
+            // Число во вкладке — с сервера
+            await expect(tabs.getByRole('tab', { name: new RegExp(`^${name}\\s*\\d+$`) })).toBeVisible();
         }
+        await expect(tabs.getByRole('tab', { name: /^Все/ })).toHaveAttribute('aria-selected', 'true');
+
+        const cards = page.getByTestId('application-card');
+        await expect(cards.first().or(page.getByText('Пока нет заявок', { exact: false }))).toBeVisible();
+        test.skip(!(await cards.count()), 'у организатора нет заявок');
+
+        const first = cards.first();
+        // Название вакансии — ссылкой на вакансию
+        await expect(first.locator('a[href^="/offers/"]')).toBeVisible();
+
+        // Поиск по имени первого волонтёра находит его карточку и пишется в адрес
+        const name = (await first.getByRole('heading').textContent())?.trim().split(/\s+/)[0] ?? '';
+        await page.getByLabel('Поиск по имени волонтёра').fill(name);
+        await expect(page).toHaveURL(/[?&]q=/);
+        await expect(cards.first().getByRole('heading')).toContainText(name);
+
+        // Новая заявка: «Ответить» ведёт в переписку, «Отклонить» сначала спрашивает подтверждение
+        await page.getByLabel('Поиск по имени волонтёра').fill('');
+        await tabs.getByRole('tab', { name: /^Новые/ }).click();
+        const fresh = cards.first();
+        test.skip(!(await fresh.count()), 'нет новых заявок');
+        const reply = fresh.getByRole('link', { name: 'Ответить' });
+        if (await reply.count()) await expect(reply).toHaveAttribute('href', /^\/messenger\/\d+$/);
+        let patched = false;
+        page.on('request', (request) => {
+            if (request.method() === 'PATCH' && request.url().includes('/application_forms/')) patched = true;
+        });
+        await fresh.getByRole('button', { name: 'Отклонить' }).click();
+        const dialog = page.getByRole('dialog');
+        await expect(dialog).toContainText('Отклонить заявку?');
+        await dialog.getByRole('button', { name: 'Отмена' }).click();
+        await expect(dialog).toBeHidden();
+        expect(patched).toBe(false);
     });
 });

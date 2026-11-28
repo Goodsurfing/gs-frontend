@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
-    ageText, gendersText, languagesText, money, organizationType, participateText, receptionPlaceText, responseStatsText, skillName,
+    ageText, applicationsClosed, APPLICATIONS_CLOSED, gendersText, languagesText, money, organizationType, participateText, receptionPlaceText, responseStatsText, skillName,
 } from "../offerText";
 
 const t = (key: string, values?: Record<string, string | number>) => `[${key}${values ? JSON.stringify(values) : ""}]`;
@@ -40,6 +40,23 @@ describe("offerText", () => {
         expect(participateText({ closed: false, needVolunteerRole: true, textParticipate: null }, labels)).toBe("Участвовать");
         expect(participateText({ closed: false, needVolunteerRole: false, textParticipate: "Вы участвуете" }, labels)).toBe("Участвуете");
         expect(participateText({ closed: false, needVolunteerRole: false, textParticipate: "Что-то новое" }, labels)).toBe("Участвовать");
+    });
+
+    it("приём заявок закончился: причина на кнопке сразу, своя заявка важнее (27.11.2026)", () => {
+        const labels = { participate: "Участвовать", closed: "Закрыта", becomeVolunteer: "Станьте", states: { "Вы отправили заявку": "Отправлена", [APPLICATIONS_CLOSED]: "Приём завершён" } };
+        expect(participateText({ closed: false, needVolunteerRole: false, applicationsEnded: true }, labels)).toBe("Приём завершён");
+        expect(participateText({ closed: false, needVolunteerRole: false, textParticipate: "Вы отправили заявку", applicationsEnded: true }, labels)).toBe("Отправлена");
+        expect(participateText({ closed: false, needVolunteerRole: false, textParticipate: APPLICATIONS_CLOSED }, labels)).toBe("Приём завершён");
+        expect(participateText({ closed: true, needVolunteerRole: false, applicationsEnded: true }, labels)).toBe("Закрыта");
+    });
+
+    it("applicationsClosed: дата приёма раньше сегодняшней", () => {
+        expect(applicationsClosed("25.11.2026", "27.11.2026")).toBe(true);
+        expect(applicationsClosed("27.11.2026", "27.11.2026")).toBe(false);
+        expect(applicationsClosed("01.01.2027", "27.11.2026")).toBe(false);
+        expect(applicationsClosed("31-12-2025", "27.11.2026")).toBe(true);
+        expect(applicationsClosed(null, "27.11.2026")).toBe(false);
+        expect(applicationsClosed("", "27.11.2026")).toBe(false);
     });
 });
 

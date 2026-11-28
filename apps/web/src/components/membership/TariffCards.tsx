@@ -56,7 +56,7 @@ export function TariffCards({ id, title, free, paid, price, payHref, signUpHref,
     return (
         <section
             id={id}
-            className={`mt-20 ${background ? "relative bg-[url(/web/images/membership/back.webp)] bg-cover bg-center bg-no-repeat before:absolute before:inset-0 before:bg-black/62" : "bg-[#f5f7f5]"}`}
+            className={`mt-20 down-md:mt-0 ${background ? "relative bg-[url(/web/images/membership/back.webp)] bg-cover bg-center bg-no-repeat before:absolute before:inset-0 before:bg-black/62" : "bg-[#f5f7f5]"}`}
         >
             <div className="relative mx-auto max-w-[1150px] px-5 py-[60px]">
                 <h2 className={`mb-10 text-center text-[1.75rem] leading-[1.3] font-bold down-md:text-[1.375rem] ${background ? "text-white" : "text-[#1a1a1a]"}`}>{title}</h2>

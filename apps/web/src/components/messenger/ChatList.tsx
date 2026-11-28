@@ -3,6 +3,7 @@
 import { type ReactNode, useMemo, useState } from "react";
 
 import { Avatar } from "@/components/ui/Avatar";
+import { EmptyHint } from "@/components/ui/EmptyHint";
 import type { Locale } from "@/i18n/config";
 import { mediaUrl } from "@/lib/media";
 import { type Chat, CHAT_TABS, chatInTab, type ChatTab, formatDateRange, formatListTime, readByOthers, statusChip } from "@/lib/messenger";
@@ -21,6 +22,8 @@ export interface ChatListLabels {
     noName: string;
     empty: string;
     emptyTab: string;
+    /** Пустая вкладка — что в неё попадает (тестировщик 07.11 ждал своё непрочитанное собеседником сообщение в «Непрочитанных») */
+    emptyTabs: Record<Exclude<ChatTab, "all">, string>;
     loadError: string;
     retry: string;
     read: string;
@@ -30,12 +33,12 @@ const STEP = 30;
 
 /**
  * Список переписок (как входящие в Worldpackers): поиск, вкладки «Все»,
- * «Непрочитанные», «Ждут ответа», «Принятые»; в строке — собеседник, время,
+ * «Непрочитанные», «Ждут ответа», «Подтверждённые»; в строке — собеседник, время,
  * вакансия с датами и статусом заявки, последнее сообщение («Вы: …» со
  * значком прочтения) и число непрочитанных. Строки дорисовываются при
  * прокрутке по 30, чтобы длинный список не тормозил слабые телефоны.
  */
-export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerIsVolunteer, selectedId, chatHref, onOpen, search, onSearch, labels, top, className = "" }: {
+export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerIsVolunteer, selectedId, chatHref, onOpen, search, onSearch, labels, top, emptyPhone, className = "" }: {
     locale: Locale;
     chats: Chat[];
     loaded: boolean;
@@ -51,6 +54,8 @@ export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerI
     labels: ChatListLabels;
     /** Над поиском: предложение включить уведомления */
     top?: ReactNode;
+    /** Нет ни одной переписки, телефон (до 768 px): подсказка и кнопка «что делать» (GS-291); на компьютере — прежняя строка */
+    emptyPhone?: { title: string; hint: string; action: { href: string; label: string } };
     className?: string;
 }) {
     const [tab, setTab] = useState<ChatTab>("all");
@@ -62,7 +67,7 @@ export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerI
     return (
         <div className={`flex h-full w-full max-w-[400px] min-w-[300px] flex-col border-r border-accent-bg bg-white ${className}`}>
             {top}
-            <div className="flex flex-col gap-2 border-b border-accent-bg px-4 pt-4">
+            <div className="flex flex-col gap-2 px-4 pt-4">
                 <input
                     type="search"
                     value={search}
@@ -71,7 +76,7 @@ export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerI
                     onChange={(event) => onSearch(event.target.value)}
                     className="h-10 w-full rounded-full border border-accent-bg bg-field px-4 text-[14px] outline-none placeholder:text-caption focus:border-primary focus:bg-white"
                 />
-                <div role="tablist" aria-label={labels.search} className="-mx-4 flex overflow-x-auto px-2 [scrollbar-width:none]">
+                <div role="tablist" aria-label={labels.search} className="scroll-strip -mx-4 flex px-2 shadow-[inset_0_-1px_0_var(--color-accent-bg)] [scrollbar-width:none]">
                     {CHAT_TABS.map((value) => {
                         const active = tab === value;
                         const count = value === "unread" || value === "awaiting" ? counts[value] : 0;
@@ -85,7 +90,7 @@ export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerI
                                     setTab(value);
                                     setVisible(STEP);
                                 }}
-                                className={`-mb-px flex h-10 shrink-0 cursor-pointer items-center gap-1 border-0 border-b-2 bg-transparent px-2 text-[13px] font-medium whitespace-nowrap transition-colors ${active ? "border-primary text-primary" : "border-transparent text-caption hover:text-ink-secondary"}`}
+                                className={`flex h-10 shrink-0 cursor-pointer items-center gap-1 border-0 border-b-2 bg-transparent px-2 text-[13px] font-medium whitespace-nowrap transition-colors ${active ? "border-primary text-primary" : "border-transparent text-caption hover:text-ink-secondary"}`}
                             >
                                 {labels.tabs[value]}
                                 {count > 0 && <span className={`rounded-full px-1.5 text-[11px] leading-[18px] ${active ? "bg-primary text-white" : "bg-field text-caption"}`}>{count}</span>}
@@ -109,7 +114,12 @@ export function ChatList({ locale, chats, loaded, failed, onRetry, myId, viewerI
                     </div>
                 )}
                 {loaded && !failed && filtered.length === 0 && (
-                    <p className="px-6 py-10 text-center text-[14px] text-caption">{chats.length === 0 && !search ? labels.empty : labels.emptyTab}</p>
+                    <p className={`px-6 py-10 text-center text-[14px] text-caption ${emptyPhone && chats.length === 0 && !search ? "down-md:hidden" : ""}`}>
+                        {chats.length === 0 && !search ? labels.empty : search || tab === "all" ? labels.emptyTab : labels.emptyTabs[tab]}
+                    </p>
+                )}
+                {loaded && !failed && emptyPhone && chats.length === 0 && !search && (
+                    <EmptyHint icon="chat" title={emptyPhone.title} hint={emptyPhone.hint} action={emptyPhone.action} className="hidden py-10 down-md:flex" />
                 )}
                 {shown.map((chat) => (
                     <ChatRow

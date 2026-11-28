@@ -1,6 +1,7 @@
 import { test, expect, request, type Page } from '@playwright/test';
 import { API_URL } from '../config';
 import { enableNewFrontend } from '../support/newFrontend';
+import { expectNoindex } from '../support/pageCheck';
 
 /** Популярная открытая вакансия, у которой больше одной страницы отзывов. */
 const findOffer = async (): Promise<number | undefined> => {
@@ -49,6 +50,26 @@ test.describe('Новый фронт: страница вакансии', () => 
             await expect(page.locator('#organization')).toBeInViewport();
         });
 
+        test('телефон: при прокрутке «Участвовать» видна всегда — в обложке или полосой внизу', async ({ page }, testInfo) => {
+            test.skip(testInfo.project.name !== 'vol', 'один раз за прогон');
+            const id = await findOffer();
+            test.skip(!id, 'нет открытой вакансии');
+            await page.setViewportSize({ width: 390, height: 844 });
+            await page.goto(`/offers/${id}`);
+            await expect(page.locator('[data-offer-hero-actions]')).toBeAttached();
+            // Видимая кнопка «Участвовать» (обложка или полоса внизу) в точках прокрутки до конца описания
+            const visibleCta = () => page.evaluate(() => [...document.querySelectorAll('a,span')]
+                .filter((el) => /^(Участвовать|.*гудсёрфером)$/.test((el.textContent ?? '').trim()))
+                .some((el) => {
+                    const r = el.getBoundingClientRect();
+                    return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight;
+                }));
+            for (let y = 0; y <= 1600; y += 80) {
+                await page.evaluate((top) => window.scrollTo(0, top), y);
+                await expect.poll(visibleCta, { message: `прокрутка ${y}px` }).toBe(true);
+            }
+        });
+
         test('несуществующая вакансия — сообщение и «Назад»', async ({ page }, testInfo) => {
             test.skip(testInfo.project.name !== 'vol', 'один раз за прогон');
             const response = await page.goto('/offers/999999999');
@@ -56,8 +77,35 @@ test.describe('Новый фронт: страница вакансии', () => 
             expect(response?.status()).toBe(404);
             await expect(page.getByText('Вакансия не найдена или произошла ошибка')).toBeVisible();
             await expect(page.getByRole('button', { name: 'Назад' })).toBeVisible();
-            await expect(page.locator('head meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+            // Тегов robots после перерисовки ISR бывает два одинаковых (Next 16.4.6, PR #973) — проверяем все
+            await expectNoindex(page);
         });
+    });
+
+    test('волонтёр: приём заявок закончился — кнопка сразу неактивна с причиной, без «мигания» (27.11)', async ({ page }, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'нужен волонтёр');
+        // Фикстура «E2E Тестовая вакансия 5» — приём заявок нарочно закончился (applicationEndDate в прошлом)
+        const api = await request.newContext();
+        const found = await (await api.get(`${API_URL}/api/v1/vacancy?search=${encodeURIComponent('E2E Тестовая вакансия 5')}&limit=5&fields=card`)).json();
+        const offer = (found?.data ?? []).find((item: { title?: string }) => item.title?.startsWith('E2E Тестовая вакансия 5'));
+        test.skip(!offer, 'нет фикстуры «E2E Тестовая вакансия 5»');
+        const when = (await (await api.get(`${API_URL}/api/v1/vacancy/${offer.id}`)).json())?.when;
+        await api.dispose();
+        test.skip(!when?.applicationEndDate, 'у фикстуры нет даты окончания приёма');
+
+        // Уже в HTML с сервера, до входа и скриптов: неактивная кнопка с причиной
+        const html = await (await page.request.get(`/offers/${offer.id}`, { headers: { Cookie: '' } })).text();
+        expect(html).toContain('Приём заявок завершён');
+
+        await page.goto(`/offers/${offer.id}`);
+        const button = page.getByRole('main').getByText('Приём заявок завершён').first();
+        await expect(button).toBeVisible();
+        await expect(button).toHaveAttribute('aria-disabled', 'true');
+        await expect(page.getByRole('main').getByRole('link', { name: 'Участвовать' })).toHaveCount(0);
+        // Ответ API для вошедшего пришёл — кнопка всё та же
+        await page.waitForTimeout(2000);
+        await expect(button).toHaveAttribute('aria-disabled', 'true');
+        await expect(page.getByRole('main').getByRole('link', { name: 'Участвовать' })).toHaveCount(0);
     });
 
     test('волонтёр: «Участвовать» ведёт к отклику, а не на вход', async ({ page }, testInfo) => {

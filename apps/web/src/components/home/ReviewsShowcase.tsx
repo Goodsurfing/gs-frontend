@@ -34,7 +34,7 @@ export function ReviewsShowcase({ reviews, labels }: { reviews: ShowcaseReview[]
                 className={`cursor-pointer disabled:cursor-default disabled:opacity-20 ${direction === -1 ? "mr-[15px] rotate-180" : ""}`}
             >
                 {/* eslint-disable-next-line @next/next/no-img-element -- иконка */}
-                <img src="/web/images/home/review-arrow.svg" alt="" />
+                <img src="/web/images/home/review-arrow.svg" alt="" width={18} height={8} loading="lazy" />
             </button>
         );
     };
@@ -61,7 +61,7 @@ export function ReviewsShowcase({ reviews, labels }: { reviews: ShowcaseReview[]
                                 <h3 className="line-clamp-2 pr-[90px] text-[1.125rem] leading-[122%] font-medium text-ink-secondary down-lg:pr-0 down-lg:text-center">{review.title}</h3>
                                 <p className="line-clamp-6 max-w-[420px] text-[0.8125rem] leading-[146%] text-ink-secondary down-lg:mt-5 down-lg:mb-10 down-lg:text-center">{review.text}</p>
                                 <div className="flex items-center">
-                                    <Avatar src={review.avatar} name={review.author} size={30} />
+                                    <Avatar src={review.avatar} name={review.author} size={30} loading="lazy" />
                                     <p className="ml-2.5 text-[0.825rem] font-semibold text-primary">{review.author}</p>
                                 </div>
                             </div>

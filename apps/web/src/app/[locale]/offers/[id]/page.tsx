@@ -10,6 +10,7 @@ import { OfferOrganization } from "@/components/offer/OfferOrganization";
 import { OfferParticipants } from "@/components/offer/OfferParticipants";
 import { OfferPhotoStack } from "@/components/offer/OfferPhotoStack";
 import { OfferReviews } from "@/components/offer/OfferReviews";
+import { ReportProvider } from "@/components/report/ReportContext";
 import {
     OfferDescription, OfferExtraConditions, OfferFinishing, OfferLanguages, OfferPayment, OfferTerms,
     OfferWhatToDo, OfferWhen, OfferWhoNeeds, type SvgMap,
@@ -24,13 +25,14 @@ import { SectionSubmenu } from "@/components/ui/SectionSubmenu";
 import { failOnApiError } from "@/lib/apiUnavailable";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getTranslator, type Translate } from "@/i18n/dictionary";
+import { reportLabels } from "@/lib/report";
 import { offerSeoDescription, offerSeoTitle } from "@/lib/offerSeo";
 import { categoryName } from "@/lib/categories";
 import { mediaUrl } from "@/lib/media";
 import { getPrices, TARIFF } from "@/lib/membershipPrices";
 import { getOffer, getOfferBanner, getOfferParticipants, getOfferReviews, getSimilarOffers, inlineSvg, localizedDescription, type OfferDetail, type SimilarOffer } from "@/lib/offer";
 import { type Badge, getOrganizationBadges } from "@/lib/achievements";
-import { organizationType, PARTICIPATE_STATES, responseStatsText } from "@/lib/offerText";
+import { applicationsClosed, organizationType, PARTICIPATE_STATES, responseStatsText } from "@/lib/offerText";
 import { routes } from "@/lib/routes";
 import { offerDatesChip, offerHighlights, shortAddress } from "@/lib/offerHighlights";
 import { pageMetadata, siteUrl } from "@/lib/seo";
@@ -57,7 +59,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const [result, tMain, tOffer] = await Promise.all([getOffer(locale, id), getTranslator(locale, "main"), getTranslator(locale, "offer")]);
     const path = routes.offer(locale, id);
     if (result.kind !== "ok") {
-        return pageMetadata({ locale, path, title: tMain("seo.title"), description: tMain("seo.description"), noindex: true });
+        return pageMetadata({ locale, path, title: tMain("seo.title"), description: tMain("seo.description"), noindex: true, notFound: result.kind === "notFound" });
     }
     const { description } = localizedDescription(result.offer);
     const offer = result.offer;
@@ -127,12 +129,13 @@ function moscowToday(): string {
 export default async function OfferPage({ params }: Props) {
     const { locale, id } = await params;
     if (!isLocale(locale)) notFound();
-    const [result, t, tOffer, tMain, tHost] = await Promise.all([
+    const [result, t, tOffer, tMain, tHost, tReport] = await Promise.all([
         getOffer(locale, id),
         getTranslator(locale),
         getTranslator(locale, "offer"),
         getTranslator(locale, "main"),
         getTranslator(locale, "host"),
+        getTranslator(locale, "report"),
     ]);
 
     failOnApiError(result, `вакансия ${id}`);
@@ -167,9 +170,11 @@ export default async function OfferPage({ params }: Props) {
     return (
         <PublicShell locale={locale}>
             <OfferViewerProvider offerId={offer.id}>
-                <div className="mx-auto flex min-h-[500px] w-full max-w-[1920px] flex-col items-center justify-center px-[50px] pt-[100px] pb-[50px] down-lg:p-5">
-                    <OfferBody locale={locale} offer={offer} participants={participants} reviews={reviews} banner={banner} svgs={svgs} badges={badges} similar={similar} volunteerPrice={prices[TARIFF.volunteer] ?? 990} t={t} tOffer={tOffer} tHost={tHost} />
-                </div>
+                <ReportProvider labels={reportLabels(tReport)}>
+                    <div className="mx-auto flex min-h-[500px] w-full max-w-[1920px] flex-col items-center justify-center px-[50px] pt-[100px] pb-[50px] down-lg:p-5">
+                        <OfferBody locale={locale} offer={offer} participants={participants} reviews={reviews} banner={banner} svgs={svgs} badges={badges} similar={similar} volunteerPrice={prices[TARIFF.volunteer] ?? 990} t={t} tOffer={tOffer} tHost={tHost} />
+                    </div>
+                </ReportProvider>
             </OfferViewerProvider>
         </PublicShell>
     );
@@ -220,6 +225,8 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
     }));
     // Пустой блок «Участники (0)» — только место на странице (10.11.2026); не загрузились — показываем, там своя ошибка
     const hasParticipants = participants === null || participants.total > 0;
+    // Дата окончания приёма публичная — кнопка «Участвовать» сразу неактивна с причиной (27.11.2026)
+    const applicationsEnded = applicationsClosed(offer.when?.applicationEndDate, moscowToday());
     const statusLabel = ["active", "disabled", "draft"].includes(offer.status) ? p(offer.status) : "";
 
     return (
@@ -235,7 +242,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
                 dates={offerDatesChip(offer.when, offer.datesPassed, tOffer, moscowToday())}
                 highlights={offerHighlights({ condition, whatToDo: offer.whatToDo, when: offer.when }, tOffer)}
                 gallery={<OfferPhotoStack images={gallery} thumbs={galleryThumbs} labels={{ photos: p("Фотографии"), ...galleryLabels }} />}
-                actions={<OfferActions offerId={offer.id} status={offer.status} variant="hero" hrefs={hrefs} labels={labels} />}
+                actions={<OfferActions offerId={offer.id} status={offer.status} applicationsEnded={applicationsEnded} variant="hero" hrefs={hrefs} labels={labels} />}
                 labels={{ status: statusLabel, reviewsCount: t("Отзывов:") }}
             />
             <SectionSubmenu
@@ -249,7 +256,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
                     { id: "review", text: p("Отзывы") },
                 ]}
             >
-                <OfferActions offerId={offer.id} status={offer.status} variant="menu" hrefs={hrefs} labels={labels} />
+                <OfferActions offerId={offer.id} status={offer.status} applicationsEnded={applicationsEnded} variant="menu" hrefs={hrefs} labels={labels} />
             </SectionSubmenu>
 
             <div className="w-full max-w-[980px] pt-10">
@@ -383,7 +390,7 @@ function OfferBody({ locale, offer, participants, reviews, banner, svgs, badges,
                 )}
             </div>
             {/* Кнопка внизу экрана на телефоне; отступ — чтобы она не закрывала конец страницы */}
-            <OfferActions offerId={offer.id} status={offer.status} variant="sticky" hrefs={hrefs} labels={labels} />
+            <OfferActions offerId={offer.id} status={offer.status} applicationsEnded={applicationsEnded} variant="sticky" hrefs={hrefs} labels={labels} />
             <div aria-hidden className="hidden h-20 down-md:block" />
         </>
     );

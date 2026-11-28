@@ -30,10 +30,12 @@ export default async function PaymentPage({ params, searchParams }: Props) {
     return (
         <PublicShell locale={locale} topGap>
             <MembershipCheckout
+                locale={locale}
                 tariffCode={tariffCode}
                 signInHref={`${routes.signIn(locale)}?next=payment&nextId=${encodeURIComponent(tariffCode)}`}
                 membershipHref={routes.membership(locale)}
                 labels={{
+                    notice: t("yookassa-notice"),
                     rubles: t("Списание средств происходит в российских рублях"),
                     conversion: t("Банк автоматически произведет конвертацию в валюту, используемой вами карты"),
                     redirect: t("Сейчас вы будете перенаправлены на страницу оплаты"),

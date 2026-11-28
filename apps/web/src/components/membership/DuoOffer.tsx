@@ -24,9 +24,9 @@ export function DuoOffer({ price, payHref, inviteBase, labels }: {
     const onRole = useCallback((role: string | null) => setHasDuo(role !== null), []);
     return (
         <section className="bg-white">
-            <div className="mx-auto flex max-w-[1150px] flex-col gap-6 px-5 py-10">
+            <div className="mx-auto flex max-w-[1150px] flex-col gap-6 px-5 py-10 down-md:gap-0 down-md:py-0">
                 {price !== null && !hasDuo && (
-                    <div className="flex items-center gap-8 rounded-xl bg-[#f5f7f5] p-7 down-md:flex-col down-md:items-stretch down-md:gap-5">
+                    <div className="flex items-center gap-8 rounded-xl bg-[#f5f7f5] p-7 down-md:hidden">
                         <div className="min-w-0 flex-1">
                             <h2 className="mb-2 text-[1.5rem] leading-[1.3] font-bold text-[#1a1a1a] down-md:text-[1.25rem]">{labels["offer-title"]}</h2>
                             <p className="text-[1rem] leading-[1.6] text-[#424242]">{labels["offer-text"]}</p>

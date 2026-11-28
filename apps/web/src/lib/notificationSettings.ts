@@ -14,7 +14,22 @@ export type NotificationState = {
         telegram: { available: boolean; connected: boolean; username?: string | null };
         max: { available: boolean; connected: boolean };
     };
+    /** Кнопка «Прислать сводку сейчас» — только на тестовой версии (GS-298) */
+    digestTest?: boolean;
 };
+
+/** Ответ «Прислать сводку сейчас»: count — сколько заявок без ответа (0 — ничего не отправлено) */
+export type DigestTestResult = { count: number; email: boolean; channels: string[] };
+
+export type DigestTestLabels = { title: string; hint: string; button: string; sending: string; none: string; sent: string; telegram: string; off: string; error: string };
+
+/** Что сказать после «Прислать сводку сейчас» */
+export function digestTestMessage(result: DigestTestResult, labels: DigestTestLabels): string {
+    if (result.count === 0) return labels.none;
+    if (!result.email && result.channels.length === 0) return labels.off;
+    const where = [result.email ? labels.sent : null, result.channels.includes("telegram") ? labels.telegram : null].filter(Boolean).join(" ");
+    return where.replace("{count}", String(result.count));
+}
 
 /** Сразу показать галочку, не дожидаясь ответа сервера */
 export function toggleCell(state: NotificationState, type: NotificationType, channel: Channel, enabled: boolean): NotificationState {

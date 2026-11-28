@@ -6,6 +6,7 @@ import { GalleryLightbox } from "@/components/gallery/GalleryLightbox";
 import { ShowNext } from "@/components/offer/ShowNext";
 import { SectionTitle } from "@/components/offer/parts";
 import { useSession } from "@/components/session/SessionProvider";
+import { ReportButton } from "@/components/report/ReportButton";
 import { Avatar } from "@/components/ui/Avatar";
 import { browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
@@ -81,6 +82,7 @@ export function VolunteerReviews({ volunteerId, labels }: {
                                 </div>
                                 <span className="ml-3 flex"><Avatar src={mediaUrl(review.image, "small")} name={review.name} size={22} /></span>
                                 <span className="ml-2 text-primary">{review.name}</span>
+                                <ReportButton target={{ type: "review", id: String(review.id) }} className="ml-auto pl-3" />
                             </div>
                         </div>
                     );

@@ -6,6 +6,9 @@ import type { HeroImage } from "@/lib/heroImages";
 
 import { useOptionalSession } from "@/components/session/SessionProvider";
 
+/** Прозрачный GIF 1×1 */
+const EMPTY_IMAGE = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
 export interface HeroSlide {
     title: string;
     text: string;
@@ -24,7 +27,8 @@ export interface HeroSlide {
  * Медленный интернет: фото — <img> в HTML (браузер начинает грузить сразу, а
  * не после CSS, как с фоном), первое — с высоким приоритетом; под ним размытое
  * превью из data URL, так что серого экрана нет. Слайдер не переключается на
- * слайд, фото которого ещё не загрузилось.
+ * слайд, фото которого ещё не загрузилось. Фото остальных слайдов начинают
+ * грузиться только после первого — не отнимают у него канал.
  */
 export function HeroSlider({ slides, bulletLabel }: { slides: HeroSlide[]; /** «Слайд {{n}}» */ bulletLabel: string }) {
     const [active, setActive] = useState(0);
@@ -52,8 +56,9 @@ export function HeroSlider({ slides, bulletLabel }: { slides: HeroSlide[]; /** �
                     className={`absolute inset-0 flex min-h-screen w-full items-center bg-cover bg-center bg-no-repeat transition-opacity duration-300 before:pointer-events-none before:absolute before:inset-0 before:z-[1] before:bg-[linear-gradient(90deg,rgba(8,24,38,0.58)_0%,rgba(8,24,38,0.42)_35%,rgba(8,24,38,0.16)_65%,rgba(8,24,38,0.06)_100%)] down-md:bg-center down-md:before:bg-[linear-gradient(180deg,rgba(8,24,38,0.62)_0%,rgba(8,24,38,0.5)_30%,rgba(8,24,38,0.3)_60%,rgba(8,24,38,0.18)_100%)] ${index === active ? "z-[1] opacity-100" : "pointer-events-none opacity-0"}`}
                     style={{ backgroundImage: `url(${slide.image.placeholder})` }}
                 >
-                    <picture>
-                        <source media="(max-width: 768px)" srcSet={slide.image.mobile} />
+                    {(index === 0 || loaded[0]) && <picture>
+                        {/* До 768 px слайдер скрыт (там PhoneHero, GS-292): пустая картинка вместо фото — скрытый <img> иначе всё равно скачивается */}
+                        <source media="(max-width: 768px)" srcSet={EMPTY_IMAGE} />
                         <img
                             data-hero
                             src={slide.image.src}
@@ -67,13 +72,13 @@ export function HeroSlider({ slides, bulletLabel }: { slides: HeroSlide[]; /** �
                             }}
                             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 down-md:object-center ${loaded[index] ? "opacity-100" : "opacity-0"}`}
                         />
-                    </picture>
+                    </picture>}
                     <div className="relative z-[2] flex flex-col gap-[30px] px-[50px] down-md:gap-[22px] down-md:px-6">
                         <h2 className="mb-2.5 text-[72px] leading-[100%] font-semibold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.45)] max-[1600px]:text-[48px] max-[1400px]:text-[32px] down-md:text-[36px]! down-md:leading-[1.08]">{slide.title}</h2>
                         <p className="text-[18px] leading-[130%] font-medium text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.4)] down-md:text-[22px] down-md:leading-[1.3]">{slide.text}</p>
                         <a href={slide.descriptionHref} className="relative z-[1] flex items-center gap-[30px] max-[1400px]:flex-col max-[1400px]:items-start">
                             {/* eslint-disable-next-line @next/next/no-img-element -- картинка-коллаж */}
-                            <img src="/web/images/home/slider-volunteer.png" alt="" className="w-[100px]" />
+                            <img src="/web/images/home/slider-volunteer.png" alt="" loading="lazy" width={102} height={42} className="w-[100px]" />
                             <span className="text-[16px] text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.4)] down-md:text-[18px] down-md:leading-[1.3]">{slide.description}</span>
                         </a>
                         <a

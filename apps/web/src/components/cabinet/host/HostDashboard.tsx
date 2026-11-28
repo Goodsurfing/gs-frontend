@@ -10,10 +10,12 @@ import { Toast } from "@/components/ui/Toast";
 import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
 import { formatLongDate } from "@/lib/formatDate";
+import type { PluralText } from "@/lib/applicationsView";
 import { hasHostMembership } from "@/lib/occupancy";
 
 import { type Application, ApplicationCard, type ApplicationCardLabels } from "./ApplicationCard";
 import { HostReviewDialog, type HostReviewDialogLabels } from "./HostReviewDialog";
+import { NewApplicationsBanner } from "./NewApplicationsBanner";
 import { useApplicationStatus } from "./useApplicationStatus";
 import { useMyOrganization } from "./useMyOrganization";
 import { storageGet, storageSet } from "@/lib/safeStorage";
@@ -30,6 +32,9 @@ export interface HostDashboardLabels {
     quota: { left: string; leftHint: string; unlimited: string; unlimitedHint: string };
     requests: string;
     newRequests: string;
+    /** «N новых заявок ждут ответа» — формы по числу */
+    waiting: PluralText;
+    reply: string;
     loading: string;
     empty: string;
     showAll: string;
@@ -46,12 +51,13 @@ export interface HostDashboardLabels {
 
 /**
  * Рабочий стол организатора (HostDashboardPage старого фронта):
- * заполненность профиля и счётчик вакансий, последние 10 заявок,
- * баннер членства (только без членства) и уведомления.
+ * «N новых заявок ждут ответа → Ответить» (GS-331), заполненность профиля и
+ * счётчик вакансий, последние 10 заявок, баннер членства (только без
+ * членства) и уведомления.
  */
 export function HostDashboard({ locale, routes, labels }: {
     locale: Locale;
-    routes: { info: string; notes: string; membership: string; volunteer: string; offer: string; chat: string; review: string };
+    routes: { info: string; notes: string; notesNew: string; membership: string; volunteer: string; offer: string; chat: string; review: string };
     labels: HostDashboardLabels;
 }) {
     const session = useSession();
@@ -59,18 +65,18 @@ export function HostDashboard({ locale, routes, labels }: {
     const [hasReviews, setHasReviews] = useState(false);
     const [occupancy, setOccupancy] = useState<{ member: boolean; remaining: number } | null>(null);
     const [applications, setApplications] = useState<Application[] | null>(null);
-    const [newCount, setNewCount] = useState(0);
+    const [newCount, setNewCount] = useState<number | null>(null);
     const [review, setReview] = useState<Application | null>(null);
     const [notificationDate, setNotificationDate] = useState("");
 
     const loadApplications = useCallback(async () => {
         const api = browserApi(session.token);
-        const [list, fresh] = await Promise.all([
+        const [list, counts] = await Promise.all([
             api.GET("/api/v1/application/list-of-organization", { params: { query: { limit: "10", page: "1" } } }).catch(() => ({ data: undefined })),
-            api.GET("/api/v1/application/list-of-organization", { params: { query: { status: "new", limit: "1", page: "1" } } }).catch(() => ({ data: undefined })),
+            api.GET("/api/v1/application/list-of-organization/counts").catch(() => ({ data: undefined })),
         ]);
         setApplications(list.data?.data ?? []);
-        setNewCount(fresh.data?.pagination?.total ?? 0);
+        setNewCount(counts.data?.new ?? 0);
     }, [session.token]);
     const status = useApplicationStatus(() => void loadApplications(), labels.statusError);
 
@@ -118,6 +124,8 @@ export function HostDashboard({ locale, routes, labels }: {
     return (
         <div className="w-full max-w-[1400px] pr-[50px] down-lg:pr-0">
             <Toast text={status.error} onClose={status.clearError} />
+            {/* GS-331: первым делом — сколько заявок ждут ответа (главный показатель — ответ за 7 дней) */}
+            <NewApplicationsBanner locale={locale} count={newCount ?? 0} forms={labels.waiting} action={labels.reply} href={routes.notesNew} className="mb-5" />
             <div className="flex w-full flex-col bg-white drop-shadow-[0_5px_20px_rgba(14,29,39,0.05)]">
                 <div className="flex border-b border-caption px-5 py-[13px]">
                     {/* В старом стиль заголовка не применялся (опечатка в классе) — браузерный h3 */}
@@ -165,7 +173,7 @@ export function HostDashboard({ locale, routes, labels }: {
                 <div className={panel}>
                     <div className={panelTitle}>
                         <h3 className="text-[1.125rem] font-semibold">{labels.requests}</h3>
-                        <p className="text-primary">{labels.newRequests}: <span className="ml-1.5">{newCount}</span></p>
+                        <a href={routes.notesNew} className="text-primary no-underline hover:underline">{labels.newRequests}: <span className="ml-1.5">{newCount ?? "…"}</span></a>
                     </div>
                     <div className="flex min-h-[450px] flex-col gap-[30px] bg-white p-[30px]">
                         {/* Порядок как в старом: column-reverse — первая заявка из ответа внизу */}

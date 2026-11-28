@@ -31,9 +31,11 @@ const button = "flex items-center justify-center rounded-[10px] border border-pr
  * выбирали, 06.11.2026); не вышло — на выбор роли, как раньше; волонтёр —
  * в сообщения, отклик. На закрытую вакансию откликнуться нельзя (GS-230).
  */
-export function OfferActions({ offerId, status, variant, hrefs, labels }: {
+export function OfferActions({ offerId, status, applicationsEnded = false, variant, hrefs, labels }: {
     offerId: number;
     status: string;
+    /** Приём заявок закончился (applicationEndDate прошла) — известно без входа, кнопка сразу неактивна */
+    applicationsEnded?: boolean;
     /**
      * hero — в карточке (светлый текст подсказки), menu — в меню разделов,
      * sticky — кнопка внизу экрана на телефоне после прокрутки обложки
@@ -44,11 +46,13 @@ export function OfferActions({ offerId, status, variant, hrefs, labels }: {
 }) {
     const viewer = useOfferViewer();
     const closed = status !== "active";
-    const disabled = closed || (viewer.signedIn && !viewer.needVolunteerRole && !viewer.canParticipate);
+    // Своя заявка уже есть — кнопка показывает её состояние и после окончания приёма
+    const ended = applicationsEnded && !viewer.textParticipate;
+    const disabled = closed || ended || viewer.loading || (viewer.signedIn && !viewer.needVolunteerRole && !viewer.canParticipate);
     let href = `${hrefs.signIn}?next=offer&nextId=${offerId}`;
     if (viewer.needVolunteerRole) href = `${hrefs.profileRole}?next=${offerId}`;
     else if (viewer.signedIn) href = `${hrefs.messenger}/create/${offerId}`;
-    const text = participateText({ closed, needVolunteerRole: viewer.needVolunteerRole, textParticipate: viewer.textParticipate }, labels);
+    const text = participateText({ closed, needVolunteerRole: viewer.needVolunteerRole, textParticipate: viewer.textParticipate, applicationsEnded: ended }, labels);
     const [busy, setBusy] = useState(false);
     // Без роли: создать профиль волонтёра (как «Стать гудсёрфером» на странице роли) и сразу к отклику
     const becomeVolunteer = viewer.needVolunteerRole ? (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -77,7 +81,7 @@ export function OfferActions({ offerId, status, variant, hrefs, labels }: {
     return (
         <>
             {disabled ? (
-                <span aria-disabled className={`${button} bg-primary text-white opacity-70`}>{text}</span>
+                <span aria-disabled aria-busy={viewer.loading || undefined} className={`${button} bg-primary text-white opacity-70 aria-busy:cursor-wait`}>{text}</span>
             ) : (
                 <a href={href} onClick={becomeVolunteer} aria-busy={busy} className={`${button} bg-primary text-white hover:bg-white hover:text-primary aria-busy:cursor-wait aria-busy:opacity-70`}>{text}</a>
             )}
@@ -103,11 +107,18 @@ export function OfferActions({ offerId, status, variant, hrefs, labels }: {
     );
 }
 
-/** Полоса с кнопкой внизу экрана на телефоне (до 768 px): появляется, когда обложка вакансии уехала вверх */
+/**
+ * Полоса с кнопкой внизу экрана на телефоне (до 768 px): появляется, как только кнопка
+ * в обложке ушла за верх экрана. Раньше порог был «прокрутили 90 % экрана», и между
+ * ушедшей кнопкой обложки и полосой был участок без кнопки (клуб тестеров, 27.11.2026)
+ */
 function StickyBar({ href, text, onClick }: { href: string; text: string; onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void }) {
     const [shown, setShown] = useState(false);
     useEffect(() => {
-        const update = () => setShown(window.scrollY > window.innerHeight * 0.9);
+        const update = () => {
+            const hero = document.querySelector("[data-offer-hero-actions]");
+            setShown(hero ? hero.getBoundingClientRect().bottom <= 0 : window.scrollY > window.innerHeight * 0.9);
+        };
         update();
         window.addEventListener("scroll", update, { passive: true });
         return () => window.removeEventListener("scroll", update);

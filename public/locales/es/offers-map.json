@@ -17,6 +17,7 @@
     "По новизне": "Por Novedad",
     "По срочности": "Por Urgencia",
     "По популярности": "Por Popularidad",
+    "Ближайшие даты": "Fechas Próximas",
     "Вернуться к карте": "Volver al Mapa",
     "Список вакансий": "Lista de empleos",
     "Карта": "Mapa",
@@ -51,5 +52,6 @@
         "limit": "Máximo 5 suscripciones: elimina alguna en «Mis suscripciones».",
         "error": "No se pudo suscribir. Inténtalo de nuevo"
     },
-    "Только верифицированные хосты": "Solo anfitriones verificados"
+    "Только верифицированные хосты": "Solo anfitriones verificados",
+    "Круглый год": "Todo el año"
 }

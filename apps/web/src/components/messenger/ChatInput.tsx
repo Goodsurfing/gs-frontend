@@ -23,6 +23,7 @@ export interface ChatInputLabels {
     emojiSmileys: string;
     emojiAnimals: string;
     emojiFood: string;
+    emojiSearch: string;
 }
 
 export interface OutgoingMessage { text: string; attachments: string[] }
@@ -117,7 +118,9 @@ export function ChatInput({ token, disabled, labels, onSend, onError, prefill, e
     return (
         <div className="border-t border-accent-bg">
         {extra}
-        <div className="relative flex items-center gap-2 px-4 py-2">
+        {/* Поле — по центру с равными отступами, стрелка отправки внутри рамки (раньше стояла справа снаружи,
+            и на телефоне поле выглядело сдвинутым влево); снизу — отступ под полоску «Домой» iPhone */}
+        <div className="relative flex items-center px-4 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] down-xs:px-3">
             {attachment && (
                 <div className="absolute bottom-full left-0 flex w-full items-center gap-[15px] bg-white p-5 text-primary">
                     {attachment.name}
@@ -144,19 +147,25 @@ export function ChatInput({ token, disabled, labels, onSend, onError, prefill, e
                     onKeyDown={keyDown}
                     className="ml-2 max-h-[230px] flex-1 resize-none border-0 bg-transparent p-0 font-[Roboto,Helvetica,Arial,sans-serif] text-[16px] leading-[1.4375em] text-black outline-none"
                 />
-                <div ref={emojiRef} className="relative">
+                <div ref={emojiRef} className="relative ml-2">
                     <button type="button" aria-label={labels.emoji} aria-expanded={emoji} onClick={() => setEmoji((value) => !value)} className={iconButton}>
                         {/* eslint-disable-next-line @next/next/no-img-element -- значок без заливки, только контур */}
                         <img src="/web/icons/messenger/chat-smile.svg" alt="" className="h-5 w-5" />
                     </button>
                     {emoji && (
-                        <div className="absolute right-0 bottom-[300%] z-10 down-lg:w-[70vw] down-xs:-right-[180%] down-xs:w-[85vw]">
+                        // Ширина задана явно: без неё окно на компьютере сжималось до 130 px и обрезалось
+                        // справа, а библиотека раскладывает смайлы по ширине, замеренной при открытии
+                        // (тестировщик, 07.11: наводишь на кота — подсвечивается другой смайл)
+                        <div className="absolute right-0 bottom-[300%] z-10 w-[350px] down-lg:w-[70vw] down-xs:-right-[180%] down-xs:w-[85vw]">
                             <EmojiPicker
                                 lazyLoadEmojis
                                 // Системные смайлики, как в самом сообщении: картинки Apple со стороннего
                                 // сервера выглядели иначе, чем отправленный смайлик, и не всегда загружались
                                 emojiStyle={"native" as never}
                                 width="100%"
+                                searchPlaceHolder={labels.emojiSearch}
+                                // Подпись в превью библиотеки только английская («What's Your Mood?») — убираем
+                                previewConfig={{ showPreview: false }}
                                 // Значения перечисления Categories из emoji-picker-react: сам модуль грузится только по кнопке
                                 categories={[
                                     { category: "smileys_people", name: labels.emojiSmileys },
@@ -168,10 +177,10 @@ export function ChatInput({ token, disabled, labels, onSend, onError, prefill, e
                         </div>
                     )}
                 </div>
+                <button type="button" aria-label={labels.send} disabled={!canSend} onClick={send} className={`${iconButton} ml-3`}>
+                    <SendArrowIcon className={`h-5 w-5 ${canSend ? "text-primary" : "text-caption"}`} />
+                </button>
             </div>
-            <button type="button" aria-label={labels.send} disabled={!canSend} onClick={send} className={iconButton}>
-                <SendArrowIcon className={`h-5 w-5 ${canSend ? "text-primary" : "text-caption"}`} />
-            </button>
         </div>
         </div>
     );

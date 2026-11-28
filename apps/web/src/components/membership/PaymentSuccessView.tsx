@@ -11,6 +11,8 @@ import { DuoPanel } from "./DuoPanel";
 import type { DuoLabels } from "./duo";
 
 const POLL_INTERVAL_MS = 3000;
+/** Через сколько показать «Если вы вышли из оплаты — попробовать ещё раз» (опрос при этом продолжается) */
+const SLOW_MS = 6000;
 const POLL_TIMEOUT_MS = 60_000;
 const FAIL_STATUSES = new Set(["CANCELLED", "FAILED", "REFUNDED"]);
 
@@ -35,6 +37,11 @@ export interface SuccessLabels {
     processing: string;
     processingText: string;
     toMembership: string;
+    /** Пока ждём подтверждения: «Проверяем оплату…», подсказка, «вышли из оплаты?» и «Попробовать ещё раз» */
+    checking: string;
+    checkingText: string;
+    exited: string;
+    retry: string;
 }
 
 const blueButton = "flex items-center justify-center rounded-[10px] border border-primary bg-primary px-[70px] py-4 text-center text-[16px] leading-[120%] text-white transition-all duration-300 hover:bg-white hover:text-primary";
@@ -45,11 +52,13 @@ const blueButton = "flex items-center justify-center rounded-[10px] border borde
  * статус каждые 3 секунды; отменённый — на страницу неудачи. Какой тариф
  * куплен — по самому платежу: активных членств может быть несколько.
  */
-export function PaymentSuccessView({ paymentId, signInHref, failHref, membershipHref, duo, labels }: {
+export function PaymentSuccessView({ paymentId, signInHref, failHref, membershipHref, paymentHref, duo, labels }: {
     paymentId: string | null;
     signInHref: string;
     failHref: string;
     membershipHref: string;
+    /** Страница оплаты (/payment) — «Попробовать ещё раз» с тем же тарифом */
+    paymentHref: string;
     /** «На двоих»: после оплаты сразу показать ссылку для второго участника */
     duo: { inviteBase: string; labels: DuoLabels };
     labels: SuccessLabels;
@@ -58,6 +67,15 @@ export function PaymentSuccessView({ paymentId, signInHref, failHref, membership
     const [status, setStatus] = useState<string | null>(null);
     const [tariffCode, setTariffCode] = useState<string | null>(null);
     const [timedOut, setTimedOut] = useState(false);
+    const [slow, setSlow] = useState(false);
+
+    // Вернулись с ЮKassa по «Exit the payment process» — платёж ещё «в ожидании», ЮKassa отменит его
+    // не сразу. Не держим человека перед пустым экраном (Drejk, 27.11.2026): сразу «Проверяем оплату…»,
+    // а через несколько секунд — «вышли из оплаты? Попробовать ещё раз» (опрос продолжается)
+    useEffect(() => {
+        const timer = setTimeout(() => setSlow(true), SLOW_MS);
+        return () => clearTimeout(timer);
+    }, []);
 
     useEffect(() => {
         if (session.status === "guest") window.location.replace(signInHref);
@@ -80,7 +98,9 @@ export function PaymentSuccessView({ paymentId, signInHref, failHref, membership
             setTariffCode(paid?.tariffCode ?? membership?.tariff?.code ?? null);
             if (paid?.status) setStatus(paid.status);
             if (paid?.status && FAIL_STATUSES.has(paid.status)) {
-                window.location.replace(failHref);
+                // Тариф — чтобы «Попробовать ещё раз» на странице ошибки вёл сразу к оплате того же (GS-333)
+                const tariff = paid.tariffCode;
+                window.location.replace(tariff ? `${failHref}&tariff=${encodeURIComponent(tariff)}` : failHref);
                 return;
             }
             if (paymentId && paid?.status === "SUCCESS") reachGoalOnce("membership_paid", paymentId);
@@ -98,7 +118,27 @@ export function PaymentSuccessView({ paymentId, signInHref, failHref, membership
     }, [session.status, session.token, paymentId, failHref]);
 
     const confirmed = !paymentId || status === "SUCCESS";
-    if (session.status !== "user" || (!confirmed && !timedOut)) return <Loading />;
+    if (session.status !== "user" || (!confirmed && !timedOut)) {
+        const retryHref = tariffCode ? `${paymentHref}?tariff=${encodeURIComponent(tariffCode)}` : membershipHref;
+        return (
+            <div className="flex min-h-[60vh] items-center justify-center p-8 down-xs:px-4">
+                <div className="flex max-w-[560px] flex-col items-center text-center">
+                    <Loading label={labels.checking} className="min-h-0" />
+                    <h1 className="mt-6 text-[1.5rem] font-bold text-[#333]">{labels.checking}</h1>
+                    <p className="mt-2 text-[1rem] text-caption">{labels.checkingText}</p>
+                    {slow && (
+                        <div role="status" className="mt-8 flex w-full flex-col items-center gap-4 rounded-[14px] bg-field p-5">
+                            <p className="text-[1rem] text-[#333]">{labels.exited}</p>
+                            <div className="flex w-full flex-wrap justify-center gap-3">
+                                <a href={retryHref} className="flex items-center justify-center rounded-[10px] border border-cta bg-cta px-8 py-3 text-center text-[16px] text-white no-underline transition-all duration-300 hover:bg-white hover:text-cta down-xs:w-full">{labels.retry}</a>
+                                <a href={membershipHref} className="flex items-center justify-center rounded-[10px] border border-primary px-8 py-3 text-center text-[16px] text-primary no-underline transition-all duration-300 hover:bg-primary hover:text-white down-xs:w-full">{labels.toMembership}</a>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    }
 
     if (!confirmed) {
         return (

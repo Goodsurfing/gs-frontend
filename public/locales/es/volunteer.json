@@ -27,6 +27,39 @@
                 "action": "Hazte miembro",
                 "why": "Postula sin límites: 990 ₽ al año"
             }
+        },
+        "mobile": {
+            "applications": "Mis solicitudes",
+            "all": "Todas las solicitudes ({{count}})",
+            "status": {
+                "new": "En revisión",
+                "accepted": "Aceptada",
+                "canceled": "Rechazada"
+            },
+            "next": {
+                "new": "Esperando al anfitrión: te avisaremos cuando responda",
+                "accepted": "Acordad las fechas y el viaje en el chat",
+                "canceled": "No te desanimes: mira vacantes parecidas"
+            },
+            "emptyTitle": "Aún no has enviado solicitudes",
+            "emptyHint": "Elige una vacante y escribe al anfitrión: la respuesta llegará a Mensajes",
+            "find": "Buscar vacante",
+            "loadError": "No se pudo cargar",
+            "retry": "Reintentar",
+            "offers": "Vacantes para ti",
+            "offersAll": "Todas las vacantes",
+            "offersFresh": "Son las vacantes más recientes. Indica tus intereses para afinar la selección",
+            "interests": "Intereses",
+            "offersEmpty": "Aún no hay vacantes adecuadas: echa un vistazo al catálogo",
+            "profileFilled": "Perfil completado al {{percent}} %",
+            "profileDone": "Perfil completo",
+            "profileHint": "Los perfiles completos se aceptan más a menudo",
+            "complete": "Completar",
+            "open": "Abrir",
+            "quota": "Solicitudes gratuitas: {{left}} de {{total}}",
+            "quotaMember": "Membresía: solicitudes ilimitadas",
+            "membership": "Membresía",
+            "noTitle": "Sin título"
         }
     },
     "volunteer-skills": {
@@ -58,7 +91,24 @@
         "Добавить отзыв": "Añadir Reseña"
     },
     "volunteer-notes": {
-        "Мои заявки": "Mis notas"
+        "Мои заявки": "Mis notas",
+        "search": "Buscar por vacante u organizador",
+        "searchPlaceholder": "Vacante u organizador",
+        "clearSearch": "Borrar búsqueda",
+        "tabsLabel": "Estado de la solicitud",
+        "tab.all": "Todas",
+        "tab.new": "En revisión",
+        "tab.accepted": "Aceptadas",
+        "tab.canceled": "Rechazadas",
+        "openOffer": "Abrir vacante",
+        "loadError": "No se pudieron cargar las solicitudes. Comprueba la conexión e inténtalo de nuevo",
+        "retry": "Reintentar",
+        "empty": "Aún no hay solicitudes",
+        "emptyHint": "Elige un viaje y escribe al anfitrión: la respuesta llegará a Mensajes",
+        "find": "Buscar viaje",
+        "emptySearch": "Ninguna solicitud coincide con la búsqueda. Prueba otro nombre de vacante u organizador",
+        "emptyTab": "Todavía no hay solicitudes en esta pestaña",
+        "resetSearch": "Borrar búsqueda"
     },
     "volunteer-subscribers": {
         "Подписки": "Suscripciones"

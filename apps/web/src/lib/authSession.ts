@@ -14,6 +14,16 @@ export interface TokenResponse {
     roles?: string[];
 }
 
+/** Заголовок с токеном входа старого формата (localStorage), если он есть — вместе с cookie входа */
+export function storedAuthHeaders(): Record<string, string> {
+    try {
+        const token = JSON.parse(storageGet("token") ?? "null") as string | null;
+        return token ? { Authorization: `Bearer ${token}` } : {};
+    } catch {
+        return {};
+    }
+}
+
 export function saveSession(data: TokenResponse, username: string) {
     const set = (key: string, value: unknown) => storageSet(key, JSON.stringify(value));
     set("user", { username });
@@ -46,7 +56,17 @@ export function nextRoute(prefix: string, next: string | null, nextId: string | 
 /** Только путь этого сайта: «/offers/5», «/en/offers-map?category=1» — не чужой домен и не «//» */
 export function safeSitePath(value: string | null | undefined): string | null {
     if (!value || value.length > 300 || !value.startsWith("/") || value.startsWith("//") || value.includes("\\")) return null;
-    return /^\/[A-Za-z0-9/_\-.~%?=&,]*$/.test(value) ? value : null;
+    return /^\/[A-Za-z0-9/_\-.~%?=&,+]*$/.test(value) ? value : null;
+}
+
+/**
+ * Адрес входа, после которого вернёт на текущую страницу: гость открыл
+ * ссылку из письма (переписка, заявки) — после входа он там же, а не в профиле.
+ * Якорь (#…) не переносится; негодный адрес — обычный вход без возврата.
+ */
+export function signInReturningTo(signInHref: string, pathname: string, search = ""): string {
+    const back = safeSitePath(`${pathname}${search === "?" ? "" : search}`);
+    return back ? `${signInHref}?next=${encodeURIComponent(back)}` : signInHref;
 }
 
 const PENDING_NEXT = "gs_auth_next";

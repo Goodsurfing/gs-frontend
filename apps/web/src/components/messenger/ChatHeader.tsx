@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 
 import { Avatar } from "@/components/ui/Avatar";
 import type { Locale } from "@/i18n/config";
@@ -25,7 +25,7 @@ export interface ChatHeaderLabels extends DecisionLabels {
  * новой заявки — полоса «Принять / Отклонить» под шапкой; у принятой или
  * отклонённой — «Изменить решение» рядом со статусом, открывает ту же полосу.
  */
-export function ChatHeader({ locale, name, avatar, profileHref, application, viewerIsVolunteer, offerHref, infoOpen, onInfo, onBack, onDecision, labels }: {
+export function ChatHeader({ locale, name, avatar, profileHref, application, viewerIsVolunteer, offerHref, infoOpen, onInfo, onBack, onDecision, actions, labels }: {
     locale: Locale;
     name: string;
     avatar?: string;
@@ -37,6 +37,8 @@ export function ChatHeader({ locale, name, avatar, profileHref, application, vie
     onInfo?: () => void;
     onBack: () => void;
     onDecision?: (status: Decision) => Promise<boolean>;
+    /** Меню «Ещё»: пожаловаться, заблокировать (GS-282) */
+    actions?: ReactNode;
     labels: ChatHeaderLabels;
 }) {
     const [busy, setBusy] = useState(false);
@@ -96,6 +98,7 @@ export function ChatHeader({ locale, name, avatar, profileHref, application, vie
                         </div>
                     )}
                 </div>
+                {actions}
                 {onInfo && (
                     <button
                         type="button"

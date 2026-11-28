@@ -295,6 +295,159 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/v1/club/commands": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Клуб: команда боту (выполнит бот, участник получит уведомление) */
+        post: operations["post_app_admin_v1_club_command"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/v1/club/completions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Клуб: сдачи заданий */
+        get: operations["get_app_admin_v1_club_completions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/v1/club/participants": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Клуб: участники */
+        get: operations["get_app_admin_v1_club_participants"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/v1/club/reports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Клуб: сообщения о проблемах */
+        get: operations["get_app_admin_v1_club_reports"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/v1/club/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Клуб: сводка */
+        get: operations["get_app_admin_v1_club_summary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/v1/club/tasks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Клуб: задания (принятые прохождения по роли и устройству, статус) */
+        get: operations["get_app_admin_v1_club_tasks"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/v1/complaints": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Жалобы: список */
+        get: operations["get_app_admin_v1_complaint_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/v1/complaints/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Жалобы: карточка */
+        get: operations["get_app_admin_v1_complaint_element"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/v1/complaints/{id}/resolve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Жалобы: разобрать */
+        post: operations["post_app_admin_v1_complaint_resolve"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/v1/course": {
         parameters: {
             query?: never;
@@ -2748,6 +2901,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/application/list-of-organization/counts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Число заявок организации авторизованного пользователя по статусам
+         * @description GS-331: числа для вкладок «Новые / Приняты / Отклонены / Все». Фильтры vacancyId и search — как у списка.
+         */
+        get: operations["get_app_api_v1_application_countsoforganization"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/application/list-of-volunteer": {
         parameters: {
             query?: never;
@@ -2760,6 +2933,26 @@ export interface paths {
          * @description Если авторизованный пользователь не активен, то ключ isHasReview всегда будет true
          */
         get: operations["get_app_api_v1_application_listofvolunteer"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/application/list-of-volunteer/counts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Число заявок волонтёра авторизованного пользователя по статусам
+         * @description GS-332: числа для вкладок «Все / На рассмотрении / Приняты / Отклонены». Поиск search — как у списка.
+         */
+        get: operations["get_app_api_v1_application_countsofvolunteer"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2893,6 +3086,41 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/blocks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Заблокированные мной (настройки профиля) */
+        get: operations["get_app_api_v1_complaint_blocks"];
+        put?: never;
+        /** Заблокировать пользователя: он не сможет мне писать, переписка с ним пропадёт из списка */
+        post: operations["post_app_api_v1_complaint_block"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/blocks/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Разблокировать пользователя */
+        delete: operations["delete_app_api_v1_complaint_unblock"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/blog": {
         parameters: {
             query?: never;
@@ -3003,6 +3231,60 @@ export interface paths {
          * @description Проставить реакцию на новость блога (лайк)
          */
         patch: operations["patch_app_api_v1_blog_like"];
+        trace?: never;
+    };
+    "/api/v1/bot/club/commands": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Бот клуба: команды из админки к выполнению
+         * @description Выданные команды берутся в аренду на 2 мин и до её конца повторно не выдаются. Для ручной проверки очереди — ?peek=1: тот же список без аренды, бот получит команды как обычно.
+         */
+        get: operations["get_app_api_v1_clubbot_commands"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/bot/club/commands/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Бот клуба: результат команды */
+        post: operations["post_app_api_v1_clubbot_result"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/bot/club/snapshot": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Бот клуба: снимок клуба целиком (заменяет прошлый) */
+        post: operations["post_app_api_v1_clubbot_snapshot"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/bot/link": {
@@ -3235,6 +3517,23 @@ export interface paths {
         get: operations["get_app_api_v1_checkoutfeedback_pending"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/complaints": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Пожаловаться на сообщение, пользователя, организацию или отзыв */
+        post: operations["post_app_api_v1_complaint_create"];
         delete?: never;
         options?: never;
         head?: never;
@@ -4217,7 +4516,7 @@ export interface paths {
         put?: never;
         /**
          * Приглашение письмом
-         * @description Отправить приглашение письмом на адрес второго участника. Не больше 5 писем на одно членство.
+         * @description Отправить приглашение письмом на адрес второго участника. Не больше 3 писем на одно членство.
          */
         post: operations["post_app_api_v1_membershipduo_send"];
         delete?: never;
@@ -4412,6 +4711,112 @@ export interface paths {
         put?: never;
         /** Ссылка «Подключить Telegram» (одноразовая, 15 минут) */
         post: operations["post_app_api_v1_notificationsettings_link"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/notification-settings/unanswered-digest/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Прислать недельную сводку о заявках без ответа сейчас — только на тестовой версии
+         * @description Для проверки тестировщиками: сводка по своим заявкам без ответа любой давности, по тем же настройкам почты и Telegram. Неделю не отмечает. На проде — 404.
+         */
+        post: operations["post_app_api_v1_notificationsettings_digesttest"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/oauth/{provider}/app-callback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Redirect URI для приложения: передаёт code/state/error в приложение по его схеме */
+        get: operations["get_app_api_v1_oauth_appcallback"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/oauth/{provider}/link": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Привязать аккаунт провайдера к текущему пользователю */
+        post: operations["post_app_api_v1_oauth_link"];
+        /** Отвязать аккаунт провайдера */
+        delete: operations["delete_app_api_v1_oauth_unlink"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/oauth/{provider}/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Вход по коду провайдера: найти, привязать по почте или зарегистрировать */
+        post: operations["post_app_api_v1_oauth_login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/oauth/accounts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Привязанные провайдеры текущего пользователя (только включённые) */
+        get: operations["get_app_api_v1_oauth_accounts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/oauth/providers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Включённые провайдеры входа (пустой список — кнопок нет) */
+        get: operations["get_app_api_v1_oauth_providers"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -5266,6 +5671,46 @@ export interface paths {
          * @description Забыть устройство вошедшего (при выходе из аккаунта).
          */
         post: operations["post_app_api_v1_pushdevice_unregister"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/recipient_blocked_by_you_exceptions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves a RecipientBlockedByYouException resource.
+         * @description Retrieves a RecipientBlockedByYouException resource.
+         */
+        get: operations["api_recipient_blocked_by_you_exceptions_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/recipient_blocked_exceptions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves a RecipientBlockedException resource.
+         * @description Retrieves a RecipientBlockedException resource.
+         */
+        get: operations["api_recipient_blocked_exceptions_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -7251,6 +7696,8 @@ export interface components {
         "Application-application-form.create": {
             /** Format: date-time */
             endDate: string;
+            /** @description «Пару слов о себе» (GS-290): необязательный текст волонтёра к отклику. */
+            message?: string | null;
             /** Format: date-time */
             startDate: string;
             /**
@@ -7523,6 +7970,32 @@ export interface components {
             vacancy: components["schemas"]["Vacancy.multipart-application-form.read_volunteer.read_volunteer.read-with-profile_user.short_media_object.read_vacancy.in-organization"] | null;
             volunteer?: components["schemas"]["Volunteer.multipart-application-form.read_volunteer.read_volunteer.read-with-profile_user.short_media_object.read_vacancy.in-organization"] | null;
         };
+        /**
+         * ApplicationCountsResult
+         * @description Число заявок по статусам — для вкладок с числами (организатор GS-331, волонтёр GS-332)
+         */
+        ApplicationCountsResult: {
+            /**
+             * @description Приняты
+             * @example 5
+             */
+            accepted: number;
+            /**
+             * @description Все
+             * @example 10
+             */
+            all: number;
+            /**
+             * @description Отклонены
+             * @example 2
+             */
+            canceled: number;
+            /**
+             * @description Новые — ждут ответа организатора
+             * @example 3
+             */
+            new: number;
+        };
         ApplicationFormAlreadyExistException: {
             /** @default 0 */
             readonly code: number;
@@ -7630,6 +8103,16 @@ export interface components {
             readonly trace?: unknown[];
             readonly traceAsString?: string;
             readonly type?: string;
+        };
+        /**
+         * ApplicationOrganizationResult
+         * @description GS-332: организатор вакансии — для карточки «Мои заявки»
+         */
+        ApplicationOrganizationResult: {
+            /** @example  */
+            id: string;
+            /** @example  */
+            name?: string | null;
         };
         ApplicationPeriodClosedException: {
             /** @default 0 */
@@ -8747,6 +9230,12 @@ export interface components {
          */
         CheckoutCommand: {
             /**
+             * @description Язык сайта, с которого платят: на нём описание платежа на странице оплаты и адрес возврата. Не передан или другой — язык профиля
+             * @example en
+             * @enum {string|null}
+             */
+            locale?: "ru" | "en" | "es" | null;
+            /**
              * @description Машинный код тарифа: volunteer_990, host_4990
              * @example volunteer_990
              */
@@ -9047,6 +9536,12 @@ export interface components {
             fundraiseId: string;
             /** @default false */
             isAnonymous: boolean;
+            /**
+             * @description Язык сайта, с которого жертвуют: на нём описание платежа на странице оплаты и адрес возврата. Не передан или другой — язык профиля
+             * @example en
+             * @enum {string|null}
+             */
+            locale?: "ru" | "en" | "es" | null;
         };
         /**
          * CreateCommand
@@ -13443,6 +13938,12 @@ export interface components {
              * @example true
              */
             isHasReview: Record<string, never>;
+            /**
+             * @description GS-331: начало текста волонтёра к заявке (до 240 символов) — для превью в карточке. Null, если волонтёр ничего не написал.
+             * @default null
+             * @example Здравствуйте! Два сезона работала на ферме…
+             */
+            messagePreview: string | null;
             /** @example 01.01.2020 */
             startDate: string;
             /** @example  */
@@ -16679,6 +17180,120 @@ export interface components {
             userId: string;
             /** @example Иванов Иван */
             userName: string;
+        };
+        /** @description Отправитель сам заблокировал собеседника — сначала разблокировать (GS-282) */
+        RecipientBlockedByYouException: {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            readonly type?: string;
+        };
+        /** @description Отправитель сам заблокировал собеседника — сначала разблокировать (GS-282) */
+        "RecipientBlockedByYouException.jsonapi": {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable.jsonapi"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            readonly type?: string;
+        };
+        /** @description Отправитель сам заблокировал собеседника — сначала разблокировать (GS-282) */
+        "RecipientBlockedByYouException.jsonld": components["schemas"]["HydraItemBaseSchema"] & {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable.jsonld"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            readonly type?: string;
+        };
+        /** @description Получатель заблокировал отправителя — писать ему нельзя (GS-282). Текст нейтральный: не сообщаем «вас заблокировали». */
+        RecipientBlockedException: {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            readonly type?: string;
+        };
+        /** @description Получатель заблокировал отправителя — писать ему нельзя (GS-282). Текст нейтральный: не сообщаем «вас заблокировали». */
+        "RecipientBlockedException.jsonapi": {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable.jsonapi"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            readonly type?: string;
+        };
+        /** @description Получатель заблокировал отправителя — писать ему нельзя (GS-282). Текст нейтральный: не сообщаем «вас заблокировали». */
+        "RecipientBlockedException.jsonld": components["schemas"]["HydraItemBaseSchema"] & {
+            /** @default 0 */
+            readonly code: number;
+            readonly detail?: string | null;
+            /** @default  */
+            readonly file: string;
+            readonly instance?: string | null;
+            /** @default 0 */
+            readonly line: number;
+            /** @default  */
+            readonly message: string;
+            readonly previous?: components["schemas"]["Throwable.jsonld"] | null;
+            readonly status?: number | null;
+            readonly title?: string | null;
+            readonly trace?: unknown[];
+            readonly traceAsString?: string;
+            readonly type?: string;
         };
         /** @description Повторная отправка письма подтверждения email */
         "ResendVerificationEmail.ResendVerificationEmailDto": {
@@ -20872,6 +21487,8 @@ export interface components {
             categories: Record<string, never>[];
             id: number;
             image: components["schemas"]["ImageResultDto"];
+            /** @description GS-332: организатор */
+            organization: components["schemas"]["ApplicationOrganizationResult"];
             /**
              * @example
              * @enum {string}
@@ -22713,6 +23330,268 @@ export interface operations {
         requestBody?: never;
         responses: {
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_admin_v1_club_command: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    kind: "approve" | "reject" | "verdict" | "report" | "issued";
+                    reportId?: number | null;
+                    taskId?: string | null;
+                    tgId?: number | null;
+                    /** @description verdict: ok/useful/important/rejected; report: confirmed/important/rejected; issued: badge/year/pin */
+                    value?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description Команда поставлена */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            /** @description Неверная команда */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Нет такого участника, сдачи или сообщения */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Уже решено или команда уже отправлена */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_app_admin_v1_club_completions: {
+        parameters: {
+            query?: {
+                limit?: number;
+                page?: number;
+                taskId?: string;
+                tgId?: number;
+                /** @description new — на проверке */
+                verdict?: "all" | "new" | "ok" | "useful" | "important" | "rejected";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    get_app_admin_v1_club_participants: {
+        parameters: {
+            query?: {
+                limit?: number;
+                page?: number;
+                status?: "all" | "new" | "pending" | "approved" | "rejected" | "excluded";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    get_app_admin_v1_club_reports: {
+        parameters: {
+            query?: {
+                limit?: number;
+                page?: number;
+                status?: "all" | "new" | "confirmed" | "important" | "rejected";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    get_app_admin_v1_club_summary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Участники по статусам, сдачи, сообщения, задания, когда был снимок */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    get_app_admin_v1_club_tasks: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>[];
+                };
+            };
+        };
+    };
+    get_app_admin_v1_complaint_list: {
+        parameters: {
+            query?: {
+                limit?: number;
+                page?: number;
+                /** @description user — от людей, auto — фильтр */
+                source?: "user" | "auto";
+                status?: "new" | "resolved" | "all";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description items, total, page, limit, newCount — сколько неразобранных всего */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    get_app_admin_v1_complaint_element: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Как в списке + sameUserCount — другие жалобы на того же человека */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_admin_v1_complaint_resolve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description none — «Разобрано», hide_review — скрыть отзыв с сайта, disable_user — отключить пользователя (как в его карточке)
+                     * @enum {string}
+                     */
+                    action: "none" | "hide_review" | "disable_user";
+                };
+            };
+        };
+        responses: {
+            /** @description Карточка после разбора */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27418,6 +28297,8 @@ export interface operations {
                 limit?: string;
                 /** @description Номер страницы */
                 page?: string;
+                /** @description GS-331: поиск по имени и фамилии волонтёра (часть слова, без учёта регистра) */
+                search?: string;
                 /** @description Фильтр по статусу заявки — для отдельной пагинации каждой колонки CRM */
                 status?: "new" | "accepted" | "canceled";
                 /** @description Фильтр по вакансии */
@@ -27442,6 +28323,30 @@ export interface operations {
             };
         };
     };
+    get_app_api_v1_application_countsoforganization: {
+        parameters: {
+            query?: {
+                /** @description Поиск по имени и фамилии волонтёра */
+                search?: string;
+                /** @description Фильтр по вакансии */
+                vacancyId?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApplicationCountsResult"];
+                };
+            };
+        };
+    };
     get_app_api_v1_application_listofvolunteer: {
         parameters: {
             query?: {
@@ -27449,6 +28354,10 @@ export interface operations {
                 limit?: string;
                 /** @description Номер страницы */
                 page?: string;
+                /** @description GS-332: поиск по названию вакансии и организатору (часть слова, без учёта регистра) */
+                search?: string;
+                /** @description GS-332: фильтр по статусу заявки (вкладки «На рассмотрении / Приняты / Отклонены») */
+                status?: "new" | "accepted" | "canceled";
             };
             header?: never;
             path?: never;
@@ -27465,6 +28374,28 @@ export interface operations {
                         data?: components["schemas"]["ListOfVolunteerResult"][];
                         pagination?: components["schemas"]["PaginationResult"];
                     };
+                };
+            };
+        };
+    };
+    get_app_api_v1_application_countsofvolunteer: {
+        parameters: {
+            query?: {
+                /** @description Поиск по названию вакансии и организатору */
+                search?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApplicationCountsResult"];
                 };
             };
         };
@@ -27804,6 +28735,105 @@ export interface operations {
             };
         };
     };
+    get_app_api_v1_complaint_blocks: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Последние заблокированные первыми, не больше 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        items: {
+                            /** @description Маленькое превью */
+                            avatar: string | null;
+                            /** @description d.m.Y */
+                            blockedAt: string;
+                            firstName: string;
+                            id: string;
+                            lastName: string;
+                        }[];
+                    };
+                };
+            };
+        };
+    };
+    post_app_api_v1_complaint_block: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description id профиля (у организации — её владельца, поле owner) */
+                    userId: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Заблокирован (повторно — тоже 204) */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Себя заблокировать нельзя */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                        errorCode: string;
+                    };
+                };
+            };
+            /** @description Пользователь не найден */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                        errorCode: string;
+                    };
+                };
+            };
+        };
+    };
+    delete_app_api_v1_complaint_unblock: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                userId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Разблокирован (если и не был — тоже 204) */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     get_app_api_v1_blog_list: {
         parameters: {
             query?: {
@@ -28011,6 +29041,130 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ErrorResult"];
                 };
+            };
+        };
+    };
+    get_app_api_v1_clubbot_commands: {
+        parameters: {
+            query?: {
+                peek?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        items: {
+                            id: string;
+                            /** @enum {string} */
+                            kind: "approve" | "reject" | "verdict" | "report" | "issued";
+                            reportId?: number | null;
+                            taskId?: string | null;
+                            tgId?: number | null;
+                            value?: string | null;
+                        }[];
+                    };
+                };
+            };
+            /** @description Клуб выключен на стенде (нет CLUB_SYNC_SECRET) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_clubbot_result: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    message?: string | null;
+                    ok: boolean;
+                };
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Клуб выключен на стенде (нет CLUB_SYNC_SECRET) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_clubbot_snapshot: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    bonuses?: Record<string, never>[];
+                    completions?: Record<string, never>[];
+                    participants?: Record<string, never>[];
+                    reports?: Record<string, never>[];
+                    revision?: string | null;
+                    taskCap?: number | null;
+                    tasks?: Record<string, never>[];
+                };
+            };
+        };
+        responses: {
+            /** @description Сколько строк принято */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            /** @description Снимок не разобран */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Нет секрета */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Клуб выключен на стенде (нет CLUB_SYNC_SECRET) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -28455,6 +29609,85 @@ export interface operations {
                         paymentId: string | null;
                     };
                 };
+            };
+        };
+    };
+    post_app_api_v1_complaint_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    comment?: string | null;
+                    /** @enum {string} */
+                    reason: "spam" | "abuse" | "fraud" | "violation" | "other";
+                    targetId: string;
+                    /**
+                     * @description message — сообщение в переписке (id число), user — пользователь (id профиля), organization — организация, review — отзыв о вакансии или о волонтёре
+                     * @enum {string}
+                     */
+                    targetType: "message" | "user" | "organization" | "review";
+                };
+            };
+        };
+        responses: {
+            /** @description Жалоба принята (повторная на то же, пока прошлая не разобрана, — тот же id) */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        id: number;
+                    };
+                };
+            };
+            /** @description Неверная причина, цель или комментарий; жалоба на себя */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                        errorCode: string;
+                    };
+                };
+            };
+            /** @description Чужая переписка */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                        errorCode: string;
+                    };
+                };
+            };
+            /** @description Объект не найден */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                        errorCode: string;
+                    };
+                };
+            };
+            /** @description Слишком много жалоб за час */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -30516,6 +31749,8 @@ export interface operations {
                                 username?: string | null;
                             };
                         };
+                        /** @description Доступна кнопка «Прислать сводку сейчас» (только на тестовой версии) */
+                        digestTest: boolean;
                         /**
                          * @example {
                          *       "new_application": {
@@ -30620,6 +31855,325 @@ export interface operations {
             };
         };
     };
+    post_app_api_v1_notificationsettings_digesttest: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description count — сколько заявок без ответа; 0 — ничего не отправлено */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        channels: string[];
+                        count: number;
+                        /** @description Письмо отправлено */
+                        email: boolean;
+                    };
+                };
+            };
+            /** @description Не тестовая версия */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_app_api_v1_oauth_appcallback: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description goodsurfing://oauth/{provider}?code=…&state=… */
+            302: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    post_app_api_v1_oauth_link: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Код авторизации от провайдера */
+                    code: string;
+                    /** @description PKCE code_verifier (code_challenge = S256) */
+                    codeVerifier: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        linked: boolean;
+                        provider: string;
+                    };
+                };
+            };
+            /** @description Нет code или codeVerifier */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description oauth_failed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+            /** @description provider_disabled */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+            /** @description linked_to_other — уже привязан к другому аккаунту */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+        };
+    };
+    delete_app_api_v1_oauth_unlink: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Отвязан (или не был привязан) */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description provider_disabled */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+            /** @description last_login_method — сначала задайте пароль */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+        };
+    };
+    post_app_api_v1_oauth_login: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Код авторизации от провайдера */
+                    code: string;
+                    /** @description PKCE code_verifier (code_challenge = S256) */
+                    codeVerifier: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Как у /api/v1/vk/jwt-token; ставит cookie входа */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        accessToken: string;
+                        /** @description Аккаунт создан этим входом */
+                        isNew: boolean;
+                        mercureToken: string;
+                        refresh_token: string;
+                        user: {
+                            email: string;
+                            firstName: string | null;
+                            id: string;
+                            isVerified: boolean;
+                            lastName: string | null;
+                            roles: string[];
+                        };
+                    };
+                };
+            };
+            /** @description Нет code или codeVerifier */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description oauth_failed — провайдер не принял код */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+            /** @description account_deleted */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+            /** @description provider_disabled */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+            /** @description no_email — у аккаунта провайдера нет почты */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+        };
+    };
+    get_app_api_v1_oauth_accounts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        accounts: {
+                            /** @description false — нет пароля и других способов входа */
+                            canUnlink: boolean;
+                            linked: boolean;
+                            /** @example yandex */
+                            provider: string;
+                        }[];
+                    };
+                };
+            };
+        };
+    };
+    get_app_api_v1_oauth_providers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        providers: {
+                            /** @example https://oauth.yandex.ru/authorize */
+                            authorizeUrl: string;
+                            clientId: string;
+                            /** @example yandex */
+                            name: string;
+                            /** @example login:email login:info login:avatar */
+                            scope: string;
+                        }[];
+                    };
+                };
+            };
+        };
+    };
     api_only_verified_volunteers_allowed_exceptions_get: {
         parameters: {
             query?: never;
@@ -30704,6 +32258,18 @@ export interface operations {
                     "multipart/form-data": components["schemas"]["OrganizationMember.multipart-member_profile.read-with-profile_user.short_user.email_media_object.read"][];
                 };
             };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/vnd.api+json": components["schemas"]["Error.jsonapi"];
+                };
+            };
         };
     };
     api_organization_organizationIdmembers_post: {
@@ -30738,6 +32304,18 @@ export interface operations {
             };
             /** @description Invalid input */
             400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/vnd.api+json": components["schemas"]["Error.jsonapi"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -30787,6 +32365,18 @@ export interface operations {
                     "multipart/form-data": components["schemas"]["OrganizationMember.multipart-member_profile.read-with-profile_user.short_user.email"];
                 };
             };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/vnd.api+json": components["schemas"]["Error.jsonapi"];
+                };
+            };
             /** @description Not found */
             404: {
                 headers: {
@@ -30821,6 +32411,18 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/vnd.api+json": components["schemas"]["Error.jsonapi"];
+                };
             };
             /** @description Not found */
             404: {
@@ -32241,6 +33843,76 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    api_recipient_blocked_by_you_exceptions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description RecipientBlockedByYouException resource */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecipientBlockedByYouException"];
+                    "application/ld+json": components["schemas"]["RecipientBlockedByYouException.jsonld"];
+                    "application/problem+json": components["schemas"]["RecipientBlockedByYouException"];
+                    "application/vnd.api+json": components["schemas"]["RecipientBlockedByYouException.jsonapi"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/vnd.api+json": components["schemas"]["Error.jsonapi"];
+                };
+            };
+        };
+    };
+    api_recipient_blocked_exceptions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description RecipientBlockedException resource */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecipientBlockedException"];
+                    "application/ld+json": components["schemas"]["RecipientBlockedException.jsonld"];
+                    "application/problem+json": components["schemas"]["RecipientBlockedException"];
+                    "application/vnd.api+json": components["schemas"]["RecipientBlockedException.jsonapi"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/vnd.api+json": components["schemas"]["Error.jsonapi"];
+                };
             };
         };
     };
@@ -34389,6 +36061,8 @@ export interface operations {
                 fields?: "card";
                 /** @description Ids обедов */
                 "foodIds[]"?: number[];
+                /** @description Только «круглый год» (isFullYearAcceptable). Периоды не учитываются: startDate, endDate, overlapStart/overlapEnd и hidePassed с ним не применяются */
+                fullYear?: boolean;
                 /** @description Скрыть прошедшие: только вакансии, у которых есть период, ещё не закончившийся (periods.ending >= сегодня). Уже идущие не скрываются */
                 hidePassed?: boolean;
                 /** @description Ids жилья */
@@ -34419,8 +36093,8 @@ export interface operations {
                 search?: string;
                 /** @description Ids навыков */
                 "skillIds[]"?: number[];
-                /** @description Сортировка по полям. Формат: поле:направление (asc или desc) */
-                sort?: "updated:asc" | "updated:desc" | "reviewCount:asc" | "reviewCount:desc" | "averageRating:asc" | "averageRating:desc" | "popularity:asc" | "popularity:desc" | "recommendation";
+                /** @description Сортировка по полям. Формат: поле:направление (asc или desc). nearestDate — «ближайшие даты»: сначала вакансии с датами по ближайшему дню заезда по незакончившимся периодам (идущий период — сегодня), затем «круглый год» (isFullYearAcceptable, периоды не учитываются), в конце прошедшие и без дат; внутри групп — по новизне */
+                sort?: "updated:asc" | "updated:desc" | "reviewCount:asc" | "reviewCount:desc" | "averageRating:asc" | "averageRating:desc" | "popularity:asc" | "popularity:desc" | "recommendation" | "nearestDate";
                 /** @description Фильтр по дате начала периода (включительно). Формат: YYYY-MM-DD */
                 startDate?: string;
                 /** @description Ids трансферов */
@@ -34877,6 +36551,8 @@ export interface operations {
                 endDate?: string;
                 /** @description Ids обедов */
                 "foodIds[]"?: number[];
+                /** @description Только «круглый год» (isFullYearAcceptable). Периоды не учитываются: startDate, endDate, overlapStart/overlapEnd и hidePassed с ним не применяются */
+                fullYear?: boolean;
                 /** @description Скрыть прошедшие: только вакансии, у которых есть период, ещё не закончившийся (periods.ending >= сегодня). Уже идущие не скрываются */
                 hidePassed?: boolean;
                 /** @description Ids жилья */

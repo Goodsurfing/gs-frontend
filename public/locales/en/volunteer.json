@@ -27,6 +27,39 @@
                 "action": "Get membership",
                 "why": "Apply without limits — 990 ₽ a year"
             }
+        },
+        "mobile": {
+            "applications": "My applications",
+            "all": "All applications ({{count}})",
+            "status": {
+                "new": "Under review",
+                "accepted": "Accepted",
+                "canceled": "Declined"
+            },
+            "next": {
+                "new": "Waiting for the host — we'll let you know when they reply",
+                "accepted": "Agree on dates and travel in the chat",
+                "canceled": "Don't worry: take a look at similar opportunities"
+            },
+            "emptyTitle": "You haven't applied yet",
+            "emptyHint": "Pick an opportunity and write to the host — the reply will arrive in Messages",
+            "find": "Find an opportunity",
+            "loadError": "Couldn't load",
+            "retry": "Retry",
+            "offers": "Opportunities for you",
+            "offersAll": "All opportunities",
+            "offersFresh": "These are the latest opportunities. Add your interests to get a better match",
+            "interests": "Interests",
+            "offersEmpty": "No matching opportunities yet — have a look at the catalog",
+            "profileFilled": "Profile {{percent}}% complete",
+            "profileDone": "Profile complete",
+            "profileHint": "Hosts accept complete profiles more often",
+            "complete": "Complete",
+            "open": "Open",
+            "quota": "Free applications: {{left}} of {{total}}",
+            "quotaMember": "Membership: unlimited applications",
+            "membership": "Membership",
+            "noTitle": "Untitled"
         }
     },
     "volunteer-skills": {
@@ -58,7 +91,24 @@
         "Добавить отзыв": "Add Review"
     },
     "volunteer-notes": {
-        "Мои заявки": "My notes"
+        "Мои заявки": "My notes",
+        "search": "Search by opportunity or host",
+        "searchPlaceholder": "Opportunity or host",
+        "clearSearch": "Clear search",
+        "tabsLabel": "Application status",
+        "tab.all": "All",
+        "tab.new": "Under review",
+        "tab.accepted": "Accepted",
+        "tab.canceled": "Declined",
+        "openOffer": "Open opportunity",
+        "loadError": "Couldn't load applications. Check your connection and try again",
+        "retry": "Retry",
+        "empty": "No applications yet",
+        "emptyHint": "Pick a trip and write to the host — the reply will arrive in Messages",
+        "find": "Find a trip",
+        "emptySearch": "No applications match this search. Try another opportunity or host name",
+        "emptyTab": "No applications in this tab yet",
+        "resetSearch": "Clear search"
     },
     "volunteer-subscribers": {
         "Подписки": "Subscriptions"

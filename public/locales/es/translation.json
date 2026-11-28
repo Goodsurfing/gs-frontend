@@ -127,8 +127,8 @@
                 "my-page": "Mi página",
                 "profile": "Perfil",
                 "about-me": "Acerca de mí",
-                "host-dashboard": "Panel de host",
-                "volunteer-dashboard": "Panel de control voluntario",
+                "host-dashboard": "Panel del anfitrión",
+                "volunteer-dashboard": "Panel del voluntario",
                 "sign-in": "Iniciar sesión",
                 "sign-up": "Unirse",
                 "exit": "Salida",
@@ -527,7 +527,7 @@
         "hints": {
             "new_application": "Al momento: quién, a qué oportunidad, fechas y el inicio del mensaje",
             "new_message": "A los 10 minutos si no lo has leído; como mucho una vez por hora por conversación",
-            "unanswered_reminder": "A los 3 y 7 días de la solicitud",
+            "unanswered_reminder": "3 y 7 días después de la solicitud, y los lunes un resumen de todas las solicitudes sin respuesta",
             "news": "Correos con noticias del proyecto",
             "host_reply": "A los 10 minutos si no lo has leído; como mucho una vez por hora por conversación",
             "application_status": "Al momento, cuando aceptan o rechazan tu solicitud"
@@ -541,7 +541,18 @@
         "banner": "Recibe solicitudes en Telegram: responderás antes",
         "bannerButton": "Conectar",
         "bannerClose": "Ocultar",
-        "introVolunteer": "Elige de qué y dónde quieres que te avisemos. En Telegram verás al momento la respuesta del anfitrión y podrás acordar el viaje rápido."
+        "introVolunteer": "Elige de qué y dónde quieres que te avisemos. En Telegram verás al momento la respuesta del anfitrión y podrás acordar el viaje rápido.",
+        "digestTest": {
+            "title": "Resumen de solicitudes (versión de prueba)",
+            "hint": "Cada lunes a las 10:00 llega un resumen de las solicitudes sin respuesta. Aquí puedes recibirlo ahora mismo: incluirá tus solicitudes sin respuesta de cualquier antigüedad.",
+            "button": "Enviar el resumen ahora",
+            "sending": "Enviando…",
+            "none": "No hay solicitudes sin respuesta: no se envía el resumen. Lo mismo pasará el lunes.",
+            "sent": "Correo enviado: {count} solicitudes en el resumen.",
+            "telegram": "Una versión corta se envió a Telegram.",
+            "off": "El correo y Telegram para los recordatorios de solicitudes están desactivados en la tabla de arriba: el resumen no se envió.",
+            "error": "No se pudo enviar, inténtalo de nuevo"
+        }
     },
     "checkoutFeedback": {
         "title": "¿Qué te impidió pagar?",
@@ -562,5 +573,37 @@
         "error": "No se pudo enviar, inténtalo de nuevo",
         "invalid": "El enlace está incompleto: ábrelo completo desde el correo.",
         "back": "← A la página de membresía"
+    },
+    "yandexId": {
+        "signIn": "Iniciar sesión con Yandex ID",
+        "unavailable": "No se pudo abrir Yandex en este navegador. Inicia sesión con tu correo o con VK.",
+        "callback": {
+            "loading": "Iniciando sesión con Yandex ID…",
+            "linking": "Vinculando Yandex ID…",
+            "loginFailed": "No se pudo iniciar sesión con Yandex ID",
+            "linkFailed": "No se pudo vincular Yandex ID",
+            "backToSignIn": "Volver a iniciar sesión",
+            "backToSettings": "Volver a la configuración"
+        },
+        "errors": {
+            "oauthFailed": "Yandex no confirmó el inicio de sesión. Inténtalo de nuevo.",
+            "disabled": "El inicio de sesión con Yandex ID no está disponible ahora. Inicia sesión con tu correo o con VK.",
+            "noEmail": "Tu cuenta de Yandex no tiene correo. Añádelo en Yandex ID o inicia sesión de otra forma.",
+            "linkedToOther": "Este Yandex ID ya está vinculado a otra cuenta de GoodSurfing.",
+            "lastMethod": "Es la única forma de entrar en tu cuenta. Primero crea una contraseña y luego desvincula Yandex ID.",
+            "expired": "El inicio de sesión caducó o se empezó en otra pestaña. Inténtalo de nuevo.",
+            "denied": "Se canceló el inicio de sesión con Yandex ID.",
+            "unknown": "Algo salió mal. Inténtalo de nuevo un poco más tarde."
+        },
+        "settings": {
+            "title": "Inicio de sesión con Yandex ID",
+            "linked": "Vinculado: puedes entrar en el sitio con Yandex ID.",
+            "notLinked": "No vinculado. Vincúlalo para entrar con un clic.",
+            "link": "Vincular",
+            "unlink": "Desvincular",
+            "cannotUnlink": "Aún no puedes desvincularlo: es tu única forma de entrar. Primero crea una contraseña en esta página.",
+            "linkedOk": "Yandex ID vinculado",
+            "unlinkedOk": "Yandex ID desvinculado"
+        }
     }
 }

@@ -97,6 +97,9 @@
     "Сбор не опубликован": "Fundraiser is not published",
     "Рейтинг жертвователей": "Donor rating",
     "Платёж обрабатывается": "Payment is being processed",
+    "Проверяем оплату…": "Checking your payment…",
+    "Обычно это занимает несколько секунд": "This usually takes a few seconds",
+    "Если вы вышли из оплаты, можно попробовать ещё раз": "If you left the payment page, you can try again",
     "Подтверждение занимает дольше обычного Проверьте статус на странице членства через несколько минут или обратитесь в службу поддержки": "Confirmation is taking longer than usual. Check your membership page status in a few minutes or contact support.",
     "На страницу членства": "Go to membership page",
     "Теперь для вас доступно": "Now available to you:",
@@ -164,5 +167,8 @@
     "Годовые отчёты о деятельности и отчётность в Минюст —": "Annual activity reports and reports to the Ministry of Justice are",
     "на странице «О некоммерческой организации»": "on the “About the non-profit organization” page",
     "Сортировка": "Sorting",
-    "Никого не найдено": "No one found"
+    "Никого не найдено": "No one found",
+    "yookassa-notice": "YooKassa will open now — after payment we'll bring you back here",
+    "fail-retry": "Try again",
+    "fail-to-membership": "Back to the membership page"
 }

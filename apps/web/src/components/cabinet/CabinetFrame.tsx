@@ -119,9 +119,10 @@ export function CabinetFrame({ items, labels, fitContent = false, children }: {
               * ряд — подразделы группы («Организация»), пока открыт один из них.
               * Точки — как breakpoints Swiper (min-width), поэтому max-[…] (строго меньше).
               */}
-            <nav className="hidden flex-col gap-y-5 overflow-x-hidden down-lg:flex">
+            {/* Отступ от шапки: пальцем не задеть логотип и меню над «таблетками» (сдача 27.11.2026) */}
+            <nav className="mt-5 hidden flex-col gap-y-5 overflow-x-hidden down-lg:flex">
                 {[items.map((item) => ({ ...item, active: isItemActive(item) })), subItems].filter((row) => row.length).map((row, index) => (
-                    <div key={index} className="overflow-x-auto pr-[60px] pl-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    <div key={index} className="scroll-strip pr-[60px] pl-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                         <div className="flex gap-[15px]">
                             {row.map((item) => (
                                 <a

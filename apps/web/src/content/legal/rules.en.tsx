@@ -298,6 +298,14 @@ export const RULES_EN: LegalDocument = {
                     to do the same. If you believe that any content on the
                     Goodsurfing Platform infringes copyright in your property,
                     please notify us: support@goodsurfing.org.
+                    <br />
+                    <br />
+                    5.7. If a message, a user profile or a review violates these
+                    Terms, you can report it with the «Report» button next to it.
+                    Reports are reviewed within 24 hours. You can also block a
+                    user: they will not be able to message you, and your
+                    conversation with them will be hidden from your list. You can
+                    unblock a user in your profile settings.
                 </div>
             </div>
             <div className={SECTION} id="6">

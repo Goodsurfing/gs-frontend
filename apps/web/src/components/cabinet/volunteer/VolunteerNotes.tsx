@@ -1,60 +1,79 @@
 "use client";
 
-import type { components } from "@goodsurfing/api";
-import { useEffect, useState } from "react";
+import { useId, useRef, useState } from "react";
 
-import { PageButtons } from "@/components/list/PageButtons";
-import { OfferShareDialog, type OfferShareLabels } from "@/components/share/OfferShareDialog";
+import { ApplicationsEmpty, ApplicationsError, ApplicationsLoading } from "@/components/cabinet/applications/ApplicationsListStates";
+import { ApplicationsSearch } from "@/components/cabinet/applications/ApplicationsSearch";
+import { CountTabs } from "@/components/cabinet/applications/CountTabs";
+import { type LoadApplicationCounts, type LoadApplications, useApplicationsView } from "@/components/cabinet/applications/useApplicationsView";
+import { Pagination } from "@/components/list/Pagination";
 import { useSession } from "@/components/session/SessionProvider";
+import { OfferShareDialog, type OfferShareLabels } from "@/components/share/OfferShareDialog";
 import { Avatar } from "@/components/ui/Avatar";
-import { Spinner } from "@/components/ui/Spinner";
 import type { Locale } from "@/i18n/config";
+import { applicationsListQuery, type ApplicationTab, VOLUNTEER_APPLICATION_TABS } from "@/lib/applicationsView";
 import { browserApi } from "@/lib/browserApi";
 import { mediaUrl } from "@/lib/media";
-import { textSlice } from "@/lib/textSlice";
+import { applicationHref, applicationStatus, type VolunteerApplication } from "@/lib/volunteerApplications";
 
+import { ApplicationSummary, type ApplicationSummaryLabels } from "./ApplicationSummary";
 import { OfferReviewDialog, type OfferReviewDialogLabels } from "./OfferReviewDialog";
 
-type Application = components["schemas"]["ListOfVolunteerResult"];
-type Status = "new" | "accepted" | "canceled";
-
-const PER_PAGE = 10;
-const STATUSES: Status[] = ["new", "accepted", "canceled"];
-/** Цвет полосы под заголовком колонки и плашки статуса (statusColors старого фронта) */
-const COLUMN_COLOR: Record<Status, string> = { new: "border-b-status-new", accepted: "border-b-status-accepted", canceled: "border-b-status-rejected" };
-/** Плашка статуса в окне отзыва: --color-blue, --color-green, --color-pink старого фронта */
-const BADGE_COLOR: Record<Status, string> = { new: "bg-primary", accepted: "bg-host", canceled: "bg-status-rejected" };
-
 export interface VolunteerNotesLabels {
-    statuses: Record<Status, string>;
-    message: string;
+    search: string;
+    searchPlaceholder: string;
+    clearSearch: string;
+    tabsLabel: string;
+    tabs: Record<ApplicationTab, string>;
+    card: ApplicationSummaryLabels;
+    openOffer: string;
     review: string;
-    noTitle: string;
-    noAddress: string;
+    share: string;
+    loadError: string;
+    retry: string;
+    empty: string;
+    emptyHint: string;
+    find: string;
+    emptySearch: string;
+    emptyTab: string;
+    resetSearch: string;
     sendError: string;
     pagination: { prev: string; next: string; page: string };
     dialog: OfferReviewDialogLabels;
-    share: string;
     shareDialog: OfferShareLabels;
 }
 
-const isStatus = (value: string): value is Status => (STATUSES as string[]).includes(value);
+const loadList: LoadApplications<VolunteerApplication> = async (token, filter) => {
+    const { data, error } = await browserApi(token).GET("/api/v1/application/list-of-volunteer", { params: { query: applicationsListQuery(filter) } });
+    return error || !data ? null : { items: data.data ?? [], total: data.pagination?.total ?? 0 };
+};
+
+const loadCounts: LoadApplicationCounts = async (token, { search }) => {
+    const query = search.trim();
+    const { data } = await browserApi(token).GET("/api/v1/application/list-of-volunteer/counts", { params: { query: query ? { search: query } : {} } });
+    return data ? { new: data.new, accepted: data.accepted, canceled: data.canceled, all: data.all } : null;
+};
+
+const secondaryButton = "flex min-h-10 cursor-pointer items-center justify-center rounded-[10px] border border-primary bg-white px-4 text-[14px] text-primary no-underline transition-colors hover:bg-primary hover:text-white";
 
 /**
- * «Мои заявки» волонтёра (NotesVolunteerForm + NotesWidget старого фронта):
- * заявки текущей страницы (по 10) в трёх колонках по статусу, без
- * перетаскивания; у принятой без отзыва — «Написать отзыв».
+ * «Мои заявки» волонтёра (GS-332, раздел 4.7): поиск по вакансии и
+ * организатору, вкладки «Все / На рассмотрении / Приняты / Отклонены» с
+ * числами с сервера, карточки с фото, организатором, датами, статусом и тем,
+ * что дальше; нажатие на карточку открывает переписку. Поиск, вкладки и
+ * состояния — общие с «Заявками» организатора (GS-331).
  */
-export function VolunteerNotes({ locale, hrefs, categories, labels }: {
+export function VolunteerNotes({ locale, hrefs, labels }: {
     locale: Locale;
-    hrefs: { offer: string; chat: string };
-    categories: Record<string, string>;
+    hrefs: { offer: string; chat: string; catalog: string };
     labels: VolunteerNotesLabels;
 }) {
     const session = useSession();
-    const [page, setPage] = useState(1);
-    const [data, setData] = useState<{ items: Application[]; total: number } | null>(null);
-    const [selected, setSelected] = useState<Application | null>(null);
+    const view = useApplicationsView({ defaultTab: "all", loadList, loadCounts });
+    const { filter, list, counts, update } = view;
+    const tabsId = useId();
+    const listTop = useRef<HTMLDivElement>(null);
+    const [selected, setSelected] = useState<VolunteerApplication | null>(null);
 
     // «Поделиться» принятой заявкой: ссылка на вакансию со своим кодом «Пригласи друга» (GS-265)
     const [shareId, setShareId] = useState<string | null>(null);
@@ -67,69 +86,68 @@ export function VolunteerNotes({ locale, hrefs, categories, labels }: {
             .catch(() => undefined);
     };
 
-    // Увеличивается после отзыва — список перечитывается («Написать отзыв» пропадает)
-    const [version, setVersion] = useState(0);
-
-    useEffect(() => {
-        if (session.status !== "user") return;
-        let cancelled = false;
-        void browserApi(session.token)
-            .GET("/api/v1/application/list-of-volunteer", { params: { query: { limit: String(PER_PAGE), page: String(page) } } })
-            .catch(() => ({ data: undefined }))
-            .then(({ data: response }) => !cancelled && setData({ items: response?.data ?? [], total: response?.pagination?.total ?? 0 }));
-        return () => {
-            cancelled = true;
-        };
-    }, [session.status, session.token, page, version]);
-
-    if (!data) return <Spinner className="max-w-[1400px]" />;
-
-    const category = (application: Application) => {
-        const name = (application.vacancy.categories[0] as { name?: string } | undefined)?.name?.trim();
-        return name ? categories[name] ?? name : undefined;
+    const goToPage = (page: number) => {
+        update({ page });
+        listTop.current?.scrollIntoView({ block: "start", behavior: "smooth" });
     };
-    const offerCard = (application: Application) => (
-        <a href={hrefs.offer.replace("{id}", String(application.vacancy.id))} className="flex gap-2 text-inherit no-underline">
-            <Avatar src={mediaUrl(application.vacancy.image, "small")} name={application.vacancy.title} size={56} />
-            <div className="flex flex-col gap-1">
-                <span className="text-[14px] font-medium text-ink">{textSlice(application.vacancy.title, 45, labels.noTitle)}</span>
-                <span className="text-[12px] font-medium text-caption">{textSlice(application.vacancy.address, 23, labels.noAddress)}</span>
-                <span className="text-[12px] font-medium text-primary">{category(application)}</span>
-            </div>
-        </a>
-    );
-    const button = "mt-3.5 h-min w-full cursor-pointer rounded-[10px] border border-primary p-[7px] text-center text-label text-primary no-underline transition-all duration-300 hover:bg-primary hover:text-white";
+    // Нет ни одной заявки вообще — «Пока нет заявок» и «Найти поездку»
+    const none = list.state === "ready" && list.items.length === 0 && !view.narrowed && (filter?.tab === "all" || counts?.all === 0);
 
     return (
-        <div className="flex w-full max-w-[1400px] flex-col items-center gap-10">
-            <div className="mt-10 grid w-full grid-cols-3 gap-5 max-[756px]:grid-cols-[repeat(auto-fit,minmax(400px,1fr))] max-[442px]:grid-cols-[repeat(auto-fit,minmax(200px,1fr))]">
-                {STATUSES.map((status) => {
-                    const items = data.items.filter((item) => item.status === status);
-                    return (
-                        <section key={status} aria-label={labels.statuses[status]} className="h-full min-h-[500px] w-full bg-white shadow-[0_5px_20px_0_rgba(14,29,39,0.05)]">
-                            <div className={`flex justify-between border-b-2 px-5 py-3.5 ${COLUMN_COLOR[status]}`}>
-                                <span className="text-[18px] font-medium text-ink-secondary">{labels.statuses[status]}</span>
-                                <span className="text-[14px] font-medium text-primary">{items.length}</span>
-                            </div>
-                            <div className="flex h-full w-full flex-col px-3.5 pb-[30px]">
-                                {items.map((application) => (
-                                    <article key={application.id} className="mt-3.5 flex min-h-[100px] w-full flex-col border border-accent-bg bg-white p-3.5 select-none">
-                                        <div className="mt-1">{offerCard(application)}</div>
-                                        <div className="flex flex-wrap">
-                                            {!!application.chatId && <a href={hrefs.chat.replace("{id}", String(application.chatId))} className={button}>{labels.message}</a>}
-                                            {status === "accepted" && (
-                                                <button type="button" onClick={() => openShare(String(application.vacancy.id))} className={button}>{labels.share}</button>
-                                            )}
-                                            {status === "accepted" && !application.isHasReview && (
-                                                <button type="button" onClick={() => setSelected(application)} className={button}>{labels.review}</button>
-                                            )}
-                                        </div>
-                                    </article>
-                                ))}
-                            </div>
-                        </section>
-                    );
-                })}
+        <div className="mt-6 flex w-full max-w-[1100px] flex-col gap-5">
+            <ApplicationsSearch
+                value={view.searchText}
+                label={labels.search}
+                placeholder={labels.searchPlaceholder}
+                clearLabel={labels.clearSearch}
+                onChange={view.setSearchText}
+                onSubmit={() => update({ search: view.searchText })}
+                onClear={() => view.resetSearch()}
+            />
+            <CountTabs ref={listTop} id={tabsId} tabs={VOLUNTEER_APPLICATION_TABS} selected={filter?.tab} counts={counts} labels={labels.tabs} label={labels.tabsLabel} onSelect={(tab) => update({ tab })} />
+            <div id={`${tabsId}-panel`} role="tabpanel" aria-labelledby={filter ? `${tabsId}-${filter.tab}` : undefined} aria-busy={list.state === "loading"}>
+                {list.state === "loading" && <ApplicationsLoading height={150} />}
+                {list.state === "error" && <ApplicationsError text={labels.loadError} retry={labels.retry} onRetry={view.reload} />}
+                {list.state === "ready" && list.items.length === 0 && (
+                    none ? (
+                        <ApplicationsEmpty text={labels.empty}>
+                            <p className="m-0 max-w-[360px] text-[14px] leading-[140%] text-caption">{labels.emptyHint}</p>
+                            <a href={hrefs.catalog} className="mt-1 inline-flex h-12 items-center justify-center rounded-[10px] bg-cta px-6 text-[16px] font-semibold text-white no-underline hover:bg-cta-hover">{labels.find}</a>
+                        </ApplicationsEmpty>
+                    ) : (
+                        <ApplicationsEmpty
+                            text={view.narrowed ? labels.emptySearch : labels.emptyTab}
+                            reset={view.narrowed ? { label: labels.resetSearch, onClick: () => view.resetSearch() } : undefined}
+                        />
+                    )
+                )}
+                {list.state === "ready" && list.items.length > 0 && (
+                    <ul className="m-0 grid list-none grid-cols-2 items-start gap-4 p-0 down-lg:grid-cols-1">
+                        {list.items.map((application, index) => {
+                            const accepted = applicationStatus(application.status) === "accepted";
+                            return (
+                                <li key={application.id} data-testid="application-card" className="flex flex-col gap-3 rounded-[12px] border border-accent-bg bg-white p-3.5">
+                                    {/* Вся карточка — в переписку (нет переписки — на вакансию) */}
+                                    <a href={applicationHref(application, hrefs)} className="flex gap-3 text-inherit no-underline hover:[&_h3]:text-primary">
+                                        <ApplicationSummary item={application} labels={labels.card} thumb={72} lazy={index > 3} organizer titleTag="h3" />
+                                    </a>
+                                    <div className="flex flex-wrap gap-2">
+                                        <a href={hrefs.offer.replace("{id}", String(application.vacancy.id))} className={secondaryButton}>{labels.openOffer}</a>
+                                        {accepted && <button type="button" onClick={() => openShare(String(application.vacancy.id))} className={secondaryButton}>{labels.share}</button>}
+                                        {accepted && !application.isHasReview && (
+                                            <button type="button" onClick={() => setSelected(application)} className={secondaryButton}>{labels.review}</button>
+                                        )}
+                                    </div>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                )}
+                {view.pages > 1 && filter && (
+                    <div className="flex justify-center py-5">
+                        <Pagination page={filter.page} count={view.pages} onPage={goToPage} labels={labels.pagination} />
+                    </div>
+                )}
             </div>
             {shareId && (
                 <OfferShareDialog
@@ -143,18 +161,15 @@ export function VolunteerNotes({ locale, hrefs, categories, labels }: {
                     labels={labels.shareDialog}
                 />
             )}
-            <PageButtons page={page} count={Math.ceil(data.total / PER_PAGE)} onChange={setPage} labels={labels.pagination} />
             <OfferReviewDialog
                 open={!!selected}
                 labels={labels.dialog}
                 assistant={selected ? { token: session.token, vacancyId: selected.vacancy.id } : undefined}
                 onClose={() => setSelected(null)}
                 offer={selected && (
-                    <div className="flex min-h-[100px] w-full flex-col border border-accent-bg bg-white p-3.5 select-none">
-                        {isStatus(selected.status) && (
-                            <div className={`box-content max-h-min max-w-min self-end rounded-[2px] px-1.5 py-[3px] text-[10px] text-white ${BADGE_COLOR[selected.status]}`}>{labels.statuses[selected.status]}</div>
-                        )}
-                        <div className="mt-1">{offerCard(selected)}</div>
+                    <div className="flex w-full gap-2 border border-accent-bg bg-white p-3.5 select-none">
+                        <Avatar src={mediaUrl(selected.vacancy.image, "small")} name={selected.vacancy.title} size={56} />
+                        <span className="text-[14px] font-medium text-ink">{selected.vacancy.title?.trim() || labels.card.noTitle}</span>
                     </div>
                 )}
                 onSend={async ({ rating, text }) => {
@@ -168,7 +183,7 @@ export function VolunteerNotes({ locale, hrefs, categories, labels }: {
                         const { detail, message } = (typeof error === "object" ? error : {}) as { detail?: unknown; message?: unknown };
                         return typeof detail === "string" ? detail : typeof message === "string" ? message : labels.sendError;
                     }
-                    setVersion((value) => value + 1);
+                    view.reload();
                     return null;
                 }}
             />

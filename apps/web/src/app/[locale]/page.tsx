@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -7,6 +8,8 @@ import { EventFeed } from "@/components/home/EventFeed";
 import { HeroSlider } from "@/components/home/HeroSlider";
 import { HomeSearch } from "@/components/home/HomeSearch";
 import { HowItWork } from "@/components/home/HowItWork";
+import { JoinLink } from "@/components/home/JoinLink";
+import { PhoneHero } from "@/components/home/PhoneHero";
 import { PersonalOffers } from "@/components/home/PersonalOffers";
 import { ReviewsShowcase } from "@/components/home/ReviewsShowcase";
 import { PublicShell } from "@/components/layout/PublicShell";
@@ -20,9 +23,11 @@ import { getEventFeed, getFeaturedOffers, getFeaturedReviews, getHomeCategories,
 import { mediaUrl } from "@/lib/media";
 import { formatStatNumber, roundStat } from "@/lib/formatStat";
 import { routes } from "@/lib/routes";
+import { takeChars } from "@/lib/textSlice";
 import { pageMetadata, siteUrl } from "@/lib/seo";
 import { jsonLdGraph } from "@/lib/structuredData";
-import { HERO_IMAGES } from "@/lib/heroImages";
+import { HERO_IMAGES, PHONE_HERO_IMAGE } from "@/lib/heroImages";
+import { homeQuickPicks } from "@/lib/landingMenu";
 
 // Подборки и баннер меняются в админке — страница пересобирается раз в 5 минут
 export const revalidate = 300;
@@ -54,10 +59,24 @@ function Section({ title, children, className = "" }: { title?: string; children
     );
 }
 
-/** Главная (MainPage старого фронта, GS-219) */
+/** Символов отзыва в HTML: карточка показывает 6 строк по ~65 знаков, остальное обрезает line-clamp */
+const REVIEW_TEXT_CHARS = 600;
+
 /** Ширина картинок «преимуществ» (высота у всех 230) — место резервируется до загрузки */
 const BENEFIT_WIDTHS = [197, 208, 197];
 
+/*
+ * Плитка направления 126×129. Картинки направлений в хранилище — оригиналы по 40–90 КБ без превью;
+ * next/image отдаёт их уменьшенными (256 px, webp — ~10 КБ) и лениво: на телефоне плитки ниже
+ * первого экрана. Фон не заливаем: у части картинок прозрачные края.
+ */
+const CATEGORY_TILE = "relative box-border flex h-[129px] w-[126px] items-end overflow-hidden p-2.5 transition-opacity duration-300 hover:opacity-80";
+const CATEGORY_TILE_SIZES = "126px";
+
+/** Картинка с хоста не из images.remotePatterns (next.config.ts) — без оптимизации, иначе next/image падает */
+const optimizable = (src: string) => src.startsWith("/") || src.startsWith("https://storage.yandexcloud.net/");
+
+/** Главная (MainPage старого фронта, GS-219) */
 export default async function HomePage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
@@ -92,14 +111,39 @@ export default async function HomePage({ params }: Props) {
     ];
 
     return (
-        <PublicShell locale={locale}>
+        <PublicShell locale={locale} socialsInHeroOnPhone>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph(structuredData)) }} />
-            {/* Первый экран: поиск и направления слева, слайдер справа; уже 1000 px — слайдер сверху */}
-            <div className="flex min-h-screen border-b border-accent-bg max-[1000px]:flex-col-reverse">
+            <PhoneHero
+                title={tMain("Путешествуй, помогай, меняй мир")}
+                lead={tMain("phoneHero.lead")}
+                image={PHONE_HERO_IMAGE}
+                catalogHref={routes.offersMap(locale)}
+                picks={homeQuickPicks(locale, categories.map((category) => ({ id: category.id, name: categoryName(category.name, t) ?? category.name })))}
+                labels={{
+                    search: tMain("phoneHero.searchLabel"),
+                    placeholder: tMain("phoneHero.placeholder"),
+                    find: tMain("phoneHero.find"),
+                    picks: tMain("phoneHero.picks"),
+                    socials: tMain("phoneHero.socials"),
+                }}
+            />
+            {/* Первый экран: поиск и направления слева, слайдер справа; уже 1000 px — слайдер сверху; на телефоне — PhoneHero, здесь только направления */}
+            <div className="flex min-h-screen border-b border-accent-bg max-[1000px]:flex-col-reverse down-md:min-h-0">
                 <div className="w-1/2 bg-white max-[1000px]:w-full">
                     <div className="flex h-full flex-col items-start overflow-visible px-12 py-7 max-[450px]:p-5">
-                        <div className="flex h-full w-full flex-col pt-[100px] max-[1000px]:items-center">
-                            <div className="mb-10 flex max-w-[713px] flex-col items-start max-[1000px]:items-center">
+                        <div className="flex h-full w-full flex-col pt-[100px] max-[1000px]:items-center down-md:pt-0">
+                            {/* Телефон: «Присоединиться» под поиском, вместо кнопки слайда */}
+                            <div className="mb-6 hidden w-full flex-col items-center gap-3 text-center down-md:flex">
+                                <p className="text-[16px] leading-[1.35] text-ink-secondary">
+                                    {today?.volunteerCount
+                                        ? tMain("slider.volunteerCount", { count: today.volunteerCount, displayCount: round(today.volunteerCount) })
+                                        : tMain("С нами уже 90 000 путешественников со смыслом со всего мира")}
+                                </p>
+                                <JoinLink href={routes.signIn(locale)} signedInHref={routes.offersMap(locale)} className="rounded-[10px] border border-host bg-host px-[50px] py-3.5 text-center text-[1rem] leading-[1.375rem] text-white">
+                                    {tMain("Присоединиться к сообществу")}
+                                </JoinLink>
+                            </div>
+                            <div className="mb-10 flex max-w-[713px] flex-col items-start max-[1000px]:items-center down-md:hidden">
                                 <h1 className="mb-10 text-left text-[4.5rem] leading-[100%] font-normal text-ink max-[1600px]:text-[48px] max-[1400px]:text-[32px] max-[1000px]:text-center max-[1000px]:text-[48px]! max-[450px]:text-[32px]!">
                                     {t("main.welcome.title")}
                                 </h1>
@@ -122,18 +166,15 @@ export default async function HomePage({ params }: Props) {
                                     <a
                                         key={category.id}
                                         href={routes.offersMapCategory(locale, category.id)}
-                                        style={category.image ? { backgroundImage: `url(${JSON.stringify(category.image)})` } : undefined}
-                                        className="box-border flex h-[129px] w-[126px] items-end bg-cover bg-center bg-no-repeat p-2.5 transition-opacity duration-300 hover:opacity-80"
+                                        className={CATEGORY_TILE}
                                     >
-                                        <p lang={locale} className="w-full hyphens-auto break-words text-white">{categoryName(category.name, t)}</p>
+                                        {category.image && <Image src={category.image} alt="" fill sizes={CATEGORY_TILE_SIZES} unoptimized={!optimizable(category.image)} className="object-cover" />}
+                                        <p lang={locale} className="relative w-full hyphens-auto break-words text-white">{categoryName(category.name, t)}</p>
                                     </a>
                                 ))}
-                                <a
-                                    href={routes.categories(locale)}
-                                    style={{ backgroundImage: "url(/web/images/home/other-categories.png)" }}
-                                    className="box-border flex h-[129px] w-[126px] items-end bg-cover bg-center bg-no-repeat p-2.5 transition-opacity duration-300 hover:opacity-80"
-                                >
-                                    <p lang={locale} className="w-full hyphens-auto break-words text-caption">{t("category-offer.Другие категории")}</p>
+                                <a href={routes.categories(locale)} className={CATEGORY_TILE}>
+                                    <Image src="/web/images/home/other-categories.png" alt="" fill sizes={CATEGORY_TILE_SIZES} className="object-cover" />
+                                    <p lang={locale} className="relative w-full hyphens-auto break-words text-caption">{t("category-offer.Другие категории")}</p>
                                 </a>
                             </div>
                             <div className="mt-auto max-[1000px]:flex max-[1000px]:flex-col max-[1000px]:items-center">
@@ -145,7 +186,7 @@ export default async function HomePage({ params }: Props) {
                         </div>
                     </div>
                 </div>
-                <div className="w-1/2 max-[1000px]:w-full">
+                <div className="w-1/2 max-[1000px]:w-full down-md:hidden">
                     <HeroSlider
                         bulletLabel="{{n}}"
                         slides={[
@@ -179,10 +220,10 @@ export default async function HomePage({ params }: Props) {
             </Section>
 
             {banner && (
-                <section
-                    className="relative mt-20 flex items-center overflow-hidden rounded-[10px] bg-cover bg-center bg-no-repeat p-5 before:absolute before:inset-0 before:bg-black/40 down-md:min-h-[200px] down-md:rounded-2xl down-md:px-5 down-md:py-6"
-                    style={banner.image ? { backgroundImage: `url(${JSON.stringify(banner.image)})` } : undefined}
-                >
+                // Картинка баннера — оригинал из хранилища: через next/image — уменьшенная и лениво (фон CSS грузится сразу)
+                <section className="relative mt-20 flex items-center overflow-hidden rounded-[10px] p-5 down-md:min-h-[200px] down-md:rounded-2xl down-md:px-5 down-md:py-6">
+                    {banner.image && <Image src={banner.image} alt="" fill sizes="100vw" unoptimized={!optimizable(banner.image)} className="object-cover" />}
+                    <div className="absolute inset-0 bg-black/40" />
                     <div className="relative z-[1] flex w-full items-center justify-between gap-4">
                         <p className="text-[20px] leading-[1.25] font-bold text-white down-md:text-[22px]">{banner.description}</p>
                         <a href={banner.url} className="w-fit rounded-[10px] border border-white px-[50px] py-3.5 text-[1rem] leading-[1.375rem] text-white transition-colors hover:bg-white hover:text-primary">{t("Подробнее")}</a>
@@ -257,7 +298,8 @@ export default async function HomePage({ params }: Props) {
                     reviews={reviews.map((review) => ({
                         id: String(review.id),
                         title: review.title,
-                        text: review.description,
+                        // На карточке — 6 строк (line-clamp), полный отзыв (до нескольких КБ) в HTML не нужен
+                        text: takeChars(review.description, REVIEW_TEXT_CHARS),
                         // Своих фото почти ни у кого нет (8 из 641 на 06.11.2026) — тогда обложка вакансии
                         image: mediaUrl(review.images[0], "large") ?? mediaUrl(review.vacancyImage, "large") ?? "",
                         author: review.authorName,

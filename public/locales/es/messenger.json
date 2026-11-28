@@ -44,6 +44,9 @@
     "Прочитано": "Leído",
     "Переписок пока нет": "Aún no hay conversaciones",
     "Здесь пока пусто": "Aquí aún no hay nada",
+    "Здесь будут переписки с сообщениями, которые вы ещё не прочитали": "Aquí aparecerán las conversaciones con mensajes que aún no has leído",
+    "Здесь будут переписки, где последнее сообщение — от собеседника": "Aquí aparecerán las conversaciones cuyo último mensaje es de la otra persona",
+    "Здесь будут переписки с подтверждёнными заявками": "Aquí aparecerán las conversaciones con solicitudes aceptadas",
     "Не удалось загрузить переписки": "No se pudieron cargar las conversaciones",
     "Повторить": "Reintentar",
     "Включите уведомления — узнаете о новых сообщениях и заявках сразу, даже когда сайт закрыт": "Activa las notificaciones para enterarte de nuevos mensajes y solicitudes al instante, incluso con el sitio cerrado",
@@ -80,8 +83,38 @@
         "close": "Si no hay respuesta en tres semanas, la solicitud se cerrará sola y te enviaremos oportunidades similares."
     },
     "Этот браузер не умеет получать уведомления. Откройте сайт в Chrome, Яндекс Браузере, Safari или Firefox — на iPhone добавьте сайт на экран «Домой»": "Este navegador no puede recibir notificaciones. Abre el sitio en Chrome, Yandex Browser, Safari o Firefox; en iPhone, añade el sitio a la pantalla de inicio",
+    "apply": {
+        "title": "Postularse a la vacante",
+        "when": "¿Cuándo quieres venir?",
+        "projectDates": "Fechas del proyecto",
+        "fullYear": "Todo el año",
+        "minStay": "Estancia mínima",
+        "maxStay": "Estancia máxima",
+        "days_one": "{count} día",
+        "days_few": "{count} días",
+        "days_many": "{count} días",
+        "days_other": "{count} días",
+        "choosePeriod": "El anfitrión recibe voluntarios en estas fechas: elige la que te convenga",
+        "windowHint": "Puedes venir durante parte de este periodo: indica tus fechas",
+        "freeHint": "Hemos puesto fechas de ejemplo; cámbialas si lo necesitas. Las fechas exactas se pueden acordar con el anfitrión en el chat.",
+        "about": "Unas palabras sobre ti",
+        "optional": "opcional",
+        "aboutPlaceholder": "Por ejemplo: cómo puedes ayudar, si tienes experiencia similar, por qué quieres venir aquí",
+        "aboutHint": "El anfitrión lo verá junto con tu solicitud",
+        "submit": "Enviar solicitud",
+        "sending": "Enviando…",
+        "needPeriod": "Elige las fechas para enviar la solicitud",
+        "network": "No se pudo enviar: sin conexión. Revisa internet y pulsa de nuevo; todo lo que escribiste se ha guardado.",
+        "loadError": "No se pudo cargar la vacante. Revisa internet e inténtalo de nuevo.",
+        "retry": "Reintentar"
+    },
     "Отклонить заявку? Волонтёр получит уведомление": "¿Rechazar la solicitud? El voluntario recibirá una notificación",
     "Отмена": "Cancelar",
     "Изменить решение": "Cambiar decisión",
-    "Измените решение по заявке — волонтёр получит уведомление": "Cambia tu decisión sobre la solicitud: el voluntario recibirá una notificación"
+    "Измените решение по заявке — волонтёр получит уведомление": "Cambia tu decisión sobre la solicitud: el voluntario recibirá una notificación",
+    "empty": {
+        "volunteer": "Aquí aparecerán tus conversaciones con los anfitriones",
+        "volunteerHint": "Envía una solicitud: el anfitrión responderá aquí",
+        "find": "Buscar vacante"
+    }
 }

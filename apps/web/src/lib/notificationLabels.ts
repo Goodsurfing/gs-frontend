@@ -1,6 +1,6 @@
 import type { NotificationSettingsLabels } from "@/components/cabinet/host/notifications/NotificationSettings";
 import type { Translate } from "@/i18n/dictionary";
-import { CHANNELS, TYPES } from "@/lib/notificationSettings";
+import { CHANNELS, type DigestTestLabels, TYPES } from "@/lib/notificationSettings";
 
 const KEYS = ["intro", "connectTitle", "telegram", "max", "connect", "connecting", "connectHint", "connected", "disconnect", "soon", "unavailable", "tableTitle", "needConnect", "service", "quiet", "saveError", "loadError", "retry"] as const;
 
@@ -13,4 +13,11 @@ export function notificationLabels(t: Translate, intro = "intro"): NotificationS
         types: Object.fromEntries(TYPES.map((type) => [type, n(`types.${type}`)])) as NotificationSettingsLabels["types"],
         hints: Object.fromEntries(TYPES.map((type) => [type, n(`hints.${type}`)])) as NotificationSettingsLabels["hints"],
     };
+}
+
+const DIGEST_KEYS = ["title", "hint", "button", "sending", "none", "sent", "telegram", "off", "error"] as const;
+
+/** «Прислать сводку сейчас» в «Уведомлениях» организатора — только на тестовой версии (GS-298) */
+export function digestTestLabels(t: Translate): DigestTestLabels {
+    return Object.fromEntries(DIGEST_KEYS.map((key) => [key, t(`notifications.digestTest.${key}`)])) as DigestTestLabels;
 }

@@ -42,7 +42,7 @@ export function OffersCarousel({ children, prevLabel, nextLabel, className = "" 
             <div className="w-full px-10 down-lg:px-5 down-sm:px-0">
                 <div
                     ref={track}
-                    className="@container flex snap-x snap-mandatory gap-2.5 overflow-x-auto [scrollbar-width:none] down-lg:px-10 down-lg:scroll-px-10 [&::-webkit-scrollbar]:hidden"
+                    className="@container flex snap-x snap-mandatory gap-2.5 scroll-strip [scrollbar-width:none] down-lg:px-10 down-lg:scroll-px-10 [&::-webkit-scrollbar]:hidden"
                 >
                     {Children.map(children, (child) => (
                         // Ширина в cqw, а не в %: calc с процентами Chrome округляет по слагаемым (359,98 px вместо 360, как у Swiper)

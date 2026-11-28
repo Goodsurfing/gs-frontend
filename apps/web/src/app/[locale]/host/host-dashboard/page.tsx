@@ -38,6 +38,7 @@ export default async function HostDashboardPage({ params }: Props) {
                     routes={{
                         info: routes.hostInfo(locale),
                         notes: routes.hostNotes(locale),
+                        notesNew: `${routes.hostNotes(locale)}?status=new`,
                         membership: routes.membership(locale),
                         volunteer: routes.volunteerPublicTemplate(locale),
                         offer: routes.offer(locale, "{id}"),
@@ -59,6 +60,8 @@ export default async function HostDashboardPage({ params }: Props) {
                         quota: { left: q("Вакансий осталось"), leftHint: q("Нужно больше? Оформите членство!"), unlimited: q("Без ограничений"), unlimitedHint: q("Не забудьте продлить членство, чтобы сохранить привилегии") },
                         requests: d("Заявки"),
                         newRequests: d("Новых заявок"),
+                        waiting: common.waiting,
+                        reply: common.reply,
                         loading: d("Загрузка..."),
                         empty: d("На данный момент заявки отсутсвуют"),
                         showAll: d("Посмотреть все"),

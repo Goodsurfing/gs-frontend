@@ -13,10 +13,13 @@ const HIDDEN_KEY = "gs.checkoutFeedbackHidden";
 /**
  * На странице членства: если человек недавно начал оплату и не закончил (вернулся «Назад»
  * со страницы ЮKassa) — спросить, что помешало. «Скрыть» запоминается для этого платежа.
+ * На телефоне вопрос свёрнут в одну строку (GS-333): раскрытые шесть вариантов с полем комментария
+ * занимали весь первый экран, и цена с «Оформить» уезжали вниз. На компьютере — сразу раскрыт.
  */
 export function CheckoutFeedbackPrompt({ labels, intro, hide }: { labels: CheckoutFeedbackLabels; intro: string; hide: string }) {
     const session = useSession();
     const [paymentId, setPaymentId] = useState<string | null>(null);
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         if (session.status !== "user") return;
@@ -41,26 +44,57 @@ export function CheckoutFeedbackPrompt({ labels, intro, hide }: { labels: Checko
 
     if (!paymentId) return null;
     return (
-        <section className="mx-auto mt-6 w-full max-w-[720px] px-4" aria-label={labels.title}>
-            <div className="flex flex-col gap-3 rounded-[10px] bg-accent-bg p-5">
+        <CheckoutFeedbackCard
+            paymentId={paymentId}
+            labels={labels}
+            intro={intro}
+            hide={hide}
+            open={open}
+            onOpen={() => setOpen(true)}
+            onHide={() => {
+                try {
+                    storageSet(HIDDEN_KEY, paymentId);
+                } catch {
+                    // нет хранилища — просто скрыть
+                }
+                setPaymentId(null);
+            }}
+        />
+    );
+}
+
+/** Карточка вопроса; open — раскрыт ли вопрос на телефоне (на компьютере раскрыт всегда) */
+export function CheckoutFeedbackCard({ paymentId, labels, intro, hide, open, onOpen, onHide }: {
+    paymentId: string;
+    labels: CheckoutFeedbackLabels;
+    intro: string;
+    hide: string;
+    open: boolean;
+    onOpen: () => void;
+    onHide: () => void;
+}) {
+    return (
+        <section className="mx-auto mt-6 w-full max-w-[720px] px-4 down-md:mt-4" aria-label={labels.title}>
+            <div className="flex flex-col gap-3 rounded-[10px] bg-accent-bg p-5 down-md:gap-2 down-md:p-4">
                 <div className="flex items-start justify-between gap-4">
                     <p className="text-[15px] leading-[140%]">{intro}</p>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            try {
-                                storageSet(HIDDEN_KEY, paymentId);
-                            } catch {
-                                // нет хранилища — просто скрыть
-                            }
-                            setPaymentId(null);
-                        }}
-                        className="shrink-0 cursor-pointer text-[14px] text-caption hover:text-ink"
-                    >
+                    <button type="button" onClick={onHide} className="shrink-0 cursor-pointer text-[14px] text-caption hover:text-ink">
                         {hide}
                     </button>
                 </div>
-                <CheckoutFeedbackForm paymentId={paymentId} labels={labels} compact />
+                {!open && (
+                    <button
+                        type="button"
+                        aria-expanded={false}
+                        onClick={onOpen}
+                        className="hidden cursor-pointer self-start text-left text-[15px] font-medium text-primary underline down-md:block"
+                    >
+                        {labels.title}
+                    </button>
+                )}
+                <div className={open ? undefined : "down-md:hidden"}>
+                    <CheckoutFeedbackForm paymentId={paymentId} labels={labels} compact />
+                </div>
             </div>
         </section>
     );

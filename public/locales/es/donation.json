@@ -98,6 +98,9 @@
     "Сбор не опубликован": "La recaudación no está publicada",
     "Рейтинг жертвователей": "Clasificación de donantes",
     "Платёж обрабатывается": "El pago se está procesando",
+    "Проверяем оплату…": "Comprobando el pago…",
+    "Обычно это занимает несколько секунд": "Normalmente tarda unos segundos",
+    "Если вы вышли из оплаты, можно попробовать ещё раз": "Si saliste del pago, puedes intentarlo de nuevo",
     "Подтверждение занимает дольше обычного Проверьте статус на странице членства через несколько минут или обратитесь в службу поддержки": "La confirmación tarda más de lo habitual. Revise el estado de su membresía en unos minutos o contacte con soporte.",
     "На страницу членства": "Ir a la página de membresía",
     "Теперь для вас доступно": "Ahora disponible para usted:",
@@ -165,5 +168,8 @@
     "Годовые отчёты о деятельности и отчётность в Минюст —": "Los informes anuales de actividad y los informes al Ministerio de Justicia están",
     "на странице «О некоммерческой организации»": "en la página «Sobre la organización sin fines de lucro»",
     "Сортировка": "Ordenar",
-    "Никого не найдено": "No se encontró a nadie"
+    "Никого не найдено": "No se encontró a nadie",
+    "yookassa-notice": "Ahora se abrirá YooKassa; después del pago te traeremos de vuelta aquí",
+    "fail-retry": "Intentar de nuevo",
+    "fail-to-membership": "Volver a la página de membresía"
 }

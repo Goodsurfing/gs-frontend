@@ -16,6 +16,11 @@ interface PageMetadataInput {
     image?: string;
     type?: "website" | "article" | "profile";
     noindex?: boolean;
+    /**
+     * Страница отвечает 404 (NotFoundStatus или proxy.ts). Next сам добавляет таким ответам
+     * <meta name="robots" content="noindex"> — свой тег не ставим, иначе их два с разным содержимым.
+     */
+    notFound?: boolean;
 }
 
 /**
@@ -23,7 +28,7 @@ interface PageMetadataInput {
  * (GS-213): title, description, canonical, hreflang ru/en/es + x-default,
  * Open Graph и Twitter. og:image по умолчанию — /og-image.jpg.
  */
-export function pageMetadata({ locale, path, title, description, image, type = "website", noindex }: PageMetadataInput): Metadata {
+export function pageMetadata({ locale, path, title, description, image, type = "website", noindex, notFound }: PageMetadataInput): Metadata {
     const url = `${siteUrl()}${path}`;
     const languages = Object.fromEntries([
         ...LOCALES.map((code) => [code, `${siteUrl()}${withLocale(path, code)}`]),
@@ -35,7 +40,7 @@ export function pageMetadata({ locale, path, title, description, image, type = "
         title,
         description,
         alternates: { canonical: url, languages },
-        robots: noindex ? { index: false, follow: true } : undefined,
+        robots: noindex && !notFound ? { index: false, follow: true } : undefined,
         openGraph: {
             siteName: SITE_NAME,
             locale: OG_LOCALE[locale],

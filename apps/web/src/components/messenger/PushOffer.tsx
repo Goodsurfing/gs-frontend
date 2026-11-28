@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { IosInstallHint, type IosInstallHintLabels } from "@/components/pwa/IosInstallHint";
 import { browserApi } from "@/lib/browserApi";
+import { currentDisplayEnv, isIphoneSafari, isStandalone } from "@/lib/pwa";
 import { currentPushSupport, OFFER_DISMISSED_KEY, type PushSupport, shouldOffer, subscribePush } from "@/lib/webPush";
 import { storageGet, storageSet } from "@/lib/safeStorage";
 
@@ -18,6 +20,9 @@ export interface PushOfferLabels {
     unsupported: string;
     /** Разрешение спрошено, а ответа нет: Chrome мог спрятать запрос в значок у адреса */
     noPrompt: string;
+    /** Safari на iPhone: плашка «Установите на iPhone» с инструкцией вместо одной строки */
+    install: IosInstallHintLabels;
+    appHref: string;
 }
 
 const dismissedAt = (): number | null => {
@@ -31,9 +36,16 @@ const dismissedAt = (): number | null => {
  * отказываются, и второй раз браузер уже не спросит. «Не сейчас» прячет на
  * 30 дней. Разрешение уже дано — тихо подписывает этот браузер на вошедшего
  * (новый вход, сменились ключи). На iPhone в Safari — подсказка добавить сайт
- * на экран «Домой»: иначе Apple не даёт пуши.
+ * на экран «Домой»: иначе Apple не даёт пуши. В самом Safari — плашка с
+ * пошаговой инструкцией (IosInstallHint, свой срок «Позже»), в других браузерах
+ * iPhone — одна строка.
+ *
+ * Без переписок плашку не показываем — нечего ждать. Исключение — сайт,
+ * открытый с экрана «Домой»: его ставят ради уведомлений, а на iPhone
+ * разрешение можно спросить только по нажатию, так что кнопка «Включить»
+ * нужна сразу, даже если переписок ещё нет.
  */
-export function PushOffer({ token, enabled, labels }: { token: string | undefined; enabled: boolean; labels: PushOfferLabels }) {
+export function PushOffer({ token, enabled, hasChats, labels }: { token: string | undefined; enabled: boolean; hasChats: boolean; labels: PushOfferLabels }) {
     const [support, setSupport] = useState<PushSupport>("unsupported");
     const [publicKey, setPublicKey] = useState<string | null>(null);
     const [visible, setVisible] = useState(false);
@@ -42,7 +54,7 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
     const [result, setResult] = useState<"enabled" | "blocked" | "unsupported" | null>(null);
 
     useEffect(() => {
-        if (!enabled) return;
+        if (!enabled || (!hasChats && !isStandalone(currentDisplayEnv()))) return;
         const kind = currentPushSupport();
         // Определяется только в браузере, после загрузки
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -57,13 +69,21 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
             const key = (data as { publicKey?: string | null } | undefined)?.publicKey ?? null;
             if (cancelled || !key) return;
             setPublicKey(key);
-            if (Notification.permission === "granted") void subscribePush(token, key);
-            else setVisible(shouldOffer(Notification.permission, dismissedAt(), Date.now()));
+            if (Notification.permission === "granted") {
+                // Уведомления разрешены раньше, а этот браузер не умеет их получать — сказать
+                // об этом (раз в 30 дней), а не молчать: человек ждёт уведомлений, а их не будет
+                void subscribePush(token, key).then((outcome) => {
+                    if (cancelled || outcome !== "unsupported" || !shouldOffer("default", dismissedAt(), Date.now())) return;
+                    storageSet(OFFER_DISMISSED_KEY, String(Date.now()));
+                    setResult("unsupported");
+                    setVisible(true);
+                });
+            } else setVisible(shouldOffer(Notification.permission, dismissedAt(), Date.now()));
         }).catch(() => undefined);
         return () => {
             cancelled = true;
         };
-    }, [enabled, token]);
+    }, [enabled, hasChats, token]);
 
     const later = useCallback(() => {
         storageSet(OFFER_DISMISSED_KEY, String(Date.now()));
@@ -75,7 +95,8 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
         setBusy(true);
         const slowTimer = window.setTimeout(() => setSlow(true), 4000);
         const permission = await Notification.requestPermission().catch(() => "denied" as const);
-        const ok = permission === "granted" && await subscribePush(token, publicKey);
+        const outcome = permission === "granted" ? await subscribePush(token, publicKey) : "failed";
+        const ok = outcome === "ok";
         window.clearTimeout(slowTimer);
         setSlow(false);
         setBusy(false);
@@ -83,14 +104,26 @@ export function PushOffer({ token, enabled, labels }: { token: string | undefine
         // честно сказать и посоветовать другой браузер, а не «браузер не разрешил»
         setResult(ok ? "enabled" : permission === "granted" ? "unsupported" : "blocked");
         if (!ok && permission !== "denied") storageSet(OFFER_DISMISSED_KEY, String(Date.now()));
-        window.setTimeout(() => setVisible(false), 4000);
+        window.setTimeout(() => setVisible(false), ok ? 4000 : 10000);
     };
 
-    if (!visible) return null;
     const ios = support === "ios-install";
+    if (ios && enabled && isIphoneSafari(navigator.userAgent)) {
+        return <IosInstallHint appHref={labels.appHref} labels={labels.install} className="rounded-none border-x-0 border-t-0" />;
+    }
+    if (!visible) return null;
     return (
         <div role="status" data-nudge-blocker className="flex flex-col gap-2 border-b border-accent-bg bg-status-new/10 px-4 py-3 text-[13px] text-ink-secondary">
-            {result ? <span>{result === "enabled" ? labels.enabled : result === "unsupported" ? labels.unsupported : labels.blocked}</span> : (
+            {result ? (
+                <>
+                    <span>{result === "enabled" ? labels.enabled : result === "unsupported" ? labels.unsupported : labels.blocked}</span>
+                    {result === "unsupported" && (
+                        <div className="flex justify-end">
+                            <button type="button" onClick={() => setVisible(false)} className="h-8 cursor-pointer rounded-full border border-accent-bg bg-white px-3 text-[13px] text-ink-tertiary hover:border-primary">{labels.ok}</button>
+                        </div>
+                    )}
+                </>
+            ) : (
                 <>
                     <span className="flex gap-2">
                         <svg aria-hidden viewBox="0 0 24 24" className="mt-0.5 h-4 w-4 shrink-0 text-primary" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8" /><path d="M10.3 20a1.9 1.9 0 0 0 3.4 0" /></svg>

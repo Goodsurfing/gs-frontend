@@ -30,7 +30,7 @@ export function EventFeedStrip({ children, prevLabel, nextLabel }: { children: R
     return (
         <div className="relative mt-8">
             {arrow(-1, prevLabel)}
-            <ul ref={track} className="m-0 flex list-none snap-x snap-mandatory gap-4 overflow-x-auto p-0 pb-3 [scrollbar-width:none] down-md:px-5 down-md:scroll-px-5 [&::-webkit-scrollbar]:hidden">
+            <ul ref={track} className="m-0 flex list-none snap-x snap-mandatory gap-4 scroll-strip p-0 pb-3 [scrollbar-width:none] down-md:px-5 down-md:scroll-px-5 [&::-webkit-scrollbar]:hidden">
                 {children}
             </ul>
             {arrow(1, nextLabel)}

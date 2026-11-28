@@ -1,16 +1,20 @@
 "use client";
 
-import { type FormEvent, useCallback, useEffect, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 
 import { type Locale, localePrefix } from "@/i18n/config";
 import { reachGoalThen } from "@/components/analytics/YandexMetrika";
-import { forgetReturnAfterAuth, keepReturn, returnAfterAuth } from "@/lib/authSession";
+import { keepReturn, returnAfterAuth } from "@/lib/authSession";
 import { API_URL } from "@/lib/browserApi";
+import { afterAuthTarget, goAfterAuth, saveRegistrationConsent } from "@/lib/socialLogin";
+import type { OAuthProvider } from "@/lib/yandexId";
 
 import { AuthInput } from "./AuthInput";
 import { AuthToast } from "./AuthToast";
 import { VkIdButton } from "./VkIdButton";
+import { YandexIdButton } from "./YandexIdButton";
 import { storageGet, storageRemove, storageSet } from "@/lib/safeStorage";
+import { useHydrated } from "@/components/ui/useHydrated";
 
 export interface SignUpLabels {
     password: string;
@@ -28,6 +32,8 @@ export interface SignUpLabels {
     privacyPolicy: string;
     noPosting: string;
     deleted: string;
+    /** Кнопка «Войти с Яндекс ID» */
+    yandex?: { label: string; unavailable: string };
 }
 
 // Отметка «Хочу получать письма» переживает уход на сайт VK (GS-203): "1"/"0", нет записи — отмечено
@@ -54,55 +60,56 @@ export const REGISTER_EMAIL_KEY = "gs.registerEmail";
 /**
  * Регистрация (SignUpContainer старого фронта): почта, пароль (не короче 6
  * символов и с цифрой), согласие на рассылку (по умолчанию стоит, решение
- * владельца 29.10.2026), вход через VK. После регистрации — страница
+ * владельца 29.10.2026), вход через VK и Яндекс ID. После регистрации — страница
  * «Подтвердите почту»; после VK — сохранить согласие и в профиль.
  */
-export function SignUpForm({ locale, signInHref, resetHref, privacyHref, confirmHref, profileHref, labels }: {
+export function SignUpForm({ locale, signInHref, signUpHref, resetHref, privacyHref, confirmHref, profileHref, labels, yandexHint }: {
     locale: Locale;
     signInHref: string;
+    /** Эта страница — сюда «Вернуться» после ошибки Яндекс ID */
+    signUpHref?: string;
+    /** Включён ли Яндекс ID (при рендере страницы, lib/oauthProvidersServer) */
+    yandexHint?: OAuthProvider | null;
     resetHref: string;
     privacyHref: string;
     confirmHref: string;
     profileHref: string;
     labels: SignUpLabels;
 }) {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    // Поля и галочка неконтролируемые, значения берутся из них при отправке: введённое
+    // до загрузки скриптов не стирается гидратацией (как у входа, GS-335)
+    const emailRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
+    const consentRef = useRef<HTMLInputElement>(null);
     const [passwordError, setPasswordError] = useState<string>();
-    const [consent, setConsent] = useState(true);
     const [duplicate, setDuplicate] = useState(false);
     const [toast, setToast] = useState<string | null>(null);
     const [busy, setBusy] = useState(false);
+    // До гидратации кнопка выключена: иначе браузер сам отправит форму и введённое пропадёт
+    const ready = useHydrated();
     const wording = `${labels.consent}. ${labels.consentHint}`;
     // Запомнить вакансию, с которой пришли: вход через VK вернёт сюда без параметров
     useEffect(() => {
         returnAfterAuth(localePrefix(locale));
     }, [locale]);
-
-    const changeConsent = (value: boolean) => {
-        setConsent(value);
-        writeConsent(value);
-    };
+    // Галочку сняли до загрузки скриптов — onChange не было, запомнить для входа через VK
+    useEffect(() => {
+        if (consentRef.current && !consentRef.current.checked) writeConsent(false);
+    }, []);
+    const consentGiven = () => consentRef.current?.checked ?? true;
 
     const afterVk = useCallback(async () => {
         const agreed = readConsent();
         writeConsent(null);
-        if (agreed) {
-            const token = JSON.parse(storageGet("token") ?? "null") as string | null;
-            await fetch(`${API_URL}/api/v1/profile/marketing-consent`, {
-                method: "PATCH",
-                credentials: "include",
-                headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-                body: JSON.stringify({ consent: true, source: "registration", wording }),
-            }).catch(() => undefined);
-        }
-        const target = returnAfterAuth(localePrefix(locale));
-        forgetReturnAfterAuth();
-        window.location.href = target ?? profileHref;
+        if (agreed) await saveRegistrationConsent(wording);
+        goAfterAuth(afterAuthTarget(locale, profileHref));
     }, [locale, profileHref, wording]);
 
     const submit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        const email = emailRef.current?.value ?? "";
+        const password = passwordRef.current?.value ?? "";
+        const consent = consentGiven();
         if (!password) {
             setPasswordError(labels.required);
             return;
@@ -142,27 +149,28 @@ export function SignUpForm({ locale, signInHref, resetHref, privacyHref, confirm
             setToast(labels.invalid);
         } finally {
             setBusy(false);
-            setPassword("");
+            if (passwordRef.current) passwordRef.current.value = "";
         }
     };
 
     return (
         <div className="flex w-full flex-col items-center">
             <AuthToast text={toast} onClose={() => setToast(null)} />
-            <form onSubmit={submit} noValidate className="flex w-full max-w-[400px] flex-col">
+            <form onSubmit={submit} method="post" noValidate className="flex w-full max-w-[400px] flex-col">
                 {duplicate && (
                     <div className="mt-2 text-[14px] text-caption">
                         {labels.maybeRegistered}{" "}
                         <a href={signInHref} onClick={(event) => keepReturn(event, signInHref)}>{labels.signIn}</a>{" / "}<a href={resetHref}>{labels.forgot}</a>
                     </div>
                 )}
-                <AuthInput label="E-mail" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} />
-                <AuthInput label={labels.password} type="password" autoComplete="new-password" value={password} error={passwordError} onChange={(event) => setPassword(event.target.value)} />
+                <AuthInput label="E-mail" type="email" autoComplete="email" inputRef={emailRef} />
+                <AuthInput label={labels.password} type="password" autoComplete="new-password" error={passwordError} inputRef={passwordRef} />
                 <label className="flex cursor-pointer items-center">
                     <input
                         type="checkbox"
-                        checked={consent}
-                        onChange={(event) => changeConsent(event.target.checked)}
+                        ref={consentRef}
+                        defaultChecked
+                        onChange={(event) => writeConsent(event.target.checked)}
                         className="relative h-[22px] w-[22px] shrink-0 cursor-pointer appearance-none rounded-[2px] border border-[#82949F] outline-none checked:bg-[url(/web/icons/auth/check.svg)] checked:bg-center checked:bg-no-repeat"
                     />
                     <span className="ml-2.5 leading-[138%] text-[#0e1d27] opacity-50">{labels.consent}</span>
@@ -170,7 +178,7 @@ export function SignUpForm({ locale, signInHref, resetHref, privacyHref, confirm
                 <p className="mt-1 ml-8 text-[13px] leading-[1.4] text-caption">{labels.consentHint}</p>
                 <button
                     type="submit"
-                    disabled={busy}
+                    disabled={busy || !ready}
                     className="mt-5 flex cursor-pointer items-center justify-center rounded-[10px] border border-primary bg-primary px-[100px] py-3 text-center text-[16px] leading-[120%] text-white transition-all duration-300 hover:bg-white hover:text-primary disabled:cursor-default disabled:opacity-70 disabled:hover:bg-primary disabled:hover:text-white down-lg:w-full down-lg:px-[15px]"
                 >
                     {labels.submit}
@@ -181,6 +189,19 @@ export function SignUpForm({ locale, signInHref, resetHref, privacyHref, confirm
                 <a href={privacyHref} className="text-[0.875rem] leading-[157%] text-[#6F828E]">{labels.privacyPolicy}</a>.
             </div>
             <VkIdButton locale={locale} page="signup" onSuccess={afterVk} onError={setToast} deletedText={labels.deleted} />
+            {labels.yandex && signUpHref && (
+                <YandexIdButton
+                    hint={yandexHint}
+                    locale={locale}
+                    label={labels.yandex.label}
+                    unavailable={labels.yandex.unavailable}
+                    returnTo={() => afterAuthTarget(locale, profileHref)}
+                    backTo={signUpHref}
+                    // Согласие на рассылку с этой страницы сохранится после входа (как у VK, GS-203)
+                    consentWording={() => (consentGiven() ? wording : undefined)}
+                    onError={setToast}
+                />
+            )}
             <p className="mt-5 text-[0.875rem] font-medium text-ink-secondary opacity-50 max-[667px]:hidden">{labels.noPosting}</p>
         </div>
     );

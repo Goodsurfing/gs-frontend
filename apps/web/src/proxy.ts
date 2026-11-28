@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { DEFAULT_LOCALE, localeFromPath, stripLocale } from "@/i18n/config";
 import { LOCALE_HEADER } from "@/i18n/request";
 import { isUuid } from "@/lib/entityId";
+import { CLUB_ADMIN_ENABLED, isClubAdminPath } from "@/lib/admin/menu";
 import { legacyOffersListTarget } from "@/lib/legacyOffersLink";
 import { legacyBackendPath, legacyRedirect } from "@/lib/legacyRedirects";
 import { routes } from "@/lib/routes";
@@ -69,8 +70,10 @@ export function proxy(request: NextRequest) {
 
     // Шаблон ссылки вместо id (/offers/{id}): страницы передают такие шаблоны в разметку,
     // поисковики находят их и ходят по ним. Раньше — 200 с пустой страницей и запрос
-    // в API с «{id}» (ошибка в Bugsink, 15.11.2026). Теперь — сразу 404
-    if (isTemplatePath(pathname)) {
+    // в API с «{id}» (ошибка в Bugsink, 15.11.2026). Теперь — сразу 404.
+    // Так же — раздел админки «Клуб тестировщиков» в сборке без него (прод, 24.11.2026):
+    // notFound() в layout раздела даёт 404 только в браузере, а ответ был бы 200
+    if (isTemplatePath(pathname) || (!CLUB_ADMIN_ENABLED && isClubAdminPath(pathname))) {
         const notFound = request.nextUrl.clone();
         notFound.pathname = `/${locale}/__not-found`;
         const notFoundHeaders = new Headers(request.headers);

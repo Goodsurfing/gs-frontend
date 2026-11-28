@@ -5,7 +5,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { reachGoal } from "@/components/analytics/YandexMetrika";
+import { useReportLabels } from "@/components/report/ReportContext";
+import { ReportDialog } from "@/components/report/ReportDialog";
+import { useBlocks } from "@/components/report/useBlocks";
 import { useSession } from "@/components/session/SessionProvider";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { Toast } from "@/components/ui/Toast";
 import type { Locale } from "@/i18n/config";
 import { API_URL, browserApi } from "@/lib/browserApi";
@@ -14,11 +18,16 @@ import {
     type ApplicationStatus, type Chat, type ChatApplication, type ChatMessage, companionTarget, formatDayLabel, formatTime, idFromIri, readByOthers, sameGroup, type Terms,
 } from "@/lib/messenger";
 import type { CatalogOffer } from "@/lib/offersCatalog";
-import { dayFromApi } from "@/lib/offerWizard";
+import { applyDates, initialTerms, offerTerms } from "@/lib/applyDates";
+import { canGoBackTo, previousPage } from "@/lib/backNavigation";
+import { dayFromApi, today } from "@/lib/offerWizard";
+import { blockedSendText, type ReportTarget } from "@/lib/report";
 
-import { type ApplicationLabels, ApplicationBlock, ApplicationEvent } from "./ApplicationBlock";
+import { type ApplicationLabels, ApplicationEvent } from "./ApplicationBlock";
+import { type ApplyFormLabels, ApplyForm, ApplyFormError, ApplyFormSkeleton } from "./ApplyForm";
 import { needsIntro, QuickIntro, type QuickIntroLabels } from "./QuickIntro";
 import { ResponseHintNote, type ResponseHintLabels } from "./ResponseHintNote";
+import { ChatActions } from "./ChatActions";
 import { ChatHeader } from "./ChatHeader";
 import { type ChatInputLabels, ChatInput, type OutgoingMessage } from "./ChatInput";
 import { type ChatListLabels, ChatList } from "./ChatList";
@@ -34,6 +43,8 @@ export interface MessengerLabels {
     hint: ResponseHintLabels;
     title: string;
     choose: string;
+    /** Пустые «Сообщения» волонтёра на телефоне (GS-291) */
+    emptyVolunteer: { title: string; hint: string; find: string };
     back: string;
     info: string;
     /** Полоса под шапкой у новой заявки (организатору) */
@@ -51,6 +62,9 @@ export interface MessengerLabels {
     list: ChatListLabels;
     input: ChatInputLabels;
     application: ApplicationLabels;
+    apply: ApplyFormLabels;
+    /** Отклик не ушёл из-за сети */
+    applyNetworkError: string;
     companion: CompanionLabels;
     push: PushOfferLabels;
     draft: ReplyDraftLabels;
@@ -63,6 +77,10 @@ export interface MessengerHrefs {
     offer: string;
     volunteer: string;
     organization: string;
+    /** «Найти вакансию» из пустых «Сообщений» */
+    catalog: string;
+    /** Список заблокированных (настройки приватности, #blocked) */
+    blocked?: string;
 }
 
 /** Поля вакансии, нужные карточке заявки (GET /api/v1/vacancies/{id} и вакансия в заявке) */
@@ -74,7 +92,8 @@ interface OfferFields {
     reviewsCount?: number | null;
     description?: { title?: string | null; shortDescription?: string | null; categories?: { name?: string }[] | null } | null;
     where?: { address?: string | null } | null;
-    when?: { isFullYearAcceptable?: boolean; periods?: { start?: string | null; end?: string | null }[] | null } | null;
+    // У периода конец — ending (раньше форма читала end, и единственный период не подставлялся)
+    when?: { isFullYearAcceptable?: boolean; durationMinDays?: number | null; durationMaxDays?: number | null; periods?: { start?: string | null; ending?: string | null }[] | null } | null;
 }
 
 const toCatalogOffer = (offer: OfferFields, categories: Record<string, string>): CatalogOffer => ({
@@ -138,14 +157,25 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     const [toast, setToast] = useState<{ text: string; ok: boolean } | null>(null);
     const fail = useCallback((text: string) => setToast({ text, ok: false }), []);
 
+    // Пожаловаться и заблокировать (GS-282): подписи кладёт страница; без них — ни меню, ни флажков
+    const report = useReportLabels();
+    const blocks = useBlocks(ready && !!report);
+    const [reportTarget, setReportTarget] = useState<ReportTarget | null>(null);
+    const [blockConfirm, setBlockConfirm] = useState(false);
+    const [blocking, setBlocking] = useState(false);
+
+    // Значок в шапке обновляется вместе со списком, а не раз в минуту (тестировщик, 07.11)
+    const { refreshUnread } = session;
     const onLive = useCallback((message: ChatMessage) => {
         list.applyMessage(message);
         chat.addMessage(message);
-    }, [chat, list]);
+        refreshUnread();
+    }, [chat, list, refreshUnread]);
     const onPoll = useCallback(() => {
         void list.reload();
         void chat.refresh();
-    }, [chat, list]);
+        refreshUnread();
+    }, [chat, list, refreshUnread]);
     useLiveMessages(ready ? me?.id : undefined, onLive, onPoll);
 
     const href = (template: string, id: string | number) => template.replace("{id}", String(id));
@@ -188,55 +218,69 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         };
     }, [ready, token, realChatId, isCreate, recipientVolunteer]);
 
-    // Отклик на вакансию: вакансия и даты
+    // Отклик на вакансию: вакансия, даты, «Пару слов о себе» (GS-290)
     const [offer, setOffer] = useState<OfferFields | null>(null);
+    const [offerState, setOfferState] = useState<"loading" | "ready" | "failed">("loading");
+    const [offerAttempt, setOfferAttempt] = useState(0);
     const [terms, setTerms] = useState<Terms>({ start: null, end: null });
+    const [applyMessage, setApplyMessage] = useState("");
     const [applying, setApplying] = useState(false);
+    const [applyError, setApplyError] = useState<string | null>(null);
+    const dates = useMemo(() => applyDates(offer?.when, today()), [offer]);
+    const offerInfo = useMemo(() => offerTerms(offer?.when), [offer]);
     useEffect(() => {
         if (!ready || !isCreate || !offerId) return;
         let cancelled = false;
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- повтор после ошибки: снова заглушка
+        setOfferState("loading");
         void browserApi(token)
             .GET("/api/v1/vacancies/{id}", { params: { path: { id: offerId } }, headers: { Accept: "application/json" } })
-            .then(({ data }) => {
+            .then(({ data, response }) => {
                 if (cancelled) return;
                 if (!data) {
+                    // 4xx — вакансии нет; 5xx — сбой, можно повторить
+                    setOfferState(response.status >= 500 ? "failed" : "ready");
                     fail(labels.offerNotFound);
                     return;
                 }
                 const loaded = data as OfferFields;
                 setOffer(loaded);
-                // Один период у вакансии — даты уже заданы организатором
-                const periods = loaded.when && !loaded.when.isFullYearAcceptable ? loaded.when.periods ?? [] : [];
-                const only = periods.length === 1 ? periods[0] : undefined;
-                const start = dayFromApi(only?.start);
-                const end = dayFromApi(only?.end);
-                if (start && end) setTerms({ start, end });
+                setTerms(initialTerms(applyDates(loaded.when, today())));
+                setOfferState("ready");
             })
-            .catch(() => fail(labels.offerNotFound));
+            .catch(() => {
+                if (!cancelled) setOfferState("failed");
+            });
         return () => {
             cancelled = true;
         };
-    }, [ready, token, isCreate, offerId, fail, labels.offerNotFound]);
-    const fixedDates = !!offer?.when && !offer.when.isFullYearAcceptable && offer.when.periods?.length === 1;
+    }, [ready, token, isCreate, offerId, fail, labels.offerNotFound, offerAttempt]);
 
     const apply = async () => {
-        if (!offerId || !terms.start || !terms.end) return;
+        if (!offerId || !terms.start || !terms.end || applying) return;
         setApplying(true);
+        setApplyError(null);
         setToast(null);
+        const text = applyMessage.trim();
         const result = await browserApi(token)
             .POST("/api/v1/applications", {
-                body: { vacancy: `/api/v1/vacancies/${offerId}`, startDate: terms.start, endDate: terms.end },
+                body: { vacancy: `/api/v1/vacancies/${offerId}`, startDate: terms.start, endDate: terms.end, ...(text ? { message: text } : {}) },
                 headers: { Accept: "application/json" },
             })
             .catch(() => null);
         setApplying(false);
         const created = result?.data as { chat?: string | null } | undefined;
-        if (!result?.response.ok || !created) {
-            const error = (result?.error ?? null) as { detail?: string; title?: string } | null;
-            fail(error?.detail || error?.title || labels.error);
+        if (!result) {
+            // Сеть: введённое остаётся в форме, можно нажать ещё раз
+            setApplyError(labels.applyNetworkError);
             return;
         }
-        reachGoal("application_sent");
+        if (!result.response.ok || !created) {
+            const error = (result.error ?? null) as { detail?: string; title?: string } | null;
+            setApplyError((report && blockedSendText(error, report)) || error?.detail || error?.title || labels.error);
+            return;
+        }
+        reachGoal("application_sent", text ? { message: "yes" } : undefined);
         setToast({ text: labels.applicationSent, ok: true });
         const newChat = idFromIri(created.chat);
         if (newChat) router.push(href(hrefs.chat, newChat));
@@ -250,9 +294,12 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         lastRead.current[realChatId] = latest.id;
         void browserApi(token)
             .POST("/api/v1/chats/read", { body: { message: `${API_URL}/api/v1/messages/${latest.id}` } })
-            .then(() => list.markRead(Number(realChatId)))
+            .then(() => {
+                list.markRead(Number(realChatId));
+                refreshUnread();
+            })
             .catch(() => undefined);
-    }, [chat.messages, realChatId, token, list]);
+    }, [chat.messages, realChatId, token, list, refreshUnread]);
 
     // Заявки внутри переписки
     const [applications, setApplications] = useState<Record<string, ApplicationData | null>>({});
@@ -313,7 +360,8 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         const result = await browserApi(token).POST("/api/v1/messages", { body, headers: { Accept: "application/json" } }).catch(() => null);
         const sent = result?.data as ChatMessage | undefined;
         if (!result?.response.ok || !sent) {
-            fail(labels.sendError);
+            // Собеседник заблокировал (или вы его) — понятный текст вместо общей ошибки
+            fail((report && blockedSendText(result?.error, report)) || labels.sendError);
             return;
         }
         if (isCreate) {
@@ -337,6 +385,25 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
     const target = companionTarget(companion ?? (participant?.id ? { id: participant.id } : null), !!me?.hostId);
     const companionHref = target ? href(target.kind === "organization" ? hrefs.organization : hrefs.volunteer, target.id) : undefined;
     const myName = fullName(me, labels.list.noName);
+    // Собеседник открытой переписки — для жалобы и блокировки
+    const companionId = participant?.id ?? companion?.id ?? undefined;
+    const companionBlocked = blocks.items === null || !companionId ? null : blocks.isBlocked(companionId);
+    const toggleBlock = async () => {
+        if (!report || !companionId) return;
+        setBlocking(true);
+        const wasBlocked = !!companionBlocked;
+        const ok = wasBlocked ? await blocks.unblock(companionId) : await blocks.block(companionId);
+        setBlocking(false);
+        setBlockConfirm(false);
+        if (!ok) {
+            fail(report.blockError);
+            return;
+        }
+        setToast({ text: wasBlocked ? report.unblocked : report.blocked, ok: true });
+        // Заблокированная переписка пропадает из списка — возвращаемся к нему
+        void list.reload();
+        if (!wasBlocked) open();
+    };
 
     // Кто вошёл в этой переписке: организатор, если заявка на вакансию его организации
     const viewerIsVolunteer = useCallback((item: Pick<Chat, "application">) => (item.application ? item.application.organizationId !== me?.hostId : !me?.hostId), [me?.hostId]);
@@ -392,6 +459,8 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                         groupEnd={groupStart}
                         token={token}
                         onImage={setImage}
+                        onReport={!own && report && message.id !== undefined ? () => setReportTarget({ type: "message", id: String(message.id) }) : undefined}
+                        reportLabel={report?.reportMessage}
                     />
                 );
             }
@@ -403,7 +472,7 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                     {node}
                     {/* column-reverse: разделитель идёт после сообщения в разметке, на экране — над ним */}
                     {dayStart && (
-                        <div className="sticky top-0 z-[1] my-3 flex justify-center">
+                        <div className="my-3 flex justify-center">
                             <span className="rounded-full bg-white/90 px-3 py-1 text-[12px] font-medium text-caption shadow-[0_1px_2px_rgba(14,29,39,0.06)]">{formatDayLabel(locale, message.createdAt ?? "")}</span>
                         </div>
                     )}
@@ -413,15 +482,51 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
         return items;
         // href — без состояния, пересоздаётся при каждом рендере
          
-    }, [chat.messages, applications, me?.id, myName, companionName, companionAvatar, companionHref, locale, token, labels, hrefs, volunteerHere, application?.status, application?.id]);
+    }, [chat.messages, applications, me?.id, myName, companionName, companionAvatar, companionHref, locale, token, labels, hrefs, volunteerHere, application?.status, application?.id, report]);
 
     const hasChat = !!chatId;
+    // «Назад» с отклика: туда, откуда пришли по сайту (обычно карточка вакансии), а без этого — на карточку,
+    // а не в «Сообщения» (сдача тестировщицы 27.11.2026)
+    const backFromApply = () => {
+        if (canGoBackTo(previousPage(), window.history.length)) window.history.back();
+        else if (offerId) router.push(href(hrefs.offer, offerId));
+    };
+    // «Назад» из переписки — тоже на предыдущую страницу сайта (заявки в кабинете, карточка
+    // волонтёра…): с экрана «Домой» на iPhone другой кнопки «Назад» нет, а стрелка всегда вела
+    // в «Сообщения» (сдачи тестировщицы 27.11.2026). Пришли по ссылке извне — в список переписок
+    const backFromChat = () => {
+        if (canGoBackTo(previousPage(), window.history.length)) window.history.back();
+        else open();
+    };
     const scroller = useRef<HTMLDivElement>(null);
     const applicationId = application?.id ? String(application.id) : undefined;
 
     return (
         <div className="mx-[50px] mt-5 mb-[18px] flex h-[calc(100vh-200px)] min-h-[480px] flex-1 flex-col down-lg:mx-5 down-lg:mt-0 down-lg:h-[calc(100dvh-110px)] down-xs:mx-0">
             <Toast text={toast?.text ?? null} ok={toast?.ok} onClose={() => setToast(null)} />
+            {report && (
+                <>
+                    <ReportDialog
+                        target={reportTarget}
+                        title={reportTarget?.type === "message" ? report.reportMessage : report.reportUser}
+                        labels={report}
+                        onClose={() => setReportTarget(null)}
+                        onSent={() => {
+                            setReportTarget(null);
+                            setToast({ text: report.sent, ok: true });
+                        }}
+                    />
+                    <ConfirmDialog
+                        open={blockConfirm}
+                        text={companionBlocked ? report.unblockConfirm : report.blockConfirm}
+                        confirm={companionBlocked ? report.unblock : report.block}
+                        cancel={report.cancel}
+                        busy={blocking}
+                        onConfirm={() => void toggleBlock()}
+                        onClose={() => setBlockConfirm(false)}
+                    />
+                </>
+            )}
             <h2 className="text-[1.5em] font-normal down-lg:hidden">{labels.title}</h2>
             <div className="mt-5 flex h-full min-h-0 flex-1 overflow-hidden rounded-[14px] border border-accent-bg bg-white down-lg:mt-0 down-xs:rounded-none down-xs:border-x-0">
                 <ChatList
@@ -438,7 +543,19 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                     search={list.search}
                     onSearch={list.setSearch}
                     labels={labels.list}
-                    top={<PushOffer token={token} enabled={ready && list.chats.length > 0} labels={labels.push} />}
+                    top={(
+                        <>
+                            <PushOffer token={token} enabled={ready && list.loaded} hasChats={list.chats.length > 0} labels={labels.push} />
+                            {/* Заблокированные пропадают из списка — вход в их список прямо отсюда, а не только из настроек (27.11.2026) */}
+                            {report && hrefs.blocked && (
+                                <a href={hrefs.blocked} className="mx-4 mt-3 -mb-1 flex items-center gap-1.5 self-end text-[13px] text-caption no-underline hover:text-primary">
+                                    <svg aria-hidden viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M5.6 5.6l12.8 12.8" /></svg>
+                                    {report.blockedTitle}
+                                </a>
+                            )}
+                        </>
+                    )}
+                    emptyPhone={ready && !me?.hostId ? { title: labels.emptyVolunteer.title, hint: labels.emptyVolunteer.hint, action: { href: hrefs.catalog, label: labels.emptyVolunteer.find } } : undefined}
                     className={hasChat ? "down-lg:hidden" : "down-lg:flex down-lg:max-w-none"}
                 />
                 {!hasChat ? (
@@ -461,8 +578,16 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                                 offerHref={application?.vacancyId ? href(hrefs.offer, application.vacancyId) : undefined}
                                 infoOpen={infoOpen}
                                 onInfo={companion ? () => setInfoOpen((value) => !value) : undefined}
-                                onBack={() => open()}
+                                onBack={isCreate && offerId ? backFromApply : backFromChat}
                                 onDecision={applicationId ? (status) => decide(applicationId, status) : undefined}
+                                actions={report && realChatId && companionId ? (
+                                    <ChatActions
+                                        blocked={companionBlocked}
+                                        onReport={() => setReportTarget({ type: "user", id: companionId })}
+                                        onBlock={() => setBlockConfirm(true)}
+                                        labels={{ menu: report.menu, report: report.reportUser, block: report.block, unblock: report.unblock }}
+                                    />
+                                ) : undefined}
                                 labels={{
                                     back: labels.back,
                                     info: labels.info,
@@ -476,57 +601,65 @@ export function Messenger({ locale, chatId, offerId, labels, hrefs, dict }: {
                                     changePrompt: labels.changePrompt,
                                 }}
                             />
-                            <div
-                                ref={scroller}
-                                className="flex min-h-0 w-full flex-1 flex-col-reverse overflow-auto px-4 pt-2 pb-4 down-xs:px-2.5"
-                                onScroll={(event) => {
-                                    const box = event.currentTarget;
-                                    // column-reverse: scrollTop отрицательный, верх — у -(scrollHeight - clientHeight)
-                                    if (box.scrollHeight - box.clientHeight + box.scrollTop < 80) chat.loadMore();
-                                }}
-                            >
-                                {isCreate && offerId && offer
-                                    ? (
-                                        <>
-                                        <ApplicationBlock
+                            {isCreate && offerId ? (
+                                // Отклик — обычная форма сверху вниз, не лента сообщений
+                                <div className="flex min-h-0 w-full flex-1 flex-col overflow-auto px-4 pt-4 down-xs:px-3">
+                                    {/* Нет имени или фото при открытии — блок над формой; после сохранения — с «Сохранено» */}
+                                    {introShown && <div className="mx-auto w-full max-w-[560px]"><QuickIntro labels={labels.intro} /></div>}
+                                    {offer ? (
+                                        <ApplyForm
                                             locale={locale}
                                             offer={toCatalogOffer(offer, dict.categories)}
                                             offerHref={href(hrefs.offer, offer.id ?? offerId)}
+                                            offerInfo={offerInfo}
+                                            dates={dates}
                                             terms={terms}
                                             onTerms={setTerms}
-                                            sent={false}
-                                            username={companionName}
-                                            fixedDates={fixedDates}
+                                            message={applyMessage}
+                                            onMessage={setApplyMessage}
                                             onSubmit={() => void apply()}
                                             busy={applying}
-                                            labels={labels.application}
+                                            error={applyError}
+                                            labels={labels.apply}
                                         />
-                                        {/* Лента сообщений идёт снизу вверх (column-reverse) — этот блок окажется над откликом.
-                                            Показываем, если при открытии не было имени или фото; после сохранения — с «Сохранено» */}
-                                        {introShown && <QuickIntro labels={labels.intro} />}
-                                        </>
-                                    )
-                                    : rendered}
-                                {realChatId && chat.loading && chat.messages.length === 0 && <MessagesSkeleton />}
-                            </div>
-                            <ChatInput
-                                token={token}
-                                disabled={!ready || (isCreate && !!offerId) || (isCreate && !recipientVolunteer && !recipientOrganization)}
-                                labels={labels.input}
-                                onSend={(message) => void send(message)}
-                                onError={fail}
-                                prefill={draft}
-                                extra={application?.id && !volunteerHere && realChatId ? (
-                                    <ReplyDraft
-                                        key={realChatId}
-                                        token={token}
-                                        applicationId={application.id}
-                                        onDraft={(text) => setDraft({ text, key: Date.now() })}
-                                        onError={fail}
-                                        labels={labels.draft}
-                                    />
-                                ) : null}
-                            />
+                                    ) : offerState === "failed" ? (
+                                        <ApplyFormError text={labels.apply.loadError} retry={labels.apply.retry} onRetry={() => setOfferAttempt((value) => value + 1)} />
+                                    ) : offerState === "loading" ? <ApplyFormSkeleton /> : null}
+                                </div>
+                            ) : (
+                                <div
+                                    ref={scroller}
+                                    className="flex min-h-0 w-full flex-1 flex-col-reverse overflow-auto px-4 pt-2 pb-4 down-xs:px-2.5"
+                                    onScroll={(event) => {
+                                        const box = event.currentTarget;
+                                        // column-reverse: scrollTop отрицательный, верх — у -(scrollHeight - clientHeight)
+                                        if (box.scrollHeight - box.clientHeight + box.scrollTop < 80) chat.loadMore();
+                                    }}
+                                >
+                                    {rendered}
+                                    {realChatId && chat.loading && chat.messages.length === 0 && <MessagesSkeleton />}
+                                </div>
+                            )}
+                            {!(isCreate && offerId) && (
+                                <ChatInput
+                                    token={token}
+                                    disabled={!ready || (isCreate && !recipientVolunteer && !recipientOrganization)}
+                                    labels={labels.input}
+                                    onSend={(message) => void send(message)}
+                                    onError={fail}
+                                    prefill={draft}
+                                    extra={application?.id && !volunteerHere && realChatId ? (
+                                        <ReplyDraft
+                                            key={realChatId}
+                                            token={token}
+                                            applicationId={application.id}
+                                            onDraft={(text) => setDraft({ text, key: Date.now() })}
+                                            onError={fail}
+                                            labels={labels.draft}
+                                        />
+                                    ) : null}
+                                />
+                            )}
                         </div>
                         {companion && (
                             <CompanionInfo

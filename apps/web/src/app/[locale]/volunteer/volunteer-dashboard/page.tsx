@@ -23,7 +23,7 @@ export default async function VolunteerDashboardPage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
     const [t, tv] = await Promise.all([getTranslator(locale), getTranslator(locale, "volunteer")]);
-    const d = (key: string) => tv(`volunteer-dashboard.${key}`);
+    const d = (key: string, values?: Record<string, string>) => tv(`volunteer-dashboard.${key}`, values);
     return (
         <CabinetShell locale={locale} items={volunteerMenu(locale, t)} need="volunteer">
             <main className="w-full">
@@ -38,6 +38,9 @@ export default async function VolunteerDashboardPage({ params }: Props) {
                         membership: routes.membership(locale),
                         offer: routes.offerTemplate(locale),
                         review: routes.volunteerReview(locale),
+                        chat: routes.messengerChatTemplate(locale),
+                        notes: routes.volunteerNotes(locale),
+                        catalog: routes.offersMap(locale),
                     }}
                     categories={categoryLabels(t)}
                     labels={{
@@ -81,6 +84,32 @@ export default async function VolunteerDashboardPage({ params }: Props) {
                             language: tv("why.language"),
                             rating: tv("why.rating"),
                             top: tv("why.top"),
+                        },
+                        phone: {
+                            applications: d("mobile.applications"),
+                            all: d("mobile.all", { count: "{{count}}" }),
+                            status: { new: d("mobile.status.new"), accepted: d("mobile.status.accepted"), canceled: d("mobile.status.canceled") },
+                            next: { new: d("mobile.next.new"), accepted: d("mobile.next.accepted"), canceled: d("mobile.next.canceled") },
+                            emptyTitle: d("mobile.emptyTitle"),
+                            emptyHint: d("mobile.emptyHint"),
+                            find: d("mobile.find"),
+                            loadError: d("mobile.loadError"),
+                            retry: d("mobile.retry"),
+                            offers: d("mobile.offers"),
+                            offersAll: d("mobile.offersAll"),
+                            offersFresh: d("mobile.offersFresh"),
+                            interests: d("mobile.interests"),
+                            offersEmpty: d("mobile.offersEmpty"),
+                            profileFilled: d("mobile.profileFilled", { percent: "{{percent}}" }),
+                            profileDone: d("mobile.profileDone"),
+                            profileHint: d("mobile.profileHint"),
+                            complete: d("mobile.complete"),
+                            open: d("mobile.open"),
+                            quota: d("mobile.quota", { left: "{{left}}", total: "{{total}}" }),
+                            quotaMember: d("mobile.quotaMember"),
+                            membership: d("mobile.membership"),
+                            noTitle: d("mobile.noTitle"),
+                            favorite: { add: t("Добавить в избранное"), remove: t("Убрать из избранного") },
                         },
                         card: {
                             more: t("Подробнее"),
