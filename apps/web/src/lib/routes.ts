@@ -131,6 +131,8 @@ export const routes = {
     favoriteOffers: (l: Locale) => path(l, "/favorite-offers"),
     /** Переписка; {id} — номер чата, подставляется в браузере */
     messengerChatTemplate: (l: Locale) => path(l, "/messenger/{id}"),
+    /** Отклик на вакансию; {id} — номер вакансии, подставляется в браузере (возврат после оплаты, GS-341) */
+    messengerApplyTemplate: (l: Locale) => path(l, "/messenger/create/{id}"),
     offerTemplate: (l: Locale) => path(l, "/offers/{id}"),
     /** Публичная страница волонтёра; {id} подставляется в браузере */
     volunteerPublic: (l: Locale, id: string) => path(l, `/volunteers/${id}`),

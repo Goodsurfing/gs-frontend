@@ -4,6 +4,7 @@ import type { components } from "@goodsurfing/api";
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 import type { Locale } from "@/i18n/config";
+import { clearAllApplyDrafts } from "@/lib/applyDraft";
 import { API_URL, browserApi } from "@/lib/browserApi";
 import { forgetReferral, storedReferral } from "@/lib/referral";
 import { forgetPush } from "@/lib/webPush";
@@ -133,6 +134,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
             body: JSON.stringify(refresh ? { refresh_token: refresh } : {}),
         }).catch(() => undefined);
         clearLegacySession();
+        // Черновики откликов вышедшего не должны остаться в браузере (GS-341)
+        clearAllApplyDrafts();
         setState(GUEST);
     }, [token]);
 

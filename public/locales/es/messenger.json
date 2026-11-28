@@ -106,7 +106,21 @@
         "needPeriod": "Elige las fechas para enviar la solicitud",
         "network": "No se pudo enviar: sin conexión. Revisa internet y pulsa de nuevo; todo lo que escribiste se ha guardado.",
         "loadError": "No se pudo cargar la vacante. Revisa internet e inténtalo de nuevo.",
-        "retry": "Reintentar"
+        "retry": "Reintentar",
+        "membership": {
+            "title": "Para postularte necesitas la membresía",
+            "limit": "Ya usaste todas tus solicitudes gratuitas de este año. Con la membresía de Goodsurfing puedes postularte sin límites.",
+            "verified": "Esta vacante solo acepta solicitudes de miembros de Goodsurfing.",
+            "saved": "Todo lo que escribiste se guardará: después de hacerte miembro te traeremos de vuelta aquí; solo tendrás que pulsar «Enviar solicitud».",
+            "cta": "Hacerme miembro",
+            "restored": "Guardamos tu solicitud: revisa las fechas y pulsa «Enviar solicitud»."
+        },
+        "return": {
+            "title": "Tu solicitud está guardada",
+            "text": "Vuelve a «{title}»: las fechas y el texto ya están rellenados, solo tienes que pulsar «Enviar solicitud».",
+            "textNoTitle": "Las fechas y el texto de tu solicitud ya están rellenados: solo tienes que pulsar «Enviar solicitud».",
+            "cta": "Volver a mi solicitud"
+        }
     },
     "Отклонить заявку? Волонтёр получит уведомление": "¿Rechazar la solicitud? El voluntario recibirá una notificación",
     "Отмена": "Cancelar",

@@ -106,7 +106,21 @@
         "needPeriod": "Choose dates to send your application",
         "network": "Could not send: no connection. Check your internet and tap again — everything you entered is saved.",
         "loadError": "Could not load the opportunity. Check your internet and try again.",
-        "retry": "Try again"
+        "retry": "Try again",
+        "membership": {
+            "title": "A membership is needed to apply",
+            "limit": "You have used all your free applications for this year. With a Goodsurfing membership you can apply without limits.",
+            "verified": "This opportunity only accepts applications from Goodsurfing members.",
+            "saved": "Everything you entered will be saved: after you join, we will bring you back here — just tap “Send application”.",
+            "cta": "Get a membership",
+            "restored": "We saved your application — check the dates and tap “Send application”."
+        },
+        "return": {
+            "title": "Your application is saved",
+            "text": "Go back to “{title}” — the dates and text are already filled in, just tap “Send application”.",
+            "textNoTitle": "The dates and text of your application are already filled in — just tap “Send application”.",
+            "cta": "Back to my application"
+        }
     },
     "Отклонить заявку? Волонтёр получит уведомление": "Decline the application? The volunteer will be notified",
     "Отмена": "Cancel",
