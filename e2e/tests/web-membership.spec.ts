@@ -81,6 +81,19 @@ test.describe('Новый фронт: членство', () => {
         });
     });
 
+    test('телефон: членство уже есть — первым крупно «активно до», без цены', async ({ page }) => {
+        // Ответ API подменён: на стейдже ничего не покупается
+        await page.route('**/api/v1/membership/current-all', (route) => route.fulfill({
+            json: [{ isActive: true, endDate: '2027-11-27T12:00:00+03:00', tariff: { code: 'volunteer_990', category: 'REGULAR' } }],
+        }));
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.goto('/membership');
+        const hero = page.locator('#membership-compact');
+        await expect(hero.getByRole('status')).toHaveText('Членство активно до 27.11.2027');
+        await expect(hero).not.toContainText(/\d[\d\s]* ₽\s*в год/);
+        await expect(hero.getByRole('link', { name: 'Оформить', exact: true })).toHaveCount(0);
+    });
+
     test('волонтёр: без кнопок регистрации', async ({ page }) => {
         await page.goto('/membership');
         await expect(page.locator('#tariffs').getByRole('link', { name: 'Получить членство' })).toBeVisible();

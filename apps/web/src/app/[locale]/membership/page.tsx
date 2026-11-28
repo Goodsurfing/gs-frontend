@@ -57,9 +57,10 @@ const greenButton = "inline-flex items-center justify-center rounded-lg border b
 export default async function MembershipPage({ params }: Props) {
     const { locale } = await params;
     if (!isLocale(locale)) notFound();
-    const [t, tCommon, prices, featured] = await Promise.all([
+    const [t, tCommon, tProfile, prices, featured] = await Promise.all([
         getTranslator(locale, "membership"),
         getTranslator(locale),
+        getTranslator(locale, "profile"),
         getPrices(locale),
         getFeaturedReviews(locale),
     ]);
@@ -108,6 +109,7 @@ export default async function MembershipPage({ params }: Props) {
                 {/* Телефон (GS-333): первый экран — цена, три выгоды и «Оформить», остальное — в «Подробнее» */}
                 <MembershipCompactHero
                     id="membership-compact"
+                    locale={locale}
                     volunteer={cta.volunteer}
                     host={cta.host}
                     duoHref={pay(TARIFF.duo)}
@@ -122,6 +124,8 @@ export default async function MembershipPage({ params }: Props) {
                         button: t("sticky.button"),
                         note: t("compact.note"),
                         member: t("compact.member"),
+                        // {{date}} подставляет браузер: серверный t() без значения стёр бы его
+                        memberUntil: tProfile("info.Членство активно до {{date}}", { date: "{{date}}" }),
                         memberLink: t("header.cta-main"),
                         more: t("compact.more"),
                     }}

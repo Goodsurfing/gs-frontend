@@ -18,6 +18,8 @@ export interface CompactHeroLabels {
     note: string;
     /** «Членство уже есть» — для тех, у кого оно действует */
     member: string;
+    /** «Членство активно до {{date}}» — дату подставляет браузер */
+    memberUntil: string;
     memberLink: string;
     more: string;
 }
@@ -28,8 +30,9 @@ export interface CompactHeroLabels {
  * «Подробнее». Организатору — его тариф и его выгоды, без «на двоих».
  * На компьютере не показывается — там прежняя шапка.
  */
-export function MembershipCompactHero({ id, volunteer, host, duoHref, labels }: {
+export function MembershipCompactHero({ id, locale, volunteer, host, duoHref, labels }: {
     id: string;
+    locale: string;
     volunteer: CtaOption;
     host: CtaOption;
     duoHref: string;
@@ -37,18 +40,29 @@ export function MembershipCompactHero({ id, volunteer, host, duoHref, labels }: 
 }) {
     const session = useSession();
     const isHost = !!(session.profile as { hostId?: string | null } | null)?.hostId;
-    const isMember = session.status === "user" && !!activeMembership(session.memberships, "REGULAR");
+    const membership = session.status === "user" ? activeMembership(session.memberships, "REGULAR") : undefined;
+    const isMember = !!membership;
+    const until = membership?.endDate ? new Date(membership.endDate).toLocaleDateString(locale === "ru" ? "ru-RU" : locale) : "";
     const option = isHost ? host : volunteer;
     const benefits = isHost ? labels.hostBenefits : labels.benefits;
 
     return (
         <section id={id} aria-labelledby={`${id}-title`} className="hidden bg-white px-5 pt-6 pb-7 down-md:block">
             <h1 id={`${id}-title`} className="mb-4 w-fit bg-[#eea52d] px-2.5 text-[1.375rem] leading-[1.35] font-bold text-white">{labels.title}</h1>
-            <p className="mb-1 flex items-baseline gap-2 text-[#212121]">
-                <span className="text-[2rem] leading-[1.2] font-bold whitespace-nowrap">{isHost ? labels.hostPrice : labels.volunteerPrice}</span>
-                <span className="text-[1rem]">{labels.perYear}</span>
-            </p>
-            {!isHost && labels.duo && (
+            {/* Членство уже есть — первым крупно «активно до», а не цена (сдача клуба 27.11) */}
+            {isMember ? (
+                <p role="status" className="mb-1 flex items-center gap-2.5 rounded-[10px] bg-[#e6f9f4] px-4 py-3 text-[1.25rem] leading-[1.3] font-bold text-[#212121]">
+                    {/* eslint-disable-next-line @next/next/no-img-element -- иконка */}
+                    <img src="/web/images/membership/check.svg" alt="" aria-hidden width={24} height={24} className="shrink-0" />
+                    <span>{until ? labels.memberUntil.replace("{{date}}", until) : labels.member}</span>
+                </p>
+            ) : (
+                <p className="mb-1 flex items-baseline gap-2 text-[#212121]">
+                    <span className="text-[2rem] leading-[1.2] font-bold whitespace-nowrap">{isHost ? labels.hostPrice : labels.volunteerPrice}</span>
+                    <span className="text-[1rem]">{labels.perYear}</span>
+                </p>
+            )}
+            {!isHost && !isMember && labels.duo && (
                 <p className="mb-1 text-[0.9375rem] leading-[1.4] text-[#424242]">
                     <a href={duoHref} className="text-primary underline">{labels.duo}</a>
                 </p>
