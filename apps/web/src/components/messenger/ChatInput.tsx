@@ -6,6 +6,8 @@ import { type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from 
 import { Spinner } from "@/components/ui/Spinner";
 import { MAX_UPLOAD_SIZE, uploadMedia } from "@/lib/uploadMedia";
 
+import { CloseIcon, SendArrowIcon } from "./MessengerIcons";
+
 // Окно смайлов тяжёлое — грузится только по кнопке
 const EmojiPicker = dynamic(() => import("emoji-picker-react"), { ssr: false });
 
@@ -27,7 +29,6 @@ export interface ChatInputLabels {
 export interface OutgoingMessage { text: string; attachments: string[] }
 
 const iconButton = "flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center border-0 bg-transparent p-0 disabled:cursor-default";
-const mask = (name: string) => ({ maskImage: `url(/web/icons/messenger/${name}.svg)`, WebkitMaskImage: `url(/web/icons/messenger/${name}.svg)` });
 
 /**
  * Поле сообщения (ChatInput старого фронта): скрепка — одно вложение до
@@ -122,7 +123,7 @@ export function ChatInput({ token, disabled, labels, onSend, onError, prefill, e
                 <div className="absolute bottom-full left-0 flex w-full items-center gap-[15px] bg-white p-5 text-primary">
                     {attachment.name}
                     <button type="button" aria-label={labels.removeAttachment} onClick={() => setAttachment(null)} className={iconButton}>
-                        <span aria-hidden className="h-5 w-5 bg-caption" style={mask("delete")} />
+                        <CloseIcon className="h-3.5 w-3.5 text-caption" />
                     </button>
                 </div>
             )}
@@ -176,7 +177,7 @@ export function ChatInput({ token, disabled, labels, onSend, onError, prefill, e
                 </div>
             </div>
             <button type="button" aria-label={labels.send} disabled={!canSend} onClick={send} className={iconButton}>
-                <span aria-hidden className={`h-5 w-5 ${canSend ? "bg-primary" : "bg-caption"}`} style={mask("send-arrow")} />
+                <SendArrowIcon className={`h-5 w-5 ${canSend ? "text-primary" : "text-caption"}`} />
             </button>
         </div>
         </div>
