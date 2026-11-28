@@ -23,6 +23,7 @@ export interface ChatInputLabels {
     emojiSmileys: string;
     emojiAnimals: string;
     emojiFood: string;
+    emojiSearch: string;
 }
 
 export interface OutgoingMessage { text: string; attachments: string[] }
@@ -150,13 +151,19 @@ export function ChatInput({ token, disabled, labels, onSend, onError, prefill, e
                         <img src="/web/icons/messenger/chat-smile.svg" alt="" className="h-5 w-5" />
                     </button>
                     {emoji && (
-                        <div className="absolute right-0 bottom-[300%] z-10 down-lg:w-[70vw] down-xs:-right-[180%] down-xs:w-[85vw]">
+                        // Ширина задана явно: без неё окно на компьютере сжималось до 130 px и обрезалось
+                        // справа, а библиотека раскладывает смайлы по ширине, замеренной при открытии
+                        // (тестировщик, 07.11: наводишь на кота — подсвечивается другой смайл)
+                        <div className="absolute right-0 bottom-[300%] z-10 w-[350px] down-lg:w-[70vw] down-xs:-right-[180%] down-xs:w-[85vw]">
                             <EmojiPicker
                                 lazyLoadEmojis
                                 // Системные смайлики, как в самом сообщении: картинки Apple со стороннего
                                 // сервера выглядели иначе, чем отправленный смайлик, и не всегда загружались
                                 emojiStyle={"native" as never}
                                 width="100%"
+                                searchPlaceHolder={labels.emojiSearch}
+                                // Подпись в превью библиотеки только английская («What's Your Mood?») — убираем
+                                previewConfig={{ showPreview: false }}
                                 // Значения перечисления Categories из emoji-picker-react: сам модуль грузится только по кнопке
                                 categories={[
                                     { category: "smileys_people", name: labels.emojiSmileys },

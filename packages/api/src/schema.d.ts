@@ -8751,6 +8751,12 @@ export interface components {
              * @example volunteer_990
              */
             tariffCode: string;
+            /**
+             * @description Язык сайта, с которого платят: на нём описание платежа на странице оплаты и адрес возврата. Не передан или другой — язык профиля
+             * @example en
+             * @enum {string|null}
+             */
+            locale?: "ru" | "en" | "es" | null;
         };
         CheckoutResult: {
             /**

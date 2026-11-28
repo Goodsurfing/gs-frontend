@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!isLocale(locale)) return {};
     const t = await getTranslator(locale, "academy");
     return {
-        ...pageMetadata({ locale, path: routes.academyLesson(locale, id), title: t("seo.lesson.title"), description: t("seo.lesson.description"), noindex: !isUuid(id) }),
+        ...pageMetadata({ locale, path: routes.academyLesson(locale, id), title: t("seo.lesson.title"), description: t("seo.lesson.description"), noindex: !isUuid(id), notFound: !isUuid(id) }),
         keywords: t("seo.lesson.keywords"),
     };
 }

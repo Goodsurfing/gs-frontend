@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { keyBytes, OFFER_PAUSE_MS, pushSupport, shouldOffer, workerActivated } from "../webPush";
+import { keyBytes, OFFER_PAUSE_MS, pushSupport, saveResult, shouldOffer, workerActivated } from "../webPush";
 
 const env = { userAgent: "Mozilla/5.0 (Windows NT 10.0) Chrome/130", standalone: false, hasServiceWorker: true, hasPushManager: true, hasNotification: true };
 const iphone = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1";
@@ -56,5 +56,19 @@ describe("веб-пуши", () => {
         vi.advanceTimersByTime(1000);
         expect(await stuck).toBe(false);
         vi.useRealTimers();
+    });
+});
+
+describe("saveResult", () => {
+    it("2xx — подписан", () => {
+        expect(saveResult(204)).toBe("ok");
+        expect(saveResult(200)).toBe("ok");
+    });
+    it("400 — сервер не принял адрес службы пушей: браузер не умеет получать уведомления", () => {
+        expect(saveResult(400)).toBe("unsupported");
+    });
+    it("остальное — временный сбой", () => {
+        expect(saveResult(401)).toBe("failed");
+        expect(saveResult(500)).toBe("failed");
     });
 });

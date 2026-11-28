@@ -52,6 +52,8 @@ jobs:
             NEXT_PUBLIC_VKID_CLIENT_ID=54505769
             # Полоса «Тестовая версия» и «Сообщить о проблеме» → бот «Клуба первых» (на проде не задаётся)
             NEXT_PUBLIC_TEST_BOT=goodsurfing_testing_bot
+            # Раздел админки «Клуб тестировщиков» — только на стейдже (на проде не задаётся)
+            NEXT_PUBLIC_CLUB_ADMIN=1
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE }}:staging
             ${{ env.REGISTRY }}/${{ env.IMAGE }}:sha-${{ github.sha }}

@@ -4,7 +4,11 @@ import { APIRequestContext, expect, Page } from '@playwright/test';
  * Оплата тестовой картой ЮKassa (деньги не списываются):
  * https://yookassa.ru/developers/payment-acceptance/testing/test-bank-card
  * Страница ЮKassa должна быть уже открыта (после чекаута). Возвращает orderId.
+ *
+ * Карта — «Мир» 2200 0000 0000 0004 с проверкой 3-D Secure: Mastercard 5555…4444
+ * с 25.11.2026 в тестовом магазине всегда отвечает «технический сбой».
  */
+const TEST_CARD = '2200000000000004';
 export const payWithTestCard = async (page: Page): Promise<string> => {
     await page.waitForURL(/yoomoney\.ru\/checkout/, { timeout: 30_000 });
     await expect(page.locator('[data-qa="notification-informer"]')).toBeVisible({ timeout: 15_000 });
@@ -23,11 +27,16 @@ export const payWithTestCard = async (page: Page): Promise<string> => {
             expect((await input.inputValue()).replace(/\D/g, '')).toBe(value);
         }).toPass({ timeout: 15_000 });
     };
-    await typeInto('card-number', '5555555555554444');
+    await typeInto('card-number', TEST_CARD);
     await typeInto('expiry-month', '12');
     await typeInto('expiry-year', '30');
     await typeInto('security-code', '123');
     await page.locator('button[type="submit"]').click();
+
+    // Тестовая страница 3-D Secure ЮKassa: «Card authentication», код — любое число
+    await page.waitForURL(/yookassa\.ru\/sandbox\/bank-card\/3ds/, { timeout: 30_000 });
+    await page.locator('input[name="answer"]').fill('123');
+    await page.getByRole('button', { name: 'Confirm' }).click();
     // Тестовая ЮKassa иногда отвечает медленно
     await page.waitForURL(/checkout\/payments\/v2\/success|goodsurfing\.org/, { timeout: 60_000 });
 

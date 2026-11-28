@@ -1,6 +1,7 @@
 import { test, expect, request, type Page } from '@playwright/test';
 import { API_URL } from '../config';
 import { enableNewFrontend } from '../support/newFrontend';
+import { expectNoindex } from '../support/pageCheck';
 
 /** Популярная открытая вакансия, у которой больше одной страницы отзывов. */
 const findOffer = async (): Promise<number | undefined> => {
@@ -56,7 +57,8 @@ test.describe('Новый фронт: страница вакансии', () => 
             expect(response?.status()).toBe(404);
             await expect(page.getByText('Вакансия не найдена или произошла ошибка')).toBeVisible();
             await expect(page.getByRole('button', { name: 'Назад' })).toBeVisible();
-            await expect(page.locator('head meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+            // Тегов robots после перерисовки ISR бывает два одинаковых (Next 16.4.6, PR #973) — проверяем все
+            await expectNoindex(page);
         });
     });
 

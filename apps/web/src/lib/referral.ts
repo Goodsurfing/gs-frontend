@@ -2,7 +2,9 @@
  * «Пригласи друга»: код из ссылки ?ref=… запоминаем в браузере, а когда человек войдёт
  * (после регистрации по почте или через VK) — один раз передаём на сервер.
  */
+import { type Locale, withLocale } from "@/i18n/config";
 import { storageGet, storageRemove, storageSet } from "@/lib/safeStorage";
+
 const KEY = "gs.ref";
 const TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
@@ -39,4 +41,13 @@ export function forgetReferral(): void {
     } catch {
         // нечего делать
     }
+}
+
+/**
+ * Ссылка-приглашение на языке сайта, с которого делятся. Бэкенд строит её на
+ * языке профиля — тестировщик с английским профилем отправлял во ВКонтакте
+ * английскую главную (по ссылке ВКонтакте берёт заголовок и описание страницы).
+ */
+export function referralLink(origin: string, locale: Locale, code: string): string {
+    return `${origin.replace(/\/$/, "")}${withLocale("/", locale)}?ref=${encodeURIComponent(code)}`;
 }

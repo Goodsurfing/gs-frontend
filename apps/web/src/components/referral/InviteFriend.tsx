@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 
 import { useSession } from "@/components/session/SessionProvider";
 import { Loading } from "@/components/ui/Loading";
+import type { Locale } from "@/i18n/config";
 import { browserApi } from "@/lib/browserApi";
+import { referralLink } from "@/lib/referral";
 
 export interface InviteFriendLabels {
     intro: string;
@@ -27,7 +29,7 @@ type Referral = { code: string; link: string; invited: number };
  * «Пригласи друга»: личная ссылка, кнопки «поделиться» и сколько друзей по ней пришло.
  * Награда — значок «Рекомендатор» (выдаётся сам за первого друга), не членство.
  */
-export function InviteFriend({ achievementsHref, labels }: { achievementsHref: string; labels: InviteFriendLabels }) {
+export function InviteFriend({ locale, achievementsHref, labels }: { locale: Locale; achievementsHref: string; labels: InviteFriendLabels }) {
     const session = useSession();
     const [data, setData] = useState<Referral | null>(null);
     const [failed, setFailed] = useState(false);
@@ -61,16 +63,18 @@ export function InviteFriend({ achievementsHref, labels }: { achievementsHref: s
     if (!data) return <Loading className="min-h-[200px]" />;
 
     const text = labels.shareText;
-    const url = encodeURIComponent(data.link);
+    // Ссылка на языке открытой страницы: по ней ВКонтакте и Telegram берут заголовок
+    const link = referralLink(window.location.origin, locale, data.code);
+    const url = encodeURIComponent(link);
     const shares = [
         { name: "Telegram", href: `https://t.me/share/url?url=${url}&text=${encodeURIComponent(text)}`, icon: "/web/icons/social-mini/telegram-mini-logo.svg" },
         { name: "VK", href: `https://vk.com/share.php?url=${url}&title=${encodeURIComponent(text)}`, icon: "/web/icons/social-mini/vk-mini-logo.svg" },
-        { name: "WhatsApp", href: `https://wa.me/?text=${encodeURIComponent(`${text} ${data.link}`)}`, icon: null },
+        { name: "WhatsApp", href: `https://wa.me/?text=${encodeURIComponent(`${text} ${link}`)}`, icon: null },
     ];
 
     const copy = async () => {
         try {
-            await navigator.clipboard.writeText(data.link);
+            await navigator.clipboard.writeText(link);
         } catch {
             // Старый браузер без доступа к буферу: выделить текст в поле, пусть скопирует сам
             (document.getElementById("invite-link") as HTMLInputElement | null)?.select();
@@ -87,7 +91,7 @@ export function InviteFriend({ achievementsHref, labels }: { achievementsHref: s
             <div className="flex flex-col gap-2">
                 <label htmlFor="invite-link" className="text-[14px] text-caption">{labels.linkLabel}</label>
                 <div className="flex gap-2.5 down-sm:flex-col">
-                    <input id="invite-link" readOnly value={data.link} onFocus={(event) => event.target.select()} className="w-full rounded-[10px] border border-field bg-white px-4 py-3 text-[15px] outline-none" />
+                    <input id="invite-link" readOnly value={link} onFocus={(event) => event.target.select()} className="w-full rounded-[10px] border border-field bg-white px-4 py-3 text-[15px] outline-none" />
                     <button type="button" onClick={() => void copy()} className="shrink-0 cursor-pointer rounded-[10px] border border-primary bg-primary px-6 py-3 text-[15px] text-white transition-colors hover:bg-white hover:text-primary">
                         {copied ? labels.copied : labels.copy}
                     </button>
@@ -96,7 +100,7 @@ export function InviteFriend({ achievementsHref, labels }: { achievementsHref: s
             <div className="flex flex-wrap items-center gap-3">
                 <span className="text-[14px] text-caption">{labels.share}</span>
                 {nativeShare && (
-                    <button type="button" onClick={() => void navigator.share({ title: "GoodSurfing", text, url: data.link }).catch(() => undefined)} className="cursor-pointer rounded-full border border-accent-bg px-4 py-2 text-[14px] hover:border-primary">
+                    <button type="button" onClick={() => void navigator.share({ title: "GoodSurfing", text, url: link }).catch(() => undefined)} className="cursor-pointer rounded-full border border-accent-bg px-4 py-2 text-[14px] hover:border-primary">
                         {labels.share}…
                     </button>
                 )}

@@ -7,7 +7,7 @@ import { type ReactNode, useEffect, useState } from "react";
 import { useSession } from "@/components/session/SessionProvider";
 import { Spinner } from "@/components/ui/Spinner";
 import { AdminApiError, useAdminApi } from "@/lib/admin/api";
-import { ADMIN_MENU, isMenuItemActive } from "@/lib/admin/menu";
+import { adminMenu, isMenuItemActive } from "@/lib/admin/menu";
 
 type Access = "checking" | "allowed" | "error";
 
@@ -74,7 +74,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             </header>
             <div className="flex flex-1">
                 <nav aria-label="Разделы админки" className={`w-[250px] shrink-0 overflow-y-auto border-r border-accent-bg bg-white p-3 down-lg:fixed down-lg:inset-y-[56px] down-lg:left-0 down-lg:z-20 down-lg:shadow-lg ${menuOpen ? "" : "down-lg:hidden"}`}>
-                    {ADMIN_MENU.map((group) => (
+                    {adminMenu().map((group) => (
                         <div key={group.title} className="mb-3">
                             <p className="px-2 pb-1 text-[11px] font-semibold tracking-wide text-muted uppercase">{group.title}</p>
                             {group.items.map((item) => {
