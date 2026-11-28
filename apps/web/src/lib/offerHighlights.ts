@@ -48,8 +48,9 @@ export interface DatesChip {
 
 /**
  * Пометка «когда» в обложке (решение 10.11.2026: «когда?» — второй вопрос после «что это?»).
- * Ближайший ещё не закончившийся период («+N», если впереди есть ещё); все прошли — «Даты прошли»;
- * периодов нет и «круглый год» — «Круглый год»; иначе пометки нет.
+ * «Круглый год» — «Круглый год», периоды не важны (решение владельца 28.11.2026: у таких вакансий
+ * остались старые периоды из легаси; так же считают каталог, бэкенд и приложение). Иначе ближайший ещё
+ * не закончившийся период («+N», если впереди есть ещё); все прошли — «Даты прошли»; иначе пометки нет.
  */
 export function offerDatesChip(
     when: { periods?: { start: string; end: string }[] | null; isFullYearAcceptable?: boolean | null } | null | undefined,
@@ -57,6 +58,7 @@ export function offerDatesChip(
     t: Translate,
     today: string,
 ): DatesChip | null {
+    if (when?.isFullYearAcceptable) return { text: t("highlights.fullYear"), passed: false };
     const periods = (when?.periods ?? []).filter((period) => dayKey(period.start) !== null && dayKey(period.end) !== null);
     const todayKey = dayKey(today) ?? 0;
     const upcoming = periods
@@ -67,7 +69,6 @@ export function offerDatesChip(
         return { text: shortPeriod(upcoming[0].start, upcoming[0].end) + more, passed: false };
     }
     if (datesPassed || periods.length > 0) return { text: t("highlights.datesPassed"), passed: true };
-    if (when?.isFullYearAcceptable) return { text: t("highlights.fullYear"), passed: false };
     return null;
 }
 

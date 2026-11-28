@@ -27,6 +27,11 @@ describe("пометка «когда» в обложке вакансии", () 
         expect(offerDatesChip({ periods: [{ start: "20.07.2026", end: "24.07.2026" }] }, true, t, TODAY)).toEqual({ text: "Даты прошли", passed: true });
     });
 
+    it("круглый год — «Круглый год», даже со старыми периодами из легаси (28.11.2026)", () => {
+        const when = { periods: [{ start: "01.06.2017", end: "31.08.2017" }], isFullYearAcceptable: true };
+        expect(offerDatesChip(when, false, t, TODAY)).toEqual({ text: "Круглый год", passed: false });
+    });
+
     it("без периодов: круглый год — пометка, иначе ничего", () => {
         expect(offerDatesChip({ periods: [], isFullYearAcceptable: true }, false, t, TODAY)).toEqual({ text: "Круглый год", passed: false });
         expect(offerDatesChip({ periods: [], isFullYearAcceptable: false }, false, t, TODAY)).toBeNull();
